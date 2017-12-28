@@ -48,4 +48,9 @@ public class Health : MonoBehaviour
     {
         return currentHealth <= 0;
     }
+
+    public string GetUIText()
+    {
+        return "HEALTH: " + GetCurrentHealth() + " / " + GetMaximumHealth() + " (" + GetBaseHealth() + " + " + GetBonusHealth() + ")";
+    }
 }

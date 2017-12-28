@@ -44,4 +44,10 @@ public class MagicResistance : MonoBehaviour
     {
         return (1f - magicDamageTakenMultiplier) * 100;
     }
+
+    public string GetUIText()
+    {
+        return "MAGIC RESISTANCE: " + GetCurrentMagicResistance() + " (" + GetBaseMagicResistance() + " + " + GetBonusMagicResistance() + 
+            ") - Takes " + (int)GetMagicDamageReductionPercent() + "% reduced magic damage";
+    }
 }

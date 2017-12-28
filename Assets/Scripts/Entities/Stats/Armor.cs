@@ -44,4 +44,9 @@ public class Armor : MonoBehaviour
     {
         return (1f - physicalDamageTakenMultiplier) * 100;
     }
+
+    public string GetUIText()
+    {
+        return "ARMOR: " + GetCurrentArmor() + " (" + GetBaseArmor() + " + " + GetBonusArmor() + ") - Takes " + (int)GetPhysicalDamageReductionPercent() + "% reduced physical damage";
+    }
 }

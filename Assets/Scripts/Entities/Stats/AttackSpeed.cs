@@ -36,4 +36,9 @@ public class AttackSpeed : MonoBehaviour
     {
         return bonusAttackSpeedPercent * baseAttackSpeed;
     }
+
+    public string GetUIText()
+    {
+        return "ATTACK SPEED: " + GetCurrentAttackSpeed().ToString("0.00") + " (" + GetBaseAttackSpeed() + " + " + GetBonusAttackSpeedFlat() + " (" + GetBonusAttackSpeedPercent() + "%))";
+    }
 }

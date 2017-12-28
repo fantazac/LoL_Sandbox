@@ -68,9 +68,9 @@ public class MainMenuManager : MonoBehaviour
                 GUILayout.Label(PhotonNetwork.connectionStateDetailed.ToString());
                 break;
             case MainMenuState.CHARACTER_SELECT:
-                if(StaticObjects.OnlineMode)
+                if (StaticObjects.OnlineMode)
                 {
-                    GUILayout.Label("Ping: " + PhotonNetwork.GetPing().ToString());
+                    GUILayout.Label("Ping: " + PhotonNetwork.GetPing().ToString() + "  -  Players Online: " + PhotonNetwork.playerList.Length);
                 }
                 if (GUILayout.Button("Ezreal", GUILayout.Height(40)))
                 {
@@ -84,7 +84,7 @@ public class MainMenuManager : MonoBehaviour
             case MainMenuState.ON_HOLD:
                 if (StaticObjects.OnlineMode)
                 {
-                    GUILayout.Label("Ping: " + PhotonNetwork.GetPing().ToString());
+                    GUILayout.Label("Ping: " + PhotonNetwork.GetPing().ToString() + "  -  Players Online: " + PhotonNetwork.playerList.Length);
                 }
                 break;
         }
@@ -125,7 +125,7 @@ public class MainMenuManager : MonoBehaviour
 
 enum MainMenuState
 {
-    MAIN, 
+    MAIN,
     CONNECTING,
     CHARACTER_SELECT,
     ON_HOLD,

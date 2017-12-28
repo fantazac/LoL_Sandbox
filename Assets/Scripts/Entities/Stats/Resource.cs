@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Resource : MonoBehaviour
+public abstract class Resource : MonoBehaviour
 {
     [SerializeField]
     protected ResourceType type;
@@ -50,6 +50,11 @@ public class Resource : MonoBehaviour
     public float GetResourcePercent()
     {
         return currentResource / maxResource;
+    }
+
+    public string GetUIText()
+    {
+        return GetResourceType() + ": " + GetCurrentResource() + " / " + GetMaximumResource() + " (" + GetBaseResource() + " + " + GetBonusResource() + ")";
     }
 }
 

@@ -35,7 +35,7 @@ public class CharacterMovement : CharacterBase
         if (terrain.Raycast(GetRay(mousePosition), out hit, Mathf.Infinity))
         {
             Instantiate(movementCapsule, hit.point, new Quaternion());
-            
+
             if (StaticObjects.OnlineMode)
             {
                 SendToServer_Movement(hit.point + characterHeightOffset);

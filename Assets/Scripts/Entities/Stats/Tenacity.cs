@@ -31,4 +31,9 @@ public class Tenacity : MonoBehaviour
     {
         return bonusTenacity;
     }
+
+    public string GetUIText()
+    {
+        return "TENACITY: " + GetCurrentTenacity() + "% (" + GetBaseTenacity() + "% + " + GetBonusTenacity() + "%)";
+    }
 }

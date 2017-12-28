@@ -56,4 +56,10 @@ public class MagicPenetration : MonoBehaviour
     {
         return bonusMagicPenetrationPercent;
     }
+
+    public string GetUIText()
+    {
+        return "MAGIC PENETRATION: " + GetCurrentMagicPenetrationFlat() + " (" + GetBaseMagicPenetrationFlat() + " + " + GetBonusMagicPenetrationFlat() + 
+            ") | " + GetCurrentMagicPenetrationPercent() + "% (" + GetBaseMagicPenetrationPercent() + "% + " + GetBonusMagicPenetrationPercent() + "%)";
+    }
 }

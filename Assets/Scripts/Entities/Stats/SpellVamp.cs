@@ -31,4 +31,9 @@ public class SpellVamp : MonoBehaviour
     {
         return bonusSpellVamp;
     }
+
+    public string GetUIText()
+    {
+        return "SPELL VAMP: " + GetCurrentSpellVamp() + "% (" + GetBaseSpellVamp() + "% + " + GetBonusSpellVamp() + "%)";
+    }
 }

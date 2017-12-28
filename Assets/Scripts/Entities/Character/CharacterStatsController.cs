@@ -32,49 +32,27 @@ public class CharacterStatsController : CharacterBase
             {
                 GUILayout.Label("");//ping goes there in online
             }
-            GUILayout.Label("HEALTH: " + characterStats.Health.GetCurrentHealth() + " / " + characterStats.Health.GetMaximumHealth() +
-                " (" + characterStats.Health.GetBaseHealth() + " + " + characterStats.Health.GetBonusHealth() + ")");
-            GUILayout.Label(characterStats.Resource.GetResourceType() + ": " + characterStats.Resource.GetCurrentResource() +
-                " / " + characterStats.Resource.GetMaximumResource() + " (" + characterStats.Resource.GetBaseResource() +
-                " + " + characterStats.Resource.GetBonusResource() + ")");
+            GUILayout.Label(characterStats.Health.GetUIText());
+            GUILayout.Label(characterStats.Resource.GetUIText());
 
-            GUILayout.Label("ATTACK DAMAGE: " + characterStats.AttackDamage.GetCurrentAttackDamage() + " (" + characterStats.AttackDamage.GetBaseAttackDamage() +
-                " + " + characterStats.AttackDamage.GetBonusAttackDamage() + ")");
-            GUILayout.Label("ABILITY POWER: " + characterStats.AbilityPower.GetCurrentAbilityPower() + " (" + characterStats.AbilityPower.GetBaseAbilityPower() +
-                " + " + characterStats.AbilityPower.GetBonusAbilityPower() + ")");
-            GUILayout.Label("ARMOR: " + characterStats.Armor.GetCurrentArmor() + " (" + characterStats.Armor.GetBaseArmor() +
-                " + " + characterStats.Armor.GetBonusArmor() + ") - Takes " + (int)characterStats.Armor.GetPhysicalDamageReductionPercent() + "% reduced physical damage");
-            GUILayout.Label("MAGIC RESISTANCE: " + characterStats.MagicResistance.GetCurrentMagicResistance() + " (" + characterStats.MagicResistance.GetBaseMagicResistance() +
-               " + " + characterStats.MagicResistance.GetBonusMagicResistance() + ") - Takes " + (int)characterStats.MagicResistance.GetMagicDamageReductionPercent() + "% reduced magic damage");
-            GUILayout.Label("ATTACK SPEED: " + characterStats.AttackSpeed.GetCurrentAttackSpeed().ToString("0.00") + " (" + characterStats.AttackSpeed.GetBaseAttackSpeed() +
-               " + " + characterStats.AttackSpeed.GetBonusAttackSpeedFlat() + " (" + characterStats.AttackSpeed.GetBonusAttackSpeedPercent() + "%))");
-            GUILayout.Label("COOLDOWN REDUCTION: " + characterStats.CooldownReduction.GetCurrentCooldownReduction() + "% (" + characterStats.CooldownReduction.GetBaseCooldownReduction() +
-               " + " + characterStats.CooldownReduction.GetBonusCooldownReduction() + ")");
-            GUILayout.Label("CRITICAL STRIKE CHANCE: " + characterStats.CriticalStrikeChance.GetCurrentCriticalStrikeChance() + "% (" + characterStats.CriticalStrikeChance.GetBaseCriticalStrikeChance() +
-               " + " + characterStats.CriticalStrikeChance.GetBonusCriticalStrikeChance() + ")");
-            GUILayout.Label("MOVEMENT SPEED: " + characterStats.MovementSpeed.GetCurrentMovementSpeed() + " (" + characterStats.MovementSpeed.GetBaseMovementSpeed() +
-                " + " + characterStats.MovementSpeed.GetBonusMovementSpeed() + ")");
+            GUILayout.Label(characterStats.AttackDamage.GetUIText());
+            GUILayout.Label(characterStats.AbilityPower.GetUIText());
+            GUILayout.Label(characterStats.Armor.GetUIText());
+            GUILayout.Label(characterStats.MagicResistance.GetUIText());
+            GUILayout.Label(characterStats.AttackSpeed.GetUIText());
+            GUILayout.Label(characterStats.CooldownReduction.GetUIText());
+            GUILayout.Label(characterStats.CriticalStrikeChance.GetUIText());
+            GUILayout.Label(characterStats.MovementSpeed.GetUIText());
 
-            GUILayout.Label("HEALTH REGENERATION: " + characterStats.HealthRegenaration.GetCurrentHealthRegeneration() + " (" + characterStats.HealthRegenaration.GetBaseHealthRegeneration() +
-                " + ((" + characterStats.HealthRegenaration.GetBaseHealthRegeneration() + " + " + characterStats.HealthRegenaration.GetBonusHealthRegenerationFlat() +
-                ") * " + characterStats.HealthRegenaration.GetBonusHealthRegenerationPercent() + "%))");
-            GUILayout.Label(characterStats.Resource.GetResourceType() + " REGENERATION: " + characterStats.ResourceRegeneration.GetCurrentResourceRegeneration() +
-                " (" + characterStats.ResourceRegeneration.GetBaseResourceRegeneration() + " + ((" + characterStats.ResourceRegeneration.GetBaseResourceRegeneration() +
-                " + " + characterStats.ResourceRegeneration.GetBonusResourceRegenerationFlat() + ") * " + characterStats.ResourceRegeneration.GetBonusResourceRegenerationPercent() + "%))");
-            GUILayout.Label("ARMOR PENETRATION: " + characterStats.ArmorPenetration.GetCurrentArmorPenetrationFlat() + " (" + characterStats.ArmorPenetration.GetBaseArmorPenetrationFlat() +
-                " + " + characterStats.ArmorPenetration.GetBonusArmorPenetrationFlat() + ") | " + characterStats.ArmorPenetration.GetCurrentArmorPenetrationPercent() +
-                "% (" + characterStats.ArmorPenetration.GetBaseArmorPenetrationPercent() + "% + " + characterStats.ArmorPenetration.GetBonusArmorPenetrationPercent() + "%)");
-            GUILayout.Label("MAGIC PENETRATION: " + characterStats.MagicPenetration.GetCurrentMagicPenetrationFlat() + " (" + characterStats.MagicPenetration.GetBaseMagicPenetrationFlat() +
-                " + " + characterStats.MagicPenetration.GetBonusMagicPenetrationFlat() + ") | " + characterStats.MagicPenetration.GetCurrentMagicPenetrationPercent() +
-                "% (" + characterStats.MagicPenetration.GetBaseMagicPenetrationPercent() + "% + " + characterStats.MagicPenetration.GetBonusMagicPenetrationPercent() + "%)");
-            GUILayout.Label("ATTACK RANGE: " + characterStats.AttackRange.GetCurrentAttackRange() + " (" + characterStats.AttackRange.GetBaseAttackRange() +
-                " + " + characterStats.AttackRange.GetBonusAttackRange() + ")");
-            GUILayout.Label("LIFE STEAL: " + characterStats.LifeSteal.GetCurrentLifeSteal() + "% (" + characterStats.LifeSteal.GetBaseLifeSteal() +
-                "% + " + characterStats.LifeSteal.GetBonusLifeSteal() + "%)");
-            GUILayout.Label("SPELL VAMP: " + characterStats.SpellVamp.GetCurrentSpellVamp() + "% (" + characterStats.SpellVamp.GetBaseSpellVamp() +
-                "% + " + characterStats.SpellVamp.GetBonusSpellVamp() + "%)");
-            GUILayout.Label("TENACITY: " + characterStats.Tenacity.GetCurrentTenacity() + "% (" + characterStats.Tenacity.GetBaseTenacity() +
-                "% + " + characterStats.Tenacity.GetBonusTenacity() + "%)");
+            GUILayout.Label(characterStats.HealthRegenaration.GetUIText());
+            GUILayout.Label(characterStats.ResourceRegeneration.GetUIText());
+            GUILayout.Label(characterStats.ArmorPenetration.GetUIText());
+            GUILayout.Label(characterStats.MagicPenetration.GetUIText());
+            GUILayout.Label(characterStats.AttackRange.GetUIText());
+            GUILayout.Label(characterStats.LifeSteal.GetUIText());
+            GUILayout.Label(characterStats.SpellVamp.GetUIText());
+            GUILayout.Label(characterStats.Tenacity.GetUIText());
+
             GUILayout.Label("POSITION: " + transform.position.x + ", " + transform.position.y + ", " + transform.position.z);
             GUILayout.Label("ROTATION: " + transform.rotation.x + ", " + transform.rotation.y + ", " + transform.rotation.z + ", " + transform.rotation.w);
 

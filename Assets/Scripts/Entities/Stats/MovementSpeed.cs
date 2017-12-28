@@ -38,4 +38,9 @@ public class MovementSpeed : MonoBehaviour
     {
         return bonusMovementSpeed;
     }
+
+    public string GetUIText()
+    {
+        return "MOVEMENT SPEED: " + GetCurrentMovementSpeed() + " (" + GetBaseMovementSpeed() + " + " + GetBonusMovementSpeed() + ")";
+    }
 }

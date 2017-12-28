@@ -56,4 +56,10 @@ public class ArmorPenetration : MonoBehaviour
     {
         return bonusArmorPenetrationPercent;
     }
+
+    public string GetUIText()
+    {
+        return "ARMOR PENETRATION: " + GetCurrentArmorPenetrationFlat() + " (" + GetBaseArmorPenetrationFlat() + " + " + GetBonusArmorPenetrationFlat() +
+            ") | " + GetCurrentArmorPenetrationPercent() + "% (" + GetBaseArmorPenetrationPercent() + "% + " + GetBonusArmorPenetrationPercent() + "%)";
+    }
 }

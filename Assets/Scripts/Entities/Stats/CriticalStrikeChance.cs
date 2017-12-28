@@ -31,4 +31,9 @@ public class CriticalStrikeChance : MonoBehaviour
     {
         return bonusCriticalStrikeChance;
     }
+
+    public string GetUIText()
+    {
+        return "CRITICAL STRIKE CHANCE: " + GetCurrentCriticalStrikeChance() + "% (" + GetBaseCriticalStrikeChance() + " + " + GetBonusCriticalStrikeChance() + ")";
+    }
 }

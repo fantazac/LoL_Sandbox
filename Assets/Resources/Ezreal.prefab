@@ -224,9 +224,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1294391184220730}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4ccba1515d6c94a499e37b3a01e3d2e4, type: 3}
+  m_Script: {fileID: 11500000, guid: ecedc18195b7124488fc66d3170532f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  type: 2
   baseResourceRegeneration: 0
   currentResourceRegeneration: 0
   bonusResourceRegenerationFlat: 0

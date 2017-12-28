@@ -38,4 +38,10 @@ public class HealthRegeneration : MonoBehaviour //the value of this stat is: per
     {
         return bonusHealthRegenerationPercent;
     }
+
+    public string GetUIText()
+    {
+        return "HEALTH REGENERATION: " + GetCurrentHealthRegeneration() + " (" + GetBaseHealthRegeneration() + " + ((" + GetBaseHealthRegeneration() + 
+            " + " + GetBonusHealthRegenerationFlat() + ") * " + GetBonusHealthRegenerationPercent() + "%))";
+    }
 }

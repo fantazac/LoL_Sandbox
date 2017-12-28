@@ -31,4 +31,9 @@ public class AttackDamage : MonoBehaviour
     {
         return bonusAttackDamage;
     }
+
+    public string GetUIText()
+    {
+        return "ATTACK DAMAGE: " + GetCurrentAttackDamage() + " (" + GetBaseAttackDamage() + " + " + GetBonusAttackDamage() + ")";
+    }
 }

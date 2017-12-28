@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public abstract class CharacterBase : MonoBehaviour {
-
+public abstract class CharacterBase : MonoBehaviour
+{
     private Character _character;
     public Character Character
     {
@@ -116,7 +116,7 @@ public abstract class CharacterBase : MonoBehaviour {
 
     private void InitializePhotonView()
     {
-        if(_photonView == null)
+        if (_photonView == null)
         {
             _photonView = GetComponent<PhotonView>();
         }

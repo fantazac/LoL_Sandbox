@@ -31,4 +31,9 @@ public class LifeSteal : MonoBehaviour
     {
         return bonusLifeSteal;
     }
+
+    public string GetUIText()
+    {
+        return "LIFE STEAL: " + GetCurrentLifeSteal() + "% (" + GetBaseLifeSteal() + "% + " + GetBonusLifeSteal() + "%)";
+    }
 }

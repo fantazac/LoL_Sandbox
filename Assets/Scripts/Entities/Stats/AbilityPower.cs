@@ -31,4 +31,9 @@ public class AbilityPower : MonoBehaviour
     {
         return bonusAbilityPower;
     }
+
+    public string GetUIText()
+    {
+        return "ABILITY POWER: " + GetCurrentAbilityPower() + " (" + GetBaseAbilityPower() + " + " + GetBonusAbilityPower() + ")";
+    }
 }

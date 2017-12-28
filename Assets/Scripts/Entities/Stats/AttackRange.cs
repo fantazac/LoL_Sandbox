@@ -31,4 +31,9 @@ public class AttackRange : MonoBehaviour
     {
         return bonusAttackRange;
     }
+
+    public string GetUIText()
+    {
+        return "ATTACK RANGE: " + GetCurrentAttackRange() + " (" + GetBaseAttackRange() + " + " + GetBonusAttackRange() + ")";
+    }
 }

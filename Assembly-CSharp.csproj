@@ -229,9 +229,12 @@
      <Compile Include="Assets\Scripts\Entities\Stats\MovementSpeed.cs" />
      <Compile Include="Assets\Scripts\Entities\Stats\Resource.cs" />
      <Compile Include="Assets\Scripts\Entities\Stats\ResourceRegeneration.cs" />
-     <Compile Include="Assets\Scripts\Entities\Stats\SecondaryResources\Energy.cs" />
-     <Compile Include="Assets\Scripts\Entities\Stats\SecondaryResources\Fury.cs" />
-     <Compile Include="Assets\Scripts\Entities\Stats\SecondaryResources\Mana.cs" />
+     <Compile Include="Assets\Scripts\Entities\Stats\Resources\Energy.cs" />
+     <Compile Include="Assets\Scripts\Entities\Stats\Resources\EnergyRegeneration.cs" />
+     <Compile Include="Assets\Scripts\Entities\Stats\Resources\Fury.cs" />
+     <Compile Include="Assets\Scripts\Entities\Stats\Resources\FuryRegeneration.cs" />
+     <Compile Include="Assets\Scripts\Entities\Stats\Resources\Mana.cs" />
+     <Compile Include="Assets\Scripts\Entities\Stats\Resources\ManaRegeneration.cs" />
      <Compile Include="Assets\Scripts\Entities\Stats\SpellVamp.cs" />
      <Compile Include="Assets\Scripts\Entities\Stats\Tenacity.cs" />
      <Compile Include="Assets\Scripts\Managers\MainMenuManager.cs" />

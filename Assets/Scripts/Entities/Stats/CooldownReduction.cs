@@ -39,4 +39,9 @@ public class CooldownReduction : MonoBehaviour
     {
         return cooldownReductionMultiplier;
     }
+
+    public string GetUIText()
+    {
+        return "COOLDOWN REDUCTION: " + GetCurrentCooldownReduction() + "% (" + GetBaseCooldownReduction() + " + " + GetBonusCooldownReduction() + ")";
+    }
 }
