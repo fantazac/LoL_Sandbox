@@ -8,6 +8,8 @@ public abstract class CharacterStats : EntityStats
 
     protected override void OnEnable()
     {
+        EntityType = EntityType.CHARACTER;
+
         base.OnEnable();
     }
 

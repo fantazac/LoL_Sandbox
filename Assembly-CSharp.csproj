@@ -211,6 +211,8 @@
      <Compile Include="Assets\Scripts\Entities\Character\CharacterStats\EzrealStats.cs" />
      <Compile Include="Assets\Scripts\Entities\Character\CharacterStats\LucianStats.cs" />
      <Compile Include="Assets\Scripts\Entities\Character\CharacterStatsController.cs" />
+     <Compile Include="Assets\Scripts\Entities\Minion\MinionStats.cs" />
+     <Compile Include="Assets\Scripts\Entities\Monster\MonsterStats.cs" />
      <Compile Include="Assets\Scripts\Entities\Stats\AbilityPower.cs" />
      <Compile Include="Assets\Scripts\Entities\Stats\Armor.cs" />
      <Compile Include="Assets\Scripts\Entities\Stats\ArmorPenetration.cs" />
