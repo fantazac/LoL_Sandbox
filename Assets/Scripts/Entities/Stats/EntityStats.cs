@@ -48,9 +48,11 @@ public class EntityStats : MonoBehaviour
         SpellVamp = GetComponent<SpellVamp>();
         AttackRange = GetComponent<AttackRange>();
         Tenacity = GetComponent<Tenacity>();
+
+        SetBaseStats(GetComponent<EntityBaseStats>());
     }
 
-    public virtual void SetBaseStats(EntityBaseStats entityBaseStats)
+    protected virtual void SetBaseStats(EntityBaseStats entityBaseStats)
     {
         Health.SetBaseHealth(entityBaseStats.BaseHealth);
         Resource.SetBaseResource(entityBaseStats.BaseResource);

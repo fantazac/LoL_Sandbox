@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EzrealStats : CharacterStats
+public class DummyStats : CharacterStats
 {
     //extra stats the character has that other characters don't
 
@@ -11,7 +11,7 @@ public class EzrealStats : CharacterStats
         base.OnEnable();
     }
 
-    public override void SetBaseStats(EntityBaseStats entityStats)
+    protected override void SetBaseStats(EntityBaseStats entityStats)
     {
         base.SetBaseStats(entityStats);
 

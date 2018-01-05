@@ -3,6 +3,12 @@ using System.Collections;
 
 public class CharacterInput : CharacterBase
 {
+    public delegate void OnPressedMHandler();
+    public event OnPressedMHandler OnPressedM;
+
+    public delegate void OnPressedNHandler();
+    public event OnPressedNHandler OnPressedN;
+
     public delegate void OnPressedSHandler();
     public event OnPressedSHandler OnPressedS;
 
@@ -25,19 +31,27 @@ public class CharacterInput : CharacterBase
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.S))
+        if (Input.GetKeyDown(KeyCode.M) && OnPressedM != null)
+        {
+            OnPressedM();
+        }
+        if (Input.GetKeyDown(KeyCode.N) && OnPressedN != null)
+        {
+            OnPressedN();
+        }
+        if (Input.GetKeyDown(KeyCode.S) && OnPressedS != null)
         {
             OnPressedS();
         }
-        if (Input.GetKeyDown(KeyCode.Y))
+        if (Input.GetKeyDown(KeyCode.Y) && OnPressedY != null)
         {
             OnPressedY();
         }
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space) && OnPressedSpace != null)
         {
             OnPressedSpace();
         }
-        if (Input.GetKeyUp(KeyCode.Space))
+        if (Input.GetKeyUp(KeyCode.Space) && OnPressedSpace != null)
         {
             OnReleasedSpace();
         }

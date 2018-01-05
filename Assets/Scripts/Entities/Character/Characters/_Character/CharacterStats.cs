@@ -2,16 +2,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LucianStats : CharacterStats
+public abstract class CharacterStats : EntityStats
 {
-    //extra stats the character has that other characters don't
+    //extra stats characters have that other entities don't
 
     protected override void OnEnable()
     {
+        EntityType = EntityType.CHARACTER;
+
         base.OnEnable();
     }
 
-    public override void SetBaseStats(EntityBaseStats entityStats)
+    protected override void SetBaseStats(EntityBaseStats entityStats)
     {
         base.SetBaseStats(entityStats);
 

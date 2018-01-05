@@ -66,6 +66,8 @@ GameObject:
   - component: {fileID: 114625631600227958}
   - component: {fileID: 114156338481985698}
   - component: {fileID: 114760876531046866}
+  - component: {fileID: 114986620668545128}
+  - component: {fileID: 114165310821136542}
   m_Layer: 8
   m_Name: Lucian
   m_TagString: Character
@@ -290,6 +292,17 @@ MonoBehaviour:
   currentArmor: 0
   bonusArmor: 0
   physicalDamageTakenMultiplier: 0
+--- !u!114 &114165310821136542
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1507067852754532}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 789237ebabbcd7048b3f884a43158838, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114244640613273516
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -579,3 +592,14 @@ MonoBehaviour:
   currentHealth: 0
   bonusHealth: 0
   maxHealth: 0
+--- !u!114 &114986620668545128
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1507067852754532}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 831f3823ef40818438cfbc5ce6de4972, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

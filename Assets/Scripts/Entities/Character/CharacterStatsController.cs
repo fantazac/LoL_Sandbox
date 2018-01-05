@@ -9,9 +9,6 @@ public class CharacterStatsController : CharacterBase
     protected void OnEnable()
     {
         characterStats = GetComponent<CharacterStats>();
-        EntityBaseStats characterBaseStats = GetComponent<EntityBaseStats>();
-
-        characterStats.SetBaseStats(characterBaseStats);
     }
 
     protected override void Start()

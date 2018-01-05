@@ -107,12 +107,20 @@ public class CharacterMovement : CharacterBase
         CharacterOrientation.StopAllCoroutines();
     }
 
+    public void StopAllMovement(Ability ability)
+    {
+        if (ability.CanStopMovement)
+        {
+            StopAllMovement();
+        }
+    }
+
     private Ray GetRay(Vector3 mousePosition)
     {
         return StaticObjects.CharacterCamera.ScreenPointToRay(mousePosition);
     }
 
-    private void NotifyCharacterMoved()
+    public void NotifyCharacterMoved()
     {
         if ((StaticObjects.OnlineMode && PhotonView.isMine) || !StaticObjects.OnlineMode)
         {

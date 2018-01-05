@@ -13,7 +13,7 @@ public abstract class MonsterStats : EntityStats
         base.OnEnable();
     }
 
-    public override void SetBaseStats(EntityBaseStats entityStats)
+    protected override void SetBaseStats(EntityBaseStats entityStats)
     {
         base.SetBaseStats(entityStats);
 

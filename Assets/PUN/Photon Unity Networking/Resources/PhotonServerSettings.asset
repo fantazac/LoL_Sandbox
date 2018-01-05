@@ -46,4 +46,5 @@ MonoBehaviour:
   - ReceiveFromServer_StopMovement
   - ReceiveFromServer_ConnectionInfo
   - ReceiveFromServer_ConnectionInfoRequest
+  - ReceiveFromServer_Ability
   DisableAutoOpenWizard: 1
