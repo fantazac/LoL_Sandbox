@@ -49,4 +49,6 @@ MonoBehaviour:
   - ReceiveFromServer_Ability
   - ReceiveFromServer_Ability_SpawnDummy
   - ReceiveFromServer_Ability_TeleportToMid
+  - ReceiveFromServer_Ability_SpawnAllyDummy
+  - ReceiveFromServer_Ability_SpawnEnemyDummy
   DisableAutoOpenWizard: 1

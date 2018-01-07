@@ -2,10 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TeleportToMid : Ability
+public class TeleportToMid : Ability, OtherAbility
 {
-    protected Vector3 midPosition;
-
     protected TeleportToMid()
     {
         CanStopMovement = true;
@@ -14,12 +12,9 @@ public class TeleportToMid : Ability
     protected override void Start()
     {
         base.Start();
-
-        midPosition = Vector3.up * character.transform.position.y;
-        character.CharacterInput.OnPressedM += PressedInput;
     }
 
-    protected override void PressedInput()
+    public override void OnPressedInput()
     {
         if (StaticObjects.OnlineMode)
         {
@@ -45,7 +40,7 @@ public class TeleportToMid : Ability
     protected override void UseAbility()
     {
         character.CharacterMovement.StopAllMovement(this);
-        character.transform.position = midPosition;
+        character.transform.position = character.CharacterMovement.CharacterHeightOffset;
         character.CharacterMovement.NotifyCharacterMoved();
     }
 }

@@ -27,6 +27,7 @@ GameObject:
   - component: {fileID: 114519223790839458}
   - component: {fileID: 114866246300443908}
   - component: {fileID: 114187010915273160}
+  - component: {fileID: 114958221426692436}
   - component: {fileID: 114995869905901432}
   - component: {fileID: 114841941229683450}
   - component: {fileID: 114419638435089374}
@@ -49,6 +50,8 @@ GameObject:
   - component: {fileID: 114583660594214464}
   - component: {fileID: 114889793785480940}
   - component: {fileID: 114634682214722888}
+  - component: {fileID: 114983581572747220}
+  - component: {fileID: 114230160075218552}
   - component: {fileID: 114147638681676846}
   - component: {fileID: 114782713917711308}
   m_Layer: 8
@@ -111,6 +114,7 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -126,6 +130,7 @@ MeshRenderer:
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
+  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -143,6 +148,7 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -158,6 +164,7 @@ MeshRenderer:
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
+  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -254,6 +261,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ca7d29745d9910c45a7dd68b98d03685, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &114230160075218552
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1294391184220730}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 61628d0fbdcbd8043a9007dc26f796a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &114264645714451542
@@ -563,6 +581,23 @@ MonoBehaviour:
   baseAttackRange: 0
   currentAttackRange: 0
   bonusAttackRange: 0
+--- !u!114 &114958221426692436
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1294391184220730}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a41480e2399dcb74aaad91384d82e998, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  characterAbilities: []
+  otherAbilities:
+  - {fileID: 114147638681676846}
+  - {fileID: 114230160075218552}
+  - {fileID: 114983581572747220}
+  - {fileID: 114782713917711308}
 --- !u!114 &114959456603954034
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -578,6 +613,20 @@ MonoBehaviour:
   currentMagicResistance: 0
   bonusMagicResistance: 0
   magicDamageTakenMultiplier: 0
+--- !u!114 &114983581572747220
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1294391184220730}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c7fa87ee87c63641992356d2e6db7c0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spawnDummyAbilities:
+  - {fileID: 114230160075218552}
+  - {fileID: 114147638681676846}
 --- !u!114 &114995869905901432
 MonoBehaviour:
   m_ObjectHideFlags: 1

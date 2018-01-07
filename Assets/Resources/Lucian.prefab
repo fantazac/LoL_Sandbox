@@ -44,6 +44,7 @@ GameObject:
   - component: {fileID: 114918926230569044}
   - component: {fileID: 114518415880134790}
   - component: {fileID: 114750828589375982}
+  - component: {fileID: 114000382555670890}
   - component: {fileID: 114439890440468546}
   - component: {fileID: 114244640613273516}
   - component: {fileID: 114078209732721834}
@@ -66,6 +67,8 @@ GameObject:
   - component: {fileID: 114625631600227958}
   - component: {fileID: 114156338481985698}
   - component: {fileID: 114760876531046866}
+  - component: {fileID: 114255252513267966}
+  - component: {fileID: 114904757158163134}
   - component: {fileID: 114986620668545128}
   - component: {fileID: 114165310821136542}
   m_Layer: 8
@@ -111,6 +114,7 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -126,6 +130,7 @@ MeshRenderer:
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
+  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -143,6 +148,7 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -158,6 +164,7 @@ MeshRenderer:
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
+  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -207,6 +214,23 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &114000382555670890
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1507067852754532}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a41480e2399dcb74aaad91384d82e998, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  characterAbilities: []
+  otherAbilities:
+  - {fileID: 114986620668545128}
+  - {fileID: 114904757158163134}
+  - {fileID: 114255252513267966}
+  - {fileID: 114165310821136542}
 --- !u!114 &114069144610409572
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -317,6 +341,20 @@ MonoBehaviour:
   movementCapsule: {fileID: 1000014217773866, guid: fce730138d5a1624199e4a657c2026af,
     type: 2}
   spawnPoint: {x: 0, y: 0, z: 0}
+--- !u!114 &114255252513267966
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1507067852754532}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c7fa87ee87c63641992356d2e6db7c0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spawnDummyAbilities:
+  - {fileID: 114904757158163134}
+  - {fileID: 114986620668545128}
 --- !u!114 &114332716081703900
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -541,6 +579,17 @@ MonoBehaviour:
   instantiationId: -1
   currentMasterID: -1
   isRuntimeInstantiated: 0
+--- !u!114 &114904757158163134
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1507067852754532}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 61628d0fbdcbd8043a9007dc26f796a8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114904866682542976
 MonoBehaviour:
   m_ObjectHideFlags: 1

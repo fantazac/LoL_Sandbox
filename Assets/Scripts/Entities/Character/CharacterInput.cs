@@ -1,16 +1,14 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System;
 
 public class CharacterInput : CharacterBase
 {
-    public delegate void OnPressedAbilityHandler(int skillId, Vector3 mousePosition);
-    public event OnPressedAbilityHandler OnPressedAbility;
+    public delegate void OnPressedCharacterAbilityHandler(int abilityId);
+    public event OnPressedCharacterAbilityHandler OnPressedCharacterAbility;
 
-    public delegate void OnPressedMHandler();
-    public event OnPressedMHandler OnPressedM;
-
-    public delegate void OnPressedNHandler();
-    public event OnPressedNHandler OnPressedN;
+    public delegate void OnPressedOtherAbilityHandler(int abilityId);
+    public event OnPressedOtherAbilityHandler OnPressedOtherAbility;
 
     public delegate void OnPressedSHandler();
     public event OnPressedSHandler OnPressedS;
@@ -37,13 +35,24 @@ public class CharacterInput : CharacterBase
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.M) && OnPressedM != null)
+        if (Input.GetKey(KeyCode.LeftShift))
         {
-            OnPressedM();
-        }
-        if (Input.GetKeyDown(KeyCode.N) && OnPressedN != null)
-        {
-            OnPressedN();
+            if (Input.GetKeyDown(KeyCode.B) && OnPressedOtherAbility != null)
+            {
+                OnPressedOtherAbility((int)OtherAbilities.SPAWN_ENEMY_DUMMY);
+            }
+            if (Input.GetKeyDown(KeyCode.M) && OnPressedOtherAbility != null)
+            {
+                OnPressedOtherAbility((int)OtherAbilities.DESTROY_ALL_DUMMIES);
+            }
+            if (Input.GetKeyDown(KeyCode.N) && OnPressedOtherAbility != null)
+            {
+                OnPressedOtherAbility((int)OtherAbilities.SPAWN_ALLY_DUMMY);
+            }
+            if (Input.GetKeyDown(KeyCode.L) && OnPressedOtherAbility != null)
+            {
+                OnPressedOtherAbility((int)OtherAbilities.TP_MID);
+            }
         }
         if (Input.GetKeyDown(KeyCode.S) && OnPressedS != null)
         {

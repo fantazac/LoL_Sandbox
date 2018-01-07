@@ -13,6 +13,16 @@ public abstract class CharacterBase : MonoBehaviour
         }
     }
 
+    private CharacterAbilityManager _characterAbilityManager;
+    public CharacterAbilityManager CharacterAbilityManager
+    {
+        get
+        {
+            InitializeCharacterAbilityManager();
+            return _characterAbilityManager;
+        }
+    }
+
     private CharacterInput _characterInput;
     public CharacterInput CharacterInput
     {
@@ -66,6 +76,7 @@ public abstract class CharacterBase : MonoBehaviour
     protected virtual void Start()
     {
         InitializeCharacter();
+        InitializeCharacterAbilityManager();
         InitializeCharacterInput();
         InitializeCharacterMovement();
         InitializeCharacterOrientation();
@@ -79,6 +90,14 @@ public abstract class CharacterBase : MonoBehaviour
         if (_character == null)
         {
             _character = GetComponent<Character>();
+        }
+    }
+
+    private void InitializeCharacterAbilityManager()
+    {
+        if (_characterAbilityManager == null)
+        {
+            _characterAbilityManager = GetComponent<CharacterAbilityManager>();
         }
     }
 

@@ -438,8 +438,14 @@
     <Compile Include="Assets\PUN\Plugins\WebSocket\WebSocket.cs" />
     <Compile Include="Assets\Scripts\Camera\CameraManager.cs" />
     <Compile Include="Assets\Scripts\Entities\Character\Abilities\Ability.cs" />
+    <Compile Include="Assets\Scripts\Entities\Character\Abilities\CharacterAbilities.cs" />
+    <Compile Include="Assets\Scripts\Entities\Character\Abilities\DestroyAllDummies.cs" />
+    <Compile Include="Assets\Scripts\Entities\Character\Abilities\OtherAbilities.cs" />
+    <Compile Include="Assets\Scripts\Entities\Character\Abilities\SpawnAllyDummy.cs" />
     <Compile Include="Assets\Scripts\Entities\Character\Abilities\SpawnDummy.cs" />
+    <Compile Include="Assets\Scripts\Entities\Character\Abilities\SpawnEnemyDummy.cs" />
     <Compile Include="Assets\Scripts\Entities\Character\Abilities\TeleportToMid.cs" />
+    <Compile Include="Assets\Scripts\Entities\Character\CharacterAbilityManager.cs" />
     <Compile Include="Assets\Scripts\Entities\Character\CharacterBase.cs" />
     <Compile Include="Assets\Scripts\Entities\Character\CharacterInput.cs" />
     <Compile Include="Assets\Scripts\Entities\Character\CharacterMovement.cs" />
