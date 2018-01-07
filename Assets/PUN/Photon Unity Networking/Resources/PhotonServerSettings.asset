@@ -47,4 +47,6 @@ MonoBehaviour:
   - ReceiveFromServer_ConnectionInfo
   - ReceiveFromServer_ConnectionInfoRequest
   - ReceiveFromServer_Ability
+  - ReceiveFromServer_Ability_SpawnDummy
+  - ReceiveFromServer_Ability_TeleportToMid
   DisableAutoOpenWizard: 1

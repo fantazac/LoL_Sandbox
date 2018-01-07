@@ -12,9 +12,7 @@ public class CharacterMovement : CharacterBase
     [HideInInspector]
     public Vector3 spawnPoint;
 
-    private Vector3 characterHeightOffset;
-
-    private TerrainCollider terrain;
+    public Vector3 CharacterHeightOffset { get; private set; }
 
     public delegate void PlayerMovedHandler();
     public event PlayerMovedHandler CharacterMoved;
@@ -24,25 +22,24 @@ public class CharacterMovement : CharacterBase
         CharacterInput.OnRightClick += PressedRightClick;
         CharacterInput.OnPressedS += StopMovement;
 
-        terrain = StaticObjects.Terrain;
-        characterHeightOffset = Vector3.up * Character.transform.position.y;
+        CharacterHeightOffset = Vector3.up * transform.position.y;
 
         base.Start();
     }
 
     private void PressedRightClick(Vector3 mousePosition)
     {
-        if (terrain.Raycast(GetRay(mousePosition), out hit, Mathf.Infinity))
+        if (MousePositionOnTerrain.GetRaycastHit(mousePosition, out hit))
         {
             Instantiate(movementCapsule, hit.point, new Quaternion());
 
             if (StaticObjects.OnlineMode)
             {
-                SendToServer_Movement(hit.point + characterHeightOffset);
+                SendToServer_Movement(hit.point + CharacterHeightOffset);
             }
             else
             {
-                SetMoveTowardsPoint(hit.point + characterHeightOffset);
+                SetMoveTowardsPoint(hit.point + CharacterHeightOffset);
             }
         }
     }
@@ -113,11 +110,6 @@ public class CharacterMovement : CharacterBase
         {
             StopAllMovement();
         }
-    }
-
-    private Ray GetRay(Vector3 mousePosition)
-    {
-        return StaticObjects.CharacterCamera.ScreenPointToRay(mousePosition);
     }
 
     public void NotifyCharacterMoved()

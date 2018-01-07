@@ -4,6 +4,17 @@ using UnityEngine;
 
 public class SpawnDummy : Ability
 {
+    protected const int MAXIMUM_DUMMY_AMOUNT = 3;
+
+    protected List<GameObject> dummies;
+
+    private RaycastHit hit;
+
+    protected SpawnDummy()
+    {
+        dummies = new List<GameObject>();
+    }
+
     protected override void Start()
     {
         if (!StaticObjects.OnlineMode)
@@ -11,6 +22,15 @@ public class SpawnDummy : Ability
             base.Start();
 
             character.CharacterInput.OnPressedN += PressedInput;
+        }
+    }
+
+    protected void OnDestroy()
+    {
+        while (dummies.Count > 0)//more efficient way to do this?
+        {
+            Destroy(dummies[0]);
+            dummies.RemoveAt(0);
         }
     }
 
@@ -39,6 +59,16 @@ public class SpawnDummy : Ability
 
     protected override void UseAbility()
     {
-        GameObject dummy = (GameObject)Instantiate(Resources.Load("Dummy"), transform.position, transform.rotation);
+        if(MousePositionOnTerrain.GetRaycastHit(Input.mousePosition, out hit))
+        {
+            if (dummies.Count == MAXIMUM_DUMMY_AMOUNT)
+            {
+                Destroy(dummies[0]);
+                dummies.RemoveAt(0);
+            }
+            GameObject dummy = (GameObject)Instantiate(Resources.Load("Dummy"), hit.point + character.CharacterMovement.CharacterHeightOffset, Quaternion.identity);
+            dummy.transform.rotation = Quaternion.LookRotation((transform.position - dummy.transform.position).normalized);
+            dummies.Add(dummy);
+        }
     }
 }

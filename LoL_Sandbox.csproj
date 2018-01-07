@@ -488,6 +488,7 @@
     <Compile Include="Assets\Scripts\Managers\MainMenuManager.cs" />
     <Compile Include="Assets\Scripts\Managers\NetworkManager.cs" />
     <Compile Include="Assets\Scripts\Managers\StaticObjects.cs" />
+    <Compile Include="Assets\Scripts\MousePositionOnTerrain.cs" />
     <Compile Include="Assets\Scripts\MovementCapsule\MovementCapsule.cs" />
     <Compile Include="Assets\Scripts\Terrain\TerrainManager.cs" />
   </ItemGroup>

@@ -3,6 +3,9 @@ using System.Collections;
 
 public class CharacterInput : CharacterBase
 {
+    public delegate void OnPressedAbilityHandler(int skillId, Vector3 mousePosition);
+    public event OnPressedAbilityHandler OnPressedAbility;
+
     public delegate void OnPressedMHandler();
     public event OnPressedMHandler OnPressedM;
 
@@ -20,6 +23,9 @@ public class CharacterInput : CharacterBase
 
     public delegate void OnReleasedSpaceHandler();
     public event OnReleasedSpaceHandler OnReleasedSpace;
+
+    public delegate void OnLeftClickHandler(Vector3 mousePosition);
+    public event OnLeftClickHandler OnLeftClick;
 
     public delegate void OnRightClickHandler(Vector3 mousePosition);
     public event OnRightClickHandler OnRightClick;
@@ -56,7 +62,11 @@ public class CharacterInput : CharacterBase
             OnReleasedSpace();
         }
 
-        if (Input.GetMouseButtonDown(1))
+        if (Input.GetMouseButtonDown(0) && OnLeftClick != null)
+        {
+            OnLeftClick(Input.mousePosition);
+        }
+        if (Input.GetMouseButtonDown(1) && OnRightClick != null)
         {
             OnRightClick(Input.mousePosition);
         }
