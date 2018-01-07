@@ -12,10 +12,29 @@ public class SpawnDummy : Ability
 
             character.CharacterInput.OnPressedN += PressedInput;
         }
+    }
+
+    protected override void PressedInput()
+    {
+        if (StaticObjects.OnlineMode)
+        {
+            SendToServer_Ability_SpawnDummy();
+        }
         else
         {
-            enabled = false;
+            UseAbility();
         }
+    }
+
+    [PunRPC]
+    protected void ReceiveFromServer_Ability_SpawnDummy()
+    {
+        UseAbility();
+    }
+
+    protected void SendToServer_Ability_SpawnDummy()
+    {
+        character.PhotonView.RPC("ReceiveFromServer_Ability_SpawnDummy", PhotonTargets.AllViaServer);
     }
 
     protected override void UseAbility()
