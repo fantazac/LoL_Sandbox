@@ -58,6 +58,10 @@ public class CharacterInput : CharacterBase
         {
             OnPressedS();
         }
+        if (Input.GetKeyDown(KeyCode.D) && OnPressedOtherAbility != null)
+        {
+            OnPressedOtherAbility((int)OtherAbilities.TELEPORT);
+        }
         if (Input.GetKeyDown(KeyCode.Y) && OnPressedY != null)
         {
             OnPressedY();
