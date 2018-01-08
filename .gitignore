@@ -1,17 +1,9 @@
 # Unity3D folders
-
 Builds/
-
 Temp/
-
 Library/
 
-
-
 # Visual Studio files
-
 .vs/
-
 *.csproj
-
 *.sln
