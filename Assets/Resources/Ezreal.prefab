@@ -50,6 +50,7 @@ GameObject:
   - component: {fileID: 114583660594214464}
   - component: {fileID: 114889793785480940}
   - component: {fileID: 114634682214722888}
+  - component: {fileID: 114162502003670860}
   - component: {fileID: 114983581572747220}
   - component: {fileID: 114230160075218552}
   - component: {fileID: 114147638681676846}
@@ -252,6 +253,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 831f3823ef40818438cfbc5ce6de4972, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &114162502003670860
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1294391184220730}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5742b104d5223db42828a0fa3406329f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  projectilePrefab: {fileID: 1000013785652862, guid: 93bfaec25208d7842b838c7b023b56cb,
+    type: 2}
 --- !u!114 &114187010915273160
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -592,7 +606,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a41480e2399dcb74aaad91384d82e998, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  characterAbilities: []
+  characterAbilities:
+  - {fileID: 0}
+  - {fileID: 114162502003670860}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   otherAbilities:
   - {fileID: 114983581572747220}
   - {fileID: 114230160075218552}

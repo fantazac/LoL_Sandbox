@@ -17,16 +17,16 @@ public class CharacterAbilityManager : CharacterBase
         CharacterInput.OnPressedOtherAbility += OnPressedInputForOtherAbility;
     }
 
-    private void OnPressedInputForCharacterAbility(int abilityId)
+    private void OnPressedInputForCharacterAbility(int abilityId, Vector3 mousePosition)
     {
-        characterAbilities[abilityId].OnPressedInput();
+        characterAbilities[abilityId].OnPressedInput(mousePosition);
     }
 
-    private void OnPressedInputForOtherAbility(int abilityId)
+    private void OnPressedInputForOtherAbility(int abilityId, Vector3 mousePosition)
     {
         if((StaticObjects.OnlineMode && !otherAbilities[abilityId].OfflineOnly) || !StaticObjects.OnlineMode)
         {
-            otherAbilities[abilityId].OnPressedInput();
+            otherAbilities[abilityId].OnPressedInput(mousePosition);
         }
     }
 }

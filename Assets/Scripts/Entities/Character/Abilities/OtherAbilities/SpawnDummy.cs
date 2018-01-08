@@ -26,9 +26,9 @@ public abstract class SpawnDummy : Ability, OtherAbility
         }
     }
 
-    public override void OnPressedInput()
+    public override void OnPressedInput(Vector3 mousePosition)
     {
-        UseAbility();
+        UseAbility(mousePosition);
     }
 
     public void RemoveAllDummies()
@@ -40,9 +40,9 @@ public abstract class SpawnDummy : Ability, OtherAbility
         }
     }
 
-    protected override void UseAbility()
+    protected override void UseAbility(Vector3 destination)
     {
-        if (MousePositionOnTerrain.GetRaycastHit(Input.mousePosition, out hit))
+        if (MousePositionOnTerrain.GetRaycastHit(destination, out hit))
         {
             if (dummies.Count == MAXIMUM_DUMMY_AMOUNT)
             {

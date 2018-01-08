@@ -440,6 +440,8 @@
     <Compile Include="Assets\Scripts\Entities\Character\Abilities\Ability.cs" />
     <Compile Include="Assets\Scripts\Entities\Character\Abilities\AbilityEnums\CharacterAbilities.cs" />
     <Compile Include="Assets\Scripts\Entities\Character\Abilities\AbilityEnums\OtherAbilities.cs" />
+    <Compile Include="Assets\Scripts\Entities\Character\Abilities\OtherAbilities\AbilityType\AbilityType.cs" />
+    <Compile Include="Assets\Scripts\Entities\Character\Abilities\OtherAbilities\AbilityType\SkillShot.cs" />
     <Compile Include="Assets\Scripts\Entities\Character\Abilities\OtherAbilities\DestroyAllDummies.cs" />
     <Compile Include="Assets\Scripts\Entities\Character\Abilities\OtherAbilities\SpawnAllyDummy.cs" />
     <Compile Include="Assets\Scripts\Entities\Character\Abilities\OtherAbilities\SpawnDummy.cs" />
@@ -496,6 +498,7 @@
     <Compile Include="Assets\Scripts\Managers\StaticObjects.cs" />
     <Compile Include="Assets\Scripts\MousePositionOnTerrain.cs" />
     <Compile Include="Assets\Scripts\MovementCapsule\MovementCapsule.cs" />
+    <Compile Include="Assets\Scripts\Projectiles\ProjectileMovement.cs" />
     <Compile Include="Assets\Scripts\Terrain\TerrainManager.cs" />
   </ItemGroup>
   <ItemGroup>
