@@ -51,8 +51,10 @@ GameObject:
   - component: {fileID: 114889793785480940}
   - component: {fileID: 114634682214722888}
   - component: {fileID: 114983581572747220}
+  - component: {fileID: 114559251438769940}
   - component: {fileID: 114230160075218552}
   - component: {fileID: 114147638681676846}
+  - component: {fileID: 114941972289502864}
   - component: {fileID: 114782713917711308}
   m_Layer: 8
   m_Name: Ezreal
@@ -458,6 +460,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ecdb7f18075bf946b16df80b155718f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &114559251438769940
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1294391184220730}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b441fe6c6b8106e4fb9e14d8dc6d3e19, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114583660594214464
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -581,6 +594,17 @@ MonoBehaviour:
   baseAttackRange: 0
   currentAttackRange: 0
   bonusAttackRange: 0
+--- !u!114 &114941972289502864
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1294391184220730}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df099550010c1ba40aedb0da333a97b6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114958221426692436
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -595,8 +619,10 @@ MonoBehaviour:
   characterAbilities: []
   otherAbilities:
   - {fileID: 114983581572747220}
+  - {fileID: 114559251438769940}
   - {fileID: 114230160075218552}
   - {fileID: 114147638681676846}
+  - {fileID: 114941972289502864}
   - {fileID: 114782713917711308}
 --- !u!114 &114959456603954034
 MonoBehaviour:
