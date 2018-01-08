@@ -14,10 +14,16 @@ public abstract class Character : CharacterBase
         base.Start();
     }
 
-    public void SendToServer_ConnectionInfoRequest()
+    [PunRPC]
+    protected void ReceiveFromServer_ConnectionInfo(Vector3 position, Quaternion rotation)
     {
-        sentConnectionInfoRequest = true;
-        PhotonView.RPC("ReceiveFromServer_ConnectionInfoRequest", PhotonTargets.Others);
+        if (sentConnectionInfoRequest)
+        {
+            sentConnectionInfoRequest = false;
+            transform.position = position;
+            transform.rotation = rotation;
+            OnConnectionInfoReceived(this);
+        }
     }
 
     [PunRPC]
@@ -29,15 +35,9 @@ public abstract class Character : CharacterBase
         }
     }
 
-    [PunRPC]
-    protected void ReceiveFromServer_ConnectionInfo(Vector3 position, Quaternion rotation)
+    public void SendToServer_ConnectionInfoRequest()
     {
-        if (sentConnectionInfoRequest)
-        {
-            sentConnectionInfoRequest = false;
-            transform.position = position;
-            transform.rotation = rotation;
-            OnConnectionInfoReceived(this);
-        }
+        sentConnectionInfoRequest = true;
+        PhotonView.RPC("ReceiveFromServer_ConnectionInfoRequest", PhotonTargets.Others);
     }
 }

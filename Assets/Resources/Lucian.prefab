@@ -227,9 +227,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   characterAbilities: []
   otherAbilities:
-  - {fileID: 114986620668545128}
-  - {fileID: 114904757158163134}
   - {fileID: 114255252513267966}
+  - {fileID: 114904757158163134}
+  - {fileID: 114986620668545128}
   - {fileID: 114165310821136542}
 --- !u!114 &114069144610409572
 MonoBehaviour:
