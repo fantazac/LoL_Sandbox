@@ -44,6 +44,18 @@ public class Health : MonoBehaviour
         return currentHealth / maxHealth;
     }
 
+    public void Heal(float amount)
+    {
+        if (currentHealth + amount > maxHealth)
+        {
+            currentHealth = maxHealth;
+        }
+        else
+        {
+            currentHealth += amount;
+        }
+    }
+
     public bool IsDead()
     {
         return currentHealth <= 0;

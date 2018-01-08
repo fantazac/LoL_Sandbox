@@ -62,6 +62,10 @@ public class CharacterInput : CharacterBase
         {
             OnPressedOtherAbility((int)OtherAbilities.TELEPORT);
         }
+        if (Input.GetKeyDown(KeyCode.F) && OnPressedOtherAbility != null)
+        {
+            OnPressedOtherAbility((int)OtherAbilities.HEAL);
+        }
         if (Input.GetKeyDown(KeyCode.Y) && OnPressedY != null)
         {
             OnPressedY();
