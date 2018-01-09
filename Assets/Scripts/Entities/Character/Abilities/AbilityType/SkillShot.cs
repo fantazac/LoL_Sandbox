@@ -9,20 +9,8 @@ public abstract class SkillShot : Ability
     protected float range;
     protected float speed;
     protected float damage;
-    protected RaycastHit hit;
 
-    protected override void Start()
-    {
-        ModifyValues();
-        base.Start();
-    }
-
-    protected bool CanUseSkill(Vector3 mousePosition)
-    {
-        return !character.CharacterAbilityManager.isCastingAbility && MousePositionOnTerrain.GetRaycastHit(mousePosition, out hit);
-    }
-
-    protected void ModifyValues()
+    protected override void ModifyValues()
     {
         range /= StaticObjects.DivisionFactor;
         speed /= StaticObjects.DivisionFactor;
@@ -34,7 +22,7 @@ public abstract class SkillShot : Ability
         {
             if (StaticObjects.OnlineMode)
             {
-                SendToServer_Ability_SkillShot(hit.point + character.CharacterMovement.CharacterHeightOffset);
+                SendToServer(hit.point + character.CharacterMovement.CharacterHeightOffset);
             }
             else
             {
@@ -43,18 +31,7 @@ public abstract class SkillShot : Ability
         }
     }
 
-    [PunRPC]
-    protected void ReceiveFromServer_Ability_SkillShot(Vector3 destination)
-    {
-        UseAbility(destination);
-    }
-
-    protected void SendToServer_Ability_SkillShot(Vector3 destination)
-    {
-        character.PhotonView.RPC("ReceiveFromServer_Ability_SkillShot", PhotonTargets.AllViaServer, destination);
-    }
-
-    protected override void UseAbility(Vector3 destination)
+    public override void UseAbility(Vector3 destination)
     {
         StartAbilityCast();
 

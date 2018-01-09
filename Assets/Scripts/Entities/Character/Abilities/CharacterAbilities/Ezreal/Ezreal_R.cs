@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Ezreal_R : SkillShot
+public class Ezreal_R : SkillShot, CharacterAbility
 {
     protected Ezreal_R()
     {

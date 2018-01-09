@@ -1,4 +1,4 @@
-﻿public enum OtherAbilities
+﻿public enum OtherAbilities//only used for inputs
 {
     DESTROY_ALL_DUMMIES,
     HEAL,

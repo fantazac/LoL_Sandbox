@@ -6,8 +6,6 @@ public abstract class SpawnDummy : Ability, OtherAbility
 {
     protected const int MAXIMUM_DUMMY_AMOUNT = 4;
 
-    protected RaycastHit hit;
-
     protected string dummyResourceName;
 
     protected List<GameObject> dummies;
@@ -28,7 +26,10 @@ public abstract class SpawnDummy : Ability, OtherAbility
 
     public override void OnPressedInput(Vector3 mousePosition)
     {
-        UseAbility(mousePosition);
+        if (CanUseSkill(mousePosition))
+        {
+            UseAbility(hit.point + character.CharacterMovement.CharacterHeightOffset);
+        }
     }
 
     public void RemoveAllDummies()
@@ -40,18 +41,15 @@ public abstract class SpawnDummy : Ability, OtherAbility
         }
     }
 
-    protected override void UseAbility(Vector3 destination)
+    public override void UseAbility(Vector3 destination)
     {
-        if (MousePositionOnTerrain.GetRaycastHit(destination, out hit))
+        if (dummies.Count == MAXIMUM_DUMMY_AMOUNT)
         {
-            if (dummies.Count == MAXIMUM_DUMMY_AMOUNT)
-            {
-                Destroy(dummies[0]);
-                dummies.RemoveAt(0);
-            }
-            GameObject dummy = (GameObject)Instantiate(Resources.Load(dummyResourceName), hit.point + character.CharacterMovement.CharacterHeightOffset, Quaternion.identity);
-            dummy.transform.rotation = Quaternion.LookRotation((transform.position - dummy.transform.position).normalized);
-            dummies.Add(dummy);
+            Destroy(dummies[0]);
+            dummies.RemoveAt(0);
         }
+        GameObject dummy = (GameObject)Instantiate(Resources.Load(dummyResourceName), destination, Quaternion.identity);
+        dummy.transform.rotation = Quaternion.LookRotation((transform.position - dummy.transform.position).normalized);
+        dummies.Add(dummy);
     }
 }
