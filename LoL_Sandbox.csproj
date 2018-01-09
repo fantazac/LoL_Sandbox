@@ -440,6 +440,9 @@
     <Compile Include="Assets\Scripts\Entities\Character\Abilities\Ability.cs" />
     <Compile Include="Assets\Scripts\Entities\Character\Abilities\AbilityEnums\CharacterAbilities.cs" />
     <Compile Include="Assets\Scripts\Entities\Character\Abilities\AbilityEnums\OtherAbilities.cs" />
+    <Compile Include="Assets\Scripts\Entities\Character\Abilities\CharacterAbilities\Ezreal\Ezreal_Q.cs" />
+    <Compile Include="Assets\Scripts\Entities\Character\Abilities\CharacterAbilities\Ezreal\Ezreal_R.cs" />
+    <Compile Include="Assets\Scripts\Entities\Character\Abilities\CharacterAbilities\Ezreal\Ezreal_W.cs" />
     <Compile Include="Assets\Scripts\Entities\Character\Abilities\OtherAbilities\AbilityType\AbilityType.cs" />
     <Compile Include="Assets\Scripts\Entities\Character\Abilities\OtherAbilities\AbilityType\SkillShot.cs" />
     <Compile Include="Assets\Scripts\Entities\Character\Abilities\OtherAbilities\DestroyAllDummies.cs" />

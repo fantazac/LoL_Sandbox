@@ -7,16 +7,25 @@ public class ProjectileMovement : MonoBehaviour
     private float speed;
     private float range;
     private float damage;
-    private Health healthOfShooter;//TEMPORAIRE
+    private bool canPassThroughUnits;
+    private bool destroyProjectile;//This is to prevent OnTriggerEnter to cast multiple times if multiple targets enter the collider at the same time
 
     private Vector3 initialPosition;
 
-    public void ShootProjectile(Health healthOfShooter, float speed, float range, float damage)
+    private List<Health> healthOfUnitsAlreadyHitWithProjectile;//CHANGE TYPE, TEMPORAIRE
+
+    private ProjectileMovement()
     {
+        healthOfUnitsAlreadyHitWithProjectile = new List<Health>();
+    }
+
+    public void ShootProjectile(Health healthOfShooter, float speed, float range, float damage, bool canPassThroughUnits = false)
+    {
+        healthOfUnitsAlreadyHitWithProjectile.Add(healthOfShooter);//TEMPORAIRE
         this.speed = speed;
         this.range = range;
         this.damage = damage;
-        this.healthOfShooter = healthOfShooter;
+        this.canPassThroughUnits = canPassThroughUnits;
         initialPosition = transform.position;
         StartCoroutine(Shoot());
     }
@@ -35,12 +44,33 @@ public class ProjectileMovement : MonoBehaviour
 
     private void OnTriggerEnter(Collider collider)
     {
-        Health targetHealth = collider.gameObject.GetComponent<Health>();
-
-        if (targetHealth != null && healthOfShooter != targetHealth)
+        if (!destroyProjectile)
         {
-            targetHealth.Hit(damage);
-            Destroy(gameObject);
+            Health targetHealth = collider.gameObject.GetComponent<Health>();
+
+            if (targetHealth != null && CanHitTarget(targetHealth))
+            {
+                healthOfUnitsAlreadyHitWithProjectile.Add(targetHealth);
+                targetHealth.Hit(damage);
+                if (!canPassThroughUnits)
+                {
+                    destroyProjectile = true;
+                    Destroy(gameObject);
+                }
+            }
         }
+    }
+
+    private bool CanHitTarget(Health targetHealth)
+    {
+        foreach(Health health in healthOfUnitsAlreadyHitWithProjectile)
+        {
+            if(health == targetHealth)
+            {
+                return false;
+            }
+        }
+
+        return true;
     }
 }

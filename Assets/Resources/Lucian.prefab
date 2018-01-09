@@ -67,7 +67,6 @@ GameObject:
   - component: {fileID: 114625631600227958}
   - component: {fileID: 114156338481985698}
   - component: {fileID: 114760876531046866}
-  - component: {fileID: 114761084529864676}
   - component: {fileID: 114255252513267966}
   - component: {fileID: 114361955831427100}
   - component: {fileID: 114904757158163134}
@@ -230,7 +229,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   characterAbilities:
   - {fileID: 0}
-  - {fileID: 114761084529864676}
+  - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
@@ -539,19 +538,6 @@ MonoBehaviour:
   baseTenacity: 0
   currentTenacity: 0
   bonusTenacity: 0
---- !u!114 &114761084529864676
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1507067852754532}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5742b104d5223db42828a0fa3406329f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  projectilePrefab: {fileID: 1000013785652862, guid: 93bfaec25208d7842b838c7b023b56cb,
-    type: 2}
 --- !u!114 &114766331759772624
 MonoBehaviour:
   m_ObjectHideFlags: 1

@@ -9,12 +9,42 @@ public class CharacterAbilityManager : CharacterBase
     [SerializeField]
     private Ability[] otherAbilities;
 
+    public bool isCastingAbility;
+
     protected override void Start()
     {
         base.Start();
 
         CharacterInput.OnPressedCharacterAbility += OnPressedInputForCharacterAbility;
         CharacterInput.OnPressedOtherAbility += OnPressedInputForOtherAbility;
+
+        foreach(Ability ability in characterAbilities)
+        {
+            if (ability != null && ability.HasCastTime)
+            {
+                ability.OnAbilityCast += OnAbilityCast;
+                ability.OnAbilityCastFinished += OnAbilityCastFinished;
+            }
+        }
+
+        foreach (Ability ability in otherAbilities)
+        {
+            if (ability != null && ability.HasCastTime)
+            {
+                ability.OnAbilityCast += OnAbilityCast;
+                ability.OnAbilityCastFinished += OnAbilityCastFinished;
+            }
+        }
+    }
+
+    private void OnAbilityCast()
+    {
+        isCastingAbility = true;
+    }
+
+    private void OnAbilityCastFinished()
+    {
+        isCastingAbility = false;
     }
 
     private void OnPressedInputForCharacterAbility(int abilityId, Vector3 mousePosition)

@@ -1,14 +1,14 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class SkillShot : Ability
+public abstract class SkillShot : Ability
 {
     [SerializeField]
     protected GameObject projectilePrefab;
 
-    protected float range = 1000;
-    protected float speed = 1000;
-    protected float damage = 100;
+    protected float range;
+    protected float speed;
+    protected float damage;
     protected RaycastHit hit;
 
     protected override void Start()
@@ -19,7 +19,7 @@ public class SkillShot : Ability
 
     protected bool CanUseSkill(Vector3 mousePosition)
     {
-        return MousePositionOnTerrain.GetRaycastHit(mousePosition, out hit); //&& playerMovement.Player.CanCastSpell(this);
+        return !character.CharacterAbilityManager.isCastingAbility && MousePositionOnTerrain.GetRaycastHit(mousePosition, out hit);
     }
 
     protected void ModifyValues()
@@ -56,8 +56,28 @@ public class SkillShot : Ability
 
     protected override void UseAbility(Vector3 destination)
     {
+        StartAbilityCast();
+
+        character.CharacterMovement.StopAllMovement(this);
         character.CharacterOrientation.RotateCharacterInstantly(destination);
+
+        if (delayCastTime == null)
+        {
+            StartCoroutine(AbilityWithoutCastTime());
+        }
+        else
+        {
+            StartCoroutine(AbilityWithCastTime());
+        }
+    }
+
+    protected override IEnumerator AbilityWithCastTime()
+    {
+        yield return delayCastTime;
+
         GameObject projectile = (GameObject)Instantiate(projectilePrefab, transform.position, transform.rotation);
         projectile.GetComponent<ProjectileMovement>().ShootProjectile(GetComponent<Health>(), speed, range, damage);//HEALTH TEMPORAIRE
+
+        FinishAbilityCast();
     }
 }
