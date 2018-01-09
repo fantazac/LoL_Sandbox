@@ -14,34 +14,34 @@ public class Teleport : Ability, OtherAbility {
         base.Start();
     }
 
-    public override void OnPressedInput()
+    public override void OnPressedInput(Vector3 mousePosition)
     {
         if (StaticObjects.OnlineMode)
         {
-            SendToServer_Ability_Teleport();
+            SendToServer_Ability_Teleport(mousePosition);
         }
         else
         {
-            UseAbility();
+            UseAbility(mousePosition);
         }
     }
 
     [PunRPC]
-    protected void ReceiveFromServer_Ability_Teleport()
+    protected void ReceiveFromServer_Ability_Teleport(Vector3 mousePosition)
     {
-        UseAbility();
+        UseAbility(mousePosition);
     }
 
-    protected void SendToServer_Ability_Teleport()
+    protected void SendToServer_Ability_Teleport(Vector3 mousePosition)
     {
-        character.PhotonView.RPC("ReceiveFromServer_Ability_Teleport", PhotonTargets.AllViaServer);
+        character.PhotonView.RPC("ReceiveFromServer_Ability_Teleport", PhotonTargets.AllViaServer, mousePosition);
     }
 
-    protected override void UseAbility()
+    protected override void UseAbility(Vector3 mousePosition)
     {
         character.CharacterMovement.StopAllMovement(this);
         // TODO: add cast delay
-        if (MousePositionOnTerrain.GetRaycastHit(Input.mousePosition, out hit))
+        if (MousePositionOnTerrain.GetRaycastHit(mousePosition, out hit))
         {
             character.transform.position = hit.point + character.CharacterMovement.CharacterHeightOffset;
             character.CharacterMovement.NotifyCharacterMoved();

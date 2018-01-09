@@ -14,7 +14,7 @@ public class TeleportToMid : Ability, OtherAbility
         base.Start();
     }
 
-    public override void OnPressedInput()
+    public override void OnPressedInput(Vector3 mousePosition)
     {
         if (StaticObjects.OnlineMode)
         {
@@ -37,7 +37,7 @@ public class TeleportToMid : Ability, OtherAbility
         character.PhotonView.RPC("ReceiveFromServer_Ability_TeleportToMid", PhotonTargets.AllViaServer);
     }
 
-    protected override void UseAbility()
+    protected override void UseAbility(Vector3 destination = default(Vector3))
     {
         character.CharacterMovement.StopAllMovement(this);
         character.transform.position = character.CharacterMovement.CharacterHeightOffset;

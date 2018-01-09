@@ -17,7 +17,7 @@ public class DestroyAllDummies : Ability, OtherAbility
         RemoveAllDummies();
     }
 
-    public override void OnPressedInput()
+    public override void OnPressedInput(Vector3 mousePosition)
     {
         UseAbility();
     }
@@ -28,7 +28,7 @@ public class DestroyAllDummies : Ability, OtherAbility
         spawnDummyAbilities[1].RemoveAllDummies();
     }
 
-    protected override void UseAbility()
+    protected override void UseAbility(Vector3 destination = default(Vector3))
     {
         RemoveAllDummies();
     }

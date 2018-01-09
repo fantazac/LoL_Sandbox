@@ -65,4 +65,16 @@ public class Health : MonoBehaviour
     {
         return "HEALTH: " + GetCurrentHealth() + " / " + GetMaximumHealth() + " (" + GetBaseHealth() + " + " + GetBonusHealth() + ")";
     }
+
+    public void Hit(float damage)
+    {
+        if(currentHealth <= damage)
+        {
+            currentHealth = 0;
+        }
+        else
+        {
+            currentHealth -= damage;
+        }
+    }
 }

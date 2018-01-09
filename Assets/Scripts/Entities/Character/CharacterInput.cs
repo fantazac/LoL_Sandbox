@@ -1,13 +1,11 @@
-﻿using UnityEngine;
-using System.Collections;
-using System;
+﻿﻿using UnityEngine;
 
 public class CharacterInput : CharacterBase
 {
-    public delegate void OnPressedCharacterAbilityHandler(int abilityId);
+    public delegate void OnPressedCharacterAbilityHandler(int abilityId, Vector3 mousePosition);
     public event OnPressedCharacterAbilityHandler OnPressedCharacterAbility;
 
-    public delegate void OnPressedOtherAbilityHandler(int abilityId);
+    public delegate void OnPressedOtherAbilityHandler(int abilityId, Vector3 mousePosition);
     public event OnPressedOtherAbilityHandler OnPressedOtherAbility;
 
     public delegate void OnPressedSHandler();
@@ -39,32 +37,36 @@ public class CharacterInput : CharacterBase
         {
             if (Input.GetKeyDown(KeyCode.B) && OnPressedOtherAbility != null)
             {
-                OnPressedOtherAbility((int)OtherAbilities.SPAWN_ENEMY_DUMMY);
+                OnPressedOtherAbility((int)OtherAbilities.SPAWN_ENEMY_DUMMY, Input.mousePosition);
             }
             if (Input.GetKeyDown(KeyCode.M) && OnPressedOtherAbility != null)
             {
-                OnPressedOtherAbility((int)OtherAbilities.DESTROY_ALL_DUMMIES);
+                OnPressedOtherAbility((int)OtherAbilities.DESTROY_ALL_DUMMIES, Input.mousePosition);
             }
             if (Input.GetKeyDown(KeyCode.N) && OnPressedOtherAbility != null)
             {
-                OnPressedOtherAbility((int)OtherAbilities.SPAWN_ALLY_DUMMY);
+                OnPressedOtherAbility((int)OtherAbilities.SPAWN_ALLY_DUMMY, Input.mousePosition);
             }
             if (Input.GetKeyDown(KeyCode.L) && OnPressedOtherAbility != null)
             {
-                OnPressedOtherAbility((int)OtherAbilities.TP_MID);
+                OnPressedOtherAbility((int)OtherAbilities.TP_MID, Input.mousePosition);
             }
+        }
+        if (Input.GetKeyDown(KeyCode.Q) && OnPressedCharacterAbility != null)
+        {
+            OnPressedCharacterAbility((int)CharacterAbilities.Q, Input.mousePosition);
+        }
+        if (Input.GetKeyDown(KeyCode.D) && OnPressedOtherAbility != null)
+        {
+            OnPressedOtherAbility((int)OtherAbilities.TELEPORT, Input.mousePosition);
+        }
+        if (Input.GetKeyDown(KeyCode.F) && OnPressedOtherAbility != null)
+        {
+            OnPressedOtherAbility((int)OtherAbilities.HEAL, Input.mousePosition);
         }
         if (Input.GetKeyDown(KeyCode.S) && OnPressedS != null)
         {
             OnPressedS();
-        }
-        if (Input.GetKeyDown(KeyCode.D) && OnPressedOtherAbility != null)
-        {
-            OnPressedOtherAbility((int)OtherAbilities.TELEPORT);
-        }
-        if (Input.GetKeyDown(KeyCode.F) && OnPressedOtherAbility != null)
-        {
-            OnPressedOtherAbility((int)OtherAbilities.HEAL);
         }
         if (Input.GetKeyDown(KeyCode.Y) && OnPressedY != null)
         {

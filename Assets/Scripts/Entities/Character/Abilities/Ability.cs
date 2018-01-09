@@ -14,8 +14,8 @@ public abstract class Ability : MonoBehaviour
         character = GetComponent<Character>();
     }
 
-    public abstract void OnPressedInput();
-    protected abstract void UseAbility();
+    public abstract void OnPressedInput(Vector3 mousePosition);
+    protected abstract void UseAbility(Vector3 destination = default(Vector3));
 }
 
 public interface CharacterAbility { }

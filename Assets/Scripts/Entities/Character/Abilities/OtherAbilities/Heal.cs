@@ -10,7 +10,7 @@ public class Heal : Ability, OtherAbility {
         base.Start();
     }
 
-    public override void OnPressedInput()
+    public override void OnPressedInput(Vector3 mousePosition)
     {
         if (StaticObjects.OnlineMode)
         {
@@ -33,7 +33,7 @@ public class Heal : Ability, OtherAbility {
         UseAbility();
     }
 
-    protected override void UseAbility()
+    protected override void UseAbility(Vector3 destination = default(Vector3))
     {
         Health characterHealth = GetComponent<CharacterStats>().Health;
         characterHealth.Heal(150);

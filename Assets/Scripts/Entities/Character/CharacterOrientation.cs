@@ -22,6 +22,11 @@ public class CharacterOrientation : CharacterBase
         StartCoroutine(Rotate(destination));
     }
 
+    public void RotateCharacterInstantly(Vector3 destination)
+    {
+        transform.rotation = Quaternion.LookRotation((destination - transform.position).normalized);
+    }
+
     private IEnumerator Rotate(Vector3 destination)
     {
         rotationAmount = Vector3.up;
