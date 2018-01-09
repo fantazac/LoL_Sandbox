@@ -62,10 +62,8 @@ public abstract class Ability : MonoBehaviour
 
     protected void SendToServer(Vector3 destination)
     {
-        Debug.Log(1);
         if(SendToServer_Ability != null)
         {
-            Debug.Log(2);
             SendToServer_Ability(AbilityId, destination);
         } 
     }
