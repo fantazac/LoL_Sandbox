@@ -1,10 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public abstract class Blink : Ability
+public abstract class Dash : Ability
 {
     protected float range;
     protected float minimumDistanceTravelled;
+    protected float dashSpeed;
     protected Vector3 destination;
 
     protected override void ModifyValues()
@@ -47,12 +48,19 @@ public abstract class Blink : Ability
         }
     }
 
-    protected override IEnumerator AbilityWithCastTime()
+    protected override IEnumerator AbilityWithoutCastTime()
     {
-        yield return delayCastTime;
+        while (transform.position != destination)
+        {
+            transform.position = Vector3.MoveTowards(transform.position, destination, Time.deltaTime * dashSpeed);
 
-        transform.position = destination;
-        character.CharacterMovement.NotifyCharacterMoved();
+            if (character.CharacterMovement != null)
+            {
+                character.CharacterMovement.NotifyCharacterMoved();
+            }
+
+            yield return null;
+        }
 
         FinishAbilityCast();
     }

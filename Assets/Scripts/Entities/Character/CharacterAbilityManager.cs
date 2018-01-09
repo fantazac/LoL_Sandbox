@@ -7,7 +7,8 @@ public class CharacterAbilityManager : CharacterBase
     [SerializeField]
     private Ability[] otherAbilities;
 
-    public bool isCastingAbility;
+    public bool isUsingAbilityWithOtherAbilityCastsUnallowed;
+    public bool isUsingAbilityWithMovementUnallowed;
 
     protected override void Start()
     {
@@ -36,10 +37,15 @@ public class CharacterAbilityManager : CharacterBase
                     abilities[i].SendToServer_Ability += SendToServer_OtherAbility;
                 }
 
-                if (abilities[i].HasCastTime)
+                if (!abilities[i].CanCastOtherAbilitiesWithCasting)
                 {
-                    abilities[i].OnAbilityCast += OnAbilityCast;
-                    abilities[i].OnAbilityCastFinished += OnAbilityCastFinished;
+                    abilities[i].OnAbilityUsedWithOtherAbilityCastsUnallowed += OnAbilityUsedWithOtherAbilityCastsUnallowed;
+                    abilities[i].OnAbilityUsedWithOtherAbilityCastsUnallowedFinished += OnAbilityUsedWithOtherAbilityCastsUnallowedFinished;
+                }
+                if (!abilities[i].CanMoveWhileCasting)
+                {
+                    abilities[i].OnAbilityUsedWithMovementUnallowedDuringCast += OnAbilityUsedWithMovementUnallowedDuringCast;
+                    abilities[i].OnAbilityUsedWithMovementUnallowedDuringCastFinished += OnAbilityUsedWithMovementUnallowedDuringCastFinished;
                 }
             }
         }
@@ -67,14 +73,24 @@ public class CharacterAbilityManager : CharacterBase
         otherAbilities[abilityId].UseAbility(destination);
     }
 
-    private void OnAbilityCast()
+    private void OnAbilityUsedWithOtherAbilityCastsUnallowed()
     {
-        isCastingAbility = true;
+        isUsingAbilityWithOtherAbilityCastsUnallowed = true;
     }
 
-    private void OnAbilityCastFinished()
+    private void OnAbilityUsedWithOtherAbilityCastsUnallowedFinished()
     {
-        isCastingAbility = false;
+        isUsingAbilityWithOtherAbilityCastsUnallowed = false;
+    }
+
+    private void OnAbilityUsedWithMovementUnallowedDuringCast()
+    {
+        isUsingAbilityWithMovementUnallowed = true;
+    }
+
+    private void OnAbilityUsedWithMovementUnallowedDuringCastFinished()
+    {
+        isUsingAbilityWithMovementUnallowed = false;
     }
 
     private void OnPressedInputForCharacterAbility(int abilityId, Vector3 mousePosition)

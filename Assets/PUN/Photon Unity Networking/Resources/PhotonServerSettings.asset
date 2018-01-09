@@ -55,4 +55,6 @@ MonoBehaviour:
   - ReceiveFromServer_Ability_Heal
   - ReceiveFromServer_Ability_SkillShot
   - ReceiveFromServer_Ability_Blink
+  - ReceiveFromServer_CharacterAbility
+  - ReceiveFromServer_OtherAbility
   DisableAutoOpenWizard: 1

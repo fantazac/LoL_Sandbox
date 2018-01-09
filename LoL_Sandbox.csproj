@@ -442,11 +442,13 @@
     <Compile Include="Assets\Scripts\Entities\Character\Abilities\AbilityEnums\OtherAbilities.cs" />
     <Compile Include="Assets\Scripts\Entities\Character\Abilities\AbilityType\AbilityType.cs" />
     <Compile Include="Assets\Scripts\Entities\Character\Abilities\AbilityType\Blink.cs" />
+    <Compile Include="Assets\Scripts\Entities\Character\Abilities\AbilityType\Dash.cs" />
     <Compile Include="Assets\Scripts\Entities\Character\Abilities\AbilityType\SkillShot.cs" />
     <Compile Include="Assets\Scripts\Entities\Character\Abilities\CharacterAbilities\Ezreal\Ezreal_E.cs" />
     <Compile Include="Assets\Scripts\Entities\Character\Abilities\CharacterAbilities\Ezreal\Ezreal_Q.cs" />
     <Compile Include="Assets\Scripts\Entities\Character\Abilities\CharacterAbilities\Ezreal\Ezreal_R.cs" />
     <Compile Include="Assets\Scripts\Entities\Character\Abilities\CharacterAbilities\Ezreal\Ezreal_W.cs" />
+    <Compile Include="Assets\Scripts\Entities\Character\Abilities\CharacterAbilities\Lucian\Lucian_E.cs" />
     <Compile Include="Assets\Scripts\Entities\Character\Abilities\OtherAbilities\DestroyAllDummies.cs" />
     <Compile Include="Assets\Scripts\Entities\Character\Abilities\OtherAbilities\Heal.cs" />
     <Compile Include="Assets\Scripts\Entities\Character\Abilities\OtherAbilities\SpawnAllyDummy.cs" />

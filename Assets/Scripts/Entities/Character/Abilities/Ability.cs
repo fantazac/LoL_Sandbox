@@ -10,15 +10,23 @@ public abstract class Ability : MonoBehaviour
     protected RaycastHit hit;
 
     public int AbilityId { get; set; }
+    public bool CanCastOtherAbilitiesWithCasting { get; protected set; }
+    public bool CanMoveWhileCasting { get; protected set; }
     public bool CanStopMovement { get; protected set; }
     public bool OfflineOnly { get; protected set; }
     public bool HasCastTime { get; protected set; }
 
-    public delegate void OnAbilityCastHandler();
-    public event OnAbilityCastHandler OnAbilityCast;
+    public delegate void OnAbilityUsedWithOtherAbilityCastsUnallowedHandler();
+    public event OnAbilityUsedWithOtherAbilityCastsUnallowedHandler OnAbilityUsedWithOtherAbilityCastsUnallowed;
 
-    public delegate void OnAbilityCastFinishedHandler();
-    public event OnAbilityCastFinishedHandler OnAbilityCastFinished;
+    public delegate void OnAbilityUsedWithOtherAbilityCastsUnallowedFinishedHandler();
+    public event OnAbilityUsedWithOtherAbilityCastsUnallowedFinishedHandler OnAbilityUsedWithOtherAbilityCastsUnallowedFinished;
+
+    public delegate void OnAbilityUsedWithMovementUnallowedDuringCastHandler();
+    public event OnAbilityUsedWithMovementUnallowedDuringCastHandler OnAbilityUsedWithMovementUnallowedDuringCast;
+
+    public delegate void OnAbilityUsedWithMovementUnallowedDuringCastFinishedHandler();
+    public event OnAbilityUsedWithMovementUnallowedDuringCastFinishedHandler OnAbilityUsedWithMovementUnallowedDuringCastFinished;
 
     public delegate void SendToServer_AbilityHandler(int abilityId, Vector3 destination);
     public event SendToServer_AbilityHandler SendToServer_Ability;
@@ -39,33 +47,41 @@ public abstract class Ability : MonoBehaviour
 
     protected virtual bool CanUseSkill(Vector3 mousePosition)
     {
-        return !character.CharacterAbilityManager.isCastingAbility && MousePositionOnTerrain.GetRaycastHit(mousePosition, out hit);
+        return !character.CharacterAbilityManager.isUsingAbilityWithOtherAbilityCastsUnallowed && MousePositionOnTerrain.GetRaycastHit(mousePosition, out hit);
     }
 
     protected virtual void ModifyValues() { }
 
     protected void StartAbilityCast()
     {
-        if (OnAbilityCast != null)
+        if (OnAbilityUsedWithOtherAbilityCastsUnallowed != null && !CanCastOtherAbilitiesWithCasting)
         {
-            OnAbilityCast();
+            OnAbilityUsedWithOtherAbilityCastsUnallowed();
+        }
+        if (OnAbilityUsedWithMovementUnallowedDuringCast != null && !CanMoveWhileCasting)
+        {
+            OnAbilityUsedWithMovementUnallowedDuringCast();
         }
     }
 
     protected void FinishAbilityCast()
     {
-        if (OnAbilityCastFinished != null)
+        if (OnAbilityUsedWithOtherAbilityCastsUnallowedFinished != null && !CanCastOtherAbilitiesWithCasting)
         {
-            OnAbilityCastFinished();
+            OnAbilityUsedWithOtherAbilityCastsUnallowedFinished();
+        }
+        if (OnAbilityUsedWithMovementUnallowedDuringCastFinished != null && !CanMoveWhileCasting)
+        {
+            OnAbilityUsedWithMovementUnallowedDuringCastFinished();
         }
     }
 
     protected void SendToServer(Vector3 destination)
     {
-        if(SendToServer_Ability != null)
+        if (SendToServer_Ability != null)
         {
             SendToServer_Ability(AbilityId, destination);
-        } 
+        }
     }
 
     protected virtual IEnumerator AbilityWithoutCastTime()
