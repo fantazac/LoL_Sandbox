@@ -443,9 +443,11 @@
     <Compile Include="Assets\Scripts\Entities\Character\Abilities\OtherAbilities\AbilityType\AbilityType.cs" />
     <Compile Include="Assets\Scripts\Entities\Character\Abilities\OtherAbilities\AbilityType\SkillShot.cs" />
     <Compile Include="Assets\Scripts\Entities\Character\Abilities\OtherAbilities\DestroyAllDummies.cs" />
+    <Compile Include="Assets\Scripts\Entities\Character\Abilities\OtherAbilities\Heal.cs" />
     <Compile Include="Assets\Scripts\Entities\Character\Abilities\OtherAbilities\SpawnAllyDummy.cs" />
     <Compile Include="Assets\Scripts\Entities\Character\Abilities\OtherAbilities\SpawnDummy.cs" />
     <Compile Include="Assets\Scripts\Entities\Character\Abilities\OtherAbilities\SpawnEnemyDummy.cs" />
+    <Compile Include="Assets\Scripts\Entities\Character\Abilities\OtherAbilities\Teleport.cs" />
     <Compile Include="Assets\Scripts\Entities\Character\Abilities\OtherAbilities\TeleportToMid.cs" />
     <Compile Include="Assets\Scripts\Entities\Character\CharacterAbilityManager.cs" />
     <Compile Include="Assets\Scripts\Entities\Character\CharacterBase.cs" />

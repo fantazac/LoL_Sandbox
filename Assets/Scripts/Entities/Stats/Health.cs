@@ -44,15 +44,15 @@ public class Health : MonoBehaviour
         return currentHealth / maxHealth;
     }
 
-    public void Heal(float amount)
+    public void Heal(float heal)
     {
-        if (currentHealth + amount > maxHealth)
+        if (currentHealth + heal >= maxHealth)
         {
             currentHealth = maxHealth;
         }
         else
         {
-            currentHealth += amount;
+            currentHealth += heal;
         }
     }
 
