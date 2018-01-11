@@ -15,4 +15,9 @@ public class Ezreal_Q : SkillShot, CharacterAbility
         CanStopMovement = true;
         HasCastTime = true;
     }
+
+    protected override void OnProjectileHit(Projectile projectile)
+    {
+        OnProjectileReachedEnd(projectile);
+    }
 }

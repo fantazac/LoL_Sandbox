@@ -15,14 +15,4 @@ public class Ezreal_R : SkillShot, CharacterAbility
         CanStopMovement = true;
         HasCastTime = true;
     }
-
-    protected override IEnumerator AbilityWithCastTime()
-    {
-        yield return delayCastTime;
-
-        GameObject projectile = (GameObject)Instantiate(projectilePrefab, transform.position, transform.rotation);
-        projectile.GetComponent<Projectile>().ShootProjectile(GetComponent<Health>(), speed, range, damage);//HEALTH TEMPORAIRE
-
-        FinishAbilityCast();
-    }
 }

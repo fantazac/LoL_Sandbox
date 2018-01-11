@@ -26,7 +26,7 @@ public abstract class SkillShot : Ability
             }
             else
             {
-                UseAbility(hit.point + character.CharacterMovement.CharacterHeightOffset); 
+                UseAbility(hit.point + character.CharacterMovement.CharacterHeightOffset);
             }
         }
     }
@@ -52,9 +52,18 @@ public abstract class SkillShot : Ability
     {
         yield return delayCastTime;
 
-        GameObject projectile = (GameObject)Instantiate(projectilePrefab, transform.position, transform.rotation);
-        projectile.GetComponent<Projectile>().ShootProjectile(GetComponent<Health>(), speed, range, damage);//HEALTH TEMPORAIRE
+        Projectile projectile = ((GameObject)Instantiate(projectilePrefab, transform.position, transform.rotation)).GetComponent<Projectile>();
+        projectile.ShootProjectile(GetComponent<Health>(), speed, range, damage);
+        projectile.OnProjectileHit += OnProjectileHit;
+        projectile.OnProjectileReachedEnd += OnProjectileReachedEnd;
 
         FinishAbilityCast();
+    }
+
+    protected virtual void OnProjectileHit(Projectile projectile) { }
+
+    protected virtual void OnProjectileReachedEnd(Projectile projectile)
+    {
+        Destroy(projectile.gameObject);
     }
 }
