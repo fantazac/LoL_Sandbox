@@ -33,6 +33,7 @@ public class CharacterInput : CharacterBase
 
     private void Update()
     {
+        //OtherAbilities
         if (Input.GetKey(KeyCode.LeftShift))
         {
             if (Input.GetKeyDown(KeyCode.B) && OnPressedOtherAbility != null)
@@ -52,10 +53,24 @@ public class CharacterInput : CharacterBase
                 OnPressedOtherAbility((int)OtherAbilities.TP_MID, Input.mousePosition);
             }
         }
+        //CharacterAbilities
         if (Input.GetKeyDown(KeyCode.Q) && OnPressedCharacterAbility != null)
         {
             OnPressedCharacterAbility((int)CharacterAbilities.Q, Input.mousePosition);
         }
+        if (Input.GetKeyDown(KeyCode.W) && OnPressedCharacterAbility != null)
+        {
+            OnPressedCharacterAbility((int)CharacterAbilities.W, Input.mousePosition);
+        }
+        if (Input.GetKeyDown(KeyCode.E) && OnPressedCharacterAbility != null)
+        {
+            OnPressedCharacterAbility((int)CharacterAbilities.E, Input.mousePosition);
+        }
+        if (Input.GetKeyDown(KeyCode.R) && OnPressedCharacterAbility != null)
+        {
+            OnPressedCharacterAbility((int)CharacterAbilities.R, Input.mousePosition);
+        }
+        //SummonerAbilities
         if (Input.GetKeyDown(KeyCode.D) && OnPressedOtherAbility != null)
         {
             OnPressedOtherAbility((int)OtherAbilities.TELEPORT, Input.mousePosition);
@@ -64,6 +79,7 @@ public class CharacterInput : CharacterBase
         {
             OnPressedOtherAbility((int)OtherAbilities.HEAL, Input.mousePosition);
         }
+        //CameraControl
         if (Input.GetKeyDown(KeyCode.S) && OnPressedS != null)
         {
             OnPressedS();
@@ -80,7 +96,7 @@ public class CharacterInput : CharacterBase
         {
             OnReleasedSpace();
         }
-
+        //Mouse
         if (Input.GetMouseButtonDown(0) && OnLeftClick != null)
         {
             OnLeftClick(Input.mousePosition);

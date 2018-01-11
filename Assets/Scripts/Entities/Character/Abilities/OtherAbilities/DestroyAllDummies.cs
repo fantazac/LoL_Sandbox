@@ -28,7 +28,7 @@ public class DestroyAllDummies : Ability, OtherAbility
         spawnDummyAbilities[1].RemoveAllDummies();
     }
 
-    protected override void UseAbility(Vector3 destination = default(Vector3))
+    public override void UseAbility(Vector3 destination = default(Vector3))
     {
         RemoveAllDummies();
     }

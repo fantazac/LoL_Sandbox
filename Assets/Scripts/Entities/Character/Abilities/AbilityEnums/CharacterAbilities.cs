@@ -1,4 +1,4 @@
-﻿public enum CharacterAbilities
+﻿public enum CharacterAbilities//only used for inputs
 {
     P,
     Q,

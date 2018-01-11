@@ -18,26 +18,15 @@ public class TeleportToMid : Ability, OtherAbility
     {
         if (StaticObjects.OnlineMode)
         {
-            SendToServer_Ability_TeleportToMid();
+            SendToServer(mousePosition);
         }
         else
         {
-            UseAbility();
+            UseAbility(mousePosition);
         }
     }
 
-    [PunRPC]
-    protected void ReceiveFromServer_Ability_TeleportToMid()
-    {
-        UseAbility();
-    }
-
-    protected void SendToServer_Ability_TeleportToMid()
-    {
-        character.PhotonView.RPC("ReceiveFromServer_Ability_TeleportToMid", PhotonTargets.AllViaServer);
-    }
-
-    protected override void UseAbility(Vector3 destination = default(Vector3))
+    public override void UseAbility(Vector3 destination)
     {
         character.CharacterMovement.StopAllMovement(this);
         character.transform.position = character.CharacterMovement.CharacterHeightOffset;
