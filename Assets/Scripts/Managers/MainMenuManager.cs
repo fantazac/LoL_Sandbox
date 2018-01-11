@@ -27,7 +27,7 @@ public class MainMenuManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            if (state == MainMenuState.CONNECTING || state == MainMenuState.CHARACTER_SELECT)
+            if (state == MainMenuState.CONNECTING || state == MainMenuState.TEAM_SELECT)
             {
                 if (StaticObjects.OnlineMode)
                 {
@@ -35,6 +35,10 @@ public class MainMenuManager : MonoBehaviour
                     StaticObjects.OnlineMode = false;
                 }
                 state = MainMenuState.MAIN;
+            }
+            else if (state == MainMenuState.CHARACTER_SELECT)
+            {
+                state = MainMenuState.TEAM_SELECT;
             }
             else if (state == MainMenuState.ON_HOLD)
             {
@@ -86,7 +90,7 @@ public class MainMenuManager : MonoBehaviour
             case MainMenuState.CHARACTER_SELECT:
                 if (StaticObjects.OnlineMode)
                 {
-                    GUILayout.Label("Ping: " + PhotonNetwork.GetPing().ToString() + "  -  Players Online: " + PhotonNetwork.playerList.Length);
+                    GUILayout.Label("Ping: " + PhotonNetwork.GetPing().ToString() + "  -  Players Online: " + PhotonNetwork.playerList.Length + " - Team: " + PhotonNetwork.player.GetTeam());
                 }
                 if (GUILayout.Button("Ezreal", GUILayout.Height(40)))
                 {
@@ -100,7 +104,7 @@ public class MainMenuManager : MonoBehaviour
             case MainMenuState.ON_HOLD:
                 if (StaticObjects.OnlineMode)
                 {
-                    GUILayout.Label("Ping: " + PhotonNetwork.GetPing().ToString() + "  -  Players Online: " + PhotonNetwork.playerList.Length);
+                    GUILayout.Label("Ping: " + PhotonNetwork.GetPing().ToString() + "  -  Players Online: " + PhotonNetwork.playerList.Length + " - Team: " + PhotonNetwork.player.GetTeam());
                 }
                 break;
         }
