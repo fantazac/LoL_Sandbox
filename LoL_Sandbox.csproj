@@ -475,6 +475,7 @@
     <Compile Include="Assets\Scripts\Entities\Dummy\Dummy.cs" />
     <Compile Include="Assets\Scripts\Entities\Dummy\DummyBaseStats.cs" />
     <Compile Include="Assets\Scripts\Entities\Dummy\DummyStats.cs" />
+    <Compile Include="Assets\Scripts\Entities\EntityTeam.cs" />
     <Compile Include="Assets\Scripts\Entities\Minion\MinionStats.cs" />
     <Compile Include="Assets\Scripts\Entities\Monster\MonsterStats.cs" />
     <Compile Include="Assets\Scripts\Entities\Stats\AbilityPower.cs" />

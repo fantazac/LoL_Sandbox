@@ -67,6 +67,22 @@ public class MainMenuManager : MonoBehaviour
             case MainMenuState.CONNECTING:
                 GUILayout.Label(PhotonNetwork.connectionStateDetailed.ToString());
                 break;
+            case MainMenuState.TEAM_SELECT:
+                if (StaticObjects.OnlineMode)
+                {
+                    GUILayout.Label("Ping: " + PhotonNetwork.GetPing().ToString() + "  -  Players Online: " + PhotonNetwork.playerList.Length);
+                }
+                if (GUILayout.Button("BLUE", GUILayout.Height(40)))
+                {
+                    state = MainMenuState.CHARACTER_SELECT;
+                    PhotonNetwork.player.SetTeam(PunTeams.Team.blue);
+                }
+                if (GUILayout.Button("RED", GUILayout.Height(40)))
+                {
+                    state = MainMenuState.CHARACTER_SELECT;
+                    PhotonNetwork.player.SetTeam(PunTeams.Team.red);
+                }
+                break;
             case MainMenuState.CHARACTER_SELECT:
                 if (StaticObjects.OnlineMode)
                 {
@@ -127,6 +143,7 @@ enum MainMenuState
 {
     MAIN,
     CONNECTING,
+    TEAM_SELECT,
     CHARACTER_SELECT,
     ON_HOLD,
 }
