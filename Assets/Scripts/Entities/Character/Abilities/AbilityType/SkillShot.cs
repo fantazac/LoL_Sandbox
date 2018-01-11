@@ -53,7 +53,7 @@ public abstract class SkillShot : Ability
         yield return delayCastTime;
 
         GameObject projectile = (GameObject)Instantiate(projectilePrefab, transform.position, transform.rotation);
-        projectile.GetComponent<ProjectileMovement>().ShootProjectile(GetComponent<Health>(), speed, range, damage);//HEALTH TEMPORAIRE
+        projectile.GetComponent<Projectile>().ShootProjectile(GetComponent<Health>(), speed, range, damage);//HEALTH TEMPORAIRE
 
         FinishAbilityCast();
     }

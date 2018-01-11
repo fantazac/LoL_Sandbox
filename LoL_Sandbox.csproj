@@ -507,7 +507,11 @@
     <Compile Include="Assets\Scripts\Managers\StaticObjects.cs" />
     <Compile Include="Assets\Scripts\MousePositionOnTerrain.cs" />
     <Compile Include="Assets\Scripts\MovementCapsule\MovementCapsule.cs" />
+    <Compile Include="Assets\Scripts\Projectiles\Projectile.cs" />
+    <Compile Include="Assets\Scripts\Projectiles\ProjectileDirectionTargetted.cs" />
     <Compile Include="Assets\Scripts\Projectiles\ProjectileMovement.cs" />
+    <Compile Include="Assets\Scripts\Projectiles\ProjectileMultipleTargets.cs" />
+    <Compile Include="Assets\Scripts\Projectiles\ProjectileSingleTarget.cs" />
     <Compile Include="Assets\Scripts\Terrain\TerrainManager.cs" />
   </ItemGroup>
   <ItemGroup>
