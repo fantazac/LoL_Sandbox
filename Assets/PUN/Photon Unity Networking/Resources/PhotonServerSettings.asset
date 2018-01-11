@@ -57,4 +57,5 @@ MonoBehaviour:
   - ReceiveFromServer_Ability_Blink
   - ReceiveFromServer_CharacterAbility
   - ReceiveFromServer_OtherAbility
+  - ReceiveFromServer_Team
   DisableAutoOpenWizard: 1

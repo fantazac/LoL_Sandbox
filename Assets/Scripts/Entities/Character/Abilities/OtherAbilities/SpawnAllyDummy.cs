@@ -7,5 +7,6 @@ public class SpawnAllyDummy : SpawnDummy
     protected SpawnAllyDummy()
     {
         dummyResourceName = "_AllyDummy";
+        team = EntityTeam.BLUE;
     }
 }
