@@ -29,7 +29,7 @@ public class CharacterMovement : CharacterBase
 
     private void PressedRightClick(Vector3 mousePosition)
     {
-        if (!CharacterAbilityManager.isUsingAbilityWithMovementUnallowed && MousePositionOnTerrain.GetRaycastHit(mousePosition, out hit))
+        if (!CharacterAbilityManager.IsUsingAbilityPreventingMovement() && MousePositionOnTerrain.GetRaycastHit(mousePosition, out hit))
         {
             Instantiate(movementCapsule, hit.point, new Quaternion());
 

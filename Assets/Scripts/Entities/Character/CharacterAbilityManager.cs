@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 public class CharacterAbilityManager : CharacterBase
 {
@@ -7,8 +8,12 @@ public class CharacterAbilityManager : CharacterBase
     [SerializeField]
     private Ability[] otherAbilities;
 
-    public bool isUsingAbilityWithOtherAbilityCastsUnallowed;
-    public bool isUsingAbilityWithMovementUnallowed;
+    private List<Ability> currentlyUsedAbilities;
+
+    private CharacterAbilityManager()
+    {
+        currentlyUsedAbilities = new List<Ability>();
+    }
 
     protected override void Start()
     {
@@ -37,16 +42,8 @@ public class CharacterAbilityManager : CharacterBase
                     abilities[i].SendToServer_Ability += SendToServer_OtherAbility;
                 }
 
-                if (!abilities[i].CanCastOtherAbilitiesWithCasting)
-                {
-                    abilities[i].OnAbilityUsedWithOtherAbilityCastsUnallowed += OnAbilityUsedWithOtherAbilityCastsUnallowed;
-                    abilities[i].OnAbilityUsedWithOtherAbilityCastsUnallowedFinished += OnAbilityUsedWithOtherAbilityCastsUnallowedFinished;
-                }
-                if (!abilities[i].CanMoveWhileCasting)
-                {
-                    abilities[i].OnAbilityUsedWithMovementUnallowedDuringCast += OnAbilityUsedWithMovementUnallowedDuringCast;
-                    abilities[i].OnAbilityUsedWithMovementUnallowedDuringCastFinished += OnAbilityUsedWithMovementUnallowedDuringCastFinished;
-                }
+                abilities[i].OnAbilityUsed += OnAbilityUsed;
+                abilities[i].OnAbilityFinished += OnAbilityFinished;
             }
         }
     }
@@ -59,7 +56,11 @@ public class CharacterAbilityManager : CharacterBase
     [PunRPC]
     protected void ReceiveFromServer_CharacterAbility(int abilityId, Vector3 destination)
     {
-        characterAbilities[abilityId].UseAbility(destination);
+        if (!IsUsingAbilityPreventingAbilityCasts())
+        {
+            characterAbilities[abilityId].UseAbility(destination);
+        }
+        //else put in queue
     }
 
     private void SendToServer_OtherAbility(int abilityId, Vector3 destination)
@@ -73,24 +74,14 @@ public class CharacterAbilityManager : CharacterBase
         otherAbilities[abilityId].UseAbility(destination);
     }
 
-    private void OnAbilityUsedWithOtherAbilityCastsUnallowed()
+    private void OnAbilityUsed(Ability ability)
     {
-        isUsingAbilityWithOtherAbilityCastsUnallowed = true;
+        currentlyUsedAbilities.Add(ability);
     }
 
-    private void OnAbilityUsedWithOtherAbilityCastsUnallowedFinished()
+    private void OnAbilityFinished(Ability ability)
     {
-        isUsingAbilityWithOtherAbilityCastsUnallowed = false;
-    }
-
-    private void OnAbilityUsedWithMovementUnallowedDuringCast()
-    {
-        isUsingAbilityWithMovementUnallowed = true;
-    }
-
-    private void OnAbilityUsedWithMovementUnallowedDuringCastFinished()
-    {
-        isUsingAbilityWithMovementUnallowed = false;
+        currentlyUsedAbilities.Remove(ability);
     }
 
     private void OnPressedInputForCharacterAbility(int abilityId, Vector3 mousePosition)
@@ -107,5 +98,41 @@ public class CharacterAbilityManager : CharacterBase
         {
             otherAbilities[abilityId].OnPressedInput(mousePosition);
         }
+    }
+
+    public bool IsUsingAbilityPreventingMovement()
+    {
+        if(currentlyUsedAbilities.Count == 0)
+        {
+            return false;
+        }
+
+        foreach(Ability ability in currentlyUsedAbilities)
+        {
+            if (!ability.CanMoveWhileCasting)
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public bool IsUsingAbilityPreventingAbilityCasts()
+    {
+        if (currentlyUsedAbilities.Count == 0)
+        {
+            return false;
+        }
+
+        foreach (Ability ability in currentlyUsedAbilities)
+        {
+            if (!ability.CanCastOtherAbilitiesWithCasting)
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

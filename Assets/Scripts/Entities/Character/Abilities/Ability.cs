@@ -16,17 +16,11 @@ public abstract class Ability : MonoBehaviour
     public bool OfflineOnly { get; protected set; }
     public bool HasCastTime { get; protected set; }
 
-    public delegate void OnAbilityUsedWithOtherAbilityCastsUnallowedHandler();
-    public event OnAbilityUsedWithOtherAbilityCastsUnallowedHandler OnAbilityUsedWithOtherAbilityCastsUnallowed;
+    public delegate void OnAbilityUsedHandler(Ability ability);
+    public event OnAbilityUsedHandler OnAbilityUsed;
 
-    public delegate void OnAbilityUsedWithOtherAbilityCastsUnallowedFinishedHandler();
-    public event OnAbilityUsedWithOtherAbilityCastsUnallowedFinishedHandler OnAbilityUsedWithOtherAbilityCastsUnallowedFinished;
-
-    public delegate void OnAbilityUsedWithMovementUnallowedDuringCastHandler();
-    public event OnAbilityUsedWithMovementUnallowedDuringCastHandler OnAbilityUsedWithMovementUnallowedDuringCast;
-
-    public delegate void OnAbilityUsedWithMovementUnallowedDuringCastFinishedHandler();
-    public event OnAbilityUsedWithMovementUnallowedDuringCastFinishedHandler OnAbilityUsedWithMovementUnallowedDuringCastFinished;
+    public delegate void OnAbilityFinishedHandler(Ability ability);
+    public event OnAbilityFinishedHandler OnAbilityFinished;
 
     public delegate void SendToServer_AbilityHandler(int abilityId, Vector3 destination);
     public event SendToServer_AbilityHandler SendToServer_Ability;
@@ -47,32 +41,24 @@ public abstract class Ability : MonoBehaviour
 
     protected virtual bool CanUseSkill(Vector3 mousePosition)
     {
-        return !character.CharacterAbilityManager.isUsingAbilityWithOtherAbilityCastsUnallowed && MousePositionOnTerrain.GetRaycastHit(mousePosition, out hit);
+        return !character.CharacterAbilityManager.IsUsingAbilityPreventingAbilityCasts() && MousePositionOnTerrain.GetRaycastHit(mousePosition, out hit);
     }
 
     protected virtual void ModifyValues() { }
 
     protected void StartAbilityCast()
     {
-        if (OnAbilityUsedWithOtherAbilityCastsUnallowed != null && !CanCastOtherAbilitiesWithCasting)
+        if (OnAbilityUsed != null)
         {
-            OnAbilityUsedWithOtherAbilityCastsUnallowed();
-        }
-        if (OnAbilityUsedWithMovementUnallowedDuringCast != null && !CanMoveWhileCasting)
-        {
-            OnAbilityUsedWithMovementUnallowedDuringCast();
+            OnAbilityUsed(this);
         }
     }
 
     protected void FinishAbilityCast()
     {
-        if (OnAbilityUsedWithOtherAbilityCastsUnallowedFinished != null && !CanCastOtherAbilitiesWithCasting)
+        if (OnAbilityFinished != null)
         {
-            OnAbilityUsedWithOtherAbilityCastsUnallowedFinished();
-        }
-        if (OnAbilityUsedWithMovementUnallowedDuringCastFinished != null && !CanMoveWhileCasting)
-        {
-            OnAbilityUsedWithMovementUnallowedDuringCastFinished();
+            OnAbilityFinished(this);
         }
     }
 
