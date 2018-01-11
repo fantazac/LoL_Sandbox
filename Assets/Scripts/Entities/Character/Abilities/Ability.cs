@@ -22,9 +22,6 @@ public abstract class Ability : MonoBehaviour
     public delegate void OnAbilityFinishedHandler(Ability ability);
     public event OnAbilityFinishedHandler OnAbilityFinished;
 
-    public delegate void SendToServer_AbilityHandler(int abilityId, Vector3 destination);
-    public event SendToServer_AbilityHandler SendToServer_Ability;
-
     protected Ability()
     {
         AbilityId = -1;
@@ -55,14 +52,6 @@ public abstract class Ability : MonoBehaviour
         if (OnAbilityFinished != null)
         {
             OnAbilityFinished(this);
-        }
-    }
-
-    protected void SendToServer(Vector3 destination)
-    {
-        if (SendToServer_Ability != null)
-        {
-            SendToServer_Ability(AbilityId, destination);
         }
     }
 
