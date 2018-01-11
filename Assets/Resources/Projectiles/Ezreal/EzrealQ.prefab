@@ -22,7 +22,7 @@ GameObject:
   - component: {fileID: 33000012975610524}
   - component: {fileID: 65000011260248368}
   - component: {fileID: 23000013987163502}
-  - component: {fileID: 114444903320164664}
+  - component: {fileID: 114034439317658944}
   m_Layer: 9
   m_Name: EzrealQ
   m_TagString: Untagged
@@ -96,7 +96,7 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &114444903320164664
+--- !u!114 &114034439317658944
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -104,6 +104,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 1000013746244026}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3fc5c1a365ea370448cc57f2729f5ddc, type: 3}
+  m_Script: {fileID: 11500000, guid: b5ddce7f8b794634980f51e27af9700e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
