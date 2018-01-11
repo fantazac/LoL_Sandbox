@@ -108,7 +108,7 @@ public class MainMenuManager : MonoBehaviour
 
     private void OnConnectedToServer()
     {
-        state = MainMenuState.CHARACTER_SELECT;
+        state = MainMenuState.TEAM_SELECT;
     }
 
     private void SpawnCharacter(string characterName)
