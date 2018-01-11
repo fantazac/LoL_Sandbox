@@ -94,7 +94,7 @@ public class CharacterAbilityManager : CharacterBase
 
     private void OnPressedInputForOtherAbility(int abilityId, Vector3 mousePosition)
     {
-        if(otherAbilities[abilityId] != null && ((StaticObjects.OnlineMode && !otherAbilities[abilityId].OfflineOnly) || !StaticObjects.OnlineMode))
+        if(otherAbilities[abilityId] != null && (!StaticObjects.OnlineMode || !otherAbilities[abilityId].OfflineOnly))
         {
             otherAbilities[abilityId].OnPressedInput(mousePosition);
         }
