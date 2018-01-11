@@ -2,12 +2,6 @@
 
 public class CharacterInput : CharacterBase
 {
-    public delegate void OnPressedCharacterAbilityHandler(int abilityId, Vector3 mousePosition);
-    public event OnPressedCharacterAbilityHandler OnPressedCharacterAbility;
-
-    public delegate void OnPressedOtherAbilityHandler(int abilityId, Vector3 mousePosition);
-    public event OnPressedOtherAbilityHandler OnPressedOtherAbility;
-
     public delegate void OnPressedSHandler();
     public event OnPressedSHandler OnPressedS;
 
@@ -36,48 +30,48 @@ public class CharacterInput : CharacterBase
         //OtherAbilities
         if (Input.GetKey(KeyCode.LeftShift))
         {
-            if (Input.GetKeyDown(KeyCode.B) && OnPressedOtherAbility != null)
+            if (Input.GetKeyDown(KeyCode.B))
             {
-                OnPressedOtherAbility((int)OtherAbilities.SPAWN_ENEMY_DUMMY, Input.mousePosition);
+                CharacterAbilityManager.OnPressedInputForOtherAbility((int)OtherAbilities.SPAWN_ENEMY_DUMMY, Input.mousePosition);
             }
-            if (Input.GetKeyDown(KeyCode.M) && OnPressedOtherAbility != null)
+            if (Input.GetKeyDown(KeyCode.M))
             {
-                OnPressedOtherAbility((int)OtherAbilities.DESTROY_ALL_DUMMIES, Input.mousePosition);
+                CharacterAbilityManager.OnPressedInputForOtherAbility((int)OtherAbilities.DESTROY_ALL_DUMMIES, Input.mousePosition);
             }
-            if (Input.GetKeyDown(KeyCode.N) && OnPressedOtherAbility != null)
+            if (Input.GetKeyDown(KeyCode.N))
             {
-                OnPressedOtherAbility((int)OtherAbilities.SPAWN_ALLY_DUMMY, Input.mousePosition);
+                CharacterAbilityManager.OnPressedInputForOtherAbility((int)OtherAbilities.SPAWN_ALLY_DUMMY, Input.mousePosition);
             }
-            if (Input.GetKeyDown(KeyCode.L) && OnPressedOtherAbility != null)
+            if (Input.GetKeyDown(KeyCode.L))
             {
-                OnPressedOtherAbility((int)OtherAbilities.TP_MID, Input.mousePosition);
+                CharacterAbilityManager.OnPressedInputForOtherAbility((int)OtherAbilities.TP_MID, Input.mousePosition);
             }
         }
         //CharacterAbilities
-        if (Input.GetKeyDown(KeyCode.Q) && OnPressedCharacterAbility != null)
+        if (Input.GetKeyDown(KeyCode.Q))
         {
-            OnPressedCharacterAbility((int)CharacterAbilities.Q, Input.mousePosition);
+            CharacterAbilityManager.OnPressedInputForCharacterAbility((int)CharacterAbilities.Q, Input.mousePosition);
         }
-        if (Input.GetKeyDown(KeyCode.W) && OnPressedCharacterAbility != null)
+        if (Input.GetKeyDown(KeyCode.W))
         {
-            OnPressedCharacterAbility((int)CharacterAbilities.W, Input.mousePosition);
+            CharacterAbilityManager.OnPressedInputForCharacterAbility((int)CharacterAbilities.W, Input.mousePosition);
         }
-        if (Input.GetKeyDown(KeyCode.E) && OnPressedCharacterAbility != null)
+        if (Input.GetKeyDown(KeyCode.E))
         {
-            OnPressedCharacterAbility((int)CharacterAbilities.E, Input.mousePosition);
+            CharacterAbilityManager.OnPressedInputForCharacterAbility((int)CharacterAbilities.E, Input.mousePosition);
         }
-        if (Input.GetKeyDown(KeyCode.R) && OnPressedCharacterAbility != null)
+        if (Input.GetKeyDown(KeyCode.R))
         {
-            OnPressedCharacterAbility((int)CharacterAbilities.R, Input.mousePosition);
+            CharacterAbilityManager.OnPressedInputForCharacterAbility((int)CharacterAbilities.R, Input.mousePosition);
         }
         //SummonerAbilities
-        if (Input.GetKeyDown(KeyCode.D) && OnPressedOtherAbility != null)
+        if (Input.GetKeyDown(KeyCode.D))
         {
-            OnPressedOtherAbility((int)OtherAbilities.TELEPORT, Input.mousePosition);
+            CharacterAbilityManager.OnPressedInputForOtherAbility((int)OtherAbilities.TELEPORT, Input.mousePosition);
         }
-        if (Input.GetKeyDown(KeyCode.F) && OnPressedOtherAbility != null)
+        if (Input.GetKeyDown(KeyCode.F))
         {
-            OnPressedOtherAbility((int)OtherAbilities.HEAL, Input.mousePosition);
+            CharacterAbilityManager.OnPressedInputForOtherAbility((int)OtherAbilities.HEAL, Input.mousePosition);
         }
         //CameraControl
         if (Input.GetKeyDown(KeyCode.S) && OnPressedS != null)
