@@ -1,4 +1,4 @@
-﻿﻿using UnityEngine;
+﻿using UnityEngine;
 
 public class CharacterInput : CharacterBase
 {
@@ -27,7 +27,47 @@ public class CharacterInput : CharacterBase
 
     private void Update()
     {
-        //OtherAbilities
+        CheckForCharacterAbilitiesInputs();
+        CheckForSummonerSpellsInputs();
+        CheckForOtherAbilitiesInputs();
+        CheckForCameraControlInputs();
+        CheckForMouseInputs();
+    }
+
+    private void CheckForCharacterAbilitiesInputs()
+    {
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            CharacterAbilityManager.OnPressedInputForCharacterAbility((int)CharacterAbilities.Q, Input.mousePosition);
+        }
+        if (Input.GetKeyDown(KeyCode.W))
+        {
+            CharacterAbilityManager.OnPressedInputForCharacterAbility((int)CharacterAbilities.W, Input.mousePosition);
+        }
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            CharacterAbilityManager.OnPressedInputForCharacterAbility((int)CharacterAbilities.E, Input.mousePosition);
+        }
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            CharacterAbilityManager.OnPressedInputForCharacterAbility((int)CharacterAbilities.R, Input.mousePosition);
+        }
+    }
+
+    private void CheckForSummonerSpellsInputs()
+    {
+        if (Input.GetKeyDown(KeyCode.D))
+        {
+            CharacterAbilityManager.OnPressedInputForOtherAbility((int)OtherAbilities.TELEPORT, Input.mousePosition);
+        }
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            CharacterAbilityManager.OnPressedInputForOtherAbility((int)OtherAbilities.HEAL, Input.mousePosition);
+        }
+    }
+
+    private void CheckForOtherAbilitiesInputs()
+    {
         if (Input.GetKey(KeyCode.LeftShift))
         {
             if (Input.GetKeyDown(KeyCode.B))
@@ -47,33 +87,10 @@ public class CharacterInput : CharacterBase
                 CharacterAbilityManager.OnPressedInputForOtherAbility((int)OtherAbilities.TP_MID, Input.mousePosition);
             }
         }
-        //CharacterAbilities
-        if (Input.GetKeyDown(KeyCode.Q))
-        {
-            CharacterAbilityManager.OnPressedInputForCharacterAbility((int)CharacterAbilities.Q, Input.mousePosition);
-        }
-        if (Input.GetKeyDown(KeyCode.W))
-        {
-            CharacterAbilityManager.OnPressedInputForCharacterAbility((int)CharacterAbilities.W, Input.mousePosition);
-        }
-        if (Input.GetKeyDown(KeyCode.E))
-        {
-            CharacterAbilityManager.OnPressedInputForCharacterAbility((int)CharacterAbilities.E, Input.mousePosition);
-        }
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-            CharacterAbilityManager.OnPressedInputForCharacterAbility((int)CharacterAbilities.R, Input.mousePosition);
-        }
-        //SummonerAbilities
-        if (Input.GetKeyDown(KeyCode.D))
-        {
-            CharacterAbilityManager.OnPressedInputForOtherAbility((int)OtherAbilities.TELEPORT, Input.mousePosition);
-        }
-        if (Input.GetKeyDown(KeyCode.F))
-        {
-            CharacterAbilityManager.OnPressedInputForOtherAbility((int)OtherAbilities.HEAL, Input.mousePosition);
-        }
-        //CameraControl
+    }
+
+    private void CheckForCameraControlInputs()
+    {
         if (Input.GetKeyDown(KeyCode.S) && OnPressedS != null)
         {
             OnPressedS();
@@ -90,7 +107,10 @@ public class CharacterInput : CharacterBase
         {
             OnReleasedSpace();
         }
-        //Mouse
+    }
+
+    private void CheckForMouseInputs()
+    {
         if (Input.GetMouseButtonDown(0) && OnLeftClick != null)
         {
             OnLeftClick(Input.mousePosition);
