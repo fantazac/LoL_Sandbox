@@ -2,16 +2,14 @@
 
 public class Heal : Ability, OtherAbility
 {
-    public override void OnPressedInput(Vector3 mousePosition)
+    public override bool CanBeCast(Vector3 mousePosition)
     {
-        if (StaticObjects.OnlineMode)
-        {
-            SendToServer(mousePosition);
-        }
-        else
-        {
-            UseAbility(mousePosition);
-        }
+        return true;
+    }
+
+    public override Vector3 GetDestination()
+    {
+        return character.transform.position;
     }
 
     public override void UseAbility(Vector3 destination)

@@ -14,16 +14,14 @@ public class TeleportToMid : Ability, OtherAbility
         base.Start();
     }
 
-    public override void OnPressedInput(Vector3 mousePosition)
+    public override bool CanBeCast(Vector3 mousePosition)
     {
-        if (StaticObjects.OnlineMode)
-        {
-            SendToServer(mousePosition);
-        }
-        else
-        {
-            UseAbility(mousePosition);
-        }
+        return !StaticObjects.OnlineMode || !OfflineOnly;
+    }
+
+    public override Vector3 GetDestination()
+    {
+        return character.CharacterMovement.CharacterHeightOffset;
     }
 
     public override void UseAbility(Vector3 destination)

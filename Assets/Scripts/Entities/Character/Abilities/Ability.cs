@@ -36,7 +36,8 @@ public abstract class Ability : MonoBehaviour
         ModifyValues();
     }
 
-    public abstract void OnPressedInput(Vector3 mousePosition);
+    public abstract bool CanBeCast(Vector3 mousePosition);
+    public abstract Vector3 GetDestination();
     public abstract void UseAbility(Vector3 destination);
 
     protected virtual bool CanUseSkill(Vector3 mousePosition)

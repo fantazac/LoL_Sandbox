@@ -24,12 +24,15 @@ public abstract class SpawnDummy : Ability, OtherAbility
         }
     }
 
-    public override void OnPressedInput(Vector3 mousePosition)
+    public override bool CanBeCast(Vector3 mousePosition)
     {
-        if (CanUseSkill(mousePosition))
-        {
-            UseAbility(hit.point + character.CharacterMovement.CharacterHeightOffset);
-        }
+        // FIXME: this
+        return  (!StaticObjects.OnlineMode || !OfflineOnly) && !character.CharacterAbilityManager.IsUsingAbilityPreventingAbilityCasts() && MousePositionOnTerrain.GetRaycastHit(mousePosition, out hit);
+    }
+
+    public override Vector3 GetDestination()
+    {
+        return hit.point + character.CharacterMovement.CharacterHeightOffset;
     }
 
     public void RemoveAllDummies()

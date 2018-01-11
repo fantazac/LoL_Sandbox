@@ -17,9 +17,14 @@ public class DestroyAllDummies : Ability, OtherAbility
         RemoveAllDummies();
     }
 
-    public override void OnPressedInput(Vector3 mousePosition)
+    public override bool CanBeCast(Vector3 mousePosition)
     {
-        UseAbility();
+        return !StaticObjects.OnlineMode || !OfflineOnly;
+    }
+
+    public override Vector3 GetDestination()
+    {
+        return new Vector3();
     }
 
     protected void RemoveAllDummies()

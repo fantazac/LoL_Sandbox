@@ -7,19 +7,14 @@ public class Teleport : Ability, OtherAbility
         CanStopMovement = true;
     }
 
-    public override void OnPressedInput(Vector3 mousePosition)
+    public override bool CanBeCast(Vector3 mousePosition)
     {
-        if (CanUseSkill(mousePosition))
-        {
-            if (StaticObjects.OnlineMode)
-            {
-                SendToServer(hit.point + character.CharacterMovement.CharacterHeightOffset);
-            }
-            else
-            {
-                UseAbility(hit.point + character.CharacterMovement.CharacterHeightOffset);
-            }
-        }
+        return !character.CharacterAbilityManager.IsUsingAbilityPreventingAbilityCasts() && MousePositionOnTerrain.GetRaycastHit(mousePosition, out hit);
+    }
+
+    public override Vector3 GetDestination()
+    {
+        return hit.point + character.CharacterMovement.CharacterHeightOffset;
     }
 
     public override void UseAbility(Vector3 destination)

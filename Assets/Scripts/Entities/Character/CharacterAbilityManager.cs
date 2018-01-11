@@ -83,17 +83,35 @@ public class CharacterAbilityManager : CharacterBase
 
     public void OnPressedInputForCharacterAbility(int abilityId, Vector3 mousePosition)
     {
-        if(characterAbilities[abilityId] != null)
+        Ability ability = characterAbilities[abilityId];
+        if (ability != null && ability.CanBeCast(mousePosition))
         {
-            characterAbilities[abilityId].OnPressedInput(mousePosition);
+            Vector3 destination = ability.GetDestination();
+            if (StaticObjects.OnlineMode)
+            {
+                SendToServer_CharacterAbility(abilityId, destination);
+            }
+            else
+            {
+                ability.UseAbility(destination);
+            }
         }
     }
 
     public void OnPressedInputForOtherAbility(int abilityId, Vector3 mousePosition)
     {
-        if(otherAbilities[abilityId] != null && (!StaticObjects.OnlineMode || !otherAbilities[abilityId].OfflineOnly))
+        Ability ability = otherAbilities[abilityId];
+        if (ability != null && ability.CanBeCast(mousePosition))
         {
-            otherAbilities[abilityId].OnPressedInput(mousePosition);
+            Vector3 destination = ability.GetDestination();
+            if (StaticObjects.OnlineMode)
+            {
+                SendToServer_OtherAbility(abilityId, destination);
+            }
+            else
+            {
+                ability.UseAbility(destination);
+            }
         }
     }
 
