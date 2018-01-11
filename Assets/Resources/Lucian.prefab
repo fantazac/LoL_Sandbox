@@ -68,7 +68,7 @@ GameObject:
   - component: {fileID: 114156338481985698}
   - component: {fileID: 114760876531046866}
   - component: {fileID: 114840785743791962}
-  - component: {fileID: 114823138794799442}
+  - component: {fileID: 114324357708582316}
   - component: {fileID: 114729605349889214}
   - component: {fileID: 114367763696821004}
   - component: {fileID: 114255252513267966}
@@ -234,7 +234,7 @@ MonoBehaviour:
   characterAbilities:
   - {fileID: 0}
   - {fileID: 114840785743791962}
-  - {fileID: 114823138794799442}
+  - {fileID: 114324357708582316}
   - {fileID: 114729605349889214}
   - {fileID: 114367763696821004}
   otherAbilities:
@@ -244,8 +244,6 @@ MonoBehaviour:
   - {fileID: 114986620668545128}
   - {fileID: 114269601118025512}
   - {fileID: 114165310821136542}
-  isUsingAbilityWithOtherAbilityCastsUnallowed: 0
-  isUsingAbilityWithMovementUnallowed: 0
 --- !u!114 &114069144610409572
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -381,6 +379,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df099550010c1ba40aedb0da333a97b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &114324357708582316
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1507067852754532}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1a4139fbea1f7a048b58f4963288b590, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  projectilePrefab: {fileID: 1000011332508624, guid: 2dd65a2c59d731245b6e300dbd615760,
+    type: 2}
+  explosionAreaOfEffectPrefab: {fileID: 1000013714180132, guid: 72fd8765c72f30f4da560504e8980708,
+    type: 2}
 --- !u!114 &114332716081703900
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -585,19 +598,6 @@ MonoBehaviour:
   baseMagicPenetrationPercent: 0
   currentMagicPenetrationPercent: 0
   bonusMagicPenetrationPercent: 0
---- !u!114 &114823138794799442
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1507067852754532}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bd7ea2af004c0734eb5b37952f1dc606, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  projectilePrefab: {fileID: 1000011417396818, guid: a57ad189bcd00744d8b83e74110eda5e,
-    type: 2}
 --- !u!114 &114840785743791962
 MonoBehaviour:
   m_ObjectHideFlags: 1

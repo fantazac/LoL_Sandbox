@@ -13,12 +13,12 @@ public abstract class ProjectileDirectionTargetted : Projectile
             yield return null;
         }
 
-        Destroy(gameObject);
+        OnProjectileReachedEndOfRange();
     }
 
     protected override bool CanHitTarget(Health targetHealth)
     {
-        foreach (Health health in healthOfUnitsAlreadyHitWithProjectile)
+        foreach (Health health in HealthOfUnitsAlreadyHit)
         {
             if (health == targetHealth)
             {

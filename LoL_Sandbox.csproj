@@ -449,6 +449,7 @@
     <Compile Include="Assets\Scripts\Entities\Character\Abilities\CharacterAbilities\Ezreal\Ezreal_R.cs" />
     <Compile Include="Assets\Scripts\Entities\Character\Abilities\CharacterAbilities\Ezreal\Ezreal_W.cs" />
     <Compile Include="Assets\Scripts\Entities\Character\Abilities\CharacterAbilities\Lucian\Lucian_E.cs" />
+    <Compile Include="Assets\Scripts\Entities\Character\Abilities\CharacterAbilities\Lucian\Lucian_W.cs" />
     <Compile Include="Assets\Scripts\Entities\Character\Abilities\OtherAbilities\DestroyAllDummies.cs" />
     <Compile Include="Assets\Scripts\Entities\Character\Abilities\OtherAbilities\Heal.cs" />
     <Compile Include="Assets\Scripts\Entities\Character\Abilities\OtherAbilities\SpawnAllyDummy.cs" />
@@ -507,6 +508,8 @@
     <Compile Include="Assets\Scripts\Managers\StaticObjects.cs" />
     <Compile Include="Assets\Scripts\MousePositionOnTerrain.cs" />
     <Compile Include="Assets\Scripts\MovementCapsule\MovementCapsule.cs" />
+    <Compile Include="Assets\Scripts\Projectiles\AreaOfEffect.cs" />
+    <Compile Include="Assets\Scripts\Projectiles\AreaOfEffectCollider.cs" />
     <Compile Include="Assets\Scripts\Projectiles\Projectile.cs" />
     <Compile Include="Assets\Scripts\Projectiles\ProjectileDirectionTargetted.cs" />
     <Compile Include="Assets\Scripts\Projectiles\ProjectileMovement.cs" />

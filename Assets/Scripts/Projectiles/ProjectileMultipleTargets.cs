@@ -6,14 +6,15 @@ public class ProjectileMultipleTargets : ProjectileDirectionTargetted
 {
     protected override void OnTriggerEnter(Collider collider)
     {
-        if (!destroyProjectile)
+        if (!alreadyHitTarget)
         {
             Health targetHealth = collider.gameObject.GetComponent<Health>();
 
             if (targetHealth != null && CanHitTarget(targetHealth))
             {
-                healthOfUnitsAlreadyHitWithProjectile.Add(targetHealth);
+                HealthOfUnitsAlreadyHit.Add(targetHealth);
                 targetHealth.Hit(damage);
+                OnProjectileHitTarget();
             }
         }
     }
