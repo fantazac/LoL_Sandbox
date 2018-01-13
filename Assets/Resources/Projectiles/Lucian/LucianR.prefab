@@ -22,7 +22,7 @@ GameObject:
   - component: {fileID: 33000010553285332}
   - component: {fileID: 65000012449885062}
   - component: {fileID: 23000014271904136}
-  - component: {fileID: 114000010218012868}
+  - component: {fileID: 114871446371683026}
   m_Layer: 9
   m_Name: LucianR
   m_TagString: Untagged
@@ -57,7 +57,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: bcc069680dfcc30469815ef49de9cd31, type: 2}
+  - {fileID: 2100000, guid: 0cf4fb3ff493fad48a27143b9036fa05, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -96,7 +96,7 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &114000010218012868
+--- !u!114 &114871446371683026
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -104,8 +104,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 1000010764437680}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e694bef56c40bd844816e04f4085fa13, type: 3}
+  m_Script: {fileID: 11500000, guid: b5ddce7f8b794634980f51e27af9700e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  deleteOnHit: 1
-  sourceTeam: 0
