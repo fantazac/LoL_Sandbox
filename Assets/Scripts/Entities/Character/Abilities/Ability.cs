@@ -9,7 +9,6 @@ public abstract class Ability : MonoBehaviour
     protected WaitForSeconds delayCastTime;
     protected RaycastHit hit;
 
-    public int AbilityId { get; set; }
     public bool CanCastOtherAbilitiesWithCasting { get; protected set; }
     public bool CanMoveWhileCasting { get; protected set; }
     public bool CanStopMovement { get; protected set; }
@@ -21,11 +20,6 @@ public abstract class Ability : MonoBehaviour
 
     public delegate void OnAbilityFinishedHandler(Ability ability);
     public event OnAbilityFinishedHandler OnAbilityFinished;
-
-    protected Ability()
-    {
-        AbilityId = -1;
-    }
 
     protected virtual void Start()
     {

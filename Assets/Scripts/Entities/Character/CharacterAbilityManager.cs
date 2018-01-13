@@ -4,15 +4,12 @@ using UnityEngine;
 public class CharacterAbilityManager : CharacterBase
 {
     [SerializeField]
-    private Ability[] characterAbilities;
-    [SerializeField]
-    private Ability[] otherAbilities;
     private Dictionary<AbilityInput, Ability> abilities;
-
     private List<Ability> currentlyUsedAbilities;
 
     private CharacterAbilityManager()
     {
+        abilities = new Dictionary<AbilityInput, Ability>();
         currentlyUsedAbilities = new List<Ability>();
     }
 
@@ -20,20 +17,27 @@ public class CharacterAbilityManager : CharacterBase
     {
         base.Start();
 
-        InitAbilities(characterAbilities);
-        InitAbilities(otherAbilities);
+        InitAbilitiesDictionnary();
+        SubscribeToAbilitiesEvents(abilities);
     }
 
-    private void InitAbilities(Ability[] abilities)
+    private void InitAbilitiesDictionnary()
     {
-        for (int i = 0; i < abilities.Length; i++)
+        Ability[] abilitiesOnCharacter = GetComponents<Ability>();
+        for (int i = 0; i < abilitiesOnCharacter.Length; i++)
         {
-            if (abilities[i] != null)
-            {
-                abilities[i].AbilityId = i;
+            abilities.Add((AbilityInput)i, abilitiesOnCharacter[i]);
+        }
+    }
 
-                abilities[i].OnAbilityUsed += OnAbilityUsed;
-                abilities[i].OnAbilityFinished += OnAbilityFinished;
+    private void SubscribeToAbilitiesEvents(Dictionary<AbilityInput, Ability> abilities)
+    {
+        foreach (Ability ability in abilities.Values)
+        {
+            if (ability != null)
+            {
+                ability.OnAbilityUsed += OnAbilityUsed;
+                ability.OnAbilityFinished += OnAbilityFinished;
             }
         }
     }
