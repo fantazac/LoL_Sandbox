@@ -38,7 +38,14 @@ public class MainMenuManager : MonoBehaviour
             }
             else if (state == MainMenuState.CHARACTER_SELECT)
             {
-                state = MainMenuState.TEAM_SELECT;
+                if (StaticObjects.OnlineMode)
+                {
+                    state = MainMenuState.TEAM_SELECT;
+                }
+                else
+                {
+                    state = MainMenuState.MAIN;
+                }
             }
             else if (state == MainMenuState.ON_HOLD)
             {
