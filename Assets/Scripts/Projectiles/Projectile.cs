@@ -7,12 +7,14 @@ public abstract class Projectile : MonoBehaviour
     protected float speed;
     protected float range;
     protected float damage;
+    protected bool canHitAllies;
+    protected EntityTeam teamOfShooter;
 
     protected bool alreadyHitTarget;//This is to prevent OnTriggerEnter to cast multiple times if multiple targets enter the collider at the same time
 
     protected Vector3 initialPosition;
 
-    public List<Health> HealthOfUnitsAlreadyHit { get; protected set; }//CHANGE TYPE, TEMPORAIRE
+    public List<Health> HealthOfUnitsAlreadyHit { get; protected set; }
 
     public delegate void OnProjectileHitHandler(Projectile projectile);
     public event OnProjectileHitHandler OnProjectileHit;
@@ -25,14 +27,20 @@ public abstract class Projectile : MonoBehaviour
         HealthOfUnitsAlreadyHit = new List<Health>();
     }
 
-    public void ShootProjectile(Health healthOfShooter, float speed, float range, float damage)
+    public void ShootProjectile(EntityTeam teamOfShooter, float speed, float range, float damage)
     {
-        HealthOfUnitsAlreadyHit.Add(healthOfShooter);
+        this.teamOfShooter = teamOfShooter;
         this.speed = speed;
         this.range = range;
         this.damage = damage;
         initialPosition = transform.position;
         StartCoroutine(Shoot());
+    }
+
+    public void ShootProjectile(EntityTeam teamOfShooter, float speed, float range, float damage, bool canHitAllies)
+    {
+        this.canHitAllies = canHitAllies;
+        ShootProjectile(teamOfShooter, speed, range, damage);
     }
 
     protected virtual IEnumerator Shoot() { yield return null; }

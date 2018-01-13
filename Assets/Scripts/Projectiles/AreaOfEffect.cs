@@ -6,20 +6,24 @@ public class AreaOfEffect : MonoBehaviour
 {
     protected float damage;
     protected float duration;
+    protected bool canHitAllies;
+    protected EntityTeam teamOfShooter;
 
     protected bool collidersInChildren;
 
     public List<Health> HealthOfUnitsAlreadyHitWithProjectile { get; protected set; }
 
-    public void ActivateAreaOfEffect(List<Health> healthOfUnitsAlreadyHitWithProjectile, float damage, float duration)
+    public void ActivateAreaOfEffect(List<Health> healthOfUnitsAlreadyHitWithProjectile, EntityTeam teamOfShooter, bool canHitAllies, float damage, float duration)
     {
         this.HealthOfUnitsAlreadyHitWithProjectile = healthOfUnitsAlreadyHitWithProjectile;
+        this.teamOfShooter = teamOfShooter;
         this.damage = damage;
         this.duration = duration;
+        this.canHitAllies = canHitAllies;
         StartCoroutine(ActivateArea());
     }
 
-    public void ActivateAreaOfEffect(List<Health> healthOfUnitsAlreadyHitWithProjectile, float damage, float duration, bool collidersInChildren)
+    public void ActivateAreaOfEffect(List<Health> healthOfUnitsAlreadyHitWithProjectile, EntityTeam teamOfShooter, bool canHitAllies, float damage, float duration, bool collidersInChildren)
     {
         if (collidersInChildren)
         {
@@ -29,7 +33,7 @@ public class AreaOfEffect : MonoBehaviour
                 aoeCollider.OnTriggerEnterInChild += OnTriggerEnterInChild;
             }
         }
-        ActivateAreaOfEffect(healthOfUnitsAlreadyHitWithProjectile, damage, duration);
+        ActivateAreaOfEffect(healthOfUnitsAlreadyHitWithProjectile, teamOfShooter, canHitAllies, damage, duration);
     }
 
     protected IEnumerator ActivateArea()
@@ -62,12 +66,15 @@ public class AreaOfEffect : MonoBehaviour
 
     protected void OnTriggerEnterInChild(Collider collider)
     {
-        Health targetHealth = collider.gameObject.GetComponent<Health>();
-
-        if (targetHealth != null && CanHitTarget(targetHealth))
+        if (collider.gameObject.GetComponent<Character>().team != teamOfShooter || canHitAllies)
         {
-            HealthOfUnitsAlreadyHitWithProjectile.Add(targetHealth);
-            targetHealth.Hit(damage);
+            Health targetHealth = collider.gameObject.GetComponent<Health>();
+
+            if (targetHealth != null && CanHitTarget(targetHealth))
+            {
+                HealthOfUnitsAlreadyHitWithProjectile.Add(targetHealth);
+                targetHealth.Hit(damage);
+            }
         }
     }
 

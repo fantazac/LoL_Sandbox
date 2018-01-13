@@ -7,6 +7,7 @@ public abstract class SpawnDummy : Ability, OtherAbility
     protected const int MAXIMUM_DUMMY_AMOUNT = 4;
 
     protected string dummyResourceName;
+    protected EntityTeam team;
 
     protected List<GameObject> dummies;
 
@@ -53,6 +54,7 @@ public abstract class SpawnDummy : Ability, OtherAbility
         }
         GameObject dummy = (GameObject)Instantiate(Resources.Load(dummyResourceName), destination, Quaternion.identity);
         dummy.transform.rotation = Quaternion.LookRotation((transform.position - dummy.transform.position).normalized);
+        dummy.GetComponent<Dummy>().team = team;
         dummies.Add(dummy);
     }
 }
