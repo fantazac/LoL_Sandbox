@@ -4,14 +4,12 @@ using UnityEngine;
 public class CharacterAbilityManager : CharacterBase
 {
     [SerializeField]
-    private Ability[] characterAbilities;
-    [SerializeField]
-    private Ability[] otherAbilities;
-
+    private Dictionary<AbilityInput, Ability> abilities;
     private List<Ability> currentlyUsedAbilities;
 
     private CharacterAbilityManager()
     {
+        abilities = new Dictionary<AbilityInput, Ability>();
         currentlyUsedAbilities = new List<Ability>();
     }
 
@@ -19,56 +17,34 @@ public class CharacterAbilityManager : CharacterBase
     {
         base.Start();
 
-        InitAbilities(characterAbilities);
-        InitAbilities(otherAbilities);
+        InitAbilities(abilities);
     }
 
-    private void InitAbilities(Ability[] abilities)
+    private void InitAbilities(Dictionary<AbilityInput, Ability> abilities)
     {
-        for (int i = 0; i < abilities.Length; i++)
+        Ability[] abilitiesOnCharacter = GetComponents<Ability>();
+        for (int i = 0; i < abilitiesOnCharacter.Length; i++)
         {
-            if (abilities[i] != null)
-            {
-                abilities[i].AbilityId = i;
-                if (abilities[i] is CharacterAbility)
-                {
-                    abilities[i].SendToServer_Ability += SendToServer_CharacterAbility;
-                }
-                else if (abilities[i] is OtherAbility)
-                {
-                    abilities[i].SendToServer_Ability += SendToServer_OtherAbility;
-                }
+            abilitiesOnCharacter[i].OnAbilityUsed += OnAbilityUsed;
+            abilitiesOnCharacter[i].OnAbilityFinished += OnAbilityFinished;
 
-                abilities[i].OnAbilityUsed += OnAbilityUsed;
-                abilities[i].OnAbilityFinished += OnAbilityFinished;
-            }
+            abilities.Add((AbilityInput)i, abilitiesOnCharacter[i]);
         }
     }
 
-    private void SendToServer_CharacterAbility(int abilityId, Vector3 destination)
+    private void SendToServer_Ability(AbilityInput abilityInput, Vector3 destination)
     {
-        PhotonView.RPC("ReceiveFromServer_CharacterAbility", PhotonTargets.AllViaServer, abilityId, destination);
+        PhotonView.RPC("ReceiveFromServer_Ability", PhotonTargets.AllViaServer, abilityInput, destination);
     }
 
     [PunRPC]
-    protected void ReceiveFromServer_CharacterAbility(int abilityId, Vector3 destination)
+    protected void ReceiveFromServer_Ability(AbilityInput abilityInput, Vector3 destination)
     {
         if (!IsUsingAbilityPreventingAbilityCasts())
         {
-            characterAbilities[abilityId].UseAbility(destination);
+            abilities[abilityInput].UseAbility(destination);
         }
         //else put in queue
-    }
-
-    private void SendToServer_OtherAbility(int abilityId, Vector3 destination)
-    {
-        PhotonView.RPC("ReceiveFromServer_OtherAbility", PhotonTargets.AllViaServer, abilityId, destination);
-    }
-
-    [PunRPC]
-    protected void ReceiveFromServer_OtherAbility(int abilityId, Vector3 destination)
-    {
-        otherAbilities[abilityId].UseAbility(destination);
     }
 
     private void OnAbilityUsed(Ability ability)
@@ -81,36 +57,22 @@ public class CharacterAbilityManager : CharacterBase
         currentlyUsedAbilities.Remove(ability);
     }
 
-    public void OnPressedInputForCharacterAbility(int abilityId, Vector3 mousePosition)
+    public void OnPressedInputForAbility(AbilityInput abilityInput, Vector3 mousePosition)
     {
-        Ability ability = characterAbilities[abilityId];
-        if (ability != null && ability.CanBeCast(mousePosition))
+        if (abilities.ContainsKey(abilityInput))
         {
-            Vector3 destination = ability.GetDestination();
-            if (StaticObjects.OnlineMode)
+            Ability ability = abilities[abilityInput];
+            if (ability.CanBeCast(mousePosition))
             {
-                SendToServer_CharacterAbility(abilityId, destination);
-            }
-            else
-            {
-                ability.UseAbility(destination);
-            }
-        }
-    }
-
-    public void OnPressedInputForOtherAbility(int abilityId, Vector3 mousePosition)
-    {
-        Ability ability = otherAbilities[abilityId];
-        if (ability != null && ability.CanBeCast(mousePosition))
-        {
-            Vector3 destination = ability.GetDestination();
-            if (StaticObjects.OnlineMode)
-            {
-                SendToServer_OtherAbility(abilityId, destination);
-            }
-            else
-            {
-                ability.UseAbility(destination);
+                Vector3 destination = ability.GetDestination();
+                if (StaticObjects.OnlineMode)
+                {
+                    SendToServer_Ability(abilityInput, destination);
+                }
+                else
+                {
+                    ability.UseAbility(destination);
+                }
             }
         }
     }

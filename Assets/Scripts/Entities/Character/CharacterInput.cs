@@ -38,19 +38,19 @@ public class CharacterInput : CharacterBase
     {
         if (Input.GetKeyDown(KeyCode.Q))
         {
-            CharacterAbilityManager.OnPressedInputForCharacterAbility((int)CharacterAbilities.Q, Input.mousePosition);
+            CharacterAbilityManager.OnPressedInputForAbility(AbilityInput.Q, Input.mousePosition);
         }
         if (Input.GetKeyDown(KeyCode.W))
         {
-            CharacterAbilityManager.OnPressedInputForCharacterAbility((int)CharacterAbilities.W, Input.mousePosition);
+            CharacterAbilityManager.OnPressedInputForAbility(AbilityInput.W, Input.mousePosition);
         }
         if (Input.GetKeyDown(KeyCode.E))
         {
-            CharacterAbilityManager.OnPressedInputForCharacterAbility((int)CharacterAbilities.E, Input.mousePosition);
+            CharacterAbilityManager.OnPressedInputForAbility(AbilityInput.E, Input.mousePosition);
         }
         if (Input.GetKeyDown(KeyCode.R))
         {
-            CharacterAbilityManager.OnPressedInputForCharacterAbility((int)CharacterAbilities.R, Input.mousePosition);
+            CharacterAbilityManager.OnPressedInputForAbility(AbilityInput.R, Input.mousePosition);
         }
     }
 
@@ -58,11 +58,11 @@ public class CharacterInput : CharacterBase
     {
         if (Input.GetKeyDown(KeyCode.D))
         {
-            CharacterAbilityManager.OnPressedInputForOtherAbility((int)OtherAbilities.TELEPORT, Input.mousePosition);
+            CharacterAbilityManager.OnPressedInputForAbility(AbilityInput.TELEPORT, Input.mousePosition);
         }
         if (Input.GetKeyDown(KeyCode.F))
         {
-            CharacterAbilityManager.OnPressedInputForOtherAbility((int)OtherAbilities.HEAL, Input.mousePosition);
+            CharacterAbilityManager.OnPressedInputForAbility(AbilityInput.HEAL, Input.mousePosition);
         }
     }
 
@@ -72,19 +72,19 @@ public class CharacterInput : CharacterBase
         {
             if (Input.GetKeyDown(KeyCode.B))
             {
-                CharacterAbilityManager.OnPressedInputForOtherAbility((int)OtherAbilities.SPAWN_ENEMY_DUMMY, Input.mousePosition);
+                CharacterAbilityManager.OnPressedInputForAbility(AbilityInput.SPAWN_ENEMY_DUMMY, Input.mousePosition);
             }
             if (Input.GetKeyDown(KeyCode.M))
             {
-                CharacterAbilityManager.OnPressedInputForOtherAbility((int)OtherAbilities.DESTROY_ALL_DUMMIES, Input.mousePosition);
+                CharacterAbilityManager.OnPressedInputForAbility(AbilityInput.DESTROY_ALL_DUMMIES, Input.mousePosition);
             }
             if (Input.GetKeyDown(KeyCode.N))
             {
-                CharacterAbilityManager.OnPressedInputForOtherAbility((int)OtherAbilities.SPAWN_ALLY_DUMMY, Input.mousePosition);
+                CharacterAbilityManager.OnPressedInputForAbility(AbilityInput.SPAWN_ALLY_DUMMY, Input.mousePosition);
             }
             if (Input.GetKeyDown(KeyCode.L))
             {
-                CharacterAbilityManager.OnPressedInputForOtherAbility((int)OtherAbilities.TP_MID, Input.mousePosition);
+                CharacterAbilityManager.OnPressedInputForAbility(AbilityInput.TP_MID, Input.mousePosition);
             }
         }
     }

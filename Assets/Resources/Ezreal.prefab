@@ -54,11 +54,11 @@ GameObject:
   - component: {fileID: 114990861650323628}
   - component: {fileID: 114531500282068062}
   - component: {fileID: 114613722554698322}
-  - component: {fileID: 114983581572747220}
   - component: {fileID: 114559251438769940}
+  - component: {fileID: 114941972289502864}
+  - component: {fileID: 114983581572747220}
   - component: {fileID: 114230160075218552}
   - component: {fileID: 114147638681676846}
-  - component: {fileID: 114941972289502864}
   - component: {fileID: 114782713917711308}
   m_Layer: 8
   m_Name: Ezreal
@@ -464,6 +464,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ecdb7f18075bf946b16df80b155718f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  team: 0
 --- !u!114 &114531500282068062
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -644,20 +645,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a41480e2399dcb74aaad91384d82e998, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  characterAbilities:
-  - {fileID: 0}
-  - {fileID: 114979452670365114}
-  - {fileID: 114990861650323628}
-  - {fileID: 114531500282068062}
-  - {fileID: 114613722554698322}
-  otherAbilities:
-  - {fileID: 114983581572747220}
-  - {fileID: 114559251438769940}
-  - {fileID: 114230160075218552}
-  - {fileID: 114147638681676846}
-  - {fileID: 114941972289502864}
-  - {fileID: 114782713917711308}
-  isCastingAbility: 0
 --- !u!114 &114959456603954034
 MonoBehaviour:
   m_ObjectHideFlags: 1
