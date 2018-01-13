@@ -17,28 +17,18 @@ public class CharacterAbilityManager : CharacterBase
     {
         base.Start();
 
-        InitAbilitiesDictionnary();
-        SubscribeToAbilitiesEvents(abilities);
+        InitAbilities(abilities);
     }
 
-    private void InitAbilitiesDictionnary()
+    private void InitAbilities(Dictionary<AbilityInput, Ability> abilities)
     {
         Ability[] abilitiesOnCharacter = GetComponents<Ability>();
         for (int i = 0; i < abilitiesOnCharacter.Length; i++)
         {
-            abilities.Add((AbilityInput)i, abilitiesOnCharacter[i]);
-        }
-    }
+            abilitiesOnCharacter[i].OnAbilityUsed += OnAbilityUsed;
+            abilitiesOnCharacter[i].OnAbilityFinished += OnAbilityFinished;
 
-    private void SubscribeToAbilitiesEvents(Dictionary<AbilityInput, Ability> abilities)
-    {
-        foreach (Ability ability in abilities.Values)
-        {
-            if (ability != null)
-            {
-                ability.OnAbilityUsed += OnAbilityUsed;
-                ability.OnAbilityFinished += OnAbilityFinished;
-            }
+            abilities.Add((AbilityInput)i, abilitiesOnCharacter[i]);
         }
     }
 
