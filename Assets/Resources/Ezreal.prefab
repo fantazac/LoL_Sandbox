@@ -29,6 +29,7 @@ GameObject:
   - component: {fileID: 114187010915273160}
   - component: {fileID: 114958221426692436}
   - component: {fileID: 114995869905901432}
+  - component: {fileID: 114401631577452450}
   - component: {fileID: 114841941229683450}
   - component: {fileID: 114419638435089374}
   - component: {fileID: 114068142256684634}
@@ -60,6 +61,7 @@ GameObject:
   - component: {fileID: 114230160075218552}
   - component: {fileID: 114147638681676846}
   - component: {fileID: 114782713917711308}
+  - component: {fileID: 114707507577671268}
   m_Layer: 8
   m_Name: Ezreal
   m_TagString: Character
@@ -365,6 +367,17 @@ MonoBehaviour:
   baseAttackDamage: 0
   currentAttackDamage: 0
   bonusAttackDamage: 0
+--- !u!114 &114401631577452450
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1294391184220730}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 10ebdf979a3b253429a6228b9ec11143, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114404049377019260
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -528,6 +541,17 @@ MonoBehaviour:
   baseTenacity: 0
   currentTenacity: 0
   bonusTenacity: 0
+--- !u!114 &114707507577671268
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1294391184220730}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1c32726754ca0f448fbd02fe5847873, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114713807835281756
 MonoBehaviour:
   m_ObjectHideFlags: 1

@@ -33,6 +33,16 @@ public abstract class CharacterBase : MonoBehaviour
         }
     }
 
+    private CharacterMouseManager _characterMouseManager;
+    public CharacterMouseManager CharacterMouseManager
+    {
+        get
+        {
+            InitializeCharacterMouseManager();
+            return _characterMouseManager;
+        }
+    }
+
     private CharacterMovement _characterMovement;
     public CharacterMovement CharacterMovement
     {
@@ -78,6 +88,7 @@ public abstract class CharacterBase : MonoBehaviour
         InitializeCharacter();
         InitializeCharacterAbilityManager();
         InitializeCharacterInput();
+        InitializeCharacterMouseManager();
         InitializeCharacterMovement();
         InitializeCharacterOrientation();
         InitializeCharacterStatsController();
@@ -106,6 +117,14 @@ public abstract class CharacterBase : MonoBehaviour
         if (_characterInput == null)
         {
             _characterInput = GetComponent<CharacterInput>();
+        }
+    }
+
+    private void InitializeCharacterMouseManager()
+    {
+        if (_characterMouseManager == null)
+        {
+            _characterMouseManager = GetComponent<CharacterMouseManager>();
         }
     }
 
