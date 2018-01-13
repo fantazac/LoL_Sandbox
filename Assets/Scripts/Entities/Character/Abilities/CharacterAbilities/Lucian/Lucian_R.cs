@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Lucian_R : SkillShot
+public class Lucian_R : SkillShot, CharacterAbility
 {
     private int amountOfProjectilesToShoot;
     private float durationOfActive;
@@ -23,7 +23,6 @@ public class Lucian_R : SkillShot
         delayBetweenBullets = new WaitForSeconds(durationOfActive / (float)amountOfProjectilesToShoot);
 
         CanMoveWhileCasting = true;
-        CanCastOtherAbilitiesWithCasting = true;
     }
 
     protected override IEnumerator AbilityWithoutCastTime()
