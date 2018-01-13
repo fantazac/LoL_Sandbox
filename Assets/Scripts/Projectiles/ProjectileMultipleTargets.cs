@@ -6,7 +6,7 @@ public class ProjectileMultipleTargets : ProjectileDirectionTargetted
 {
     protected override void OnTriggerEnter(Collider collider)
     {
-        if (!alreadyHitTarget)
+        if (!alreadyHitTarget && (collider.gameObject.GetComponent<Character>().team != teamOfShooter || canHitAllies))
         {
             Health targetHealth = collider.gameObject.GetComponent<Health>();
 

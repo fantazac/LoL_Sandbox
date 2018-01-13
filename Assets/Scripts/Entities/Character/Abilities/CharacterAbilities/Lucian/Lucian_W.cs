@@ -31,7 +31,7 @@ public class Lucian_W : SkillShot, CharacterAbility
     protected override void OnProjectileReachedEnd(Projectile projectile)
     {
         AreaOfEffect aoe = ((GameObject)Instantiate(explosionAreaOfEffectPrefab, projectile.transform.position, projectile.transform.rotation)).GetComponent<AreaOfEffect>();
-        aoe.ActivateAreaOfEffect(projectile.HealthOfUnitsAlreadyHit, damage, durationAoE, true);
+        aoe.ActivateAreaOfEffect(projectile.HealthOfUnitsAlreadyHit, character.team, false, damage, durationAoE, true);
         Destroy(projectile.gameObject);
     }
 }

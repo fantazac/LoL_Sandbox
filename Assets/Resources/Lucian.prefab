@@ -70,12 +70,12 @@ GameObject:
   - component: {fileID: 114840785743791962}
   - component: {fileID: 114324357708582316}
   - component: {fileID: 114729605349889214}
-  - component: {fileID: 114367763696821004}
-  - component: {fileID: 114255252513267966}
+  - component: {fileID: 114372474999472434}
   - component: {fileID: 114361955831427100}
+  - component: {fileID: 114269601118025512}
+  - component: {fileID: 114255252513267966}
   - component: {fileID: 114904757158163134}
   - component: {fileID: 114986620668545128}
-  - component: {fileID: 114269601118025512}
   - component: {fileID: 114165310821136542}
   m_Layer: 8
   m_Name: Lucian
@@ -231,19 +231,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a41480e2399dcb74aaad91384d82e998, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  characterAbilities:
-  - {fileID: 0}
-  - {fileID: 114840785743791962}
-  - {fileID: 114324357708582316}
-  - {fileID: 114729605349889214}
-  - {fileID: 114367763696821004}
-  otherAbilities:
-  - {fileID: 114255252513267966}
-  - {fileID: 114361955831427100}
-  - {fileID: 114904757158163134}
-  - {fileID: 114986620668545128}
-  - {fileID: 114269601118025512}
-  - {fileID: 114165310821136542}
 --- !u!114 &114069144610409572
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -451,7 +438,7 @@ MonoBehaviour:
   currentHealthRegeneration: 0
   bonusHealthRegenerationFlat: 0
   bonusHealthRegenerationPercent: 0
---- !u!114 &114367763696821004
+--- !u!114 &114372474999472434
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -459,10 +446,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1507067852754532}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8fafc61995960ee4aac217fd721aa24d, type: 3}
+  m_Script: {fileID: 11500000, guid: c165cc7bfb006d644b4461dce582bf14, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  projectilePrefab: {fileID: 1000014125105712, guid: 21502943dfe1c694ab495b6b2d598488,
+  projectilePrefab: {fileID: 1000010764437680, guid: 518710b74c6e1bb41becee4207ea623b,
     type: 2}
 --- !u!114 &114439890440468546
 MonoBehaviour:
@@ -702,6 +689,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75703a33004677b4f962376fb1b0d4ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  team: 0
 --- !u!114 &114919538514130098
 MonoBehaviour:
   m_ObjectHideFlags: 1

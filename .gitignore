@@ -2,6 +2,7 @@
 Builds/
 Temp/
 Library/
+obj/
 
 # Visual Studio files
 .vs/

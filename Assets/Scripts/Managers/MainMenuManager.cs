@@ -27,7 +27,7 @@ public class MainMenuManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            if (state == MainMenuState.CONNECTING || state == MainMenuState.CHARACTER_SELECT)
+            if (state == MainMenuState.CONNECTING || state == MainMenuState.TEAM_SELECT)
             {
                 if (StaticObjects.OnlineMode)
                 {
@@ -35,6 +35,10 @@ public class MainMenuManager : MonoBehaviour
                     StaticObjects.OnlineMode = false;
                 }
                 state = MainMenuState.MAIN;
+            }
+            else if (state == MainMenuState.CHARACTER_SELECT)
+            {
+                state = MainMenuState.TEAM_SELECT;
             }
             else if (state == MainMenuState.ON_HOLD)
             {
@@ -67,10 +71,26 @@ public class MainMenuManager : MonoBehaviour
             case MainMenuState.CONNECTING:
                 GUILayout.Label(PhotonNetwork.connectionStateDetailed.ToString());
                 break;
-            case MainMenuState.CHARACTER_SELECT:
+            case MainMenuState.TEAM_SELECT:
                 if (StaticObjects.OnlineMode)
                 {
                     GUILayout.Label("Ping: " + PhotonNetwork.GetPing().ToString() + "  -  Players Online: " + PhotonNetwork.playerList.Length);
+                }
+                if (GUILayout.Button("BLUE", GUILayout.Height(40)))
+                {
+                    state = MainMenuState.CHARACTER_SELECT;
+                    PhotonNetwork.player.SetTeam(PunTeams.Team.blue);
+                }
+                if (GUILayout.Button("RED", GUILayout.Height(40)))
+                {
+                    state = MainMenuState.CHARACTER_SELECT;
+                    PhotonNetwork.player.SetTeam(PunTeams.Team.red);
+                }
+                break;
+            case MainMenuState.CHARACTER_SELECT:
+                if (StaticObjects.OnlineMode)
+                {
+                    GUILayout.Label("Ping: " + PhotonNetwork.GetPing().ToString() + "  -  Players Online: " + PhotonNetwork.playerList.Length + " - Team: " + PhotonNetwork.player.GetTeam());
                 }
                 if (GUILayout.Button("Ezreal", GUILayout.Height(40)))
                 {
@@ -84,7 +104,7 @@ public class MainMenuManager : MonoBehaviour
             case MainMenuState.ON_HOLD:
                 if (StaticObjects.OnlineMode)
                 {
-                    GUILayout.Label("Ping: " + PhotonNetwork.GetPing().ToString() + "  -  Players Online: " + PhotonNetwork.playerList.Length);
+                    GUILayout.Label("Ping: " + PhotonNetwork.GetPing().ToString() + "  -  Players Online: " + PhotonNetwork.playerList.Length + " - Team: " + PhotonNetwork.player.GetTeam());
                 }
                 break;
         }
@@ -92,7 +112,7 @@ public class MainMenuManager : MonoBehaviour
 
     private void OnConnectedToServer()
     {
-        state = MainMenuState.CHARACTER_SELECT;
+        state = MainMenuState.TEAM_SELECT;
     }
 
     private void SpawnCharacter(string characterName)
@@ -127,6 +147,7 @@ enum MainMenuState
 {
     MAIN,
     CONNECTING,
+    TEAM_SELECT,
     CHARACTER_SELECT,
     ON_HOLD,
 }
