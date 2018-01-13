@@ -64,14 +64,13 @@ public class CharacterAbilityManager : CharacterBase
             Ability ability = abilities[abilityInput];
             if (ability.CanBeCast(mousePosition))
             {
-                Vector3 destination = ability.GetDestination();
                 if (StaticObjects.OnlineMode)
                 {
-                    SendToServer_Ability(abilityInput, destination);
+                    SendToServer_Ability(abilityInput, ability.GetDestination());
                 }
                 else
                 {
-                    ability.UseAbility(destination);
+                    ability.UseAbility(ability.GetDestination());
                 }
             }
         }
