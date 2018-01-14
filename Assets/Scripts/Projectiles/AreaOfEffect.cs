@@ -64,7 +64,7 @@ public class AreaOfEffect : MonoBehaviour
         }
     }
 
-    protected void OnTriggerEnterInChild(Collider collider)
+    protected void OnTriggerEnter(Collider collider)
     {
         if (collider.gameObject.GetComponent<Character>().team != teamOfShooter || canHitAllies)
         {
@@ -76,6 +76,11 @@ public class AreaOfEffect : MonoBehaviour
                 targetHealth.Hit(damage);
             }
         }
+    }
+
+    protected void OnTriggerEnterInChild(Collider collider)
+    {
+        OnTriggerEnter(collider);
     }
 
     protected bool CanHitTarget(Health targetHealth)

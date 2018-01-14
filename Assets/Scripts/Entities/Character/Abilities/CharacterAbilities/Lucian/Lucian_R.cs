@@ -45,12 +45,12 @@ public class Lucian_R : SkillShot, CharacterAbility
                 transform.position + (transform.forward * 0.6f) + (transform.right * (projectileId % 2 == 0 ? offset : -offset)),
                 transform.rotation)).GetComponent<Projectile>();
         projectile.ShootProjectile(GetComponent<Character>().team, speed, range, damage);
-        projectile.OnProjectileHit += OnProjectileHit;
-        projectile.OnProjectileReachedEnd += OnProjectileReachedEnd;
+        projectile.OnProjectileHit += OnSkillShotHit;
+        projectile.OnProjectileReachedEnd += OnSkillShotReachedEnd;
     }
 
-    protected override void OnProjectileHit(Projectile projectile)
+    protected override void OnSkillShotHit(Projectile projectile)
     {
-        OnProjectileReachedEnd(projectile);
+        OnSkillShotReachedEnd(projectile);
     }
 }

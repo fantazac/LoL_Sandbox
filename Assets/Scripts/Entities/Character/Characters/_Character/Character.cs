@@ -5,6 +5,7 @@ using System.Collections.Generic;
 public abstract class Character : CharacterBase
 {
     public EntityTeam team;
+    public int characterId;
 
     private bool sentConnectionInfoRequest = false;
 
@@ -23,13 +24,14 @@ public abstract class Character : CharacterBase
             {
                 team = EntityTeam.RED;
             }
-            SendToServer_Team();
+            characterId = PhotonNetwork.player.ID;
+            SendToServer_TeamAndID();
         }
         base.Start();
     }
 
     [PunRPC]
-    protected void ReceiveFromServer_ConnectionInfo(Vector3 position, Quaternion rotation, EntityTeam team)
+    protected void ReceiveFromServer_ConnectionInfo(Vector3 position, Quaternion rotation, EntityTeam team, int characterId)
     {
         if (sentConnectionInfoRequest)
         {
@@ -37,6 +39,7 @@ public abstract class Character : CharacterBase
             transform.position = position;
             transform.rotation = rotation;
             this.team = team;
+            this.characterId = characterId;
             OnConnectionInfoReceived(this);
         }
     }
@@ -46,7 +49,7 @@ public abstract class Character : CharacterBase
     {
         if (PhotonView.isMine)
         {
-            PhotonView.RPC("ReceiveFromServer_ConnectionInfo", PhotonTargets.Others, transform.position, transform.rotation, team);
+            PhotonView.RPC("ReceiveFromServer_ConnectionInfo", PhotonTargets.Others, transform.position, transform.rotation, team, characterId);
         }
     }
 
@@ -56,14 +59,15 @@ public abstract class Character : CharacterBase
         PhotonView.RPC("ReceiveFromServer_ConnectionInfoRequest", PhotonTargets.Others);
     }
 
-    public void SendToServer_Team()
+    public void SendToServer_TeamAndID()
     {
-        PhotonView.RPC("ReceiveFromServer_Team", PhotonTargets.Others, team);
+        PhotonView.RPC("ReceiveFromServer_TeamAndID", PhotonTargets.Others, team, characterId);
     }
 
     [PunRPC]
-    protected void ReceiveFromServer_Team(EntityTeam team)
+    protected void ReceiveFromServer_TeamAndID(EntityTeam team, int characterId)
     {
         this.team = team;
+        this.characterId = characterId;
     }
 }

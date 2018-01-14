@@ -19,4 +19,13 @@ public class CharacterMouseManager : CharacterBase
             HoveredObject = null;
         }
     }
+
+    public bool HoveredObjectIsEnemy(EntityTeam team)
+    {
+        if(HoveredObject == null)
+        {
+            return false;
+        }
+        return team != HoveredObject.GetComponent<Character>().team;
+    }
 }

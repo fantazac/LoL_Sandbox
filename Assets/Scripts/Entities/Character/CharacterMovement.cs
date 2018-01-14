@@ -17,6 +17,9 @@ public class CharacterMovement : CharacterBase
     public delegate void PlayerMovedHandler();
     public event PlayerMovedHandler CharacterMoved;
 
+    public delegate void PlayerIsInRangeHandler(Vector3 targetPosition);
+    public event PlayerIsInRangeHandler CharacterIsInRange;
+
     protected override void Start()
     {
         CharacterInput.OnRightClick += PressedRightClick;
@@ -31,6 +34,7 @@ public class CharacterMovement : CharacterBase
     {
         if (!CharacterAbilityManager.IsUsingAbilityPreventingMovement() && MousePositionOnTerrain.GetRaycastHit(mousePosition, out hit))
         {
+            CharacterIsInRange = null;
             Instantiate(movementCapsule, hit.point, new Quaternion());
 
             if (StaticObjects.OnlineMode)
@@ -56,7 +60,7 @@ public class CharacterMovement : CharacterBase
         SetMoveTowardsPoint(destination);
     }
 
-    private void SetMoveTowardsPoint(Vector3 destination)
+    public void SetMoveTowardsPoint(Vector3 destination)
     {
         StopAllCoroutines();
         StartCoroutine(MoveTowardsPoint(destination));
@@ -73,6 +77,30 @@ public class CharacterMovement : CharacterBase
 
             yield return null;
         }
+    }
+
+    public void SetMoveTowardsTarget(Transform target, float range)
+    {
+        StopAllCoroutines();
+        StartCoroutine(MoveTowardsTarget(target, range));
+        CharacterOrientation.RotateCharacterUntilReachedTarget(target);
+    }
+
+    private IEnumerator MoveTowardsTarget(Transform target, float range)
+    {
+        while (Vector3.Distance(target.position, transform.position) > range)
+        {
+            transform.position = Vector3.MoveTowards(transform.position, target.position, Time.deltaTime * CharacterStatsController.GetCurrentMovementSpeed());
+
+            NotifyCharacterMoved();
+
+            yield return null;
+        }
+        if(CharacterIsInRange != null)
+        {
+            CharacterIsInRange(target.position);
+        }
+        
     }
 
     private void StopMovement()
@@ -114,7 +142,7 @@ public class CharacterMovement : CharacterBase
 
     public void NotifyCharacterMoved()
     {
-        if ((StaticObjects.OnlineMode && PhotonView.isMine) || !StaticObjects.OnlineMode)
+        if (!StaticObjects.OnlineMode || PhotonView.isMine)
         {
             CharacterMoved();
         }
