@@ -7,6 +7,7 @@ public abstract class SpawnDummy : Ability, OtherAbility
     protected const int MAXIMUM_DUMMY_AMOUNT = 4;
 
     protected string dummyResourceName;
+    protected int dummyId;
     protected EntityTeam team;
 
     protected List<GameObject> dummies;
@@ -52,9 +53,14 @@ public abstract class SpawnDummy : Ability, OtherAbility
             Destroy(dummies[0]);
             dummies.RemoveAt(0);
         }
-        GameObject dummy = (GameObject)Instantiate(Resources.Load(dummyResourceName), destination, Quaternion.identity);
+        if (dummyId == 4 || dummyId == 8)
+        {
+            dummyId -= 4;
+        }
+        Dummy dummy = ((GameObject)Instantiate(Resources.Load(dummyResourceName), destination, Quaternion.identity)).GetComponent<Dummy>();
         dummy.transform.rotation = Quaternion.LookRotation((transform.position - dummy.transform.position).normalized);
-        dummy.GetComponent<Dummy>().team = team;
-        dummies.Add(dummy);
+        dummy.team = team;
+        dummy.characterId = ++dummyId;
+        dummies.Add(dummy.gameObject);
     }
 }

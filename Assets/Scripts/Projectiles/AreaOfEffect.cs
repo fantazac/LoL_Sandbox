@@ -40,6 +40,7 @@ public class AreaOfEffect : MonoBehaviour
     {
         float timeBeforeFrame = Time.deltaTime;
 
+        yield return null;//2 frames
         yield return null;
 
         DisableColliders();
