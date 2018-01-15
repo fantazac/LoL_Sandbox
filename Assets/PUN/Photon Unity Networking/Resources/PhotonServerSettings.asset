@@ -58,4 +58,5 @@ MonoBehaviour:
   - ReceiveFromServer_CharacterAbility
   - ReceiveFromServer_OtherAbility
   - ReceiveFromServer_Team
+  - ReceiveFromServer_TeamAndID
   DisableAutoOpenWizard: 1

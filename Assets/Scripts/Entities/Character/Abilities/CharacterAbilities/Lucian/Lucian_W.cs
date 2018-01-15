@@ -23,12 +23,12 @@ public class Lucian_W : SkillShot, CharacterAbility
         HasCastTime = true;
     }
 
-    protected override void OnProjectileHit(Projectile projectile)
+    protected override void OnSkillShotHit(Projectile projectile)
     {
-        OnProjectileReachedEnd(projectile);
+        OnSkillShotReachedEnd(projectile);
     }
 
-    protected override void OnProjectileReachedEnd(Projectile projectile)
+    protected override void OnSkillShotReachedEnd(Projectile projectile)
     {
         AreaOfEffect aoe = ((GameObject)Instantiate(explosionAreaOfEffectPrefab, projectile.transform.position, projectile.transform.rotation)).GetComponent<AreaOfEffect>();
         aoe.ActivateAreaOfEffect(projectile.HealthOfUnitsAlreadyHit, character.team, false, damage, durationAoE, true);

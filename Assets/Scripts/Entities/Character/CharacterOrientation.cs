@@ -16,15 +16,15 @@ public class CharacterOrientation : CharacterBase
         base.Start();
     }
 
+    public void RotateCharacterInstantly(Vector3 destination)
+    {
+        transform.rotation = Quaternion.LookRotation((destination - transform.position).normalized);
+    }
+
     public void RotateCharacter(Vector3 destination)
     {
         StopAllCoroutines();
         StartCoroutine(Rotate(destination));
-    }
-
-    public void RotateCharacterInstantly(Vector3 destination)
-    {
-        transform.rotation = Quaternion.LookRotation((destination - transform.position).normalized);
     }
 
     private IEnumerator Rotate(Vector3 destination)
@@ -43,4 +43,29 @@ public class CharacterOrientation : CharacterBase
             yield return null;
         }
     }
+
+    public void RotateCharacterUntilReachedTarget(Transform target)
+    {
+        StopAllCoroutines();
+        StartCoroutine(RotateUntilReachedTarget(target));
+    }
+
+    private IEnumerator RotateUntilReachedTarget(Transform target)
+    {
+        rotationAmount = Vector3.up;
+        rotationAmountLastFrame = Vector3.zero;
+
+        while (target != null)
+        {
+            rotationAmountLastFrame = rotationAmount;
+
+            rotationAmount = Vector3.RotateTowards(transform.forward, target.position - transform.position, Time.deltaTime * rotationSpeed, 0);
+
+            transform.rotation = Quaternion.LookRotation(rotationAmount);
+
+            yield return null;
+        }
+    }
+
+    //private bool CanRotate() { } //TODO using CanRotateWhileCasting from abilities
 }

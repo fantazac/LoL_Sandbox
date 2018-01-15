@@ -68,7 +68,7 @@ GameObject:
   - component: {fileID: 114625631600227958}
   - component: {fileID: 114156338481985698}
   - component: {fileID: 114760876531046866}
-  - component: {fileID: 114840785743791962}
+  - component: {fileID: 114536618287389660}
   - component: {fileID: 114324357708582316}
   - component: {fileID: 114729605349889214}
   - component: {fileID: 114372474999472434}
@@ -486,6 +486,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5ce362c3519933c48b115ae5346e2aea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &114536618287389660
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1507067852754532}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 96d2cf110d9d0b84eb6471fc8c9db4df, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  projectilePrefab: {fileID: 1000011639411960, guid: 7d23b316a2ad36249a139ef23be8c616,
+    type: 2}
 --- !u!114 &114562199205961970
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -598,19 +611,6 @@ MonoBehaviour:
   baseMagicPenetrationPercent: 0
   currentMagicPenetrationPercent: 0
   bonusMagicPenetrationPercent: 0
---- !u!114 &114840785743791962
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1507067852754532}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 18f9337b65581b743a0ce541524c6f68, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  projectilePrefab: {fileID: 1000013746244026, guid: 4fd62e8b5155cfe4489fe2e0177cf117,
-    type: 2}
 --- !u!114 &114853023981360742
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -703,6 +703,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   team: 0
+  characterId: 0
 --- !u!114 &114919538514130098
 MonoBehaviour:
   m_ObjectHideFlags: 1

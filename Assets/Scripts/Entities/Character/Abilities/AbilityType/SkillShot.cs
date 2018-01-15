@@ -49,15 +49,15 @@ public abstract class SkillShot : Ability
 
         Projectile projectile = ((GameObject)Instantiate(projectilePrefab, transform.position, transform.rotation)).GetComponent<Projectile>();
         projectile.ShootProjectile(GetComponent<Character>().team, speed, range, damage);
-        projectile.OnProjectileHit += OnProjectileHit;
-        projectile.OnProjectileReachedEnd += OnProjectileReachedEnd;
+        projectile.OnProjectileHit += OnSkillShotHit;
+        projectile.OnProjectileReachedEnd += OnSkillShotReachedEnd;
 
         FinishAbilityCast();
     }
 
-    protected virtual void OnProjectileHit(Projectile projectile) { }
+    protected virtual void OnSkillShotHit(Projectile projectile) { }
 
-    protected virtual void OnProjectileReachedEnd(Projectile projectile)
+    protected virtual void OnSkillShotReachedEnd(Projectile projectile)
     {
         Destroy(projectile.gameObject);
     }

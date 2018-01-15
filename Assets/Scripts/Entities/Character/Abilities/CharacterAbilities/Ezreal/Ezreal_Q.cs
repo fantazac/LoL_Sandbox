@@ -16,8 +16,8 @@ public class Ezreal_Q : SkillShot, CharacterAbility
         HasCastTime = true;
     }
 
-    protected override void OnProjectileHit(Projectile projectile)
+    protected override void OnSkillShotHit(Projectile projectile)
     {
-        OnProjectileReachedEnd(projectile);
+        OnSkillShotReachedEnd(projectile);
     }
 }
