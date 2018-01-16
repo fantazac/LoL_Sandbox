@@ -57,12 +57,12 @@ public class CharacterAbilityManager : CharacterBase
         currentlyUsedAbilities.Remove(ability);
     }
 
-    public void OnPressedInputForAbility(AbilityInput abilityInput, Vector3 mousePosition)
+    public void OnPressedInputForAbility(AbilityInput abilityInput)
     {
         if (abilities.ContainsKey(abilityInput))
         {
             Ability ability = abilities[abilityInput];
-            if (ability.CanBeCast(mousePosition))
+            if (ability.CanBeCast(Input.mousePosition))
             {
                 if (StaticObjects.OnlineMode)
                 {
@@ -104,6 +104,24 @@ public class CharacterAbilityManager : CharacterBase
         foreach (Ability ability in currentlyUsedAbilities)
         {
             if (!ability.CanCastOtherAbilitiesWithCasting)
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public bool IsUsingAbilityPreventingRotation()
+    {
+        if (currentlyUsedAbilities.Count == 0)
+        {
+            return false;
+        }
+
+        foreach (Ability ability in currentlyUsedAbilities)
+        {
+            if (!ability.CanRotateWhileCasting)
             {
                 return true;
             }

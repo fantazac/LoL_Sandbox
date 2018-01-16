@@ -27,6 +27,8 @@ public class CharacterInput : CharacterBase
 
     private void Update()
     {
+        //TODO : On peut pas faire ca, car le CheckForOtherAbilitiesInputs utilise le shift, et donc ca checkrait aussi pour les touches sans le shift
+        //exemple: Shift + L = TeleportMid, L = autre spell -> il ferait les 2 de la façon que c'est fait présentement
         CheckForCharacterAbilitiesInputs();
         CheckForSummonerSpellsInputs();
         CheckForOtherAbilitiesInputs();
@@ -38,19 +40,19 @@ public class CharacterInput : CharacterBase
     {
         if (Input.GetKeyDown(KeyCode.Q))
         {
-            CharacterAbilityManager.OnPressedInputForAbility(AbilityInput.Q, Input.mousePosition);
+            CharacterAbilityManager.OnPressedInputForAbility(AbilityInput.Q);
         }
         if (Input.GetKeyDown(KeyCode.W))
         {
-            CharacterAbilityManager.OnPressedInputForAbility(AbilityInput.W, Input.mousePosition);
+            CharacterAbilityManager.OnPressedInputForAbility(AbilityInput.W);
         }
         if (Input.GetKeyDown(KeyCode.E))
         {
-            CharacterAbilityManager.OnPressedInputForAbility(AbilityInput.E, Input.mousePosition);
+            CharacterAbilityManager.OnPressedInputForAbility(AbilityInput.E);
         }
         if (Input.GetKeyDown(KeyCode.R))
         {
-            CharacterAbilityManager.OnPressedInputForAbility(AbilityInput.R, Input.mousePosition);
+            CharacterAbilityManager.OnPressedInputForAbility(AbilityInput.R);
         }
     }
 
@@ -58,11 +60,11 @@ public class CharacterInput : CharacterBase
     {
         if (Input.GetKeyDown(KeyCode.D))
         {
-            CharacterAbilityManager.OnPressedInputForAbility(AbilityInput.TELEPORT, Input.mousePosition);
+            CharacterAbilityManager.OnPressedInputForAbility(AbilityInput.TELEPORT);
         }
         if (Input.GetKeyDown(KeyCode.F))
         {
-            CharacterAbilityManager.OnPressedInputForAbility(AbilityInput.HEAL, Input.mousePosition);
+            CharacterAbilityManager.OnPressedInputForAbility(AbilityInput.HEAL);
         }
     }
 
@@ -72,19 +74,19 @@ public class CharacterInput : CharacterBase
         {
             if (Input.GetKeyDown(KeyCode.B))
             {
-                CharacterAbilityManager.OnPressedInputForAbility(AbilityInput.SPAWN_ENEMY_DUMMY, Input.mousePosition);
+                CharacterAbilityManager.OnPressedInputForAbility(AbilityInput.SPAWN_ENEMY_DUMMY);
             }
             if (Input.GetKeyDown(KeyCode.M))
             {
-                CharacterAbilityManager.OnPressedInputForAbility(AbilityInput.DESTROY_ALL_DUMMIES, Input.mousePosition);
+                CharacterAbilityManager.OnPressedInputForAbility(AbilityInput.DESTROY_ALL_DUMMIES);
             }
             if (Input.GetKeyDown(KeyCode.N))
             {
-                CharacterAbilityManager.OnPressedInputForAbility(AbilityInput.SPAWN_ALLY_DUMMY, Input.mousePosition);
+                CharacterAbilityManager.OnPressedInputForAbility(AbilityInput.SPAWN_ALLY_DUMMY);
             }
             if (Input.GetKeyDown(KeyCode.L))
             {
-                CharacterAbilityManager.OnPressedInputForAbility(AbilityInput.TP_MID, Input.mousePosition);
+                CharacterAbilityManager.OnPressedInputForAbility(AbilityInput.TP_MID);
             }
         }
     }

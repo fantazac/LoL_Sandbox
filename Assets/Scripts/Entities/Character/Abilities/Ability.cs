@@ -5,12 +5,17 @@ using UnityEngine;
 public abstract class Ability : MonoBehaviour
 {
     protected Character character;
+
     protected float castTime;
+    protected float damage;
     protected WaitForSeconds delayCastTime;
     protected RaycastHit hit;
+    protected float range;
+    protected float speed;
 
     public bool CanCastOtherAbilitiesWithCasting { get; protected set; }
     public bool CanMoveWhileCasting { get; protected set; }
+    public bool CanRotateWhileCasting { get; protected set; }
     public bool CanStopMovement { get; protected set; }
     public bool OfflineOnly { get; protected set; }
     public bool HasCastTime { get; protected set; }
@@ -31,7 +36,11 @@ public abstract class Ability : MonoBehaviour
     public abstract Vector3 GetDestination();
     public abstract void UseAbility(Vector3 destination);
 
-    protected virtual void ModifyValues() { }
+    protected virtual void ModifyValues()
+    {
+        range /= StaticObjects.DivisionFactor;
+        speed /= StaticObjects.DivisionFactor;
+    }
 
     protected void StartAbilityCast()
     {
@@ -49,15 +58,8 @@ public abstract class Ability : MonoBehaviour
         }
     }
 
-    protected virtual IEnumerator AbilityWithoutCastTime()
-    {
-        yield return null;
-    }
-
-    protected virtual IEnumerator AbilityWithCastTime()
-    {
-        yield return null;
-    }
+    protected virtual IEnumerator AbilityWithCastTime() { yield return null; }
+    protected virtual IEnumerator AbilityWithoutCastTime() { yield return null; }
 }
 
 public interface CharacterAbility { }

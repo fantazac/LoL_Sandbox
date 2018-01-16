@@ -3,14 +3,13 @@ using System.Collections;
 
 public abstract class Blink : Ability
 {
-    protected float range;
     protected float minimumDistanceTravelled;
     protected Vector3 destination;
 
     protected override void ModifyValues()
     {
-        range /= StaticObjects.DivisionFactor;
         minimumDistanceTravelled /= StaticObjects.DivisionFactor;
+        base.ModifyValues();
     }
 
     public override bool CanBeCast(Vector3 mousePosition)

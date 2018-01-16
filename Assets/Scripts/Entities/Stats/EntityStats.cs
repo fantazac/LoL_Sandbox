@@ -76,10 +76,3 @@ public class EntityStats : MonoBehaviour
         Tenacity.SetBaseTenacity(entityBaseStats.BaseTenacity);
     }
 }
-
-public enum EntityType
-{
-    CHARACTER,
-    MINION,
-    MONSTER,
-}

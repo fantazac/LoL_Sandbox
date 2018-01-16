@@ -31,15 +31,18 @@ public class CharacterOrientation : CharacterBase
     {
         rotationAmount = Vector3.up;
         rotationAmountLastFrame = Vector3.zero;
-        
+
         while (rotationAmountLastFrame != rotationAmount)
         {
-            rotationAmountLastFrame = rotationAmount;
+            if (CanRotate())
+            {
+                rotationAmountLastFrame = rotationAmount;
 
-            rotationAmount = Vector3.RotateTowards(transform.forward, destination - transform.position, Time.deltaTime * rotationSpeed, 0);
+                rotationAmount = Vector3.RotateTowards(transform.forward, destination - transform.position, Time.deltaTime * rotationSpeed, 0);
 
-            transform.rotation = Quaternion.LookRotation(rotationAmount);
-
+                transform.rotation = Quaternion.LookRotation(rotationAmount);
+            }
+                
             yield return null;
         }
     }
@@ -57,15 +60,21 @@ public class CharacterOrientation : CharacterBase
 
         while (target != null)
         {
-            rotationAmountLastFrame = rotationAmount;
+            if (CanRotate())
+            {
+                rotationAmountLastFrame = rotationAmount;
 
-            rotationAmount = Vector3.RotateTowards(transform.forward, target.position - transform.position, Time.deltaTime * rotationSpeed, 0);
+                rotationAmount = Vector3.RotateTowards(transform.forward, target.position - transform.position, Time.deltaTime * rotationSpeed, 0);
 
-            transform.rotation = Quaternion.LookRotation(rotationAmount);
-
+                transform.rotation = Quaternion.LookRotation(rotationAmount);
+            }
+            
             yield return null;
         }
     }
 
-    //private bool CanRotate() { } //TODO using CanRotateWhileCasting from abilities
+    private bool CanRotate()
+    {
+        return !CharacterAbilityManager.IsUsingAbilityPreventingRotation();
+    }
 }
