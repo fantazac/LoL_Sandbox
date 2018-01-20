@@ -2,21 +2,33 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public abstract class Character : CharacterBase
+public abstract class Character : Entity
 {
     public EntityTeam team;
     public int characterId;
 
     private bool sentConnectionInfoRequest = false;
 
+    public CharacterAbilityManager CharacterAbilityManager { get; private set; }
+    public CharacterInput CharacterInput { get; private set; }
+    public CharacterMouseManager CharacterMouseManager { get; private set; }
+    public CharacterMovement CharacterMovement { get; private set; }
+    public CharacterOrientation CharacterOrientation { get; private set; }
+    public CharacterStatsController CharacterStatsController { get; private set; }
+
     public delegate void OnConnectionInfoReceivedHandler(Character character);
     public event OnConnectionInfoReceivedHandler OnConnectionInfoReceived;
 
+    protected void Awake()
+    {
+        InitCharacterProperties();
+    }
+
     protected override void Start()
     {
-        if (StaticObjects.OnlineMode && PhotonView.isMine)
+        if (StaticObjects.OnlineMode && StaticObjects.PhotonView != null && StaticObjects.PhotonView.isMine)
         {
-            if(PhotonNetwork.player.GetTeam() == PunTeams.Team.blue)
+            if (PhotonNetwork.player.GetTeam() == PunTeams.Team.blue)
             {
                 team = EntityTeam.BLUE;
             }
@@ -27,7 +39,18 @@ public abstract class Character : CharacterBase
             characterId = PhotonNetwork.player.ID;
             SendToServer_TeamAndID();
         }
+
         base.Start();
+    }
+
+    private void InitCharacterProperties()
+    {
+        CharacterAbilityManager = GetComponent<CharacterAbilityManager>();
+        CharacterInput = GetComponent<CharacterInput>();
+        CharacterMouseManager = GetComponent<CharacterMouseManager>();
+        CharacterMovement = GetComponent<CharacterMovement>();
+        CharacterOrientation = GetComponent<CharacterOrientation>();
+        CharacterStatsController = GetComponent<CharacterStatsController>();
     }
 
     [PunRPC]
@@ -47,21 +70,21 @@ public abstract class Character : CharacterBase
     [PunRPC]
     protected void ReceiveFromServer_ConnectionInfoRequest()
     {
-        if (PhotonView.isMine)
+        if (StaticObjects.PhotonView.isMine)
         {
-            PhotonView.RPC("ReceiveFromServer_ConnectionInfo", PhotonTargets.Others, transform.position, transform.rotation, team, characterId);
+            StaticObjects.PhotonView.RPC("ReceiveFromServer_ConnectionInfo", PhotonTargets.Others, transform.position, transform.rotation, team, characterId);
         }
     }
 
     public void SendToServer_ConnectionInfoRequest()
     {
         sentConnectionInfoRequest = true;
-        PhotonView.RPC("ReceiveFromServer_ConnectionInfoRequest", PhotonTargets.Others);
+        StaticObjects.PhotonView.RPC("ReceiveFromServer_ConnectionInfoRequest", PhotonTargets.Others);
     }
 
     public void SendToServer_TeamAndID()
     {
-        PhotonView.RPC("ReceiveFromServer_TeamAndID", PhotonTargets.Others, team, characterId);
+        StaticObjects.PhotonView.RPC("ReceiveFromServer_TeamAndID", PhotonTargets.Others, team, characterId);
     }
 
     [PunRPC]
@@ -70,4 +93,7 @@ public abstract class Character : CharacterBase
         this.team = team;
         this.characterId = characterId;
     }
+
+    //This was in CharacterBase, no idea if useful, keeping it here in case it is.
+    //public virtual void SerializeState(PhotonStream stream, PhotonMessageInfo info) { }
 }

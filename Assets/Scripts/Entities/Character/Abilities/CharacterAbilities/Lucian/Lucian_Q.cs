@@ -21,9 +21,9 @@ public class Lucian_Q : SkillShot, CharacterAbility
         HasCastTime = true;
     }
 
-    public override bool CanBeCast(Vector3 mousePosition)
+    public override bool CanBeCast(Vector3 mousePosition, CharacterAbilityManager characterAbilityManager)
     {
-        return !character.CharacterAbilityManager.IsUsingAbilityPreventingAbilityCasts() && character.CharacterMouseManager.HoveredObjectIsEnemy(character.team);
+        return !characterAbilityManager.IsUsingAbilityPreventingAbilityCasts() && character.CharacterMouseManager.HoveredObjectIsEnemy(character.team);
     }
 
     public override Vector3 GetDestination()

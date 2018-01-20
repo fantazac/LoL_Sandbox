@@ -13,9 +13,9 @@ public abstract class Dash : Ability
         base.ModifyValues();
     }
 
-    public override bool CanBeCast(Vector3 mousePosition)
+    public override bool CanBeCast(Vector3 mousePosition, CharacterAbilityManager characterAbilityManager)
     {
-        return !character.CharacterAbilityManager.IsUsingAbilityPreventingAbilityCasts() && MousePositionOnTerrain.GetRaycastHit(mousePosition, out hit);
+        return !characterAbilityManager.IsUsingAbilityPreventingAbilityCasts() && MousePositionOnTerrain.GetRaycastHit(mousePosition, out hit);
     }
 
     public override Vector3 GetDestination()
@@ -48,10 +48,7 @@ public abstract class Dash : Ability
         {
             transform.position = Vector3.MoveTowards(transform.position, destination, Time.deltaTime * dashSpeed);
 
-            if (character.CharacterMovement != null)
-            {
-                character.CharacterMovement.NotifyCharacterMoved();
-            }
+            character.CharacterMovement.NotifyCharacterMoved();
 
             yield return null;
         }

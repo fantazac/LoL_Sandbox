@@ -2,7 +2,7 @@
 
 public class Heal : Ability, OtherAbility
 {
-    public override bool CanBeCast(Vector3 mousePosition)
+    public override bool CanBeCast(Vector3 mousePosition, CharacterAbilityManager characterAbilityManager)
     {
         return true;
     }

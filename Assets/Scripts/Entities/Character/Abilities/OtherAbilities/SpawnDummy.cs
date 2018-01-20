@@ -26,10 +26,10 @@ public abstract class SpawnDummy : Ability, OtherAbility
         }
     }
 
-    public override bool CanBeCast(Vector3 mousePosition)
+    public override bool CanBeCast(Vector3 mousePosition, CharacterAbilityManager characterAbilityManager)
     {
         // FIXME: this
-        return  (!StaticObjects.OnlineMode || !OfflineOnly) && !character.CharacterAbilityManager.IsUsingAbilityPreventingAbilityCasts() && MousePositionOnTerrain.GetRaycastHit(mousePosition, out hit);
+        return  (!StaticObjects.OnlineMode || !OfflineOnly) && !characterAbilityManager.IsUsingAbilityPreventingAbilityCasts() && MousePositionOnTerrain.GetRaycastHit(mousePosition, out hit);
     }
 
     public override Vector3 GetDestination()

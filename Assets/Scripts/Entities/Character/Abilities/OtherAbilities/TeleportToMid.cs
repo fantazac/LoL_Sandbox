@@ -14,7 +14,7 @@ public class TeleportToMid : Ability, OtherAbility
         base.Start();
     }
 
-    public override bool CanBeCast(Vector3 mousePosition)
+    public override bool CanBeCast(Vector3 mousePosition, CharacterAbilityManager characterAbilityManager)
     {
         return !StaticObjects.OnlineMode || !OfflineOnly;
     }

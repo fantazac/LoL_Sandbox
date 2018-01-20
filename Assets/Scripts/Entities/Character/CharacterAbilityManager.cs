@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-public class CharacterAbilityManager : CharacterBase
+public class CharacterAbilityManager : MonoBehaviour
 {
     [SerializeField]
     private Dictionary<AbilityInput, Ability> abilities;
@@ -13,10 +13,8 @@ public class CharacterAbilityManager : CharacterBase
         currentlyUsedAbilities = new List<Ability>();
     }
 
-    protected override void Start()
+    private void Start()
     {
-        base.Start();
-
         InitAbilities(abilities);
     }
 
@@ -34,11 +32,11 @@ public class CharacterAbilityManager : CharacterBase
 
     private void SendToServer_Ability(AbilityInput abilityInput, Vector3 destination)
     {
-        PhotonView.RPC("ReceiveFromServer_Ability", PhotonTargets.AllViaServer, abilityInput, destination);
+        StaticObjects.PhotonView.RPC("ReceiveFromServer_Ability", PhotonTargets.AllViaServer, abilityInput, destination);
     }
 
     [PunRPC]
-    protected void ReceiveFromServer_Ability(AbilityInput abilityInput, Vector3 destination)
+    private void ReceiveFromServer_Ability(AbilityInput abilityInput, Vector3 destination)
     {
         if (!IsUsingAbilityPreventingAbilityCasts())
         {
@@ -62,7 +60,7 @@ public class CharacterAbilityManager : CharacterBase
         if (abilities.ContainsKey(abilityInput))
         {
             Ability ability = abilities[abilityInput];
-            if (ability.CanBeCast(Input.mousePosition))
+            if (ability.CanBeCast(Input.mousePosition, this))
             {
                 if (StaticObjects.OnlineMode)
                 {

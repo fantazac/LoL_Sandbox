@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CharacterMouseManager : CharacterBase
+public class CharacterMouseManager : MonoBehaviour
 {
     public GameObject HoveredObject { get; private set; }//ENTITY
     public GameObject ClickedObject { get; private set; }//ENTITY

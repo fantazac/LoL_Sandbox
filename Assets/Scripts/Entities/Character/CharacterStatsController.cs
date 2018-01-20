@@ -2,18 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CharacterStatsController : CharacterBase
+public class CharacterStatsController : MonoBehaviour
 {
     private CharacterStats characterStats;
+    private bool showStats;
 
-    protected void OnEnable()
+    private void OnEnable()
     {
         characterStats = GetComponent<CharacterStats>();
-    }
-
-    protected override void Start()
-    {
-        base.Start();
+        showStats = !StaticObjects.OnlineMode || (StaticObjects.PhotonView != null && StaticObjects.PhotonView.isMine);
     }
 
     public float GetCurrentMovementSpeed()
@@ -23,7 +20,7 @@ public class CharacterStatsController : CharacterBase
 
     private void OnGUI()
     {
-        if (!StaticObjects.OnlineMode || PhotonView.isMine)
+        if (showStats)
         {
             if (StaticObjects.OnlineMode)
             {
@@ -52,7 +49,6 @@ public class CharacterStatsController : CharacterBase
 
             GUILayout.Label("POSITION: " + transform.position.x + ", " + transform.position.y + ", " + transform.position.z);
             GUILayout.Label("ROTATION: " + transform.rotation.x + ", " + transform.rotation.y + ", " + transform.rotation.z + ", " + transform.rotation.w);
-
         }
     }
 }

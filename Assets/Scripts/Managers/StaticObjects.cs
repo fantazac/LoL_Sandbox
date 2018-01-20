@@ -9,6 +9,7 @@ public class StaticObjects : MonoBehaviour
     public static bool OnlineMode { get; set; }
     public static TerrainCollider Terrain { get; set; }
     public static float DivisionFactor { get; private set; }
+    public static PhotonView PhotonView { get; set; }
 
     private StaticObjects()
     {

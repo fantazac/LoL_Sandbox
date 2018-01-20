@@ -13,7 +13,7 @@ public class CameraManager : MonoBehaviour
     private int screenWidth;
     private int screenHeight;
 
-    private Character character;
+    private CharacterInput characterInput;
 
     private bool cameraLockedOnCharacter = true;
     private bool cameraFollowsCharacter = false;
@@ -24,17 +24,17 @@ public class CameraManager : MonoBehaviour
 
     private void Start()
     {
-        character = StaticObjects.Character;
-        character.CharacterInput.OnPressedY += SetCameraLock;
-        character.CharacterInput.OnPressedSpace += SetCameraOnCharacter;
-        character.CharacterInput.OnReleasedSpace += SetCameraFree;
-        
+        characterInput = StaticObjects.Character.GetComponent<CharacterInput>();
+        characterInput.OnPressedY += SetCameraLock;
+        characterInput.OnPressedSpace += SetCameraOnCharacter;
+        characterInput.OnReleasedSpace += SetCameraFree;
+
         screenWidth = Screen.width;
         screenHeight = Screen.height;
 
         initialPosition = transform.position;
-        transform.position += character.transform.position;
-        character.CharacterMovement.CharacterMoved += CharacterMoved;
+        transform.position += StaticObjects.Character.transform.position;
+        StaticObjects.Character.GetComponent<CharacterMovement>().CharacterMoved += CharacterMoved;
 
         CharacterMoved();
     }
@@ -45,7 +45,7 @@ public class CameraManager : MonoBehaviour
         {
             mousePositionOnFrame = Input.mousePosition;
 
-            if(mousePositionOnFrame.x > (screenWidth - distanceFromBorderToStartMoving))
+            if (mousePositionOnFrame.x > (screenWidth - distanceFromBorderToStartMoving))
             {
                 transform.position += Vector3.right * speed * Time.deltaTime;
             }
@@ -86,7 +86,7 @@ public class CameraManager : MonoBehaviour
     {
         if (CameraShouldFollowCharacter())
         {
-            transform.position = character.transform.position + initialPosition;
+            transform.position = StaticObjects.Character.transform.position + initialPosition;
         }
     }
 

@@ -1,9 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class CharacterOrientation : CharacterBase
+public class CharacterOrientation : MonoBehaviour
 {
     private Vector3 networkMove;
+
+    private CharacterAbilityManager characterAbilityManager;
 
     [SerializeField]
     private int rotationSpeed = 15;
@@ -11,9 +13,9 @@ public class CharacterOrientation : CharacterBase
     private Vector3 rotationAmountLastFrame;
     private Vector3 rotationAmount;
 
-    protected override void Start()
+    private void Awake()
     {
-        base.Start();
+        characterAbilityManager = GetComponent<CharacterAbilityManager>();
     }
 
     public void RotateCharacterInstantly(Vector3 destination)
@@ -42,7 +44,7 @@ public class CharacterOrientation : CharacterBase
 
                 transform.rotation = Quaternion.LookRotation(rotationAmount);
             }
-                
+
             yield return null;
         }
     }
@@ -68,13 +70,13 @@ public class CharacterOrientation : CharacterBase
 
                 transform.rotation = Quaternion.LookRotation(rotationAmount);
             }
-            
+
             yield return null;
         }
     }
 
     private bool CanRotate()
     {
-        return !CharacterAbilityManager.IsUsingAbilityPreventingRotation();
+        return !characterAbilityManager.IsUsingAbilityPreventingRotation();
     }
 }
