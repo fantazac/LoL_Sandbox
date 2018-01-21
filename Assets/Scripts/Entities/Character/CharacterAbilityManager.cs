@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class CharacterAbilityManager : MonoBehaviour
 {
+    private Character character;
+
     [SerializeField]
     private Dictionary<AbilityInput, Ability> abilities;
     private List<Ability> currentlyUsedAbilities;
@@ -15,6 +17,7 @@ public class CharacterAbilityManager : MonoBehaviour
 
     private void Start()
     {
+        character = GetComponent<Character>();
         InitAbilities(abilities);
     }
 
@@ -32,7 +35,7 @@ public class CharacterAbilityManager : MonoBehaviour
 
     private void SendToServer_Ability(AbilityInput abilityInput, Vector3 destination)
     {
-        StaticObjects.PhotonView.RPC("ReceiveFromServer_Ability", PhotonTargets.AllViaServer, abilityInput, destination);
+        character.PhotonView.RPC("ReceiveFromServer_Ability", PhotonTargets.AllViaServer, abilityInput, destination);
     }
 
     [PunRPC]

@@ -10,7 +10,7 @@ public class CharacterStatsController : MonoBehaviour
     private void OnEnable()
     {
         characterStats = GetComponent<CharacterStats>();
-        showStats = !StaticObjects.OnlineMode || (StaticObjects.PhotonView != null && StaticObjects.PhotonView.isMine);
+        showStats = !StaticObjects.OnlineMode || GetComponent<PhotonView>().isMine;
     }
 
     public float GetCurrentMovementSpeed()

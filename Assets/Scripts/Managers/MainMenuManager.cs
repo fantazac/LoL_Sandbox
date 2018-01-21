@@ -54,7 +54,6 @@ public class MainMenuManager : MonoBehaviour
                 PhotonNetwork.Destroy(StaticObjects.Character.transform.parent.gameObject);
                 StaticObjects.Character = null;
                 StaticObjects.CharacterCamera = null;
-                StaticObjects.PhotonView = null;
                 state = MainMenuState.CHARACTER_SELECT;
             }
         }
@@ -133,7 +132,6 @@ public class MainMenuManager : MonoBehaviour
         if (StaticObjects.OnlineMode)
         {
             character = PhotonNetwork.Instantiate(characterName, Vector3.up * 0.5f, new Quaternion(), 0);
-            StaticObjects.PhotonView = character.GetComponent<PhotonView>();
         }
         else
         {

@@ -29,7 +29,7 @@ public class CharacterMovement : MonoBehaviour
 
     private void Start()
     {
-        if (StaticObjects.PhotonView != null && StaticObjects.PhotonView.isMine)
+        if (character.PhotonView.isMine)
         {
             character.CharacterInput.OnRightClick += PressedRightClick;
             character.CharacterInput.OnPressedS += StopMovement;
@@ -63,8 +63,8 @@ public class CharacterMovement : MonoBehaviour
 
     private void SendToServer_Movement(Vector3 destination)
     {
-        PhotonNetwork.RemoveRPCs(StaticObjects.PhotonView);//if using AllBufferedViaServer somewhere else, this needs to change
-        StaticObjects.PhotonView.RPC("ReceiveFromServer_Movement", PhotonTargets.AllBufferedViaServer, destination);
+        PhotonNetwork.RemoveRPCs(character.PhotonView);//if using AllBufferedViaServer somewhere else, this needs to change
+        character.PhotonView.RPC("ReceiveFromServer_Movement", PhotonTargets.AllBufferedViaServer, destination);
     }
 
     [PunRPC]
@@ -130,7 +130,7 @@ public class CharacterMovement : MonoBehaviour
 
     private void SendToServer_StopMovement()
     {
-        StaticObjects.PhotonView.RPC("ReceiveFromServer_StopMovement", PhotonTargets.AllViaServer);
+        character.PhotonView.RPC("ReceiveFromServer_StopMovement", PhotonTargets.AllViaServer);
     }
 
     [PunRPC]
@@ -155,7 +155,7 @@ public class CharacterMovement : MonoBehaviour
 
     public void NotifyCharacterMoved()
     {
-        if (CharacterMoved != null && (!StaticObjects.OnlineMode || StaticObjects.PhotonView.isMine))
+        if (CharacterMoved != null && (!StaticObjects.OnlineMode || character.PhotonView.isMine))
         {
             CharacterMoved();
         }

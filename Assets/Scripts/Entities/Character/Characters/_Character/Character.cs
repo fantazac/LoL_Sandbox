@@ -16,6 +16,8 @@ public abstract class Character : Entity
     public CharacterOrientation CharacterOrientation { get; private set; }
     public CharacterStatsController CharacterStatsController { get; private set; }
 
+    public PhotonView PhotonView { get; private set; }
+
     public delegate void OnConnectionInfoReceivedHandler(Character character);
     public event OnConnectionInfoReceivedHandler OnConnectionInfoReceived;
 
@@ -26,7 +28,7 @@ public abstract class Character : Entity
 
     protected override void Start()
     {
-        if (StaticObjects.OnlineMode && StaticObjects.PhotonView != null && StaticObjects.PhotonView.isMine)
+        if (StaticObjects.OnlineMode && PhotonView.isMine)
         {
             if (PhotonNetwork.player.GetTeam() == PunTeams.Team.blue)
             {
@@ -51,6 +53,8 @@ public abstract class Character : Entity
         CharacterMovement = GetComponent<CharacterMovement>();
         CharacterOrientation = GetComponent<CharacterOrientation>();
         CharacterStatsController = GetComponent<CharacterStatsController>();
+
+        PhotonView = GetComponent<PhotonView>();
     }
 
     [PunRPC]
@@ -70,21 +74,21 @@ public abstract class Character : Entity
     [PunRPC]
     protected void ReceiveFromServer_ConnectionInfoRequest()
     {
-        if (StaticObjects.PhotonView.isMine)
+        if (PhotonView.isMine)
         {
-            StaticObjects.PhotonView.RPC("ReceiveFromServer_ConnectionInfo", PhotonTargets.Others, transform.position, transform.rotation, team, characterId);
+            PhotonView.RPC("ReceiveFromServer_ConnectionInfo", PhotonTargets.Others, transform.position, transform.rotation, team, characterId);
         }
     }
 
     public void SendToServer_ConnectionInfoRequest()
     {
         sentConnectionInfoRequest = true;
-        StaticObjects.PhotonView.RPC("ReceiveFromServer_ConnectionInfoRequest", PhotonTargets.Others);
+        PhotonView.RPC("ReceiveFromServer_ConnectionInfoRequest", PhotonTargets.Others);
     }
 
     public void SendToServer_TeamAndID()
     {
-        StaticObjects.PhotonView.RPC("ReceiveFromServer_TeamAndID", PhotonTargets.Others, team, characterId);
+        PhotonView.RPC("ReceiveFromServer_TeamAndID", PhotonTargets.Others, team, characterId);
     }
 
     [PunRPC]
