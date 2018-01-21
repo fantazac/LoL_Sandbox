@@ -2,30 +2,30 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CharacterMouseManager : CharacterBase
+public class CharacterMouseManager : MonoBehaviour
 {
-    public GameObject HoveredObject { get; private set; }//ENTITY
-    public GameObject ClickedObject { get; private set; }//ENTITY
+    public Entity HoveredEntity { get; private set; }
+    public Entity ClickedEntity { get; private set; }
 
-    public void HoverObject(GameObject hoveredObject)
+    public void HoverEntity(Entity hoveredEntity)
     {
-        HoveredObject = hoveredObject;
+        HoveredEntity = hoveredEntity;
     }
 
-    public void UnhoverObject(GameObject unhoveredObject)
+    public void UnhoverEntity(Entity unhoveredEntity)
     {
-        if(HoveredObject == unhoveredObject)
+        if(HoveredEntity == unhoveredEntity)
         {
-            HoveredObject = null;
+            HoveredEntity = null;
         }
     }
 
-    public bool HoveredObjectIsEnemy(EntityTeam team)
+    public bool HoveredEntityIsAnEnemy(EntityTeam team)
     {
-        if(HoveredObject == null)
+        if(HoveredEntity != null)
         {
-            return false;
+            return team != HoveredEntity.Team;
         }
-        return team != HoveredObject.GetComponent<Character>().team;
+        return false;
     }
 }

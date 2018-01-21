@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Lucian_R : SkillShot, CharacterAbility
+public class Lucian_R : DirectionTargetedProjectile, CharacterAbility
 {
     private int amountOfProjectilesToShoot;
     private float durationOfActive;
@@ -13,6 +13,9 @@ public class Lucian_R : SkillShot, CharacterAbility
 
     protected Lucian_R()
     {
+        effectType = AbilityEffectType.SINGLE_TARGET;
+        affectedUnitType = AbilityAffectedUnitType.ENEMIES;
+
         range = 1200;
         speed = 2000;
         damage = 40;
@@ -44,13 +47,8 @@ public class Lucian_R : SkillShot, CharacterAbility
         projectile = ((GameObject)Instantiate(projectilePrefab,
                 transform.position + (transform.forward * 0.6f) + (transform.right * (projectileId % 2 == 0 ? offset : -offset)),
                 transform.rotation)).GetComponent<Projectile>();
-        projectile.ShootProjectile(GetComponent<Character>().team, speed, range, damage);
-        projectile.OnProjectileHit += OnSkillShotHit;
-        projectile.OnProjectileReachedEnd += OnSkillShotReachedEnd;
-    }
-
-    protected override void OnSkillShotHit(Projectile projectile)
-    {
-        OnSkillShotReachedEnd(projectile);
+        projectile.ShootProjectile(character.Team, affectedUnitType, speed, range);
+        projectile.OnAbilityEffectHit += OnProjectileHit;
+        projectile.OnProjectileReachedEnd += OnProjectileReachedEnd;
     }
 }

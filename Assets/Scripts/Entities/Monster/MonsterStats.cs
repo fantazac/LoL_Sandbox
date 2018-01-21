@@ -8,8 +8,6 @@ public abstract class MonsterStats : EntityStats
 
     protected override void OnEnable()
     {
-        EntityType = EntityType.MONSTER;
-
         base.OnEnable();
     }
 

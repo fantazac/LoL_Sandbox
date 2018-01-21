@@ -1,9 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class CharacterOrientation : CharacterBase
+public class CharacterOrientation : MonoBehaviour
 {
     private Vector3 networkMove;
+
+    private CharacterAbilityManager characterAbilityManager;
 
     [SerializeField]
     private int rotationSpeed = 15;
@@ -11,9 +13,9 @@ public class CharacterOrientation : CharacterBase
     private Vector3 rotationAmountLastFrame;
     private Vector3 rotationAmount;
 
-    protected override void Start()
+    private void Awake()
     {
-        base.Start();
+        characterAbilityManager = GetComponent<CharacterAbilityManager>();
     }
 
     public void RotateCharacterInstantly(Vector3 destination)
@@ -31,14 +33,17 @@ public class CharacterOrientation : CharacterBase
     {
         rotationAmount = Vector3.up;
         rotationAmountLastFrame = Vector3.zero;
-        
+
         while (rotationAmountLastFrame != rotationAmount)
         {
-            rotationAmountLastFrame = rotationAmount;
+            if (CanRotate())
+            {
+                rotationAmountLastFrame = rotationAmount;
 
-            rotationAmount = Vector3.RotateTowards(transform.forward, destination - transform.position, Time.deltaTime * rotationSpeed, 0);
+                rotationAmount = Vector3.RotateTowards(transform.forward, destination - transform.position, Time.deltaTime * rotationSpeed, 0);
 
-            transform.rotation = Quaternion.LookRotation(rotationAmount);
+                transform.rotation = Quaternion.LookRotation(rotationAmount);
+            }
 
             yield return null;
         }
@@ -57,15 +62,21 @@ public class CharacterOrientation : CharacterBase
 
         while (target != null)
         {
-            rotationAmountLastFrame = rotationAmount;
+            if (CanRotate())
+            {
+                rotationAmountLastFrame = rotationAmount;
 
-            rotationAmount = Vector3.RotateTowards(transform.forward, target.position - transform.position, Time.deltaTime * rotationSpeed, 0);
+                rotationAmount = Vector3.RotateTowards(transform.forward, target.position - transform.position, Time.deltaTime * rotationSpeed, 0);
 
-            transform.rotation = Quaternion.LookRotation(rotationAmount);
+                transform.rotation = Quaternion.LookRotation(rotationAmount);
+            }
 
             yield return null;
         }
     }
 
-    //private bool CanRotate() { } //TODO using CanRotateWhileCasting from abilities
+    private bool CanRotate()
+    {
+        return !characterAbilityManager.IsUsingAbilityPreventingRotation();
+    }
 }

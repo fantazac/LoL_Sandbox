@@ -2,10 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Ezreal_R : SkillShot, CharacterAbility
+public class Ezreal_R : DirectionTargetedProjectile, CharacterAbility
 {
     protected Ezreal_R()
     {
+        effectType = AbilityEffectType.AREA_OF_EFFECT;
+        affectedUnitType = AbilityAffectedUnitType.ENEMIES;
+
         range = (float)Range.GLOBAL;
         speed = 2000;
         damage = 300;

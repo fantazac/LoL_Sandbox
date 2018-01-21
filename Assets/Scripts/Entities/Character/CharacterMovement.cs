@@ -2,12 +2,14 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class CharacterMovement : CharacterBase
+public class CharacterMovement : MonoBehaviour
 {
     [SerializeField]
     private GameObject movementCapsule;
 
     private RaycastHit hit;
+
+    private Character character;
 
     [HideInInspector]
     public Vector3 spawnPoint;
@@ -17,25 +19,35 @@ public class CharacterMovement : CharacterBase
     public delegate void PlayerMovedHandler();
     public event PlayerMovedHandler CharacterMoved;
 
-    public delegate void PlayerIsInRangeHandler(Vector3 targetPosition);
+    public delegate void PlayerIsInRangeHandler(Entity target);
     public event PlayerIsInRangeHandler CharacterIsInRange;
 
-    protected override void Start()
+    private void Awake()
     {
-        CharacterInput.OnRightClick += PressedRightClick;
-        CharacterInput.OnPressedS += StopMovement;
+        character = GetComponent<Character>();
+    }
+
+    private void Start()
+    {
+        if (!StaticObjects.OnlineMode || character.PhotonView.isMine)
+        {
+            character.CharacterInput.OnRightClick += PressedRightClick;
+            character.CharacterInput.OnPressedS += StopMovement;
+        }
 
         CharacterHeightOffset = Vector3.up * transform.position.y;
+    }
 
-        base.Start();
+    public void UnsubscribeCameraEvent()
+    {
+        CharacterMoved = null;
     }
 
     private void PressedRightClick(Vector3 mousePosition)
     {
-        if (!CharacterAbilityManager.IsUsingAbilityPreventingMovement() && MousePositionOnTerrain.GetRaycastHit(mousePosition, out hit))
+        if (!character.CharacterAbilityManager.IsUsingAbilityPreventingMovement() && MousePositionOnTerrain.GetRaycastHit(mousePosition, out hit))
         {
-            CharacterIsInRange = null;
-            Instantiate(movementCapsule, hit.point, new Quaternion());
+            Instantiate(movementCapsule, hit.point, Quaternion.identity);
 
             if (StaticObjects.OnlineMode)
             {
@@ -50,8 +62,8 @@ public class CharacterMovement : CharacterBase
 
     private void SendToServer_Movement(Vector3 destination)
     {
-        PhotonNetwork.RemoveRPCs(PhotonView);//if using AllBufferedViaServer somewhere else, this needs to change
-        PhotonView.RPC("ReceiveFromServer_Movement", PhotonTargets.AllBufferedViaServer, destination);
+        PhotonNetwork.RemoveRPCs(character.PhotonView);//if using AllBufferedViaServer somewhere else, this needs to change
+        character.PhotonView.RPC("ReceiveFromServer_Movement", PhotonTargets.AllBufferedViaServer, destination);
     }
 
     [PunRPC]
@@ -63,15 +75,16 @@ public class CharacterMovement : CharacterBase
     public void SetMoveTowardsPoint(Vector3 destination)
     {
         StopAllCoroutines();
+        CharacterIsInRange = null;
         StartCoroutine(MoveTowardsPoint(destination));
-        CharacterOrientation.RotateCharacter(destination);
+        character.CharacterOrientation.RotateCharacter(destination);
     }
 
     private IEnumerator MoveTowardsPoint(Vector3 wherePlayerClickedToMove)
     {
         while (transform.position != wherePlayerClickedToMove)
         {
-            transform.position = Vector3.MoveTowards(transform.position, wherePlayerClickedToMove, Time.deltaTime * CharacterStatsController.GetCurrentMovementSpeed());
+            transform.position = Vector3.MoveTowards(transform.position, wherePlayerClickedToMove, Time.deltaTime * character.CharacterStatsController.GetCurrentMovementSpeed());
 
             NotifyCharacterMoved();
 
@@ -79,28 +92,30 @@ public class CharacterMovement : CharacterBase
         }
     }
 
-    public void SetMoveTowardsTarget(Transform target, float range)
+    public void SetMoveTowardsTarget(Entity target, float range)
     {
         StopAllCoroutines();
+        CharacterIsInRange = null;
         StartCoroutine(MoveTowardsTarget(target, range));
-        CharacterOrientation.RotateCharacterUntilReachedTarget(target);
+        character.CharacterOrientation.RotateCharacterUntilReachedTarget(target.transform);
     }
 
-    private IEnumerator MoveTowardsTarget(Transform target, float range)
+    private IEnumerator MoveTowardsTarget(Entity target, float range)
     {
-        while (Vector3.Distance(target.position, transform.position) > range)
+        Transform targetTransform = target.transform;
+        while (Vector3.Distance(targetTransform.position, transform.position) > range)
         {
-            transform.position = Vector3.MoveTowards(transform.position, target.position, Time.deltaTime * CharacterStatsController.GetCurrentMovementSpeed());
+            transform.position = Vector3.MoveTowards(transform.position, targetTransform.position, Time.deltaTime * character.CharacterStatsController.GetCurrentMovementSpeed());
 
             NotifyCharacterMoved();
 
             yield return null;
         }
-        if(CharacterIsInRange != null)
+        if (CharacterIsInRange != null)
         {
-            CharacterIsInRange(target.position);
+            CharacterIsInRange(target);
         }
-        
+
     }
 
     private void StopMovement()
@@ -117,7 +132,7 @@ public class CharacterMovement : CharacterBase
 
     private void SendToServer_StopMovement()
     {
-        PhotonView.RPC("ReceiveFromServer_StopMovement", PhotonTargets.AllViaServer);
+        character.PhotonView.RPC("ReceiveFromServer_StopMovement", PhotonTargets.AllViaServer);
     }
 
     [PunRPC]
@@ -129,7 +144,7 @@ public class CharacterMovement : CharacterBase
     private void StopAllMovement()
     {
         StopAllCoroutines();
-        CharacterOrientation.StopAllCoroutines();
+        character.CharacterOrientation.StopAllCoroutines();
     }
 
     public void StopAllMovement(Ability ability)
@@ -142,7 +157,7 @@ public class CharacterMovement : CharacterBase
 
     public void NotifyCharacterMoved()
     {
-        if (!StaticObjects.OnlineMode || PhotonView.isMine)
+        if (CharacterMoved != null && (!StaticObjects.OnlineMode || character.PhotonView.isMine))
         {
             CharacterMoved();
         }

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Lucian_W : SkillShot, CharacterAbility
+public class Lucian_W : DirectionTargetedProjectile, CharacterAbility
 {
     [SerializeField]
     private GameObject explosionAreaOfEffectPrefab;
@@ -11,6 +11,9 @@ public class Lucian_W : SkillShot, CharacterAbility
 
     protected Lucian_W()
     {
+        effectType = AbilityEffectType.SINGLE_TARGET;
+        affectedUnitType = AbilityAffectedUnitType.ENEMIES;
+
         range = 900;
         speed = 1550;
         damage = 60;
@@ -23,15 +26,17 @@ public class Lucian_W : SkillShot, CharacterAbility
         HasCastTime = true;
     }
 
-    protected override void OnSkillShotHit(Projectile projectile)
+    protected override void OnProjectileHit(AbilityEffect projectile, Entity entityHit)
     {
-        OnSkillShotReachedEnd(projectile);
+        OnAreaOfEffectHit(projectile, entityHit);
+        OnProjectileReachedEnd((Projectile)projectile);
     }
 
-    protected override void OnSkillShotReachedEnd(Projectile projectile)
+    protected override void OnProjectileReachedEnd(Projectile projectile)
     {
         AreaOfEffect aoe = ((GameObject)Instantiate(explosionAreaOfEffectPrefab, projectile.transform.position, projectile.transform.rotation)).GetComponent<AreaOfEffect>();
-        aoe.ActivateAreaOfEffect(projectile.HealthOfUnitsAlreadyHit, character.team, false, damage, durationAoE, true);
+        aoe.ActivateAreaOfEffect(projectile.UnitsAlreadyHit, character.Team, affectedUnitType, durationAoE, true);
+        aoe.OnAbilityEffectHit += OnAreaOfEffectHit;
         Destroy(projectile.gameObject);
     }
 }

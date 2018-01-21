@@ -253,7 +253,7 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1507067852754532}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a7117fbebb694f4438f9a8c4e3c122bf, type: 3}
   m_Name: 
@@ -497,7 +497,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 96d2cf110d9d0b84eb6471fc8c9db4df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  projectilePrefab: {fileID: 1000011639411960, guid: 7d23b316a2ad36249a139ef23be8c616,
+  areaOfEffectPrefab: {fileID: 1000011639411960, guid: 7d23b316a2ad36249a139ef23be8c616,
     type: 2}
 --- !u!114 &114562199205961970
 MonoBehaviour:
@@ -702,8 +702,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75703a33004677b4f962376fb1b0d4ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  team: 0
-  characterId: 0
 --- !u!114 &114919538514130098
 MonoBehaviour:
   m_ObjectHideFlags: 1

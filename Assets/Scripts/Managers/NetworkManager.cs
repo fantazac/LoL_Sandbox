@@ -52,10 +52,11 @@ public class NetworkManager : MonoBehaviour
     {
         yield return null;
 
-        foreach (GameObject character in GameObject.FindGameObjectsWithTag("Character"))
+        foreach (GameObject player in GameObject.FindGameObjectsWithTag("Character"))
         {
-            character.GetComponent<Character>().SendToServer_ConnectionInfoRequest();
-            character.GetComponent<Character>().OnConnectionInfoReceived += OnConnectionInfoReceived;
+            Character character = player.GetComponent<Character>();
+            character.SendToServer_ConnectionInfoRequest();
+            character.OnConnectionInfoReceived += OnConnectionInfoReceived;
         }
     }
 

@@ -1,7 +1,9 @@
 ﻿using UnityEngine;
 
-public class CharacterInput : CharacterBase
+public class CharacterInput : MonoBehaviour
 {
+    private CharacterAbilityManager characterAbilityManager;
+
     public delegate void OnPressedSHandler();
     public event OnPressedSHandler OnPressedS;
 
@@ -20,13 +22,15 @@ public class CharacterInput : CharacterBase
     public delegate void OnRightClickHandler(Vector3 mousePosition);
     public event OnRightClickHandler OnRightClick;
 
-    protected override void Start()
+    private void Start()
     {
-        base.Start();
+        characterAbilityManager = StaticObjects.Character.CharacterAbilityManager;
     }
 
     private void Update()
     {
+        //TODO : On peut pas faire ca, car le CheckForOtherAbilitiesInputs utilise le shift, et donc ca checkrait aussi pour les touches sans le shift
+        //exemple: Shift + L = TeleportMid, L = autre spell -> il ferait les 2 de la façon que c'est fait présentement
         CheckForCharacterAbilitiesInputs();
         CheckForSummonerSpellsInputs();
         CheckForOtherAbilitiesInputs();
@@ -38,19 +42,19 @@ public class CharacterInput : CharacterBase
     {
         if (Input.GetKeyDown(KeyCode.Q))
         {
-            CharacterAbilityManager.OnPressedInputForAbility(AbilityInput.Q, Input.mousePosition);
+            characterAbilityManager.OnPressedInputForAbility(AbilityInput.Q);
         }
         if (Input.GetKeyDown(KeyCode.W))
         {
-            CharacterAbilityManager.OnPressedInputForAbility(AbilityInput.W, Input.mousePosition);
+            characterAbilityManager.OnPressedInputForAbility(AbilityInput.W);
         }
         if (Input.GetKeyDown(KeyCode.E))
         {
-            CharacterAbilityManager.OnPressedInputForAbility(AbilityInput.E, Input.mousePosition);
+            characterAbilityManager.OnPressedInputForAbility(AbilityInput.E);
         }
         if (Input.GetKeyDown(KeyCode.R))
         {
-            CharacterAbilityManager.OnPressedInputForAbility(AbilityInput.R, Input.mousePosition);
+            characterAbilityManager.OnPressedInputForAbility(AbilityInput.R);
         }
     }
 
@@ -58,11 +62,11 @@ public class CharacterInput : CharacterBase
     {
         if (Input.GetKeyDown(KeyCode.D))
         {
-            CharacterAbilityManager.OnPressedInputForAbility(AbilityInput.TELEPORT, Input.mousePosition);
+            characterAbilityManager.OnPressedInputForAbility(AbilityInput.TELEPORT);
         }
         if (Input.GetKeyDown(KeyCode.F))
         {
-            CharacterAbilityManager.OnPressedInputForAbility(AbilityInput.HEAL, Input.mousePosition);
+            characterAbilityManager.OnPressedInputForAbility(AbilityInput.HEAL);
         }
     }
 
@@ -72,19 +76,19 @@ public class CharacterInput : CharacterBase
         {
             if (Input.GetKeyDown(KeyCode.B))
             {
-                CharacterAbilityManager.OnPressedInputForAbility(AbilityInput.SPAWN_ENEMY_DUMMY, Input.mousePosition);
+                characterAbilityManager.OnPressedInputForAbility(AbilityInput.SPAWN_ENEMY_DUMMY);
             }
             if (Input.GetKeyDown(KeyCode.M))
             {
-                CharacterAbilityManager.OnPressedInputForAbility(AbilityInput.DESTROY_ALL_DUMMIES, Input.mousePosition);
+                characterAbilityManager.OnPressedInputForAbility(AbilityInput.DESTROY_ALL_DUMMIES);
             }
             if (Input.GetKeyDown(KeyCode.N))
             {
-                CharacterAbilityManager.OnPressedInputForAbility(AbilityInput.SPAWN_ALLY_DUMMY, Input.mousePosition);
+                characterAbilityManager.OnPressedInputForAbility(AbilityInput.SPAWN_ALLY_DUMMY);
             }
             if (Input.GetKeyDown(KeyCode.L))
             {
-                CharacterAbilityManager.OnPressedInputForAbility(AbilityInput.TP_MID, Input.mousePosition);
+                characterAbilityManager.OnPressedInputForAbility(AbilityInput.TP_MID);
             }
         }
     }

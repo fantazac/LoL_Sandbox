@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class SpawnDummy : Ability, OtherAbility
+public abstract class SpawnDummy : GroundTargeted, OtherAbility
 {
     protected const int MAXIMUM_DUMMY_AMOUNT = 4;
 
@@ -26,15 +26,9 @@ public abstract class SpawnDummy : Ability, OtherAbility
         }
     }
 
-    public override bool CanBeCast(Vector3 mousePosition)
+    public override bool CanBeCast(Vector3 mousePosition, CharacterAbilityManager characterAbilityManager)
     {
-        // FIXME: this
-        return  (!StaticObjects.OnlineMode || !OfflineOnly) && !character.CharacterAbilityManager.IsUsingAbilityPreventingAbilityCasts() && MousePositionOnTerrain.GetRaycastHit(mousePosition, out hit);
-    }
-
-    public override Vector3 GetDestination()
-    {
-        return hit.point + character.CharacterMovement.CharacterHeightOffset;
+        return  (!StaticObjects.OnlineMode || !OfflineOnly) && base.CanBeCast(mousePosition, characterAbilityManager);
     }
 
     public void RemoveAllDummies()
@@ -59,8 +53,7 @@ public abstract class SpawnDummy : Ability, OtherAbility
         }
         Dummy dummy = ((GameObject)Instantiate(Resources.Load(dummyResourceName), destination, Quaternion.identity)).GetComponent<Dummy>();
         dummy.transform.rotation = Quaternion.LookRotation((transform.position - dummy.transform.position).normalized);
-        dummy.team = team;
-        dummy.characterId = ++dummyId;
+        dummy.SetDummyTeamAndID(team, ++dummyId);
         dummies.Add(dummy.gameObject);
     }
 }
