@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Ezreal_E : Blink, CharacterAbility
+public class Ezreal_E : GroundTargetedBlink, CharacterAbility
 {
     protected Ezreal_E()
     {

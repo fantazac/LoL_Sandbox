@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Lucian_Q : SkillShot, CharacterAbility
+public class Lucian_Q : DirectionTargetedProjectile, CharacterAbility
 {
     private GameObject target;
 

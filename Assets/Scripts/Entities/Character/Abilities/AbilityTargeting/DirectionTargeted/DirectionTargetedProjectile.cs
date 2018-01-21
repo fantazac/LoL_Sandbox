@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public abstract class SkillShot : DirectionTargeted
+public abstract class DirectionTargetedProjectile : DirectionTargeted
 {
     [SerializeField]
     protected GameObject projectilePrefab;
@@ -12,15 +12,15 @@ public abstract class SkillShot : DirectionTargeted
 
         Projectile projectile = ((GameObject)Instantiate(projectilePrefab, transform.position, transform.rotation)).GetComponent<Projectile>();
         projectile.ShootProjectile(GetComponent<Character>().team, speed, range, damage);
-        projectile.OnProjectileHit += OnSkillShotHit;
-        projectile.OnProjectileReachedEnd += OnSkillShotReachedEnd;
+        projectile.OnProjectileHit += OnProjectileHit;
+        projectile.OnProjectileReachedEnd += OnProjectileReachedEnd;
 
         FinishAbilityCast();
     }
 
-    protected virtual void OnSkillShotHit(Projectile projectile) { }
+    protected virtual void OnProjectileHit(Projectile projectile) { }
 
-    protected virtual void OnSkillShotReachedEnd(Projectile projectile)
+    protected virtual void OnProjectileReachedEnd(Projectile projectile)
     {
         Destroy(projectile.gameObject);
     }

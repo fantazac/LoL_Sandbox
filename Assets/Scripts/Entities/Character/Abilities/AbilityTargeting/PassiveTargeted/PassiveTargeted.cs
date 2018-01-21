@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PassiveTargeted : MonoBehaviour
+public abstract class PassiveTargeted : Ability
 {
 
 }

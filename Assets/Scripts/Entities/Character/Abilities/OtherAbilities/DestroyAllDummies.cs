@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DestroyAllDummies : Ability, OtherAbility
+public class DestroyAllDummies : AutoTargeted, OtherAbility
 {
     [SerializeField]
     private SpawnDummy[] spawnDummyAbilities;
@@ -12,6 +12,14 @@ public class DestroyAllDummies : Ability, OtherAbility
         OfflineOnly = true;
     }
 
+    protected override void Start()
+    {
+        if (!StaticObjects.OnlineMode)
+        {
+            base.Start();
+        }
+    }
+
     protected void OnDestroy()
     {
         RemoveAllDummies();
@@ -19,22 +27,17 @@ public class DestroyAllDummies : Ability, OtherAbility
 
     public override bool CanBeCast(Vector3 mousePosition, CharacterAbilityManager characterAbilityManager)
     {
-        return !StaticObjects.OnlineMode || !OfflineOnly;
+        return !StaticObjects.OnlineMode || !OfflineOnly; // Is !(StaticObjects.OnlineMode || OfflineOnly) better?
     }
 
-    public override Vector3 GetDestination()
+    public override void UseAbility(Vector3 destination = default(Vector3))
     {
-        return new Vector3();
+        RemoveAllDummies();
     }
 
     protected void RemoveAllDummies()
     {
         spawnDummyAbilities[0].RemoveAllDummies();
         spawnDummyAbilities[1].RemoveAllDummies();
-    }
-
-    public override void UseAbility(Vector3 destination = default(Vector3))
-    {
-        RemoveAllDummies();
     }
 }

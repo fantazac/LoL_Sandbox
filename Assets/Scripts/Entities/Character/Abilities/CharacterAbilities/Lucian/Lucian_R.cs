@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Lucian_R : SkillShot, CharacterAbility
+public class Lucian_R : DirectionTargetedProjectile, CharacterAbility
 {
     private int amountOfProjectilesToShoot;
     private float durationOfActive;
@@ -45,12 +45,12 @@ public class Lucian_R : SkillShot, CharacterAbility
                 transform.position + (transform.forward * 0.6f) + (transform.right * (projectileId % 2 == 0 ? offset : -offset)),
                 transform.rotation)).GetComponent<Projectile>();
         projectile.ShootProjectile(GetComponent<Character>().team, speed, range, damage);
-        projectile.OnProjectileHit += OnSkillShotHit;
-        projectile.OnProjectileReachedEnd += OnSkillShotReachedEnd;
+        projectile.OnProjectileHit += OnProjectileHit;
+        projectile.OnProjectileReachedEnd += OnProjectileReachedEnd;
     }
 
-    protected override void OnSkillShotHit(Projectile projectile)
+    protected override void OnProjectileHit(Projectile projectile)
     {
-        OnSkillShotReachedEnd(projectile);
+        OnProjectileReachedEnd(projectile);
     }
 }

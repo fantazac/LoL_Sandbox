@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Lucian_E : Dash, CharacterAbility
+public class Lucian_E : DirectionTargetedDash, CharacterAbility
 {
     protected Lucian_E()
     {

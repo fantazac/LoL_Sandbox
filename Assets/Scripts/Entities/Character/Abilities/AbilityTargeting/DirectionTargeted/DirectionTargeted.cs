@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class DirectionTargeted : Ability
+public abstract class DirectionTargeted : Ability // Curently same as GroundTargeted, might change when other abilities are created
 {
     public override bool CanBeCast(Vector3 mousePosition, CharacterAbilityManager characterAbilityManager)
     {
@@ -22,6 +22,8 @@ public abstract class DirectionTargeted : Ability
         character.CharacterMovement.StopAllMovement(this);
         character.CharacterOrientation.RotateCharacterInstantly(destination);
 
+        FinalAdjustments(destination);
+
         if (delayCastTime == null)
         {
             StartCoroutine(AbilityWithoutCastTime());
@@ -31,4 +33,6 @@ public abstract class DirectionTargeted : Ability
             StartCoroutine(AbilityWithCastTime());
         }
     }
+
+    protected virtual void FinalAdjustments(Vector3 destination) { }
 }

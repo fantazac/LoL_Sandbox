@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Ezreal_Q : SkillShot, CharacterAbility
+public class Ezreal_Q : DirectionTargetedProjectile, CharacterAbility
 {
     protected Ezreal_Q()
     {
@@ -16,8 +16,8 @@ public class Ezreal_Q : SkillShot, CharacterAbility
         HasCastTime = true;
     }
 
-    protected override void OnSkillShotHit(Projectile projectile)
+    protected override void OnProjectileHit(Projectile projectile)
     {
-        OnSkillShotReachedEnd(projectile);
+        OnProjectileReachedEnd(projectile);
     }
 }

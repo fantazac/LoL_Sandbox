@@ -29,7 +29,7 @@ public class CharacterMovement : MonoBehaviour
 
     private void Start()
     {
-        if (character.PhotonView.isMine)
+        if (!StaticObjects.OnlineMode || character.PhotonView.isMine)
         {
             character.CharacterInput.OnRightClick += PressedRightClick;
             character.CharacterInput.OnPressedS += StopMovement;
@@ -48,7 +48,7 @@ public class CharacterMovement : MonoBehaviour
         if (!character.CharacterAbilityManager.IsUsingAbilityPreventingMovement() && MousePositionOnTerrain.GetRaycastHit(mousePosition, out hit))
         {
             CharacterIsInRange = null;
-            Instantiate(movementCapsule, hit.point, new Quaternion());
+            Instantiate(movementCapsule, hit.point, Quaternion.identity);
 
             if (StaticObjects.OnlineMode)
             {

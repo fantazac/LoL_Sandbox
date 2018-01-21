@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class SelfTargeted : Ability
+public abstract class AutoTargeted : Ability
 {
     public override bool CanBeCast(Vector3 mousePosition, CharacterAbilityManager characterAbilityManager)
     {
@@ -11,6 +11,6 @@ public abstract class SelfTargeted : Ability
 
     public override Vector3 GetDestination()
     {
-        return character.transform.position;
+        return Vector3.zero; // This will change
     }
 }

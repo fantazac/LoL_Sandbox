@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Lucian_W : SkillShot, CharacterAbility
+public class Lucian_W : DirectionTargetedProjectile, CharacterAbility
 {
     [SerializeField]
     private GameObject explosionAreaOfEffectPrefab;
@@ -23,12 +23,12 @@ public class Lucian_W : SkillShot, CharacterAbility
         HasCastTime = true;
     }
 
-    protected override void OnSkillShotHit(Projectile projectile)
+    protected override void OnProjectileHit(Projectile projectile)
     {
-        OnSkillShotReachedEnd(projectile);
+        OnProjectileReachedEnd(projectile);
     }
 
-    protected override void OnSkillShotReachedEnd(Projectile projectile)
+    protected override void OnProjectileReachedEnd(Projectile projectile)
     {
         AreaOfEffect aoe = ((GameObject)Instantiate(explosionAreaOfEffectPrefab, projectile.transform.position, projectile.transform.rotation)).GetComponent<AreaOfEffect>();
         aoe.ActivateAreaOfEffect(projectile.HealthOfUnitsAlreadyHit, character.team, false, damage, durationAoE, true);
