@@ -63,9 +63,33 @@ public class CharacterAbilityManager : MonoBehaviour
         //else put in queue
     }
 
-    private Entity FindTarget(int entityId, EntityType entityType)
+    private Entity FindTarget(int entityId, EntityType entityType) // TODO: when adding an EntityType
     {
-
+        Entity entity = null;
+        switch (entityType)
+        {
+            case EntityType.CHARACTER:
+                foreach (Character character in FindObjectsOfType<Character>())
+                {
+                    if (character.EntityId == entityId)
+                    {
+                        entity = character;
+                        break;
+                    }
+                }
+                break;
+            /*case EntityType.MINION:
+                foreach (Minion minion in FindObjectsOfType<Minion>())
+                {
+                    if (minion.EntityId == entityId)
+                    {
+                        entity = minion;
+                        break;
+                    }
+                }
+                break;*/
+        }
+        return entity;
     }
 
     private void OnAbilityUsed(Ability ability)
