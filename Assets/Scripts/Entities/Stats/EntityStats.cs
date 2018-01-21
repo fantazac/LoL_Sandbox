@@ -3,8 +3,6 @@ using System.Collections;
 
 public class EntityStats : MonoBehaviour
 {
-    public EntityType EntityType { get; protected set; }
-
     public Health Health { get; protected set; }
     public Resource Resource { get; protected set; }//mana, energy, fury, ...
 

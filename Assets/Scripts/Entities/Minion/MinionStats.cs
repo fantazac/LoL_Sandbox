@@ -8,8 +8,6 @@ public abstract class MinionStats : EntityStats
 
     protected override void OnEnable()
     {
-        EntityType = EntityType.MINION;
-
         base.OnEnable();
     }
 

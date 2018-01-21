@@ -6,6 +6,9 @@ public abstract class Ability : MonoBehaviour
 {
     protected Character character;
 
+    protected AbilityEffectType effectType;
+    protected AbilityAffectedUnitType affectedUnitType;
+
     protected float castTime;
     protected float damage;
     protected WaitForSeconds delayCastTime;

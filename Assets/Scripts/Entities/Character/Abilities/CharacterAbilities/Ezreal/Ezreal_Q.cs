@@ -6,6 +6,9 @@ public class Ezreal_Q : DirectionTargetedProjectile, CharacterAbility
 {
     protected Ezreal_Q()
     {
+        effectType = AbilityEffectType.SINGLE_TARGET;
+        affectedUnitType = AbilityAffectedUnitType.ENEMIES;
+
         range = 1150;
         speed = 2000;
         damage = 100;
@@ -14,10 +17,5 @@ public class Ezreal_Q : DirectionTargetedProjectile, CharacterAbility
 
         CanStopMovement = true;
         HasCastTime = true;
-    }
-
-    protected override void OnProjectileHit(Projectile projectile)
-    {
-        OnProjectileReachedEnd(projectile);
     }
 }

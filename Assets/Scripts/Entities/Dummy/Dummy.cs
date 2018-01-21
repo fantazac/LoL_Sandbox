@@ -8,4 +8,10 @@ public class Dummy : Character
     {
         base.Start();
     }
+
+    public void SetDummyTeamAndID(EntityTeam team, int dummyId)
+    {
+        Team = team;
+        CharacterId = dummyId;
+    }
 }

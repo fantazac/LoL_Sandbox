@@ -47,7 +47,6 @@ public class CharacterMovement : MonoBehaviour
     {
         if (!character.CharacterAbilityManager.IsUsingAbilityPreventingMovement() && MousePositionOnTerrain.GetRaycastHit(mousePosition, out hit))
         {
-            CharacterIsInRange = null;
             Instantiate(movementCapsule, hit.point, Quaternion.identity);
 
             if (StaticObjects.OnlineMode)
@@ -76,6 +75,7 @@ public class CharacterMovement : MonoBehaviour
     public void SetMoveTowardsPoint(Vector3 destination)
     {
         StopAllCoroutines();
+        CharacterIsInRange = null;
         StartCoroutine(MoveTowardsPoint(destination));
         character.CharacterOrientation.RotateCharacter(destination);
     }
@@ -95,6 +95,7 @@ public class CharacterMovement : MonoBehaviour
     public void SetMoveTowardsTarget(Transform target, float range)
     {
         StopAllCoroutines();
+        CharacterIsInRange = null;
         StartCoroutine(MoveTowardsTarget(target, range));
         character.CharacterOrientation.RotateCharacterUntilReachedTarget(target);
     }

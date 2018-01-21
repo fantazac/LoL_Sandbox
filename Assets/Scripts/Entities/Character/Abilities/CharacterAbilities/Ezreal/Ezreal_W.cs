@@ -6,6 +6,9 @@ public class Ezreal_W : DirectionTargetedProjectile, CharacterAbility
 {
     protected Ezreal_W()
     {
+        effectType = AbilityEffectType.AREA_OF_EFFECT;
+        affectedUnitType = AbilityAffectedUnitType.CHARACTERS;
+
         range = 1000;
         speed = 1550;
         damage = 80;
@@ -14,5 +17,22 @@ public class Ezreal_W : DirectionTargetedProjectile, CharacterAbility
 
         CanStopMovement = true;
         HasCastTime = true;
+    }
+
+    protected void ApplyBuffToTarget(Entity entityHit)
+    {
+        Debug.Log("Increased " + entityHit.gameObject + "'s Attack Speed");
+    }
+
+    protected override void OnProjectileHit(AbilityEffect projectile, Entity entityHit)
+    {
+        if (entityHit.Team == character.Team)
+        {
+            ApplyBuffToTarget(entityHit);
+        }
+        else
+        {
+            entityHit.GetComponent<Health>().Hit(damage);
+        }
     }
 }

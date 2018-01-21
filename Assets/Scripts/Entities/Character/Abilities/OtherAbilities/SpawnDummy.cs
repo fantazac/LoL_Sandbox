@@ -53,8 +53,7 @@ public abstract class SpawnDummy : GroundTargeted, OtherAbility
         }
         Dummy dummy = ((GameObject)Instantiate(Resources.Load(dummyResourceName), destination, Quaternion.identity)).GetComponent<Dummy>();
         dummy.transform.rotation = Quaternion.LookRotation((transform.position - dummy.transform.position).normalized);
-        dummy.team = team;
-        dummy.characterId = ++dummyId;
+        dummy.SetDummyTeamAndID(team, ++dummyId);
         dummies.Add(dummy.gameObject);
     }
 }

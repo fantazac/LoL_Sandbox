@@ -1,10 +1,12 @@
 ﻿public enum EntityType
 {
-    CHARACTER,//self, ally, enemy, all
+    CHARACTER,//self, ally characters, enemy characters
     MINION,//ally, enemy, all
     MONSTER,//ally (ivern), enemy (all)
     PET,//ally, enemy, all
-    STRUCTURE,//turret, inhibitor, nexus
+    TURRET,
+    INHIBITOR,
+    NEXUS,//turret, inhibitor, nexus
     TERRAIN,
 
     //Ally: self, ally character, ally minion, ally pet

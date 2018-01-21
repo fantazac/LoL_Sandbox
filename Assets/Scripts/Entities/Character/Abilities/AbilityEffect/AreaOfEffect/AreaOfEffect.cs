@@ -2,28 +2,22 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AreaOfEffect : MonoBehaviour
+public class AreaOfEffect : AbilityEffect
 {
-    protected float damage;
     protected float duration;
-    protected bool canHitAllies;
-    protected EntityTeam teamOfShooter;
 
     protected bool collidersInChildren;
 
-    public List<Health> HealthOfUnitsAlreadyHitWithProjectile { get; protected set; }
-
-    public void ActivateAreaOfEffect(List<Health> healthOfUnitsAlreadyHitWithProjectile, EntityTeam teamOfShooter, bool canHitAllies, float damage, float duration)
+    public void ActivateAreaOfEffect(List<Entity> unitsAlreadyHit, EntityTeam teamOfShooter, AbilityAffectedUnitType affectedUnitType, float duration)
     {
-        this.HealthOfUnitsAlreadyHitWithProjectile = healthOfUnitsAlreadyHitWithProjectile;
+        UnitsAlreadyHit = unitsAlreadyHit;
         this.teamOfShooter = teamOfShooter;
-        this.damage = damage;
+        this.affectedUnitType = affectedUnitType;
         this.duration = duration;
-        this.canHitAllies = canHitAllies;
-        StartCoroutine(ActivateArea());
+        StartCoroutine(ActivateAbilityEffect());
     }
 
-    public void ActivateAreaOfEffect(List<Health> healthOfUnitsAlreadyHitWithProjectile, EntityTeam teamOfShooter, bool canHitAllies, float damage, float duration, bool collidersInChildren)
+    public void ActivateAreaOfEffect(List<Entity> unitsAlreadyHit, EntityTeam teamOfShooter, AbilityAffectedUnitType affectedUnitType, float duration, bool collidersInChildren)
     {
         if (collidersInChildren)
         {
@@ -33,10 +27,10 @@ public class AreaOfEffect : MonoBehaviour
                 aoeCollider.OnTriggerEnterInChild += OnTriggerEnterInChild;
             }
         }
-        ActivateAreaOfEffect(healthOfUnitsAlreadyHitWithProjectile, teamOfShooter, canHitAllies, damage, duration);
+        ActivateAreaOfEffect(unitsAlreadyHit, teamOfShooter, affectedUnitType, duration);
     }
 
-    protected IEnumerator ActivateArea()
+    protected override IEnumerator ActivateAbilityEffect()
     {
         float timeBeforeFrame = Time.deltaTime;
 
@@ -65,35 +59,19 @@ public class AreaOfEffect : MonoBehaviour
         }
     }
 
-    protected void OnTriggerEnter(Collider collider)
+    protected override void OnTriggerEnter(Collider collider)
     {
-        if (collider.gameObject.GetComponent<Character>().team != teamOfShooter || canHitAllies)
-        {
-            Health targetHealth = collider.gameObject.GetComponent<Health>();
+        Entity entityHit = collider.gameObject.GetComponent<Entity>();
 
-            if (targetHealth != null && CanHitTarget(targetHealth))
-            {
-                HealthOfUnitsAlreadyHitWithProjectile.Add(targetHealth);
-                targetHealth.Hit(damage);
-            }
+        if (entityHit != null && CanAffectTarget(entityHit))
+        {
+            UnitsAlreadyHit.Add(entityHit);
+            OnAbilityEffectHitTarget(entityHit);
         }
     }
 
     protected void OnTriggerEnterInChild(Collider collider)
     {
         OnTriggerEnter(collider);
-    }
-
-    protected bool CanHitTarget(Health targetHealth)
-    {
-        foreach (Health health in HealthOfUnitsAlreadyHitWithProjectile)
-        {
-            if (health == targetHealth)
-            {
-                return false;
-            }
-        }
-
-        return true;
     }
 }

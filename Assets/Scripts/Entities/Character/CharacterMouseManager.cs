@@ -22,10 +22,10 @@ public class CharacterMouseManager : MonoBehaviour
 
     public bool HoveredObjectIsEnemy(EntityTeam team)
     {
-        if(HoveredObject == null)
+        if(HoveredObject != null)
         {
-            return false;
+            return team != HoveredObject.GetComponent<Character>().Team;
         }
-        return team != HoveredObject.GetComponent<Character>().team;
+        return false;
     }
 }

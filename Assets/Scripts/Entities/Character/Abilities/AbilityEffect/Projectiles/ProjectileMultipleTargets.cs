@@ -2,20 +2,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ProjectileMultipleTargets : ProjectileDirectionTargetted
+public class ProjectileMultipleTargets : ProjectileDirectionTargeted
 {
     protected override void OnTriggerEnter(Collider collider)
     {
-        if (!alreadyHitTarget && (collider.gameObject.GetComponent<Character>().team != teamOfShooter || canHitAllies))
-        {
-            Health targetHealth = collider.gameObject.GetComponent<Health>();
+        Entity entityHit = collider.gameObject.GetComponent<Entity>();
 
-            if (targetHealth != null && CanHitTarget(targetHealth))
-            {
-                HealthOfUnitsAlreadyHit.Add(targetHealth);
-                targetHealth.Hit(damage);
-                OnProjectileHitTarget();
-            }
+        if (entityHit != null && CanAffectTarget(entityHit))
+        {
+            UnitsAlreadyHit.Add(entityHit);
+            OnAbilityEffectHitTarget(entityHit);
         }
     }
 }

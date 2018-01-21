@@ -10,6 +10,9 @@ public class Lucian_Q : DirectionTargetedProjectile, CharacterAbility
 
     protected Lucian_Q()
     {
+        effectType = AbilityEffectType.AREA_OF_EFFECT;
+        affectedUnitType = AbilityAffectedUnitType.ENEMIES;
+
         range = 500;
         damage = 130;
         castTime = 0.3f;
@@ -23,12 +26,12 @@ public class Lucian_Q : DirectionTargetedProjectile, CharacterAbility
 
     public override bool CanBeCast(Vector3 mousePosition, CharacterAbilityManager characterAbilityManager)
     {
-        return !characterAbilityManager.IsUsingAbilityPreventingAbilityCasts() && character.CharacterMouseManager.HoveredObjectIsEnemy(character.team);
+        return !characterAbilityManager.IsUsingAbilityPreventingAbilityCasts() && character.CharacterMouseManager.HoveredObjectIsEnemy(character.Team);
     }
 
     public override Vector3 GetDestination()
     {
-        return Vector3.right * character.CharacterMouseManager.HoveredObject.GetComponent<Character>().characterId;
+        return Vector3.right * character.CharacterMouseManager.HoveredObject.GetComponent<Character>().CharacterId;
     }
 
     public override void UseAbility(Vector3 destination)
@@ -43,7 +46,7 @@ public class Lucian_Q : DirectionTargetedProjectile, CharacterAbility
         {
             character.CharacterMovement.SetMoveTowardsTarget(target.transform, range);
             character.CharacterMovement.CharacterIsInRange += base.UseAbility;
-        }  
+        }
     }
 
     private GameObject FindEnemyCharacter(int characterId)
@@ -51,7 +54,7 @@ public class Lucian_Q : DirectionTargetedProjectile, CharacterAbility
         GameObject enemyCharacter = null;
         foreach (Character character in FindObjectsOfType<Character>())
         {
-            if (character.characterId == characterId)
+            if (character.CharacterId == characterId)
             {
                 enemyCharacter = character.gameObject;
                 break;
@@ -65,8 +68,8 @@ public class Lucian_Q : DirectionTargetedProjectile, CharacterAbility
         yield return delayCastTime;
 
         AreaOfEffect aoe = ((GameObject)Instantiate(projectilePrefab, transform.position + (transform.forward * projectilePrefab.transform.localScale.z * 0.5f), transform.rotation)).GetComponent<AreaOfEffect>();
-        aoe.ActivateAreaOfEffect(new List<Health>(), character.team, false, damage, durationAoE);
-
+        aoe.ActivateAreaOfEffect(new List<Entity>(), character.Team, affectedUnitType, durationAoE);
+        aoe.OnAbilityEffectHit += OnAreaOfEffectHit;
         FinishAbilityCast();
     }
 }
