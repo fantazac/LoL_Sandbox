@@ -13,4 +13,7 @@ public abstract class SelfTargeted : Ability
     {
         return character.transform.position;
     }
+
+    public override bool CanBeCast(Entity target, CharacterAbilityManager characterAbilityManager) { return false; }
+    public override void UseAbility(Entity target) { }
 }

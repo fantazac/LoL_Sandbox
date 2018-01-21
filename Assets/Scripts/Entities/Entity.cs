@@ -7,6 +7,8 @@ public class Entity : MonoBehaviour
     public EntityType EntityType { get; protected set; }
     public EntityTeam Team { get; protected set; }
 
+    public int EntityId { get; protected set; }
+
     protected virtual void Start()
     {
 

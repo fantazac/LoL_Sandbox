@@ -11,7 +11,7 @@ public class AreaOfEffect : AbilityEffect
     public void ActivateAreaOfEffect(List<Entity> unitsAlreadyHit, EntityTeam teamOfShooter, AbilityAffectedUnitType affectedUnitType, float duration)
     {
         UnitsAlreadyHit = unitsAlreadyHit;
-        this.teamOfShooter = teamOfShooter;
+        this.teamOfCallingEntity = teamOfShooter;
         this.affectedUnitType = affectedUnitType;
         this.duration = duration;
         StartCoroutine(ActivateAbilityEffect());

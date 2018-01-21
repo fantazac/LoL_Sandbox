@@ -18,7 +18,7 @@ public abstract class DirectionTargetedProjectile : DirectionTargeted
         FinishAbilityCast();
     }
 
-    protected virtual void OnAreaOfEffectHit(AbilityEffect projectile, Entity entityHit) // This will most likely go after Lucian Q becomes a UnitTargeted ability
+    protected virtual void OnAreaOfEffectHit(AbilityEffect projectile, Entity entityHit) // See alternative as this is only used by Lucian_W
     {
         entityHit.GetComponent<Health>().Hit(damage);
     }

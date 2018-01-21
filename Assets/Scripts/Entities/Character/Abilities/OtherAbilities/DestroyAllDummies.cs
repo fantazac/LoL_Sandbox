@@ -30,7 +30,7 @@ public class DestroyAllDummies : AutoTargeted, OtherAbility
         return !StaticObjects.OnlineMode || !OfflineOnly; // Is !(StaticObjects.OnlineMode || OfflineOnly) better?
     }
 
-    public override void UseAbility(Vector3 destination = default(Vector3))
+    public override void UseAbility(Vector3 destination)
     {
         RemoveAllDummies();
     }

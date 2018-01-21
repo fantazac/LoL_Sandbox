@@ -12,6 +12,6 @@ public class Dummy : Character
     public void SetDummyTeamAndID(EntityTeam team, int dummyId)
     {
         Team = team;
-        CharacterId = dummyId;
+        EntityId = dummyId;
     }
 }

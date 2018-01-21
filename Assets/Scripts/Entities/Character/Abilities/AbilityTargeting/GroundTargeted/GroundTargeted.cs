@@ -35,4 +35,7 @@ public abstract class GroundTargeted : Ability // Curently same as DirectionTarg
     }
 
     protected virtual void FinalAdjustments(Vector3 destination) { }
+
+    public override bool CanBeCast(Entity target, CharacterAbilityManager characterAbilityManager) { return false; }
+    public override void UseAbility(Entity target) { }
 }

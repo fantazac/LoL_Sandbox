@@ -14,7 +14,7 @@ public abstract class Projectile : AbilityEffect
 
     public void ShootProjectile(EntityTeam teamOfShooter, AbilityAffectedUnitType affectedUnitType, float speed, float range)
     {
-        this.teamOfShooter = teamOfShooter;
+        this.teamOfCallingEntity = teamOfShooter;
         this.affectedUnitType = affectedUnitType;
         this.speed = speed;
         this.range = range;

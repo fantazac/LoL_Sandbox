@@ -4,8 +4,6 @@ using System.Collections.Generic;
 
 public abstract class Character : Entity
 {
-    public int CharacterId { get; protected set; }
-
     private bool sentConnectionInfoRequest = false;
 
     public CharacterAbilityManager CharacterAbilityManager { get; private set; }
@@ -37,7 +35,7 @@ public abstract class Character : Entity
             {
                 Team = EntityTeam.RED;
             }
-            CharacterId = PhotonNetwork.player.ID;
+            EntityId = PhotonNetwork.player.ID;
             SendToServer_TeamAndID();
         }
 
@@ -67,7 +65,7 @@ public abstract class Character : Entity
             transform.position = position;
             transform.rotation = rotation;
             Team = team;
-            CharacterId = characterId;
+            EntityId = characterId;
             OnConnectionInfoReceived(this);
         }
     }
@@ -77,7 +75,7 @@ public abstract class Character : Entity
     {
         if (PhotonView.isMine)
         {
-            PhotonView.RPC("ReceiveFromServer_ConnectionInfo", PhotonTargets.Others, transform.position, transform.rotation, Team, CharacterId);
+            PhotonView.RPC("ReceiveFromServer_ConnectionInfo", PhotonTargets.Others, transform.position, transform.rotation, Team, EntityId);
         }
     }
 
@@ -89,16 +87,16 @@ public abstract class Character : Entity
 
     public void SendToServer_TeamAndID()
     {
-        PhotonView.RPC("ReceiveFromServer_TeamAndID", PhotonTargets.Others, Team, CharacterId);
+        PhotonView.RPC("ReceiveFromServer_TeamAndID", PhotonTargets.Others, Team, EntityId);
     }
 
     [PunRPC]
     protected void ReceiveFromServer_TeamAndID(EntityTeam team, int characterId)
     {
         Team = team;
-        CharacterId = characterId;
+        EntityId = characterId;
     }
 
     //This was in CharacterBase, no idea if useful, keeping it here in case it is.
-    //public virtual void SerializeState(PhotonStream stream, PhotonMessageInfo info) { }
+    public virtual void SerializeState(PhotonStream stream, PhotonMessageInfo info) { }
 }

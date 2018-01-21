@@ -19,7 +19,7 @@ public class CharacterMovement : MonoBehaviour
     public delegate void PlayerMovedHandler();
     public event PlayerMovedHandler CharacterMoved;
 
-    public delegate void PlayerIsInRangeHandler(Vector3 targetPosition);
+    public delegate void PlayerIsInRangeHandler(Entity target);
     public event PlayerIsInRangeHandler CharacterIsInRange;
 
     private void Awake()
@@ -92,19 +92,20 @@ public class CharacterMovement : MonoBehaviour
         }
     }
 
-    public void SetMoveTowardsTarget(Transform target, float range)
+    public void SetMoveTowardsTarget(Entity target, float range)
     {
         StopAllCoroutines();
         CharacterIsInRange = null;
         StartCoroutine(MoveTowardsTarget(target, range));
-        character.CharacterOrientation.RotateCharacterUntilReachedTarget(target);
+        character.CharacterOrientation.RotateCharacterUntilReachedTarget(target.transform);
     }
 
-    private IEnumerator MoveTowardsTarget(Transform target, float range)
+    private IEnumerator MoveTowardsTarget(Entity target, float range)
     {
-        while (Vector3.Distance(target.position, transform.position) > range)
+        Transform targetTransform = target.transform;
+        while (Vector3.Distance(targetTransform.position, transform.position) > range)
         {
-            transform.position = Vector3.MoveTowards(transform.position, target.position, Time.deltaTime * character.CharacterStatsController.GetCurrentMovementSpeed());
+            transform.position = Vector3.MoveTowards(transform.position, targetTransform.position, Time.deltaTime * character.CharacterStatsController.GetCurrentMovementSpeed());
 
             NotifyCharacterMoved();
 
@@ -112,7 +113,7 @@ public class CharacterMovement : MonoBehaviour
         }
         if (CharacterIsInRange != null)
         {
-            CharacterIsInRange(target.position);
+            CharacterIsInRange(target);
         }
 
     }

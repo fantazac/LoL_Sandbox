@@ -13,4 +13,7 @@ public abstract class AutoTargeted : Ability
     {
         return Vector3.zero; // This will change
     }
+
+    public override bool CanBeCast(Entity target, CharacterAbilityManager characterAbilityManager) { return false; }
+    public override void UseAbility(Entity target) { }
 }
