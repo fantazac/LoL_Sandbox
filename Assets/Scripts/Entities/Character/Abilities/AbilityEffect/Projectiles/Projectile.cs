@@ -12,9 +12,9 @@ public abstract class Projectile : AbilityEffect
     public delegate void OnProjectileReachedEndHandler(Projectile projectile);
     public event OnProjectileReachedEndHandler OnProjectileReachedEnd;
 
-    public void ShootProjectile(EntityTeam teamOfShooter, AbilityAffectedUnitType affectedUnitType, float speed, float range)
+    public void ShootProjectile(EntityTeam teamOfCallingEntity, AbilityAffectedUnitType affectedUnitType, float speed, float range)
     {
-        this.teamOfCallingEntity = teamOfShooter;
+        this.teamOfCallingEntity = teamOfCallingEntity;
         this.affectedUnitType = affectedUnitType;
         this.speed = speed;
         this.range = range;
