@@ -6,8 +6,9 @@ public class Ezreal_Q : DirectionTargetedProjectile, CharacterAbility
 {
     protected Ezreal_Q()
     {
-        effectType = AbilityEffectType.SINGLE_TARGET;
         affectedUnitType = AbilityAffectedUnitType.ENEMIES;
+        effectType = AbilityEffectType.SINGLE_TARGET;
+        damageType = DamageType.PHYSICAL;
 
         range = 1150;
         speed = 2000;

@@ -8,8 +8,9 @@ public class Ezreal_E : GroundTargetedBlink, CharacterAbility
 
     protected Ezreal_E()
     {
-        effectType = AbilityEffectType.SINGLE_TARGET;
         affectedUnitType = AbilityAffectedUnitType.ENEMIES;
+        effectType = AbilityEffectType.SINGLE_TARGET;
+        damageType = DamageType.MAGIC;
 
         range = 475;
         speed = 1500;

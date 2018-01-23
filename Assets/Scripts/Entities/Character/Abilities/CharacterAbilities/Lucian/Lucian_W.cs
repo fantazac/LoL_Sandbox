@@ -11,8 +11,9 @@ public class Lucian_W : DirectionTargetedProjectile, CharacterAbility
 
     protected Lucian_W()
     {
-        effectType = AbilityEffectType.SINGLE_TARGET;
         affectedUnitType = AbilityAffectedUnitType.ENEMIES;
+        effectType = AbilityEffectType.SINGLE_TARGET;
+        damageType = DamageType.MAGIC;
 
         range = 900;
         speed = 1550;
