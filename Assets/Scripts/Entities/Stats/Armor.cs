@@ -1,4 +1,6 @@
-﻿public class Armor : Stat
+﻿using UnityEngine;
+
+public class Armor : Stat
 {
     public float GetPhysicalDamageTakenMultiplier()
     {
@@ -12,10 +14,16 @@
         }
     }
 
+    public int GetPhysicalDamageReductionPercent()
+    {
+        float percent = (1 - GetPhysicalDamageTakenMultiplier())*100;
+        return (int)Mathf.Round(percent);
+    }
+
     public override string GetUIText()
     {
         return "ARMOR: " + GetTotal() + " ((" + GetBaseValue() + " + " + GetFlatBonus() +
                ") * " + GetPercentBonus() + "% * -" + GetPercentMalus() + "% - " + GetFlatMalus() + 
-               ") - Takes " + (int)(GetPhysicalDamageTakenMultiplier()*100) + "% reduced physical damage";
+               ") - Takes " + GetPhysicalDamageReductionPercent() + "% reduced physical damage";
     }
 }

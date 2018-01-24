@@ -1,4 +1,6 @@
-﻿public class MagicResistance : Stat
+﻿using UnityEngine;
+
+public class MagicResistance : Stat
 {
     public float GetMagicDamageTakenMultiplier()
     {
@@ -12,10 +14,16 @@
         }
     }
 
+    public int GetMagicDamageReductionPercent()
+    {
+        float percent = (1 - GetMagicDamageTakenMultiplier()) * 100;
+        return (int)Mathf.Round(percent);
+    }
+
     public override string GetUIText()
     {
         return "MAGIC RESISTANCE: " + GetTotal() + " ((" + GetBaseValue() + " + " + GetFlatBonus() +
                ") * " + GetPercentBonus() + "% * -" + GetPercentMalus() + "% - " + GetFlatMalus() +
-            ") - Takes " + (int)(GetMagicDamageTakenMultiplier()*100) + "% reduced magic damage";
+            ") - Takes " + GetMagicDamageReductionPercent() + "% reduced magic damage";
     }
 }
