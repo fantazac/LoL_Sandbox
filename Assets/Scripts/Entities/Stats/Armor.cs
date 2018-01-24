@@ -1,52 +1,29 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class Armor : MonoBehaviour
+public class Armor : Stat
 {
-    [SerializeField]
-    private float baseArmor;
-    [SerializeField]
-    private float currentArmor;
-    [SerializeField]
-    private float bonusArmor;
-    [SerializeField]
-    private float physicalDamageTakenMultiplier;
-
-    public void SetBaseArmor(float baseArmor)
-    {
-        this.baseArmor = baseArmor;
-        currentArmor = baseArmor;//change this
-        physicalDamageTakenMultiplier = 1f - (currentArmor / (100f + currentArmor));
-    }
-
-    public float GetBaseArmor()
-    {
-        return baseArmor;
-    }
-
-    public float GetCurrentArmor()
-    {
-        return currentArmor;
-    }
-
-    public float GetBonusArmor()
-    {
-        return bonusArmor;
-    }
-
     public float GetPhysicalDamageTakenMultiplier()
     {
-        return physicalDamageTakenMultiplier;
+        if (total >= 0)
+        {
+            return 100 / (100 + total);
+        }
+        else
+        {
+            return 2 - 100 / (100 - total);
+        }
     }
 
-    public float GetPhysicalDamageReductionPercent()
+    public int GetPhysicalDamageReductionPercent()
     {
-        return (1f - physicalDamageTakenMultiplier) * 100;
+        float percent = (1 - GetPhysicalDamageTakenMultiplier())*100;
+        return (int)Mathf.Round(percent);
     }
 
-    public string GetUIText()
+    public override string GetUIText()
     {
-        return "ARMOR: " + GetCurrentArmor() + " (" + GetBaseArmor() + " + " + GetBonusArmor() + ") - Takes " + (int)GetPhysicalDamageReductionPercent() + "% reduced physical damage";
+        return "ARMOR: " + GetTotal() + " ((" + GetBaseValue() + " + " + GetFlatBonus() +
+               ") * " + GetPercentBonus() + "% * -" + GetPercentMalus() + "% - " + GetFlatMalus() + 
+               ") - Takes " + GetPhysicalDamageReductionPercent() + "% reduced physical damage";
     }
 }

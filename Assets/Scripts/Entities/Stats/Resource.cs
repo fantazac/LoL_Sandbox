@@ -1,60 +1,52 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public abstract class Resource : MonoBehaviour
+public abstract class Resource : Stat
 {
     [SerializeField]
     protected ResourceType type;
     [SerializeField]
-    protected float baseResource;
-    [SerializeField]
-    protected float currentResource;
-    [SerializeField]
-    protected float bonusResource;
-    [SerializeField]
-    protected float maxResource;
-
-    public void SetBaseResource(float baseResource)
-    {
-        this.baseResource = baseResource;
-        maxResource = baseResource;
-        currentResource = maxResource;//change this
-    }
+    protected float currentValue;
 
     public ResourceType GetResourceType()
     {
         return type;
     }
 
-    public float GetBaseResource()
+    public float GetCurrentValue()
     {
-        return baseResource;
+        return currentValue;
     }
 
-    public float GetCurrentResource()
+    public void Reduce(float amount)
     {
-        return currentResource;
+        currentValue = Mathf.Clamp(currentValue - amount, 0, total);
     }
 
-    public float GetBonusResource()
+    public void Restore(float amount)
     {
-        return bonusResource;
+        currentValue = Mathf.Clamp(currentValue + amount, 0, total);
     }
 
-    public float GetMaximumResource()
+    public float GetPercentLeft()
     {
-        return maxResource;
+        return currentValue / total;
     }
 
-    public float GetResourcePercent()
+    public override void UpdateTotal()
     {
-        return currentResource / maxResource;
+        float previousTotal = total;
+
+        base.UpdateTotal();
+        total = Mathf.Clamp(total, 0, float.MaxValue);
+
+        float difference = total - previousTotal;
+        currentValue = Mathf.Clamp(currentValue + difference, 0, total);
     }
 
-    public string GetUIText()
+    public override string GetUIText()
     {
-        return GetResourceType() + ": " + GetCurrentResource() + " / " + GetMaximumResource() + " (" + GetBaseResource() + " + " + GetBonusResource() + ")";
+        return GetResourceType() + ": " + GetCurrentValue() + " / " + GetTotal() + " ((" + GetBaseValue() + " + " + GetFlatBonus() +
+               ") * " + GetPercentBonus() + "% * -" + GetPercentMalus() + "% - " + GetFlatMalus() + ")";
     }
 }
 

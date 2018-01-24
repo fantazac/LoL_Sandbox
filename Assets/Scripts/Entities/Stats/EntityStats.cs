@@ -27,7 +27,7 @@ public class EntityStats : MonoBehaviour
     protected virtual void OnEnable()
     {
         Health = GetComponent<Health>();
-        Resource = GetComponent<Resource>();//need to handle when there is no resource (ex. garen)
+        Resource = GetComponent<Resource>();//TODO: need to handle when there is no resource (ex. garen)
 
         AttackDamage = GetComponent<AttackDamage>();
         AbilityPower = GetComponent<AbilityPower>();
@@ -52,25 +52,25 @@ public class EntityStats : MonoBehaviour
 
     protected virtual void SetBaseStats(EntityBaseStats entityBaseStats)
     {
-        Health.SetBaseHealth(entityBaseStats.BaseHealth);
-        Resource.SetBaseResource(entityBaseStats.BaseResource);
+        Health.SetBaseValue(entityBaseStats.BaseHealth);
+        Resource.SetBaseValue(entityBaseStats.BaseResource);
 
-        AttackDamage.SetBaseAttackDamage(entityBaseStats.BaseAttackDamage);
-        AbilityPower.SetBaseAbilityPower(entityBaseStats.BaseAbilityPower);
-        Armor.SetBaseArmor(entityBaseStats.BaseArmor);
-        MagicResistance.SetBaseMagicResistance(entityBaseStats.BaseMagicResistance);
-        AttackSpeed.SetBaseAttackSpeed(entityBaseStats.BaseAttackSpeed);
-        CooldownReduction.SetBaseCooldownReduction(entityBaseStats.BaseCooldownReduction);
-        CriticalStrikeChance.SetBaseCriticalStrikeChance(entityBaseStats.BaseCriticalStrikeChance);
-        MovementSpeed.SetBaseMovementSpeed(entityBaseStats.BaseMovementSpeed);
+        AttackDamage.SetBaseValue(entityBaseStats.BaseAttackDamage);
+        AbilityPower.SetBaseValue(entityBaseStats.BaseAbilityPower);
+        Armor.SetBaseValue(entityBaseStats.BaseArmor);
+        MagicResistance.SetBaseValue(entityBaseStats.BaseMagicResistance);
+        AttackSpeed.SetBaseValue(entityBaseStats.BaseAttackSpeed);
+        CooldownReduction.SetBaseValue(entityBaseStats.BaseCooldownReduction);
+        CriticalStrikeChance.SetBaseValue(entityBaseStats.BaseCriticalStrikeChance);
+        MovementSpeed.SetBaseValue(entityBaseStats.BaseMovementSpeed);
 
-        HealthRegenaration.SetBaseHealthRegeneration(entityBaseStats.BaseHealthRegeneration);
-        ResourceRegeneration.SetBaseResourceRegeneration(entityBaseStats.BaseResourceRegeneration);
-        ArmorPenetration.SetBaseArmorPenetration(entityBaseStats.BaseArmorPenetration, entityBaseStats.BaseArmorPenetrationPercent);
-        MagicPenetration.SetBaseMagicPenetration(entityBaseStats.BaseMagicPenetration, entityBaseStats.BaseMagicPenetrationPercent);
-        LifeSteal.SetBaseLifeSteal(entityBaseStats.BaseLifeSteal);
-        SpellVamp.SetBaseSpellVamp(entityBaseStats.BaseSpellVamp);
-        AttackRange.SetBaseAttackRange(entityBaseStats.BaseAttackRange);
-        Tenacity.SetBaseTenacity(entityBaseStats.BaseTenacity);
+        HealthRegenaration.SetBaseValue(entityBaseStats.BaseHealthRegeneration);
+        ResourceRegeneration.SetBaseValue(entityBaseStats.BaseResourceRegeneration);
+        ArmorPenetration.SetBaseValue(entityBaseStats.BaseArmorPenetration);
+        MagicPenetration.SetBaseValue(entityBaseStats.BaseMagicPenetration);
+        LifeSteal.SetBaseValue(entityBaseStats.BaseLifeSteal);
+        SpellVamp.SetBaseValue(entityBaseStats.BaseSpellVamp);
+        AttackRange.SetBaseValue(entityBaseStats.BaseAttackRange);
+        Tenacity.SetBaseValue(entityBaseStats.BaseTenacity);
     }
 }

@@ -32,7 +32,7 @@ public class Ezreal_R : DirectionTargetedProjectile, CharacterAbility
 
     protected override void OnProjectileHit(AbilityEffect projectile, Entity entityHit)
     {
-        entityHit.GetComponent<Health>().Hit(damage * currentDamageMultiplier);
+        entityHit.GetComponent<Health>().Reduce(damage * currentDamageMultiplier);
         if(currentDamageMultiplier > DAMAGE_REDUCTION_CAP)
         {
             currentDamageMultiplier -= DAMAGE_REDUCTION_PER_TARGET_HIT;

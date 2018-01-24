@@ -1,39 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class AttackDamage : MonoBehaviour
+﻿public class AttackDamage : Stat
 {
-    [SerializeField]
-    private float baseAttackDamage;
-    [SerializeField]
-    private float currentAttackDamage;
-    [SerializeField]
-    private float bonusAttackDamage;
-
-    public void SetBaseAttackDamage(float baseAttackDamage)
+    public override string GetUIText()
     {
-        this.baseAttackDamage = baseAttackDamage;
-        currentAttackDamage = baseAttackDamage;//change this
-    }
-
-    public float GetBaseAttackDamage()
-    {
-        return baseAttackDamage;
-    }
-
-    public float GetCurrentAttackDamage()
-    {
-        return currentAttackDamage;
-    }
-
-    public float GetBonusAttackDamage()
-    {
-        return bonusAttackDamage;
-    }
-
-    public string GetUIText()
-    {
-        return "ATTACK DAMAGE: " + GetCurrentAttackDamage() + " (" + GetBaseAttackDamage() + " + " + GetBonusAttackDamage() + ")";
+        return "ATTACK DAMAGE: " + GetTotal() + " ((" + GetBaseValue() + " + " + GetFlatBonus() +
+               ") * " + GetPercentBonus() + "% * -" + GetPercentMalus() + "% - " + GetFlatMalus() + ")";
     }
 }

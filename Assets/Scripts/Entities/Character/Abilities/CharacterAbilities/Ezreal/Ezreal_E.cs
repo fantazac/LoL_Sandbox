@@ -65,7 +65,7 @@ public class Ezreal_E : GroundTargetedBlink, CharacterAbility
 
     private void OnProjectileHit(AbilityEffect projectile, Entity entityHit)
     {
-        entityHit.GetComponent<Health>().Hit(damage);
+        entityHit.GetComponent<Health>().Reduce(damage);
         Destroy(projectile.gameObject);
     }
 }

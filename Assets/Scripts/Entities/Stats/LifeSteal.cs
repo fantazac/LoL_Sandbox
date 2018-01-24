@@ -1,39 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class LifeSteal : MonoBehaviour
+﻿public class LifeSteal : Stat
 {
-    [SerializeField]
-    private float baseLifeSteal;
-    [SerializeField]
-    private float currentLifeSteal;
-    [SerializeField]
-    private float bonusLifeSteal;
-
-    public void SetBaseLifeSteal(float baseLifeSteal)
+    public override string GetUIText()
     {
-        this.baseLifeSteal = baseLifeSteal;
-        currentLifeSteal = baseLifeSteal;//change this
-    }
-
-    public float GetBaseLifeSteal()
-    {
-        return baseLifeSteal;
-    }
-
-    public float GetCurrentLifeSteal()
-    {
-        return currentLifeSteal;
-    }
-
-    public float GetBonusLifeSteal()
-    {
-        return bonusLifeSteal;
-    }
-
-    public string GetUIText()
-    {
-        return "LIFE STEAL: " + GetCurrentLifeSteal() + "% (" + GetBaseLifeSteal() + "% + " + GetBonusLifeSteal() + "%)";
+        return "LIFE STEAL: " + GetTotal() + "% ((" + GetBaseValue() + " + " + GetFlatBonus() +
+               ") * " + GetPercentBonus() + "% * -" + GetPercentMalus() + "% - " + GetFlatMalus() + ")";
     }
 }

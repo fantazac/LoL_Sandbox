@@ -20,12 +20,12 @@ public abstract class DirectionTargetedProjectile : DirectionTargeted
 
     protected virtual void OnAreaOfEffectHit(AbilityEffect projectile, Entity entityHit) // See alternative as this is only used by Lucian_W
     {
-        entityHit.GetComponent<Health>().Hit(damage);
+        entityHit.GetComponent<Health>().Reduce(damage);
     }
 
     protected virtual void OnProjectileHit(AbilityEffect projectile, Entity entityHit)
     {
-        entityHit.GetComponent<Health>().Hit(damage);
+        entityHit.GetComponent<Health>().Reduce(damage);
         if (effectType == AbilityEffectType.SINGLE_TARGET)
         {
             Destroy(projectile.gameObject);
