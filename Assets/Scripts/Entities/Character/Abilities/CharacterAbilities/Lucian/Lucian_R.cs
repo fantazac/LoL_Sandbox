@@ -13,8 +13,9 @@ public class Lucian_R : DirectionTargetedProjectile, CharacterAbility
 
     protected Lucian_R()
     {
-        effectType = AbilityEffectType.SINGLE_TARGET;
         affectedUnitType = AbilityAffectedUnitType.ENEMIES;
+        effectType = AbilityEffectType.SINGLE_TARGET;
+        damageType = DamageType.PHYSICAL;
 
         range = 1200;
         speed = 2000;

@@ -11,8 +11,9 @@ public class Lucian_Q : UnitTargeted, CharacterAbility
 
     protected Lucian_Q()
     {
-        effectType = AbilityEffectType.AREA_OF_EFFECT;
         affectedUnitType = AbilityAffectedUnitType.ENEMIES;
+        effectType = AbilityEffectType.AREA_OF_EFFECT;
+        damageType = DamageType.PHYSICAL;
 
         range = 500;
         damage = 130;

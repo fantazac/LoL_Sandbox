@@ -6,8 +6,9 @@ public class Ezreal_W : DirectionTargetedProjectile, CharacterAbility
 {
     protected Ezreal_W()
     {
-        effectType = AbilityEffectType.AREA_OF_EFFECT;
         affectedUnitType = AbilityAffectedUnitType.CHARACTERS;
+        effectType = AbilityEffectType.AREA_OF_EFFECT;
+        damageType = DamageType.MAGIC;
 
         range = 1000;
         speed = 1550;
