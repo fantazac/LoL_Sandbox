@@ -27,7 +27,7 @@ public class EntityStats : MonoBehaviour
     protected virtual void OnEnable()
     {
         Health = GetComponent<Health>();
-        Resource = GetComponent<Resource>();//need to handle when there is no resource (ex. garen)
+        Resource = GetComponent<Resource>();//TODO: need to handle when there is no resource (ex. garen)
 
         AttackDamage = GetComponent<AttackDamage>();
         AbilityPower = GetComponent<AbilityPower>();
