@@ -46,7 +46,7 @@ public abstract class UnitTargeted : Ability
 
     protected virtual void OnAreaOfEffectHit(AbilityEffect areaOfEffect, Entity entityHit)
     {
-        entityHit.GetComponent<Health>().Hit(damage);
+        entityHit.GetComponent<Health>().Reduce(damage);
     }
 
     public override bool CanBeCast(Vector3 mousePosition, CharacterAbilityManager characterAbilityManager) { return false; }

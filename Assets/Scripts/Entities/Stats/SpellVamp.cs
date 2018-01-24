@@ -1,39 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class SpellVamp : MonoBehaviour
+﻿public class SpellVamp : Stat
 {
-    [SerializeField]
-    private float baseSpellVamp;
-    [SerializeField]
-    private float currentSpellVamp;
-    [SerializeField]
-    private float bonusSpellVamp;
-
-    public void SetBaseSpellVamp(float baseSpellVamp)
+    public override string GetUIText()
     {
-        this.baseSpellVamp = baseSpellVamp;
-        currentSpellVamp = baseSpellVamp;//change this
-    }
-
-    public float GetBaseSpellVamp()
-    {
-        return baseSpellVamp;
-    }
-
-    public float GetCurrentSpellVamp()
-    {
-        return currentSpellVamp;
-    }
-
-    public float GetBonusSpellVamp()
-    {
-        return bonusSpellVamp;
-    }
-
-    public string GetUIText()
-    {
-        return "SPELL VAMP: " + GetCurrentSpellVamp() + "% (" + GetBaseSpellVamp() + "% + " + GetBonusSpellVamp() + "%)";
+        return "SPELL VAMP: " + GetTotal() + "% ((" + GetBaseValue() + " + " + GetFlatBonus() +
+               ") * " + GetPercentBonus() + "% * -" + GetPercentMalus() + "% - " + GetFlatMalus() + ")";
     }
 }

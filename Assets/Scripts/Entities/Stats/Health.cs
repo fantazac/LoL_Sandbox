@@ -1,80 +1,39 @@
 ﻿using UnityEngine;
-using System.Collections;
 
-public class Health : MonoBehaviour
+//TODO: make this a resource
+public class Health : Stat
 {
     [SerializeField]
-    private float baseHealth;
-    [SerializeField]
-    private float currentHealth;
-    [SerializeField]
-    private float bonusHealth;//health gained from abilities, items, masteries, etc...
-    [SerializeField]
-    private float maxHealth;//baseHealth + bonusHealth
+    protected float currentValue;
 
-    public void SetBaseHealth(float baseHealth)
+    public float GetCurrentValue()
     {
-        this.baseHealth = baseHealth;
-        maxHealth = baseHealth;
-        currentHealth = maxHealth;//change this
+        return currentValue;
     }
 
-    public float GetBaseHealth()
+    public void Reduce(float amount)
     {
-        return baseHealth;
+        currentValue = Mathf.Clamp(currentValue - amount, 0, total);
     }
 
-    public float GetCurrentHealth()
+    public void Restore(float amount)
     {
-        return currentHealth;
+        currentValue = Mathf.Clamp(currentValue + amount, 0, total);
     }
 
-    public float GetBonusHealth()
+    public float GetPercentLeft()
     {
-        return bonusHealth;
-    }
-
-    public float GetMaximumHealth()
-    {
-        return maxHealth;
-    }
-
-    public float GetHealthPercent()
-    {
-        return currentHealth / maxHealth;
-    }
-
-    public void Heal(float heal)
-    {
-        if (currentHealth + heal >= maxHealth)
-        {
-            currentHealth = maxHealth;
-        }
-        else
-        {
-            currentHealth += heal;
-        }
+        return currentValue / total;
     }
 
     public bool IsDead()
     {
-        return currentHealth <= 0;
+        return currentValue <= 0;
     }
 
-    public string GetUIText()
+    public override string GetUIText()
     {
-        return "HEALTH: " + GetCurrentHealth() + " / " + GetMaximumHealth() + " (" + GetBaseHealth() + " + " + GetBonusHealth() + ")";
-    }
-
-    public void Hit(float damage)
-    {
-        if(currentHealth <= damage)
-        {
-            currentHealth = 0;
-        }
-        else
-        {
-            currentHealth -= damage;
-        }
+        return "HEALTH: " + GetCurrentValue() + " / " + GetTotal() + " ((" + GetBaseValue() + " + " + GetFlatBonus() +
+               ") * " + GetPercentBonus() + "% * -" + GetPercentMalus() + "% - " + GetFlatMalus() + ")";
     }
 }

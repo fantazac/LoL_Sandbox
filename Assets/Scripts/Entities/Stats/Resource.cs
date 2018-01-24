@@ -17,20 +17,36 @@ public abstract class Resource : Stat
         return currentValue;
     }
 
-    public void SetCurrentValue(float currentValue)
+    public void Reduce(float amount)
     {
-        this.currentValue = currentValue;
-        UpdateTotal();
+        currentValue = Mathf.Clamp(currentValue - amount, 0, total);
     }
 
-    public float GetResourcePercent()
+    public void Restore(float amount)
+    {
+        currentValue = Mathf.Clamp(currentValue + amount, 0, total);
+    }
+
+    public float GetPercentLeft()
     {
         return currentValue / total;
     }
 
+    public override void UpdateTotal()
+    {
+        float previousTotal = total;
+
+        base.UpdateTotal();
+        total = Mathf.Clamp(total, 0, float.MaxValue);
+
+        float difference = total - previousTotal;
+        currentValue = Mathf.Clamp(currentValue + difference, 0, total);
+    }
+
     public override string GetUIText()
     {
-        return GetResourceType() + ": " + GetTotal() + " / " + GetMaximumValue() + " (" + GetBaseResource() + " + " + GetBonusResource() + ")";
+        return GetResourceType() + ": " + GetCurrentValue() + " / " + GetTotal() + " ((" + GetBaseValue() + " + " + GetFlatBonus() +
+               ") * " + GetPercentBonus() + "% * -" + GetPercentMalus() + "% - " + GetFlatMalus() + ")";
     }
 }
 

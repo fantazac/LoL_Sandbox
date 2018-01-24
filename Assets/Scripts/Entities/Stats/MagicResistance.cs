@@ -1,53 +1,21 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class MagicResistance : MonoBehaviour
+﻿public class MagicResistance : Stat
 {
-    [SerializeField]
-    private float baseMagicResistance;
-    [SerializeField]
-    private float currentMagicResistance;
-    [SerializeField]
-    private float bonusMagicResistance;
-    [SerializeField]
-    private float magicDamageTakenMultiplier;
-
-    public void SetBaseMagicResistance(float baseMagicResistance)
-    {
-        this.baseMagicResistance = baseMagicResistance;
-        currentMagicResistance = baseMagicResistance;//change this
-        magicDamageTakenMultiplier = 1f - (currentMagicResistance / (100f + currentMagicResistance));
-    }
-
-    public float GetBaseMagicResistance()
-    {
-        return baseMagicResistance;
-    }
-
-    public float GetCurrentMagicResistance()
-    {
-        return currentMagicResistance;
-    }
-
-    public float GetBonusMagicResistance()
-    {
-        return bonusMagicResistance;
-    }
-
     public float GetMagicDamageTakenMultiplier()
     {
-        return magicDamageTakenMultiplier;
+        if (total >= 0)
+        {
+            return 100 / (100 + total);
+        }
+        else
+        {
+            return 2 - 100 / (100 - total);
+        }
     }
 
-    public float GetMagicDamageReductionPercent()
+    public override string GetUIText()
     {
-        return (1f - magicDamageTakenMultiplier) * 100;
-    }
-
-    public string GetUIText()
-    {
-        return "MAGIC RESISTANCE: " + GetCurrentMagicResistance() + " (" + GetBaseMagicResistance() + " + " + GetBonusMagicResistance() + 
-            ") - Takes " + (int)GetMagicDamageReductionPercent() + "% reduced magic damage";
+        return "MAGIC RESISTANCE: " + GetTotal() + " ((" + GetBaseValue() + " + " + GetFlatBonus() +
+               ") * " + GetPercentBonus() + "% * -" + GetPercentMalus() + "% - " + GetFlatMalus() +
+            ") - Takes " + (int)(GetMagicDamageTakenMultiplier()*100) + "% reduced magic damage";
     }
 }

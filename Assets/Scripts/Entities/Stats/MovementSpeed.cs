@@ -1,46 +1,16 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class MovementSpeed : MonoBehaviour
+﻿public class MovementSpeed : Stat
 {
-    [SerializeField]
-    private float baseMovementSpeed;
-    [SerializeField]
-    private float currentMovementSpeed;
-    [SerializeField]
-    private float bonusMovementSpeed;
+    private const float MOVEMENT_SPEED_MODIFIER = 0.01f;    // This is because our map is 100 times smaller than the real one.
 
-    private const float MOVEMENT_SPEED_MODIFIER = 0.01f;
-
-    public void SetBaseMovementSpeed(float baseMovementSpeed)
-    {
-        this.baseMovementSpeed = baseMovementSpeed;
-        currentMovementSpeed = baseMovementSpeed;//change this
-    }
-
-    public float GetBaseMovementSpeed()
-    {
-        return baseMovementSpeed;
-    }
-
-    public float GetCurrentMovementSpeed()
-    {
-        return currentMovementSpeed;
-    }
 
     public float GetCurrentMovementSpeedForMovement()
     {
-        return currentMovementSpeed * MOVEMENT_SPEED_MODIFIER;
+        return total * MOVEMENT_SPEED_MODIFIER;
     }
 
-    public float GetBonusMovementSpeed()
+    public override string GetUIText()
     {
-        return bonusMovementSpeed;
-    }
-
-    public string GetUIText()
-    {
-        return "MOVEMENT SPEED: " + GetCurrentMovementSpeed() + " (" + GetBaseMovementSpeed() + " + " + GetBonusMovementSpeed() + ")";
+        return "MOVEMENT SPEED: " + GetTotal() + " ((" + GetBaseValue() + " + " + GetFlatBonus() +
+               ") * " + GetPercentBonus() + "% * -" + GetPercentMalus() + "% - " + GetFlatMalus() + ")";
     }
 }

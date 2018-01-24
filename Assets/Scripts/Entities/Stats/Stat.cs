@@ -80,5 +80,6 @@ public abstract class Stat : MonoBehaviour
         total = (baseValue + flatBonus) * (1 + percentBonus) * (1 - percentMalus) - flatMalus;
     }
 
+    // FIXME: the UI is not this class' concern. Move this method somewhere else.
     public abstract string GetUIText();
 }
