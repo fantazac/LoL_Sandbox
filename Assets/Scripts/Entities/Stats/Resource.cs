@@ -1,60 +1,36 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public abstract class Resource : MonoBehaviour
+public abstract class Resource : Stat
 {
     [SerializeField]
     protected ResourceType type;
     [SerializeField]
-    protected float baseResource;
-    [SerializeField]
-    protected float currentResource;
-    [SerializeField]
-    protected float bonusResource;
-    [SerializeField]
-    protected float maxResource;
-
-    public void SetBaseResource(float baseResource)
-    {
-        this.baseResource = baseResource;
-        maxResource = baseResource;
-        currentResource = maxResource;//change this
-    }
+    protected float currentValue;
 
     public ResourceType GetResourceType()
     {
         return type;
     }
 
-    public float GetBaseResource()
+    public float GetCurrentValue()
     {
-        return baseResource;
+        return currentValue;
     }
 
-    public float GetCurrentResource()
+    public void SetCurrentValue(float currentValue)
     {
-        return currentResource;
-    }
-
-    public float GetBonusResource()
-    {
-        return bonusResource;
-    }
-
-    public float GetMaximumResource()
-    {
-        return maxResource;
+        this.currentValue = currentValue;
+        UpdateTotal();
     }
 
     public float GetResourcePercent()
     {
-        return currentResource / maxResource;
+        return currentValue / total;
     }
 
-    public string GetUIText()
+    public override string GetUIText()
     {
-        return GetResourceType() + ": " + GetCurrentResource() + " / " + GetMaximumResource() + " (" + GetBaseResource() + " + " + GetBonusResource() + ")";
+        return GetResourceType() + ": " + GetTotal() + " / " + GetMaximumValue() + " (" + GetBaseResource() + " + " + GetBonusResource() + ")";
     }
 }
 

@@ -5,7 +5,7 @@ public abstract class Stat : MonoBehaviour
     [SerializeField]
     protected float baseValue;
     [SerializeField]
-    protected float currentValue;
+    protected float total;
     [SerializeField]
     protected float flatBonus;
     [SerializeField]
@@ -23,12 +23,12 @@ public abstract class Stat : MonoBehaviour
     public void SetBaseValue(float baseValue)
     {
         this.baseValue = baseValue;
-        UpdateCurrentValue();
+        UpdateTotal();
     }
 
-    public float GetCurrentValue()
+    public float GetTotal()
     {
-        return currentValue;
+        return total;
     }
 
     public float GetFlatBonus()
@@ -39,7 +39,7 @@ public abstract class Stat : MonoBehaviour
     public void SetFlatBonus(float flatBonus)
     {
         this.flatBonus = flatBonus;
-        UpdateCurrentValue();
+        UpdateTotal();
     }
 
     public float GetPercentBonus()
@@ -50,11 +50,35 @@ public abstract class Stat : MonoBehaviour
     public void SetPercentBonus(float percentBonus)
     {
         this.percentBonus = percentBonus;
-        UpdateCurrentValue();
+        UpdateTotal();
     }
 
-    public virtual void UpdateCurrentValue()
+    public float GetFlatMalus()
     {
-        currentValue = (baseValue + flatBonus) * (1 + percentBonus) * (1 - percentMalus) - flatMalus;
+        return flatMalus;
     }
+
+    public void SetFlatMalus(float flatMalus)
+    {
+        this.flatMalus = flatMalus;
+        UpdateTotal();
+    }
+
+    public float GetPercentMalus()
+    {
+        return percentMalus;
+    }
+
+    public void SetPercentMalus(float percentMalus)
+    {
+        this.percentMalus = percentMalus;
+        UpdateTotal();
+    }
+
+    public virtual void UpdateTotal()
+    {
+        total = (baseValue + flatBonus) * (1 + percentBonus) * (1 - percentMalus) - flatMalus;
+    }
+
+    public abstract string GetUIText();
 }
