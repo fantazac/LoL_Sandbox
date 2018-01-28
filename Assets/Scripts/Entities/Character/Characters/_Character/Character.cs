@@ -7,6 +7,7 @@ public abstract class Character : Entity
     private bool sentConnectionInfoRequest = false;
 
     public CharacterAbilityManager CharacterAbilityManager { get; private set; }
+    public CharacterActionManager CharacterActionManager { get; private set; }
     public CharacterInput CharacterInput { get; private set; }
     public CharacterMouseManager CharacterMouseManager { get; private set; }
     public CharacterMovement CharacterMovement { get; private set; }
@@ -47,6 +48,7 @@ public abstract class Character : Entity
     private void InitCharacterProperties()
     {
         CharacterAbilityManager = GetComponent<CharacterAbilityManager>();
+        CharacterActionManager = GetComponent<CharacterActionManager>();
         CharacterInput = GetComponent<CharacterInput>();
         CharacterMouseManager = GetComponent<CharacterMouseManager>();
         CharacterMovement = GetComponent<CharacterMovement>();

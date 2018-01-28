@@ -5,9 +5,9 @@ using UnityEngine;
 
 public abstract class GroundTargeted : Ability // Curently same as DirectionTargeted, might change when other abilities are created
 {
-    public override bool CanBeCast(Vector3 mousePosition, CharacterAbilityManager characterAbilityManager)
+    public override bool CanBeCast(Vector3 mousePosition)
     {
-        return !characterAbilityManager.IsUsingAbilityPreventingAbilityCasts() && MousePositionOnTerrain.GetRaycastHit(mousePosition, out hit);
+        return MousePositionOnTerrain.GetRaycastHit(mousePosition, out hit);
     }
 
     public override Vector3 GetDestination()
@@ -36,6 +36,6 @@ public abstract class GroundTargeted : Ability // Curently same as DirectionTarg
 
     protected virtual void FinalAdjustments(Vector3 destination) { }
 
-    public override bool CanBeCast(Entity target, CharacterAbilityManager characterAbilityManager) { return false; }
+    public override bool CanBeCast(Entity target) { return false; }
     public override void UseAbility(Entity target) { }
 }

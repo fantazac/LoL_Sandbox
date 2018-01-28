@@ -7,6 +7,8 @@ public class CharacterMovement : MonoBehaviour
     [SerializeField]
     private GameObject movementCapsule;
 
+    private Vector3 destination;
+    private Entity target;
     private RaycastHit hit;
 
     private Character character;
@@ -45,7 +47,7 @@ public class CharacterMovement : MonoBehaviour
 
     private void PressedRightClick(Vector3 mousePosition)
     {
-        if (!character.CharacterAbilityManager.IsUsingAbilityPreventingMovement() && MousePositionOnTerrain.GetRaycastHit(mousePosition, out hit))
+        if (MousePositionOnTerrain.GetRaycastHit(mousePosition, out hit))
         {
             Instantiate(movementCapsule, hit.point, Quaternion.identity);
 
@@ -53,9 +55,13 @@ public class CharacterMovement : MonoBehaviour
             {
                 SendToServer_Movement(hit.point + CharacterHeightOffset);
             }
-            else
+            else if (!character.CharacterAbilityManager.IsUsingAbilityPreventingMovement())
             {
                 SetMoveTowardsPoint(hit.point + CharacterHeightOffset);
+            }
+            else
+            {
+                character.CharacterActionManager.SetPositionMovementInQueue(hit.point + CharacterHeightOffset);
             }
         }
     }
@@ -69,24 +75,70 @@ public class CharacterMovement : MonoBehaviour
     [PunRPC]
     private void ReceiveFromServer_Movement(Vector3 destination)
     {
-        SetMoveTowardsPoint(destination);
+        if (!character.CharacterAbilityManager.IsUsingAbilityPreventingMovement())
+        {
+            SetMoveTowardsPoint(destination);
+        }
+        else
+        {
+            character.CharacterActionManager.SetPositionMovementInQueue(destination);
+        }
     }
 
     public void SetMoveTowardsPoint(Vector3 destination)
     {
         StopAllCoroutines();
         CharacterIsInRange = null;
+        this.destination = destination;
+        target = null;
         StartCoroutine(MoveTowardsPoint(destination));
         character.CharacterOrientation.RotateCharacter(destination);
     }
 
-    private IEnumerator MoveTowardsPoint(Vector3 wherePlayerClickedToMove)
+    private IEnumerator MoveTowardsPoint(Vector3 destination)
     {
-        while (transform.position != wherePlayerClickedToMove)
+        while (transform.position != destination)
         {
-            transform.position = Vector3.MoveTowards(transform.position, wherePlayerClickedToMove, Time.deltaTime * character.CharacterStatsController.GetCurrentMovementSpeed());
+            if (!character.CharacterAbilityManager.IsUsingAbilityPreventingMovement())
+            {
+                transform.position = Vector3.MoveTowards(transform.position, destination, Time.deltaTime * character.CharacterStatsController.GetCurrentMovementSpeed());
 
-            NotifyCharacterMoved();
+                NotifyCharacterMoved();
+            }
+
+            yield return null;
+        }
+        this.destination = Vector3.zero;
+    }
+
+    public void SetMoveTowardsPointIfMovingTowardsTarget()
+    {
+        if (target != null)
+        {
+            SetMoveTowardsPointWithRange(target.transform.position, character.CharacterStatsController.GetCurrentAttackRange());// TODO : Maybe its 125 range (base value for all units)?
+        }
+    }
+
+    private void SetMoveTowardsPointWithRange(Vector3 destination, float range)
+    {
+        StopAllCoroutines();
+        CharacterIsInRange = null;
+        this.destination = Vector3.zero; // Should not resume movement after an ability cast (ex. Lucian Q -> Lucian R)
+        target = null;
+        StartCoroutine(MoveTowardsPointWithRange(destination, range));
+        //character.CharacterOrientation.RotateCharacter(destination); //Should not have to rotate
+    }
+
+    private IEnumerator MoveTowardsPointWithRange(Vector3 destination, float range)
+    {
+        while (Vector3.Distance(destination, transform.position) > range)
+        {
+            if (!character.CharacterAbilityManager.IsUsingAbilityPreventingMovement())
+            {
+                transform.position = Vector3.MoveTowards(transform.position, destination, Time.deltaTime * character.CharacterStatsController.GetCurrentMovementSpeed());
+
+                NotifyCharacterMoved();
+            }
 
             yield return null;
         }
@@ -96,6 +148,8 @@ public class CharacterMovement : MonoBehaviour
     {
         StopAllCoroutines();
         CharacterIsInRange = null;
+        destination = Vector3.zero;
+        this.target = target;
         StartCoroutine(MoveTowardsTarget(target, range));
         character.CharacterOrientation.RotateCharacterUntilReachedTarget(target.transform);
     }
@@ -105,9 +159,12 @@ public class CharacterMovement : MonoBehaviour
         Transform targetTransform = target.transform;
         while (Vector3.Distance(targetTransform.position, transform.position) > range)
         {
-            transform.position = Vector3.MoveTowards(transform.position, targetTransform.position, Time.deltaTime * character.CharacterStatsController.GetCurrentMovementSpeed());
+            if (!character.CharacterAbilityManager.IsUsingAbilityPreventingMovement())
+            {
+                transform.position = Vector3.MoveTowards(transform.position, targetTransform.position, Time.deltaTime * character.CharacterStatsController.GetCurrentMovementSpeed());
 
-            NotifyCharacterMoved();
+                NotifyCharacterMoved();
+            }
 
             yield return null;
         }
@@ -115,7 +172,7 @@ public class CharacterMovement : MonoBehaviour
         {
             CharacterIsInRange(target);
         }
-
+        this.target = null;
     }
 
     private void StopMovement()
@@ -127,6 +184,7 @@ public class CharacterMovement : MonoBehaviour
         else
         {
             StopAllMovement();
+            character.CharacterActionManager.ResetBufferedAction();
         }
     }
 
@@ -139,10 +197,13 @@ public class CharacterMovement : MonoBehaviour
     private void ReceiveFromServer_StopMovement()
     {
         StopAllMovement();
+        character.CharacterActionManager.ResetBufferedAction();
     }
 
     private void StopAllMovement()
     {
+        destination = Vector3.zero;
+        target = null;
         StopAllCoroutines();
         character.CharacterOrientation.StopAllCoroutines();
     }
@@ -151,6 +212,17 @@ public class CharacterMovement : MonoBehaviour
     {
         if (ability.CanStopMovement)
         {
+            if (!(ability is UnitTargeted))
+            {
+                if (destination != Vector3.zero)
+                {
+                    character.CharacterActionManager.SetPositionMovementInQueue(destination);
+                }
+                else if (target != null)
+                {
+                    character.CharacterActionManager.SetUnitMovementInQueue(target);
+                }
+            }
             StopAllMovement();
         }
     }

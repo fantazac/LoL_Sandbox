@@ -26,7 +26,7 @@ public abstract class Stat : MonoBehaviour
         UpdateTotal();
     }
 
-    public float GetTotal()
+    public virtual float GetTotal()
     {
         return total;
     }

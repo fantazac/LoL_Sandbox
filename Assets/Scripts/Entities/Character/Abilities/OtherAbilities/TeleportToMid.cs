@@ -9,7 +9,7 @@ public class TeleportToMid : AutoTargetedBlink, OtherAbility
         CanStopMovement = true;
     }
 
-    public override bool CanBeCast(Vector3 mousePosition, CharacterAbilityManager characterAbilityManager)
+    public override bool CanBeCast(Vector3 mousePosition)
     {
         return (!StaticObjects.OnlineMode || !OfflineOnly);
     }

@@ -25,7 +25,7 @@ public class DestroyAllDummies : AutoTargeted, OtherAbility
         RemoveAllDummies();
     }
 
-    public override bool CanBeCast(Vector3 mousePosition, CharacterAbilityManager characterAbilityManager)
+    public override bool CanBeCast(Vector3 mousePosition)
     {
         return !StaticObjects.OnlineMode || !OfflineOnly; // Is !(StaticObjects.OnlineMode || OfflineOnly) better?
     }

@@ -4,9 +4,9 @@ using UnityEngine;
 
 public abstract class UnitTargeted : Ability
 {
-    public override bool CanBeCast(Entity target, CharacterAbilityManager characterAbilityManager)
+    public override bool CanBeCast(Entity target)
     {
-        return !characterAbilityManager.IsUsingAbilityPreventingAbilityCasts() && IsAValidTarget(target);
+        return IsAValidTarget(target);
     }
 
     protected bool IsAValidTarget(Entity target)
@@ -49,7 +49,7 @@ public abstract class UnitTargeted : Ability
         entityHit.GetComponent<Health>().Reduce(damage);
     }
 
-    public override bool CanBeCast(Vector3 mousePosition, CharacterAbilityManager characterAbilityManager) { return false; }
+    public override bool CanBeCast(Vector3 mousePosition) { return false; }
     public override Vector3 GetDestination() { return Vector3.zero; }
     public override void UseAbility(Vector3 destination) { }
 }

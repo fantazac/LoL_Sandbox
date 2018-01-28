@@ -36,8 +36,8 @@ public abstract class Ability : MonoBehaviour
         ModifyValues();
     }
 
-    public abstract bool CanBeCast(Entity target, CharacterAbilityManager characterAbilityManager);
-    public abstract bool CanBeCast(Vector3 mousePosition, CharacterAbilityManager characterAbilityManager);
+    public abstract bool CanBeCast(Entity target);
+    public abstract bool CanBeCast(Vector3 mousePosition);
     public abstract Vector3 GetDestination();
     public abstract void UseAbility(Entity target);
     public abstract void UseAbility(Vector3 destination);
