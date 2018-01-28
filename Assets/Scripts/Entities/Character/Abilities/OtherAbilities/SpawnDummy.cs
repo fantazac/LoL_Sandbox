@@ -26,9 +26,9 @@ public abstract class SpawnDummy : GroundTargeted, OtherAbility
         }
     }
 
-    public override bool CanBeCast(Vector3 mousePosition, CharacterAbilityManager characterAbilityManager)
+    public override bool CanBeCast(Vector3 mousePosition)
     {
-        return  (!StaticObjects.OnlineMode || !OfflineOnly) && base.CanBeCast(mousePosition, characterAbilityManager);
+        return  (!StaticObjects.OnlineMode || !OfflineOnly) && base.CanBeCast(mousePosition);
     }
 
     public void RemoveAllDummies()

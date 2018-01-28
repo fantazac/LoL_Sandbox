@@ -45,6 +45,7 @@ GameObject:
   - component: {fileID: 114518415880134790}
   - component: {fileID: 114750828589375982}
   - component: {fileID: 114000382555670890}
+  - component: {fileID: 114318922436608908}
   - component: {fileID: 114439890440468546}
   - component: {fileID: 114971362640578986}
   - component: {fileID: 114244640613273516}
@@ -244,9 +245,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8dace38c621721e4893b172a0ce99921, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseCriticalStrikeChance: 0
-  currentCriticalStrikeChance: 0
-  bonusCriticalStrikeChance: 0
+  baseValue: 0
+  total: 0
+  flatBonus: 0
+  percentBonus: 0
+  flatMalus: 0
+  percentMalus: 0
 --- !u!114 &114078209732721834
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -270,11 +274,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ddf9a23202048b1489ada737b5a33a3e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  baseValue: 0
+  total: 0
+  flatBonus: 0
+  percentBonus: 0
+  flatMalus: 0
+  percentMalus: 0
   type: 2
-  baseResource: 0
-  currentResource: 0
-  bonusResource: 0
-  maxResource: 0
+  currentValue: 0
 --- !u!114 &114142111717814548
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -286,9 +293,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 70ab071ee508e0b46af0d916b45cc1d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseAbilityPower: 0
-  currentAbilityPower: 0
-  bonusAbilityPower: 0
+  baseValue: 0
+  total: 0
+  flatBonus: 0
+  percentBonus: 0
+  flatMalus: 0
+  percentMalus: 0
 --- !u!114 &114156338481985698
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -300,9 +310,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d8f8cb324e5bfe40bea3b1cb6662e17, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseAttackRange: 0
-  currentAttackRange: 0
-  bonusAttackRange: 0
+  baseValue: 0
+  total: 0
+  flatBonus: 0
+  percentBonus: 0
+  flatMalus: 0
+  percentMalus: 0
 --- !u!114 &114160018958516456
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -314,10 +327,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c443f084e8d5fec4387fa5892739796a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseArmor: 0
-  currentArmor: 0
-  bonusArmor: 0
-  physicalDamageTakenMultiplier: 0
+  baseValue: 0
+  total: 0
+  flatBonus: 0
+  percentBonus: 0
+  flatMalus: 0
+  percentMalus: 0
 --- !u!114 &114165310821136542
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -368,6 +383,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df099550010c1ba40aedb0da333a97b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &114318922436608908
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1507067852754532}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 48c30a60bbbd58642a9289d5cf79af5b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114324357708582316
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -394,12 +420,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: efd9236b9761cd0489e3d7c6878d14ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseArmorPenetrationFlat: 0
-  currentArmorPenetrationFlat: 0
-  bonusArmorPenetrationFlat: 0
-  baseArmorPenetrationPercent: 0
-  currentArmorPenetrationPercent: 0
-  bonusArmorPenetrationPercent: 0
+  baseValue: 0
+  total: 0
+  flatBonus: 0
+  percentBonus: 0
+  flatMalus: 0
+  percentMalus: 0
 --- !u!114 &114339826450767578
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -411,9 +437,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4cd27110f130bc841bff93a9d704a4b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseAttackSpeed: 0
-  currentAttackSpeed: 0
-  bonusAttackSpeedPercent: 0
+  baseValue: 0
+  total: 0
+  flatBonus: 0
+  percentBonus: 0
+  flatMalus: 0
+  percentMalus: 0
 --- !u!114 &114361955831427100
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -447,10 +476,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a6b3178e0d0ac443989491f4ecf8867, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseHealthRegeneration: 0
-  currentHealthRegeneration: 0
-  bonusHealthRegenerationFlat: 0
-  bonusHealthRegenerationPercent: 0
+  baseValue: 0
+  total: 0
+  flatBonus: 0
+  percentBonus: 0
+  flatMalus: 0
+  percentMalus: 0
 --- !u!114 &114372474999472434
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -510,11 +541,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ecedc18195b7124488fc66d3170532f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  baseValue: 0
+  total: 0
+  flatBonus: 0
+  percentBonus: 0
+  flatMalus: 0
+  percentMalus: 0
   type: 2
-  baseResourceRegeneration: 0
-  currentResourceRegeneration: 0
-  bonusResourceRegenerationFlat: 0
-  bonusResourceRegenerationPercent: 0
 --- !u!114 &114574960310744102
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -526,9 +559,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 049a651b45a7e974f8deed586742a826, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseLifeSteal: 0
-  currentLifeSteal: 0
-  bonusLifeSteal: 0
+  baseValue: 0
+  total: 0
+  flatBonus: 0
+  percentBonus: 0
+  flatMalus: 0
+  percentMalus: 0
 --- !u!114 &114625631600227958
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -540,9 +576,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c9ad3189d5f86da49b1ab8a2fe6478fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseSpellVamp: 0
-  currentSpellVamp: 0
-  bonusSpellVamp: 0
+  baseValue: 0
+  total: 0
+  flatBonus: 0
+  percentBonus: 0
+  flatMalus: 0
+  percentMalus: 0
 --- !u!114 &114673362339766542
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -554,10 +593,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71cd07a6685d1b448af72e2c6aea88ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseCooldownReduction: 0
-  currentCooldownReduction: 0
-  bonusCooldownReduction: 0
-  cooldownReductionMultiplier: 0
+  baseValue: 0
+  total: 0
+  flatBonus: 0
+  percentBonus: 0
+  flatMalus: 0
+  percentMalus: 0
 --- !u!114 &114729605349889214
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -591,9 +632,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35c7be0cc6ca5a24c97e00dc91d3b015, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseTenacity: 0
-  currentTenacity: 0
-  bonusTenacity: 0
+  baseValue: 0
+  total: 0
+  flatBonus: 0
+  percentBonus: 0
+  flatMalus: 0
+  percentMalus: 0
 --- !u!114 &114766331759772624
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -605,12 +649,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: edafada4c38fc834cb03d508792af936, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseMagicPenetrationFlat: 0
-  currentMagicPenetrationFlat: 0
-  bonusMagicPenetrationFlat: 0
-  baseMagicPenetrationPercent: 0
-  currentMagicPenetrationPercent: 0
-  bonusMagicPenetrationPercent: 0
+  baseValue: 0
+  total: 0
+  flatBonus: 0
+  percentBonus: 0
+  flatMalus: 0
+  percentMalus: 0
 --- !u!114 &114853023981360742
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -622,10 +666,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1967d41d12bb2c44bbbbff2a85a652de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseMagicResistance: 0
-  currentMagicResistance: 0
-  bonusMagicResistance: 0
-  magicDamageTakenMultiplier: 0
+  baseValue: 0
+  total: 0
+  flatBonus: 0
+  percentBonus: 0
+  flatMalus: 0
+  percentMalus: 0
 --- !u!114 &114864249587281566
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -637,9 +683,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e3801b8cb8f78647b0952218144feef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseAttackDamage: 0
-  currentAttackDamage: 0
-  bonusAttackDamage: 0
+  baseValue: 0
+  total: 0
+  flatBonus: 0
+  percentBonus: 0
+  flatMalus: 0
+  percentMalus: 0
 --- !u!114 &114877994131866258
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -688,9 +737,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e08388dccceed445a088bbf3d30af06, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseMovementSpeed: 0
-  currentMovementSpeed: 0
-  bonusMovementSpeed: 0
+  baseValue: 0
+  total: 0
+  flatBonus: 0
+  percentBonus: 0
+  flatMalus: 0
+  percentMalus: 0
 --- !u!114 &114918926230569044
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -724,10 +776,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 550b535ce77c341469350015403dd777, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseHealth: 0
-  currentHealth: 0
-  bonusHealth: 0
-  maxHealth: 0
+  baseValue: 0
+  total: 0
+  flatBonus: 0
+  percentBonus: 0
+  flatMalus: 0
+  percentMalus: 0
+  currentValue: 0
 --- !u!114 &114971362640578986
 MonoBehaviour:
   m_ObjectHideFlags: 1

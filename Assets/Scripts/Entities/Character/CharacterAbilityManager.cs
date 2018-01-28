@@ -5,9 +5,8 @@ public class CharacterAbilityManager : MonoBehaviour
 {
     private Character character;
 
-    [SerializeField]
     private Dictionary<AbilityInput, Ability> abilities;
-    private List<Ability> currentlyUsedAbilities;
+    private List<Ability> currentlyUsedAbilities;//TODO: Check if this list empties on ability cancel (ex. right click to move to cancel Lucian_Q)
 
     private CharacterAbilityManager()
     {
@@ -43,9 +42,17 @@ public class CharacterAbilityManager : MonoBehaviour
     {
         if (!IsUsingAbilityPreventingAbilityCasts())
         {
+            if (currentlyUsedAbilities.Count > 0)
+            {
+                character.CharacterActionManager.ResetBufferedAction();
+            }
             abilities[abilityInput].UseAbility(destination);
+            character.CharacterMovement.SetMoveTowardsPointIfMovingTowardsTarget();
         }
-        //else put in queue
+        else
+        {
+            character.CharacterActionManager.SetPositionTargetedAbilityInQueue(abilities[abilityInput], destination);
+        }
     }
 
     private void SendToServer_Ability_Entity(AbilityInput abilityInput, Entity target)
@@ -58,9 +65,16 @@ public class CharacterAbilityManager : MonoBehaviour
     {
         if (!IsUsingAbilityPreventingAbilityCasts())
         {
+            if (currentlyUsedAbilities.Count > 0)
+            {
+                character.CharacterActionManager.ResetBufferedAction();
+            }
             abilities[abilityInput].UseAbility(FindTarget(entityId, entityType));
         }
-        //else put in queue
+        else
+        {
+            character.CharacterActionManager.SetUnitTargetedAbilityInQueue(abilities[abilityInput], FindTarget(entityId, entityType));
+        }
     }
 
     private Entity FindTarget(int entityId, EntityType entityType) // TODO: when adding an EntityType
@@ -78,16 +92,16 @@ public class CharacterAbilityManager : MonoBehaviour
                     }
                 }
                 break;
-            /*case EntityType.MINION:
-                foreach (Minion minion in FindObjectsOfType<Minion>())
-                {
-                    if (minion.EntityId == entityId)
+                /*case EntityType.MINION:
+                    foreach (Minion minion in FindObjectsOfType<Minion>())
                     {
-                        entity = minion;
-                        break;
+                        if (minion.EntityId == entityId)
+                        {
+                            entity = minion;
+                            break;
+                        }
                     }
-                }
-                break;*/
+                    break;*/
         }
         return entity;
     }
@@ -99,7 +113,12 @@ public class CharacterAbilityManager : MonoBehaviour
 
     private void OnAbilityFinished(Ability ability)
     {
-        currentlyUsedAbilities.Remove(ability);
+        currentlyUsedAbilities.Remove(ability);//TODO: This does not work well (ex. Lucian Q (walking to range), E and R (both have no cast time))
+
+        if (!IsUsingAbilityPreventingAbilityCasts())
+        {
+            character.CharacterActionManager.UseBufferedAction();
+        }
     }
 
     public void OnPressedInputForAbility(AbilityInput abilityInput)
@@ -110,27 +129,44 @@ public class CharacterAbilityManager : MonoBehaviour
             if (ability is UnitTargeted)
             {
                 Entity hoveredEntity = character.CharacterMouseManager.HoveredEntity;
-                if (hoveredEntity != null && ability.CanBeCast(character.CharacterMouseManager.HoveredEntity, this))
+                if (hoveredEntity != null && ability.CanBeCast(character.CharacterMouseManager.HoveredEntity))
                 {
                     if (StaticObjects.OnlineMode)
                     {
                         SendToServer_Ability_Entity(abilityInput, hoveredEntity);
                     }
+                    else if (!IsUsingAbilityPreventingAbilityCasts())
+                    {
+                        if (currentlyUsedAbilities.Count > 0)
+                        {
+                            character.CharacterActionManager.ResetBufferedAction();
+                        }
+                        ability.UseAbility(hoveredEntity);
+                    }
                     else
                     {
-                        ability.UseAbility(hoveredEntity);
+                        character.CharacterActionManager.SetUnitTargetedAbilityInQueue(abilities[abilityInput], hoveredEntity);
                     }
                 }
             }
-            else if (ability.CanBeCast(Input.mousePosition, this))
+            else if (ability.CanBeCast(Input.mousePosition))
             {
                 if (StaticObjects.OnlineMode)
                 {
                     SendToServer_Ability_Destination(abilityInput, ability.GetDestination());
                 }
+                else if (!IsUsingAbilityPreventingAbilityCasts())
+                {
+                    if (currentlyUsedAbilities.Count > 0)
+                    {
+                        character.CharacterActionManager.ResetBufferedAction();
+                    }
+                    ability.UseAbility(ability.GetDestination());
+                    character.CharacterMovement.SetMoveTowardsPointIfMovingTowardsTarget();
+                }
                 else
                 {
-                    ability.UseAbility(ability.GetDestination());
+                    character.CharacterActionManager.SetPositionTargetedAbilityInQueue(abilities[abilityInput], ability.GetDestination());
                 }
             }
         }

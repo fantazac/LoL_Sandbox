@@ -4,7 +4,7 @@ using UnityEngine;
 
 public abstract class SelfTargeted : Ability
 {
-    public override bool CanBeCast(Vector3 mousePosition, CharacterAbilityManager characterAbilityManager)
+    public override bool CanBeCast(Vector3 mousePosition)
     {
         return true;
     }
@@ -14,6 +14,6 @@ public abstract class SelfTargeted : Ability
         return character.transform.position;
     }
 
-    public override bool CanBeCast(Entity target, CharacterAbilityManager characterAbilityManager) { return false; }
+    public override bool CanBeCast(Entity target) { return false; }
     public override void UseAbility(Entity target) { }
 }
