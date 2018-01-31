@@ -62,7 +62,7 @@ public class CharacterAbilityManager : MonoBehaviour
         }
     }
 
-    private Entity FindTarget(int entityId, EntityType entityType) // TODO: when adding an EntityType
+    public Entity FindTarget(int entityId, EntityType entityType) // TODO: when adding an EntityType
     {
         Entity entity = null;
         switch (entityType)

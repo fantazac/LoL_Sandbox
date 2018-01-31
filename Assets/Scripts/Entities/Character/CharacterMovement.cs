@@ -9,12 +9,8 @@ public class CharacterMovement : MonoBehaviour
 
     private Vector3 destination;
     private Entity target;
-    private RaycastHit hit;
 
     private Character character;
-
-    [HideInInspector]
-    public Vector3 spawnPoint;
 
     public Vector3 CharacterHeightOffset { get; private set; }
 
@@ -33,7 +29,6 @@ public class CharacterMovement : MonoBehaviour
     {
         if (!StaticObjects.OnlineMode || character.PhotonView.isMine)
         {
-            character.CharacterInput.OnRightClick += PressedRightClick;
             character.CharacterInput.OnPressedS += StopMovement;
         }
 
@@ -45,33 +40,53 @@ public class CharacterMovement : MonoBehaviour
         CharacterMoved = null;
     }
 
-    private void PressedRightClick(Vector3 mousePosition)
+    public void PrepareMovementTowardsPoint(Vector3 pointOnMap)
     {
-        if (MousePositionOnTerrain.GetRaycastHit(mousePosition, out hit))
+        if (StaticObjects.OnlineMode)
         {
-            Instantiate(movementCapsule, hit.point, Quaternion.identity);
+            SendToServer_Movement_Point(pointOnMap + CharacterHeightOffset);
+        }
+        else
+        {
+            SetMoveTowardsPoint(pointOnMap + CharacterHeightOffset);
+        }
+        Instantiate(movementCapsule, pointOnMap, Quaternion.identity);
+    }
 
-            if (StaticObjects.OnlineMode)
-            {
-                SendToServer_Movement(hit.point + CharacterHeightOffset);
-            }
-            else
-            {
-                SetMoveTowardsPoint(hit.point + CharacterHeightOffset);
-            }
+    public void PrepareMovementTowardsTarget(Entity target)
+    {
+        if (StaticObjects.OnlineMode)
+        {
+            SendToServer_Movement_Target(target, character.CharacterStatsController.GetCurrentAttackRange());
+        }
+        else
+        {
+            SetMoveTowardsTarget(target, character.CharacterStatsController.GetCurrentAttackRange());
         }
     }
 
-    private void SendToServer_Movement(Vector3 destination)
+    private void SendToServer_Movement_Point(Vector3 destination)
     {
         PhotonNetwork.RemoveRPCs(character.PhotonView);//if using AllBufferedViaServer somewhere else, this needs to change
-        character.PhotonView.RPC("ReceiveFromServer_Movement", PhotonTargets.AllBufferedViaServer, destination);
+        character.PhotonView.RPC("ReceiveFromServer_Movement_Point", PhotonTargets.AllBufferedViaServer, destination);
     }
 
     [PunRPC]
-    private void ReceiveFromServer_Movement(Vector3 destination)
+    private void ReceiveFromServer_Movement_Point(Vector3 destination)
     {
         SetMoveTowardsPoint(destination);
+    }
+
+    private void SendToServer_Movement_Target(Entity target, float range)
+    {
+        PhotonNetwork.RemoveRPCs(character.PhotonView);//if using AllBufferedViaServer somewhere else, this needs to change
+        character.PhotonView.RPC("ReceiveFromServer_Movement_Target", PhotonTargets.AllBufferedViaServer, target.EntityId, target.EntityType, range);
+    }
+
+    [PunRPC]
+    private void ReceiveFromServer_Movement_Target(int entityId, EntityType entityType, float range)
+    {
+        SetMoveTowardsTarget(character.CharacterAbilityManager.FindTarget(entityId, entityType), range);
     }
 
     public void SetMoveTowardsPoint(Vector3 destination)
