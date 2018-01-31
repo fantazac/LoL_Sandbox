@@ -4,11 +4,6 @@ using UnityEngine;
 
 public class TeleportToMid : AutoTargetedBlink, OtherAbility
 {
-    protected TeleportToMid()
-    {
-        CanStopMovement = true;
-    }
-
     public override bool CanBeCast(Vector3 mousePosition)
     {
         return (!StaticObjects.OnlineMode || !OfflineOnly);

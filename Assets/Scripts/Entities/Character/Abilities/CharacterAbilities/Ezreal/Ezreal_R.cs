@@ -21,7 +21,6 @@ public class Ezreal_R : DirectionTargetedProjectile, CharacterAbility
         castTime = 1;
         delayCastTime = new WaitForSeconds(castTime);
 
-        CanStopMovement = true;
         HasCastTime = true;
     }
 

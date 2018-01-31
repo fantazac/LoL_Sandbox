@@ -23,7 +23,6 @@ public class Lucian_W : DirectionTargetedProjectile, CharacterAbility
 
         durationAoE = 0.2f;
 
-        CanStopMovement = true;
         HasCastTime = true;
     }
 

@@ -55,13 +55,9 @@ public class CharacterMovement : MonoBehaviour
             {
                 SendToServer_Movement(hit.point + CharacterHeightOffset);
             }
-            else if (!character.CharacterAbilityManager.IsUsingAbilityPreventingMovement())
-            {
-                SetMoveTowardsPoint(hit.point + CharacterHeightOffset);
-            }
             else
             {
-                character.CharacterActionManager.SetPositionMovementInQueue(hit.point + CharacterHeightOffset);
+                SetMoveTowardsPoint(hit.point + CharacterHeightOffset);
             }
         }
     }
@@ -75,22 +71,13 @@ public class CharacterMovement : MonoBehaviour
     [PunRPC]
     private void ReceiveFromServer_Movement(Vector3 destination)
     {
-        if (!character.CharacterAbilityManager.IsUsingAbilityPreventingMovement())
-        {
-            SetMoveTowardsPoint(destination);
-        }
-        else
-        {
-            character.CharacterActionManager.SetPositionMovementInQueue(destination);
-        }
+        SetMoveTowardsPoint(destination);
     }
 
     public void SetMoveTowardsPoint(Vector3 destination)
     {
-        StopAllCoroutines();
-        CharacterIsInRange = null;
+        StopAllMovement();
         this.destination = destination;
-        target = null;
         StartCoroutine(MoveTowardsPoint(destination));
         character.CharacterOrientation.RotateCharacter(destination);
     }
@@ -111,44 +98,18 @@ public class CharacterMovement : MonoBehaviour
         this.destination = Vector3.zero;
     }
 
-    public void SetMoveTowardsPointIfMovingTowardsTarget()
+    public void SetCharacterIsInRangeEventForBasicAttack()
     {
         if (target != null)
         {
-            SetMoveTowardsPointWithRange(target.transform.position, character.CharacterStatsController.GetCurrentAttackRange());// TODO : Maybe its 125 range (base value for all units)?
-        }
-    }
-
-    private void SetMoveTowardsPointWithRange(Vector3 destination, float range)
-    {
-        StopAllCoroutines();
-        CharacterIsInRange = null;
-        this.destination = Vector3.zero; // Should not resume movement after an ability cast (ex. Lucian Q -> Lucian R)
-        target = null;
-        StartCoroutine(MoveTowardsPointWithRange(destination, range));
-        //character.CharacterOrientation.RotateCharacter(destination); //Should not have to rotate
-    }
-
-    private IEnumerator MoveTowardsPointWithRange(Vector3 destination, float range)
-    {
-        while (Vector3.Distance(destination, transform.position) > range)
-        {
-            if (!character.CharacterAbilityManager.IsUsingAbilityPreventingMovement())
-            {
-                transform.position = Vector3.MoveTowards(transform.position, destination, Time.deltaTime * character.CharacterStatsController.GetCurrentMovementSpeed());
-
-                NotifyCharacterMoved();
-            }
-
-            yield return null;
+            CharacterIsInRange = null;
+            //CharacterIsInRange += character.BasicAttack.InRange;
         }
     }
 
     public void SetMoveTowardsTarget(Entity target, float range)
     {
-        StopAllCoroutines();
-        CharacterIsInRange = null;
-        destination = Vector3.zero;
+        StopAllMovement();
         this.target = target;
         StartCoroutine(MoveTowardsTarget(target, range));
         character.CharacterOrientation.RotateCharacterUntilReachedTarget(target.transform);
@@ -168,11 +129,29 @@ public class CharacterMovement : MonoBehaviour
 
             yield return null;
         }
+
+        while (character.CharacterAbilityManager.IsUsingAbilityPreventingMovement())
+        {
+            yield return null;
+        }
+
         if (CharacterIsInRange != null)
         {
             CharacterIsInRange(target);
         }
         this.target = null;
+    }
+
+    public void RotateCharacterIfMoving()
+    {
+        if (destination != Vector3.zero)
+        {
+            character.CharacterOrientation.RotateCharacter(destination);
+        }
+        else if (target != null)
+        {
+            character.CharacterOrientation.RotateCharacterUntilReachedTarget(target.transform);
+        }
     }
 
     private void StopMovement()
@@ -184,7 +163,6 @@ public class CharacterMovement : MonoBehaviour
         else
         {
             StopAllMovement();
-            character.CharacterActionManager.ResetBufferedAction();
         }
     }
 
@@ -197,34 +175,16 @@ public class CharacterMovement : MonoBehaviour
     private void ReceiveFromServer_StopMovement()
     {
         StopAllMovement();
-        character.CharacterActionManager.ResetBufferedAction();
     }
 
-    private void StopAllMovement()
+    public void StopAllMovement()
     {
-        destination = Vector3.zero;
-        target = null;
+        character.CharacterActionManager.ResetBufferedAction();
         StopAllCoroutines();
         character.CharacterOrientation.StopAllCoroutines();
-    }
-
-    public void StopAllMovement(Ability ability)
-    {
-        if (ability.CanStopMovement)
-        {
-            if (!(ability is UnitTargeted))
-            {
-                if (destination != Vector3.zero)
-                {
-                    character.CharacterActionManager.SetPositionMovementInQueue(destination);
-                }
-                else if (target != null)
-                {
-                    character.CharacterActionManager.SetUnitMovementInQueue(target);
-                }
-            }
-            StopAllMovement();
-        }
+        CharacterIsInRange = null;
+        destination = Vector3.zero;
+        target = null;
     }
 
     public void NotifyCharacterMoved()

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -13,16 +14,20 @@ public abstract class Ability : MonoBehaviour
     protected float castTime;
     protected float damage;
     protected WaitForSeconds delayCastTime;
+    protected float durationOfActive;
     protected RaycastHit hit;
+    protected Vector3 positionOnCast;
     protected float range;
     protected float speed;
 
-    public bool CanCastOtherAbilitiesWithCasting { get; protected set; }
+    public bool CanBeCancelled { get; protected set; }
+    public bool CanCastOtherAbilitiesWhileActive { get; private set; }
     public bool CanMoveWhileCasting { get; protected set; }
     public bool CanRotateWhileCasting { get; protected set; }
-    public bool CanStopMovement { get; protected set; }
     public bool OfflineOnly { get; protected set; }
     public bool HasCastTime { get; protected set; }
+
+    public List<Ability> CastableAbilitiesWhileActive { get; protected set; }
 
     public delegate void OnAbilityUsedHandler(Ability ability);
     public event OnAbilityUsedHandler OnAbilityUsed;
@@ -30,9 +35,16 @@ public abstract class Ability : MonoBehaviour
     public delegate void OnAbilityFinishedHandler(Ability ability);
     public event OnAbilityFinishedHandler OnAbilityFinished;
 
+    protected Ability()
+    {
+        CastableAbilitiesWhileActive = new List<Ability>();
+    }
+
     protected virtual void Start()
     {
         character = GetComponent<Character>();
+        CanCastOtherAbilitiesWhileActive = CastableAbilitiesWhileActive.Count > 0;
+
         ModifyValues();
     }
 

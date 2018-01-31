@@ -8,8 +8,5 @@ public class Lucian_E : DirectionTargetedDash, CharacterAbility
         range = 425;
         minimumDistanceTravelled = 100;
         dashSpeed = 32;
-
-        CanCastOtherAbilitiesWithCasting = true;
-        CanStopMovement = true;
     }
 }

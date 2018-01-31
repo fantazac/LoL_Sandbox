@@ -1,10 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class Lucian_R : DirectionTargetedProjectile, CharacterAbility
 {
     private int amountOfProjectilesToShoot;
-    private float durationOfActive;
     private float offset;
 
     private WaitForSeconds delayBetweenBullets;
@@ -26,7 +26,16 @@ public class Lucian_R : DirectionTargetedProjectile, CharacterAbility
         offset = 0.2f;
         delayBetweenBullets = new WaitForSeconds(durationOfActive / (float)amountOfProjectilesToShoot);
 
+        CanBeCancelled = true;
         CanMoveWhileCasting = true;
+    }
+
+    protected override void Start()
+    {
+        CastableAbilitiesWhileActive.Add(GetComponent<Lucian_E>());
+        //CastableAbilitiesWhileActive.Add(this); Useful once cancel is coded?
+
+        base.Start();
     }
 
     protected override IEnumerator AbilityWithoutCastTime()

@@ -40,18 +40,10 @@ public class CharacterAbilityManager : MonoBehaviour
     [PunRPC]
     private void ReceiveFromServer_Ability_Destination(AbilityInput abilityInput, Vector3 destination)
     {
-        if (!IsUsingAbilityPreventingAbilityCasts())
+        Ability ability = abilities[abilityInput];
+        if (AbilityIsCastable(ability))
         {
-            if (currentlyUsedAbilities.Count > 0)
-            {
-                character.CharacterActionManager.ResetBufferedAction();
-            }
-            abilities[abilityInput].UseAbility(destination);
-            character.CharacterMovement.SetMoveTowardsPointIfMovingTowardsTarget();
-        }
-        else
-        {
-            character.CharacterActionManager.SetPositionTargetedAbilityInQueue(abilities[abilityInput], destination);
+            UsePositionTargetedAbility(ability, destination);
         }
     }
 
@@ -63,17 +55,10 @@ public class CharacterAbilityManager : MonoBehaviour
     [PunRPC]
     private void ReceiveFromServer_Ability_Entity(AbilityInput abilityInput, int entityId, EntityType entityType)
     {
-        if (!IsUsingAbilityPreventingAbilityCasts())
+        Ability ability = abilities[abilityInput];
+        if (AbilityIsCastable(ability))
         {
-            if (currentlyUsedAbilities.Count > 0)
-            {
-                character.CharacterActionManager.ResetBufferedAction();
-            }
-            abilities[abilityInput].UseAbility(FindTarget(entityId, entityType));
-        }
-        else
-        {
-            character.CharacterActionManager.SetUnitTargetedAbilityInQueue(abilities[abilityInput], FindTarget(entityId, entityType));
+            UseUnitTargetedAbility(ability, FindTarget(entityId, entityType));
         }
     }
 
@@ -113,9 +98,11 @@ public class CharacterAbilityManager : MonoBehaviour
 
     private void OnAbilityFinished(Ability ability)
     {
-        currentlyUsedAbilities.Remove(ability);//TODO: This does not work well (ex. Lucian Q (walking to range), E and R (both have no cast time))
+        currentlyUsedAbilities.Remove(ability);
 
-        if (!IsUsingAbilityPreventingAbilityCasts())
+        character.CharacterMovement.RotateCharacterIfMoving();
+
+        if (!IsUsingAbilityPreventingAbilityCast(null))//Might have a problem with AbilityIsCastable() not being called. If it bugs, this might be why.
         {
             character.CharacterActionManager.UseBufferedAction();
         }
@@ -126,50 +113,121 @@ public class CharacterAbilityManager : MonoBehaviour
         if (abilities.ContainsKey(abilityInput))
         {
             Ability ability = abilities[abilityInput];
-            if (ability is UnitTargeted)
+            if (AbilityIsCastable(ability))
             {
-                Entity hoveredEntity = character.CharacterMouseManager.HoveredEntity;
-                if (hoveredEntity != null && ability.CanBeCast(character.CharacterMouseManager.HoveredEntity))
+                if (ability is UnitTargeted)
+                {
+                    Entity hoveredEntity = character.CharacterMouseManager.HoveredEntity;
+                    if (hoveredEntity != null && ability.CanBeCast(character.CharacterMouseManager.HoveredEntity))
+                    {
+                        if (StaticObjects.OnlineMode)
+                        {
+                            SendToServer_Ability_Entity(abilityInput, hoveredEntity);
+                        }
+                        else
+                        {
+                            UseUnitTargetedAbility(ability, hoveredEntity);
+                        }
+                    }
+                }
+                else if (ability.CanBeCast(Input.mousePosition))
                 {
                     if (StaticObjects.OnlineMode)
                     {
-                        SendToServer_Ability_Entity(abilityInput, hoveredEntity);
-                    }
-                    else if (!IsUsingAbilityPreventingAbilityCasts())
-                    {
-                        if (currentlyUsedAbilities.Count > 0)
-                        {
-                            character.CharacterActionManager.ResetBufferedAction();
-                        }
-                        ability.UseAbility(hoveredEntity);
+                        SendToServer_Ability_Destination(abilityInput, ability.GetDestination());
                     }
                     else
                     {
-                        character.CharacterActionManager.SetUnitTargetedAbilityInQueue(abilities[abilityInput], hoveredEntity);
+                        UsePositionTargetedAbility(ability, ability.GetDestination());
                     }
-                }
-            }
-            else if (ability.CanBeCast(Input.mousePosition))
-            {
-                if (StaticObjects.OnlineMode)
-                {
-                    SendToServer_Ability_Destination(abilityInput, ability.GetDestination());
-                }
-                else if (!IsUsingAbilityPreventingAbilityCasts())
-                {
-                    if (currentlyUsedAbilities.Count > 0)
-                    {
-                        character.CharacterActionManager.ResetBufferedAction();
-                    }
-                    ability.UseAbility(ability.GetDestination());
-                    character.CharacterMovement.SetMoveTowardsPointIfMovingTowardsTarget();
-                }
-                else
-                {
-                    character.CharacterActionManager.SetPositionTargetedAbilityInQueue(abilities[abilityInput], ability.GetDestination());
                 }
             }
         }
+    }
+
+    private void UsePositionTargetedAbility(Ability ability, Vector3 destination)
+    {
+        if (!IsUsingAbilityPreventingAbilityCast(ability))
+        {
+            if (currentlyUsedAbilities.Count > 0)
+            {
+                character.CharacterActionManager.ResetBufferedAction();
+            }
+            ability.UseAbility(destination);
+            if (ability.HasCastTime || ability.CanBeCancelled)
+            {
+                character.CharacterMovement.SetCharacterIsInRangeEventForBasicAttack();
+            }
+        }
+        else
+        {
+            character.CharacterMovement.StopAllMovement();
+            character.CharacterActionManager.SetPositionTargetedAbilityInQueue(ability, destination);
+        }
+    }
+
+    private void UseUnitTargetedAbility(Ability ability, Entity target)
+    {
+        if (!IsUsingAbilityPreventingAbilityCast(ability))
+        {
+            if (currentlyUsedAbilities.Count > 0)
+            {
+                character.CharacterActionManager.ResetBufferedAction();
+            }
+            character.CharacterMovement.StopAllMovement();
+            ability.UseAbility(target);
+        }
+        else
+        {
+            character.CharacterMovement.StopAllMovement();
+            character.CharacterActionManager.SetUnitTargetedAbilityInQueue(ability, target);
+        }
+    }
+
+    //True: Put ability in the buffer
+    //False: Allow ability to be cast
+    private bool IsUsingAbilityPreventingAbilityCast(Ability abilityToCast)
+    {
+        if (currentlyUsedAbilities.Count == 0)
+        {
+            return false;
+        }
+
+        foreach (Ability ability in currentlyUsedAbilities)
+        {
+            //First part: If you cannot cast abilities while active AND you have a cast time (aka abilities that have no cast time and you can cast anything while active (ex. Lucian_E))
+            //Second part: If you can cast at least another ability while active AND the ability you want to cast is castable AND the ability has a cast time 
+            //(ex. Lucian_Q can cast (buffer) the W or R and has a cast time, so you put them in the action queue)
+
+            //TODO FIX ME: This can probably get simplified
+            if ((!ability.CanCastOtherAbilitiesWhileActive && ability.HasCastTime) ||
+                (ability.CanCastOtherAbilitiesWhileActive && ability.CastableAbilitiesWhileActive.Contains(abilityToCast) && ability.HasCastTime))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    //True: Allow ability to be cast
+    //False: Act as if the key was not pressed
+    private bool AbilityIsCastable(Ability abilityToCast)
+    {
+        if (currentlyUsedAbilities.Count == 0)
+        {
+            return true;
+        }
+
+        foreach (Ability ability in currentlyUsedAbilities)
+        {
+            if (ability.CanCastOtherAbilitiesWhileActive && !ability.CastableAbilitiesWhileActive.Contains(abilityToCast))
+            {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     public bool IsUsingAbilityPreventingMovement()
@@ -182,24 +240,6 @@ public class CharacterAbilityManager : MonoBehaviour
         foreach (Ability ability in currentlyUsedAbilities)
         {
             if (!ability.CanMoveWhileCasting)
-            {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    public bool IsUsingAbilityPreventingAbilityCasts()
-    {
-        if (currentlyUsedAbilities.Count == 0)
-        {
-            return false;
-        }
-
-        foreach (Ability ability in currentlyUsedAbilities)
-        {
-            if (!ability.CanCastOtherAbilitiesWithCasting)
             {
                 return true;
             }
