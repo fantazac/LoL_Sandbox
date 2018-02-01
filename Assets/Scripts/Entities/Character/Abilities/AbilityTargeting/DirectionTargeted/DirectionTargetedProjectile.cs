@@ -9,12 +9,12 @@ public abstract class DirectionTargetedProjectile : DirectionTargeted
     protected override IEnumerator AbilityWithCastTime()
     {
         yield return delayCastTime;
-
+        
         Projectile projectile = ((GameObject)Instantiate(projectilePrefab, transform.position, transform.rotation)).GetComponent<Projectile>();
         projectile.ShootProjectile(character.Team, affectedUnitType, speed, range);
         projectile.OnAbilityEffectHit += OnProjectileHit;
         projectile.OnProjectileReachedEnd += OnProjectileReachedEnd;
-
+        
         FinishAbilityCast();
     }
 

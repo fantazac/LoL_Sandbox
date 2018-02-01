@@ -29,10 +29,22 @@ public class AbilityUIManager : MonoBehaviour
         abilityImage.fillAmount = 0;
     }
 
-    public void UpdateAbilityCooldown(int abilityId, float cooldown, float cooldownRemaining, string cooldownForUI)
+    public void UpdateAbilityCooldown(int abilityId, float cooldown, float cooldownRemaining)
     {
         abilityImages[abilityId].fillAmount = 1 - (cooldownRemaining / cooldown);
-        abilityCooldownTexts[abilityId].text = cooldownForUI;
+
+        if (cooldownRemaining >= 1)
+        {
+            abilityCooldownTexts[abilityId].text = ((int)cooldownRemaining).ToString();
+        }
+        else if (cooldownRemaining <= 0)
+        {
+            abilityCooldownTexts[abilityId].text = "";
+        }
+        else
+        {
+            abilityCooldownTexts[abilityId].text = cooldownRemaining.ToString("f1");
+        }
     }
 
     public void SetAbilityOffCooldown(int abilityId)

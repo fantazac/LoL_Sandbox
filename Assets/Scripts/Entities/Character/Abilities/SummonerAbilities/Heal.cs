@@ -6,7 +6,7 @@ public class Heal : SelfTargeted, SummonerAbility
     {
         cooldown = 10;
 
-        startCooldownOnStartAbilityCast = true;
+        startCooldownOnAbilityCast = true;
 
         CanBeCastAtAnytime = true;
     }

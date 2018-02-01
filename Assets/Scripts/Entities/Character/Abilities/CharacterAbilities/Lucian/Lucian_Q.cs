@@ -21,8 +21,6 @@ public class Lucian_Q : UnitTargeted, CharacterAbility
         castTime = 0.3f;
         delayCastTime = new WaitForSeconds(castTime);
 
-        startCooldownOnFinishAbilityCast = true;
-
         durationAoE = 0.15f;
 
         HasCastTime = true;

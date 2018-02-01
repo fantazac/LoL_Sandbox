@@ -15,7 +15,6 @@ public abstract class Ability : MonoBehaviour
 
     protected float castTime;
     protected float cooldown;
-    protected string cooldownForUI;
     protected float cooldownRemaining;
     protected float damage;
     protected WaitForSeconds delayCastTime;
@@ -24,8 +23,7 @@ public abstract class Ability : MonoBehaviour
     protected Vector3 positionOnCast;
     protected float range;
     protected float speed;
-    protected bool startCooldownOnStartAbilityCast;
-    protected bool startCooldownOnFinishAbilityCast;
+    protected bool startCooldownOnAbilityCast;
 
     public Sprite abilitySprite;
 
@@ -77,7 +75,7 @@ public abstract class Ability : MonoBehaviour
         {
             OnAbilityUsed(this);
         }
-        if (startCooldownOnStartAbilityCast && (!StaticObjects.OnlineMode || character.PhotonView.isMine))
+        if (startCooldownOnAbilityCast && (!StaticObjects.OnlineMode || character.PhotonView.isMine))
         {
             StartCoroutine(PutAbilityOffCooldown());
         }
@@ -89,7 +87,7 @@ public abstract class Ability : MonoBehaviour
         {
             OnAbilityFinished(this);
         }
-        if (startCooldownOnFinishAbilityCast && (!StaticObjects.OnlineMode || character.PhotonView.isMine))
+        if (!startCooldownOnAbilityCast && (!StaticObjects.OnlineMode || character.PhotonView.isMine))
         {
             StartCoroutine(PutAbilityOffCooldown());
         }
@@ -108,20 +106,7 @@ public abstract class Ability : MonoBehaviour
         {
             cooldownRemaining -= Time.deltaTime;
 
-            if (cooldownRemaining >= 1)
-            {
-                cooldownForUI = ((int)cooldownRemaining).ToString();
-            }
-            else if (cooldownRemaining <= 0)
-            {
-                cooldownForUI = "";
-            }
-            else
-            {
-                cooldownForUI = cooldownRemaining.ToString("f1");
-            }
-
-            character.AbilityUIManager.UpdateAbilityCooldown(ID, cooldown, cooldownRemaining, cooldownForUI);
+            character.AbilityUIManager.UpdateAbilityCooldown(ID, cooldown, cooldownRemaining);
 
             yield return null;
         }

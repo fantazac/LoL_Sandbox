@@ -108,11 +108,8 @@ public class CharacterAbilityManager : MonoBehaviour
         currentlyUsedAbilities.Remove(ability);
 
         character.CharacterMovement.RotateCharacterIfMoving();
-
-        if (!IsUsingAbilityPreventingAbilityCast(null))//Might have a problem with AbilityIsCastable() not being called. If it bugs, this might be why.
-        {
-            character.CharacterActionManager.UseBufferedAction();
-        }
+        
+        character.CharacterActionManager.UseBufferedAction();
     }
 
     public void OnPressedInputForAbility(AbilityInput abilityInput)
@@ -195,7 +192,7 @@ public class CharacterAbilityManager : MonoBehaviour
     //False: Allow ability to be cast
     private bool IsUsingAbilityPreventingAbilityCast(Ability abilityToCast)
     {
-        if (currentlyUsedAbilities.Count == 0 || (abilityToCast != null && abilityToCast.CanBeCastAtAnytime))
+        if (currentlyUsedAbilities.Count == 0 || abilityToCast.CanBeCastAtAnytime)
         {
             return false;
         }

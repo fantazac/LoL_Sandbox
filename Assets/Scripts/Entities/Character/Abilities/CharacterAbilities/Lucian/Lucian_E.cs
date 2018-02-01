@@ -10,6 +10,6 @@ public class Lucian_E : DirectionTargetedDash, CharacterAbility
         minimumDistanceTravelled = 100;
         dashSpeed = 32;
 
-        startCooldownOnStartAbilityCast = true;
+        startCooldownOnAbilityCast = true;
     }
 }
