@@ -22,7 +22,7 @@ public class Lucian_W : DirectionTargetedProjectile, CharacterAbility
         castTime = 0.2f;
         delayCastTime = new WaitForSeconds(castTime);
 
-        startCooldownOnStartAbilityCast = true;
+        startCooldownOnAbilityCast = true;
 
         durationAoE = 0.2f;
 

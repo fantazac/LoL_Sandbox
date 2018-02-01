@@ -17,7 +17,7 @@ public class Ezreal_W : DirectionTargetedProjectile, CharacterAbility
         castTime = 0.2f;
         delayCastTime = new WaitForSeconds(castTime);
 
-        startCooldownOnStartAbilityCast = true;
+        startCooldownOnAbilityCast = true;
 
         HasCastTime = true;
     }

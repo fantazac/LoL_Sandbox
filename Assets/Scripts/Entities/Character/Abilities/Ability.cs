@@ -23,8 +23,7 @@ public abstract class Ability : MonoBehaviour
     protected Vector3 positionOnCast;
     protected float range;
     protected float speed;
-    protected bool startCooldownOnStartAbilityCast;
-    protected bool startCooldownOnFinishAbilityCast;
+    protected bool startCooldownOnAbilityCast;
 
     public Sprite abilitySprite;
 
@@ -76,7 +75,7 @@ public abstract class Ability : MonoBehaviour
         {
             OnAbilityUsed(this);
         }
-        if (startCooldownOnStartAbilityCast && (!StaticObjects.OnlineMode || character.PhotonView.isMine))
+        if (startCooldownOnAbilityCast && (!StaticObjects.OnlineMode || character.PhotonView.isMine))
         {
             StartCoroutine(PutAbilityOffCooldown());
         }
@@ -88,7 +87,7 @@ public abstract class Ability : MonoBehaviour
         {
             OnAbilityFinished(this);
         }
-        if (startCooldownOnFinishAbilityCast && (!StaticObjects.OnlineMode || character.PhotonView.isMine))
+        if (!startCooldownOnAbilityCast && (!StaticObjects.OnlineMode || character.PhotonView.isMine))
         {
             StartCoroutine(PutAbilityOffCooldown());
         }

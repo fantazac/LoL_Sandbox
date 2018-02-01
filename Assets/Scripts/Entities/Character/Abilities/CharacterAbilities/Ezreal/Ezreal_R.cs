@@ -22,7 +22,7 @@ public class Ezreal_R : DirectionTargetedProjectile, CharacterAbility
         castTime = 1;
         delayCastTime = new WaitForSeconds(castTime);
 
-        startCooldownOnStartAbilityCast = true;
+        startCooldownOnAbilityCast = true;
 
         HasCastTime = true;
     }

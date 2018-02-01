@@ -19,7 +19,7 @@ public class Ezreal_E : GroundTargetedBlink, CharacterAbility
         castTime = 0.15f;
         delayCastTime = new WaitForSeconds(castTime);
 
-        startCooldownOnStartAbilityCast = true;
+        startCooldownOnAbilityCast = true;
 
         HasCastTime = true;
     }

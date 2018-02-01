@@ -27,8 +27,6 @@ public class Lucian_R : DirectionTargetedProjectile, CharacterAbility
         offset = 0.2f;
         delayBetweenBullets = new WaitForSeconds(durationOfActive / (float)amountOfProjectilesToShoot);
 
-        startCooldownOnFinishAbilityCast = true;
-
         CanBeCancelled = true;
         CanMoveWhileCasting = true;
     }

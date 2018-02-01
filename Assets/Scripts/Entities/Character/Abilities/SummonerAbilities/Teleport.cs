@@ -1,4 +1,7 @@
-﻿using UnityEngine;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 
 public class Teleport : GroundTargetedBlink, SummonerAbility
 {
@@ -6,19 +9,22 @@ public class Teleport : GroundTargetedBlink, SummonerAbility
     {
         cooldown = 13;
 
-        startCooldownOnStartAbilityCast = true;
+        startCooldownOnAbilityCast = true;
     }
 
-    public override void UseAbility(Vector3 destination)
+    protected override void FinalAdjustments(Vector3 destination)
+    {
+        this.destination = destination;
+    }
+
+    public override void UseAbility(Vector3 destination)//TODO FIX ME: The crash bug if you do FinishAbilityCast in this method instead of a coroutine.
     {
         StartAbilityCast();
 
         character.CharacterOrientation.RotateCharacterInstantly(destination);
 
-        transform.position = destination;
-        character.CharacterMovement.NotifyCharacterMoved();
-        // TODO: add cast delay (channel time)
+        FinalAdjustments(destination);
 
-        FinishAbilityCast();
+        StartCoroutine(AbilityWithCastTime());
     }
 }
