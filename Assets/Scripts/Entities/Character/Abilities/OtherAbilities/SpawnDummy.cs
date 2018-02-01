@@ -42,6 +42,8 @@ public abstract class SpawnDummy : GroundTargeted, OtherAbility
 
     public override void UseAbility(Vector3 destination)
     {
+        StartAbilityCast();
+
         if (dummies.Count == MAXIMUM_DUMMY_AMOUNT)
         {
             Destroy(dummies[0]);
@@ -55,5 +57,7 @@ public abstract class SpawnDummy : GroundTargeted, OtherAbility
         dummy.transform.rotation = Quaternion.LookRotation((transform.position - dummy.transform.position).normalized);
         dummy.SetDummyTeamAndID(team, ++dummyId);
         dummies.Add(dummy.gameObject);
+
+        FinishAbilityCast();
     }
 }

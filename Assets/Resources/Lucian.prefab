@@ -69,6 +69,7 @@ GameObject:
   - component: {fileID: 114625631600227958}
   - component: {fileID: 114156338481985698}
   - component: {fileID: 114760876531046866}
+  - component: {fileID: 114315950057543016}
   - component: {fileID: 114536618287389660}
   - component: {fileID: 114324357708582316}
   - component: {fileID: 114729605349889214}
@@ -385,6 +386,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   abilitySprite: {fileID: 0}
+--- !u!114 &114315950057543016
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1507067852754532}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3241db5dd3ad7d4448c162bfc433c0f5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  abilitySprite: {fileID: 21300000, guid: ab5344e185e3a86408b2a63aea61f048, type: 3}
 --- !u!114 &114318922436608908
 MonoBehaviour:
   m_ObjectHideFlags: 1
