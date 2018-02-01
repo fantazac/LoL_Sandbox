@@ -108,7 +108,7 @@ public class CharacterAbilityManager : MonoBehaviour
         currentlyUsedAbilities.Remove(ability);
 
         character.CharacterMovement.RotateCharacterIfMoving();
-        
+
         character.CharacterActionManager.UseBufferedAction();
     }
 
@@ -199,13 +199,7 @@ public class CharacterAbilityManager : MonoBehaviour
 
         foreach (Ability ability in currentlyUsedAbilities)
         {
-            //First part: If you cannot cast abilities while active AND you have a cast time (aka abilities that have no cast time and you can cast anything while active (ex. Lucian_E))
-            //Second part: If you can cast at least another ability while active AND the ability you want to cast is castable AND the ability has a cast time 
-            //(ex. Lucian_Q can cast (buffer) the W or R and has a cast time, so you put them in the action queue)
-
-            //TODO FIX ME: This can probably get simplified
-            if ((!ability.CanCastOtherAbilitiesWhileActive && ability.HasCastTime) ||
-                (ability.CanCastOtherAbilitiesWhileActive && ability.CastableAbilitiesWhileActive.Contains(abilityToCast) && ability.HasCastTime))
+            if (ability.HasCastTime && (!ability.CanCastOtherAbilitiesWhileActive || ability.CastableAbilitiesWhileActive.Contains(abilityToCast)))
             {
                 return true;
             }
