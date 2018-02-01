@@ -11,7 +11,12 @@ public abstract class Ability : MonoBehaviour
     protected AbilityEffectType effectType;
     protected DamageType damageType;
 
+    public int ID { get; set; }
+
     protected float castTime;
+    protected float cooldown;
+    protected string cooldownForUI;
+    protected float cooldownRemaining;
     protected float damage;
     protected WaitForSeconds delayCastTime;
     protected float durationOfActive;
@@ -19,11 +24,16 @@ public abstract class Ability : MonoBehaviour
     protected Vector3 positionOnCast;
     protected float range;
     protected float speed;
+    protected bool startCooldownOnStartAbilityCast;
+    protected bool startCooldownOnFinishAbilityCast;
+
+    public Sprite abilitySprite;
 
     public bool CanBeCancelled { get; protected set; }
     public bool CanCastOtherAbilitiesWhileActive { get; private set; }
     public bool CanMoveWhileCasting { get; protected set; }
     public bool CanRotateWhileCasting { get; protected set; }
+    public bool IsOnCooldown { get; protected set; }
     public bool OfflineOnly { get; protected set; }
     public bool HasCastTime { get; protected set; }
 
@@ -66,6 +76,10 @@ public abstract class Ability : MonoBehaviour
         {
             OnAbilityUsed(this);
         }
+        if (startCooldownOnStartAbilityCast)
+        {
+            StartCoroutine(PutAbilityOffCooldown());
+        }
     }
 
     protected void FinishAbilityCast()
@@ -74,6 +88,45 @@ public abstract class Ability : MonoBehaviour
         {
             OnAbilityFinished(this);
         }
+        if (startCooldownOnFinishAbilityCast)
+        {
+            StartCoroutine(PutAbilityOffCooldown());
+        }
+    }
+
+    protected virtual IEnumerator PutAbilityOffCooldown()
+    {
+        IsOnCooldown = true;
+        cooldownRemaining = cooldown;
+
+        yield return null;
+
+        character.AbilityUIManager.SetAbilityOnCooldown(ID);
+
+        while (cooldownRemaining > 0)
+        {
+            cooldownRemaining -= Time.deltaTime;
+
+            if (cooldownRemaining >= 1)
+            {
+                cooldownForUI = ((int)cooldownRemaining).ToString();
+            }
+            else if (cooldownRemaining <= 0)
+            {
+                cooldownForUI = "";
+            }
+            else
+            {
+                cooldownForUI = cooldownRemaining.ToString("f1");
+            }
+
+            character.AbilityUIManager.UpdateAbilityCooldown(ID, cooldown, cooldownRemaining, cooldownForUI);
+
+            yield return null;
+        }
+
+        character.AbilityUIManager.SetAbilityOffCooldown(ID);
+        IsOnCooldown = false;
     }
 
     protected virtual IEnumerator AbilityWithCastTime() { yield return null; }

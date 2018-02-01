@@ -17,8 +17,11 @@ public class Lucian_Q : UnitTargeted, CharacterAbility
 
         range = 500;
         damage = 130;
+        cooldown = 6;
         castTime = 0.3f;
         delayCastTime = new WaitForSeconds(castTime);
+
+        startCooldownOnFinishAbilityCast = true;
 
         durationAoE = 0.15f;
 

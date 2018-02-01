@@ -48,7 +48,7 @@ public class CharacterMouseManager : MonoBehaviour
 
     private void PressedLeftClick(Vector3 mousePosition)
     {
-
+        //TODO
     }
 
     private void PressedRightClick(Vector3 mousePosition)

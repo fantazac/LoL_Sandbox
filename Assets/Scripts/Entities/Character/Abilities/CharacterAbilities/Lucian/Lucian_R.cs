@@ -20,11 +20,14 @@ public class Lucian_R : DirectionTargetedProjectile, CharacterAbility
         range = 1200;
         speed = 2000;
         damage = 40;
+        cooldown = 13;
 
         amountOfProjectilesToShoot = 20;
         durationOfActive = 3;
         offset = 0.2f;
         delayBetweenBullets = new WaitForSeconds(durationOfActive / (float)amountOfProjectilesToShoot);
+
+        startCooldownOnFinishAbilityCast = true;
 
         CanBeCancelled = true;
         CanMoveWhileCasting = true;

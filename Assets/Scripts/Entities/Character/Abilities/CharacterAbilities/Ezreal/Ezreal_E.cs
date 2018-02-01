@@ -15,8 +15,11 @@ public class Ezreal_E : GroundTargetedBlink, CharacterAbility
         range = 475;
         speed = 1500;
         damage = 50;
+        cooldown = 10;
         castTime = 0.15f;
         delayCastTime = new WaitForSeconds(castTime);
+
+        startCooldownOnStartAbilityCast = true;
 
         HasCastTime = true;
     }

@@ -25,10 +25,17 @@ public class CharacterAbilityManager : MonoBehaviour
         Ability[] abilitiesOnCharacter = GetComponents<Ability>();
         for (int i = 0; i < abilitiesOnCharacter.Length; i++)
         {
-            abilitiesOnCharacter[i].OnAbilityUsed += OnAbilityUsed;
-            abilitiesOnCharacter[i].OnAbilityFinished += OnAbilityFinished;
+            Ability ability = abilitiesOnCharacter[i];
+            ability.OnAbilityUsed += OnAbilityUsed;
+            ability.OnAbilityFinished += OnAbilityFinished;
 
-            abilities.Add((AbilityInput)i, abilitiesOnCharacter[i]);
+            if (ability is CharacterAbility)
+            {
+                ability.ID = i;
+                character.AbilityUIManager.SetAbilitySprite(i, ability.abilitySprite);
+            }
+
+            abilities.Add((AbilityInput)i, ability);
         }
     }
 
@@ -214,6 +221,11 @@ public class CharacterAbilityManager : MonoBehaviour
     //False: Act as if the key was not pressed
     private bool AbilityIsCastable(Ability abilityToCast)
     {
+        if (abilityToCast.IsOnCooldown)
+        {
+            return false;
+        }
+
         if (currentlyUsedAbilities.Count == 0)
         {
             return true;

@@ -6,7 +6,10 @@ public class Lucian_E : DirectionTargetedDash, CharacterAbility
     protected Lucian_E()
     {
         range = 425;
+        cooldown = 6;
         minimumDistanceTravelled = 100;
         dashSpeed = 32;
+
+        startCooldownOnStartAbilityCast = true;
     }
 }
