@@ -541,7 +541,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b441fe6c6b8106e4fb9e14d8dc6d3e19, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  abilitySprite: {fileID: 0}
+  abilitySprite: {fileID: 21300000, guid: 7460e194506a93f4fafc79fd1682b3da, type: 3}
 --- !u!114 &114583660594214464
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -727,7 +727,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df099550010c1ba40aedb0da333a97b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  abilitySprite: {fileID: 0}
+  abilitySprite: {fileID: 21300000, guid: 1892104e585f42343bb0c06d81f6f7d6, type: 3}
 --- !u!114 &114958221426692436
 MonoBehaviour:
   m_ObjectHideFlags: 1

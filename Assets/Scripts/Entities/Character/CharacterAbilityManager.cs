@@ -29,7 +29,7 @@ public class CharacterAbilityManager : MonoBehaviour
             ability.OnAbilityUsed += OnAbilityUsed;
             ability.OnAbilityFinished += OnAbilityFinished;
 
-            if (ability is CharacterAbility)
+            if (!(ability is OtherAbility))
             {
                 ability.ID = i;
                 character.AbilityUIManager.SetAbilitySprite(i, ability.abilitySprite);
@@ -195,7 +195,7 @@ public class CharacterAbilityManager : MonoBehaviour
     //False: Allow ability to be cast
     private bool IsUsingAbilityPreventingAbilityCast(Ability abilityToCast)
     {
-        if (currentlyUsedAbilities.Count == 0)
+        if (currentlyUsedAbilities.Count == 0 || (abilityToCast != null && abilityToCast.CanBeCastAtAnytime))
         {
             return false;
         }
@@ -221,12 +221,14 @@ public class CharacterAbilityManager : MonoBehaviour
     //False: Act as if the key was not pressed
     private bool AbilityIsCastable(Ability abilityToCast)
     {
-        if (abilityToCast.IsOnCooldown)
+        bool abilityToCastIsAvailable = abilityToCast != null;
+
+        if (abilityToCastIsAvailable && abilityToCast.IsOnCooldown)
         {
             return false;
         }
 
-        if (currentlyUsedAbilities.Count == 0)
+        if (currentlyUsedAbilities.Count == 0 || (abilityToCastIsAvailable && abilityToCast.CanBeCastAtAnytime))
         {
             return true;
         }

@@ -29,6 +29,7 @@ public abstract class Ability : MonoBehaviour
 
     public Sprite abilitySprite;
 
+    public bool CanBeCastAtAnytime { get; protected set; }
     public bool CanBeCancelled { get; protected set; }
     public bool CanCastOtherAbilitiesWhileActive { get; private set; }
     public bool CanMoveWhileCasting { get; protected set; }
@@ -134,4 +135,5 @@ public abstract class Ability : MonoBehaviour
 }
 
 public interface CharacterAbility { }
+public interface SummonerAbility { }
 public interface OtherAbility { }
