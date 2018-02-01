@@ -317,6 +317,7 @@
     <Compile Include="Assets\PUN\Photon Unity Networking\UtilityScripts\PhotonPlayer\Editor\PunTeamsInspector.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Assets\Materials\UI\Grayscale.shader" />
     <None Include="Assets\PUN\Photon Unity Networking\Demos\DemoBoxes\Resources\eurof_tt.txt" />
     <None Include="Assets\PUN\Photon Unity Networking\Demos\DemoRockPaperScissors\Assets\OpenSans\Apache License.txt" />
     <None Include="Assets\PUN\Photon Unity Networking\Demos\MarcoPolo-Tutorial\marcopolo-readme.txt" />
