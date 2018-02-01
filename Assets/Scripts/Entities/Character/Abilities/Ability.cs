@@ -15,7 +15,6 @@ public abstract class Ability : MonoBehaviour
 
     protected float castTime;
     protected float cooldown;
-    protected string cooldownForUI;
     protected float cooldownRemaining;
     protected float damage;
     protected WaitForSeconds delayCastTime;
@@ -108,20 +107,7 @@ public abstract class Ability : MonoBehaviour
         {
             cooldownRemaining -= Time.deltaTime;
 
-            if (cooldownRemaining >= 1)
-            {
-                cooldownForUI = ((int)cooldownRemaining).ToString();
-            }
-            else if (cooldownRemaining <= 0)
-            {
-                cooldownForUI = "";
-            }
-            else
-            {
-                cooldownForUI = cooldownRemaining.ToString("f1");
-            }
-
-            character.AbilityUIManager.UpdateAbilityCooldown(ID, cooldown, cooldownRemaining, cooldownForUI);
+            character.AbilityUIManager.UpdateAbilityCooldown(ID, cooldown, cooldownRemaining);
 
             yield return null;
         }
