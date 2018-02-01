@@ -52,6 +52,7 @@ GameObject:
   - component: {fileID: 114583660594214464}
   - component: {fileID: 114889793785480940}
   - component: {fileID: 114634682214722888}
+  - component: {fileID: 114342004944102226}
   - component: {fileID: 114979452670365114}
   - component: {fileID: 114990861650323628}
   - component: {fileID: 114531500282068062}
@@ -263,6 +264,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 831f3823ef40818438cfbc5ce6de4972, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  abilitySprite: {fileID: 0}
 --- !u!114 &114187010915273160
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -285,6 +287,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61628d0fbdcbd8043a9007dc26f796a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  abilitySprite: {fileID: 0}
 --- !u!114 &114264645714451542
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -363,6 +366,18 @@ MonoBehaviour:
   percentBonus: 0
   flatMalus: 0
   percentMalus: 0
+--- !u!114 &114342004944102226
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1294391184220730}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 14c093447875efa4383146eb96a42f91, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  abilitySprite: {fileID: 21300000, guid: 43dd2469bd712fa449494496f4d191ac, type: 3}
 --- !u!114 &114387761315736602
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -512,6 +527,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 17d6ede8470f1ad42b6362e9f3de06ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  abilitySprite: {fileID: 21300000, guid: 1180c3a7049c69143b3e0593b1130b17, type: 3}
   projectilePrefab: {fileID: 1978247655739888, guid: c6d28b54373dc8f4383b85ee2faa2c18,
     type: 2}
 --- !u!114 &114559251438769940
@@ -525,6 +541,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b441fe6c6b8106e4fb9e14d8dc6d3e19, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  abilitySprite: {fileID: 21300000, guid: 7460e194506a93f4fafc79fd1682b3da, type: 3}
 --- !u!114 &114583660594214464
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -553,6 +570,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8fafc61995960ee4aac217fd721aa24d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  abilitySprite: {fileID: 21300000, guid: be48ff60ed9768842a2247f43810733d, type: 3}
   projectilePrefab: {fileID: 1000014125105712, guid: 21502943dfe1c694ab495b6b2d598488,
     type: 2}
 --- !u!114 &114634682214722888
@@ -639,6 +657,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 789237ebabbcd7048b3f884a43158838, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  abilitySprite: {fileID: 0}
 --- !u!114 &114824518019010878
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -669,7 +688,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   movementCapsule: {fileID: 1000014217773866, guid: fce730138d5a1624199e4a657c2026af,
     type: 2}
-  spawnPoint: {x: 0, y: 0, z: 0}
 --- !u!114 &114866246300443908
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -709,6 +727,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df099550010c1ba40aedb0da333a97b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  abilitySprite: {fileID: 21300000, guid: 1892104e585f42343bb0c06d81f6f7d6, type: 3}
 --- !u!114 &114958221426692436
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -748,6 +767,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18f9337b65581b743a0ce541524c6f68, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  abilitySprite: {fileID: 21300000, guid: 0d544b69d006ebe4fb9d8c989fa9ad67, type: 3}
   projectilePrefab: {fileID: 1000013746244026, guid: 4fd62e8b5155cfe4489fe2e0177cf117,
     type: 2}
 --- !u!114 &114983581572747220
@@ -761,6 +781,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c7fa87ee87c63641992356d2e6db7c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  abilitySprite: {fileID: 0}
   spawnDummyAbilities:
   - {fileID: 114230160075218552}
   - {fileID: 114147638681676846}
@@ -775,6 +796,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd7ea2af004c0734eb5b37952f1dc606, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  abilitySprite: {fileID: 21300000, guid: 2cacc627fdd18db47a35ff2058a10eb4, type: 3}
   projectilePrefab: {fileID: 1000011417396818, guid: a57ad189bcd00744d8b83e74110eda5e,
     type: 2}
 --- !u!114 &114995869905901432

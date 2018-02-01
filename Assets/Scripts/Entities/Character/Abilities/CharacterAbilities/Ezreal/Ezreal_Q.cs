@@ -13,10 +13,12 @@ public class Ezreal_Q : DirectionTargetedProjectile, CharacterAbility
         range = 1150;
         speed = 2000;
         damage = 100;
+        cooldown = 4;
         castTime = 0.25f;
         delayCastTime = new WaitForSeconds(castTime);
 
-        CanStopMovement = true;
+        startCooldownOnStartAbilityCast = true;
+
         HasCastTime = true;
     }
 }

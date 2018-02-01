@@ -69,6 +69,7 @@ GameObject:
   - component: {fileID: 114625631600227958}
   - component: {fileID: 114156338481985698}
   - component: {fileID: 114760876531046866}
+  - component: {fileID: 114315950057543016}
   - component: {fileID: 114536618287389660}
   - component: {fileID: 114324357708582316}
   - component: {fileID: 114729605349889214}
@@ -344,6 +345,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 789237ebabbcd7048b3f884a43158838, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  abilitySprite: {fileID: 0}
 --- !u!114 &114244640613273516
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -357,7 +359,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   movementCapsule: {fileID: 1000014217773866, guid: fce730138d5a1624199e4a657c2026af,
     type: 2}
-  spawnPoint: {x: 0, y: 0, z: 0}
 --- !u!114 &114255252513267966
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -369,6 +370,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c7fa87ee87c63641992356d2e6db7c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  abilitySprite: {fileID: 0}
   spawnDummyAbilities:
   - {fileID: 114904757158163134}
   - {fileID: 114986620668545128}
@@ -383,6 +385,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df099550010c1ba40aedb0da333a97b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  abilitySprite: {fileID: 21300000, guid: 1892104e585f42343bb0c06d81f6f7d6, type: 3}
+--- !u!114 &114315950057543016
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1507067852754532}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3241db5dd3ad7d4448c162bfc433c0f5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  abilitySprite: {fileID: 21300000, guid: ab5344e185e3a86408b2a63aea61f048, type: 3}
 --- !u!114 &114318922436608908
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -405,6 +420,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a4139fbea1f7a048b58f4963288b590, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  abilitySprite: {fileID: 21300000, guid: d5bfd520d124a8f41a496e03d2f3daae, type: 3}
   projectilePrefab: {fileID: 1000011332508624, guid: 2dd65a2c59d731245b6e300dbd615760,
     type: 2}
   explosionAreaOfEffectPrefab: {fileID: 1000013714180132, guid: 72fd8765c72f30f4da560504e8980708,
@@ -454,6 +470,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b441fe6c6b8106e4fb9e14d8dc6d3e19, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  abilitySprite: {fileID: 21300000, guid: 7460e194506a93f4fafc79fd1682b3da, type: 3}
 --- !u!114 &114363818384739092
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -493,6 +510,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c165cc7bfb006d644b4461dce582bf14, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  abilitySprite: {fileID: 21300000, guid: 708670b0170e08747ab0f57a8f41e5a7, type: 3}
   projectilePrefab: {fileID: 1000010764437680, guid: 518710b74c6e1bb41becee4207ea623b,
     type: 2}
 --- !u!114 &114439890440468546
@@ -528,6 +546,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 96d2cf110d9d0b84eb6471fc8c9db4df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  abilitySprite: {fileID: 21300000, guid: 3068fcef45f70564daa683f96e850931, type: 3}
   areaOfEffectPrefab: {fileID: 1000011639411960, guid: 7d23b316a2ad36249a139ef23be8c616,
     type: 2}
 --- !u!114 &114562199205961970
@@ -610,6 +629,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 321800863ff0e6d4eab2b9a434088623, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  abilitySprite: {fileID: 21300000, guid: 997af1dc16ff7664ebc7ce6c46e3fbab, type: 3}
 --- !u!114 &114750828589375982
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -726,6 +746,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61628d0fbdcbd8043a9007dc26f796a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  abilitySprite: {fileID: 0}
 --- !u!114 &114904866682542976
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -805,3 +826,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 831f3823ef40818438cfbc5ce6de4972, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  abilitySprite: {fileID: 0}

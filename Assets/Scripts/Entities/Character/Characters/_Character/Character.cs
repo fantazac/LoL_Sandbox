@@ -14,6 +14,8 @@ public abstract class Character : Entity
     public CharacterOrientation CharacterOrientation { get; private set; }
     public CharacterStatsController CharacterStatsController { get; private set; }
 
+    public AbilityUIManager AbilityUIManager { get; private set; }
+
     public PhotonView PhotonView { get; private set; }
 
     public delegate void OnConnectionInfoReceivedHandler(Character character);
@@ -26,6 +28,10 @@ public abstract class Character : Entity
 
     protected override void Start()
     {
+        if ((!StaticObjects.OnlineMode && EntityId == 0) || PhotonView.isMine)
+        {
+            AbilityUIManager = transform.parent.GetComponentInChildren<AbilityUIManager>();
+        }
         if (StaticObjects.OnlineMode && PhotonView.isMine)
         {
             if (PhotonNetwork.player.GetTeam() == PunTeams.Team.blue)

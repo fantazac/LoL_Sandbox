@@ -6,8 +6,11 @@ public abstract class AutoTargetedBlink : AutoTargeted
 {
     public override void UseAbility(Vector3 destination)
     {
-        character.CharacterMovement.StopAllMovement(this);
+        StartAbilityCast();
+
         character.transform.position = destination;
         character.CharacterMovement.NotifyCharacterMoved();
+
+        FinishAbilityCast();
     }
 }

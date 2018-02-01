@@ -18,12 +18,14 @@ public class Lucian_W : DirectionTargetedProjectile, CharacterAbility
         range = 900;
         speed = 1550;
         damage = 60;
+        cooldown = 9;
         castTime = 0.2f;
         delayCastTime = new WaitForSeconds(castTime);
 
+        startCooldownOnStartAbilityCast = true;
+
         durationAoE = 0.2f;
 
-        CanStopMovement = true;
         HasCastTime = true;
     }
 

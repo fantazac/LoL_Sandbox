@@ -19,7 +19,6 @@ public abstract class DirectionTargeted : Ability // Curently same as GroundTarg
     {
         StartAbilityCast();
 
-        character.CharacterMovement.StopAllMovement(this);
         character.CharacterOrientation.RotateCharacterInstantly(destination);
 
         FinalAdjustments(destination);

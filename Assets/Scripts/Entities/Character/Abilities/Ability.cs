@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -10,19 +11,34 @@ public abstract class Ability : MonoBehaviour
     protected AbilityEffectType effectType;
     protected DamageType damageType;
 
+    public int ID { get; set; }
+
     protected float castTime;
+    protected float cooldown;
+    protected string cooldownForUI;
+    protected float cooldownRemaining;
     protected float damage;
     protected WaitForSeconds delayCastTime;
+    protected float durationOfActive;
     protected RaycastHit hit;
+    protected Vector3 positionOnCast;
     protected float range;
     protected float speed;
+    protected bool startCooldownOnStartAbilityCast;
+    protected bool startCooldownOnFinishAbilityCast;
 
-    public bool CanCastOtherAbilitiesWithCasting { get; protected set; }
+    public Sprite abilitySprite;
+
+    public bool CanBeCastAtAnytime { get; protected set; }
+    public bool CanBeCancelled { get; protected set; }
+    public bool CanCastOtherAbilitiesWhileActive { get; private set; }
     public bool CanMoveWhileCasting { get; protected set; }
     public bool CanRotateWhileCasting { get; protected set; }
-    public bool CanStopMovement { get; protected set; }
+    public bool IsOnCooldown { get; protected set; }
     public bool OfflineOnly { get; protected set; }
     public bool HasCastTime { get; protected set; }
+
+    public List<Ability> CastableAbilitiesWhileActive { get; protected set; }
 
     public delegate void OnAbilityUsedHandler(Ability ability);
     public event OnAbilityUsedHandler OnAbilityUsed;
@@ -30,9 +46,16 @@ public abstract class Ability : MonoBehaviour
     public delegate void OnAbilityFinishedHandler(Ability ability);
     public event OnAbilityFinishedHandler OnAbilityFinished;
 
+    protected Ability()
+    {
+        CastableAbilitiesWhileActive = new List<Ability>();
+    }
+
     protected virtual void Start()
     {
         character = GetComponent<Character>();
+        CanCastOtherAbilitiesWhileActive = CastableAbilitiesWhileActive.Count > 0;
+
         ModifyValues();
     }
 
@@ -54,6 +77,10 @@ public abstract class Ability : MonoBehaviour
         {
             OnAbilityUsed(this);
         }
+        if (startCooldownOnStartAbilityCast && (!StaticObjects.OnlineMode || character.PhotonView.isMine))
+        {
+            StartCoroutine(PutAbilityOffCooldown());
+        }
     }
 
     protected void FinishAbilityCast()
@@ -62,6 +89,45 @@ public abstract class Ability : MonoBehaviour
         {
             OnAbilityFinished(this);
         }
+        if (startCooldownOnFinishAbilityCast && (!StaticObjects.OnlineMode || character.PhotonView.isMine))
+        {
+            StartCoroutine(PutAbilityOffCooldown());
+        }
+    }
+
+    protected virtual IEnumerator PutAbilityOffCooldown()
+    {
+        IsOnCooldown = true;
+        cooldownRemaining = cooldown;
+
+        yield return null;
+
+        character.AbilityUIManager.SetAbilityOnCooldown(ID);
+
+        while (cooldownRemaining > 0)
+        {
+            cooldownRemaining -= Time.deltaTime;
+
+            if (cooldownRemaining >= 1)
+            {
+                cooldownForUI = ((int)cooldownRemaining).ToString();
+            }
+            else if (cooldownRemaining <= 0)
+            {
+                cooldownForUI = "";
+            }
+            else
+            {
+                cooldownForUI = cooldownRemaining.ToString("f1");
+            }
+
+            character.AbilityUIManager.UpdateAbilityCooldown(ID, cooldown, cooldownRemaining, cooldownForUI);
+
+            yield return null;
+        }
+
+        character.AbilityUIManager.SetAbilityOffCooldown(ID);
+        IsOnCooldown = false;
     }
 
     protected virtual IEnumerator AbilityWithCastTime() { yield return null; }
@@ -69,4 +135,5 @@ public abstract class Ability : MonoBehaviour
 }
 
 public interface CharacterAbility { }
+public interface SummonerAbility { }
 public interface OtherAbility { }

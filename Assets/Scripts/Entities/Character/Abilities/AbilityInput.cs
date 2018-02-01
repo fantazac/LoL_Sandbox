@@ -1,6 +1,7 @@
 ﻿public enum AbilityInput
 {
     // Character abilities
+    PASSIVE,
     Q,
     W,
     E,

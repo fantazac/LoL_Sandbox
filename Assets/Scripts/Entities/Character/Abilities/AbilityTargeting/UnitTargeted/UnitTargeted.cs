@@ -31,7 +31,7 @@ public abstract class UnitTargeted : Ability
     {
         StartAbilityCast();
 
-        character.CharacterMovement.StopAllMovement(this);
+        character.CharacterMovement.StopAllMovement();
         character.CharacterOrientation.RotateCharacterInstantly(target.transform.position);
 
         if (delayCastTime == null)

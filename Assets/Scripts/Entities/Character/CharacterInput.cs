@@ -62,11 +62,11 @@ public class CharacterInput : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.D))
         {
-            characterAbilityManager.OnPressedInputForAbility(AbilityInput.TELEPORT);
+            characterAbilityManager.OnPressedInputForAbility(AbilityInput.HEAL);
         }
         if (Input.GetKeyDown(KeyCode.F))
         {
-            characterAbilityManager.OnPressedInputForAbility(AbilityInput.HEAL);
+            characterAbilityManager.OnPressedInputForAbility(AbilityInput.TELEPORT);
         }
     }
 

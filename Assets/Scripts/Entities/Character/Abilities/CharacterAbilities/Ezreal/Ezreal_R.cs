@@ -18,10 +18,12 @@ public class Ezreal_R : DirectionTargetedProjectile, CharacterAbility
         range = (float)Range.GLOBAL;
         speed = 2000;
         damage = 300;
+        cooldown = 15;
         castTime = 1;
         delayCastTime = new WaitForSeconds(castTime);
 
-        CanStopMovement = true;
+        startCooldownOnStartAbilityCast = true;
+
         HasCastTime = true;
     }
 

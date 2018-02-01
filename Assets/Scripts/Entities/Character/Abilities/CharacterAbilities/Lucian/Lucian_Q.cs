@@ -17,20 +17,32 @@ public class Lucian_Q : UnitTargeted, CharacterAbility
 
         range = 500;
         damage = 130;
+        cooldown = 6;
         castTime = 0.3f;
         delayCastTime = new WaitForSeconds(castTime);
 
+        startCooldownOnFinishAbilityCast = true;
+
         durationAoE = 0.15f;
 
-        CanStopMovement = true;
         HasCastTime = true;
+    }
+
+    protected override void Start()
+    {
+        CastableAbilitiesWhileActive.Add(GetComponent<Lucian_W>());
+        CastableAbilitiesWhileActive.Add(GetComponent<Lucian_R>());
+
+        base.Start();
     }
 
     protected override IEnumerator AbilityWithCastTime()
     {
+        positionOnCast = transform.position + (transform.forward * areaOfEffectPrefab.transform.localScale.z * 0.5f);
+
         yield return delayCastTime;
 
-        AreaOfEffect aoe = ((GameObject)Instantiate(areaOfEffectPrefab, transform.position + (transform.forward * areaOfEffectPrefab.transform.localScale.z * 0.5f), transform.rotation)).GetComponent<AreaOfEffect>();
+        AreaOfEffect aoe = ((GameObject)Instantiate(areaOfEffectPrefab, positionOnCast, transform.rotation)).GetComponent<AreaOfEffect>();
         aoe.ActivateAreaOfEffect(new List<Entity>(), character.Team, affectedUnitType, durationAoE);
         aoe.OnAbilityEffectHit += OnAreaOfEffectHit;
         FinishAbilityCast();

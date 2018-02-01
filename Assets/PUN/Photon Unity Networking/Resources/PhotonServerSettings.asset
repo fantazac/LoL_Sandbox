@@ -61,4 +61,6 @@ MonoBehaviour:
   - ReceiveFromServer_TeamAndID
   - ReceiveFromServer_Ability_Destination
   - ReceiveFromServer_Ability_Entity
+  - ReceiveFromServer_Movement_Point
+  - ReceiveFromServer_Movement_Target
   DisableAutoOpenWizard: 1

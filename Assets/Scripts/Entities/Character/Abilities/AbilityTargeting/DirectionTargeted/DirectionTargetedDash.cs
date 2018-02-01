@@ -13,6 +13,29 @@ public abstract class DirectionTargetedDash : DirectionTargeted
         base.ModifyValues();
     }
 
+    public override void UseAbility(Vector3 destination)
+    {
+        bool rotate = !character.CharacterAbilityManager.IsUsingAbilityPreventingRotation();
+
+        StartAbilityCast();
+
+        if (rotate)
+        {
+            character.CharacterOrientation.RotateCharacterInstantly(destination);
+        }
+
+        FinalAdjustments(destination);
+
+        if (delayCastTime == null)
+        {
+            StartCoroutine(AbilityWithoutCastTime());
+        }
+        else
+        {
+            StartCoroutine(AbilityWithCastTime());
+        }
+    }
+
     protected override IEnumerator AbilityWithoutCastTime()
     {
         while (transform.position != destination)
