@@ -77,7 +77,7 @@ public abstract class Ability : MonoBehaviour
         {
             OnAbilityUsed(this);
         }
-        if (startCooldownOnStartAbilityCast)
+        if (startCooldownOnStartAbilityCast && (!StaticObjects.OnlineMode || character.PhotonView.isMine))
         {
             StartCoroutine(PutAbilityOffCooldown());
         }
@@ -89,7 +89,7 @@ public abstract class Ability : MonoBehaviour
         {
             OnAbilityFinished(this);
         }
-        if (startCooldownOnFinishAbilityCast)
+        if (startCooldownOnFinishAbilityCast && (!StaticObjects.OnlineMode || character.PhotonView.isMine))
         {
             StartCoroutine(PutAbilityOffCooldown());
         }
