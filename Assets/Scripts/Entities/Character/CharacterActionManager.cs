@@ -48,13 +48,15 @@ public class CharacterActionManager : MonoBehaviour
     {
         if (bufferedPositionTargetedAbility != null)
         {
-            bufferedPositionTargetedAbility.UseAbility(bufferedPosition);
+            Ability bufferedAbility = bufferedPositionTargetedAbility;
             ResetBufferedPositionTargetedAbility();
+            bufferedAbility.UseAbility(bufferedPosition);
         }
         else if (bufferedUnitTargetedAbility != null)
         {
-            bufferedUnitTargetedAbility.UseAbility(bufferedUnit);
+            Ability bufferedAbility = bufferedUnitTargetedAbility;
             ResetBufferedUnitTargetedAbility();
+            bufferedAbility.UseAbility(bufferedUnit);
         }
     }
 

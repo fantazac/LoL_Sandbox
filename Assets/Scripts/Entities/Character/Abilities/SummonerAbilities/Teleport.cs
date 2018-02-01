@@ -12,19 +12,15 @@ public class Teleport : GroundTargetedBlink, SummonerAbility
         startCooldownOnAbilityCast = true;
     }
 
-    protected override void FinalAdjustments(Vector3 destination)
-    {
-        this.destination = destination;
-    }
-
-    public override void UseAbility(Vector3 destination)//TODO FIX ME: The crash bug if you do FinishAbilityCast in this method instead of a coroutine.
+    public override void UseAbility(Vector3 destination)
     {
         StartAbilityCast();
 
         character.CharacterOrientation.RotateCharacterInstantly(destination);
 
-        FinalAdjustments(destination);
+        transform.position = destination;
+        character.CharacterMovement.NotifyCharacterMoved();
 
-        StartCoroutine(AbilityWithCastTime());
+        FinishAbilityCast();
     }
 }
