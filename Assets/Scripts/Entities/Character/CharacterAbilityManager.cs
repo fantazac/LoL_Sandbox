@@ -6,7 +6,7 @@ public class CharacterAbilityManager : MonoBehaviour
     private Character character;
 
     private Dictionary<AbilityInput, Ability> abilities;
-    private List<Ability> currentlyUsedAbilities;//TODO: Check if this list empties on ability cancel (ex. right click to move to cancel Lucian_Q)
+    private List<Ability> currentlyUsedAbilities;
 
     private CharacterAbilityManager()
     {
@@ -16,11 +16,11 @@ public class CharacterAbilityManager : MonoBehaviour
 
     private void Start()
     {
-        character = GetComponent<Character>();
-        InitAbilities(abilities);
+        character = StaticObjects.Character;
+        InitAbilities();
     }
 
-    private void InitAbilities(Dictionary<AbilityInput, Ability> abilities)
+    private void InitAbilities()
     {
         Ability[] abilitiesOnCharacter = GetComponents<Ability>();
         for (int i = 0; i < abilitiesOnCharacter.Length; i++)

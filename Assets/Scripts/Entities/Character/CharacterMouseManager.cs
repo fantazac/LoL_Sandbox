@@ -11,13 +11,9 @@ public class CharacterMouseManager : MonoBehaviour
 
     private RaycastHit hit;
 
-    private void Awake()
-    {
-        character = GetComponent<Character>();
-    }
-
     private void Start()
     {
+        character = StaticObjects.Character;
         if (!StaticObjects.OnlineMode || character.PhotonView.isMine)
         {
             character.CharacterInput.OnRightClick += PressedRightClick;
