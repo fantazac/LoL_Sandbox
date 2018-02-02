@@ -13,15 +13,40 @@ public class Flash : GroundTargetedBlink, SummonerAbility
         startCooldownOnAbilityCast = true;
 
         CanBeCastAtAnytime = true;
+        CanRotateWhileCasting = true;
     }
 
     public override void UseAbility(Vector3 destination)
     {
         StartAbilityCast();
 
-        character.CharacterOrientation.RotateCharacterInstantly(destination);
+        character.CharacterMovement.StopMovementTowardsPoint();
 
-        transform.position = FindPointToMoveTo(destination, transform.position);
+        Vector3 newDestination = FindPointToMoveTo(destination, transform.position);
+        transform.position = newDestination;
+        character.CharacterAbilityManager.StopAllDashAbilities(newDestination);
+
+        if (character.CharacterAbilityManager.IsUsingAbilityThatHasACastTime())
+        {
+            character.CharacterOrientation.RotateCharacterInstantlyToLastInstantRotation();
+        }
+        else if (!character.CharacterAbilityManager.IsUsingAbilityPreventingRotation())
+        {
+            Entity target = character.CharacterMovement.GetTarget();
+            if (target != null)
+            {
+                character.CharacterOrientation.RotateCharacterInstantly(target.transform.position);
+            }
+            else
+            {
+                character.CharacterOrientation.RotateCharacterInstantly(destination);
+            }
+        }
+        else if (character.CharacterAbilityManager.IsUsingADashAbility())
+        {
+            character.CharacterOrientation.RotateCharacterInstantly(destination);
+        }
+
         character.CharacterMovement.NotifyCharacterMoved();
 
         FinishAbilityCast();

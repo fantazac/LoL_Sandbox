@@ -7,6 +7,11 @@ public abstract class DirectionTargetedDash : DirectionTargeted
     protected float dashSpeed;
     protected Vector3 destination;
 
+    protected DirectionTargetedDash()
+    {
+        IsADash = true;
+    }
+
     protected override void ModifyValues()
     {
         minimumDistanceTravelled /= StaticObjects.DivisionFactor;
@@ -47,6 +52,12 @@ public abstract class DirectionTargetedDash : DirectionTargeted
             yield return null;
         }
         FinishAbilityCast();
+    }
+
+    public void StopDash(Vector3 destination)
+    {
+        this.destination = destination;
+        //TODO: Should kill the ability coroutine (without killing the cooldown coroutine) and call FinishAbilityCast
     }
 
     protected override void FinalAdjustments(Vector3 destination)

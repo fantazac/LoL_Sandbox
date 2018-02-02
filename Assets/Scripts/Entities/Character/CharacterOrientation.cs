@@ -3,7 +3,7 @@ using System.Collections;
 
 public class CharacterOrientation : MonoBehaviour
 {
-    private Vector3 networkMove;
+    private Vector3 lastInstantRotation;
 
     private CharacterAbilityManager characterAbilityManager;
 
@@ -20,7 +20,13 @@ public class CharacterOrientation : MonoBehaviour
 
     public void RotateCharacterInstantly(Vector3 destination)
     {
+        lastInstantRotation = destination;
         transform.rotation = Quaternion.LookRotation((destination - transform.position).normalized);
+    }
+
+    public void RotateCharacterInstantlyToLastInstantRotation()
+    {
+        transform.rotation = Quaternion.LookRotation((lastInstantRotation - transform.position).normalized); ;
     }
 
     public void RotateCharacter(Vector3 destination)

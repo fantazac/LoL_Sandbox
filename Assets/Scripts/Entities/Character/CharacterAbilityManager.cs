@@ -271,9 +271,59 @@ public class CharacterAbilityManager : MonoBehaviour
         return false;
     }
 
+    public bool IsUsingAbilityThatHasACastTime()
+    {
+        if (currentlyUsedAbilities.Count == 0)
+        {
+            return false;
+        }
+
+        foreach (Ability ability in currentlyUsedAbilities)
+        {
+            if (ability.HasCastTime)
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public bool IsUsingADashAbility()
+    {
+        if (currentlyUsedAbilities.Count == 0)
+        {
+            return false;
+        }
+
+        foreach (Ability ability in currentlyUsedAbilities)
+        {
+            if (ability.IsADash)
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public void StopAllDashAbilities(Vector3 destination)
+    {
+        if (currentlyUsedAbilities.Count > 1)
+        {
+            foreach (Ability ability in currentlyUsedAbilities)
+            {
+                if (ability is DirectionTargetedDash)
+                {
+                    ((DirectionTargetedDash)ability).StopDash(destination);
+                }
+            }
+        }
+    }
+
     public void ResetCooldowns()
     {
-        for(int i = 0; i < abilities.Count; i++)
+        for (int i = 0; i < abilities.Count; i++)
         {
             abilities[(AbilityInput)i].ResetCooldown();
         }

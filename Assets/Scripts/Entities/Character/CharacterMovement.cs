@@ -198,8 +198,21 @@ public class CharacterMovement : MonoBehaviour
         StopAllCoroutines();
         character.CharacterOrientation.StopAllCoroutines();
         CharacterIsInRange = null;
-        destination = Vector3.zero;
+        destination = Vector3.zero;//TODO: This needs to be a point impossible to click, currently you could in theory click Vector3.zero since it's the center of the map
         target = null;
+    }
+
+    public void StopMovementTowardsPoint()
+    {
+        if(destination != Vector3.zero)
+        {
+            StopAllMovement();
+        }
+    }
+
+    public Entity GetTarget()
+    {
+        return target;
     }
 
     public void NotifyCharacterMoved()

@@ -33,6 +33,7 @@ public abstract class Ability : MonoBehaviour
     public bool CanCastOtherAbilitiesWhileActive { get; private set; }
     public bool CanMoveWhileCasting { get; protected set; }
     public bool CanRotateWhileCasting { get; protected set; }
+    public bool IsADash { get; protected set; }
     public bool IsOnCooldown { get; protected set; }
     public bool OfflineOnly { get; protected set; }
     public bool HasCastTime { get; protected set; }
