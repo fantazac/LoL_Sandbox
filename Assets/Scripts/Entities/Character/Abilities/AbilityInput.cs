@@ -7,8 +7,8 @@
     E,
     R,
     // Summoner spells
-    HEAL,
-    TELEPORT,
+    D,
+    F,
     // Other abilities
     DESTROY_ALL_DUMMIES,
     SPAWN_ALLY_DUMMY,

@@ -270,4 +270,12 @@ public class CharacterAbilityManager : MonoBehaviour
 
         return false;
     }
+
+    public void ResetCooldowns()
+    {
+        for(int i = 0; i < abilities.Count; i++)
+        {
+            abilities[(AbilityInput)i].ResetCooldown();
+        }
+    }
 }

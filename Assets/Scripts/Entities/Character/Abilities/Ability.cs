@@ -21,6 +21,7 @@ public abstract class Ability : MonoBehaviour
     protected float durationOfActive;
     protected RaycastHit hit;
     protected Vector3 positionOnCast;
+    protected Quaternion rotationOnCast;
     protected float range;
     protected float speed;
     protected bool startCooldownOnAbilityCast;
@@ -113,6 +114,11 @@ public abstract class Ability : MonoBehaviour
 
         character.AbilityUIManager.SetAbilityOffCooldown(ID);
         IsOnCooldown = false;
+    }
+
+    public void ResetCooldown()
+    {
+        cooldownRemaining = 0;
     }
 
     protected virtual IEnumerator AbilityWithCastTime() { yield return null; }

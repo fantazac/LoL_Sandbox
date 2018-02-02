@@ -75,7 +75,7 @@ GameObject:
   - component: {fileID: 114729605349889214}
   - component: {fileID: 114372474999472434}
   - component: {fileID: 114361955831427100}
-  - component: {fileID: 114269601118025512}
+  - component: {fileID: 114620902814611038}
   - component: {fileID: 114255252513267966}
   - component: {fileID: 114904757158163134}
   - component: {fileID: 114986620668545128}
@@ -374,18 +374,6 @@ MonoBehaviour:
   spawnDummyAbilities:
   - {fileID: 114904757158163134}
   - {fileID: 114986620668545128}
---- !u!114 &114269601118025512
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1507067852754532}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: df099550010c1ba40aedb0da333a97b6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  abilitySprite: {fileID: 21300000, guid: 1892104e585f42343bb0c06d81f6f7d6, type: 3}
 --- !u!114 &114315950057543016
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -584,6 +572,18 @@ MonoBehaviour:
   percentBonus: 0
   flatMalus: 0
   percentMalus: 0
+--- !u!114 &114620902814611038
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1507067852754532}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 43b117018cc795546b1f3ee893e02585, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  abilitySprite: {fileID: 21300000, guid: e167926241f6d1a4db7711ab6f823f5e, type: 3}
 --- !u!114 &114625631600227958
 MonoBehaviour:
   m_ObjectHideFlags: 1
