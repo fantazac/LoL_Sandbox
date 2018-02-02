@@ -121,10 +121,17 @@ public abstract class Ability : MonoBehaviour
         cooldownRemaining = 0;
     }
 
+    public void ReduceCooldown(float cooldownReductionAmount)
+    {
+        cooldownRemaining -= cooldownReductionAmount;
+    }
+
     protected virtual IEnumerator AbilityWithCastTime() { yield return null; }
     protected virtual IEnumerator AbilityWithoutCastTime() { yield return null; }
 }
 
+public interface PassiveCharacterAbility { }
 public interface CharacterAbility { }
 public interface SummonerAbility { }
 public interface OtherAbility { }
+

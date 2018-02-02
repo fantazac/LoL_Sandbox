@@ -22,7 +22,7 @@ public class CharacterMovement : MonoBehaviour
 
     private void Awake()
     {
-        character = StaticObjects.Character;
+        character = GetComponent<Character>();
     }
 
     private void Start()
