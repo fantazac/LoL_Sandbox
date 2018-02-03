@@ -40,4 +40,6 @@ public class DestroyAllDummies : AutoTargeted, OtherAbility
         spawnDummyAbilities[0].RemoveAllDummies();
         spawnDummyAbilities[1].RemoveAllDummies();
     }
+
+    protected override void SetAbilitySpritePath() { }
 }

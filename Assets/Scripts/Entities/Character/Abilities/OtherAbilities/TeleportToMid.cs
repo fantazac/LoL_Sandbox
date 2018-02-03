@@ -13,4 +13,6 @@ public class TeleportToMid : AutoTargetedBlink, OtherAbility
     {
         return character.CharacterMovement.CharacterHeightOffset;
     }
+
+    protected override void SetAbilitySpritePath() { }
 }

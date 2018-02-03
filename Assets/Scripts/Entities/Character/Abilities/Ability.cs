@@ -27,6 +27,7 @@ public abstract class Ability : MonoBehaviour
     protected bool startCooldownOnAbilityCast;
 
     public Sprite abilitySprite;
+    protected string abilitySpritePath;
 
     public bool CanBeCastAtAnytime { get; protected set; }
     public bool CanBeCancelled { get; protected set; }
@@ -49,11 +50,20 @@ public abstract class Ability : MonoBehaviour
     protected Ability()
     {
         CastableAbilitiesWhileActive = new List<Ability>();
+        SetAbilitySpritePath();
+    }
+
+    protected virtual void Awake()
+    {
+        character = GetComponent<Character>();
+        if (!StaticObjects.OnlineMode || character.PhotonView.isMine)
+        {
+            abilitySprite = Resources.Load<Sprite>(abilitySpritePath);
+        }
     }
 
     protected virtual void Start()
     {
-        character = GetComponent<Character>();
         CanCastOtherAbilitiesWhileActive = CastableAbilitiesWhileActive.Count > 0;
 
         ModifyValues();
@@ -64,6 +74,8 @@ public abstract class Ability : MonoBehaviour
     public abstract Vector3 GetDestination();
     public abstract void UseAbility(Entity target);
     public abstract void UseAbility(Vector3 destination);
+
+    protected abstract void SetAbilitySpritePath();
 
     protected virtual void ModifyValues()
     {

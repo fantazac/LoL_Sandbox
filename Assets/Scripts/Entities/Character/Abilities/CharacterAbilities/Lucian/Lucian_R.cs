@@ -31,6 +31,11 @@ public class Lucian_R : DirectionTargetedProjectile, CharacterAbility
         CanMoveWhileCasting = true;
     }
 
+    protected override void SetAbilitySpritePath()
+    {
+        abilitySpritePath = "Sprites/CharacterAbilities/Lucian/LucianR";
+    }
+
     protected override void Start()
     {
         CastableAbilitiesWhileActive.Add(GetComponent<Lucian_E>());

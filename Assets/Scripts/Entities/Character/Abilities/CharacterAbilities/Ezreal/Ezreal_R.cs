@@ -23,8 +23,13 @@ public class Ezreal_R : DirectionTargetedProjectile, CharacterAbility
         delayCastTime = new WaitForSeconds(castTime);
 
         startCooldownOnAbilityCast = true;
-
+        
         HasCastTime = true;
+    }
+
+    protected override void SetAbilitySpritePath()
+    {
+        abilitySpritePath = "Sprites/CharacterAbilities/Ezreal/EzrealR";
     }
 
     protected override void FinalAdjustments(Vector3 destination)

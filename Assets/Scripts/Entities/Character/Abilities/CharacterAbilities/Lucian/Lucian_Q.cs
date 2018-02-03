@@ -26,6 +26,11 @@ public class Lucian_Q : UnitTargeted, CharacterAbility
         HasCastTime = true;
     }
 
+    protected override void SetAbilitySpritePath()
+    {
+        abilitySpritePath = "Sprites/CharacterAbilities/Lucian/LucianQ";
+    }
+
     protected override void Start()
     {
         CastableAbilitiesWhileActive.Add(GetComponent<Lucian_W>());

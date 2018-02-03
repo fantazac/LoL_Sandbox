@@ -11,6 +11,11 @@ public class Heal : SelfTargeted, SummonerAbility
         CanBeCastAtAnytime = true;
     }
 
+    protected override void SetAbilitySpritePath()
+    {
+        abilitySpritePath = "Sprites/SummonerAbilities/Heal";
+    }
+
     public override void UseAbility(Vector3 destination)
     {
         StartAbilityCast();

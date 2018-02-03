@@ -27,6 +27,11 @@ public class Ezreal_Q : DirectionTargetedProjectile, CharacterAbility
         HasCastTime = true;
     }
 
+    protected override void SetAbilitySpritePath()
+    {
+        abilitySpritePath = "Sprites/CharacterAbilities/Ezreal/EzrealQ";
+    }
+
     protected override void Start()
     {
         base.Start();

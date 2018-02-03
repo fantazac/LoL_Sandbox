@@ -16,6 +16,11 @@ public class Flash : GroundTargetedBlink, SummonerAbility
         CanRotateWhileCasting = true;
     }
 
+    protected override void SetAbilitySpritePath()
+    {
+        abilitySpritePath = "Sprites/SummonerAbilities/Flash";
+    }
+
     public override void UseAbility(Vector3 destination)
     {
         StartAbilityCast();

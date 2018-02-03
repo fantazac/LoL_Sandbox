@@ -24,6 +24,11 @@ public class Ezreal_E : GroundTargetedBlink, CharacterAbility
         HasCastTime = true;
     }
 
+    protected override void SetAbilitySpritePath()
+    {
+        abilitySpritePath = "Sprites/CharacterAbilities/Ezreal/EzrealE";
+    }
+
     protected override IEnumerator AbilityWithCastTime()
     {
         yield return delayCastTime;
