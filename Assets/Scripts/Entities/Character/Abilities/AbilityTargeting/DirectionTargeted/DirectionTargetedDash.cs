@@ -7,9 +7,12 @@ public abstract class DirectionTargetedDash : DirectionTargeted
     protected float dashSpeed;
     protected Vector3 destination;
 
+    protected IEnumerator currentDashCoroutine;
+
     protected DirectionTargetedDash()
     {
         IsADash = true;
+        currentDashCoroutine = null;
     }
 
     protected override void ModifyValues()
@@ -33,12 +36,13 @@ public abstract class DirectionTargetedDash : DirectionTargeted
 
         if (delayCastTime == null)
         {
-            StartCoroutine(AbilityWithoutCastTime());
+            currentDashCoroutine = AbilityWithoutCastTime();
         }
         else
         {
-            StartCoroutine(AbilityWithCastTime());
+            currentDashCoroutine = AbilityWithCastTime();
         }
+        StartCoroutine(currentDashCoroutine);
     }
 
     protected override IEnumerator AbilityWithoutCastTime()
@@ -51,13 +55,18 @@ public abstract class DirectionTargetedDash : DirectionTargeted
 
             yield return null;
         }
+        currentDashCoroutine = null;
         FinishAbilityCast();
     }
 
-    public void StopDash(Vector3 destination)
+    public void StopDash()
     {
-        this.destination = destination;
-        //TODO: Should kill the ability coroutine (without killing the cooldown coroutine) and call FinishAbilityCast
+        if (currentDashCoroutine != null)
+        {
+            StopCoroutine(currentDashCoroutine);
+            currentDashCoroutine = null;
+            FinishAbilityCast();
+        }
     }
 
     protected override void FinalAdjustments(Vector3 destination)

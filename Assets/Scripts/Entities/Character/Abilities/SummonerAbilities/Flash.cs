@@ -23,14 +23,15 @@ public class Flash : GroundTargetedBlink, SummonerAbility
 
     public override void UseAbility(Vector3 destination)
     {
-        StartAbilityCast();
+        //StartAbilityCast();
 
         character.CharacterMovement.StopMovementTowardsPoint();
 
         Vector3 newDestination = FindPointToMoveTo(destination, transform.position);
+        Quaternion newRotation = Quaternion.LookRotation((destination - transform.position).normalized); ;
         transform.position = newDestination;
-        character.CharacterAbilityManager.StopAllDashAbilities(newDestination);
-
+        character.CharacterAbilityManager.StopAllDashAbilities();
+        
         if (character.CharacterAbilityManager.IsUsingAbilityThatHasACastTime())
         {
             character.CharacterOrientation.RotateCharacterInstantlyToLastInstantRotation();
@@ -44,16 +45,16 @@ public class Flash : GroundTargetedBlink, SummonerAbility
             }
             else
             {
-                character.CharacterOrientation.RotateCharacterInstantly(destination);
+                transform.rotation = newRotation;
             }
         }
-        else if (character.CharacterAbilityManager.IsUsingADashAbility())
+        else if (character.CharacterAbilityManager.IsUsingOnlyDashAbilitiesOrFlash())
         {
-            character.CharacterOrientation.RotateCharacterInstantly(destination);
+            transform.rotation = newRotation;
         }
 
         character.CharacterMovement.NotifyCharacterMoved();
 
-        FinishAbilityCast();
+        //FinishAbilityCast();
     }
 }

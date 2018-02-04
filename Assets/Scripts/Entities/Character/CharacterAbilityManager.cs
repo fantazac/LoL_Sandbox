@@ -271,6 +271,24 @@ public class CharacterAbilityManager : MonoBehaviour
         return false;
     }
 
+    public bool IsUsingOnlyDashAbilitiesOrFlash()
+    {
+        if (currentlyUsedAbilities.Count == 0)
+        {
+            return false;
+        }
+
+        foreach (Ability ability in currentlyUsedAbilities)
+        {
+            if (!(ability is DirectionTargetedDash) && !(ability is Flash))
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     public bool IsUsingAbilityThatHasACastTime()
     {
         if (currentlyUsedAbilities.Count == 0)
@@ -307,16 +325,15 @@ public class CharacterAbilityManager : MonoBehaviour
         return false;
     }
 
-    public void StopAllDashAbilities(Vector3 destination)
+    public void StopAllDashAbilities()
     {
-        if (currentlyUsedAbilities.Count > 1)
+        for (int i = 0; i < currentlyUsedAbilities.Count; i++)
         {
-            foreach (Ability ability in currentlyUsedAbilities)
+            Ability ability = currentlyUsedAbilities[i];
+            if (ability is DirectionTargetedDash)
             {
-                if (ability is DirectionTargetedDash)
-                {
-                    ((DirectionTargetedDash)ability).StopDash(destination);
-                }
+                ((DirectionTargetedDash)ability).StopDash();
+                i--;
             }
         }
     }
