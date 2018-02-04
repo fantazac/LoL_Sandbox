@@ -7,6 +7,14 @@ public abstract class DirectionTargetedDash : DirectionTargeted
     protected float dashSpeed;
     protected Vector3 destination;
 
+    protected IEnumerator currentDashCoroutine;
+
+    protected DirectionTargetedDash()
+    {
+        IsADash = true;
+        currentDashCoroutine = null;
+    }
+
     protected override void ModifyValues()
     {
         minimumDistanceTravelled /= StaticObjects.DivisionFactor;
@@ -15,24 +23,28 @@ public abstract class DirectionTargetedDash : DirectionTargeted
 
     public override void UseAbility(Vector3 destination)
     {
-        bool rotate = !character.CharacterAbilityManager.IsUsingAbilityPreventingRotation();
-
         StartAbilityCast();
 
-        if (rotate)
-        {
-            character.CharacterOrientation.RotateCharacterInstantly(destination);
-        }
+        RotationOnAbilityCast(destination);
 
         FinalAdjustments(destination);
 
         if (delayCastTime == null)
         {
-            StartCoroutine(AbilityWithoutCastTime());
+            currentDashCoroutine = AbilityWithoutCastTime();
         }
         else
         {
-            StartCoroutine(AbilityWithCastTime());
+            currentDashCoroutine = AbilityWithCastTime();
+        }
+        StartCoroutine(currentDashCoroutine);
+    }
+
+    protected override void RotationOnAbilityCast(Vector3 destination)
+    {
+        if (!character.CharacterAbilityManager.IsUsingAbilityPreventingRotation())
+        {
+            character.CharacterOrientation.RotateCharacterInstantly(destination);
         }
     }
 
@@ -46,7 +58,18 @@ public abstract class DirectionTargetedDash : DirectionTargeted
 
             yield return null;
         }
+        currentDashCoroutine = null;
         FinishAbilityCast();
+    }
+
+    public void StopDash()
+    {
+        if (currentDashCoroutine != null)
+        {
+            StopCoroutine(currentDashCoroutine);
+            currentDashCoroutine = null;
+            FinishAbilityCast();
+        }
     }
 
     protected override void FinalAdjustments(Vector3 destination)

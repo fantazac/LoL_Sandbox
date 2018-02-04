@@ -28,7 +28,13 @@ public class Lucian_R : DirectionTargetedProjectile, CharacterAbility
         delayBetweenBullets = new WaitForSeconds(durationOfActive / (float)amountOfProjectilesToShoot);
 
         CanBeCancelled = true;
+        CannotRotateWhileCasting = true;
         CanMoveWhileCasting = true;
+    }
+
+    protected override void SetAbilitySpritePath()
+    {
+        abilitySpritePath = "Sprites/CharacterAbilities/Lucian/LucianR";
     }
 
     protected override void Start()
@@ -37,6 +43,11 @@ public class Lucian_R : DirectionTargetedProjectile, CharacterAbility
         //CastableAbilitiesWhileActive.Add(this); Useful once cancel is coded?
 
         base.Start();
+    }
+
+    protected override void RotationOnAbilityCast(Vector3 destination)
+    {
+        character.CharacterOrientation.RotateCharacterInstantly(destination);
     }
 
     protected override IEnumerator AbilityWithoutCastTime()

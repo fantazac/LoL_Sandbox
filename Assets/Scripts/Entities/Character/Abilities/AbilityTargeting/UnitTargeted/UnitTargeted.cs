@@ -32,7 +32,8 @@ public abstract class UnitTargeted : Ability
         StartAbilityCast();
 
         character.CharacterMovement.StopAllMovement();
-        character.CharacterOrientation.RotateCharacterInstantly(target.transform.position);
+        destinationOnCast = target.transform.position;
+        RotationOnAbilityCast(target.transform.position);
 
         if (delayCastTime == null)
         {
@@ -50,6 +51,6 @@ public abstract class UnitTargeted : Ability
     }
 
     public override bool CanBeCast(Vector3 mousePosition) { return false; }
-    public override Vector3 GetDestination() { return Vector3.zero; }
+    public override Vector3 GetDestination() { return Vector3.down; }
     public override void UseAbility(Vector3 destination) { }
 }

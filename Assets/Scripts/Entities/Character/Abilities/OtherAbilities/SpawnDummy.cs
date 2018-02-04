@@ -60,4 +60,6 @@ public abstract class SpawnDummy : GroundTargeted, OtherAbility
 
         FinishAbilityCast();
     }
+
+    protected override void SetAbilitySpritePath() { }
 }

@@ -29,8 +29,6 @@ public class CharacterInput : MonoBehaviour
 
     private void Update()
     {
-        //TODO : On peut pas faire ca, car le CheckForOtherAbilitiesInputs utilise le shift, et donc ca checkrait aussi pour les touches sans le shift
-        //exemple: Shift + L = TeleportMid, L = autre spell -> il ferait les 2 de la façon que c'est fait présentement
         CheckForCharacterAbilitiesInputs();
         CheckForSummonerSpellsInputs();
         CheckForOtherAbilitiesInputs();
@@ -62,16 +60,20 @@ public class CharacterInput : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.D))
         {
-            characterAbilityManager.OnPressedInputForAbility(AbilityInput.HEAL);
+            characterAbilityManager.OnPressedInputForAbility(AbilityInput.D);
         }
         if (Input.GetKeyDown(KeyCode.F))
         {
-            characterAbilityManager.OnPressedInputForAbility(AbilityInput.TELEPORT);
+            characterAbilityManager.OnPressedInputForAbility(AbilityInput.F);
         }
     }
 
     private void CheckForOtherAbilitiesInputs()
     {
+        if (Input.GetKeyDown(KeyCode.K))
+        {
+            characterAbilityManager.ResetCooldowns();
+        }
         if (Input.GetKey(KeyCode.LeftShift))
         {
             if (Input.GetKeyDown(KeyCode.B))

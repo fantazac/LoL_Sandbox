@@ -19,7 +19,7 @@ public abstract class PassiveTargeted : Ability
     public override Vector3 GetDestination()
     {
         Debug.Log("This should not happen - GetDestination - " + this);
-        return Vector3.zero;
+        return Vector3.down;
     }
 
     public override void UseAbility(Vector3 destination)

@@ -12,15 +12,19 @@ public class Teleport : GroundTargetedBlink, SummonerAbility
         startCooldownOnAbilityCast = true;
     }
 
+    protected override void SetAbilitySpritePath()
+    {
+        abilitySpritePath = "Sprites/SummonerAbilities/Teleport";
+    }
+
     public override void UseAbility(Vector3 destination)
     {
-        StartAbilityCast();
-
+        character.CharacterOrientation.StopRotationTowardsCastPoint();
         character.CharacterOrientation.RotateCharacterInstantly(destination);
 
         transform.position = destination;
         character.CharacterMovement.NotifyCharacterMoved();
 
-        FinishAbilityCast();
+        StartCooldown(startCooldownOnAbilityCast);
     }
 }

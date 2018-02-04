@@ -22,6 +22,11 @@ public class Ezreal_W : DirectionTargetedProjectile, CharacterAbility
         HasCastTime = true;
     }
 
+    protected override void SetAbilitySpritePath()
+    {
+        abilitySpritePath = "Sprites/CharacterAbilities/Ezreal/EzrealW";
+    }
+
     protected void ApplyBuffToTarget(Entity entityHit)
     {
         Debug.Log("Increased " + entityHit.gameObject + "'s Attack Speed");

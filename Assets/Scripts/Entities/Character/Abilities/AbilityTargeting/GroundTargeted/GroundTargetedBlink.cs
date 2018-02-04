@@ -5,13 +5,13 @@ using UnityEngine;
 
 public abstract class GroundTargetedBlink : GroundTargeted
 {
-    protected Vector3 destination;
-
     protected override IEnumerator AbilityWithCastTime()
     {
         yield return delayCastTime;
 
-        transform.position = destination;
+        destinationOnCast = FindPointToMoveTo(destinationOnCast, transform.position);
+        character.CharacterOrientation.RotateCharacterInstantly(destinationOnCast);
+        transform.position = destinationOnCast;
         character.CharacterMovement.NotifyCharacterMoved();
 
         FinishAbilityCast();
@@ -19,7 +19,7 @@ public abstract class GroundTargetedBlink : GroundTargeted
 
     protected override void FinalAdjustments(Vector3 destination)
     {
-        this.destination = FindPointToMoveTo(destination, transform.position);
+        destinationOnCast = destination;
     }
 
     protected Vector3 FindPointToMoveTo(Vector3 destination, Vector3 currentPosition)
