@@ -20,6 +20,7 @@ public abstract class Ability : MonoBehaviour
     protected WaitForSeconds delayCastTime;
     protected float durationOfActive;
     protected RaycastHit hit;
+    protected Vector3 destinationOnCast;
     protected Vector3 positionOnCast;
     protected Quaternion rotationOnCast;
     protected float range;
@@ -33,7 +34,7 @@ public abstract class Ability : MonoBehaviour
     public bool CanBeCancelled { get; protected set; }
     public bool CanCastOtherAbilitiesWhileActive { get; private set; }
     public bool CanMoveWhileCasting { get; protected set; }
-    public bool CanRotateWhileCasting { get; protected set; }
+    public bool CannotRotateWhileCasting { get; protected set; }
     public bool IsADash { get; protected set; }
     public bool IsOnCooldown { get; protected set; }
     public bool OfflineOnly { get; protected set; }
@@ -77,6 +78,11 @@ public abstract class Ability : MonoBehaviour
 
     protected abstract void SetAbilitySpritePath();
 
+    protected virtual void RotationOnAbilityCast(Vector3 destination)
+    {
+        character.CharacterOrientation.RotateCharacterTowardsCastPoint(destination);
+    }
+
     protected virtual void ModifyValues()
     {
         range /= StaticObjects.DivisionFactor;
@@ -89,10 +95,7 @@ public abstract class Ability : MonoBehaviour
         {
             OnAbilityUsed(this);
         }
-        if (startCooldownOnAbilityCast && (!StaticObjects.OnlineMode || character.PhotonView.isMine))
-        {
-            StartCoroutine(PutAbilityOffCooldown());
-        }
+        StartCooldown(startCooldownOnAbilityCast);
     }
 
     protected void FinishAbilityCast()
@@ -101,10 +104,21 @@ public abstract class Ability : MonoBehaviour
         {
             OnAbilityFinished(this);
         }
-        if (!startCooldownOnAbilityCast && (!StaticObjects.OnlineMode || character.PhotonView.isMine))
+        StartCooldown(!startCooldownOnAbilityCast);
+    }
+
+    protected void StartCooldown(bool calledInStartAbilityCast)
+    {
+        if (calledInStartAbilityCast == startCooldownOnAbilityCast && (!StaticObjects.OnlineMode || character.PhotonView.isMine))
         {
             StartCoroutine(PutAbilityOffCooldown());
         }
+    }
+
+    protected void SetPositionAndRotationOnCast(Vector3 position)
+    {
+        positionOnCast = position;
+        rotationOnCast = Quaternion.LookRotation((destinationOnCast - transform.position).normalized);
     }
 
     protected virtual IEnumerator PutAbilityOffCooldown()

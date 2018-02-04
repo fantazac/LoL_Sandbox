@@ -23,7 +23,7 @@ public class Ezreal_R : DirectionTargetedProjectile, CharacterAbility
         delayCastTime = new WaitForSeconds(castTime);
 
         startCooldownOnAbilityCast = true;
-        
+
         HasCastTime = true;
     }
 
@@ -37,10 +37,24 @@ public class Ezreal_R : DirectionTargetedProjectile, CharacterAbility
         currentDamageMultiplier = 1f;
     }
 
+    protected override IEnumerator AbilityWithCastTime()
+    {
+        SetPositionAndRotationOnCast(transform.position);
+
+        yield return delayCastTime;
+
+        Projectile projectile = ((GameObject)Instantiate(projectilePrefab, positionOnCast, rotationOnCast)).GetComponent<Projectile>();
+        projectile.ShootProjectile(character.Team, affectedUnitType, speed, range);
+        projectile.OnAbilityEffectHit += OnProjectileHit;
+        projectile.OnProjectileReachedEnd += OnProjectileReachedEnd;
+
+        FinishAbilityCast();
+    }
+
     protected override void OnProjectileHit(AbilityEffect projectile, Entity entityHit)
     {
         entityHit.GetComponent<Health>().Reduce(damage * currentDamageMultiplier);
-        if(currentDamageMultiplier > DAMAGE_REDUCTION_CAP)
+        if (currentDamageMultiplier > DAMAGE_REDUCTION_CAP)
         {
             currentDamageMultiplier -= DAMAGE_REDUCTION_PER_TARGET_HIT;
         }

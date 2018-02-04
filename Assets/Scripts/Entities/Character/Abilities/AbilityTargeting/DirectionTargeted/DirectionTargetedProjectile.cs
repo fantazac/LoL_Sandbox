@@ -9,6 +9,8 @@ public abstract class DirectionTargetedProjectile : DirectionTargeted
     protected override IEnumerator AbilityWithCastTime()
     {
         yield return delayCastTime;
+
+        character.CharacterOrientation.RotateCharacterInstantly(destinationOnCast);
         
         Projectile projectile = ((GameObject)Instantiate(projectilePrefab, transform.position, transform.rotation)).GetComponent<Projectile>();
         projectile.ShootProjectile(character.Team, affectedUnitType, speed, range);

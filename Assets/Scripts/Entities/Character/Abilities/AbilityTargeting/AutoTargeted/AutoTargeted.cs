@@ -11,7 +11,7 @@ public abstract class AutoTargeted : Ability
 
     public override Vector3 GetDestination()
     {
-        return Vector3.zero; // This will change
+        return Vector3.down; // This will change
     }
 
     public override bool CanBeCast(Entity target) { return false; }

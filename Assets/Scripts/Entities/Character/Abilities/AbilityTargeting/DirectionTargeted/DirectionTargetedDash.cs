@@ -23,14 +23,9 @@ public abstract class DirectionTargetedDash : DirectionTargeted
 
     public override void UseAbility(Vector3 destination)
     {
-        bool rotate = !character.CharacterAbilityManager.IsUsingAbilityPreventingRotation();
-
         StartAbilityCast();
 
-        if (rotate)
-        {
-            character.CharacterOrientation.RotateCharacterInstantly(destination);
-        }
+        RotationOnAbilityCast(destination);
 
         FinalAdjustments(destination);
 
@@ -43,6 +38,14 @@ public abstract class DirectionTargetedDash : DirectionTargeted
             currentDashCoroutine = AbilityWithCastTime();
         }
         StartCoroutine(currentDashCoroutine);
+    }
+
+    protected override void RotationOnAbilityCast(Vector3 destination)
+    {
+        if (!character.CharacterAbilityManager.IsUsingAbilityPreventingRotation())
+        {
+            character.CharacterOrientation.RotateCharacterInstantly(destination);
+        }
     }
 
     protected override IEnumerator AbilityWithoutCastTime()

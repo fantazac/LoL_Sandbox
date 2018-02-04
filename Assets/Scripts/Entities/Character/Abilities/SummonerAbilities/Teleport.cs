@@ -19,13 +19,12 @@ public class Teleport : GroundTargetedBlink, SummonerAbility
 
     public override void UseAbility(Vector3 destination)
     {
-        StartAbilityCast();
-
+        character.CharacterOrientation.StopRotationTowardsCastPoint();
         character.CharacterOrientation.RotateCharacterInstantly(destination);
 
         transform.position = destination;
         character.CharacterMovement.NotifyCharacterMoved();
 
-        FinishAbilityCast();
+        StartCooldown(startCooldownOnAbilityCast);
     }
 }

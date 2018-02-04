@@ -110,7 +110,7 @@ public class CharacterMovement : MonoBehaviour
 
             yield return null;
         }
-        this.destination = Vector3.zero;
+        this.destination = Vector3.down;
     }
 
     public void SetCharacterIsInRangeEventForBasicAttack()
@@ -159,7 +159,7 @@ public class CharacterMovement : MonoBehaviour
 
     public void RotateCharacterIfMoving()
     {
-        if (destination != Vector3.zero)
+        if (destination != Vector3.down)
         {
             character.CharacterOrientation.RotateCharacter(destination);
         }
@@ -196,15 +196,15 @@ public class CharacterMovement : MonoBehaviour
     {
         character.CharacterActionManager.ResetBufferedAction();
         StopAllCoroutines();
-        character.CharacterOrientation.StopAllCoroutines();
+        character.CharacterOrientation.StopAllRotation();
         CharacterIsInRange = null;
-        destination = Vector3.zero;//TODO: This needs to be a point impossible to click, currently you could in theory click Vector3.zero since it's the center of the map
+        destination = Vector3.down;
         target = null;
     }
 
     public void StopMovementTowardsPoint()
     {
-        if(destination != Vector3.zero)
+        if(destination != Vector3.down)
         {
             StopAllMovement();
         }

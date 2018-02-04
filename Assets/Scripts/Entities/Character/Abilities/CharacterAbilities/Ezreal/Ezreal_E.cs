@@ -33,7 +33,9 @@ public class Ezreal_E : GroundTargetedBlink, CharacterAbility
     {
         yield return delayCastTime;
 
-        transform.position = destination;
+        destinationOnCast = FindPointToMoveTo(destinationOnCast, transform.position);
+        character.CharacterOrientation.RotateCharacterInstantly(destinationOnCast);
+        transform.position = destinationOnCast;
         character.CharacterMovement.NotifyCharacterMoved();
 
         FinishAbilityCast();

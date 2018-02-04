@@ -18,10 +18,8 @@ public class Heal : SelfTargeted, SummonerAbility
 
     public override void UseAbility(Vector3 destination)
     {
-        //StartAbilityCast();
-
         GetComponent<CharacterStats>().Health.Restore(150);
 
-        //FinishAbilityCast();
+        StartCooldown(startCooldownOnAbilityCast);
     }
 }

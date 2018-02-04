@@ -262,31 +262,13 @@ public class CharacterAbilityManager : MonoBehaviour
 
         foreach (Ability ability in currentlyUsedAbilities)
         {
-            if (!ability.CanRotateWhileCasting)
+            if (ability.CannotRotateWhileCasting)
             {
                 return true;
             }
         }
 
         return false;
-    }
-
-    public bool IsUsingOnlyDashAbilitiesOrFlash()
-    {
-        if (currentlyUsedAbilities.Count == 0)
-        {
-            return false;
-        }
-
-        foreach (Ability ability in currentlyUsedAbilities)
-        {
-            if (!(ability is DirectionTargetedDash) && !(ability is Flash))
-            {
-                return false;
-            }
-        }
-
-        return true;
     }
 
     public bool IsUsingAbilityThatHasACastTime()
@@ -299,24 +281,6 @@ public class CharacterAbilityManager : MonoBehaviour
         foreach (Ability ability in currentlyUsedAbilities)
         {
             if (ability.HasCastTime)
-            {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    public bool IsUsingADashAbility()
-    {
-        if (currentlyUsedAbilities.Count == 0)
-        {
-            return false;
-        }
-
-        foreach (Ability ability in currentlyUsedAbilities)
-        {
-            if (ability.IsADash)
             {
                 return true;
             }

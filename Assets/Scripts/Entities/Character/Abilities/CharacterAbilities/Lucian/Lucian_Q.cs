@@ -41,10 +41,14 @@ public class Lucian_Q : UnitTargeted, CharacterAbility
 
     protected override IEnumerator AbilityWithCastTime()
     {
-        positionOnCast = transform.position + (transform.forward * areaOfEffectPrefab.transform.localScale.z * 0.5f);
-        rotationOnCast = transform.rotation;
+        Quaternion currentRotation = transform.rotation;
+        transform.LookAt(destinationOnCast);
+        SetPositionAndRotationOnCast(transform.position + (transform.forward * areaOfEffectPrefab.transform.localScale.z * 0.5f));
+        transform.rotation = currentRotation;
 
         yield return delayCastTime;
+
+        character.CharacterOrientation.RotateCharacterInstantly(destinationOnCast);
 
         AreaOfEffect aoe = ((GameObject)Instantiate(areaOfEffectPrefab, positionOnCast, rotationOnCast)).GetComponent<AreaOfEffect>();
         aoe.ActivateAreaOfEffect(new List<Entity>(), character.Team, affectedUnitType, durationAoE);
