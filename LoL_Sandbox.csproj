@@ -475,6 +475,7 @@
     <Compile Include="Assets\Scripts\Entities\Character\Abilities\OtherAbilities\SpawnDummy.cs" />
     <Compile Include="Assets\Scripts\Entities\Character\Abilities\OtherAbilities\SpawnEnemyDummy.cs" />
     <Compile Include="Assets\Scripts\Entities\Character\Abilities\OtherAbilities\TeleportToMid.cs" />
+    <Compile Include="Assets\Scripts\Entities\Character\Abilities\SummonerAbilities\Flash.cs" />
     <Compile Include="Assets\Scripts\Entities\Character\Abilities\SummonerAbilities\Heal.cs" />
     <Compile Include="Assets\Scripts\Entities\Character\Abilities\SummonerAbilities\Teleport.cs" />
     <Compile Include="Assets\Scripts\Entities\Character\CharacterAbilityManager.cs" />
