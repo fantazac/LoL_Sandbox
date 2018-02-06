@@ -20,6 +20,11 @@ public class CharacterMovement : MonoBehaviour
     public delegate void PlayerIsInRangeHandler(Entity target);
     public event PlayerIsInRangeHandler CharacterIsInRange;
 
+    private CharacterMovement()
+    {
+        destination = Vector3.down;
+    }
+
     private void Awake()
     {
         character = GetComponent<Character>();
