@@ -36,9 +36,9 @@ public abstract class Stat : MonoBehaviour
         return flatBonus;
     }
 
-    public void SetFlatBonus(float flatBonus)
+    public void AddFlatBonus(float flatBonus)
     {
-        this.flatBonus = flatBonus;
+        this.flatBonus += flatBonus;
         UpdateTotal();
     }
 
@@ -47,9 +47,9 @@ public abstract class Stat : MonoBehaviour
         return percentBonus;
     }
 
-    public void SetPercentBonus(float percentBonus)
+    public void AddPercentBonus(float percentBonus)
     {
-        this.percentBonus = percentBonus;
+        this.percentBonus += percentBonus;
         UpdateTotal();
     }
 
@@ -58,9 +58,9 @@ public abstract class Stat : MonoBehaviour
         return flatMalus;
     }
 
-    public void SetFlatMalus(float flatMalus)
+    public void AddFlatMalus(float flatMalus)
     {
-        this.flatMalus = flatMalus;
+        this.flatMalus += flatMalus;
         UpdateTotal();
     }
 
@@ -69,9 +69,9 @@ public abstract class Stat : MonoBehaviour
         return percentMalus;
     }
 
-    public void SetPercentMalus(float percentMalus)
+    public void AddPercentMalus(float percentMalus)
     {
-        this.percentMalus = percentMalus;
+        this.percentMalus += percentMalus;
         UpdateTotal();
     }
 
