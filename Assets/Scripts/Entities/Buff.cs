@@ -12,7 +12,7 @@ public class Buff
     public OnUpdateEffect OnUpdate;
 
     public delegate void OnRemoveEffect(Entity entity);
-    public OnRemoveEffect OnRemove;
+    public event OnRemoveEffect OnRemove;
 
 
     public Buff(float durationInSeconds)
@@ -23,18 +23,27 @@ public class Buff
 
     public virtual void ApplyEffectTo(Entity entity)
     {
-        OnApply(entity);
+        if (OnApply != null)
+        {
+            OnApply(entity);
+        }
         stopTime = Time.time + durationInSeconds;
     }
 
     public virtual void Update(Entity entity)
     {
-        OnUpdate(entity);
+        if (OnUpdate != null)
+        {
+            OnUpdate(entity);
+        }
     }
 
     public virtual void RemoveEffectFrom(Entity entity)
     {
-        OnRemove(entity);
+        if (OnRemove != null)
+        {
+            OnRemove(entity);
+        }
     }
 
     public virtual bool HasExpired()
