@@ -30,7 +30,7 @@ public class Buff
         stopTime = Time.time + durationInSeconds;
     }
 
-    public virtual void Update(Entity entity)
+    public virtual void UpdateBuff(Entity entity)
     {
         if (OnUpdate != null)
         {

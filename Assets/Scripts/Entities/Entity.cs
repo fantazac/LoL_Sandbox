@@ -10,12 +10,14 @@ public class Entity : MonoBehaviour
 
     public int EntityId { get; protected set; }
 
-    protected virtual void Start()
+    protected Entity()
     {
         buffs = new List<Buff>();
     }
 
-    public virtual void Update()
+    protected virtual void Start() { }
+
+    public virtual void Update() // TODO FIX ME: Should be a coroutine handled by CharacterBuffManager
     {
         RemoveExpiredBuffs();
         UpdateActiveBuffs();
@@ -37,7 +39,7 @@ public class Entity : MonoBehaviour
     {
         foreach (Buff buff in buffs)
         {
-            buff.Update(this);
+            buff.UpdateBuff(this);
         }
     }
 

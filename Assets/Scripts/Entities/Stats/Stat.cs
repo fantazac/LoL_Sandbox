@@ -77,7 +77,7 @@ public abstract class Stat : MonoBehaviour
 
     public virtual void UpdateTotal()
     {
-        total = (baseValue + flatBonus) * (1 + percentBonus / 100) * (1 - percentMalus / 100) - flatMalus;
+        total = (baseValue + flatBonus) * (1 + (percentBonus * 0.01f)) * (1 - (percentMalus * 0.01f)) - flatMalus;
     }
 
     // FIXME: the UI is not this class' concern. Move this method somewhere else.
