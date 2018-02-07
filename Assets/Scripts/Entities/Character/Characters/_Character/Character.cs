@@ -12,7 +12,6 @@ public abstract class Character : Entity
     public CharacterMouseManager CharacterMouseManager { get; private set; }
     public CharacterMovement CharacterMovement { get; private set; }
     public CharacterOrientation CharacterOrientation { get; private set; }
-    public CharacterStatsController CharacterStatsController { get; private set; }
 
     public AbilityUIManager AbilityUIManager { get; private set; }
     public BuffUIManager BuffUIManager { get; private set; }
@@ -62,7 +61,6 @@ public abstract class Character : Entity
         CharacterMouseManager = GetComponent<CharacterMouseManager>();
         CharacterMovement = GetComponent<CharacterMovement>();
         CharacterOrientation = GetComponent<CharacterOrientation>();
-        CharacterStatsController = GetComponent<CharacterStatsController>();
 
         PhotonView = GetComponent<PhotonView>();
     }

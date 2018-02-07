@@ -13,16 +13,6 @@ public class CharacterStatsController : MonoBehaviour
         showStats = !StaticObjects.OnlineMode || GetComponent<PhotonView>().isMine;
     }
 
-    public float GetCurrentAttackRange()
-    {
-        return characterStats.AttackRange.GetTotal();
-    }
-
-    public float GetCurrentMovementSpeed()
-    {
-        return characterStats.MovementSpeed.GetTotal();
-    }
-
     private void OnGUI()
     {
         if (showStats)

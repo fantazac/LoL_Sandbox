@@ -7,7 +7,9 @@ public class Entity : MonoBehaviour
     public EntityTeam Team { get; protected set; }
 
     public int EntityId { get; protected set; }
+
     public EntityBuffManager EntityBuffManager { get; private set; }
+    public EntityStats EntityStats { get; private set; }
 
     protected virtual void Awake()
     {
@@ -19,5 +21,6 @@ public class Entity : MonoBehaviour
     protected virtual void InitEntityProperties()
     {
         EntityBuffManager = GetComponent<EntityBuffManager>();
-    }
+        EntityStats = GetComponent<EntityStats>();
+}
 }
