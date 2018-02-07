@@ -22,6 +22,8 @@ public class Lucian_W : DirectionTargetedProjectile, CharacterAbility
         castTime = 0.2f;
         delayCastTime = new WaitForSeconds(castTime);
 
+        debuffDuration = 4;
+
         startCooldownOnAbilityCast = true;
 
         durationAoE = 0.2f;
@@ -48,5 +50,21 @@ public class Lucian_W : DirectionTargetedProjectile, CharacterAbility
         aoe.ActivateAreaOfEffect(projectile.UnitsAlreadyHit, character.Team, affectedUnitType, durationAoE, true);
         aoe.OnAbilityEffectHit += OnAreaOfEffectHit;
         Destroy(projectile.gameObject);
+    }
+
+    private void OnAreaOfEffectHit(AbilityEffect projectile, Entity entityHit)
+    {
+        AddNewDebuffToEntityHit(entityHit);
+        entityHit.EntityStats.Health.Reduce(damage);
+    }
+
+    public override void ApplyBuffToEntityHit(Entity entityHit)
+    {
+        Debug.Log(entityHit.gameObject + " is marked by Lucian's W");
+    }
+
+    public override void RemoveBuffFromEntityHit(Entity entityHit)
+    {
+        Debug.Log(entityHit.gameObject + " is not marked anymore by Lucian's W");
     }
 }

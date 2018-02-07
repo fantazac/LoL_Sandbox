@@ -39,20 +39,8 @@ public class Ezreal_W : DirectionTargetedProjectile, CharacterAbility
         }
         else
         {
-            entityHit.GetComponent<Health>().Reduce(damage);
+            entityHit.EntityStats.Health.Reduce(damage);
         }
-    }
-
-    protected override void AddNewBuffToEntityHit(Entity entityHit)
-    {
-        Buff buff = new Buff(this, entityHit, buffDuration);
-        entityHit.EntityBuffManager.ApplyBuff(buff, buffSprite);
-    }
-
-    protected override void AddNewDebuffToEntityHit(Entity entityHit)
-    {
-        Buff debuff = new Buff(this, entityHit, buffDuration);
-        entityHit.EntityBuffManager.ApplyDebuff(debuff, buffSprite);
     }
 
     public override void ApplyBuffToEntityHit(Entity entityHit)

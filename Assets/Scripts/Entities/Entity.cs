@@ -22,5 +22,5 @@ public class Entity : MonoBehaviour
     {
         EntityBuffManager = GetComponent<EntityBuffManager>();
         EntityStats = GetComponent<EntityStats>();
-}
+    }
 }

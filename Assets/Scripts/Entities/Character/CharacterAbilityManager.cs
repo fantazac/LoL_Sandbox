@@ -16,7 +16,7 @@ public class CharacterAbilityManager : MonoBehaviour
 
     private void Start()
     {
-        character = StaticObjects.Character;
+        character = GetComponent<Character>();
         InitAbilities();
     }
 
@@ -28,7 +28,6 @@ public class CharacterAbilityManager : MonoBehaviour
             Ability ability = abilitiesOnCharacter[i];
             ability.OnAbilityUsed += OnAbilityUsed;
             ability.OnAbilityFinished += OnAbilityFinished;
-
             if (!(ability is OtherAbility) && (!StaticObjects.OnlineMode || character.PhotonView.isMine))
             {
                 ability.ID = i;

@@ -30,6 +30,8 @@ public class BuffUIManager : MonoBehaviour
         buffOutlines.Add(buff, buffOutline);
 
         Image[] buffImages = buffOutline.transform.GetChild(0).GetComponentsInChildren<Image>();
+        buffImages[1].sprite = buffSprite;
+        buffImages[2].sprite = buffSprite;
         antiClockwiseImages.Add(buff, buffImages[1]);
         clockwiseImages.Add(buff, buffImages[2]);
         buffStacksTexts.Add(buff, buffOutline.transform.GetComponentInChildren<Text>());

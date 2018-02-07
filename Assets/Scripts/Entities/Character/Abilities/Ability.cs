@@ -68,11 +68,11 @@ public abstract class Ability : MonoBehaviour
     protected virtual void Awake()
     {
         character = GetComponent<Character>();
+        buffSprite = Resources.Load<Sprite>(buffSpritePath);
+        debuffSprite = Resources.Load<Sprite>(debuffSpritePath);
         if (!StaticObjects.OnlineMode || character.PhotonView.isMine)
         {
             abilitySprite = Resources.Load<Sprite>(abilitySpritePath);
-            buffSprite = Resources.Load<Sprite>(buffSpritePath);
-            debuffSprite = Resources.Load<Sprite>(debuffSpritePath);
         }
     }
 
@@ -166,8 +166,17 @@ public abstract class Ability : MonoBehaviour
         cooldownRemaining -= cooldownReductionAmount;
     }
 
-    protected virtual void AddNewBuffToEntityHit(Entity entityHit) { }
-    protected virtual void AddNewDebuffToEntityHit(Entity entityHit) { }
+    protected virtual void AddNewBuffToEntityHit(Entity entityHit)
+    {
+        Buff buff = new Buff(this, entityHit, buffDuration);
+        entityHit.EntityBuffManager.ApplyBuff(buff, buffSprite);
+    }
+
+    protected virtual void AddNewDebuffToEntityHit(Entity entityHit)
+    {
+        Buff debuff = new Buff(this, entityHit, debuffDuration);
+        entityHit.EntityBuffManager.ApplyDebuff(debuff, debuffSprite);
+    }
 
     public virtual void ApplyBuffToEntityHit(Entity entityHit) { }
     public virtual void RemoveBuffFromEntityHit(Entity entityHit) { }
