@@ -27,7 +27,7 @@ public class Ezreal_R : DirectionTargetedProjectile, CharacterAbility
         HasCastTime = true;
     }
 
-    protected override void SetAbilitySpritePath()
+    protected override void SetSpritePaths()
     {
         abilitySpritePath = "Sprites/CharacterAbilities/Ezreal/EzrealR";
     }

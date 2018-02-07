@@ -4,8 +4,9 @@ using UnityEngine;
 
 public class Lucian_P : PassiveTargeted, CharacterAbility, PassiveCharacterAbility
 {
-    protected override void SetAbilitySpritePath()
+    protected override void SetSpritePaths()
     {
         abilitySpritePath = "Sprites/CharacterAbilities/Lucian/LucianP";
+        buffSpritePath = "Sprites/CharacterAbilities/Lucian/LucianP_Buff";
     }
 }

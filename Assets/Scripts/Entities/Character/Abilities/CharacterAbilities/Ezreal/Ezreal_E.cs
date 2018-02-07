@@ -24,7 +24,7 @@ public class Ezreal_E : GroundTargetedBlink, CharacterAbility
         HasCastTime = true;
     }
 
-    protected override void SetAbilitySpritePath()
+    protected override void SetSpritePaths()
     {
         abilitySpritePath = "Sprites/CharacterAbilities/Ezreal/EzrealE";
     }

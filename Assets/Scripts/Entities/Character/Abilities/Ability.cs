@@ -26,8 +26,20 @@ public abstract class Ability : MonoBehaviour
     protected float speed;
     protected bool startCooldownOnAbilityCast;
 
+    protected float buffDuration;
+    protected float buffFlatBonus;
+    protected float buffPercentBonus;
+
+    protected float debuffDuration;
+    protected float debuffFlatBonus;
+    protected float debuffPercentBonus;
+
     public Sprite abilitySprite;
     protected string abilitySpritePath;
+    public Sprite buffSprite;
+    protected string buffSpritePath;
+    public Sprite debuffSprite;
+    protected string debuffSpritePath;
 
     public bool CanBeCastAtAnytime { get; protected set; }
     public bool CanBeCancelled { get; protected set; }
@@ -50,7 +62,7 @@ public abstract class Ability : MonoBehaviour
     protected Ability()
     {
         CastableAbilitiesWhileActive = new List<Ability>();
-        SetAbilitySpritePath();
+        SetSpritePaths();
     }
 
     protected virtual void Awake()
@@ -59,6 +71,8 @@ public abstract class Ability : MonoBehaviour
         if (!StaticObjects.OnlineMode || character.PhotonView.isMine)
         {
             abilitySprite = Resources.Load<Sprite>(abilitySpritePath);
+            buffSprite = Resources.Load<Sprite>(buffSpritePath);
+            debuffSprite = Resources.Load<Sprite>(debuffSpritePath);
         }
     }
 
@@ -75,7 +89,7 @@ public abstract class Ability : MonoBehaviour
     public abstract void UseAbility(Entity target);
     public abstract void UseAbility(Vector3 destination);
 
-    protected abstract void SetAbilitySpritePath();
+    protected abstract void SetSpritePaths();
 
     protected virtual void RotationOnAbilityCast(Vector3 destination)
     {
@@ -151,6 +165,9 @@ public abstract class Ability : MonoBehaviour
     {
         cooldownRemaining -= cooldownReductionAmount;
     }
+
+    protected virtual void AddNewBuffToEntityHit(Entity entityHit) { }
+    protected virtual void AddNewDebuffToEntityHit(Entity entityHit) { }
 
     public virtual void ApplyBuffToEntityHit(Entity entityHit) { }
     public virtual void RemoveBuffFromEntityHit(Entity entityHit) { }

@@ -15,6 +15,8 @@ public abstract class Character : Entity
     public CharacterStatsController CharacterStatsController { get; private set; }
 
     public AbilityUIManager AbilityUIManager { get; private set; }
+    public BuffUIManager BuffUIManager { get; private set; }
+    public BuffUIManager DebuffUIManager { get; private set; }
 
     public PhotonView PhotonView { get; private set; }
 
@@ -26,6 +28,10 @@ public abstract class Character : Entity
         if ((!StaticObjects.OnlineMode && EntityId == 0) || PhotonView.isMine)
         {
             AbilityUIManager = transform.parent.GetComponentInChildren<AbilityUIManager>();
+            BuffUIManager[] buffUIManagers = transform.parent.GetComponentsInChildren<BuffUIManager>();
+            BuffUIManager = buffUIManagers[0];
+            DebuffUIManager = buffUIManagers[1];
+            EntityBuffManager.SetUIManagers(BuffUIManager, DebuffUIManager);
         }
         if (StaticObjects.OnlineMode && PhotonView.isMine)
         {

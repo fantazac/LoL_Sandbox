@@ -4,9 +4,6 @@ using UnityEngine;
 
 public class Ezreal_W : DirectionTargetedProjectile, CharacterAbility
 {
-    private float attackSpeedBuffDuration;
-    private float attackSpeedBuffPercentBonus;
-
     protected Ezreal_W()
     {
         affectedUnitType = AbilityAffectedUnitType.CHARACTERS;
@@ -24,20 +21,21 @@ public class Ezreal_W : DirectionTargetedProjectile, CharacterAbility
 
         HasCastTime = true;
 
-        attackSpeedBuffDuration = 5;
-        attackSpeedBuffPercentBonus = 20;
+        buffDuration = 5;
+        buffPercentBonus = 20;
     }
 
-    protected override void SetAbilitySpritePath()
+    protected override void SetSpritePaths()
     {
         abilitySpritePath = "Sprites/CharacterAbilities/Ezreal/EzrealW";
+        buffSpritePath = "Sprites/CharacterAbilities/Ezreal/EzrealW_Buff";
     }
 
     protected override void OnProjectileHit(AbilityEffect projectile, Entity entityHit)
     {
         if (entityHit.Team == character.Team)
         {
-            ApplyBuffToTarget(entityHit);
+            AddNewBuffToEntityHit(entityHit);
         }
         else
         {
@@ -45,20 +43,27 @@ public class Ezreal_W : DirectionTargetedProjectile, CharacterAbility
         }
     }
 
-    protected void ApplyBuffToTarget(Entity entityHit)
+    protected override void AddNewBuffToEntityHit(Entity entityHit)
     {
-        entityHit.EntityBuffManager.ApplyBuff(new Buff(this, entityHit, attackSpeedBuffDuration));
+        Buff buff = new Buff(this, entityHit, buffDuration);
+        entityHit.EntityBuffManager.ApplyBuff(buff, buffSprite);
+    }
+
+    protected override void AddNewDebuffToEntityHit(Entity entityHit)
+    {
+        Buff debuff = new Buff(this, entityHit, buffDuration);
+        entityHit.EntityBuffManager.ApplyDebuff(debuff, buffSprite);
     }
 
     public override void ApplyBuffToEntityHit(Entity entityHit)
     {
-        entityHit.GetComponent<AttackSpeed>().AddPercentBonus(attackSpeedBuffPercentBonus);
+        entityHit.GetComponent<AttackSpeed>().AddPercentBonus(buffPercentBonus);
         Debug.Log("Increased " + entityHit.gameObject + "'s Attack Speed");
     }
 
     public override void RemoveBuffFromEntityHit(Entity entityHit)
     {
-        entityHit.GetComponent<AttackSpeed>().AddPercentBonus(-attackSpeedBuffPercentBonus);
+        entityHit.GetComponent<AttackSpeed>().RemovePercentBonus(buffPercentBonus);
         Debug.Log("Decreased " + entityHit.gameObject + "'s Attack Speed");
     }
 }

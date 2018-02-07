@@ -32,7 +32,7 @@ public class Lucian_R : DirectionTargetedProjectile, CharacterAbility
         CanMoveWhileCasting = true;
     }
 
-    protected override void SetAbilitySpritePath()
+    protected override void SetSpritePaths()
     {
         abilitySpritePath = "Sprites/CharacterAbilities/Lucian/LucianR";
     }

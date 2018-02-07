@@ -29,9 +29,11 @@ public class Lucian_W : DirectionTargetedProjectile, CharacterAbility
         HasCastTime = true;
     }
 
-    protected override void SetAbilitySpritePath()
+    protected override void SetSpritePaths()
     {
         abilitySpritePath = "Sprites/CharacterAbilities/Lucian/LucianW";
+        buffSpritePath = "Sprites/CharacterAbilities/Lucian/LucianW_Buff";
+        debuffSpritePath = "Sprites/CharacterAbilities/Lucian/LucianW_Debuff";
     }
 
     protected override void OnProjectileHit(AbilityEffect projectile, Entity entityHit)
