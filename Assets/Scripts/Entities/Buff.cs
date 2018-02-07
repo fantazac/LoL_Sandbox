@@ -1,53 +1,41 @@
-﻿using UnityEngine;
-
-public class Buff
+﻿public class Buff
 {
-    private float durationInSeconds;
-    private float stopTime;
+    private Ability sourceAbility;
+    private Entity entityHit;
 
-    public delegate void OnApplyEffect(Entity entity);
-    public OnApplyEffect OnApply;
+    private float duration;
+    private float durationRemaining;
 
-    public delegate void OnUpdateEffect(Entity entity);
-    public OnUpdateEffect OnUpdate;
-
-    public delegate void OnRemoveEffect(Entity entity);
-    public event OnRemoveEffect OnRemove;
-
-
-    public Buff(float durationInSeconds)
+    public Buff(Ability sourceAbility, Entity entityHit, float duration)
     {
-        this.durationInSeconds = durationInSeconds;
-        stopTime = 0;
+        this.sourceAbility = sourceAbility;
+        this.entityHit = entityHit;
+        this.duration = duration;
+
+        durationRemaining = duration;
+
+        sourceAbility.ApplyBuffToEntityHit(entityHit);
     }
 
-    public virtual void ApplyEffectTo(Entity entity)
+    public Buff(Ability sourceAbility, Entity entityHit) : this(sourceAbility, entityHit, 0) { }
+
+    public void RemoveBuff()
     {
-        if (OnApply != null)
-        {
-            OnApply(entity);
-        }
-        stopTime = Time.time + durationInSeconds;
+        sourceAbility.RemoveBuffFromEntityHit(entityHit);
     }
 
-    public virtual void UpdateBuff(Entity entity)
+    public void ReduceDurationRemaining(float frameDuration)
     {
-        if (OnUpdate != null)
-        {
-            OnUpdate(entity);
-        }
+        durationRemaining -= frameDuration;
     }
 
-    public virtual void RemoveEffectFrom(Entity entity)
+    public bool HasExpired()
     {
-        if (OnRemove != null)
-        {
-            OnRemove(entity);
-        }
+        return durationRemaining <= 0;
     }
 
-    public virtual bool HasExpired()
+    public bool HasDuration()
     {
-        return Time.time > stopTime;
+        return duration > 0;
     }
 }

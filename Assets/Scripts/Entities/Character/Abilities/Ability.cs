@@ -152,6 +152,9 @@ public abstract class Ability : MonoBehaviour
         cooldownRemaining -= cooldownReductionAmount;
     }
 
+    public virtual void ApplyBuffToEntityHit(Entity entityHit) { }
+    public virtual void RemoveBuffFromEntityHit(Entity entityHit) { }
+
     protected virtual IEnumerator AbilityWithCastTime() { yield return null; }
     protected virtual IEnumerator AbilityWithoutCastTime() { yield return null; }
 }

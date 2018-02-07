@@ -21,11 +21,6 @@ public abstract class Character : Entity
     public delegate void OnConnectionInfoReceivedHandler(Character character);
     public event OnConnectionInfoReceivedHandler OnConnectionInfoReceived;
 
-    protected void Awake()
-    {
-        InitCharacterProperties();
-    }
-
     protected override void Start()
     {
         if ((!StaticObjects.OnlineMode && EntityId == 0) || PhotonView.isMine)
@@ -51,8 +46,10 @@ public abstract class Character : Entity
         base.Start();
     }
 
-    private void InitCharacterProperties()
+    protected override void InitEntityProperties()
     {
+        base.InitEntityProperties();
+
         CharacterAbilityManager = GetComponent<CharacterAbilityManager>();
         CharacterActionManager = GetComponent<CharacterActionManager>();
         CharacterInput = GetComponent<CharacterInput>();

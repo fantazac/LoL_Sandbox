@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Ezreal_W : DirectionTargetedProjectile, CharacterAbility
 {
-    private float attackSpeedBuffDurationInSeconds;
+    private float attackSpeedBuffDuration;
     private float attackSpeedBuffPercentBonus;
 
     protected Ezreal_W()
@@ -24,8 +24,8 @@ public class Ezreal_W : DirectionTargetedProjectile, CharacterAbility
 
         HasCastTime = true;
 
-        attackSpeedBuffDurationInSeconds = 5;
-        attackSpeedBuffPercentBonus = 20;   //TODO: make the bonus scale with level
+        attackSpeedBuffDuration = 5;
+        attackSpeedBuffPercentBonus = 20;
     }
 
     protected override void SetAbilitySpritePath()
@@ -47,22 +47,18 @@ public class Ezreal_W : DirectionTargetedProjectile, CharacterAbility
 
     protected void ApplyBuffToTarget(Entity entityHit)
     {
-        Buff attackSpeedBuff = new Buff(attackSpeedBuffDurationInSeconds);
-        attackSpeedBuff.OnApply += OnApplyAttackSpeedBuff;
-        attackSpeedBuff.OnRemove += OnRemoveAttackSpeedBuff;
-
-        entityHit.ApplyBuff(attackSpeedBuff);
+        entityHit.EntityBuffManager.ApplyBuff(new Buff(this, entityHit, attackSpeedBuffDuration));
     }
 
-    private void OnApplyAttackSpeedBuff(Entity entity)
+    public override void ApplyBuffToEntityHit(Entity entityHit)
     {
-        entity.GetComponent<AttackSpeed>().AddPercentBonus(20); //FIXME: the stats should be properties of Entity.
-        Debug.Log("Increased " + entity.gameObject + "'s Attack Speed");
+        entityHit.GetComponent<AttackSpeed>().AddPercentBonus(attackSpeedBuffPercentBonus);
+        Debug.Log("Increased " + entityHit.gameObject + "'s Attack Speed");
     }
 
-    private void OnRemoveAttackSpeedBuff(Entity entity)
+    public override void RemoveBuffFromEntityHit(Entity entityHit)
     {
-        entity.GetComponent<AttackSpeed>().AddPercentBonus(-20);
-        Debug.Log("Decreased " + entity.gameObject + "'s Attack Speed");
+        entityHit.GetComponent<AttackSpeed>().AddPercentBonus(-attackSpeedBuffPercentBonus);
+        Debug.Log("Decreased " + entityHit.gameObject + "'s Attack Speed");
     }
 }
