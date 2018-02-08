@@ -90,7 +90,7 @@
         }
         else
         {
-            return CurrentStacks <= 0;
+            return CurrentStacks == 0;
         }
     }
 }

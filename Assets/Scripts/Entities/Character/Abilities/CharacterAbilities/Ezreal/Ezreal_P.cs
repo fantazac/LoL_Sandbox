@@ -33,7 +33,7 @@ public class Ezreal_P : PassiveTargeted, CharacterAbility, PassiveCharacterAbili
 
     protected override void AddNewBuffToEntityHit(Entity entityHit)
     {
-        if(passive == null || passive.CurrentStacks == 0)
+        if (passive == null || passive.HasExpired())
         {
             passive = new Buff(this, character, buffDuration, buffMaximumStacks);
             entityHit.EntityBuffManager.ApplyBuff(passive, buffSprite);
