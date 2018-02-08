@@ -41,17 +41,16 @@ public class Ezreal_W : DirectionTargetedProjectile, CharacterAbility
         {
             entityHit.EntityStats.Health.Reduce(damage);
         }
+        AbilityHit();
     }
 
     public override void ApplyBuffToEntityHit(Entity entityHit)
     {
         entityHit.EntityStats.AttackSpeed.AddPercentBonus(buffPercentBonus);
-        Debug.Log("Increased " + entityHit.gameObject + "'s Attack Speed");
     }
 
     public override void RemoveBuffFromEntityHit(Entity entityHit)
     {
         entityHit.EntityStats.AttackSpeed.RemovePercentBonus(buffPercentBonus);
-        Debug.Log("Decreased " + entityHit.gameObject + "'s Attack Speed");
     }
 }

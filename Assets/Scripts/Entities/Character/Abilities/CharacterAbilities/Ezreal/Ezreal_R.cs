@@ -62,5 +62,6 @@ public class Ezreal_R : DirectionTargetedProjectile, CharacterAbility
         {
             Destroy(projectile.gameObject);
         }
+        AbilityHit();
     }
 }

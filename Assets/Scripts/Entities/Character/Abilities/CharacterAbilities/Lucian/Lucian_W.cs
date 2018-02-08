@@ -41,6 +41,7 @@ public class Lucian_W : DirectionTargetedProjectile, CharacterAbility
     protected override void OnProjectileHit(AbilityEffect projectile, Entity entityHit)
     {
         OnAreaOfEffectHit(projectile, entityHit);
+        AbilityHit();
         OnProjectileReachedEnd((Projectile)projectile);
     }
 
@@ -56,15 +57,6 @@ public class Lucian_W : DirectionTargetedProjectile, CharacterAbility
     {
         AddNewDebuffToEntityHit(entityHit);
         entityHit.EntityStats.Health.Reduce(damage);
-    }
-
-    public override void ApplyBuffToEntityHit(Entity entityHit)
-    {
-        Debug.Log(entityHit.gameObject + " is marked by Lucian's W");
-    }
-
-    public override void RemoveBuffFromEntityHit(Entity entityHit)
-    {
-        Debug.Log(entityHit.gameObject + " is not marked anymore by Lucian's W");
+        AbilityHit();
     }
 }

@@ -66,7 +66,7 @@ public class CharacterMovement : MonoBehaviour
         }
         else
         {
-            SetMoveTowardsTarget(target, character.EntityStats.MovementSpeed.GetTotal());
+            SetMoveTowardsTarget(target, character.EntityStats.AttackRange.GetTotal());
         }
     }
 

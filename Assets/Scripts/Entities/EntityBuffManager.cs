@@ -43,7 +43,7 @@ public class EntityBuffManager : MonoBehaviour
             buff.ReduceDurationRemaining(deltaTime);
             if (hasBuffUIManager)
             {
-                buffUIManager.UpdateBuffDuration(buff, buff.Duration, buff.DurationRemaining, buff.Stacks);
+                buffUIManager.UpdateBuffDuration(buff, buff.DurationForUI, buff.DurationRemaining, buff.CurrentStacks);
             }
             if (buff.HasExpired())
             {
@@ -60,6 +60,7 @@ public class EntityBuffManager : MonoBehaviour
     public void ApplyBuff(Buff buff, Sprite buffSprite)
     {
         buffs.Add(buff);
+        buff.ApplyBuff();
         if (buffUIManager != null)
         {
             buffUIManager.SetNewBuff(buff, buffSprite);
@@ -69,6 +70,7 @@ public class EntityBuffManager : MonoBehaviour
     public void ApplyDebuff(Buff debuff, Sprite debuffSprite)
     {
         debuffs.Add(debuff);
+        debuff.ApplyBuff();
         if (debuffUIManager != null)
         {
             debuffUIManager.SetNewBuff(debuff, debuffSprite);

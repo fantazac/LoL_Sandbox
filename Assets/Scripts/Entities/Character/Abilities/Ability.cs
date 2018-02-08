@@ -27,18 +27,24 @@ public abstract class Ability : MonoBehaviour
     protected bool startCooldownOnAbilityCast;
 
     protected float buffDuration;
+    protected int buffMaximumStacks;
     protected float buffFlatBonus;
     protected float buffPercentBonus;
 
     protected float debuffDuration;
+    protected int debuffMaximumStacks;
     protected float debuffFlatBonus;
     protected float debuffPercentBonus;
 
+    [HideInInspector]
     public Sprite abilitySprite;
-    protected string abilitySpritePath;
+    [HideInInspector]
     public Sprite buffSprite;
-    protected string buffSpritePath;
+    [HideInInspector]
     public Sprite debuffSprite;
+
+    protected string abilitySpritePath;
+    protected string buffSpritePath;
     protected string debuffSpritePath;
 
     public bool CanBeCastAtAnytime { get; protected set; }
@@ -58,6 +64,9 @@ public abstract class Ability : MonoBehaviour
 
     public delegate void OnAbilityFinishedHandler(Ability ability);
     public event OnAbilityFinishedHandler OnAbilityFinished;
+
+    public delegate void OnAbilityHitHandler(Ability ability);
+    public event OnAbilityHitHandler OnAbilityHit;
 
     protected Ability()
     {
@@ -118,6 +127,14 @@ public abstract class Ability : MonoBehaviour
             OnAbilityFinished(this);
         }
         StartCooldown(!startCooldownOnAbilityCast);
+    }
+
+    protected void AbilityHit()
+    {
+        if (OnAbilityHit != null)
+        {
+            OnAbilityHit(this);
+        }
     }
 
     protected void StartCooldown(bool calledInStartAbilityCast)

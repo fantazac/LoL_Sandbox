@@ -35,7 +35,7 @@ public class BuffUIManager : MonoBehaviour
         antiClockwiseImages.Add(buff, buffImages[1]);
         clockwiseImages.Add(buff, buffImages[2]);
         buffStacksTexts.Add(buff, buffOutline.transform.GetComponentInChildren<Text>());
-
+        
         if (!buff.HasDuration)
         {
             buffImages[0].fillAmount = 1;

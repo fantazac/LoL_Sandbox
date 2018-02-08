@@ -27,6 +27,7 @@ public abstract class DirectionTargetedProjectile : DirectionTargeted
         {
             Destroy(projectile.gameObject);
         }
+        AbilityHit();
     }
 
     protected virtual void OnProjectileReachedEnd(Projectile projectile)
