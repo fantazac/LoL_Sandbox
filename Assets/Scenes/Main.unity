@@ -494,7 +494,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mainMenuCamera: {fileID: 770103255}
-  characterParent: {fileID: 1000014173963430, guid: 29da1c7f4f9a0d0428a9a1adb3262720,
+  characterParent: {fileID: 1008474478363358, guid: 29da1c7f4f9a0d0428a9a1adb3262720,
     type: 2}
 --- !u!1 &1751576766
 GameObject:

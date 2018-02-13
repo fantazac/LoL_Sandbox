@@ -8,6 +8,8 @@ public class AbilityUIManager : MonoBehaviour
     [SerializeField]
     private Image[] abilityImages;
     [SerializeField]
+    private Image[] abilityOnCooldownImages;
+    [SerializeField]
     private Text[] abilityCooldownTexts;
 
     private Color abilityColorOnCooldown;
@@ -24,14 +26,13 @@ public class AbilityUIManager : MonoBehaviour
 
     public void SetAbilityOnCooldown(int abilityId)
     {
-        Image abilityImage = abilityImages[abilityId];
-        abilityImage.color = abilityColorOnCooldown;
-        abilityImage.fillAmount = 0;
+        abilityImages[abilityId].color = abilityColorOnCooldown;
+        abilityOnCooldownImages[abilityId].fillAmount = 1;
     }
 
     public void UpdateAbilityCooldown(int abilityId, float cooldown, float cooldownRemaining)
     {
-        abilityImages[abilityId].fillAmount = 1 - (cooldownRemaining / cooldown);
+        abilityOnCooldownImages[abilityId].fillAmount = cooldownRemaining / cooldown;
 
         if (cooldownRemaining >= 1)
         {
@@ -49,9 +50,8 @@ public class AbilityUIManager : MonoBehaviour
 
     public void SetAbilityOffCooldown(int abilityId)
     {
-        Image abilityImage = abilityImages[abilityId];
-        abilityImage.fillAmount = 1;
-        abilityImage.color = Color.white;
+        abilityOnCooldownImages[abilityId].fillAmount = 0;
+        abilityImages[abilityId].color = Color.white;
         abilityCooldownTexts[abilityId].text = "";
     }
 }
