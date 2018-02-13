@@ -185,18 +185,21 @@ public abstract class Ability : MonoBehaviour
 
     protected virtual void AddNewBuffToEntityHit(Entity entityHit)
     {
-        Buff buff = new Buff(this, entityHit, buffDuration);
+        Buff buff = new Buff(this, entityHit, false, buffDuration);
         entityHit.EntityBuffManager.ApplyBuff(buff, buffSprite);
     }
 
     protected virtual void AddNewDebuffToEntityHit(Entity entityHit)
     {
-        Buff debuff = new Buff(this, entityHit, debuffDuration);
+        Buff debuff = new Buff(this, entityHit, true, debuffDuration);
         entityHit.EntityBuffManager.ApplyDebuff(debuff, debuffSprite);
     }
 
     public virtual void ApplyBuffToEntityHit(Entity entityHit) { }
     public virtual void RemoveBuffFromEntityHit(Entity entityHit) { }
+
+    public virtual void ApplyDebuffToEntityHit(Entity entityHit) { }
+    public virtual void RemoveDebuffFromEntityHit(Entity entityHit) { }
 
     protected virtual IEnumerator AbilityWithCastTime() { yield return null; }
     protected virtual IEnumerator AbilityWithoutCastTime() { yield return null; }

@@ -22,6 +22,8 @@ public class Lucian_W : DirectionTargetedProjectile, CharacterAbility
         castTime = 0.2f;
         delayCastTime = new WaitForSeconds(castTime);
 
+        buffDuration = 1;
+        buffFlatBonus = 60;
         debuffDuration = 4;
 
         startCooldownOnAbilityCast = true;
@@ -55,8 +57,33 @@ public class Lucian_W : DirectionTargetedProjectile, CharacterAbility
 
     private void OnAreaOfEffectHit(AbilityEffect projectile, Entity entityHit)
     {
-        AddNewDebuffToEntityHit(entityHit);
         entityHit.EntityStats.Health.Reduce(damage);
+        AddNewDebuffToEntityHit(entityHit);
         AbilityHit();
+    }
+
+    private void OnEntityDamaged()
+    {
+        AddNewBuffToEntityHit(character);
+    }
+
+    public override void ApplyBuffToEntityHit(Entity entityHit)
+    {
+        entityHit.EntityStats.MovementSpeed.AddFlatBonus(buffFlatBonus);
+    }
+
+    public override void RemoveBuffFromEntityHit(Entity entityHit)
+    {
+        entityHit.EntityStats.MovementSpeed.RemoveFlatBonus(buffFlatBonus);
+    }
+
+    public override void ApplyDebuffToEntityHit(Entity entityHit)
+    {
+        entityHit.EntityStats.Health.OnHealthReduced += OnEntityDamaged;
+    }
+
+    public override void RemoveDebuffFromEntityHit(Entity entityHit)
+    {
+        entityHit.EntityStats.Health.OnHealthReduced -= OnEntityDamaged;
     }
 }

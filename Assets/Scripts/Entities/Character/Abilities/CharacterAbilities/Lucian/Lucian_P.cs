@@ -32,7 +32,7 @@ public class Lucian_P : PassiveTargeted, CharacterAbility, PassiveCharacterAbili
     {
         if (passive == null || passive.HasExpired())
         {
-            passive = new Buff(this, character, buffDuration);
+            passive = new Buff(this, character, false, buffDuration);
             entityHit.EntityBuffManager.ApplyBuff(passive, buffSprite);
         }
         else

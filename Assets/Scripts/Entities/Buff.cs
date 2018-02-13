@@ -1,5 +1,7 @@
 ﻿public class Buff
 {
+    private bool isADebuff;
+
     private Ability sourceAbility;
     private Entity entityHit;
 
@@ -14,15 +16,17 @@
     public bool HasDuration { get; private set; }
     public bool HasStacks { get; private set; }
 
-    public Buff(Ability sourceAbility, Entity entityHit, float buffDuration, int maximumStacks, float stackDecayingDuration)
+    public Buff(Ability sourceAbility, Entity entityHit, bool isADebuff, float buffDuration, int maximumStacks, float stackDecayingDuration)
     {
         this.sourceAbility = sourceAbility;
         this.entityHit = entityHit;
+        this.isADebuff = isADebuff;
         Duration = buffDuration;
         DurationForUI = buffDuration;
         DurationRemaining = buffDuration;
         MaximumStacks = maximumStacks;
         StackDecayingDuration = stackDecayingDuration;
+
         if (maximumStacks > 0)
         {
             CurrentStacks = 1;
@@ -32,18 +36,32 @@
         HasStacks = maximumStacks > 0;
     }
 
-    public Buff(Ability sourceAbility, Entity entityHit) : this(sourceAbility, entityHit, 0, 0, 0) { }
-    public Buff(Ability sourceAbility, Entity entityHit, float duration) : this(sourceAbility, entityHit, duration, 0, 0) { }
-    public Buff(Ability sourceAbility, Entity entityHit, float duration, int maximumStacks) : this(sourceAbility, entityHit, duration, maximumStacks, 0) { }
+    public Buff(Ability sourceAbility, Entity entityHit, bool isADebuff) : this(sourceAbility, entityHit, isADebuff, 0, 0, 0) { }
+    public Buff(Ability sourceAbility, Entity entityHit, bool isADebuff, float duration) : this(sourceAbility, entityHit, isADebuff, duration, 0, 0) { }
+    public Buff(Ability sourceAbility, Entity entityHit, bool isADebuff, float duration, int maximumStacks) : this(sourceAbility, entityHit, isADebuff, duration, maximumStacks, 0) { }
 
     public void ApplyBuff()
     {
-        sourceAbility.ApplyBuffToEntityHit(entityHit);
+        if (isADebuff)
+        {
+            sourceAbility.ApplyDebuffToEntityHit(entityHit);
+        }
+        else
+        {
+            sourceAbility.ApplyBuffToEntityHit(entityHit);
+        }
     }
 
     public void RemoveBuff()
     {
-        sourceAbility.RemoveBuffFromEntityHit(entityHit);
+        if (isADebuff)
+        {
+            sourceAbility.RemoveDebuffFromEntityHit(entityHit);
+        }
+        else
+        {
+            sourceAbility.RemoveBuffFromEntityHit(entityHit);
+        }
     }
 
     public void ReduceDurationRemaining(float frameDuration)
@@ -52,7 +70,7 @@
         if (DurationRemaining <= 0 && !HasExpired())
         {
             sourceAbility.RemoveBuffFromEntityHit(entityHit);
-            if(StackDecayingDuration > 0)
+            if (StackDecayingDuration > 0)
             {
                 CurrentStacks--;
                 sourceAbility.ApplyBuffToEntityHit(entityHit);

@@ -44,7 +44,7 @@ public class BuffUIManager : MonoBehaviour
     public void UpdateBuffDuration(Buff buff, float duration, float durationRemaining, int buffStacks)
     {
         darkImages[buff].fillAmount = durationRemaining / duration;
-        if(buffStacks > 0)
+        if(buffStacks > 1)
         {
             buffStacksTexts[buff].text = "" + buffStacks;
         }
