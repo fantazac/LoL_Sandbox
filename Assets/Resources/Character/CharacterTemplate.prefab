@@ -733,7 +733,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1595eee4a57636e4f9d3661734c857c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buffOutlinePrefab: {fileID: 1441922843596938, guid: 9970af0ef09088a4f98be4a4a4e0b4fe,
+  buffOutlinePrefab: {fileID: 1305304119207692, guid: 9970af0ef09088a4f98be4a4a4e0b4fe,
     type: 2}
 --- !u!114 &114080502865960364
 MonoBehaviour:
