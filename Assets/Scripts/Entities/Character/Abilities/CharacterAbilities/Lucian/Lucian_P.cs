@@ -27,17 +27,4 @@ public class Lucian_P : PassiveTargeted, CharacterAbility, PassiveCharacterAbili
             }
         }
     }
-
-    protected override void AddNewBuffToEntityHit(Entity entityHit)
-    {
-        if (passive == null || passive.HasExpired())
-        {
-            passive = new Buff(this, character, false, buffDuration);
-            entityHit.EntityBuffManager.ApplyBuff(passive, buffSprite);
-        }
-        else
-        {
-            passive.ResetDurationRemaining();
-        }
-    }
 }

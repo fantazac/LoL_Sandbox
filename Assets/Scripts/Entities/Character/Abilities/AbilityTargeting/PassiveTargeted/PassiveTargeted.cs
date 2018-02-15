@@ -4,8 +4,6 @@ using UnityEngine;
 
 public abstract class PassiveTargeted : Ability
 {
-    protected Buff passive;
-
     public override bool CanBeCast(Vector3 mousePosition)
     {
         Debug.Log("This should not happen - CanBeCast(mousePosition) - " + this);

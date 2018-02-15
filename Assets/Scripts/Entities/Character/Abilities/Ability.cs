@@ -26,11 +26,13 @@ public abstract class Ability : MonoBehaviour
     protected float speed;
     protected bool startCooldownOnAbilityCast;
 
+    protected Buff buff;
     protected float buffDuration;
     protected int buffMaximumStacks;
     protected float buffFlatBonus;
     protected float buffPercentBonus;
 
+    protected Buff debuff;
     protected float debuffDuration;
     protected int debuffMaximumStacks;
     protected float debuffFlatBonus;
@@ -185,14 +187,28 @@ public abstract class Ability : MonoBehaviour
 
     protected virtual void AddNewBuffToEntityHit(Entity entityHit)
     {
-        Buff buff = new Buff(this, entityHit, false, buffDuration);
-        entityHit.EntityBuffManager.ApplyBuff(buff, buffSprite);
+        if (buff == null || buff.HasExpired())
+        {
+            buff = new Buff(this, entityHit, false, buffDuration);
+            entityHit.EntityBuffManager.ApplyBuff(buff, buffSprite);
+        }
+        else
+        {
+            buff.ResetDurationRemaining();
+        }
     }
 
     protected virtual void AddNewDebuffToEntityHit(Entity entityHit)
     {
-        Buff debuff = new Buff(this, entityHit, true, debuffDuration);
-        entityHit.EntityBuffManager.ApplyDebuff(debuff, debuffSprite);
+        if (debuff == null || debuff.HasExpired())
+        {
+            debuff = new Buff(this, entityHit, true, debuffDuration);
+            entityHit.EntityBuffManager.ApplyDebuff(debuff, debuffSprite);
+        }
+        else
+        {
+            debuff.ResetDurationRemaining();
+        }
     }
 
     public virtual void ApplyBuffToEntityHit(Entity entityHit) { }

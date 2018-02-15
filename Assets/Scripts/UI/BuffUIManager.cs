@@ -26,7 +26,6 @@ public class BuffUIManager : MonoBehaviour
         buffOutlines.Add(buff, buffOutline);
 
         buffOutline.transform.GetChild(0).GetComponent<Image>().sprite = buffSprite;
-        Image darkImage = buffOutline.transform.GetChild(0).GetComponent<Image>();
         darkImages.Add(buff, buffOutline.transform.GetChild(0).GetChild(0).GetComponent<Image>());
         buffStacksTexts.Add(buff, buffOutline.transform.GetComponentInChildren<Text>());
         
