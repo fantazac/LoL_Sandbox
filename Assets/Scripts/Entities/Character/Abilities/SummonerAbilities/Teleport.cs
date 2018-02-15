@@ -12,7 +12,7 @@ public class Teleport : GroundTargetedBlink, SummonerAbility
         startCooldownOnAbilityCast = true;
     }
 
-    protected override void SetAbilitySpritePath()
+    protected override void SetSpritePaths()
     {
         abilitySpritePath = "Sprites/SummonerAbilities/Teleport";
     }

@@ -15,7 +15,7 @@ public class Flash : GroundTargetedBlink, SummonerAbility
         CanBeCastAtAnytime = true;
     }
 
-    protected override void SetAbilitySpritePath()
+    protected override void SetSpritePaths()
     {
         abilitySpritePath = "Sprites/SummonerAbilities/Flash";
     }

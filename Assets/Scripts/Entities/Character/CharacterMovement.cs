@@ -62,11 +62,11 @@ public class CharacterMovement : MonoBehaviour
     {
         if (StaticObjects.OnlineMode)
         {
-            SendToServer_Movement_Target(target, character.CharacterStatsController.GetCurrentAttackRange());
+            SendToServer_Movement_Target(target, character.EntityStats.AttackRange.GetTotal());
         }
         else
         {
-            SetMoveTowardsTarget(target, character.CharacterStatsController.GetCurrentAttackRange());
+            SetMoveTowardsTarget(target, character.EntityStats.AttackRange.GetTotal());
         }
     }
 
@@ -108,7 +108,7 @@ public class CharacterMovement : MonoBehaviour
         {
             if (!character.CharacterAbilityManager.IsUsingAbilityPreventingMovement())
             {
-                transform.position = Vector3.MoveTowards(transform.position, destination, Time.deltaTime * character.CharacterStatsController.GetCurrentMovementSpeed());
+                transform.position = Vector3.MoveTowards(transform.position, destination, Time.deltaTime * character.EntityStats.MovementSpeed.GetTotal());
 
                 NotifyCharacterMoved();
             }
@@ -142,7 +142,7 @@ public class CharacterMovement : MonoBehaviour
         {
             if (!character.CharacterAbilityManager.IsUsingAbilityPreventingMovement())
             {
-                transform.position = Vector3.MoveTowards(transform.position, targetTransform.position, Time.deltaTime * character.CharacterStatsController.GetCurrentMovementSpeed());
+                transform.position = Vector3.MoveTowards(transform.position, targetTransform.position, Time.deltaTime * character.EntityStats.MovementSpeed.GetTotal());
 
                 NotifyCharacterMoved();
             }
@@ -209,7 +209,7 @@ public class CharacterMovement : MonoBehaviour
 
     public void StopMovementTowardsPoint()
     {
-        if(destination != Vector3.down)
+        if (destination != Vector3.down)
         {
             StopAllMovement();
         }

@@ -31,4 +31,9 @@ public abstract class PassiveTargeted : Ability
     {
         Debug.Log("This should not happen - UseAbility(target) - " + this);
     }
+
+    protected void PassiveEffect(Ability ability)
+    {
+        AddNewBuffToEntityHit(character);
+    }
 }

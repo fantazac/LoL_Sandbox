@@ -127,7 +127,7 @@ public class MainMenuManager : MonoBehaviour
     {
         state = MainMenuState.ON_HOLD;
 
-        GameObject characterTemplate = (GameObject)Instantiate(characterParent, new Vector3(), new Quaternion());
+        GameObject characterTemplate = Instantiate(characterParent, new Vector3(), new Quaternion());
         GameObject character;
         if (StaticObjects.OnlineMode)
         {

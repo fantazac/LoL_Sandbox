@@ -1,53 +1,114 @@
-﻿using UnityEngine;
-
-public class Buff
+﻿public class Buff
 {
-    private float durationInSeconds;
-    private float stopTime;
+    private bool isADebuff;
 
-    public delegate void OnApplyEffect(Entity entity);
-    public OnApplyEffect OnApply;
+    private Ability sourceAbility;
+    private Entity entityHit;
 
-    public delegate void OnUpdateEffect(Entity entity);
-    public OnUpdateEffect OnUpdate;
+    public float Duration { get; private set; }
+    public float DurationForUI { get; private set; }
+    public float DurationRemaining { get; private set; }
 
-    public delegate void OnRemoveEffect(Entity entity);
-    public event OnRemoveEffect OnRemove;
+    public int CurrentStacks { get; private set; }
+    public int MaximumStacks { get; private set; }
+    public float StackDecayingDuration { get; private set; }
 
+    public bool HasDuration { get; private set; }
+    public bool HasStacks { get; private set; }
 
-    public Buff(float durationInSeconds)
+    public Buff(Ability sourceAbility, Entity entityHit, bool isADebuff, float buffDuration, int maximumStacks, float stackDecayingDuration)
     {
-        this.durationInSeconds = durationInSeconds;
-        stopTime = 0;
-    }
+        this.sourceAbility = sourceAbility;
+        this.entityHit = entityHit;
+        this.isADebuff = isADebuff;
+        Duration = buffDuration;
+        DurationForUI = buffDuration;
+        DurationRemaining = buffDuration;
+        MaximumStacks = maximumStacks;
+        StackDecayingDuration = stackDecayingDuration;
 
-    public virtual void ApplyEffectTo(Entity entity)
-    {
-        if (OnApply != null)
+        if (maximumStacks > 0)
         {
-            OnApply(entity);
+            CurrentStacks = 1;
         }
-        stopTime = Time.time + durationInSeconds;
+
+        HasDuration = buffDuration > 0;
+        HasStacks = maximumStacks > 0;
     }
 
-    public virtual void UpdateBuff(Entity entity)
+    public Buff(Ability sourceAbility, Entity entityHit, bool isADebuff) : this(sourceAbility, entityHit, isADebuff, 0, 0, 0) { }
+    public Buff(Ability sourceAbility, Entity entityHit, bool isADebuff, float duration) : this(sourceAbility, entityHit, isADebuff, duration, 0, 0) { }
+    public Buff(Ability sourceAbility, Entity entityHit, bool isADebuff, float duration, int maximumStacks) : this(sourceAbility, entityHit, isADebuff, duration, maximumStacks, 0) { }
+
+    public void ApplyBuff()
     {
-        if (OnUpdate != null)
+        if (isADebuff)
         {
-            OnUpdate(entity);
+            sourceAbility.ApplyDebuffToEntityHit(entityHit);
         }
-    }
-
-    public virtual void RemoveEffectFrom(Entity entity)
-    {
-        if (OnRemove != null)
+        else
         {
-            OnRemove(entity);
+            sourceAbility.ApplyBuffToEntityHit(entityHit);
         }
     }
 
-    public virtual bool HasExpired()
+    public void RemoveBuff()
     {
-        return Time.time > stopTime;
+        if (isADebuff)
+        {
+            sourceAbility.RemoveDebuffFromEntityHit(entityHit);
+        }
+        else
+        {
+            sourceAbility.RemoveBuffFromEntityHit(entityHit);
+        }
+    }
+
+    public void ReduceDurationRemaining(float frameDuration)
+    {
+        DurationRemaining -= frameDuration;
+        if (DurationRemaining <= 0 && !HasExpired())
+        {
+            sourceAbility.RemoveBuffFromEntityHit(entityHit);
+            if (StackDecayingDuration > 0)
+            {
+                CurrentStacks--;
+                sourceAbility.ApplyBuffToEntityHit(entityHit);
+                DurationRemaining = StackDecayingDuration;
+                DurationForUI = StackDecayingDuration;
+            }
+            else
+            {
+                CurrentStacks = 0;
+            }
+        }
+    }
+
+    public void ResetDurationRemaining()
+    {
+        DurationForUI = Duration;
+        DurationRemaining = Duration;
+    }
+
+    public void IncreaseCurrentStacks()
+    {
+        if (CurrentStacks < MaximumStacks)
+        {
+            sourceAbility.RemoveBuffFromEntityHit(entityHit);
+            CurrentStacks++;
+            sourceAbility.ApplyBuffToEntityHit(entityHit);
+        }
+    }
+
+    public bool HasExpired()
+    {
+        if (MaximumStacks == 0)
+        {
+            return DurationRemaining <= 0;
+        }
+        else
+        {
+            return CurrentStacks == 0;
+        }
     }
 }

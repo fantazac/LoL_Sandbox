@@ -26,7 +26,7 @@ public class Lucian_Q : UnitTargeted, CharacterAbility
         HasCastTime = true;
     }
 
-    protected override void SetAbilitySpritePath()
+    protected override void SetSpritePaths()
     {
         abilitySpritePath = "Sprites/CharacterAbilities/Lucian/LucianQ";
     }

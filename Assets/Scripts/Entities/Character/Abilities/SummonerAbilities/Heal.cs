@@ -11,7 +11,7 @@ public class Heal : SelfTargeted, SummonerAbility
         CanBeCastAtAnytime = true;
     }
 
-    protected override void SetAbilitySpritePath()
+    protected override void SetSpritePaths()
     {
         abilitySpritePath = "Sprites/SummonerAbilities/Heal";
     }

@@ -2,6 +2,9 @@
 
 public class Health : Stat
 {
+    public delegate void OnHealthReducedHandler();
+    public event OnHealthReducedHandler OnHealthReduced;
+
     [SerializeField]
     protected float currentValue;
 
@@ -13,6 +16,10 @@ public class Health : Stat
     public void Reduce(float amount)
     {
         currentValue = Mathf.Clamp(currentValue - amount, 0, total);
+        if(OnHealthReduced != null)
+        {
+            OnHealthReduced();
+        }
     }
 
     public void Restore(float amount)

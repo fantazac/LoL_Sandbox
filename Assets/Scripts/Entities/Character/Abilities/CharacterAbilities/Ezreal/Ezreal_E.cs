@@ -24,7 +24,7 @@ public class Ezreal_E : GroundTargetedBlink, CharacterAbility
         HasCastTime = true;
     }
 
-    protected override void SetAbilitySpritePath()
+    protected override void SetSpritePaths()
     {
         abilitySpritePath = "Sprites/CharacterAbilities/Ezreal/EzrealE";
     }
@@ -74,7 +74,8 @@ public class Ezreal_E : GroundTargetedBlink, CharacterAbility
 
     private void OnProjectileHit(AbilityEffect projectile, Entity entityHit)
     {
-        entityHit.GetComponent<Health>().Reduce(damage);
+        entityHit.EntityStats.Health.Reduce(damage);
+        AbilityHit();
         Destroy(projectile.gameObject);
     }
 }

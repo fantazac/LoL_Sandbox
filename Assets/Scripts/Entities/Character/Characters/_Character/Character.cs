@@ -12,25 +12,25 @@ public abstract class Character : Entity
     public CharacterMouseManager CharacterMouseManager { get; private set; }
     public CharacterMovement CharacterMovement { get; private set; }
     public CharacterOrientation CharacterOrientation { get; private set; }
-    public CharacterStatsController CharacterStatsController { get; private set; }
 
     public AbilityUIManager AbilityUIManager { get; private set; }
+    public BuffUIManager BuffUIManager { get; private set; }
+    public BuffUIManager DebuffUIManager { get; private set; }
 
     public PhotonView PhotonView { get; private set; }
 
     public delegate void OnConnectionInfoReceivedHandler(Character character);
     public event OnConnectionInfoReceivedHandler OnConnectionInfoReceived;
 
-    protected void Awake()
-    {
-        InitCharacterProperties();
-    }
-
     protected override void Start()
     {
         if ((!StaticObjects.OnlineMode && EntityId == 0) || PhotonView.isMine)
         {
             AbilityUIManager = transform.parent.GetComponentInChildren<AbilityUIManager>();
+            BuffUIManager[] buffUIManagers = transform.parent.GetComponentsInChildren<BuffUIManager>();
+            BuffUIManager = buffUIManagers[0];
+            DebuffUIManager = buffUIManagers[1];
+            EntityBuffManager.SetUIManagers(BuffUIManager, DebuffUIManager);
         }
         if (StaticObjects.OnlineMode && PhotonView.isMine)
         {
@@ -51,15 +51,16 @@ public abstract class Character : Entity
         base.Start();
     }
 
-    private void InitCharacterProperties()
+    protected override void InitEntityProperties()
     {
+        base.InitEntityProperties();
+
         CharacterAbilityManager = GetComponent<CharacterAbilityManager>();
         CharacterActionManager = GetComponent<CharacterActionManager>();
         CharacterInput = GetComponent<CharacterInput>();
         CharacterMouseManager = GetComponent<CharacterMouseManager>();
         CharacterMovement = GetComponent<CharacterMovement>();
         CharacterOrientation = GetComponent<CharacterOrientation>();
-        CharacterStatsController = GetComponent<CharacterStatsController>();
 
         PhotonView = GetComponent<PhotonView>();
     }

@@ -26,8 +26,28 @@ public abstract class Ability : MonoBehaviour
     protected float speed;
     protected bool startCooldownOnAbilityCast;
 
+    protected Buff buff;
+    protected float buffDuration;
+    protected int buffMaximumStacks;
+    protected float buffFlatBonus;
+    protected float buffPercentBonus;
+
+    protected Buff debuff;
+    protected float debuffDuration;
+    protected int debuffMaximumStacks;
+    protected float debuffFlatBonus;
+    protected float debuffPercentBonus;
+
+    [HideInInspector]
     public Sprite abilitySprite;
+    [HideInInspector]
+    public Sprite buffSprite;
+    [HideInInspector]
+    public Sprite debuffSprite;
+
     protected string abilitySpritePath;
+    protected string buffSpritePath;
+    protected string debuffSpritePath;
 
     public bool CanBeCastAtAnytime { get; protected set; }
     public bool CanBeCancelled { get; protected set; }
@@ -47,15 +67,20 @@ public abstract class Ability : MonoBehaviour
     public delegate void OnAbilityFinishedHandler(Ability ability);
     public event OnAbilityFinishedHandler OnAbilityFinished;
 
+    public delegate void OnAbilityHitHandler(Ability ability);
+    public event OnAbilityHitHandler OnAbilityHit;
+
     protected Ability()
     {
         CastableAbilitiesWhileActive = new List<Ability>();
-        SetAbilitySpritePath();
+        SetSpritePaths();
     }
 
     protected virtual void Awake()
     {
         character = GetComponent<Character>();
+        buffSprite = Resources.Load<Sprite>(buffSpritePath);
+        debuffSprite = Resources.Load<Sprite>(debuffSpritePath);
         if (!StaticObjects.OnlineMode || character.PhotonView.isMine)
         {
             abilitySprite = Resources.Load<Sprite>(abilitySpritePath);
@@ -75,7 +100,7 @@ public abstract class Ability : MonoBehaviour
     public abstract void UseAbility(Entity target);
     public abstract void UseAbility(Vector3 destination);
 
-    protected abstract void SetAbilitySpritePath();
+    protected abstract void SetSpritePaths();
 
     protected virtual void RotationOnAbilityCast(Vector3 destination)
     {
@@ -104,6 +129,14 @@ public abstract class Ability : MonoBehaviour
             OnAbilityFinished(this);
         }
         StartCooldown(!startCooldownOnAbilityCast);
+    }
+
+    protected void AbilityHit()
+    {
+        if (OnAbilityHit != null)
+        {
+            OnAbilityHit(this);
+        }
     }
 
     protected void StartCooldown(bool calledInStartAbilityCast)
@@ -151,6 +184,38 @@ public abstract class Ability : MonoBehaviour
     {
         cooldownRemaining -= cooldownReductionAmount;
     }
+
+    protected virtual void AddNewBuffToEntityHit(Entity entityHit)
+    {
+        if (buff == null || buff.HasExpired())
+        {
+            buff = new Buff(this, entityHit, false, buffDuration);
+            entityHit.EntityBuffManager.ApplyBuff(buff, buffSprite);
+        }
+        else
+        {
+            buff.ResetDurationRemaining();
+        }
+    }
+
+    protected virtual void AddNewDebuffToEntityHit(Entity entityHit)
+    {
+        if (debuff == null || debuff.HasExpired())
+        {
+            debuff = new Buff(this, entityHit, true, debuffDuration);
+            entityHit.EntityBuffManager.ApplyDebuff(debuff, debuffSprite);
+        }
+        else
+        {
+            debuff.ResetDurationRemaining();
+        }
+    }
+
+    public virtual void ApplyBuffToEntityHit(Entity entityHit) { }
+    public virtual void RemoveBuffFromEntityHit(Entity entityHit) { }
+
+    public virtual void ApplyDebuffToEntityHit(Entity entityHit) { }
+    public virtual void RemoveDebuffFromEntityHit(Entity entityHit) { }
 
     protected virtual IEnumerator AbilityWithCastTime() { yield return null; }
     protected virtual IEnumerator AbilityWithoutCastTime() { yield return null; }
