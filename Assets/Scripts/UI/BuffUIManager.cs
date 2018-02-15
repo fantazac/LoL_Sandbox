@@ -28,7 +28,7 @@ public class BuffUIManager : MonoBehaviour
         buffOutline.transform.GetChild(0).GetComponent<Image>().sprite = buffSprite;
         darkImages.Add(buff, buffOutline.transform.GetChild(0).GetChild(0).GetComponent<Image>());
         buffStacksTexts.Add(buff, buffOutline.transform.GetComponentInChildren<Text>());
-        
+
         if (!buff.HasDuration)
         {
             darkImages[buff].fillAmount = 0;
@@ -43,7 +43,7 @@ public class BuffUIManager : MonoBehaviour
     public void UpdateBuffDuration(Buff buff, float duration, float durationRemaining, int buffStacks)
     {
         darkImages[buff].fillAmount = durationRemaining / duration;
-        if(buffStacks > 1)
+        if (buffStacks > 1)
         {
             buffStacksTexts[buff].text = "" + buffStacks;
         }
