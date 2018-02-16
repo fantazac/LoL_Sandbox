@@ -8,27 +8,27 @@ public class EzrealBaseStats : CharacterBaseStats
 
     protected EzrealBaseStats()
     {
-        BaseHealth = 450;
-        BaseResource = 40;
+        BaseHealth = 484.4f;
+        BaseResource = 360.6f;
 
-        BaseAttackDamage = 350;
-        BaseAbilityPower = 378;
-        BaseArmor = 13;
-        BaseMagicResistance = 73;
-        BaseAttackSpeed = 0.771f;
-        BaseCooldownReduction = 5;
-        BaseCriticalStrikeChance = 23;
-        BaseMovementSpeed = 335;
+        BaseAttackDamage = 64;
+        BaseAbilityPower = 0;
+        BaseArmor = 31;
+        BaseMagicResistance = 30;
+        BaseAttackSpeed = 0.625f;
+        BaseCooldownReduction = 0;
+        BaseCriticalStrikeChance = 0;
+        BaseMovementSpeed = 325;
 
-        BaseHealthRegeneration = 5;
-        BaseResourceRegeneration = 9;
-        BaseArmorPenetration = 15;
-        BaseArmorPenetrationPercent = 15;
-        BaseMagicPenetration = 23;
-        BaseMagicPenetrationPercent = 44;
-        BaseLifeSteal = 15;
-        BaseSpellVamp = 25;
-        BaseAttackRange = 525;
-        BaseTenacity = 29;
+        BaseHealthRegeneration = 6.5f;
+        BaseResourceRegeneration = 8.1f;
+        BaseArmorPenetration = 0;
+        BaseArmorPenetrationPercent = 0;
+        BaseMagicPenetration = 0;
+        BaseMagicPenetrationPercent = 0;
+        BaseLifeSteal = 0;
+        BaseSpellVamp = 0;
+        BaseAttackRange = 550;
+        BaseTenacity = 0;
     }
 }

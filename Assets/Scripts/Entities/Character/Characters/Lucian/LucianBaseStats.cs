@@ -8,27 +8,27 @@ public class LucianBaseStats : CharacterBaseStats
 
     protected LucianBaseStats()
     {
-        BaseHealth = 500;
-        BaseResource = 28;
+        BaseHealth = 554.4f;
+        BaseResource = 348.9f;
 
-        BaseAttackDamage = 420;
-        BaseAbilityPower = 234;
-        BaseArmor = 60;
-        BaseMagicResistance = 40;
-        BaseAttackSpeed = 1.325f;
-        BaseCooldownReduction = 10;
-        BaseCriticalStrikeChance = 42;
-        BaseMovementSpeed = 325;
+        BaseAttackDamage = 65;
+        BaseAbilityPower = 0;
+        BaseArmor = 33;
+        BaseMagicResistance = 30;
+        BaseAttackSpeed = 0.638f;
+        BaseCooldownReduction = 0;
+        BaseCriticalStrikeChance = 0;
+        BaseMovementSpeed = 335;
 
-        BaseHealthRegeneration = 8;
-        BaseResourceRegeneration = 11;
-        BaseArmorPenetration = 9;
-        BaseArmorPenetrationPercent = 32;
-        BaseMagicPenetration = 14;
-        BaseMagicPenetrationPercent = 30;
-        BaseLifeSteal = 31;
-        BaseSpellVamp = 17;
-        BaseAttackRange = 550;
-        BaseTenacity = 22;
+        BaseHealthRegeneration = 6;
+        BaseResourceRegeneration = 8.2f;
+        BaseArmorPenetration = 0;
+        BaseArmorPenetrationPercent = 0;
+        BaseMagicPenetration = 0;
+        BaseMagicPenetrationPercent = 0;
+        BaseLifeSteal = 0;
+        BaseSpellVamp = 0;
+        BaseAttackRange = 500;
+        BaseTenacity = 0;
     }
 }
