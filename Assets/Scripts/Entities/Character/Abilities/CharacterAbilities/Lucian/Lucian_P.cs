@@ -4,9 +4,18 @@ using UnityEngine;
 
 public class Lucian_P : PassiveTargeted, CharacterAbility, PassiveCharacterAbility
 {
+    private Ability lucianE;
+
     protected Lucian_P()
     {
         buffDuration = 3;
+    }
+
+    protected override void Awake()
+    {
+        base.Awake();
+
+        lucianE = GetComponent<Lucian_E>();
     }
 
     protected override void SetSpritePaths()
@@ -25,6 +34,18 @@ public class Lucian_P : PassiveTargeted, CharacterAbility, PassiveCharacterAbili
             {
                 ability.OnAbilityFinished += PassiveEffect;
             }
+        }
+    }
+
+    public override void UseAbility(Entity target)
+    {
+        if(target is Character)
+        {
+            lucianE.ReduceCooldown(2);
+        }
+        else
+        {
+            lucianE.ReduceCooldown(1);
         }
     }
 }

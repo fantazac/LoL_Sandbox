@@ -17,8 +17,8 @@ public abstract class EntityBasicAttack : MonoBehaviour
 
     protected float speed;
 
-    public delegate void BasicAttackHitHandler();
-    public event BasicAttackHitHandler BasicAttackHit;
+    public delegate void OnBasicAttackHitHandler();
+    public event OnBasicAttackHitHandler OnBasicAttackHit;
 
     protected virtual void OnEnable()
     {
@@ -45,7 +45,7 @@ public abstract class EntityBasicAttack : MonoBehaviour
         ((Character)entity).CharacterMovement.CharacterIsInRange += UseBasicAttack;
     }
 
-    public void StopBasicAttack()
+    public virtual void StopBasicAttack()
     {
         currentTarget = null;
         attackIsInQueue = false;
@@ -67,7 +67,7 @@ public abstract class EntityBasicAttack : MonoBehaviour
         }
     }
 
-    protected void UseBasicAttack(Entity target)
+    protected virtual void UseBasicAttack(Entity target)
     {
         currentTarget = target;
         if (entity.EntityBasicAttackCycle.AttackSpeedCycleIsReady)
@@ -87,16 +87,18 @@ public abstract class EntityBasicAttack : MonoBehaviour
 
         ProjectileUnitTargeted projectile = (Instantiate(basicAttackPrefab, transform.position, transform.rotation)).GetComponent<ProjectileUnitTargeted>();
         projectile.ShootProjectile(entity.Team, target, speed);
-        projectile.OnAbilityEffectHit += OnBasicAttackHit;
+        projectile.OnAbilityEffectHit += BasicAttackHit;
     }
 
-    protected virtual void OnBasicAttackHit(AbilityEffect basicAttackProjectile, Entity entityHit)
+    protected virtual void BasicAttackHit(AbilityEffect basicAttackProjectile, Entity entityHit)
     {
         entityHit.EntityStats.Health.Reduce(entity.EntityStats.AttackDamage.GetTotal());
         Destroy(basicAttackProjectile.gameObject);
-        if (BasicAttackHit != null)
+        if (OnBasicAttackHit != null)
         {
-            BasicAttackHit();
+            OnBasicAttackHit();
         }
     }
+
+
 }

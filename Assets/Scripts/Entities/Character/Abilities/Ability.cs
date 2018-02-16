@@ -193,7 +193,7 @@ public abstract class Ability : MonoBehaviour
 
     protected virtual void AddNewBuffToEntityHit(Entity entityHit)
     {
-        if (buff == null || buff.HasExpired())
+        if (!BuffIsActive())
         {
             buff = new Buff(this, entityHit, false, buffDuration);
             entityHit.EntityBuffManager.ApplyBuff(buff, buffSprite);
@@ -206,7 +206,7 @@ public abstract class Ability : MonoBehaviour
 
     protected virtual void AddNewDebuffToEntityHit(Entity entityHit)
     {
-        if (debuff == null || debuff.HasExpired())
+        if (!DebuffIsActive())
         {
             debuff = new Buff(this, entityHit, true, debuffDuration);
             entityHit.EntityBuffManager.ApplyDebuff(debuff, debuffSprite);
@@ -214,6 +214,32 @@ public abstract class Ability : MonoBehaviour
         else
         {
             debuff.ResetDurationRemaining();
+        }
+    }
+
+    public bool BuffIsActive()
+    {
+        return !(buff == null || buff.HasExpired());
+    }
+
+    public bool DebuffIsActive()
+    {
+        return !(debuff == null || debuff.HasExpired());
+    }
+
+    public void ConsumeBuff()
+    {
+        if (BuffIsActive())
+        {
+            buff.ConsumeBuff();
+        }
+    }
+
+    public void ConsumeDebuff()
+    {
+        if (DebuffIsActive())
+        {
+            debuff.ConsumeBuff();
         }
     }
 

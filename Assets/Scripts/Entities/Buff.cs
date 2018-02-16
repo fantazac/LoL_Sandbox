@@ -64,6 +64,12 @@
         }
     }
 
+    public void ConsumeBuff()
+    {
+        CurrentStacks = 0;
+        DurationRemaining = 0;
+    }
+
     public void ReduceDurationRemaining(float frameDuration)
     {
         DurationRemaining -= frameDuration;
