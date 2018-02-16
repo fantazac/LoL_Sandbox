@@ -8,7 +8,7 @@ public class Lucian_P : PassiveTargeted, CharacterAbility, PassiveCharacterAbili
 
     protected Lucian_P()
     {
-        damage = 0.5f;// 0.5f/0.55f/0.6f
+        damage = 0.5f;// 0.5f/0.55f/0.6f at levels 1/7/13
 
         buffDuration = 3;
     }

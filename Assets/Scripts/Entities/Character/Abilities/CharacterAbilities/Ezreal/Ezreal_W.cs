@@ -12,9 +12,10 @@ public class Ezreal_W : DirectionTargetedProjectile, CharacterAbility
 
         range = 1000;
         speed = 1550;
-        damage = 80;
-        cooldown = 7;
-        castTime = 0.2f;
+        damage = 70;// 70/115/160/205/250 + TOTAL AP % 80
+        //resourceCost = 50;// 50/60/70/80/90
+        cooldown = 9;
+        castTime = 0.2f;//TODO: VERIFY ACTUAL VALUE
         delayCastTime = new WaitForSeconds(castTime);
 
         startCooldownOnAbilityCast = true;
@@ -22,7 +23,7 @@ public class Ezreal_W : DirectionTargetedProjectile, CharacterAbility
         HasCastTime = true;
 
         buffDuration = 5;
-        buffPercentBonus = 20;
+        buffPercentBonus = 20;// 20/25/30/35/40
     }
 
     protected override void SetSpritePaths()

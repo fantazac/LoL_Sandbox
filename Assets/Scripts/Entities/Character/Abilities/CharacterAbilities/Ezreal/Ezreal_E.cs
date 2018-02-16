@@ -6,6 +6,8 @@ public class Ezreal_E : GroundTargetedBlink, CharacterAbility
     [SerializeField]
     private GameObject projectilePrefab;
 
+    private float effectRadius;
+
     protected Ezreal_E()
     {
         affectedUnitType = AbilityAffectedUnitType.ENEMIES;
@@ -14,14 +16,17 @@ public class Ezreal_E : GroundTargetedBlink, CharacterAbility
 
         range = 475;
         speed = 1500;
-        damage = 50;
-        cooldown = 10;
-        castTime = 0.15f;
+        damage = 80;// 80/130/180/230/280 + BONUS AD % 50 + TOTAL AP % 75
+        //resourceCost = 90;
+        cooldown = 19;// 19/17.5f/16/14.5f/13
+        castTime = 0.15f;//TODO: VERIFY ACTUAL VALUE
         delayCastTime = new WaitForSeconds(castTime);
 
         startCooldownOnAbilityCast = true;
 
         HasCastTime = true;
+
+        effectRadius = 750;
     }
 
     protected override void SetSpritePaths()
@@ -50,7 +55,7 @@ public class Ezreal_E : GroundTargetedBlink, CharacterAbility
         float distance = float.MaxValue;
         float tempDistance;
 
-        foreach (Collider collider in Physics.OverlapSphere(transform.position, range))
+        foreach (Collider collider in Physics.OverlapSphere(transform.position, effectRadius))
         {
             tempEntity = collider.GetComponent<Entity>();
             if (tempEntity != null && TargetIsValid.CheckIfTargetIsValid(tempEntity, affectedUnitType, character.Team))

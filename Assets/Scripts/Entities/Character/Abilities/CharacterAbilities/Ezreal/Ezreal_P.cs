@@ -9,7 +9,7 @@ public class Ezreal_P : PassiveTargeted, CharacterAbility, PassiveCharacterAbili
     {
         buffDuration = 6;
         buffMaximumStacks = 5;
-        buffPercentBonus = 10;
+        buffPercentBonus = 10;// 10/12/14 at levels 1/7/13
     }
 
     protected override void SetSpritePaths()

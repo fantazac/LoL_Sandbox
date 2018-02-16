@@ -11,6 +11,8 @@ public class CharacterMouseManager : MonoBehaviour
 
     private RaycastHit hit;
 
+    private const float RADIUS_RUBBER_BANDING = 0.3f;
+
     private void Start()
     {
         character = StaticObjects.Character;
@@ -50,8 +52,7 @@ public class CharacterMouseManager : MonoBehaviour
     private void PressedRightClick(Vector3 mousePosition)
     {
         bool hitTerrain = MousePositionOnTerrain.GetRaycastHit(mousePosition, out hit);
-        Collider[] colliders = Physics.OverlapSphere(hit.point, 0.3f);
-        Entity closestEnemyEntity = FindClosestEnemyEntity(colliders);
+        Entity closestEnemyEntity = FindClosestEnemyEntity();
 
         if (HoveredEntityIsAnEnemy(character.Team))
         {
@@ -67,10 +68,10 @@ public class CharacterMouseManager : MonoBehaviour
         }
     }
 
-    private Entity FindClosestEnemyEntity(Collider[] colliders)
+    private Entity FindClosestEnemyEntity()
     {
         Entity closestEnemyEntity = null;
-        foreach (Collider collider in colliders)
+        foreach (Collider collider in Physics.OverlapSphere(hit.point, RADIUS_RUBBER_BANDING))
         {
             closestEnemyEntity = collider.GetComponent<Entity>();
             if (closestEnemyEntity != null && closestEnemyEntity.Team != character.Team)

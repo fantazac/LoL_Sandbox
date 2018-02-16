@@ -17,8 +17,9 @@ public class Ezreal_R : DirectionTargetedProjectile, CharacterAbility
 
         range = (float)Range.GLOBAL;
         speed = 2000;
-        damage = 300;
-        cooldown = 15;
+        damage = 350;// 350/500/650 + BONUS AD % 100 + TOTAL AP % 90
+        //resourceCost = 100;
+        cooldown = 120;
         castTime = 1;
         delayCastTime = new WaitForSeconds(castTime);
 
