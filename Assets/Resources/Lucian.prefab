@@ -374,6 +374,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   basicAttackPrefab: {fileID: 1000013580955186, guid: eb410a3bfea5d1c4e8735f39c4626e55,
     type: 2}
+  passiveBasicAttackPrefab: {fileID: 1000013580955186, guid: 42c590e598d3b97458c63d2454cee23a,
+    type: 2}
 --- !u!114 &114244640613273516
 MonoBehaviour:
   m_ObjectHideFlags: 1

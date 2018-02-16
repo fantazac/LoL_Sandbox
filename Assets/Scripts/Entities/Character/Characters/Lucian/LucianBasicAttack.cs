@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class LucianBasicAttack : CharacterBasicAttack
 {
+    [SerializeField]
+    private GameObject passiveBasicAttackPrefab;
+
     private WaitForSeconds delayPassiveShot;
 
     private Ability passive;
@@ -13,7 +16,7 @@ public class LucianBasicAttack : CharacterBasicAttack
 
     protected LucianBasicAttack()
     {
-        delayPercentBeforeAttack = 0.15f;
+        delayPercentBeforeAttack = 0.1666f;
         speed = 2500;
 
         delayPassiveShot = new WaitForSeconds(0.2f);
@@ -84,7 +87,7 @@ public class LucianBasicAttack : CharacterBasicAttack
 
             yield return delayPassiveShot;
 
-            ProjectileUnitTargeted projectile2 = (Instantiate(basicAttackPrefab, transform.position, transform.rotation)).GetComponent<ProjectileUnitTargeted>();
+            ProjectileUnitTargeted projectile2 = (Instantiate(passiveBasicAttackPrefab, transform.position, transform.rotation)).GetComponent<ProjectileUnitTargeted>();
             projectile2.ShootProjectile(entity.Team, target, speed);
             projectile2.OnAbilityEffectHit += PassiveBasicAttackHit;
         }
@@ -95,6 +98,6 @@ public class LucianBasicAttack : CharacterBasicAttack
     private void PassiveBasicAttackHit(AbilityEffect basicAttackProjectile, Entity entityHit)
     {
         passive.UseAbility(entityHit);
-        BasicAttackHit(basicAttackProjectile, entity);
+        BasicAttackHit(basicAttackProjectile, entityHit);
     }
 }
