@@ -54,10 +54,12 @@ public abstract class Ability : MonoBehaviour
     public bool CanCastOtherAbilitiesWhileActive { get; private set; }
     public bool CanMoveWhileCasting { get; protected set; }
     public bool CannotRotateWhileCasting { get; protected set; }
+    public bool CanUseBasicAttacksWhileCasting { get; protected set; }
     public bool IsADash { get; protected set; }
     public bool IsOnCooldown { get; protected set; }
     public bool OfflineOnly { get; protected set; }
     public bool HasCastTime { get; protected set; }
+    public bool ResetBasicAttackCycleOnAbilityFinished { get; protected set; }
 
     public List<Ability> CastableAbilitiesWhileActive { get; protected set; }
 
@@ -109,8 +111,8 @@ public abstract class Ability : MonoBehaviour
 
     protected virtual void ModifyValues()
     {
-        range /= StaticObjects.DivisionFactor;
-        speed /= StaticObjects.DivisionFactor;
+        range *= StaticObjects.MultiplyingFactor;
+        speed *= StaticObjects.MultiplyingFactor;
     }
 
     protected void StartAbilityCast()
@@ -127,6 +129,10 @@ public abstract class Ability : MonoBehaviour
         if (OnAbilityFinished != null)
         {
             OnAbilityFinished(this);
+        }
+        if (ResetBasicAttackCycleOnAbilityFinished)
+        {
+            character.EntityBasicAttack.ResetBasicAttack();
         }
         StartCooldown(!startCooldownOnAbilityCast);
     }

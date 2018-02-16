@@ -8,8 +8,12 @@ public class Entity : MonoBehaviour
 
     public int EntityId { get; protected set; }
 
+    public EntityBasicAttack EntityBasicAttack { get; private set; }
+    public EntityBasicAttackCycle EntityBasicAttackCycle { get; private set; }
     public EntityBuffManager EntityBuffManager { get; private set; }
     public EntityStats EntityStats { get; private set; }
+
+    public PhotonView PhotonView { get; private set; }
 
     protected virtual void Awake()
     {
@@ -20,7 +24,11 @@ public class Entity : MonoBehaviour
 
     protected virtual void InitEntityProperties()
     {
+        EntityBasicAttack = GetComponent<EntityBasicAttack>();
+        EntityBasicAttackCycle = GetComponent<EntityBasicAttackCycle>();
         EntityBuffManager = GetComponent<EntityBuffManager>();
         EntityStats = GetComponent<EntityStats>();
+
+        PhotonView = GetComponent<PhotonView>();
     }
 }

@@ -17,7 +17,7 @@ public abstract class DirectionTargetedDash : DirectionTargeted
 
     protected override void ModifyValues()
     {
-        minimumDistanceTravelled /= StaticObjects.DivisionFactor;
+        minimumDistanceTravelled *= StaticObjects.MultiplyingFactor;
         base.ModifyValues();
     }
 

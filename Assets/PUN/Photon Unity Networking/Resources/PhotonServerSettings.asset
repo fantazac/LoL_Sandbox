@@ -63,4 +63,5 @@ MonoBehaviour:
   - ReceiveFromServer_Ability_Entity
   - ReceiveFromServer_Movement_Point
   - ReceiveFromServer_Movement_Target
+  - UseBasicAttackOnServer
   DisableAutoOpenWizard: 1

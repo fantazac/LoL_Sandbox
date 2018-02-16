@@ -17,8 +17,6 @@ public abstract class Character : Entity
     public BuffUIManager BuffUIManager { get; private set; }
     public BuffUIManager DebuffUIManager { get; private set; }
 
-    public PhotonView PhotonView { get; private set; }
-
     public delegate void OnConnectionInfoReceivedHandler(Character character);
     public event OnConnectionInfoReceivedHandler OnConnectionInfoReceived;
 
@@ -61,8 +59,6 @@ public abstract class Character : Entity
         CharacterMouseManager = GetComponent<CharacterMouseManager>();
         CharacterMovement = GetComponent<CharacterMovement>();
         CharacterOrientation = GetComponent<CharacterOrientation>();
-
-        PhotonView = GetComponent<PhotonView>();
     }
 
     [PunRPC]

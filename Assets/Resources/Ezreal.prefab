@@ -26,7 +26,9 @@ GameObject:
   - component: {fileID: 114264645714451542}
   - component: {fileID: 114519223790839458}
   - component: {fileID: 114866246300443908}
+  - component: {fileID: 114687265148906610}
   - component: {fileID: 114187010915273160}
+  - component: {fileID: 114173693140930370}
   - component: {fileID: 114159445398811640}
   - component: {fileID: 114958221426692436}
   - component: {fileID: 114706553705502816}
@@ -266,6 +268,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   abilitySprite: {fileID: 0}
+  buffSprite: {fileID: 0}
+  debuffSprite: {fileID: 0}
 --- !u!114 &114147638681676846
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -278,6 +282,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   abilitySprite: {fileID: 0}
+  buffSprite: {fileID: 0}
+  debuffSprite: {fileID: 0}
 --- !u!114 &114159445398811640
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -287,6 +293,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 565e51caff029aa45bad7a5197a24844, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &114173693140930370
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1294391184220730}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0430bee4f9267b64fb8af43464d31e91, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &114187010915273160
@@ -312,6 +329,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   abilitySprite: {fileID: 0}
+  buffSprite: {fileID: 0}
+  debuffSprite: {fileID: 0}
 --- !u!114 &114264645714451542
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -402,6 +421,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   abilitySprite: {fileID: 0}
+  buffSprite: {fileID: 0}
+  debuffSprite: {fileID: 0}
 --- !u!114 &114387761315736602
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -551,6 +572,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   abilitySprite: {fileID: 0}
+  buffSprite: {fileID: 0}
+  debuffSprite: {fileID: 0}
   projectilePrefab: {fileID: 1978247655739888, guid: c6d28b54373dc8f4383b85ee2faa2c18,
     type: 2}
 --- !u!114 &114559251438769940
@@ -565,6 +588,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   abilitySprite: {fileID: 0}
+  buffSprite: {fileID: 0}
+  debuffSprite: {fileID: 0}
 --- !u!114 &114583660594214464
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -594,6 +619,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   abilitySprite: {fileID: 0}
+  buffSprite: {fileID: 0}
+  debuffSprite: {fileID: 0}
   projectilePrefab: {fileID: 1000014125105712, guid: 21502943dfe1c694ab495b6b2d598488,
     type: 2}
 --- !u!114 &114634682214722888
@@ -613,6 +640,19 @@ MonoBehaviour:
   percentBonus: 0
   flatMalus: 0
   percentMalus: 0
+--- !u!114 &114687265148906610
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1294391184220730}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bd42ec032cb2e084dbf946d738176e11, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  basicAttackPrefab: {fileID: 1000011696616614, guid: bd720a6723e4df4499d62d8de580edb2,
+    type: 2}
 --- !u!114 &114706553705502816
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -681,6 +721,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   abilitySprite: {fileID: 0}
+  buffSprite: {fileID: 0}
+  debuffSprite: {fileID: 0}
 --- !u!114 &114824518019010878
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -779,6 +821,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   abilitySprite: {fileID: 0}
+  buffSprite: {fileID: 0}
+  debuffSprite: {fileID: 0}
   projectilePrefab: {fileID: 1000013746244026, guid: 4fd62e8b5155cfe4489fe2e0177cf117,
     type: 2}
 --- !u!114 &114983581572747220
@@ -793,6 +837,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   abilitySprite: {fileID: 0}
+  buffSprite: {fileID: 0}
+  debuffSprite: {fileID: 0}
   spawnDummyAbilities:
   - {fileID: 114230160075218552}
   - {fileID: 114147638681676846}
@@ -808,6 +854,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   abilitySprite: {fileID: 0}
+  buffSprite: {fileID: 0}
+  debuffSprite: {fileID: 0}
   projectilePrefab: {fileID: 1000011417396818, guid: a57ad189bcd00744d8b83e74110eda5e,
     type: 2}
 --- !u!114 &114995869905901432

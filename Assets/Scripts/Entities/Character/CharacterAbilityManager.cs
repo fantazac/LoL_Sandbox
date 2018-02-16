@@ -252,6 +252,24 @@ public class CharacterAbilityManager : MonoBehaviour
         return false;
     }
 
+    public bool IsUsingAbilityPreventingBasicAttacks()
+    {
+        if (currentlyUsedAbilities.Count == 0)
+        {
+            return false;
+        }
+
+        foreach (Ability ability in currentlyUsedAbilities)
+        {
+            if (!ability.CanUseBasicAttacksWhileCasting)
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     public bool IsUsingAbilityPreventingRotation()
     {
         if (currentlyUsedAbilities.Count == 0)
@@ -262,6 +280,24 @@ public class CharacterAbilityManager : MonoBehaviour
         foreach (Ability ability in currentlyUsedAbilities)
         {
             if (ability.CannotRotateWhileCasting)
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public bool IsUsingADashAbility()
+    {
+        if (currentlyUsedAbilities.Count == 0)
+        {
+            return false;
+        }
+
+        foreach (Ability ability in currentlyUsedAbilities)
+        {
+            if (ability is DirectionTargetedDash)
             {
                 return true;
             }

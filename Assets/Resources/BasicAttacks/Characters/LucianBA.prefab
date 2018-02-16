@@ -22,7 +22,7 @@ GameObject:
   - component: {fileID: 33000013038608078}
   - component: {fileID: 65000011950238784}
   - component: {fileID: 23000011036515354}
-  - component: {fileID: 114000011946672928}
+  - component: {fileID: 114419558080239160}
   m_Layer: 9
   m_Name: LucianBA
   m_TagString: Untagged
@@ -96,7 +96,7 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &114000011946672928
+--- !u!114 &114419558080239160
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -104,6 +104,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 1000013580955186}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: db1db9034bb946b43a71d83239e3148b, type: 3}
+  m_Script: {fileID: 11500000, guid: 7a0cc9318efa0434289f5bedb092c6a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
