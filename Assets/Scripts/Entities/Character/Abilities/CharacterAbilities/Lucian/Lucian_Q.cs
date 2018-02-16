@@ -16,9 +16,10 @@ public class Lucian_Q : UnitTargeted, CharacterAbility
         damageType = DamageType.PHYSICAL;
 
         range = 500;
-        damage = 130;
-        cooldown = 6;
-        castTime = 0.3f;
+        damage = 85;// 85/120/155/190/225 + BONUS AD % 60/70/80/90/100
+        //resourceCost = 50;// 50/60/70/80/90
+        cooldown = 9;// 9/8/7/6/5
+        castTime = 0.4f;// 0.409f - (0.009 * level)
         delayCastTime = new WaitForSeconds(castTime);
 
         durationAoE = 0.15f;

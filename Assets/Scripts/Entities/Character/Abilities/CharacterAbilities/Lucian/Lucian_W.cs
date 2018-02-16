@@ -17,14 +17,15 @@ public class Lucian_W : DirectionTargetedProjectile, CharacterAbility
 
         range = 900;
         speed = 1550;
-        damage = 60;
-        cooldown = 9;
-        castTime = 0.2f;
+        damage = 60;// 60/100/140/180/220 + TOTAL AP % 90
+        //resourceCost = 50;
+        cooldown = 14;// 14/13/12/11/10
+        castTime = 0.25f;
         delayCastTime = new WaitForSeconds(castTime);
 
         buffDuration = 1;
-        buffFlatBonus = 60;
-        debuffDuration = 4;
+        buffFlatBonus = 60;// 60/65/70/75/80
+        debuffDuration = 6;
 
         startCooldownOnAbilityCast = true;
 

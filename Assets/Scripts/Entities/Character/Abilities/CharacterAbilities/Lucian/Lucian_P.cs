@@ -8,6 +8,8 @@ public class Lucian_P : PassiveTargeted, CharacterAbility, PassiveCharacterAbili
 
     protected Lucian_P()
     {
+        damage = 0.5f;// 0.5f/0.55f/0.6f
+
         buffDuration = 3;
     }
 
@@ -39,7 +41,7 @@ public class Lucian_P : PassiveTargeted, CharacterAbility, PassiveCharacterAbili
 
     public override void UseAbility(Entity target)
     {
-        if(target is Character)
+        if (target is Character)
         {
             lucianE.ReduceCooldown(2);
         }
@@ -47,5 +49,18 @@ public class Lucian_P : PassiveTargeted, CharacterAbility, PassiveCharacterAbili
         {
             lucianE.ReduceCooldown(1);
         }
+    }
+
+    public void OnPassiveHit(Entity entityHit)
+    {
+        //if (entityHit is Minion)
+        //{
+        //    entityHit.EntityStats.Health.Reduce(character.EntityStats.AttackDamage.GetTotal());
+        //}
+        //else
+        //{
+        entityHit.EntityStats.Health.Reduce(character.EntityStats.AttackDamage.GetTotal() * damage);
+        //} 
+        UseAbility(entityHit);
     }
 }

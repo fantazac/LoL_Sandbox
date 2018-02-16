@@ -9,7 +9,7 @@ public class LucianBasicAttack : CharacterBasicAttack
 
     private WaitForSeconds delayPassiveShot;
 
-    private Ability passive;
+    private Lucian_P passive;
 
     private bool isShootingPassiveShot;
     private bool passiveWasActiveOnBasicAttackCast;
@@ -26,7 +26,7 @@ public class LucianBasicAttack : CharacterBasicAttack
     {
         base.OnEnable();
 
-        passive = (Ability)GetComponent<PassiveCharacterAbility>();
+        passive = GetComponent<Lucian_P>();
     }
 
     public override void StopBasicAttack()
@@ -73,11 +73,11 @@ public class LucianBasicAttack : CharacterBasicAttack
         projectile.ShootProjectile(entity.Team, target, speed);
         if (passiveWasActiveOnBasicAttackCast)
         {
-            projectile.OnAbilityEffectHit += PassiveBasicAttackHit;
+            projectile.OnAbilityEffectHit += BasicAttackHit;
         }
         else
         {
-            projectile.OnAbilityEffectHit += BasicAttackHit;
+            projectile.OnAbilityEffectHit += base.BasicAttackHit;
         }
 
         if (passiveWasActiveOnBasicAttackCast)
@@ -95,9 +95,16 @@ public class LucianBasicAttack : CharacterBasicAttack
         isShootingPassiveShot = false;
     }
 
-    private void PassiveBasicAttackHit(AbilityEffect basicAttackProjectile, Entity entityHit)
+    protected override void BasicAttackHit(AbilityEffect basicAttackProjectile, Entity entityHit)
     {
         passive.UseAbility(entityHit);
-        BasicAttackHit(basicAttackProjectile, entityHit);
+        base.BasicAttackHit(basicAttackProjectile, entityHit);
+    }
+
+    private void PassiveBasicAttackHit(AbilityEffect basicAttackProjectile, Entity entityHit)
+    {
+        passive.OnPassiveHit(entityHit);
+        Destroy(basicAttackProjectile.gameObject);
+        CallOnBasicAttackHitEvent();
     }
 }

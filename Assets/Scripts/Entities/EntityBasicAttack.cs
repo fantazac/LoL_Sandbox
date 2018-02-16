@@ -104,11 +104,14 @@ public abstract class EntityBasicAttack : MonoBehaviour
     {
         entityHit.EntityStats.Health.Reduce(entity.EntityStats.AttackDamage.GetTotal());
         Destroy(basicAttackProjectile.gameObject);
+        CallOnBasicAttackHitEvent();
+    }
+
+    protected void CallOnBasicAttackHitEvent()
+    {
         if (OnBasicAttackHit != null)
         {
             OnBasicAttackHit();
         }
     }
-
-
 }
