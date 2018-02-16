@@ -127,6 +127,14 @@ public class CharacterMovement : MonoBehaviour
         }
     }
 
+    public void RestartMovementTowardsTargetAfterAbility()
+    {
+        if(character.EntityBasicAttack.AttackIsInQueue())
+        {
+            SetMoveTowardsTarget(character.EntityBasicAttack.CurrentTarget(), character.EntityStats.AttackRange.GetTotal(), true);
+        }
+    }
+
     public void SetMoveTowardsTarget(Entity target, float range, bool isBasicAttack)
     {
         StopAllMovement();

@@ -58,7 +58,7 @@ public class LucianBasicAttack : CharacterBasicAttack
         passiveWasActiveOnBasicAttackCast = passive.BuffIsActive();
 
         yield return delayAttack;
-
+        
         isShootingPassiveShot = true;
 
         if (!passiveWasActiveOnBasicAttackCast)

@@ -25,6 +25,7 @@ public abstract class DirectionTargetedDash : DirectionTargeted
     {
         StartAbilityCast();
 
+        character.CharacterMovement.RestartMovementTowardsTargetAfterAbility();
         RotationOnAbilityCast(destination);
 
         FinalAdjustments(destination);

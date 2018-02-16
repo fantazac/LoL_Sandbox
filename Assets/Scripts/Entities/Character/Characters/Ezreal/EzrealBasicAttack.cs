@@ -6,7 +6,7 @@ public class EzrealBasicAttack : CharacterBasicAttack
 {
     protected EzrealBasicAttack()
     {
-        delayPercentBeforeAttack = 0.2f;
-        speed = 2000;
+        delayPercentBeforeAttack = 0.1666f;
+        speed = 1600;
     }
 }

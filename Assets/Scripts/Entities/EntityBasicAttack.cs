@@ -52,6 +52,16 @@ public abstract class EntityBasicAttack : MonoBehaviour
         StopAllCoroutines();
     }
 
+    public bool AttackIsInQueue()
+    {
+        return attackIsInQueue;
+    }
+
+    public Entity CurrentTarget()
+    {
+        return currentTarget;
+    }
+
     public void ResetBasicAttack()
     {
         attackIsInQueue = false;
