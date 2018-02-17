@@ -4,11 +4,14 @@ using System.Collections.Generic;
 
 public abstract class Character : Entity
 {
-    private bool sentConnectionInfoRequest = false;
+    protected bool sentConnectionInfoRequest = false;
+
+    protected string characterPortraitPath;
 
     public CharacterAbilityManager CharacterAbilityManager { get; private set; }
     public CharacterActionManager CharacterActionManager { get; private set; }
     public CharacterInput CharacterInput { get; private set; }
+    public CharacterLevelManager CharacterLevelManager { get; private set; }
     public CharacterMouseManager CharacterMouseManager { get; private set; }
     public CharacterMovement CharacterMovement { get; private set; }
     public CharacterOrientation CharacterOrientation { get; private set; }
@@ -16,6 +19,7 @@ public abstract class Character : Entity
     public AbilityUIManager AbilityUIManager { get; private set; }
     public BuffUIManager BuffUIManager { get; private set; }
     public BuffUIManager DebuffUIManager { get; private set; }
+    public LevelUIManager LevelUIManager { get; private set; }
 
     public delegate void OnConnectionInfoReceivedHandler(Character character);
     public event OnConnectionInfoReceivedHandler OnConnectionInfoReceived;
@@ -29,6 +33,9 @@ public abstract class Character : Entity
             BuffUIManager = buffUIManagers[0];
             DebuffUIManager = buffUIManagers[1];
             EntityBuffManager.SetUIManagers(BuffUIManager, DebuffUIManager);
+            LevelUIManager = transform.parent.GetComponentInChildren<LevelUIManager>();
+            LevelUIManager.SetPortraitSprite(Resources.Load<Sprite>(characterPortraitPath));
+            LevelUIManager.SetLevel(CharacterLevelManager.Level);
         }
         if (StaticObjects.OnlineMode && PhotonView.isMine)
         {
@@ -56,6 +63,7 @@ public abstract class Character : Entity
         CharacterAbilityManager = GetComponent<CharacterAbilityManager>();
         CharacterActionManager = GetComponent<CharacterActionManager>();
         CharacterInput = GetComponent<CharacterInput>();
+        CharacterLevelManager = GetComponent<CharacterLevelManager>();
         CharacterMouseManager = GetComponent<CharacterMouseManager>();
         CharacterMovement = GetComponent<CharacterMovement>();
         CharacterOrientation = GetComponent<CharacterOrientation>();

@@ -17,7 +17,7 @@ public class Ezreal_E : GroundTargetedBlink, CharacterAbility
         range = 475;
         speed = 1500;
         damage = 80;// 80/130/180/230/280 + BONUS AD % 50 + TOTAL AP % 75
-        //resourceCost = 90;
+        resourceCost = 90;
         cooldown = 19;// 19/17.5f/16/14.5f/13
         castTime = 0.15f;//TODO: VERIFY ACTUAL VALUE
         delayCastTime = new WaitForSeconds(castTime);
@@ -31,7 +31,7 @@ public class Ezreal_E : GroundTargetedBlink, CharacterAbility
 
     protected override void SetSpritePaths()
     {
-        abilitySpritePath = "Sprites/CharacterAbilities/Ezreal/EzrealE";
+        abilitySpritePath = "Sprites/Characters/CharacterAbilities/Ezreal/EzrealE";
     }
 
     protected override IEnumerator AbilityWithCastTime()

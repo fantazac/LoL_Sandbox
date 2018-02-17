@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class EntityBasicAttackCycle : MonoBehaviour
 {
-    private EntityBasicAttack entityBasicAttack;
-
     private WaitForSeconds delayPostBasicAttack;
 
     public bool AttackSpeedCycleIsReady { get; private set; }
@@ -13,11 +11,6 @@ public class EntityBasicAttackCycle : MonoBehaviour
     private EntityBasicAttackCycle()
     {
         AttackSpeedCycleIsReady = true;
-    }
-
-    private void Awake()
-    {
-        entityBasicAttack = GetComponent<EntityBasicAttack>();
     }
 
     public void SetAttackSpeedCycleDuration(float postBasicAttackDuration)

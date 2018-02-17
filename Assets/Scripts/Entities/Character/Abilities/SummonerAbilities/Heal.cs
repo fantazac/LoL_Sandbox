@@ -13,7 +13,7 @@ public class Heal : SelfTargeted, SummonerAbility
 
     protected override void SetSpritePaths()
     {
-        abilitySpritePath = "Sprites/SummonerAbilities/Heal";
+        abilitySpritePath = "Sprites/Characters/SummonerAbilities/Heal";
     }
 
     public override void UseAbility(Vector3 destination)

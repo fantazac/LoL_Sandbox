@@ -18,7 +18,7 @@ public class Lucian_W : DirectionTargetedProjectile, CharacterAbility
         range = 900;
         speed = 1550;
         damage = 60;// 60/100/140/180/220 + TOTAL AP % 90
-        //resourceCost = 50;
+        resourceCost = 50;
         cooldown = 14;// 14/13/12/11/10
         castTime = 0.25f;
         delayCastTime = new WaitForSeconds(castTime);
@@ -36,9 +36,9 @@ public class Lucian_W : DirectionTargetedProjectile, CharacterAbility
 
     protected override void SetSpritePaths()
     {
-        abilitySpritePath = "Sprites/CharacterAbilities/Lucian/LucianW";
-        buffSpritePath = "Sprites/CharacterAbilities/Lucian/LucianW_Buff";
-        debuffSpritePath = "Sprites/CharacterAbilities/Lucian/LucianW_Debuff";
+        abilitySpritePath = "Sprites/Characters/CharacterAbilities/Lucian/LucianW";
+        buffSpritePath = "Sprites/Characters/CharacterAbilities/Lucian/LucianW_Buff";
+        debuffSpritePath = "Sprites/Characters/CharacterAbilities/Lucian/LucianW_Debuff";
     }
 
     protected override void OnProjectileHit(AbilityEffect projectile, Entity entityHit)

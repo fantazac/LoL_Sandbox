@@ -17,7 +17,7 @@ public class Flash : GroundTargetedBlink, SummonerAbility
 
     protected override void SetSpritePaths()
     {
-        abilitySpritePath = "Sprites/SummonerAbilities/Flash";
+        abilitySpritePath = "Sprites/Characters/SummonerAbilities/Flash";
     }
 
     public override void UseAbility(Vector3 destination)

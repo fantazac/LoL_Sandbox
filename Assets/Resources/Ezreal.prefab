@@ -33,6 +33,7 @@ GameObject:
   - component: {fileID: 114958221426692436}
   - component: {fileID: 114706553705502816}
   - component: {fileID: 114995869905901432}
+  - component: {fileID: 114318763526550632}
   - component: {fileID: 114401631577452450}
   - component: {fileID: 114841941229683450}
   - component: {fileID: 114419638435089374}
@@ -357,6 +358,17 @@ MonoBehaviour:
   instantiationId: -1
   currentMasterID: -1
   isRuntimeInstantiated: 0
+--- !u!114 &114318763526550632
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1294391184220730}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 52d230b27777ecb499c731cbb29db874, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114321881503312248
 MonoBehaviour:
   m_ObjectHideFlags: 1

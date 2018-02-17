@@ -9,13 +9,13 @@ public class Ezreal_P : PassiveTargeted, CharacterAbility, PassiveCharacterAbili
     {
         buffDuration = 6;
         buffMaximumStacks = 5;
-        buffPercentBonus = 10;// 10/12/14 at levels 1/7/13
+        buffPercentBonus = 10;
     }
 
     protected override void SetSpritePaths()
     {
-        abilitySpritePath = "Sprites/CharacterAbilities/Ezreal/EzrealP";
-        buffSpritePath = "Sprites/CharacterAbilities/Ezreal/EzrealP_Buff";
+        abilitySpritePath = "Sprites/Characters/CharacterAbilities/Ezreal/EzrealP";
+        buffSpritePath = "Sprites/Characters/CharacterAbilities/Ezreal/EzrealP_Buff";
     }
 
     protected override void Start()
@@ -28,6 +28,20 @@ public class Ezreal_P : PassiveTargeted, CharacterAbility, PassiveCharacterAbili
             {
                 ability.OnAbilityHit += PassiveEffect;
             }
+        }
+
+        character.CharacterLevelManager.OnLevelUp += OnLevelUp;
+    }
+
+    public override void OnLevelUp(int level)
+    {
+        if(level == 7)
+        {
+            buffPercentBonus = 12;
+        }
+        else if(level == 13)
+        {
+            buffPercentBonus = 14;
         }
     }
 

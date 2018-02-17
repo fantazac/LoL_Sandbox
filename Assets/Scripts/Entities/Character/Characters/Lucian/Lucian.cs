@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class Lucian : Character
 {
-    protected override void Start()
+    protected Lucian()
     {
-        base.Start();
+        characterPortraitPath = "Sprites/Characters/CharacterPortraits/Lucian";
     }
 }

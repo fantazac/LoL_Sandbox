@@ -23,6 +23,7 @@ public abstract class Ability : MonoBehaviour
     protected Vector3 positionOnCast;
     protected Quaternion rotationOnCast;
     protected float range;
+    protected float resourceCost;
     protected float speed;
     protected bool startCooldownOnAbilityCast;
 
@@ -248,6 +249,8 @@ public abstract class Ability : MonoBehaviour
 
     public virtual void ApplyDebuffToEntityHit(Entity entityHit) { }
     public virtual void RemoveDebuffFromEntityHit(Entity entityHit) { }
+
+    public virtual void OnLevelUp(int level) { }
 
     protected virtual IEnumerator AbilityWithCastTime() { yield return null; }
     protected virtual IEnumerator AbilityWithoutCastTime() { yield return null; }

@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class Ezreal : Character
 {
-    protected override void Start()
+    protected Ezreal()
     {
-        base.Start();
+        characterPortraitPath = "Sprites/Characters/CharacterPortraits/Ezreal";
     }
 }

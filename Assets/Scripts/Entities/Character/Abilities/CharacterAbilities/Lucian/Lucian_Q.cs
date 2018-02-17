@@ -17,9 +17,9 @@ public class Lucian_Q : UnitTargeted, CharacterAbility
 
         range = 500;
         damage = 85;// 85/120/155/190/225 + BONUS AD % 60/70/80/90/100
-        //resourceCost = 50;// 50/60/70/80/90
+        resourceCost = 50;// 50/60/70/80/90
         cooldown = 9;// 9/8/7/6/5
-        castTime = 0.4f;// 0.409f - (0.009 * level)
+        castTime = 0.4f;
         delayCastTime = new WaitForSeconds(castTime);
 
         durationAoE = 0.15f;
@@ -29,7 +29,7 @@ public class Lucian_Q : UnitTargeted, CharacterAbility
 
     protected override void SetSpritePaths()
     {
-        abilitySpritePath = "Sprites/CharacterAbilities/Lucian/LucianQ";
+        abilitySpritePath = "Sprites/Characters/CharacterAbilities/Lucian/LucianQ";
     }
 
     protected override void Start()
@@ -38,6 +38,14 @@ public class Lucian_Q : UnitTargeted, CharacterAbility
         CastableAbilitiesWhileActive.Add(GetComponent<Lucian_R>());
 
         base.Start();
+
+        character.CharacterLevelManager.OnLevelUp += OnLevelUp;
+    }
+
+    public override void OnLevelUp(int level)
+    {
+        castTime = (0.409f - (0.009f * level));
+        delayCastTime = new WaitForSeconds(castTime);
     }
 
     protected override IEnumerator AbilityWithCastTime()

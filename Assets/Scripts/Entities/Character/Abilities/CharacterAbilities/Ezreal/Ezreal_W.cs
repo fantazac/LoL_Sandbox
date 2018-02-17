@@ -13,7 +13,7 @@ public class Ezreal_W : DirectionTargetedProjectile, CharacterAbility
         range = 1000;
         speed = 1550;
         damage = 70;// 70/115/160/205/250 + TOTAL AP % 80
-        //resourceCost = 50;// 50/60/70/80/90
+        resourceCost = 50;// 50/60/70/80/90
         cooldown = 9;
         castTime = 0.2f;//TODO: VERIFY ACTUAL VALUE
         delayCastTime = new WaitForSeconds(castTime);
@@ -28,8 +28,8 @@ public class Ezreal_W : DirectionTargetedProjectile, CharacterAbility
 
     protected override void SetSpritePaths()
     {
-        abilitySpritePath = "Sprites/CharacterAbilities/Ezreal/EzrealW";
-        buffSpritePath = "Sprites/CharacterAbilities/Ezreal/EzrealW_Buff";
+        abilitySpritePath = "Sprites/Characters/CharacterAbilities/Ezreal/EzrealW";
+        buffSpritePath = "Sprites/Characters/CharacterAbilities/Ezreal/EzrealW_Buff";
     }
 
     protected override void OnProjectileHit(AbilityEffect projectile, Entity entityHit)

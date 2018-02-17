@@ -18,7 +18,7 @@ public class Ezreal_R : DirectionTargetedProjectile, CharacterAbility
         range = (float)Range.GLOBAL;
         speed = 2000;
         damage = 350;// 350/500/650 + BONUS AD % 100 + TOTAL AP % 90
-        //resourceCost = 100;
+        resourceCost = 100;
         cooldown = 120;
         castTime = 1;
         delayCastTime = new WaitForSeconds(castTime);
@@ -30,7 +30,7 @@ public class Ezreal_R : DirectionTargetedProjectile, CharacterAbility
 
     protected override void SetSpritePaths()
     {
-        abilitySpritePath = "Sprites/CharacterAbilities/Ezreal/EzrealR";
+        abilitySpritePath = "Sprites/Characters/CharacterAbilities/Ezreal/EzrealR";
     }
 
     protected override void FinalAdjustments(Vector3 destination)

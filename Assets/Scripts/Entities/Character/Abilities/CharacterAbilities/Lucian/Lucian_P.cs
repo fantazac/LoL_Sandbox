@@ -8,7 +8,7 @@ public class Lucian_P : PassiveTargeted, CharacterAbility, PassiveCharacterAbili
 
     protected Lucian_P()
     {
-        damage = 0.5f;// 0.5f/0.55f/0.6f at levels 1/7/13
+        damage = 0.5f;
 
         buffDuration = 3;
     }
@@ -22,8 +22,8 @@ public class Lucian_P : PassiveTargeted, CharacterAbility, PassiveCharacterAbili
 
     protected override void SetSpritePaths()
     {
-        abilitySpritePath = "Sprites/CharacterAbilities/Lucian/LucianP";
-        buffSpritePath = "Sprites/CharacterAbilities/Lucian/LucianP_Buff";
+        abilitySpritePath = "Sprites/Characters/CharacterAbilities/Lucian/LucianP";
+        buffSpritePath = "Sprites/Characters/CharacterAbilities/Lucian/LucianP_Buff";
     }
 
     protected override void Start()
@@ -37,6 +37,8 @@ public class Lucian_P : PassiveTargeted, CharacterAbility, PassiveCharacterAbili
                 ability.OnAbilityFinished += PassiveEffect;
             }
         }
+
+        character.CharacterLevelManager.OnLevelUp += OnLevelUp;
     }
 
     public override void UseAbility(Entity target)
@@ -48,6 +50,18 @@ public class Lucian_P : PassiveTargeted, CharacterAbility, PassiveCharacterAbili
         else
         {
             lucianE.ReduceCooldown(1);
+        }
+    }
+
+    public override void OnLevelUp(int level)
+    {
+        if (level == 7)
+        {
+            damage = 0.55f;
+        }
+        else if (level == 13)
+        {
+            damage = 0.6f;
         }
     }
 
