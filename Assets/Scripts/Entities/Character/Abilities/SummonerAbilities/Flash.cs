@@ -8,7 +8,7 @@ public class Flash : GroundTargetedBlink, SummonerAbility
     protected Flash()
     {
         range = 400;
-        cooldown = 20;
+        cooldown = 300;
 
         startCooldownOnAbilityCast = true;
 

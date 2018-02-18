@@ -55,15 +55,15 @@ public class LucianBasicAttack : CharacterBasicAttack
 
     protected override IEnumerator ShootBasicAttack(Entity target)
     {
-        passiveWasActiveOnBasicAttackCast = passive.BuffIsActive();
+        passiveWasActiveOnBasicAttackCast = entity.EntityBuffManager.GetBuff(passive) != null;
 
         yield return delayAttack;
-        
+
         isShootingPassiveShot = true;
 
         if (!passiveWasActiveOnBasicAttackCast)
         {
-            passiveWasActiveOnBasicAttackCast = passive.BuffIsActive();
+            passiveWasActiveOnBasicAttackCast = entity.EntityBuffManager.GetBuff(passive) != null;
         }
 
         entity.EntityBasicAttackCycle.LockBasicAttack();
@@ -83,7 +83,7 @@ public class LucianBasicAttack : CharacterBasicAttack
         if (passiveWasActiveOnBasicAttackCast)
         {
             passiveWasActiveOnBasicAttackCast = false;
-            passive.ConsumeBuff();
+            passive.ConsumeBuff(entity);
 
             yield return delayPassiveShot;
 

@@ -57,6 +57,38 @@ public class EntityBuffManager : MonoBehaviour
         }
     }
 
+    public Buff GetBuff(Ability sourceAbility)
+    {
+        Buff buff = null;
+
+        foreach(Buff activeBuff in buffs)
+        {
+            if(activeBuff.SourceAbility == sourceAbility)
+            {
+                buff = activeBuff;
+                break;
+            }
+        }
+
+        return buff;
+    }
+
+    public Buff GetDebuff(Ability sourceAbility)
+    {
+        Buff debuff = null;
+
+        foreach (Buff activeDebuff in debuffs)
+        {
+            if (activeDebuff.SourceAbility == sourceAbility)
+            {
+                debuff = activeDebuff;
+                break;
+            }
+        }
+
+        return debuff;
+    }
+
     public void ApplyBuff(Buff buff, Sprite buffSprite)
     {
         buffs.Add(buff);

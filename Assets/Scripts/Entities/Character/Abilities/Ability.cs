@@ -27,13 +27,11 @@ public abstract class Ability : MonoBehaviour
     protected float speed;
     protected bool startCooldownOnAbilityCast;
 
-    protected Buff buff;
     protected float buffDuration;
     protected int buffMaximumStacks;
     protected float buffFlatBonus;
     protected float buffPercentBonus;
 
-    protected Buff debuff;
     protected float debuffDuration;
     protected int debuffMaximumStacks;
     protected float debuffFlatBonus;
@@ -194,7 +192,8 @@ public abstract class Ability : MonoBehaviour
 
     protected virtual void AddNewBuffToEntityHit(Entity entityHit)
     {
-        if (!BuffIsActive())
+        Buff buff = entityHit.EntityBuffManager.GetBuff(this);
+        if (buff == null)
         {
             buff = new Buff(this, entityHit, false, buffDuration);
             entityHit.EntityBuffManager.ApplyBuff(buff, buffSprite);
@@ -207,7 +206,8 @@ public abstract class Ability : MonoBehaviour
 
     protected virtual void AddNewDebuffToEntityHit(Entity entityHit)
     {
-        if (!DebuffIsActive())
+        Buff debuff = entityHit.EntityBuffManager.GetDebuff(this);
+        if (debuff == null)
         {
             debuff = new Buff(this, entityHit, true, debuffDuration);
             entityHit.EntityBuffManager.ApplyDebuff(debuff, debuffSprite);
@@ -218,37 +218,29 @@ public abstract class Ability : MonoBehaviour
         }
     }
 
-    public bool BuffIsActive()
+    public void ConsumeBuff(Entity affectedTarget)
     {
-        return !(buff == null || buff.HasExpired());
-    }
-
-    public bool DebuffIsActive()
-    {
-        return !(debuff == null || debuff.HasExpired());
-    }
-
-    public void ConsumeBuff()
-    {
-        if (BuffIsActive())
+        Buff buff = affectedTarget.EntityBuffManager.GetBuff(this);
+        if (buff != null)
         {
             buff.ConsumeBuff();
         }
     }
 
-    public void ConsumeDebuff()
+    public void ConsumeDebuff(Entity affectedTarget)
     {
-        if (DebuffIsActive())
+        Buff debuff = affectedTarget.EntityBuffManager.GetDebuff(this);
+        if (debuff != null)
         {
             debuff.ConsumeBuff();
         }
     }
 
-    public virtual void ApplyBuffToEntityHit(Entity entityHit) { }
-    public virtual void RemoveBuffFromEntityHit(Entity entityHit) { }
+    public virtual void ApplyBuffToEntityHit(Entity entityHit, int currentStacks) { }
+    public virtual void RemoveBuffFromEntityHit(Entity entityHit, int currentStacks) { }
 
-    public virtual void ApplyDebuffToEntityHit(Entity entityHit) { }
-    public virtual void RemoveDebuffFromEntityHit(Entity entityHit) { }
+    public virtual void ApplyDebuffToEntityHit(Entity entityHit, int currentStacks) { }
+    public virtual void RemoveDebuffFromEntityHit(Entity entityHit, int currentStacks) { }
 
     public virtual void OnLevelUp(int level) { }
 

@@ -47,9 +47,10 @@ public class Ezreal_P : PassiveTargeted, CharacterAbility, PassiveCharacterAbili
 
     protected override void AddNewBuffToEntityHit(Entity entityHit)
     {
-        if (buff == null || buff.HasExpired())
+        Buff buff = entityHit.EntityBuffManager.GetBuff(this);
+        if (buff == null)
         {
-            buff = new Buff(this, character, false, buffDuration, buffMaximumStacks);
+            buff = new Buff(this, entityHit, false, buffDuration, buffMaximumStacks);
             entityHit.EntityBuffManager.ApplyBuff(buff, buffSprite);
         }
         else
@@ -59,13 +60,13 @@ public class Ezreal_P : PassiveTargeted, CharacterAbility, PassiveCharacterAbili
         }
     }
 
-    public override void ApplyBuffToEntityHit(Entity entityHit)
+    public override void ApplyBuffToEntityHit(Entity entityHit, int currentStacks)
     {
-        entityHit.EntityStats.AttackSpeed.AddPercentBonus(buffPercentBonus * buff.CurrentStacks);
+        entityHit.EntityStats.AttackSpeed.AddPercentBonus(buffPercentBonus * currentStacks);
     }
 
-    public override void RemoveBuffFromEntityHit(Entity entityHit)
+    public override void RemoveBuffFromEntityHit(Entity entityHit, int currentStacks)
     {
-        entityHit.EntityStats.AttackSpeed.RemovePercentBonus(buffPercentBonus * buff.CurrentStacks);
+        entityHit.EntityStats.AttackSpeed.RemovePercentBonus(buffPercentBonus * currentStacks);
     }
 }
