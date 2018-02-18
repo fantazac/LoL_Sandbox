@@ -23,15 +23,38 @@ public class CharacterLevelManager : MonoBehaviour
         character = GetComponent<Character>();
     }
 
-    public void LevelUp()
+    public void PrepareLevelUp()
     {
         if (Level < MAX_LEVEL)
         {
-            character.LevelUIManager.SetLevel(++Level);
-            if (OnLevelUp != null)
+            if (StaticObjects.OnlineMode)
             {
-                OnLevelUp(Level);
+                SendToServer_LevelUp();
             }
+            else
+            {
+                LevelUp();
+            }
+        }
+    }
+
+    private void SendToServer_LevelUp()
+    {
+        character.PhotonView.RPC("ReceiveFromServer_Level", PhotonTargets.AllViaServer);
+    }
+
+    [PunRPC]
+    private void ReceiveFromServer_Level()
+    {
+        LevelUp();
+    }
+
+    private void LevelUp()
+    {
+        character.LevelUIManager.SetLevel(++Level);
+        if (OnLevelUp != null)
+        {
+            OnLevelUp(Level);
         }
     }
 }

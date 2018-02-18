@@ -78,7 +78,7 @@ public class CharacterInput : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.Equals))
         {
-            characterLevelManager.LevelUp();
+            characterLevelManager.PrepareLevelUp();
         }
         if (Input.GetKey(KeyCode.LeftShift))
         {
