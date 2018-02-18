@@ -35,11 +35,11 @@ public class Ezreal_P : PassiveTargeted, CharacterAbility, PassiveCharacterAbili
 
     public override void OnLevelUp(int level)
     {
-        if(level == 7)
+        if (level == 7)
         {
             buffPercentBonus = 12;
         }
-        else if(level == 13)
+        else if (level == 13)
         {
             buffPercentBonus = 14;
         }

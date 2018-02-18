@@ -16,8 +16,6 @@
     public bool HasDuration { get; private set; }
     public bool HasStacks { get; private set; }
 
-    private float buffValue;//TODO: TRANSFER BUFF/DEBUFF FLAT/PERCENT VALUE(S) HERE SO IF YOU USE AN ABILITY AND LEVEL IT UP/LEVEL UP ON A LEVEL-SCALING ABILITY, IT REMOVES THE CORRECT AMOUNT
-
     public Buff(Ability sourceAbility, Entity entityHit, bool isADebuff, float buffDuration, int maximumStacks, float stackDecayingDuration)
     {
         SourceAbility = sourceAbility;
