@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class EntityBuffManager : MonoBehaviour
 {
@@ -61,9 +62,9 @@ public class EntityBuffManager : MonoBehaviour
     {
         Buff buff = null;
 
-        foreach(Buff activeBuff in buffs)
+        foreach (Buff activeBuff in buffs)
         {
-            if(activeBuff.SourceAbility == sourceAbility)
+            if (activeBuff.SourceAbility == sourceAbility)
             {
                 buff = activeBuff;
                 break;
@@ -80,6 +81,38 @@ public class EntityBuffManager : MonoBehaviour
         foreach (Buff activeDebuff in debuffs)
         {
             if (activeDebuff.SourceAbility == sourceAbility)
+            {
+                debuff = activeDebuff;
+                break;
+            }
+        }
+
+        return debuff;
+    }
+
+    public Buff GetBuffOfSameType(Ability sourceAbility)
+    {
+        Buff buff = null;
+
+        foreach (Buff activeBuff in buffs)
+        {
+            if (activeBuff.SourceAbility.GetType() == sourceAbility.GetType())
+            {
+                buff = activeBuff;
+                break;
+            }
+        }
+
+        return buff;
+    }
+
+    public Buff GetDebuffOfSameType(Ability sourceAbility)
+    {
+        Buff debuff = null;
+
+        foreach (Buff activeDebuff in debuffs)
+        {
+            if (activeDebuff.SourceAbility.GetType() == sourceAbility.GetType())
             {
                 debuff = activeDebuff;
                 break;

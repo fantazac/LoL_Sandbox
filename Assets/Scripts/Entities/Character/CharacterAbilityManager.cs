@@ -68,6 +68,21 @@ public class CharacterAbilityManager : MonoBehaviour
         }
     }
 
+    private void SendToServer_Ability_Cancel(AbilityInput abilityInput)
+    {
+        character.PhotonView.RPC("ReceiveFromServer_Ability_Cancel", PhotonTargets.AllViaServer, abilityInput);
+    }
+
+    [PunRPC]
+    private void ReceiveFromServer_Ability_Cancel(AbilityInput abilityInput)
+    {
+        Ability ability = abilities[abilityInput];
+        if (ability.CanBeCancelled && currentlyUsedAbilities.Contains(ability))
+        {
+            ability.CancelAbility();
+        }
+    }
+
     public Entity FindTarget(int entityId, EntityType entityType) // TODO: when adding an EntityType
     {
         Entity entity = null;
@@ -145,9 +160,16 @@ public class CharacterAbilityManager : MonoBehaviour
                     }
                 }
             }
-            else if(ability.CanBeCancelled && currentlyUsedAbilities.Contains(ability))
+            else if (ability.CanBeCancelled && currentlyUsedAbilities.Contains(ability))
             {
-                ability.CancelAbility();
+                if (StaticObjects.OnlineMode)
+                {
+                    SendToServer_Ability_Cancel(abilityInput);
+                }
+                else
+                {
+                    ability.CancelAbility();
+                }
             }
         }
     }

@@ -9,7 +9,7 @@ public class Heal : SelfTargeted, SummonerAbility
 
     protected Heal()
     {
-        affectedUnitType = AbilityAffectedUnitType.CHARACTERS;
+        affectedUnitType = AbilityAffectedUnitType.ALLY_CHARACTERS;
         effectType = AbilityEffectType.HEALING;
 
         range = 850;
@@ -117,9 +117,20 @@ public class Heal : SelfTargeted, SummonerAbility
         StartCooldown(startCooldownOnAbilityCast);
     }
 
+    protected override void AddNewDebuffToEntityHit(Entity entityHit)
+    {
+        Buff debuff = entityHit.EntityBuffManager.GetDebuffOfSameType(this);
+        if (debuff != null)
+        {
+            debuff.ConsumeBuff();
+        }
+        debuff = new Buff(this, entityHit, true, debuffDuration);
+        entityHit.EntityBuffManager.ApplyDebuff(debuff, debuffSprite);
+    }
+
     public override void ApplyBuffToEntityHit(Entity entityHit, int currentStacks)
     {
-        if (entityHit.EntityBuffManager.GetDebuff(this) != null)
+        if (entityHit.EntityBuffManager.GetDebuffOfSameType(this) != null)
         {
             entityHit.EntityStats.Health.Restore(buffFlatBonus * debuffPercentBonus);
         }
