@@ -145,6 +145,10 @@ public class CharacterAbilityManager : MonoBehaviour
                     }
                 }
             }
+            else if(ability.CanBeCancelled && currentlyUsedAbilities.Contains(ability))
+            {
+                ability.CancelAbility();
+            }
         }
     }
 

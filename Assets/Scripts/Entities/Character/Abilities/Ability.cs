@@ -122,7 +122,7 @@ public abstract class Ability : MonoBehaviour
         {
             OnAbilityUsed(this);
         }
-        StartCooldown(startCooldownOnAbilityCast);
+        StartCooldown(true);
     }
 
     protected void FinishAbilityCast()
@@ -135,7 +135,7 @@ public abstract class Ability : MonoBehaviour
         {
             character.EntityBasicAttack.ResetBasicAttack();
         }
-        StartCooldown(!startCooldownOnAbilityCast);
+        StartCooldown(false);
     }
 
     protected void AbilityHit()
@@ -251,6 +251,12 @@ public abstract class Ability : MonoBehaviour
     public virtual void RemoveDebuffFromEntityHit(Entity entityHit) { }
 
     public virtual void OnLevelUp(int level) { }
+
+    public virtual void CancelAbility()
+    {
+        StopAllCoroutines();
+        FinishAbilityCast();
+    }
 
     protected virtual IEnumerator AbilityWithCastTime() { yield return null; }
     protected virtual IEnumerator AbilityWithoutCastTime() { yield return null; }
