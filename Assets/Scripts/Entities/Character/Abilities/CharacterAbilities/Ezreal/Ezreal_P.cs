@@ -37,11 +37,28 @@ public class Ezreal_P : PassiveTargeted, CharacterAbility, PassiveCharacterAbili
     {
         if (level == 7)
         {
+            UpdateBuffOnAffectedEntities(buffPercentBonus, 12);
             buffPercentBonus = 12;
         }
         else if (level == 13)
         {
+            UpdateBuffOnAffectedEntities(buffPercentBonus, 14);
             buffPercentBonus = 14;
+        }
+    }
+
+    protected override void UpdateBuffOnAffectedEntities(float oldValue, float newValue)
+    {
+        foreach(Entity affectedEntity in EntitiesAffectedByBuff)
+        {
+            Buff buff = affectedEntity.EntityBuffManager.GetBuff(this);
+            int currentStacks = 0;
+            if (buff != null)
+            {
+                currentStacks = buff.CurrentStacks;
+                affectedEntity.EntityStats.AttackSpeed.RemovePercentBonus(oldValue * currentStacks);
+                affectedEntity.EntityStats.AttackSpeed.AddPercentBonus(newValue * currentStacks);
+            }
         }
     }
 
@@ -63,10 +80,12 @@ public class Ezreal_P : PassiveTargeted, CharacterAbility, PassiveCharacterAbili
     public override void ApplyBuffToEntityHit(Entity entityHit, int currentStacks)
     {
         entityHit.EntityStats.AttackSpeed.AddPercentBonus(buffPercentBonus * currentStacks);
+        EntitiesAffectedByBuff.Add(entityHit);
     }
 
     public override void RemoveBuffFromEntityHit(Entity entityHit, int currentStacks)
     {
         entityHit.EntityStats.AttackSpeed.RemovePercentBonus(buffPercentBonus * currentStacks);
+        EntitiesAffectedByBuff.Remove(entityHit);
     }
 }

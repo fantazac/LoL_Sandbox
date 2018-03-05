@@ -71,20 +71,24 @@ public class Lucian_W : DirectionTargetedProjectile, CharacterAbility
     public override void ApplyBuffToEntityHit(Entity entityHit, int currentStacks)
     {
         entityHit.EntityStats.MovementSpeed.AddFlatBonus(buffFlatBonus);
+        EntitiesAffectedByBuff.Add(entityHit);
     }
 
     public override void RemoveBuffFromEntityHit(Entity entityHit, int currentStacks)
     {
         entityHit.EntityStats.MovementSpeed.RemoveFlatBonus(buffFlatBonus);
+        EntitiesAffectedByBuff.Remove(entityHit);
     }
 
     public override void ApplyDebuffToEntityHit(Entity entityHit, int currentStacks)
     {
         entityHit.EntityStats.Health.OnHealthReduced += OnEntityDamaged;
+        EntitiesAffectedByDebuff.Add(entityHit);
     }
 
     public override void RemoveDebuffFromEntityHit(Entity entityHit, int currentStacks)
     {
         entityHit.EntityStats.Health.OnHealthReduced -= OnEntityDamaged;
+        EntitiesAffectedByDebuff.Remove(entityHit);
     }
 }

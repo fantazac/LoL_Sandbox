@@ -61,6 +61,8 @@ public abstract class Ability : MonoBehaviour
     public bool ResetBasicAttackCycleOnAbilityFinished { get; protected set; }
 
     public List<Ability> CastableAbilitiesWhileActive { get; protected set; }
+    public List<Entity> EntitiesAffectedByBuff { get; protected set; }
+    public List<Entity> EntitiesAffectedByDebuff { get; protected set; }
 
     public delegate void OnAbilityUsedHandler(Ability ability);
     public event OnAbilityUsedHandler OnAbilityUsed;
@@ -74,6 +76,8 @@ public abstract class Ability : MonoBehaviour
     protected Ability()
     {
         CastableAbilitiesWhileActive = new List<Ability>();
+        EntitiesAffectedByBuff = new List<Entity>();
+        EntitiesAffectedByDebuff = new List<Entity>();
         SetSpritePaths();
     }
 
@@ -238,9 +242,11 @@ public abstract class Ability : MonoBehaviour
 
     public virtual void ApplyBuffToEntityHit(Entity entityHit, int currentStacks) { }
     public virtual void RemoveBuffFromEntityHit(Entity entityHit, int currentStacks) { }
+    protected virtual void UpdateBuffOnAffectedEntities(float oldValue, float newValue) { }
 
     public virtual void ApplyDebuffToEntityHit(Entity entityHit, int currentStacks) { }
     public virtual void RemoveDebuffFromEntityHit(Entity entityHit, int currentStacks) { }
+    protected virtual void UpdateDebuffOnAffectedEntities(float oldValue, float newValue) { }
 
     public virtual void OnLevelUp(int level) { }
 

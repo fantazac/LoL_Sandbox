@@ -51,7 +51,11 @@ public class CharacterLevelManager : MonoBehaviour
 
     private void LevelUp()
     {
-        character.LevelUIManager.SetLevel(++Level);
+        ++Level;
+        if (character.LevelUIManager != null)
+        {
+            character.LevelUIManager.SetLevel(Level);
+        }
         if (OnLevelUp != null)
         {
             OnLevelUp(Level);

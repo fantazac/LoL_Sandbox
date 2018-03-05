@@ -139,10 +139,12 @@ public class Heal : SelfTargeted, SummonerAbility
             entityHit.EntityStats.Health.Restore(buffFlatBonus);
         }
         entityHit.EntityStats.MovementSpeed.AddPercentBonus(buffPercentBonus);
+        EntitiesAffectedByBuff.Add(entityHit);
     }
 
     public override void RemoveBuffFromEntityHit(Entity entityHit, int currentStacks)
     {
         entityHit.EntityStats.MovementSpeed.RemovePercentBonus(buffPercentBonus);
+        EntitiesAffectedByBuff.Remove(entityHit);
     }
 }
