@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EntityBaseStats : MonoBehaviour 
+public class EntityBaseStats : MonoBehaviour
 {
     public float BaseHealth { get; protected set; }
     public float BaseResource { get; protected set; }//mana, energy, fury, ...

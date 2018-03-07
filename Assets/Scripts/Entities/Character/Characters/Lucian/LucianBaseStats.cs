@@ -30,5 +30,16 @@ public class LucianBaseStats : CharacterBaseStats
         BaseSpellVamp = 0;
         BaseAttackRange = 500;
         BaseTenacity = 0;
+
+        HealthPerLevel = 80;
+        ResourcePerLevel = 38;
+
+        AttackDamagePerLevel = 2.41f;
+        AttackSpeedPerLevel = 3.3f;
+
+        HealthRegenerationPerLevel = 0.65f;
+        ResourceRegenerationPerLevel = 0.7f;
+        ArmorPerLevel = 3;
+        MagicResistancePerLevel = 0.5f;
     }
 }

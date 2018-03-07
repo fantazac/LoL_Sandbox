@@ -30,5 +30,16 @@ public class EzrealBaseStats : CharacterBaseStats
         BaseSpellVamp = 0;
         BaseAttackRange = 550;
         BaseTenacity = 0;
+
+        HealthPerLevel = 80;
+        ResourcePerLevel = 42;
+
+        AttackDamagePerLevel = 2.41f;
+        AttackSpeedPerLevel = 1.5f;
+
+        HealthRegenerationPerLevel = 0.55f;
+        ResourceRegenerationPerLevel = 0.65f;
+        ArmorPerLevel = 3.5f;
+        MagicResistancePerLevel = 0.5f;
     }
 }

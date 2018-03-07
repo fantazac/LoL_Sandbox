@@ -11,10 +11,22 @@ public abstract class CharacterStats : EntityStats
         base.OnEnable();
     }
 
-    protected override void SetBaseStats(EntityBaseStats entityStats)
+    protected override void SetBaseStats(EntityBaseStats entityBaseStats)
     {
-        base.SetBaseStats(entityStats);
+        base.SetBaseStats(entityBaseStats);
+
+        CharacterBaseStats characterBaseStats = (CharacterBaseStats)entityBaseStats;
 
         //set extra character stats
+        Health.SetPerLevelValue(characterBaseStats.HealthPerLevel);
+        Resource.SetPerLevelValue(characterBaseStats.ResourcePerLevel);
+
+        AttackDamage.SetPerLevelValue(characterBaseStats.AttackDamagePerLevel);
+        Armor.SetPerLevelValue(characterBaseStats.ArmorPerLevel);
+        MagicResistance.SetPerLevelValue(characterBaseStats.MagicResistancePerLevel);
+        AttackSpeed.SetPerLevelValue(characterBaseStats.AttackSpeedPerLevel);
+
+        HealthRegenaration.SetPerLevelValue(characterBaseStats.HealthRegenerationPerLevel);
+        ResourceRegeneration.SetPerLevelValue(characterBaseStats.ResourceRegenerationPerLevel);
     }
 }

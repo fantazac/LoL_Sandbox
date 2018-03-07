@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CharacterStatsController : MonoBehaviour
+public class CharacterStatsManager : MonoBehaviour
 {
     private CharacterStats characterStats;
     private bool showStats;
@@ -11,6 +11,19 @@ public class CharacterStatsController : MonoBehaviour
     {
         characterStats = GetComponent<CharacterStats>();
         showStats = !StaticObjects.OnlineMode || GetComponent<PhotonView>().isMine;
+    }
+
+    private void Start()
+    {
+        Character character = StaticObjects.Character;
+        character.CharacterLevelManager.OnLevelUp += characterStats.Health.OnLevelUp;
+        character.CharacterLevelManager.OnLevelUp += characterStats.Resource.OnLevelUp;
+        character.CharacterLevelManager.OnLevelUp += characterStats.AttackDamage.OnLevelUp;
+        character.CharacterLevelManager.OnLevelUp += characterStats.Armor.OnLevelUp;
+        character.CharacterLevelManager.OnLevelUp += characterStats.MagicResistance.OnLevelUp;
+        character.CharacterLevelManager.OnLevelUp += characterStats.AttackSpeed.OnLevelUp;
+        character.CharacterLevelManager.OnLevelUp += characterStats.HealthRegenaration.OnLevelUp;
+        character.CharacterLevelManager.OnLevelUp += characterStats.ResourceRegeneration.OnLevelUp;
     }
 
     private void OnGUI()
