@@ -38,6 +38,14 @@ public class CharacterLevelManager : MonoBehaviour
         }
     }
 
+    public void SetLevelFromLoad(int characterLevel)
+    {
+        for (int i = 0; i < characterLevel - 1; i++)
+        {
+            LevelUp();
+        }
+    }
+
     private void SendToServer_LevelUp()
     {
         character.PhotonView.RPC("ReceiveFromServer_Level", PhotonTargets.AllViaServer);

@@ -15,6 +15,7 @@ public abstract class Character : Entity
     public CharacterMouseManager CharacterMouseManager { get; private set; }
     public CharacterMovement CharacterMovement { get; private set; }
     public CharacterOrientation CharacterOrientation { get; private set; }
+    public CharacterStatsManager CharacterStatsManager { get; private set; }
 
     public AbilityUIManager AbilityUIManager { get; private set; }
     public BuffUIManager BuffUIManager { get; private set; }
@@ -67,10 +68,11 @@ public abstract class Character : Entity
         CharacterMouseManager = GetComponent<CharacterMouseManager>();
         CharacterMovement = GetComponent<CharacterMovement>();
         CharacterOrientation = GetComponent<CharacterOrientation>();
+        CharacterStatsManager = GetComponent<CharacterStatsManager>();
     }
 
     [PunRPC]
-    protected void ReceiveFromServer_ConnectionInfo(Vector3 position, Quaternion rotation, EntityTeam team, int characterId)
+    protected void ReceiveFromServer_ConnectionInfo(Vector3 position, Quaternion rotation, EntityTeam team, int characterId, int characterLevel)
     {
         if (sentConnectionInfoRequest)
         {
@@ -79,6 +81,7 @@ public abstract class Character : Entity
             transform.rotation = rotation;
             Team = team;
             EntityId = characterId;
+            CharacterLevelManager.SetLevelFromLoad(characterLevel);
             OnConnectionInfoReceived(this);
         }
     }
@@ -88,7 +91,7 @@ public abstract class Character : Entity
     {
         if (PhotonView.isMine)
         {
-            PhotonView.RPC("ReceiveFromServer_ConnectionInfo", PhotonTargets.Others, transform.position, transform.rotation, Team, EntityId);
+            PhotonView.RPC("ReceiveFromServer_ConnectionInfo", PhotonTargets.Others, transform.position, transform.rotation, Team, EntityId, CharacterLevelManager.Level);
         }
     }
 

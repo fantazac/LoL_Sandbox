@@ -4,26 +4,27 @@ using UnityEngine;
 
 public class CharacterStatsManager : MonoBehaviour
 {
+    private CharacterLevelManager characterLevelManager;
     private CharacterStats characterStats;
     private bool showStats;
 
     private void OnEnable()
     {
+        characterLevelManager = GetComponent<CharacterLevelManager>();
         characterStats = GetComponent<CharacterStats>();
         showStats = !StaticObjects.OnlineMode || GetComponent<PhotonView>().isMine;
     }
 
     private void Start()
     {
-        Character character = StaticObjects.Character;
-        character.CharacterLevelManager.OnLevelUp += characterStats.Health.OnLevelUp;
-        character.CharacterLevelManager.OnLevelUp += characterStats.Resource.OnLevelUp;
-        character.CharacterLevelManager.OnLevelUp += characterStats.AttackDamage.OnLevelUp;
-        character.CharacterLevelManager.OnLevelUp += characterStats.Armor.OnLevelUp;
-        character.CharacterLevelManager.OnLevelUp += characterStats.MagicResistance.OnLevelUp;
-        character.CharacterLevelManager.OnLevelUp += characterStats.AttackSpeed.OnLevelUp;
-        character.CharacterLevelManager.OnLevelUp += characterStats.HealthRegenaration.OnLevelUp;
-        character.CharacterLevelManager.OnLevelUp += characterStats.ResourceRegeneration.OnLevelUp;
+        characterLevelManager.OnLevelUp += characterStats.Health.OnLevelUp;
+        characterLevelManager.OnLevelUp += characterStats.Resource.OnLevelUp;
+        characterLevelManager.OnLevelUp += characterStats.AttackDamage.OnLevelUp;
+        characterLevelManager.OnLevelUp += characterStats.Armor.OnLevelUp;
+        characterLevelManager.OnLevelUp += characterStats.MagicResistance.OnLevelUp;
+        characterLevelManager.OnLevelUp += characterStats.AttackSpeed.OnLevelUp;
+        characterLevelManager.OnLevelUp += characterStats.HealthRegenaration.OnLevelUp;
+        characterLevelManager.OnLevelUp += characterStats.ResourceRegeneration.OnLevelUp;
     }
 
     private void OnGUI()
