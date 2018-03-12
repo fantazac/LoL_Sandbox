@@ -8,6 +8,8 @@ public class Lucian_P : PassiveTargeted, CharacterAbility, PassiveCharacterAbili
 
     protected Lucian_P()
     {
+        abilityName = "Lightslinger";
+
         damage = 0.5f;
 
         buffDuration = 3;

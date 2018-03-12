@@ -7,6 +7,8 @@ public class Teleport : GroundTargetedBlink, SummonerAbility
 {
     protected Teleport()
     {
+        abilityName = "Teleport";
+
         cooldown = 300;
         channelTime = 4.5f;
         delayChannelTime = new WaitForSeconds(channelTime);

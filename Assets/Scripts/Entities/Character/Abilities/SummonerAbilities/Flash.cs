@@ -7,6 +7,8 @@ public class Flash : GroundTargetedBlink, SummonerAbility
 {
     protected Flash()
     {
+        abilityName = "Flash";
+
         range = 400;
         cooldown = 300;
 

@@ -11,6 +11,8 @@ public class Ezreal_R : DirectionTargetedProjectile, CharacterAbility
 
     protected Ezreal_R()
     {
+        abilityName = "Trueshot Barrage";
+
         affectedUnitType = AbilityAffectedUnitType.ENEMIES;
         effectType = AbilityEffectType.AREA_OF_EFFECT;
         damageType = DamageType.MAGIC;

@@ -9,6 +9,8 @@ public class DestroyAllDummies : AutoTargeted, OtherAbility
 
     protected DestroyAllDummies()
     {
+        abilityName = "Destroy All Dummies";
+
         OfflineOnly = true;
     }
 

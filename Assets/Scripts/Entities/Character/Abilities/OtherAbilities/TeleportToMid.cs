@@ -4,6 +4,11 @@ using UnityEngine;
 
 public class TeleportToMid : AutoTargetedBlink, OtherAbility
 {
+    protected TeleportToMid()
+    {
+        abilityName = "Teleport To Mid";
+    }
+
     public override bool CanBeCast(Vector3 mousePosition)
     {
         return (!StaticObjects.OnlineMode || !OfflineOnly);

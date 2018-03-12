@@ -11,6 +11,8 @@ public class Lucian_W : DirectionTargetedProjectile, CharacterAbility
 
     protected Lucian_W()
     {
+        abilityName = "Ardent Blaze";
+
         affectedUnitType = AbilityAffectedUnitType.ENEMIES;
         effectType = AbilityEffectType.SINGLE_TARGET;
         damageType = DamageType.MAGIC;

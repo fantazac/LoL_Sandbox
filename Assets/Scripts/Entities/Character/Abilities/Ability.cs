@@ -12,6 +12,8 @@ public abstract class Ability : MonoBehaviour
 
     public int ID { get; set; }
 
+    protected string abilityName;
+
     protected float castTime;
     protected float channelTime;
     protected float cooldown;
@@ -126,6 +128,22 @@ public abstract class Ability : MonoBehaviour
 
     protected void StartAbilityCast()
     {
+        if (character.AbilityTimeBarUIManager != null)
+        {
+            if(HasCastTime && HasChannelTime)
+            {
+                character.AbilityTimeBarUIManager.SetCastTimeAndChannelTime(castTime, channelTime, abilityName);
+            }
+            else if (HasCastTime)
+            {
+                character.AbilityTimeBarUIManager.SetCastTime(castTime, abilityName);
+            }
+            else if (HasChannelTime)
+            {
+                character.AbilityTimeBarUIManager.SetChannelTime(channelTime, abilityName);
+            }
+            
+        }
         if (OnAbilityUsed != null)
         {
             OnAbilityUsed(this);

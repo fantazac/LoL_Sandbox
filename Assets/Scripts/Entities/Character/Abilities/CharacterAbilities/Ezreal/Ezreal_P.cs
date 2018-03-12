@@ -7,6 +7,8 @@ public class Ezreal_P : PassiveTargeted, CharacterAbility, PassiveCharacterAbili
 {
     protected Ezreal_P()
     {
+        abilityName = "Rising Spell Force";
+
         buffDuration = 6;
         buffMaximumStacks = 5;
         buffPercentBonus = 10;

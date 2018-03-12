@@ -9,6 +9,8 @@ public class Heal : SelfTargeted, SummonerAbility
 
     protected Heal()
     {
+        abilityName = "Heal";
+
         affectedUnitType = AbilityAffectedUnitType.ALLY_CHARACTERS;
         effectType = AbilityEffectType.HEALING;
 
