@@ -139,9 +139,9 @@ public class MainMenuManager : MonoBehaviour
         }
         character.transform.parent = characterTemplate.transform;
         StaticObjects.Character = character.GetComponent<Character>();
-        StaticObjects.CharacterCamera = characterTemplate.GetComponentInChildren<Camera>(true);
-        StaticObjects.CharacterCamera.gameObject.SetActive(true);
-        characterTemplate.GetComponentInChildren<Canvas>(true).gameObject.SetActive(true);
+        StaticObjects.CharacterCamera = characterTemplate.GetComponentInChildren<Camera>();
+        //StaticObjects.CharacterCamera.gameObject.SetActive(true);
+        //characterTemplate.GetComponentInChildren<Canvas>(true).gameObject.SetActive(true);
 
         character.GetComponent<CharacterInput>().enabled = true;
         character.GetComponent<CharacterMouseManager>().enabled = true;
