@@ -3,6 +3,7 @@
 public class CharacterInput : MonoBehaviour
 {
     private CharacterAbilityManager characterAbilityManager;
+    private CharacterLevelManager characterLevelManager;
 
     public delegate void OnPressedSHandler();
     public event OnPressedSHandler OnPressedS;
@@ -25,6 +26,7 @@ public class CharacterInput : MonoBehaviour
     private void Start()
     {
         characterAbilityManager = StaticObjects.Character.CharacterAbilityManager;
+        characterLevelManager = StaticObjects.Character.CharacterLevelManager;
     }
 
     private void Update()
@@ -73,6 +75,10 @@ public class CharacterInput : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.K))
         {
             characterAbilityManager.ResetCooldowns();
+        }
+        if (Input.GetKeyDown(KeyCode.Equals))
+        {
+            characterLevelManager.PrepareLevelUp();
         }
         if (Input.GetKey(KeyCode.LeftShift))
         {

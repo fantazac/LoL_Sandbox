@@ -17,14 +17,15 @@ public class Lucian_W : DirectionTargetedProjectile, CharacterAbility
 
         range = 900;
         speed = 1550;
-        damage = 60;
-        cooldown = 9;
-        castTime = 0.2f;
+        damage = 60;// 60/100/140/180/220 + TOTAL AP % 90
+        resourceCost = 50;
+        cooldown = 14;// 14/13/12/11/10
+        castTime = 0.25f;
         delayCastTime = new WaitForSeconds(castTime);
 
         buffDuration = 1;
-        buffFlatBonus = 60;
-        debuffDuration = 4;
+        buffFlatBonus = 60;// 60/65/70/75/80
+        debuffDuration = 6;
 
         startCooldownOnAbilityCast = true;
 
@@ -35,9 +36,9 @@ public class Lucian_W : DirectionTargetedProjectile, CharacterAbility
 
     protected override void SetSpritePaths()
     {
-        abilitySpritePath = "Sprites/CharacterAbilities/Lucian/LucianW";
-        buffSpritePath = "Sprites/CharacterAbilities/Lucian/LucianW_Buff";
-        debuffSpritePath = "Sprites/CharacterAbilities/Lucian/LucianW_Debuff";
+        abilitySpritePath = "Sprites/Characters/CharacterAbilities/Lucian/LucianW";
+        buffSpritePath = "Sprites/Characters/CharacterAbilities/Lucian/LucianW_Buff";
+        debuffSpritePath = "Sprites/Characters/CharacterAbilities/Lucian/LucianW_Debuff";
     }
 
     protected override void OnProjectileHit(AbilityEffect projectile, Entity entityHit)
@@ -67,23 +68,27 @@ public class Lucian_W : DirectionTargetedProjectile, CharacterAbility
         AddNewBuffToEntityHit(character);
     }
 
-    public override void ApplyBuffToEntityHit(Entity entityHit)
+    public override void ApplyBuffToEntityHit(Entity entityHit, int currentStacks)
     {
         entityHit.EntityStats.MovementSpeed.AddFlatBonus(buffFlatBonus);
+        EntitiesAffectedByBuff.Add(entityHit);
     }
 
-    public override void RemoveBuffFromEntityHit(Entity entityHit)
+    public override void RemoveBuffFromEntityHit(Entity entityHit, int currentStacks)
     {
         entityHit.EntityStats.MovementSpeed.RemoveFlatBonus(buffFlatBonus);
+        EntitiesAffectedByBuff.Remove(entityHit);
     }
 
-    public override void ApplyDebuffToEntityHit(Entity entityHit)
+    public override void ApplyDebuffToEntityHit(Entity entityHit, int currentStacks)
     {
         entityHit.EntityStats.Health.OnHealthReduced += OnEntityDamaged;
+        EntitiesAffectedByDebuff.Add(entityHit);
     }
 
-    public override void RemoveDebuffFromEntityHit(Entity entityHit)
+    public override void RemoveDebuffFromEntityHit(Entity entityHit, int currentStacks)
     {
         entityHit.EntityStats.Health.OnHealthReduced -= OnEntityDamaged;
+        EntitiesAffectedByDebuff.Remove(entityHit);
     }
 }

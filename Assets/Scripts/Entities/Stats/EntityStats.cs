@@ -47,7 +47,14 @@ public class EntityStats : MonoBehaviour
         AttackRange = GetComponent<AttackRange>();
         Tenacity = GetComponent<Tenacity>();
 
+        ExtraAdjustments();
+
         SetBaseStats(GetComponent<EntityBaseStats>());
+    }
+
+    protected void ExtraAdjustments()
+    {
+        AttackSpeed.SetEntityBasicAttack();
     }
 
     protected virtual void SetBaseStats(EntityBaseStats entityBaseStats)

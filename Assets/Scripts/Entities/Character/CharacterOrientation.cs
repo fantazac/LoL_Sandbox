@@ -127,6 +127,7 @@ public class CharacterOrientation : MonoBehaviour
 
     private bool CanRotate()
     {
-        return !isRotatingTowardsCastPoint && !characterAbilityManager.IsUsingAbilityPreventingRotation() && !characterAbilityManager.IsUsingAbilityThatHasACastTime();
+        return !(isRotatingTowardsCastPoint || characterAbilityManager.IsUsingAbilityPreventingRotation() || 
+            characterAbilityManager.IsUsingAbilityThatHasACastTime() || characterAbilityManager.IsUsingADashAbility());
     }
 }

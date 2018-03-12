@@ -2,8 +2,13 @@
 
 public abstract class Stat : MonoBehaviour
 {
+    protected const float BASE_PERCENTAGE_ON_LEVEL_UP = 0.65f;
+    protected const float ADDITIVE_PERCENTAGE_PER_LEVEL = 0.035f;
+
     [SerializeField]
     protected float baseValue;
+    [SerializeField]
+    protected float perLevelValue;
     [SerializeField]
     protected float total;
     [SerializeField]
@@ -24,6 +29,21 @@ public abstract class Stat : MonoBehaviour
     {
         this.baseValue = baseValue;
         UpdateTotal();
+    }
+
+    public float GetPerLevelValue()
+    {
+        return baseValue;
+    }
+
+    public void SetPerLevelValue(float perLevelValue)
+    {
+        this.perLevelValue = perLevelValue;
+    }
+
+    public virtual void OnLevelUp(int level)
+    {
+        SetBaseValue(((BASE_PERCENTAGE_ON_LEVEL_UP + (ADDITIVE_PERCENTAGE_PER_LEVEL * level)) * perLevelValue) + baseValue);
     }
 
     public virtual float GetTotal()

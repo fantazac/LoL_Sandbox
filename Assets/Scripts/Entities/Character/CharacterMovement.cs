@@ -17,8 +17,8 @@ public class CharacterMovement : MonoBehaviour
     public delegate void PlayerMovedHandler();
     public event PlayerMovedHandler CharacterMoved;
 
-    public delegate void PlayerIsInRangeHandler(Entity target);
-    public event PlayerIsInRangeHandler CharacterIsInRange;
+    public delegate void CharacterIsInRangeHandler(Entity target);
+    public event CharacterIsInRangeHandler CharacterIsInRange;
 
     private CharacterMovement()
     {
@@ -62,11 +62,11 @@ public class CharacterMovement : MonoBehaviour
     {
         if (StaticObjects.OnlineMode)
         {
-            SendToServer_Movement_Target(target, character.EntityStats.AttackRange.GetTotal());
+            SendToServer_Movement_Target(target, character.EntityStats.AttackRange.GetTotal(), true);
         }
         else
         {
-            SetMoveTowardsTarget(target, character.EntityStats.AttackRange.GetTotal());
+            SetMoveTowardsTarget(target, character.EntityStats.AttackRange.GetTotal(), true);
         }
     }
 
@@ -82,16 +82,16 @@ public class CharacterMovement : MonoBehaviour
         SetMoveTowardsPoint(destination);
     }
 
-    private void SendToServer_Movement_Target(Entity target, float range)
+    private void SendToServer_Movement_Target(Entity target, float range, bool isBasicAttack)
     {
         PhotonNetwork.RemoveRPCs(character.PhotonView);//if using AllBufferedViaServer somewhere else, this needs to change
-        character.PhotonView.RPC("ReceiveFromServer_Movement_Target", PhotonTargets.AllBufferedViaServer, target.EntityId, target.EntityType, range);
+        character.PhotonView.RPC("ReceiveFromServer_Movement_Target", PhotonTargets.AllBufferedViaServer, target.EntityId, target.EntityType, range, isBasicAttack);
     }
 
     [PunRPC]
-    private void ReceiveFromServer_Movement_Target(int entityId, EntityType entityType, float range)
+    private void ReceiveFromServer_Movement_Target(int entityId, EntityType entityType, float range, bool isBasicAttack)
     {
-        SetMoveTowardsTarget(character.CharacterAbilityManager.FindTarget(entityId, entityType), range);
+        SetMoveTowardsTarget(character.CharacterAbilityManager.FindTarget(entityId, entityType), range, isBasicAttack);
     }
 
     public void SetMoveTowardsPoint(Vector3 destination)
@@ -123,13 +123,25 @@ public class CharacterMovement : MonoBehaviour
         if (target != null)
         {
             CharacterIsInRange = null;
-            //CharacterIsInRange += character.BasicAttack.InRange;
+            character.EntityBasicAttack.SetupBasicAttack();
         }
     }
 
-    public void SetMoveTowardsTarget(Entity target, float range)
+    public void RestartMovementTowardsTargetAfterAbility()
+    {
+        if(character.EntityBasicAttack.AttackIsInQueue())
+        {
+            SetMoveTowardsTarget(character.EntityBasicAttack.CurrentTarget(), character.EntityStats.AttackRange.GetTotal(), true);
+        }
+    }
+
+    public void SetMoveTowardsTarget(Entity target, float range, bool isBasicAttack)
     {
         StopAllMovement();
+        if (isBasicAttack)
+        {
+            character.EntityBasicAttack.SetupBasicAttack();
+        }
         this.target = target;
         StartCoroutine(MoveTowardsTarget(target, range));
         character.CharacterOrientation.RotateCharacterUntilReachedTarget(target.transform);
@@ -150,7 +162,7 @@ public class CharacterMovement : MonoBehaviour
             yield return null;
         }
 
-        while (character.CharacterAbilityManager.IsUsingAbilityPreventingMovement())
+        while (character.CharacterAbilityManager.IsUsingAbilityPreventingBasicAttacks())
         {
             yield return null;
         }
@@ -199,6 +211,7 @@ public class CharacterMovement : MonoBehaviour
 
     public void StopAllMovement()
     {
+        character.EntityBasicAttack.StopBasicAttack();
         character.CharacterActionManager.ResetBufferedAction();
         StopAllCoroutines();
         character.CharacterOrientation.StopAllRotation();

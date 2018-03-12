@@ -11,12 +11,12 @@ public abstract class DirectionTargetedProjectile : DirectionTargeted
         yield return delayCastTime;
 
         character.CharacterOrientation.RotateCharacterInstantly(destinationOnCast);
-        
-        Projectile projectile = ((GameObject)Instantiate(projectilePrefab, transform.position, transform.rotation)).GetComponent<Projectile>();
+
+        Projectile projectile = (Instantiate(projectilePrefab, transform.position, transform.rotation)).GetComponent<Projectile>();
         projectile.ShootProjectile(character.Team, affectedUnitType, speed, range);
         projectile.OnAbilityEffectHit += OnProjectileHit;
         projectile.OnProjectileReachedEnd += OnProjectileReachedEnd;
-        
+
         FinishAbilityCast();
     }
 

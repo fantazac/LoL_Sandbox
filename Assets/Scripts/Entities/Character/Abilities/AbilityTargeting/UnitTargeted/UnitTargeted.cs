@@ -22,7 +22,7 @@ public abstract class UnitTargeted : Ability
         }
         else
         {
-            character.CharacterMovement.SetMoveTowardsTarget(target, range);
+            character.CharacterMovement.SetMoveTowardsTarget(target, range, false);
             character.CharacterMovement.CharacterIsInRange += UseAbilityInRange;
         }
     }
@@ -32,6 +32,8 @@ public abstract class UnitTargeted : Ability
         StartAbilityCast();
 
         character.CharacterMovement.StopAllMovement();
+        character.CharacterMovement.SetMoveTowardsTarget(target, character.EntityStats.AttackRange.GetTotal(), true);
+
         destinationOnCast = target.transform.position;
         RotationOnAbilityCast(target.transform.position);
 

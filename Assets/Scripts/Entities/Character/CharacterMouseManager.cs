@@ -11,6 +11,8 @@ public class CharacterMouseManager : MonoBehaviour
 
     private RaycastHit hit;
 
+    private const float RADIUS_RUBBER_BANDING = 0.3f;
+
     private void Start()
     {
         character = StaticObjects.Character;
@@ -27,7 +29,7 @@ public class CharacterMouseManager : MonoBehaviour
 
     public void UnhoverEntity(Entity unhoveredEntity)
     {
-        if(HoveredEntity == unhoveredEntity)
+        if (HoveredEntity == unhoveredEntity)
         {
             HoveredEntity = null;
         }
@@ -35,7 +37,7 @@ public class CharacterMouseManager : MonoBehaviour
 
     public bool HoveredEntityIsAnEnemy(EntityTeam team)
     {
-        if(HoveredEntity != null)
+        if (HoveredEntity != null)
         {
             return team != HoveredEntity.Team;
         }
@@ -49,13 +51,38 @@ public class CharacterMouseManager : MonoBehaviour
 
     private void PressedRightClick(Vector3 mousePosition)
     {
+        bool hitTerrain = MousePositionOnTerrain.GetRaycastHit(mousePosition, out hit);
+        Entity closestEnemyEntity = FindClosestEnemyEntity();
+
         if (HoveredEntityIsAnEnemy(character.Team))
         {
             character.CharacterMovement.PrepareMovementTowardsTarget(HoveredEntity);
         }
-        else if (MousePositionOnTerrain.GetRaycastHit(mousePosition, out hit))
+        else if (closestEnemyEntity != null)
+        {
+            character.CharacterMovement.PrepareMovementTowardsTarget(closestEnemyEntity);
+        }
+        else if (hitTerrain)
         {
             character.CharacterMovement.PrepareMovementTowardsPoint(hit.point);
         }
+    }
+
+    private Entity FindClosestEnemyEntity()
+    {
+        Entity closestEnemyEntity = null;
+        foreach (Collider collider in Physics.OverlapSphere(hit.point, RADIUS_RUBBER_BANDING))
+        {
+            closestEnemyEntity = collider.GetComponent<Entity>();
+            if (closestEnemyEntity != null && closestEnemyEntity.Team != character.Team)
+            {
+                break;
+            }
+            else
+            {
+                closestEnemyEntity = null;
+            }
+        }
+        return closestEnemyEntity;
     }
 }

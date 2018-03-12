@@ -19,13 +19,14 @@ public class Lucian_R : DirectionTargetedProjectile, CharacterAbility
 
         range = 1200;
         speed = 2000;
-        damage = 40;
-        cooldown = 13;
+        damage = 20;// 20/35/50 + TOTAL AD % 20 + TOTAL AP % 10
+        resourceCost = 100;
+        cooldown = 110;// 110/100/90
 
-        amountOfProjectilesToShoot = 20;
+        amountOfProjectilesToShoot = 20;// 20/25/30
         durationOfActive = 3;
         offset = 0.2f;
-        delayBetweenBullets = new WaitForSeconds(durationOfActive / (float)amountOfProjectilesToShoot);
+        delayBetweenBullets = new WaitForSeconds(durationOfActive / amountOfProjectilesToShoot);
 
         CanBeCancelled = true;
         CannotRotateWhileCasting = true;
@@ -34,7 +35,7 @@ public class Lucian_R : DirectionTargetedProjectile, CharacterAbility
 
     protected override void SetSpritePaths()
     {
-        abilitySpritePath = "Sprites/CharacterAbilities/Lucian/LucianR";
+        abilitySpritePath = "Sprites/Characters/CharacterAbilities/Lucian/LucianR";
     }
 
     protected override void Start()

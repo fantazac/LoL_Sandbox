@@ -23,16 +23,15 @@ public abstract class Ability : MonoBehaviour
     protected Vector3 positionOnCast;
     protected Quaternion rotationOnCast;
     protected float range;
+    protected float resourceCost;
     protected float speed;
     protected bool startCooldownOnAbilityCast;
 
-    protected Buff buff;
     protected float buffDuration;
     protected int buffMaximumStacks;
     protected float buffFlatBonus;
     protected float buffPercentBonus;
 
-    protected Buff debuff;
     protected float debuffDuration;
     protected int debuffMaximumStacks;
     protected float debuffFlatBonus;
@@ -54,12 +53,16 @@ public abstract class Ability : MonoBehaviour
     public bool CanCastOtherAbilitiesWhileActive { get; private set; }
     public bool CanMoveWhileCasting { get; protected set; }
     public bool CannotRotateWhileCasting { get; protected set; }
+    public bool CanUseBasicAttacksWhileCasting { get; protected set; }
     public bool IsADash { get; protected set; }
     public bool IsOnCooldown { get; protected set; }
     public bool OfflineOnly { get; protected set; }
     public bool HasCastTime { get; protected set; }
+    public bool ResetBasicAttackCycleOnAbilityFinished { get; protected set; }
 
     public List<Ability> CastableAbilitiesWhileActive { get; protected set; }
+    public List<Entity> EntitiesAffectedByBuff { get; protected set; }
+    public List<Entity> EntitiesAffectedByDebuff { get; protected set; }
 
     public delegate void OnAbilityUsedHandler(Ability ability);
     public event OnAbilityUsedHandler OnAbilityUsed;
@@ -73,6 +76,8 @@ public abstract class Ability : MonoBehaviour
     protected Ability()
     {
         CastableAbilitiesWhileActive = new List<Ability>();
+        EntitiesAffectedByBuff = new List<Entity>();
+        EntitiesAffectedByDebuff = new List<Entity>();
         SetSpritePaths();
     }
 
@@ -109,8 +114,8 @@ public abstract class Ability : MonoBehaviour
 
     protected virtual void ModifyValues()
     {
-        range /= StaticObjects.DivisionFactor;
-        speed /= StaticObjects.DivisionFactor;
+        range *= StaticObjects.MultiplyingFactor;
+        speed *= StaticObjects.MultiplyingFactor;
     }
 
     protected void StartAbilityCast()
@@ -119,7 +124,7 @@ public abstract class Ability : MonoBehaviour
         {
             OnAbilityUsed(this);
         }
-        StartCooldown(startCooldownOnAbilityCast);
+        StartCooldown(true);
     }
 
     protected void FinishAbilityCast()
@@ -128,7 +133,11 @@ public abstract class Ability : MonoBehaviour
         {
             OnAbilityFinished(this);
         }
-        StartCooldown(!startCooldownOnAbilityCast);
+        if (ResetBasicAttackCycleOnAbilityFinished)
+        {
+            character.EntityBasicAttack.ResetBasicAttack();
+        }
+        StartCooldown(false);
     }
 
     protected void AbilityHit()
@@ -187,7 +196,8 @@ public abstract class Ability : MonoBehaviour
 
     protected virtual void AddNewBuffToEntityHit(Entity entityHit)
     {
-        if (buff == null || buff.HasExpired())
+        Buff buff = entityHit.EntityBuffManager.GetBuff(this);
+        if (buff == null)
         {
             buff = new Buff(this, entityHit, false, buffDuration);
             entityHit.EntityBuffManager.ApplyBuff(buff, buffSprite);
@@ -200,7 +210,8 @@ public abstract class Ability : MonoBehaviour
 
     protected virtual void AddNewDebuffToEntityHit(Entity entityHit)
     {
-        if (debuff == null || debuff.HasExpired())
+        Buff debuff = entityHit.EntityBuffManager.GetDebuff(this);
+        if (debuff == null)
         {
             debuff = new Buff(this, entityHit, true, debuffDuration);
             entityHit.EntityBuffManager.ApplyDebuff(debuff, debuffSprite);
@@ -211,11 +222,39 @@ public abstract class Ability : MonoBehaviour
         }
     }
 
-    public virtual void ApplyBuffToEntityHit(Entity entityHit) { }
-    public virtual void RemoveBuffFromEntityHit(Entity entityHit) { }
+    public void ConsumeBuff(Entity affectedTarget)
+    {
+        Buff buff = affectedTarget.EntityBuffManager.GetBuff(this);
+        if (buff != null)
+        {
+            buff.ConsumeBuff();
+        }
+    }
 
-    public virtual void ApplyDebuffToEntityHit(Entity entityHit) { }
-    public virtual void RemoveDebuffFromEntityHit(Entity entityHit) { }
+    public void ConsumeDebuff(Entity affectedTarget)
+    {
+        Buff debuff = affectedTarget.EntityBuffManager.GetDebuff(this);
+        if (debuff != null)
+        {
+            debuff.ConsumeBuff();
+        }
+    }
+
+    public virtual void ApplyBuffToEntityHit(Entity entityHit, int currentStacks) { }
+    public virtual void RemoveBuffFromEntityHit(Entity entityHit, int currentStacks) { }
+    protected virtual void UpdateBuffOnAffectedEntities(float oldValue, float newValue) { }
+
+    public virtual void ApplyDebuffToEntityHit(Entity entityHit, int currentStacks) { }
+    public virtual void RemoveDebuffFromEntityHit(Entity entityHit, int currentStacks) { }
+    protected virtual void UpdateDebuffOnAffectedEntities(float oldValue, float newValue) { }
+
+    public virtual void OnLevelUp(int level) { }
+
+    public virtual void CancelAbility()
+    {
+        StopAllCoroutines();
+        FinishAbilityCast();
+    }
 
     protected virtual IEnumerator AbilityWithCastTime() { yield return null; }
     protected virtual IEnumerator AbilityWithoutCastTime() { yield return null; }

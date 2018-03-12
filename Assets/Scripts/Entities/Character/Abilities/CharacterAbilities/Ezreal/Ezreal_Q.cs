@@ -15,9 +15,10 @@ public class Ezreal_Q : DirectionTargetedProjectile, CharacterAbility
 
         range = 1150;
         speed = 2000;
-        damage = 100;
-        cooldown = 4;
-        castTime = 0.25f;
+        damage = 15;// 15/40/65/90/115 + TOTAL AD % 110 + TOTAL AP % 40
+        resourceCost = 28;// 28/31/34/37/40
+        cooldown = 5.5f;// 5.5f/5.25f/5/4.75f/4.5f
+        castTime = 0.25f;//TODO: VERIFY ACTUAL VALUE
         delayCastTime = new WaitForSeconds(castTime);
 
         cooldownReductionOnProjectileHit = 1.5f;
@@ -29,7 +30,7 @@ public class Ezreal_Q : DirectionTargetedProjectile, CharacterAbility
 
     protected override void SetSpritePaths()
     {
-        abilitySpritePath = "Sprites/CharacterAbilities/Ezreal/EzrealQ";
+        abilitySpritePath = "Sprites/Characters/CharacterAbilities/Ezreal/EzrealQ";
     }
 
     protected override void Start()
