@@ -24,8 +24,6 @@ public class Ezreal_E : GroundTargetedBlink, CharacterAbility
 
         startCooldownOnAbilityCast = true;
 
-        HasCastTime = true;
-
         effectRadius = 750;
     }
 

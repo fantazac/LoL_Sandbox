@@ -20,8 +20,6 @@ public class Ezreal_W : DirectionTargetedProjectile, CharacterAbility
 
         startCooldownOnAbilityCast = true;
 
-        HasCastTime = true;
-
         buffDuration = 5;
         buffPercentBonus = 20;// 20/25/30/35/40
     }

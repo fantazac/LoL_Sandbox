@@ -23,8 +23,6 @@ public class Lucian_Q : UnitTargeted, CharacterAbility
         delayCastTime = new WaitForSeconds(castTime);
 
         durationAoE = 0.15f;
-
-        HasCastTime = true;
     }
 
     protected override void SetSpritePaths()

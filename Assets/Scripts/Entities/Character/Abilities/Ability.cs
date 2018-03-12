@@ -13,10 +13,12 @@ public abstract class Ability : MonoBehaviour
     public int ID { get; set; }
 
     protected float castTime;
+    protected float channelTime;
     protected float cooldown;
     protected float cooldownRemaining;
     protected float damage;
     protected WaitForSeconds delayCastTime;
+    protected WaitForSeconds delayChannelTime;
     protected float durationOfActive;
     protected RaycastHit hit;
     protected Vector3 destinationOnCast;
@@ -55,9 +57,11 @@ public abstract class Ability : MonoBehaviour
     public bool CannotRotateWhileCasting { get; protected set; }
     public bool CanUseBasicAttacksWhileCasting { get; protected set; }
     public bool IsADash { get; protected set; }
+    public bool IsBeingCasted { get; protected set; }
     public bool IsOnCooldown { get; protected set; }
     public bool OfflineOnly { get; protected set; }
-    public bool HasCastTime { get; protected set; }
+    public bool HasCastTime { get; private set; }
+    public bool HasChannelTime { get; private set; }
     public bool ResetBasicAttackCycleOnAbilityFinished { get; protected set; }
 
     public List<Ability> CastableAbilitiesWhileActive { get; protected set; }
@@ -95,6 +99,8 @@ public abstract class Ability : MonoBehaviour
     protected virtual void Start()
     {
         CanCastOtherAbilitiesWhileActive = CastableAbilitiesWhileActive.Count > 0;
+        HasCastTime = castTime > 0;
+        HasChannelTime = channelTime > 0;
 
         ModifyValues();
     }
@@ -124,6 +130,7 @@ public abstract class Ability : MonoBehaviour
         {
             OnAbilityUsed(this);
         }
+        IsBeingCasted = true;
         StartCooldown(true);
     }
 
@@ -133,6 +140,7 @@ public abstract class Ability : MonoBehaviour
         {
             OnAbilityFinished(this);
         }
+        IsBeingCasted = false;
         if (ResetBasicAttackCycleOnAbilityFinished)
         {
             character.EntityBasicAttack.ResetBasicAttack();
@@ -257,7 +265,8 @@ public abstract class Ability : MonoBehaviour
     }
 
     protected virtual IEnumerator AbilityWithCastTime() { yield return null; }
-    protected virtual IEnumerator AbilityWithoutCastTime() { yield return null; }
+    protected virtual IEnumerator AbilityWithChannelTime() { yield return null; }
+    protected virtual IEnumerator AbilityWithoutDelay() { yield return null; }
 }
 
 public interface PassiveCharacterAbility { }

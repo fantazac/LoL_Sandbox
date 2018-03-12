@@ -24,8 +24,6 @@ public class Ezreal_Q : DirectionTargetedProjectile, CharacterAbility
         cooldownReductionOnProjectileHit = 1.5f;
 
         startCooldownOnAbilityCast = true;
-
-        HasCastTime = true;
     }
 
     protected override void SetSpritePaths()

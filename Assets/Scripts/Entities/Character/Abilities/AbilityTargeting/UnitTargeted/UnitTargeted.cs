@@ -37,13 +37,17 @@ public abstract class UnitTargeted : Ability
         destinationOnCast = target.transform.position;
         RotationOnAbilityCast(target.transform.position);
 
-        if (delayCastTime == null)
+        if (delayCastTime != null)
         {
-            StartCoroutine(AbilityWithoutCastTime());
+            StartCoroutine(AbilityWithCastTime());
+        }
+        else if (delayChannelTime != null)
+        {
+            StartCoroutine(AbilityWithChannelTime());
         }
         else
         {
-            StartCoroutine(AbilityWithCastTime());
+            StartCoroutine(AbilityWithoutDelay());
         }
     }
 

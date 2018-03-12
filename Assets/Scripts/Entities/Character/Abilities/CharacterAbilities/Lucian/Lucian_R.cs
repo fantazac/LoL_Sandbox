@@ -41,7 +41,6 @@ public class Lucian_R : DirectionTargetedProjectile, CharacterAbility
     protected override void Start()
     {
         CastableAbilitiesWhileActive.Add(GetComponent<Lucian_E>());
-        //CastableAbilitiesWhileActive.Add(this); Useful once cancel is coded?
 
         base.Start();
     }
@@ -51,7 +50,7 @@ public class Lucian_R : DirectionTargetedProjectile, CharacterAbility
         character.CharacterOrientation.RotateCharacterInstantly(destination);
     }
 
-    protected override IEnumerator AbilityWithoutCastTime()
+    protected override IEnumerator AbilityWithoutDelay()
     {
         ShootProjectile(0);
 

@@ -214,7 +214,7 @@ public class CharacterMovement : MonoBehaviour
         character.EntityBasicAttack.StopBasicAttack();
         character.CharacterActionManager.ResetBufferedAction();
         StopAllCoroutines();
-        character.CharacterOrientation.StopAllRotation();
+        character.CharacterOrientation.StopMovementRotation();
         CharacterIsInRange = null;
         destination = Vector3.down;
         target = null;

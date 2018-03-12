@@ -30,8 +30,6 @@ public class Lucian_W : DirectionTargetedProjectile, CharacterAbility
         startCooldownOnAbilityCast = true;
 
         durationAoE = 0.2f;
-
-        HasCastTime = true;
     }
 
     protected override void SetSpritePaths()

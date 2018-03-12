@@ -26,13 +26,17 @@ public abstract class GroundTargeted : Ability // Curently same as DirectionTarg
 
         FinalAdjustments(destination);
 
-        if (delayCastTime == null)
+        if (delayCastTime != null)
         {
-            StartCoroutine(AbilityWithoutCastTime());
+            StartCoroutine(AbilityWithCastTime());
+        }
+        else if(delayChannelTime != null)
+        {
+            StartCoroutine(AbilityWithChannelTime());
         }
         else
         {
-            StartCoroutine(AbilityWithCastTime());
+            StartCoroutine(AbilityWithoutDelay());
         }
     }
 

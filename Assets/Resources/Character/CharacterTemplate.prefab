@@ -548,7 +548,7 @@ GameObject:
   - component: {fileID: 114570855364511764}
   - component: {fileID: 114343335104839580}
   m_Layer: 5
-  m_Name: TextAbilityTime
+  m_Name: TextChannelTime
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -800,7 +800,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: 
+  m_Text: aaaaaaaaaaaaaaaaaa
 --- !u!114 &114024849681229620
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -861,7 +861,7 @@ MonoBehaviour:
   ui: {fileID: 1634347110158672}
   abilityTimeBar: {fileID: 114549924938199314}
   abilityName: {fileID: 114005460900388174}
-  abilityTime: {fileID: 114570855364511764}
+  abilityChannelTime: {fileID: 114570855364511764}
 --- !u!114 &114149567567232374
 MonoBehaviour:
   m_ObjectHideFlags: 1

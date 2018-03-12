@@ -17,6 +17,7 @@ public abstract class Character : Entity
     public CharacterOrientation CharacterOrientation { get; private set; }
     public CharacterStatsManager CharacterStatsManager { get; private set; }
 
+    public AbilityTimeBarUIManager AbilityTimeBarUIManager { get; private set; }
     public AbilityUIManager AbilityUIManager { get; private set; }
     public BuffUIManager BuffUIManager { get; private set; }
     public BuffUIManager DebuffUIManager { get; private set; }
@@ -29,6 +30,7 @@ public abstract class Character : Entity
     {
         if ((!StaticObjects.OnlineMode && EntityId == 0) || PhotonView.isMine)
         {
+            AbilityTimeBarUIManager = transform.parent.GetComponentInChildren<AbilityTimeBarUIManager>();
             AbilityUIManager = transform.parent.GetComponentInChildren<AbilityUIManager>();
             BuffUIManager[] buffUIManagers = transform.parent.GetComponentsInChildren<BuffUIManager>();
             BuffUIManager = buffUIManagers[0];

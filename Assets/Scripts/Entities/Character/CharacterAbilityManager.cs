@@ -183,7 +183,7 @@ public class CharacterAbilityManager : MonoBehaviour
                 character.CharacterActionManager.ResetBufferedAction();
             }
             ability.UseAbility(destination);
-            if (ability.HasCastTime || ability.CanBeCancelled)
+            if (ability.HasCastTime || ability.HasChannelTime || ability.CanBeCancelled)
             {
                 character.CharacterMovement.SetCharacterIsInRangeEventForBasicAttack();
             }
@@ -224,7 +224,7 @@ public class CharacterAbilityManager : MonoBehaviour
 
         foreach (Ability ability in currentlyUsedAbilities)
         {
-            if (ability.HasCastTime && (!ability.CanCastOtherAbilitiesWhileActive || ability.CastableAbilitiesWhileActive.Contains(abilityToCast)))
+            if ((ability.HasCastTime || ability.HasChannelTime) && (!ability.CanCastOtherAbilitiesWhileActive || ability.CastableAbilitiesWhileActive.Contains(abilityToCast)))
             {
                 return true;
             }
@@ -239,7 +239,7 @@ public class CharacterAbilityManager : MonoBehaviour
     {
         bool abilityToCastIsAvailable = abilityToCast != null;
 
-        if (abilityToCastIsAvailable && abilityToCast.IsOnCooldown)
+        if (abilityToCastIsAvailable && (abilityToCast.IsOnCooldown || abilityToCast.IsBeingCasted))
         {
             return false;
         }
@@ -256,7 +256,7 @@ public class CharacterAbilityManager : MonoBehaviour
                 return false;
             }
         }
-
+        
         return true;
     }
 
@@ -342,6 +342,24 @@ public class CharacterAbilityManager : MonoBehaviour
         foreach (Ability ability in currentlyUsedAbilities)
         {
             if (ability.HasCastTime)
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public bool IsUsingAbilityThatHasAChannelTime()
+    {
+        if (currentlyUsedAbilities.Count == 0)
+        {
+            return false;
+        }
+
+        foreach (Ability ability in currentlyUsedAbilities)
+        {
+            if (ability.HasChannelTime)
             {
                 return true;
             }

@@ -30,13 +30,17 @@ public abstract class DirectionTargetedDash : DirectionTargeted
 
         FinalAdjustments(destination);
 
-        if (delayCastTime == null)
+        if (delayCastTime != null)
         {
-            currentDashCoroutine = AbilityWithoutCastTime();
+            currentDashCoroutine = AbilityWithCastTime();
+        }
+        else if (delayChannelTime != null)
+        {
+            currentDashCoroutine = AbilityWithChannelTime();
         }
         else
         {
-            currentDashCoroutine = AbilityWithCastTime();
+            currentDashCoroutine = AbilityWithoutDelay();
         }
         StartCoroutine(currentDashCoroutine);
     }
@@ -49,7 +53,7 @@ public abstract class DirectionTargetedDash : DirectionTargeted
         }
     }
 
-    protected override IEnumerator AbilityWithoutCastTime()
+    protected override IEnumerator AbilityWithoutDelay()
     {
         while (transform.position != destination)
         {
