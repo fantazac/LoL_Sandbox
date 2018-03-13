@@ -122,4 +122,10 @@ public class AbilityTimeBarUIManager : MonoBehaviour
 
         ResetUI();
     }
+
+    public void CancelCastTimeAndChannelTime()
+    {
+        StopAllCoroutines();
+        ResetUI();
+    }
 }

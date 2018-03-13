@@ -19,7 +19,7 @@ public class Heal : SelfTargeted, SummonerAbility
 
         startCooldownOnAbilityCast = true;
 
-        CanBeCastAtAnytime = true;
+        CanBeCastDuringOtherAbilityCastTimes = true;
 
         buffDuration = 1;
         buffFlatBonus = 90;

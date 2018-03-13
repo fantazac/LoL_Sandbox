@@ -24,13 +24,14 @@ public class Lucian_R : DirectionTargetedProjectile, CharacterAbility
         damage = 20;// 20/35/50 + TOTAL AD % 20 + TOTAL AP % 10
         resourceCost = 100;
         cooldown = 110;// 110/100/90
+        cooldownBeforeRecast = 0.75f;
 
         amountOfProjectilesToShoot = 20;// 20/25/30
         durationOfActive = 3;
         offset = 0.2f;
         delayBetweenBullets = new WaitForSeconds(durationOfActive / amountOfProjectilesToShoot);
 
-        CanBeCancelled = true;
+        CanBeRecasted = true;
         CannotRotateWhileCasting = true;
         CanMoveWhileCasting = true;
     }

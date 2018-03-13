@@ -17,6 +17,7 @@ public abstract class Ability : MonoBehaviour
     protected float castTime;
     protected float channelTime;
     protected float cooldown;
+    protected float cooldownBeforeRecast;
     protected float cooldownRemaining;
     protected float damage;
     protected WaitForSeconds delayCastTime;
@@ -44,16 +45,19 @@ public abstract class Ability : MonoBehaviour
     [HideInInspector]
     public Sprite abilitySprite;
     [HideInInspector]
+    public Sprite abilityRecastSprite;
+    [HideInInspector]
     public Sprite buffSprite;
     [HideInInspector]
     public Sprite debuffSprite;
 
     protected string abilitySpritePath;
+    protected string abilityRecastSpritePath;
     protected string buffSpritePath;
     protected string debuffSpritePath;
 
-    public bool CanBeCastAtAnytime { get; protected set; }
-    public bool CanBeCancelled { get; protected set; }
+    public bool CanBeCastDuringOtherAbilityCastTimes { get; protected set; }
+    public bool CanBeRecasted { get; protected set; }
     public bool CanCastOtherAbilitiesWhileActive { get; private set; }
     public bool CanMoveWhileCasting { get; protected set; }
     public bool CannotRotateWhileCasting { get; protected set; }
@@ -61,12 +65,14 @@ public abstract class Ability : MonoBehaviour
     public bool IsADash { get; protected set; }
     public bool IsBeingCasted { get; protected set; }
     public bool IsOnCooldown { get; protected set; }
+    public bool IsOnCooldownForRecast { get; protected set; }
     public bool OfflineOnly { get; protected set; }
     public bool HasCastTime { get; private set; }
     public bool HasChannelTime { get; private set; }
     public bool ResetBasicAttackCycleOnAbilityFinished { get; protected set; }
 
     public List<Ability> CastableAbilitiesWhileActive { get; protected set; }
+
     public List<Entity> EntitiesAffectedByBuff { get; protected set; }
     public List<Entity> EntitiesAffectedByDebuff { get; protected set; }
 
@@ -95,6 +101,7 @@ public abstract class Ability : MonoBehaviour
         if (!StaticObjects.OnlineMode || character.PhotonView.isMine)
         {
             abilitySprite = Resources.Load<Sprite>(abilitySpritePath);
+            abilityRecastSprite = Resources.Load<Sprite>(abilityRecastSpritePath);
         }
     }
 
@@ -128,9 +135,9 @@ public abstract class Ability : MonoBehaviour
 
     protected void StartAbilityCast()
     {
-        if (character.AbilityTimeBarUIManager != null)
+        if (!StaticObjects.OnlineMode || character.PhotonView.isMine)
         {
-            if(HasCastTime && HasChannelTime)
+            if (HasCastTime && HasChannelTime)
             {
                 character.AbilityTimeBarUIManager.SetCastTimeAndChannelTime(castTime, channelTime, abilityName);
             }
@@ -142,7 +149,11 @@ public abstract class Ability : MonoBehaviour
             {
                 character.AbilityTimeBarUIManager.SetChannelTime(channelTime, abilityName);
             }
-            
+
+        }
+        if (CanBeRecasted)
+        {
+            StartCooldownForRecast();
         }
         if (OnAbilityUsed != null)
         {
@@ -182,6 +193,14 @@ public abstract class Ability : MonoBehaviour
         }
     }
 
+    protected void StartCooldownForRecast()
+    {
+        if (!StaticObjects.OnlineMode || character.PhotonView.isMine)
+        {
+            StartCoroutine(PutAbilityOffCooldownForRecast());
+        }
+    }
+
     protected void SetPositionAndRotationOnCast(Vector3 position)
     {
         positionOnCast = position;
@@ -208,6 +227,28 @@ public abstract class Ability : MonoBehaviour
 
         character.AbilityUIManager.SetAbilityOffCooldown(ID);
         IsOnCooldown = false;
+    }
+
+    protected virtual IEnumerator PutAbilityOffCooldownForRecast()
+    {
+        IsOnCooldownForRecast = true;
+        cooldownRemaining = cooldownBeforeRecast;
+
+        yield return null;
+
+        character.AbilityUIManager.SetAbilityOnCooldownForRecast(ID);
+
+        while (cooldownRemaining > 0)
+        {
+            cooldownRemaining -= Time.deltaTime;
+
+            character.AbilityUIManager.UpdateAbilityCooldownForRecast(ID, cooldownBeforeRecast, cooldownRemaining);
+
+            yield return null;
+        }
+
+        character.AbilityUIManager.SetAbilityOffCooldownForRecast(ID);
+        IsOnCooldownForRecast = false;
     }
 
     public void ResetCooldown()
@@ -276,10 +317,19 @@ public abstract class Ability : MonoBehaviour
 
     public virtual void OnLevelUp(int level) { }
 
-    public virtual void CancelAbility()
+    public virtual void RecastAbility()
     {
-        StopAllCoroutines();
+        CancelAbility();
+    }
+
+    private void CancelAbility()
+    {
+        StopAllCoroutines();//TODO: Change this in case cooldown starts on ability cast
         FinishAbilityCast();
+        if (character.AbilityTimeBarUIManager)
+        {
+            character.AbilityTimeBarUIManager.CancelCastTimeAndChannelTime();
+        }
     }
 
     protected virtual IEnumerator AbilityWithCastTime() { yield return null; }

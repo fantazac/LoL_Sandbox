@@ -66,4 +66,5 @@ MonoBehaviour:
   - UseBasicAttackOnServer
   - ReceiveFromServer_Ability_Cancel
   - ReceiveFromServer_Level
+  - ReceiveFromServer_Ability_Recast
   DisableAutoOpenWizard: 1

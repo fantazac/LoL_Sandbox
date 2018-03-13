@@ -68,18 +68,18 @@ public class CharacterAbilityManager : MonoBehaviour
         }
     }
 
-    private void SendToServer_Ability_Cancel(AbilityInput abilityInput)
+    private void SendToServer_Ability_Recast(AbilityInput abilityInput)
     {
-        character.PhotonView.RPC("ReceiveFromServer_Ability_Cancel", PhotonTargets.AllViaServer, abilityInput);
+        character.PhotonView.RPC("ReceiveFromServer_Ability_Recast", PhotonTargets.AllViaServer, abilityInput);
     }
 
     [PunRPC]
-    private void ReceiveFromServer_Ability_Cancel(AbilityInput abilityInput)
+    private void ReceiveFromServer_Ability_Recast(AbilityInput abilityInput)
     {
         Ability ability = abilities[abilityInput];
-        if (ability.CanBeCancelled && currentlyUsedAbilities.Contains(ability))
+        if (ability.CanBeRecasted && currentlyUsedAbilities.Contains(ability))
         {
-            ability.CancelAbility();
+            ability.RecastAbility();
         }
     }
 
@@ -160,15 +160,15 @@ public class CharacterAbilityManager : MonoBehaviour
                     }
                 }
             }
-            else if (ability.CanBeCancelled && currentlyUsedAbilities.Contains(ability))
+            else if (ability.CanBeRecasted && !ability.IsOnCooldownForRecast && currentlyUsedAbilities.Contains(ability))
             {
                 if (StaticObjects.OnlineMode)
                 {
-                    SendToServer_Ability_Cancel(abilityInput);
+                    SendToServer_Ability_Recast(abilityInput);
                 }
                 else
                 {
-                    ability.CancelAbility();
+                    ability.RecastAbility();
                 }
             }
         }
@@ -183,7 +183,7 @@ public class CharacterAbilityManager : MonoBehaviour
                 character.CharacterActionManager.ResetBufferedAction();
             }
             ability.UseAbility(destination);
-            if (ability.HasCastTime || ability.HasChannelTime || ability.CanBeCancelled)
+            if (ability.HasCastTime || ability.HasChannelTime || ability.CanBeRecasted)
             {
                 character.CharacterMovement.SetCharacterIsInRangeEventForBasicAttack();
             }
@@ -217,7 +217,7 @@ public class CharacterAbilityManager : MonoBehaviour
     //False: Allow ability to be cast
     private bool IsUsingAbilityPreventingAbilityCast(Ability abilityToCast)
     {
-        if (currentlyUsedAbilities.Count == 0 || abilityToCast.CanBeCastAtAnytime)
+        if (currentlyUsedAbilities.Count == 0 || abilityToCast.CanBeCastDuringOtherAbilityCastTimes)
         {
             return false;
         }
@@ -239,12 +239,12 @@ public class CharacterAbilityManager : MonoBehaviour
     {
         bool abilityToCastIsAvailable = abilityToCast != null;
 
-        if (abilityToCastIsAvailable && (abilityToCast.IsOnCooldown || abilityToCast.IsBeingCasted))
+        if (abilityToCastIsAvailable && (abilityToCast.IsOnCooldown || abilityToCast.IsOnCooldownForRecast || abilityToCast.IsBeingCasted))
         {
             return false;
         }
 
-        if (currentlyUsedAbilities.Count == 0 || (abilityToCastIsAvailable && abilityToCast.CanBeCastAtAnytime))
+        if (currentlyUsedAbilities.Count == 0 || (abilityToCastIsAvailable && abilityToCast.CanBeCastDuringOtherAbilityCastTimes))
         {
             return true;
         }

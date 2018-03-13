@@ -10,10 +10,11 @@ public class Teleport : GroundTargetedBlink, SummonerAbility
         abilityName = "Teleport";
 
         cooldown = 300;
+        cooldownBeforeRecast = 0.75f;
         channelTime = 4.5f;
         delayChannelTime = new WaitForSeconds(channelTime);
 
-        CanBeCancelled = true;
+        CanBeRecasted = true;
     }
 
     protected override void SetSpritePaths()
