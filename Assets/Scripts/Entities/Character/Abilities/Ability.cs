@@ -8,6 +8,7 @@ public abstract class Ability : MonoBehaviour
 
     protected AbilityAffectedUnitType affectedUnitType;
     protected AbilityEffectType effectType;
+    protected AbilityType abilityType;
     protected DamageType damageType;
 
     public int ID { get; set; }
@@ -60,9 +61,9 @@ public abstract class Ability : MonoBehaviour
     public bool CanBeRecasted { get; protected set; }
     public bool CanCastOtherAbilitiesWhileActive { get; private set; }
     public bool CanMoveWhileCasting { get; protected set; }
+    public bool CannotCastAnyAbilityWhileActive { get; protected set; }
     public bool CannotRotateWhileCasting { get; protected set; }
     public bool CanUseBasicAttacksWhileCasting { get; protected set; }
-    public bool IsADash { get; protected set; }
     public bool IsBeingCasted { get; protected set; }
     public bool IsOnCooldown { get; protected set; }
     public bool IsOnCooldownForRecast { get; protected set; }
@@ -72,6 +73,7 @@ public abstract class Ability : MonoBehaviour
     public bool ResetBasicAttackCycleOnAbilityFinished { get; protected set; }
 
     public List<Ability> CastableAbilitiesWhileActive { get; protected set; }
+    //public List<Ability> UncastableAbilitiesWhileActive { get; protected set; }
 
     public List<Entity> EntitiesAffectedByBuff { get; protected set; }
     public List<Entity> EntitiesAffectedByDebuff { get; protected set; }
@@ -88,6 +90,7 @@ public abstract class Ability : MonoBehaviour
     protected Ability()
     {
         CastableAbilitiesWhileActive = new List<Ability>();
+        //UncastableAbilitiesWhileActive = new List<Ability>();
         EntitiesAffectedByBuff = new List<Entity>();
         EntitiesAffectedByDebuff = new List<Entity>();
         SetSpritePaths();
@@ -330,6 +333,11 @@ public abstract class Ability : MonoBehaviour
         {
             character.AbilityTimeBarUIManager.CancelCastTimeAndChannelTime();
         }
+    }
+
+    public AbilityType GetAbilityType()
+    {
+        return abilityType;
     }
 
     protected virtual IEnumerator AbilityWithCastTime() { yield return null; }

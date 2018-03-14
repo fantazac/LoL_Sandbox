@@ -11,7 +11,6 @@ public abstract class DirectionTargetedDash : DirectionTargeted
 
     protected DirectionTargetedDash()
     {
-        IsADash = true;
         currentDashCoroutine = null;
     }
 

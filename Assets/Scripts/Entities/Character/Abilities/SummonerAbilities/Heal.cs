@@ -11,6 +11,7 @@ public class Heal : SelfTargeted, SummonerAbility
     {
         abilityName = "Heal";
 
+        abilityType = AbilityType.Heal;
         affectedUnitType = AbilityAffectedUnitType.ALLY_CHARACTERS;
         effectType = AbilityEffectType.HEALING;
 

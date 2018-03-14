@@ -10,6 +10,8 @@ public class Lucian_P : PassiveTargeted, CharacterAbility, PassiveCharacterAbili
     {
         abilityName = "Lightslinger";
 
+        abilityType = AbilityType.Passive;
+
         damage = 0.5f;
 
         buffDuration = 3;

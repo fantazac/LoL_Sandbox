@@ -246,17 +246,24 @@ public class CharacterAbilityManager : MonoBehaviour
 
         if (currentlyUsedAbilities.Count == 0 || (abilityToCastIsAvailable && abilityToCast.CanBeCastDuringOtherAbilityCastTimes))
         {
+            foreach (Ability ability in currentlyUsedAbilities)
+            {
+                if (ability.CannotCastAnyAbilityWhileActive)// || ability.UncastableAbilitiesWhileActive.Contains(abilityToCast))
+                {
+                    return false;
+                }
+            }
             return true;
         }
 
         foreach (Ability ability in currentlyUsedAbilities)
         {
-            if (ability.CanCastOtherAbilitiesWhileActive && !ability.CastableAbilitiesWhileActive.Contains(abilityToCast))
+            if (ability.CannotCastAnyAbilityWhileActive || (ability.CanCastOtherAbilitiesWhileActive && !ability.CastableAbilitiesWhileActive.Contains(abilityToCast)))
             {
                 return false;
             }
         }
-        
+
         return true;
     }
 
@@ -323,7 +330,7 @@ public class CharacterAbilityManager : MonoBehaviour
 
         foreach (Ability ability in currentlyUsedAbilities)
         {
-            if (ability is DirectionTargetedDash)
+            if (ability.GetAbilityType() == AbilityType.Dash)
             {
                 return true;
             }

@@ -8,6 +8,7 @@ public class Ezreal_W : DirectionTargetedProjectile, CharacterAbility
     {
         abilityName = "Essence Flux";
 
+        abilityType = AbilityType.Skillshot;
         affectedUnitType = AbilityAffectedUnitType.CHARACTERS;
         effectType = AbilityEffectType.AREA_OF_EFFECT;
         damageType = DamageType.MAGIC;

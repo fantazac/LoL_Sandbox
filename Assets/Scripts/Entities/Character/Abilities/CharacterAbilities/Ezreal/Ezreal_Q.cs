@@ -11,6 +11,7 @@ public class Ezreal_Q : DirectionTargetedProjectile, CharacterAbility
     {
         abilityName = "Mystic Shot";
 
+        abilityType = AbilityType.Skillshot;
         affectedUnitType = AbilityAffectedUnitType.ENEMIES;
         effectType = AbilityEffectType.SINGLE_TARGET;
         damageType = DamageType.PHYSICAL;

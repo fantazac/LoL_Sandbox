@@ -9,6 +9,8 @@ public class Flash : GroundTargetedBlink, SummonerAbility
     {
         abilityName = "Flash";
 
+        abilityType = AbilityType.Blink;
+
         range = 400;
         cooldown = 300;
 

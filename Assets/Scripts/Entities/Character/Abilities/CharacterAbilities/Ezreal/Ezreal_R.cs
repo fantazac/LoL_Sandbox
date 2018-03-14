@@ -13,6 +13,7 @@ public class Ezreal_R : DirectionTargetedProjectile, CharacterAbility
     {
         abilityName = "Trueshot Barrage";
 
+        abilityType = AbilityType.Skillshot;
         affectedUnitType = AbilityAffectedUnitType.ENEMIES;
         effectType = AbilityEffectType.AREA_OF_EFFECT;
         damageType = DamageType.MAGIC;
