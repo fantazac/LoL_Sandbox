@@ -16,6 +16,9 @@ public class CharacterOrientation : MonoBehaviour
     private Vector3 rotationAmountLastFrame;
     private Vector3 rotationAmount;
 
+    private Vector3 castPointRotationAmountLastFrame;
+    private Vector3 castPointRotationAmount;
+
     private void Awake()
     {
         characterAbilityManager = GetComponent<CharacterAbilityManager>();
@@ -120,16 +123,16 @@ public class CharacterOrientation : MonoBehaviour
     {
         isRotatingTowardsCastPoint = true;
 
-        rotationAmount = Vector3.up;
-        rotationAmountLastFrame = Vector3.zero;
+        castPointRotationAmount = Vector3.up;
+        castPointRotationAmountLastFrame = Vector3.zero;
 
-        while (rotationAmountLastFrame != rotationAmount)
+        while (castPointRotationAmountLastFrame != castPointRotationAmount)
         {
-            rotationAmountLastFrame = rotationAmount;
+            castPointRotationAmountLastFrame = castPointRotationAmount;
 
-            rotationAmount = Vector3.RotateTowards(transform.forward, castPoint - transform.position, Time.deltaTime * rotationSpeed, 0);
+            castPointRotationAmount = Vector3.RotateTowards(transform.forward, castPoint - transform.position, Time.deltaTime * rotationSpeed, 0);
 
-            transform.rotation = Quaternion.LookRotation(rotationAmount);
+            transform.rotation = Quaternion.LookRotation(castPointRotationAmount);
 
             yield return null;
         }
