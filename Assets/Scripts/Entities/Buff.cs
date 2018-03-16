@@ -13,6 +13,7 @@
     public int MaximumStacks { get; private set; }
     public float StackDecayingDuration { get; private set; }
 
+    public bool HasBeenConsumed { get; private set; }
     public bool HasDuration { get; private set; }
     public bool HasStacks { get; private set; }
 
@@ -68,24 +69,32 @@
     {
         CurrentStacks = 0;
         DurationRemaining = 0;
+        HasBeenConsumed = true;
     }
 
     public void ReduceDurationRemaining(float frameDuration)
     {
         DurationRemaining -= frameDuration;
-        if (DurationRemaining <= 0 && !HasExpired())
+        if (DurationRemaining <= 0)
         {
-            SourceAbility.RemoveBuffFromEntityHit(entityHit, CurrentStacks);
-            if (StackDecayingDuration > 0)
+            if (!HasExpired())
             {
-                CurrentStacks--;
-                SourceAbility.ApplyBuffToEntityHit(entityHit, CurrentStacks);
-                DurationRemaining = StackDecayingDuration;
-                DurationForUI = StackDecayingDuration;
+                SourceAbility.RemoveBuffFromEntityHit(entityHit, CurrentStacks);
+                if (StackDecayingDuration > 0)
+                {
+                    CurrentStacks--;
+                    SourceAbility.ApplyBuffToEntityHit(entityHit, CurrentStacks);
+                    DurationRemaining = StackDecayingDuration;
+                    DurationForUI = StackDecayingDuration;
+                }
+                else
+                {
+                    ConsumeBuff();
+                }
             }
             else
             {
-                CurrentStacks = 0;
+                ConsumeBuff();
             }
         }
     }

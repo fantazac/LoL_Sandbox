@@ -11,7 +11,7 @@ public class CharacterOrientation : MonoBehaviour
     private IEnumerator movementRotation;
     private bool isRotatingTowardsCastPoint;
 
-    private int rotationSpeed = 15;
+    private int rotationSpeed = 18;// note: rotation under 18 makes EzrealE stop rotation for a short time after the ability is done
 
     private Vector3 rotationAmountLastFrame;
     private Vector3 rotationAmount;

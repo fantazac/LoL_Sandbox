@@ -46,15 +46,15 @@ public class EntityBuffManager : MonoBehaviour
             {
                 buffUIManager.UpdateBuffDuration(buff, buff.DurationForUI, buff.DurationRemaining, buff.CurrentStacks);
             }
-            if (buff.HasExpired())
+        }
+        if (buff.HasBeenConsumed)
+        {
+            if (hasBuffUIManager)
             {
-                if (hasBuffUIManager)
-                {
-                    buffUIManager.RemoveExpiredBuff(buff);
-                }
-                buff.RemoveBuff();
-                buffs.RemoveAt(position);
+                buffUIManager.RemoveExpiredBuff(buff);
             }
+            buff.RemoveBuff();
+            buffs.RemoveAt(position);
         }
     }
 

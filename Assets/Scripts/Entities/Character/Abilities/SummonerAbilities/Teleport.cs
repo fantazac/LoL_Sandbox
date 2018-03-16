@@ -42,17 +42,6 @@ public class Teleport : GroundTargetedBlink, SummonerAbility
 
         FinalAdjustments(destination);
 
-        if (delayCastTime != null)
-        {
-            StartCoroutine(AbilityWithCastTime());
-        }
-        else if (delayChannelTime != null)
-        {
-            StartCoroutine(AbilityWithChannelTime());
-        }
-        else
-        {
-            StartCoroutine(AbilityWithoutDelay());
-        }
+        StartCorrectCoroutine();
     }
 }

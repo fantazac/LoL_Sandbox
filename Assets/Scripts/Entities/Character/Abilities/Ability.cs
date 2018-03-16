@@ -168,6 +168,7 @@ public abstract class Ability : MonoBehaviour
 
     protected void FinishAbilityCast()
     {
+        //character.CharacterOrientation.StopRotationTowardsCastPoint();
         if (OnAbilityFinished != null)
         {
             OnAbilityFinished(this);
@@ -272,7 +273,7 @@ public abstract class Ability : MonoBehaviour
             buff = new Buff(this, entityHit, false, buffDuration);
             entityHit.EntityBuffManager.ApplyBuff(buff, buffSprite);
         }
-        else
+        else if(buffDuration > 0)
         {
             buff.ResetDurationRemaining();
         }
@@ -340,7 +341,28 @@ public abstract class Ability : MonoBehaviour
         return abilityType;
     }
 
+    protected void StartCorrectCoroutine()
+    {
+        if (delayCastTime != null && delayChannelTime != null)
+        {
+            StartCoroutine(AbilityWithCastTimeAndChannelTime());
+        }
+        else if (delayCastTime != null)
+        {
+            StartCoroutine(AbilityWithCastTime());
+        }
+        else if (delayChannelTime != null)
+        {
+            StartCoroutine(AbilityWithChannelTime());
+        }
+        else
+        {
+            StartCoroutine(AbilityWithoutDelay());
+        }
+    }
+
     protected virtual IEnumerator AbilityWithCastTime() { yield return null; }
+    protected virtual IEnumerator AbilityWithCastTimeAndChannelTime() { yield return null; }
     protected virtual IEnumerator AbilityWithChannelTime() { yield return null; }
     protected virtual IEnumerator AbilityWithoutDelay() { yield return null; }
 }

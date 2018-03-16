@@ -26,18 +26,7 @@ public abstract class DirectionTargeted : Ability // Curently same as GroundTarg
 
         FinalAdjustments(destination);
 
-        if (delayCastTime != null)
-        {
-            StartCoroutine(AbilityWithCastTime());
-        }
-        else if (delayChannelTime != null)
-        {
-            StartCoroutine(AbilityWithChannelTime());
-        }
-        else
-        {
-            StartCoroutine(AbilityWithoutDelay());
-        }
+        StartCorrectCoroutine();
     }
 
     protected virtual void FinalAdjustments(Vector3 destination) { }

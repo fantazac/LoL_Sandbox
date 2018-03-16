@@ -29,7 +29,11 @@ public abstract class DirectionTargetedDash : DirectionTargeted
 
         FinalAdjustments(destination);
 
-        if (delayCastTime != null)
+        if (delayCastTime != null && delayChannelTime != null)
+        {
+            currentDashCoroutine = AbilityWithCastTimeAndChannelTime();
+        }
+        else if (delayCastTime != null)
         {
             currentDashCoroutine = AbilityWithCastTime();
         }

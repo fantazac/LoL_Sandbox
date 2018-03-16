@@ -37,18 +37,7 @@ public abstract class UnitTargeted : Ability
         destinationOnCast = target.transform.position;
         RotationOnAbilityCast(target.transform.position);
 
-        if (delayCastTime != null)
-        {
-            StartCoroutine(AbilityWithCastTime());
-        }
-        else if (delayChannelTime != null)
-        {
-            StartCoroutine(AbilityWithChannelTime());
-        }
-        else
-        {
-            StartCoroutine(AbilityWithoutDelay());
-        }
+        StartCorrectCoroutine();
     }
 
     protected virtual void OnAreaOfEffectHit(AbilityEffect areaOfEffect, Entity entityHit)

@@ -94,10 +94,10 @@ public class CharacterInput : MonoBehaviour
             {
                 characterAbilityManager.OnPressedInputForAbility(AbilityInput.SPAWN_ALLY_DUMMY);
             }
-            if (Input.GetKeyDown(KeyCode.L))
-            {
-                characterAbilityManager.OnPressedInputForAbility(AbilityInput.TP_MID);
-            }
+        }
+        else if (Input.GetKeyDown(KeyCode.B))
+        {
+            characterAbilityManager.OnPressedInputForAbility(AbilityInput.RECALL);
         }
     }
 
