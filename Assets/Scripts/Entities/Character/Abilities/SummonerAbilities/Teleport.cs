@@ -38,7 +38,7 @@ public class Teleport : GroundTargetedBlink, SummonerAbility
     {
         StartAbilityCast();
 
-        character.CharacterMovement.StopMovementTowardsPoint();
+        character.CharacterMovement.RestartMovementTowardsTargetAfterAbility();
 
         FinalAdjustments(destination);
 
