@@ -16,15 +16,6 @@ public class Teleport : GroundTargetedBlink, SummonerAbility
         channelTime = 4.5f;
         delayChannelTime = new WaitForSeconds(channelTime);
 
-        /*foreach (Ability ability in GetComponents<Ability>())
-        {
-            AbilityType type = ability.GetAbilityType();
-            if(type == AbilityType.Blink || type == AbilityType.Dash)
-            {
-                UncastableAbilitiesWhileActive.Add(ability);
-            }
-        }*/
-
         CanBeRecasted = true;
         CannotCastAnyAbilityWhileActive = true;
     }

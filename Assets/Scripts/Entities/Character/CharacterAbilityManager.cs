@@ -138,44 +138,47 @@ public class CharacterAbilityManager : MonoBehaviour
         if (abilities.ContainsKey(abilityInput))
         {
             Ability ability = abilities[abilityInput];
-            if (AbilityIsCastable(ability))
+            if (ability.IsEnabled)
             {
-                if (ability is UnitTargeted)
+                if (AbilityIsCastable(ability))
                 {
-                    Entity hoveredEntity = character.CharacterMouseManager.HoveredEntity;
-                    if (hoveredEntity != null && ability.CanBeCast(character.CharacterMouseManager.HoveredEntity))
+                    if (ability is UnitTargeted)
+                    {
+                        Entity hoveredEntity = character.CharacterMouseManager.HoveredEntity;
+                        if (hoveredEntity != null && ability.CanBeCast(character.CharacterMouseManager.HoveredEntity))
+                        {
+                            if (StaticObjects.OnlineMode)
+                            {
+                                SendToServer_Ability_Entity(abilityInput, hoveredEntity);
+                            }
+                            else
+                            {
+                                UseUnitTargetedAbility(ability, hoveredEntity);
+                            }
+                        }
+                    }
+                    else if (ability.CanBeCast(Input.mousePosition))
                     {
                         if (StaticObjects.OnlineMode)
                         {
-                            SendToServer_Ability_Entity(abilityInput, hoveredEntity);
+                            SendToServer_Ability_Destination(abilityInput, ability.GetDestination());
                         }
                         else
                         {
-                            UseUnitTargetedAbility(ability, hoveredEntity);
+                            UsePositionTargetedAbility(ability, ability.GetDestination());
                         }
                     }
                 }
-                else if (ability.CanBeCast(Input.mousePosition))
+                else if (ability.CanBeRecasted && !ability.IsOnCooldownForRecast && currentlyUsedAbilities.Contains(ability))
                 {
                     if (StaticObjects.OnlineMode)
                     {
-                        SendToServer_Ability_Destination(abilityInput, ability.GetDestination());
+                        SendToServer_Ability_Recast(abilityInput);
                     }
                     else
                     {
-                        UsePositionTargetedAbility(ability, ability.GetDestination());
+                        ability.RecastAbility();
                     }
-                }
-            }
-            else if (ability.CanBeRecasted && !ability.IsOnCooldownForRecast && currentlyUsedAbilities.Contains(ability))
-            {
-                if (StaticObjects.OnlineMode)
-                {
-                    SendToServer_Ability_Recast(abilityInput);
-                }
-                else
-                {
-                    ability.RecastAbility();
                 }
             }
         }
@@ -220,27 +223,6 @@ public class CharacterAbilityManager : MonoBehaviour
         }
     }
 
-    //True: Put ability in the buffer
-    //False: Allow ability to be cast
-    private bool IsUsingAbilityPreventingAbilityCast(Ability abilityToCast)
-    {
-        if (currentlyUsedAbilities.Count == 0 || abilityToCast.CanBeCastDuringOtherAbilityCastTimes)
-        {
-            return false;
-        }
-
-        foreach (Ability ability in currentlyUsedAbilities)
-        {
-            if (!(ability.HasChannelTime && ability.IsBeingChanneled && ability.CanUseAnyAbilityWhileChanneling) && 
-                ((ability.HasCastTime || ability.HasChannelTime) && (!ability.CanCastSomeAbilitiesWhileActive || ability.CastableAbilitiesWhileActive.Contains(abilityToCast))))
-            {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
     //True: Allow ability to be cast
     //False: Act as if the key was not pressed
     private bool AbilityIsCastable(Ability abilityToCast)
@@ -252,27 +234,35 @@ public class CharacterAbilityManager : MonoBehaviour
             return false;
         }
 
-        if (currentlyUsedAbilities.Count == 0 || (abilityToCastIsAvailable && abilityToCast.CanBeCastDuringOtherAbilityCastTimes))
-        {
-            foreach (Ability ability in currentlyUsedAbilities)
-            {
-                if (ability.CannotCastAnyAbilityWhileActive)// || ability.UncastableAbilitiesWhileActive.Contains(abilityToCast))
-                {
-                    return false;
-                }
-            }
-            return true;
-        }
-
         foreach (Ability ability in currentlyUsedAbilities)
         {
-            if (ability.CannotCastAnyAbilityWhileActive || (ability.CanCastSomeAbilitiesWhileActive && !ability.CastableAbilitiesWhileActive.Contains(abilityToCast)))
+            if (ability.CannotCastAnyAbilityWhileActive)
             {
                 return false;
             }
         }
 
         return true;
+    }
+
+    //True: Put ability in the buffer
+    //False: Allow ability to be cast
+    private bool IsUsingAbilityPreventingAbilityCast(Ability abilityToCast)
+    {
+        if (currentlyUsedAbilities.Count == 0 || abilityToCast.CanBeCastDuringOtherAbilityCastTimes)
+        {
+            return false;
+        }
+
+        foreach (Ability ability in currentlyUsedAbilities)
+        {
+            if (ability.HasCastTime && !(ability.HasChannelTime && ability.IsBeingChanneled && ability.CanUseAnyAbilityWhileChanneling))
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public bool IsUsingAbilityPreventingMovement()
@@ -390,13 +380,12 @@ public class CharacterAbilityManager : MonoBehaviour
 
     public void StopAllDashAbilities()
     {
-        for (int i = 0; i < currentlyUsedAbilities.Count; i++)
+        for (int i = currentlyUsedAbilities.Count - 1; i >= 0; i--)
         {
             Ability ability = currentlyUsedAbilities[i];
             if (ability is DirectionTargetedDash)
             {
-                ((DirectionTargetedDash)ability).StopDash();
-                i--;
+                ability.CancelAbility();
             }
         }
     }

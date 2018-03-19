@@ -33,7 +33,7 @@ public class Heal : SelfTargeted, SummonerAbility
     protected override void SetSpritePaths()
     {
         abilitySpritePath = "Sprites/Characters/SummonerAbilities/Heal";
-        buffSpritePath = "Sprites/Characters/SummonerAbilities/Heal";//TODO: Ghost, not Heal
+        buffSpritePath = "Sprites/Characters/SummonerAbilities/Ghost";
         debuffSpritePath = "Sprites/Characters/SummonerAbilities/Heal";
     }
 

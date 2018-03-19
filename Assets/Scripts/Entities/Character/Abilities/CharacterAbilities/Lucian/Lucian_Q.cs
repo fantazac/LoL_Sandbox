@@ -35,9 +35,8 @@ public class Lucian_Q : UnitTargeted, CharacterAbility
 
     protected override void Start()
     {
-        CastableAbilitiesWhileActive.Add(GetComponent<Lucian_W>());
-        CastableAbilitiesWhileActive.Add(GetComponent<Lucian_R>());
-        CastableAbilitiesWhileActive.Add(GetComponent<Recall>());
+        AbilitiesToDisableWhileActive.Add(this);
+        AbilitiesToDisableWhileActive.Add(GetComponent<Lucian_E>());
 
         base.Start();
 

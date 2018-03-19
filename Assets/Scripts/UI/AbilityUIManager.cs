@@ -76,10 +76,13 @@ public class AbilityUIManager : MonoBehaviour
         }
     }
 
-    public void SetAbilityOffCooldown(int abilityId)
+    public void SetAbilityOffCooldown(int abilityId, bool abilityIsEnabled)
     {
         abilityOnCooldownImages[abilityId].fillAmount = 0;
-        abilityImages[abilityId].color = Color.white;
+        if (abilityIsEnabled)
+        {
+            abilityImages[abilityId].color = Color.white;
+        }
         abilityCooldownTexts[abilityId].text = "";
     }
 
@@ -88,5 +91,15 @@ public class AbilityUIManager : MonoBehaviour
         abilityOnCooldownImages[abilityId].fillAmount = 0;
         abilityImages[abilityId].color = Color.white;
         abilityCooldownTexts[abilityId].text = "";
+    }
+
+    public void DisableAbility(int abilityId)
+    {
+        abilityImages[abilityId].color = abilityColorOnCooldown;
+    }
+
+    public void EnableAbility(int abilityId)
+    {
+        abilityImages[abilityId].color = Color.white;
     }
 }

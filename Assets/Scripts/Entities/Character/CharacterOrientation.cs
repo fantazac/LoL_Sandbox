@@ -27,7 +27,11 @@ public class CharacterOrientation : MonoBehaviour
     public void RotateCharacterInstantly(Vector3 destination)
     {
         lastInstantRotation = destination;
-        transform.rotation = Quaternion.LookRotation((destination - transform.position).normalized);
+        Vector3 rotation = (destination - transform.position).normalized;
+        if (rotation != Vector3.zero)
+        {
+            transform.rotation = Quaternion.LookRotation((destination - transform.position).normalized);
+        }
     }
 
     public void RotateCharacterInstantlyToLastInstantRotation()
@@ -37,7 +41,7 @@ public class CharacterOrientation : MonoBehaviour
 
     public void StopMovementRotation()
     {
-        if(movementRotation != null)
+        if (movementRotation != null)
         {
             StopCoroutine(movementRotation);
             movementRotation = null;
@@ -111,7 +115,7 @@ public class CharacterOrientation : MonoBehaviour
 
     public void StopRotationTowardsCastPoint()
     {
-        if(castPointRotation != null)
+        if (castPointRotation != null)
         {
             StopCoroutine(castPointRotation);
             castPointRotation = null;

@@ -7,13 +7,6 @@ public abstract class DirectionTargetedDash : DirectionTargeted
     protected float dashSpeed;
     protected Vector3 destination;
 
-    protected IEnumerator currentDashCoroutine;
-
-    protected DirectionTargetedDash()
-    {
-        currentDashCoroutine = null;
-    }
-
     protected override void ModifyValues()
     {
         minimumDistanceTravelled *= StaticObjects.MultiplyingFactor;
@@ -29,23 +22,7 @@ public abstract class DirectionTargetedDash : DirectionTargeted
 
         FinalAdjustments(destination);
 
-        if (delayCastTime != null && delayChannelTime != null)
-        {
-            currentDashCoroutine = AbilityWithCastTimeAndChannelTime();
-        }
-        else if (delayCastTime != null)
-        {
-            currentDashCoroutine = AbilityWithCastTime();
-        }
-        else if (delayChannelTime != null)
-        {
-            currentDashCoroutine = AbilityWithChannelTime();
-        }
-        else
-        {
-            currentDashCoroutine = AbilityWithoutDelay();
-        }
-        StartCoroutine(currentDashCoroutine);
+        StartCorrectCoroutine();
     }
 
     protected override void RotationOnAbilityCast(Vector3 destination)
@@ -66,18 +43,8 @@ public abstract class DirectionTargetedDash : DirectionTargeted
 
             yield return null;
         }
-        currentDashCoroutine = null;
+        
         FinishAbilityCast();
-    }
-
-    public void StopDash()
-    {
-        if (currentDashCoroutine != null)
-        {
-            StopCoroutine(currentDashCoroutine);
-            currentDashCoroutine = null;
-            FinishAbilityCast();
-        }
     }
 
     protected override void FinalAdjustments(Vector3 destination)

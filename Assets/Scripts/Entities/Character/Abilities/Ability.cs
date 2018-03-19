@@ -11,6 +11,8 @@ public abstract class Ability : MonoBehaviour
     protected AbilityType abilityType;
     protected DamageType damageType;
 
+    protected IEnumerator abilityEffectCoroutine;
+
     public int ID { get; set; }
 
     protected string abilityName;
@@ -59,7 +61,6 @@ public abstract class Ability : MonoBehaviour
 
     public bool CanBeCastDuringOtherAbilityCastTimes { get; protected set; }
     public bool CanBeRecasted { get; protected set; }
-    public bool CanCastSomeAbilitiesWhileActive { get; private set; }
     public bool CanMoveWhileActive { get; protected set; }
     public bool CanMoveWhileChanneling { get; protected set; }
     public bool CannotCastAnyAbilityWhileActive { get; protected set; }
@@ -68,6 +69,7 @@ public abstract class Ability : MonoBehaviour
     public bool CanUseBasicAttacksWhileCasting { get; protected set; }
     public bool IsBeingCasted { get; protected set; }
     public bool IsBeingChanneled { get; protected set; }
+    public bool IsEnabled { get; protected set; }
     public bool IsOnCooldown { get; protected set; }
     public bool IsOnCooldownForRecast { get; protected set; }
     public bool OfflineOnly { get; protected set; }
@@ -75,8 +77,7 @@ public abstract class Ability : MonoBehaviour
     public bool HasChannelTime { get; private set; }
     public bool ResetBasicAttackCycleOnAbilityFinished { get; protected set; }
 
-    public List<Ability> CastableAbilitiesWhileActive { get; protected set; }//NEEDS TO CHANGE, TODO: AbilitiesToDisableWhileActive (turns them gray like they are not leveled yet, see LucianQ)
-    //public List<Ability> UncastableAbilitiesWhileActive { get; protected set; }
+    public List<Ability> AbilitiesToDisableWhileActive { get; protected set; }
 
     public List<Entity> EntitiesAffectedByBuff { get; protected set; }
     public List<Entity> EntitiesAffectedByDebuff { get; protected set; }
@@ -92,8 +93,8 @@ public abstract class Ability : MonoBehaviour
 
     protected Ability()
     {
-        CastableAbilitiesWhileActive = new List<Ability>();
-        //UncastableAbilitiesWhileActive = new List<Ability>();
+        IsEnabled = true;//TODO: REMOVE THIS ONCE ABILITY LEVELING IS IMPLEMENTED, FOR TESTING ONLY
+        AbilitiesToDisableWhileActive = new List<Ability>();
         EntitiesAffectedByBuff = new List<Entity>();
         EntitiesAffectedByDebuff = new List<Entity>();
         SetSpritePaths();
@@ -113,7 +114,6 @@ public abstract class Ability : MonoBehaviour
 
     protected virtual void Start()
     {
-        CanCastSomeAbilitiesWhileActive = CastableAbilitiesWhileActive.Count > 0;
         HasCastTime = castTime > 0;
         HasChannelTime = channelTime > 0;
 
@@ -141,6 +141,10 @@ public abstract class Ability : MonoBehaviour
 
     protected void StartAbilityCast()
     {
+        foreach(Ability ability in AbilitiesToDisableWhileActive)
+        {
+            ability.DisableAbility();
+        }
         if (CanBeRecasted)
         {
             StartCooldownForRecast();
@@ -170,7 +174,11 @@ public abstract class Ability : MonoBehaviour
 
     protected void FinishAbilityCast()
     {
-        //character.CharacterOrientation.StopRotationTowardsCastPoint();
+        abilityEffectCoroutine = null;
+        foreach (Ability ability in AbilitiesToDisableWhileActive)
+        {
+            ability.EnableAbility();
+        }
         if (OnAbilityFinished != null)
         {
             OnAbilityFinished(this);
@@ -181,6 +189,24 @@ public abstract class Ability : MonoBehaviour
             character.EntityBasicAttack.ResetBasicAttack();
         }
         StartCooldown(false);
+    }
+
+    public void DisableAbility()
+    {
+        IsEnabled = false;
+        if (!IsOnCooldown && (!StaticObjects.OnlineMode || character.PhotonView.isMine))
+        {
+            character.AbilityUIManager.DisableAbility(ID);
+        }
+    }
+
+    public void EnableAbility()
+    {
+        IsEnabled = true;
+        if (!IsOnCooldown && (!StaticObjects.OnlineMode || character.PhotonView.isMine))
+        {
+            character.AbilityUIManager.EnableAbility(ID);
+        }
     }
 
     protected void AbilityHit()
@@ -231,7 +257,7 @@ public abstract class Ability : MonoBehaviour
             yield return null;
         }
 
-        character.AbilityUIManager.SetAbilityOffCooldown(ID);
+        character.AbilityUIManager.SetAbilityOffCooldown(ID, IsEnabled);
         IsOnCooldown = false;
     }
 
@@ -328,14 +354,17 @@ public abstract class Ability : MonoBehaviour
         CancelAbility();
     }
 
-    protected void CancelAbility()
+    public void CancelAbility()
     {
-        StopAllCoroutines();//TODO: Change this in case cooldown starts on ability cast
-        if (character.AbilityTimeBarUIManager)
+        if (abilityEffectCoroutine != null)
         {
-            character.AbilityTimeBarUIManager.CancelCastTimeAndChannelTime();
+            StopCoroutine(abilityEffectCoroutine);
+            if (character.AbilityTimeBarUIManager && (HasCastTime || HasChannelTime))
+            {
+                character.AbilityTimeBarUIManager.CancelCastTimeAndChannelTime();
+            }
+            FinishAbilityCast();
         }
-        FinishAbilityCast();
     }
 
     public AbilityType GetAbilityType()
@@ -347,20 +376,21 @@ public abstract class Ability : MonoBehaviour
     {
         if (delayCastTime != null && delayChannelTime != null)
         {
-            StartCoroutine(AbilityWithCastTimeAndChannelTime());
+            abilityEffectCoroutine = AbilityWithCastTimeAndChannelTime();
         }
         else if (delayCastTime != null)
         {
-            StartCoroutine(AbilityWithCastTime());
+            abilityEffectCoroutine = AbilityWithCastTime();
         }
         else if (delayChannelTime != null)
         {
-            StartCoroutine(AbilityWithChannelTime());
+            abilityEffectCoroutine = AbilityWithChannelTime();
         }
         else
         {
-            StartCoroutine(AbilityWithoutDelay());
+            abilityEffectCoroutine = AbilityWithoutDelay();
         }
+        StartCoroutine(abilityEffectCoroutine);
     }
 
     protected virtual IEnumerator AbilityWithCastTime() { yield return null; }
