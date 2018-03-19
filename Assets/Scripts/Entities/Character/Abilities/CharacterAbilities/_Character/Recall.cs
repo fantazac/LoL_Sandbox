@@ -15,6 +15,9 @@ public class Recall : AutoTargetedBlink, OtherAbility
         channelTime = 8;
         delayCastTime = new WaitForSeconds(castTime);
         delayChannelTime = new WaitForSeconds(channelTime);
+
+        CanMoveWhileChanneling = true;
+        CanUseAnyAbilityWhileChanneling = true;
     }
 
     protected override void SetSpritePaths()
@@ -32,7 +35,9 @@ public class Recall : AutoTargetedBlink, OtherAbility
     {
         yield return delayCastTime;
 
+        character.CharacterMovement.StopAllMovement();
         AddNewBuffToEntityHit(character);
+        IsBeingChanneled = true;
 
         yield return delayChannelTime;
 
@@ -41,16 +46,32 @@ public class Recall : AutoTargetedBlink, OtherAbility
         transform.position = GetDestination();
         character.CharacterMovement.NotifyCharacterMoved();
 
+        IsBeingChanneled = false;
         FinishAbilityCast();
+    }
+
+    private void CancelRecall()
+    {
+        IsBeingChanneled = false;
+        CancelAbility();
+        ConsumeBuff(character);
     }
 
     public override void ApplyBuffToEntityHit(Entity entityHit, int currentStacks)
     {
+        entityHit.EntityStats.Health.OnHealthReduced += CancelRecall;
+        ((Character)entityHit).CharacterAbilityManager.OnAnAbilityUsed += CancelRecall;
+        ((Character)entityHit).CharacterMovement.CharacterMoved += CancelRecall;
+        //TODO: if cc'd, cancel aswell
         EntitiesAffectedByBuff.Add(entityHit);
     }
 
     public override void RemoveBuffFromEntityHit(Entity entityHit, int currentStacks)
     {
+        entityHit.EntityStats.Health.OnHealthReduced -= CancelRecall;
+        ((Character)entityHit).CharacterAbilityManager.OnAnAbilityUsed -= CancelRecall;
+        ((Character)entityHit).CharacterMovement.CharacterMoved -= CancelRecall;
+        //TODO: remove cc cancel
         EntitiesAffectedByBuff.Remove(entityHit);
     }
 }

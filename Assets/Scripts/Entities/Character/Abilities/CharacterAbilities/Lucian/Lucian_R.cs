@@ -34,7 +34,7 @@ public class Lucian_R : DirectionTargetedProjectile, CharacterAbility
 
         CanBeRecasted = true;
         CannotRotateWhileCasting = true;
-        CanMoveWhileCasting = true;
+        CanMoveWhileActive = true;
     }
 
     protected override void SetSpritePaths()

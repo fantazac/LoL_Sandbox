@@ -235,7 +235,7 @@ public class CharacterMovement : MonoBehaviour
 
     public void NotifyCharacterMoved()
     {
-        if (CharacterMoved != null && (!StaticObjects.OnlineMode || character.PhotonView.isMine))
+        if (CharacterMoved != null)// && (!StaticObjects.OnlineMode || character.PhotonView.isMine))
         {
             CharacterMoved();
         }

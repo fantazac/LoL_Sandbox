@@ -59,12 +59,15 @@ public abstract class Ability : MonoBehaviour
 
     public bool CanBeCastDuringOtherAbilityCastTimes { get; protected set; }
     public bool CanBeRecasted { get; protected set; }
-    public bool CanCastOtherAbilitiesWhileActive { get; private set; }
-    public bool CanMoveWhileCasting { get; protected set; }
+    public bool CanCastSomeAbilitiesWhileActive { get; private set; }
+    public bool CanMoveWhileActive { get; protected set; }
+    public bool CanMoveWhileChanneling { get; protected set; }
     public bool CannotCastAnyAbilityWhileActive { get; protected set; }
     public bool CannotRotateWhileCasting { get; protected set; }
+    public bool CanUseAnyAbilityWhileChanneling { get; protected set; }
     public bool CanUseBasicAttacksWhileCasting { get; protected set; }
     public bool IsBeingCasted { get; protected set; }
+    public bool IsBeingChanneled { get; protected set; }
     public bool IsOnCooldown { get; protected set; }
     public bool IsOnCooldownForRecast { get; protected set; }
     public bool OfflineOnly { get; protected set; }
@@ -72,7 +75,7 @@ public abstract class Ability : MonoBehaviour
     public bool HasChannelTime { get; private set; }
     public bool ResetBasicAttackCycleOnAbilityFinished { get; protected set; }
 
-    public List<Ability> CastableAbilitiesWhileActive { get; protected set; }
+    public List<Ability> CastableAbilitiesWhileActive { get; protected set; }//NEEDS TO CHANGE, TODO: AbilitiesToDisableWhileActive (turns them gray like they are not leveled yet, see LucianQ)
     //public List<Ability> UncastableAbilitiesWhileActive { get; protected set; }
 
     public List<Entity> EntitiesAffectedByBuff { get; protected set; }
@@ -110,7 +113,7 @@ public abstract class Ability : MonoBehaviour
 
     protected virtual void Start()
     {
-        CanCastOtherAbilitiesWhileActive = CastableAbilitiesWhileActive.Count > 0;
+        CanCastSomeAbilitiesWhileActive = CastableAbilitiesWhileActive.Count > 0;
         HasCastTime = castTime > 0;
         HasChannelTime = channelTime > 0;
 
@@ -138,6 +141,15 @@ public abstract class Ability : MonoBehaviour
 
     protected void StartAbilityCast()
     {
+        if (CanBeRecasted)
+        {
+            StartCooldownForRecast();
+        }
+        if (OnAbilityUsed != null)
+        {
+            OnAbilityUsed(this);
+        }
+        IsBeingCasted = true;
         if (!StaticObjects.OnlineMode || character.PhotonView.isMine)
         {
             if (HasCastTime && HasChannelTime)
@@ -152,17 +164,7 @@ public abstract class Ability : MonoBehaviour
             {
                 character.AbilityTimeBarUIManager.SetChannelTime(channelTime, abilityName);
             }
-
         }
-        if (CanBeRecasted)
-        {
-            StartCooldownForRecast();
-        }
-        if (OnAbilityUsed != null)
-        {
-            OnAbilityUsed(this);
-        }
-        IsBeingCasted = true;
         StartCooldown(true);
     }
 
@@ -326,14 +328,14 @@ public abstract class Ability : MonoBehaviour
         CancelAbility();
     }
 
-    private void CancelAbility()
+    protected void CancelAbility()
     {
         StopAllCoroutines();//TODO: Change this in case cooldown starts on ability cast
-        FinishAbilityCast();
         if (character.AbilityTimeBarUIManager)
         {
             character.AbilityTimeBarUIManager.CancelCastTimeAndChannelTime();
         }
+        FinishAbilityCast();
     }
 
     public AbilityType GetAbilityType()

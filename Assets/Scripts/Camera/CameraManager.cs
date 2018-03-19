@@ -24,7 +24,7 @@ public class CameraManager : MonoBehaviour
 
     private void Start()
     {
-        characterInput = StaticObjects.Character.GetComponent<CharacterInput>();
+        characterInput = StaticObjects.Character.CharacterInput;
         characterInput.OnPressedY += SetCameraLock;
         characterInput.OnPressedSpace += SetCameraOnCharacter;
         characterInput.OnReleasedSpace += SetCameraFree;
@@ -34,7 +34,7 @@ public class CameraManager : MonoBehaviour
 
         initialPosition = transform.position;
         transform.position += StaticObjects.Character.transform.position;
-        StaticObjects.Character.GetComponent<CharacterMovement>().CharacterMoved += CharacterMoved;
+        StaticObjects.Character.CharacterMovement.CharacterMoved += CharacterMoved;
 
         CharacterMoved();
     }

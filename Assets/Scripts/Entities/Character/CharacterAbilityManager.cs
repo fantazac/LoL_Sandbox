@@ -8,6 +8,9 @@ public class CharacterAbilityManager : MonoBehaviour
     private Dictionary<AbilityInput, Ability> abilities;
     private List<Ability> currentlyUsedAbilities;
 
+    public delegate void OnAnAbilityUsedHandler();
+    public event OnAnAbilityUsedHandler OnAnAbilityUsed;
+
     private CharacterAbilityManager()
     {
         abilities = new Dictionary<AbilityInput, Ability>();
@@ -115,6 +118,10 @@ public class CharacterAbilityManager : MonoBehaviour
     private void OnAbilityUsed(Ability ability)
     {
         currentlyUsedAbilities.Add(ability);
+        if (OnAnAbilityUsed != null)
+        {
+            OnAnAbilityUsed();
+        }
     }
 
     private void OnAbilityFinished(Ability ability)
@@ -224,7 +231,8 @@ public class CharacterAbilityManager : MonoBehaviour
 
         foreach (Ability ability in currentlyUsedAbilities)
         {
-            if ((ability.HasCastTime || ability.HasChannelTime) && (!ability.CanCastOtherAbilitiesWhileActive || ability.CastableAbilitiesWhileActive.Contains(abilityToCast)))
+            if (!(ability.HasChannelTime && ability.IsBeingChanneled && ability.CanUseAnyAbilityWhileChanneling) && 
+                ((ability.HasCastTime || ability.HasChannelTime) && (!ability.CanCastSomeAbilitiesWhileActive || ability.CastableAbilitiesWhileActive.Contains(abilityToCast))))
             {
                 return true;
             }
@@ -258,7 +266,7 @@ public class CharacterAbilityManager : MonoBehaviour
 
         foreach (Ability ability in currentlyUsedAbilities)
         {
-            if (ability.CannotCastAnyAbilityWhileActive || (ability.CanCastOtherAbilitiesWhileActive && !ability.CastableAbilitiesWhileActive.Contains(abilityToCast)))
+            if (ability.CannotCastAnyAbilityWhileActive || (ability.CanCastSomeAbilitiesWhileActive && !ability.CastableAbilitiesWhileActive.Contains(abilityToCast)))
             {
                 return false;
             }
@@ -276,13 +284,18 @@ public class CharacterAbilityManager : MonoBehaviour
 
         foreach (Ability ability in currentlyUsedAbilities)
         {
-            if (!ability.CanMoveWhileCasting)
+            if (!CanMoveWhileAbilityIsActive(ability))
             {
                 return true;
             }
         }
 
         return false;
+    }
+
+    private bool CanMoveWhileAbilityIsActive(Ability ability)
+    {
+        return ability.CanMoveWhileActive || (ability.CanMoveWhileChanneling && ability.IsBeingChanneled);
     }
 
     public bool IsUsingAbilityPreventingBasicAttacks()

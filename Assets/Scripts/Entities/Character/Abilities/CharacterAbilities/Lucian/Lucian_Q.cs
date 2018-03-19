@@ -37,6 +37,7 @@ public class Lucian_Q : UnitTargeted, CharacterAbility
     {
         CastableAbilitiesWhileActive.Add(GetComponent<Lucian_W>());
         CastableAbilitiesWhileActive.Add(GetComponent<Lucian_R>());
+        CastableAbilitiesWhileActive.Add(GetComponent<Recall>());
 
         base.Start();
 
