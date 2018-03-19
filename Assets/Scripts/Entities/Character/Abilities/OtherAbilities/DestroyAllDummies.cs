@@ -12,6 +12,8 @@ public class DestroyAllDummies : AutoTargeted, OtherAbility
         abilityName = "Destroy All Dummies";
 
         OfflineOnly = true;
+
+        IsEnabled = true;
     }
 
     protected override void Start()

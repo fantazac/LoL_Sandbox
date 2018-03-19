@@ -18,6 +18,8 @@ public class Teleport : GroundTargetedBlink, SummonerAbility
 
         CanBeRecasted = true;
         CannotCastAnyAbilityWhileActive = true;
+
+        IsEnabled = true;
     }
 
     protected override void SetSpritePaths()

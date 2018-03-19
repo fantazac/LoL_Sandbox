@@ -16,6 +16,8 @@ public abstract class SpawnDummy : GroundTargeted, OtherAbility
     {
         dummies = new List<GameObject>();
         OfflineOnly = true;
+
+        IsEnabled = true;
     }
 
     protected override void Start()

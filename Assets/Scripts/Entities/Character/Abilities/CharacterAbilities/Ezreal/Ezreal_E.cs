@@ -19,9 +19,13 @@ public class Ezreal_E : GroundTargetedBlink, CharacterAbility
 
         range = 475;
         speed = 1500;
-        damage = 80;// 80/130/180/230/280 + BONUS AD % 50 + TOTAL AP % 75
-        resourceCost = 90;
+        damage = 80;// 80/130/180/230/280
+        damagePerLevel = 50;
+        bonusADScaling = 0.5f;// 50
+        totalAPScaling = 0.75f;// 75
+        resourceCost = 90;// 90
         cooldown = 19;// 19/17.5f/16/14.5f/13
+        cooldownPerLevel = -1.5f;
         castTime = 0.15f;//TODO: VERIFY ACTUAL VALUE
         delayCastTime = new WaitForSeconds(castTime);
 
@@ -87,7 +91,7 @@ public class Ezreal_E : GroundTargetedBlink, CharacterAbility
 
     private void OnProjectileHit(AbilityEffect projectile, Entity entityHit)
     {
-        entityHit.EntityStats.Health.Reduce(damage);
+        entityHit.EntityStats.Health.Reduce(GetAbilityDamage());
         AbilityHit();
         Destroy(projectile.gameObject);
     }

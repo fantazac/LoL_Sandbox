@@ -42,7 +42,7 @@ public abstract class UnitTargeted : Ability
 
     protected virtual void OnAreaOfEffectHit(AbilityEffect areaOfEffect, Entity entityHit)
     {
-        entityHit.EntityStats.Health.Reduce(damage);
+        entityHit.EntityStats.Health.Reduce(GetAbilityDamage());
         AbilityHit();
     }
 

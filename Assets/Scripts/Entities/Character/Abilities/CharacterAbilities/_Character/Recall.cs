@@ -18,6 +18,8 @@ public class Recall : AutoTargetedBlink, OtherAbility
 
         CanMoveWhileChanneling = true;
         CanUseAnyAbilityWhileChanneling = true;
+
+        IsEnabled = true;
     }
 
     protected override void SetSpritePaths()

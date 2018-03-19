@@ -14,6 +14,8 @@ public class Ezreal_P : PassiveTargeted, CharacterAbility, PassiveCharacterAbili
         buffDuration = 6;
         buffMaximumStacks = 5;
         buffPercentBonus = 10;
+
+        IsEnabled = true;
     }
 
     protected override void SetSpritePaths()
@@ -34,10 +36,10 @@ public class Ezreal_P : PassiveTargeted, CharacterAbility, PassiveCharacterAbili
             }
         }
 
-        character.CharacterLevelManager.OnLevelUp += OnLevelUp;
+        character.CharacterLevelManager.OnLevelUp += OnCharacterLevelUp;
     }
 
-    public override void OnLevelUp(int level)
+    public override void OnCharacterLevelUp(int level)
     {
         if (level == 7)
         {

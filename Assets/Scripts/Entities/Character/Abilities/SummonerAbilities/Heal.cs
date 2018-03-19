@@ -28,6 +28,8 @@ public class Heal : SelfTargeted, SummonerAbility
 
         debuffDuration = 35;
         debuffPercentBonus = 0.5f;
+
+        IsEnabled = true;
     }
 
     protected override void SetSpritePaths()
@@ -41,7 +43,7 @@ public class Heal : SelfTargeted, SummonerAbility
     {
         base.Start();
 
-        character.CharacterLevelManager.OnLevelUp += OnLevelUp;
+        character.CharacterLevelManager.OnLevelUp += OnCharacterLevelUp;
     }
 
     public override bool CanBeCast(Vector3 mousePosition)
@@ -58,7 +60,7 @@ public class Heal : SelfTargeted, SummonerAbility
         return hit.point + character.CharacterMovement.CharacterHeightOffset;
     }
 
-    public override void OnLevelUp(int level)
+    public override void OnCharacterLevelUp(int level)
     {
         buffFlatBonus = (BASE_HEAL_VALUE + (HEAL_INCREASE_PER_LEVEL * level));
     }

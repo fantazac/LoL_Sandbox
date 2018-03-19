@@ -36,6 +36,10 @@ public class CharacterAbilityManager : MonoBehaviour
                 ability.ID = i;
                 character.AbilityUIManager.SetAbilitySprite(i, ability.abilitySprite);
             }
+            if(ability is CharacterAbility && !(ability is PassiveCharacterAbility))
+            {
+                character.AbilityUIManager.DisableAbility(i);
+            }
 
             abilities.Add((AbilityInput)i, ability);
         }
@@ -131,6 +135,11 @@ public class CharacterAbilityManager : MonoBehaviour
         character.CharacterMovement.RotateCharacterIfMoving();
 
         character.CharacterActionManager.UseBufferedAction();
+    }
+
+    public void LevelUpAbility(AbilityInput abilityId)
+    {
+        abilities[abilityId].LevelUp();
     }
 
     public void OnPressedInputForAbility(AbilityInput abilityInput)

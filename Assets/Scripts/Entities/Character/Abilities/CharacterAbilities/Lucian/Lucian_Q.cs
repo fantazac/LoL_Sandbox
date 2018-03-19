@@ -19,9 +19,14 @@ public class Lucian_Q : UnitTargeted, CharacterAbility
         damageType = DamageType.PHYSICAL;
 
         range = 500;
-        damage = 85;// 85/120/155/190/225 + BONUS AD % 60/70/80/90/100
+        damage = 85;// 85/120/155/190/225
+        damagePerLevel = 35;
+        bonusADScaling = 0.6f;// 60/70/80/90/100
+        bonusADScalingPerLevel = 0.1f;
         resourceCost = 50;// 50/60/70/80/90
+        resourceCostPerLevel = 10;
         cooldown = 9;// 9/8/7/6/5
+        cooldownPerLevel = -1;
         castTime = 0.4f;
         delayCastTime = new WaitForSeconds(castTime);
 
@@ -40,10 +45,10 @@ public class Lucian_Q : UnitTargeted, CharacterAbility
 
         base.Start();
 
-        character.CharacterLevelManager.OnLevelUp += OnLevelUp;
+        character.CharacterLevelManager.OnLevelUp += OnCharacterLevelUp;
     }
 
-    public override void OnLevelUp(int level)
+    public override void OnCharacterLevelUp(int level)
     {
         castTime = (0.409f - (0.009f * level));
         delayCastTime = new WaitForSeconds(castTime);

@@ -15,6 +15,8 @@ public class Lucian_P : PassiveTargeted, CharacterAbility, PassiveCharacterAbili
         damage = 0.5f;
 
         buffDuration = 3;
+
+        IsEnabled = true;
     }
 
     protected override void Awake()
@@ -42,7 +44,7 @@ public class Lucian_P : PassiveTargeted, CharacterAbility, PassiveCharacterAbili
             }
         }
 
-        character.CharacterLevelManager.OnLevelUp += OnLevelUp;
+        character.CharacterLevelManager.OnLevelUp += OnCharacterLevelUp;
     }
 
     public override void UseAbility(Entity target)
@@ -57,7 +59,7 @@ public class Lucian_P : PassiveTargeted, CharacterAbility, PassiveCharacterAbili
         }
     }
 
-    public override void OnLevelUp(int level)
+    public override void OnCharacterLevelUp(int level)
     {
         if (level == 7)
         {
@@ -77,7 +79,7 @@ public class Lucian_P : PassiveTargeted, CharacterAbility, PassiveCharacterAbili
         //}
         //else
         //{
-        entityHit.EntityStats.Health.Reduce(character.EntityStats.AttackDamage.GetTotal() * damage);
+        entityHit.EntityStats.Health.Reduce(character.EntityStats.AttackDamage.GetTotal() * GetAbilityDamage());
         //} 
         UseAbility(entityHit);
     }

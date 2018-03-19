@@ -20,9 +20,12 @@ public class Ezreal_R : DirectionTargetedProjectile, CharacterAbility
 
         range = (float)Range.GLOBAL;
         speed = 2000;
-        damage = 350;// 350/500/650 + BONUS AD % 100 + TOTAL AP % 90
-        resourceCost = 100;
-        cooldown = 120;
+        damage = 350;// 350/500/650
+        damagePerLevel = 150;
+        bonusADScaling = 1;// 100
+        totalAPScaling = 0.9f;// 90
+        resourceCost = 100;// 100
+        cooldown = 120;// 120
         castTime = 1;
         delayCastTime = new WaitForSeconds(castTime);
 
@@ -55,7 +58,7 @@ public class Ezreal_R : DirectionTargetedProjectile, CharacterAbility
 
     protected override void OnProjectileHit(AbilityEffect projectile, Entity entityHit)
     {
-        entityHit.EntityStats.Health.Reduce(damage * currentDamageMultiplier);
+        entityHit.EntityStats.Health.Reduce(GetAbilityDamage() * currentDamageMultiplier);
         if (currentDamageMultiplier > DAMAGE_REDUCTION_CAP)
         {
             currentDamageMultiplier -= DAMAGE_REDUCTION_PER_TARGET_HIT;

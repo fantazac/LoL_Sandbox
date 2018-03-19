@@ -15,9 +15,12 @@ public class Ezreal_W : DirectionTargetedProjectile, CharacterAbility
 
         range = 1000;
         speed = 1550;
-        damage = 70;// 70/115/160/205/250 + TOTAL AP % 80
+        damage = 70;// 70/115/160/205/250
+        damagePerLevel = 45;
+        totalAPScaling = 0.8f;// 80
         resourceCost = 50;// 50/60/70/80/90
-        cooldown = 9;
+        resourceCostPerLevel = 10;
+        cooldown = 9;// 9
         castTime = 0.2f;//TODO: VERIFY ACTUAL VALUE
         delayCastTime = new WaitForSeconds(castTime);
 
@@ -25,6 +28,7 @@ public class Ezreal_W : DirectionTargetedProjectile, CharacterAbility
 
         buffDuration = 5;
         buffPercentBonus = 20;// 20/25/30/35/40
+        buffPercentBonusPerLevel = 5;
     }
 
     protected override void SetSpritePaths()
@@ -41,7 +45,7 @@ public class Ezreal_W : DirectionTargetedProjectile, CharacterAbility
         }
         else
         {
-            entityHit.EntityStats.Health.Reduce(damage);
+            entityHit.EntityStats.Health.Reduce(GetAbilityDamage());
         }
         AbilityHit();
     }

@@ -17,6 +17,8 @@ public class Flash : GroundTargetedBlink, SummonerAbility
         startCooldownOnAbilityCast = true;
 
         CanBeCastDuringOtherAbilityCastTimes = true;
+
+        IsEnabled = true;
     }
 
     protected override void SetSpritePaths()

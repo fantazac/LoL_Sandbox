@@ -15,14 +15,12 @@ public abstract class Ability : MonoBehaviour
 
     public int ID { get; set; }
 
+    protected int abilityLevel;
     protected string abilityName;
-
     protected float castTime;
     protected float channelTime;
-    protected float cooldown;
     protected float cooldownBeforeRecast;
     protected float cooldownRemaining;
-    protected float damage;
     protected WaitForSeconds delayCastTime;
     protected WaitForSeconds delayChannelTime;
     protected float durationOfActive;
@@ -31,14 +29,28 @@ public abstract class Ability : MonoBehaviour
     protected Vector3 positionOnCast;
     protected Quaternion rotationOnCast;
     protected float range;
-    protected float resourceCost;
     protected float speed;
     protected bool startCooldownOnAbilityCast;
+
+    protected float bonusADScaling;
+    protected float bonusADScalingPerLevel;
+    protected float cooldown;
+    protected float cooldownPerLevel;
+    protected float damage;
+    protected float damagePerLevel;
+    protected float resourceCost;
+    protected float resourceCostPerLevel;
+    protected float totalADScaling;
+    protected float totalADScalingPerLevel;
+    protected float totalAPScaling;
+    protected float totalAPScalingPerLevel;
 
     protected float buffDuration;
     protected int buffMaximumStacks;
     protected float buffFlatBonus;
+    protected float buffFlatBonusPerLevel;
     protected float buffPercentBonus;
+    protected float buffPercentBonusPerLevel;
 
     protected float debuffDuration;
     protected int debuffMaximumStacks;
@@ -93,7 +105,6 @@ public abstract class Ability : MonoBehaviour
 
     protected Ability()
     {
-        IsEnabled = true;//TODO: REMOVE THIS ONCE ABILITY LEVELING IS IMPLEMENTED, FOR TESTING ONLY
         AbilitiesToDisableWhileActive = new List<Ability>();
         EntitiesAffectedByBuff = new List<Entity>();
         EntitiesAffectedByDebuff = new List<Entity>();
@@ -141,7 +152,7 @@ public abstract class Ability : MonoBehaviour
 
     protected void StartAbilityCast()
     {
-        foreach(Ability ability in AbilitiesToDisableWhileActive)
+        foreach (Ability ability in AbilitiesToDisableWhileActive)
         {
             ability.DisableAbility();
         }
@@ -301,7 +312,7 @@ public abstract class Ability : MonoBehaviour
             buff = new Buff(this, entityHit, false, buffDuration);
             entityHit.EntityBuffManager.ApplyBuff(buff, buffSprite);
         }
-        else if(buffDuration > 0)
+        else if (buffDuration > 0)
         {
             buff.ResetDurationRemaining();
         }
@@ -339,6 +350,39 @@ public abstract class Ability : MonoBehaviour
         }
     }
 
+    public void LevelUp()
+    {
+        abilityLevel++;
+        if (abilityLevel > 1)
+        {
+            bonusADScaling += bonusADScalingPerLevel;
+            cooldown += cooldownPerLevel;
+            damage += damagePerLevel;
+            resourceCost += resourceCostPerLevel;
+            totalADScaling += totalADScalingPerLevel;
+            totalAPScaling += totalAPScalingPerLevel;
+
+            buffFlatBonus += buffFlatBonusPerLevel;
+            buffPercentBonus += buffPercentBonusPerLevel;
+
+            LevelUpExtraStats();
+        }
+        else if (abilityLevel == 1)
+        {
+            EnableAbility();
+        }
+    }
+
+    protected float GetAbilityDamage()
+    {
+        return damage +
+            (bonusADScaling * character.EntityStats.AttackDamage.GetBonus()) +
+            (totalADScaling * character.EntityStats.AttackDamage.GetTotal()) +
+            (totalAPScaling * character.EntityStats.AbilityPower.GetTotal());
+    }
+
+    public virtual void LevelUpExtraStats() { }
+
     public virtual void ApplyBuffToEntityHit(Entity entityHit, int currentStacks) { }
     public virtual void RemoveBuffFromEntityHit(Entity entityHit, int currentStacks) { }
     protected virtual void UpdateBuffOnAffectedEntities(float oldValue, float newValue) { }
@@ -347,7 +391,7 @@ public abstract class Ability : MonoBehaviour
     public virtual void RemoveDebuffFromEntityHit(Entity entityHit, int currentStacks) { }
     protected virtual void UpdateDebuffOnAffectedEntities(float oldValue, float newValue) { }
 
-    public virtual void OnLevelUp(int level) { }
+    public virtual void OnCharacterLevelUp(int level) { }
 
     public virtual void RecastAbility()
     {
