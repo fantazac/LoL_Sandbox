@@ -58,10 +58,9 @@ public class Ezreal_P : PassiveTargeted, CharacterAbility, PassiveCharacterAbili
         foreach(Entity affectedEntity in EntitiesAffectedByBuff)
         {
             Buff buff = affectedEntity.EntityBuffManager.GetBuff(this);
-            int currentStacks = 0;
             if (buff != null)
             {
-                currentStacks = buff.CurrentStacks;
+                int currentStacks = buff.CurrentStacks;
                 affectedEntity.EntityStats.AttackSpeed.RemovePercentBonus(oldValue * currentStacks);
                 affectedEntity.EntityStats.AttackSpeed.AddPercentBonus(newValue * currentStacks);
             }

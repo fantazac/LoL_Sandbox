@@ -36,6 +36,7 @@ public abstract class Ability : MonoBehaviour
     protected float bonusADScalingPerLevel;
     protected float cooldown;
     protected float cooldownPerLevel;
+    protected float cooldownOnCancel;//TODO
     protected float damage;
     protected float damagePerLevel;
     protected float resourceCost;
@@ -154,7 +155,10 @@ public abstract class Ability : MonoBehaviour
     {
         foreach (Ability ability in AbilitiesToDisableWhileActive)
         {
-            ability.DisableAbility();
+            if (ability.abilityLevel > 0)
+            {
+                ability.DisableAbility();
+            }
         }
         if (CanBeRecasted)
         {
@@ -188,7 +192,10 @@ public abstract class Ability : MonoBehaviour
         abilityEffectCoroutine = null;
         foreach (Ability ability in AbilitiesToDisableWhileActive)
         {
-            ability.EnableAbility();
+            if(ability.abilityLevel > 0)
+            {
+                ability.EnableAbility();
+            }   
         }
         if (OnAbilityFinished != null)
         {
@@ -398,7 +405,7 @@ public abstract class Ability : MonoBehaviour
         CancelAbility();
     }
 
-    public void CancelAbility()
+    public virtual void CancelAbility()
     {
         if (abilityEffectCoroutine != null)
         {

@@ -16,6 +16,8 @@ public class Teleport : GroundTargetedBlink, SummonerAbility
         channelTime = 4.5f;
         delayChannelTime = new WaitForSeconds(channelTime);
 
+        cooldownOnCancel = 200;
+
         CanBeRecasted = true;
         CannotCastAnyAbilityWhileActive = true;
 
