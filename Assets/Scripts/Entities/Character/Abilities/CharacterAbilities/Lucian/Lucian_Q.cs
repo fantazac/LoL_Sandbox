@@ -21,7 +21,7 @@ public class Lucian_Q : UnitTargeted, CharacterAbility
         range = 500;
         damage = 85;// 85/120/155/190/225
         damagePerLevel = 35;
-        bonusADScaling = 0.6f;// 60/70/80/90/100
+        bonusADScaling = 0.6f;// 60/70/80/90/100 %
         bonusADScalingPerLevel = 0.1f;
         resourceCost = 50;// 50/60/70/80/90
         resourceCostPerLevel = 10;

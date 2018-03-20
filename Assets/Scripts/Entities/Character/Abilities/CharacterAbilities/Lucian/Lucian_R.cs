@@ -25,8 +25,8 @@ public class Lucian_R : DirectionTargetedProjectile, CharacterAbility
         speed = 2000;
         damage = 20;// 20/35/50
         damagePerLevel = 15;
-        totalADScaling = 0.2f;// 20
-        totalAPScaling = 0.1f;// 10
+        totalADScaling = 0.25f;// 25%
+        totalAPScaling = 0.1f;// 10%
         resourceCost = 100;// 100
         cooldown = 110;// 110/100/90
         cooldownPerLevel = -10;

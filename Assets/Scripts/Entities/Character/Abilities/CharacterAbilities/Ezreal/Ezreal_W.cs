@@ -17,7 +17,7 @@ public class Ezreal_W : DirectionTargetedProjectile, CharacterAbility
         speed = 1550;
         damage = 70;// 70/115/160/205/250
         damagePerLevel = 45;
-        totalAPScaling = 0.8f;// 80
+        totalAPScaling = 0.8f;// 80%
         resourceCost = 50;// 50/60/70/80/90
         resourceCostPerLevel = 10;
         cooldown = 9;// 9

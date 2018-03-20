@@ -20,9 +20,9 @@ public class Lucian_W : DirectionTargetedProjectile, CharacterAbility
 
         range = 900;
         speed = 1550;
-        damage = 60;// 60/100/140/180/220
+        damage = 85;// 85/125/165/205/245
         damagePerLevel = 40;
-        totalAPScaling = 0.9f;// 90
+        totalAPScaling = 0.9f;// 90%
         resourceCost = 50;// 50
         cooldown = 14;// 14/13/12/11/10
         cooldownPerLevel = -1;
