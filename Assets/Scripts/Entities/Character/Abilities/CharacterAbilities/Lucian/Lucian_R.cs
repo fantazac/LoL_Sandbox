@@ -59,6 +59,8 @@ public class Lucian_R : DirectionTargetedProjectile, CharacterAbility
     public override void LevelUpExtraStats()
     {
         amountOfProjectilesToShoot += amountOfProjectilesToShootPerLevel;
+
+        delayBetweenBullets = new WaitForSeconds(durationOfActive / amountOfProjectilesToShoot);
     }
 
     protected override void RotationOnAbilityCast(Vector3 destination)
