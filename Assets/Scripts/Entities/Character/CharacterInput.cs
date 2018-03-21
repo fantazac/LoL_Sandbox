@@ -61,6 +61,10 @@ public class CharacterInput : MonoBehaviour
             {
                 OnAbilityLevelUp(3);
             }
+            /*if (Input.GetKeyDown(KeyCode.Equals))
+            {
+                characterLevelManager.ReachMaxLevel();
+            }*/
         }
         else
         {
@@ -80,6 +84,10 @@ public class CharacterInput : MonoBehaviour
             {
                 characterAbilityManager.OnPressedInputForAbility(AbilityInput.R);
             }
+            /*if (Input.GetKeyDown(KeyCode.Equals))
+            {
+                characterLevelManager.PrepareLevelUp();
+            }*/
         }
     }
 
@@ -120,13 +128,16 @@ public class CharacterInput : MonoBehaviour
                 characterLevelManager.ReachMaxLevel();
             }
         }
-        else if (Input.GetKeyDown(KeyCode.B))
+        else
         {
-            characterAbilityManager.OnPressedInputForAbility(AbilityInput.RECALL);
-        }
-        else if (Input.GetKeyDown(KeyCode.Equals))
-        {
-            characterLevelManager.PrepareLevelUp();
+            if (Input.GetKeyDown(KeyCode.B))
+            {
+                characterAbilityManager.OnPressedInputForAbility(AbilityInput.RECALL);
+            }
+            if (Input.GetKeyDown(KeyCode.Equals))
+            {
+                characterLevelManager.PrepareLevelUp();
+            }
         }
     }
 

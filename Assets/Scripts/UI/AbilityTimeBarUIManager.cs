@@ -14,6 +14,8 @@ public class AbilityTimeBarUIManager : MonoBehaviour
     [SerializeField]
     private Text abilityChannelTime;
 
+    private int currentAbilityId;
+
     private void Start()
     {
         ResetUI();
@@ -43,26 +45,24 @@ public class AbilityTimeBarUIManager : MonoBehaviour
         }
     }
 
-    public void StopCastTimeAndChannelTime()
-    {
-        ResetUI();
-    }
-
-    public void SetCastTime(float castTime, string name)
+    public void SetCastTime(float castTime, string name, int abilityId)
     {
         SetupUI(0, name, "", true);
+        currentAbilityId = abilityId;
         StartCoroutine(CastTime(castTime));
     }
 
-    public void SetCastTimeAndChannelTime(float castTime, float channelTime, string name)
+    public void SetCastTimeAndChannelTime(float castTime, float channelTime, string name, int abilityId)
     {
         SetupUI(0, name, "", true);
+        currentAbilityId = abilityId;
         StartCoroutine(CastTimeAndChannelTime(castTime, channelTime));
     }
 
-    public void SetChannelTime(float channelTime, string name)
+    public void SetChannelTime(float channelTime, string name, int abilityId)
     {
         SetupUI(1, name, channelTime.ToString("0.0"), true);
+        currentAbilityId = abilityId;
         StartCoroutine(ChannelTime(channelTime));
     }
 
@@ -123,9 +123,12 @@ public class AbilityTimeBarUIManager : MonoBehaviour
         ResetUI();
     }
 
-    public void CancelCastTimeAndChannelTime()
+    public void CancelCastTimeAndChannelTime(int abilityId)
     {
-        StopAllCoroutines();
-        ResetUI();
+        if(abilityId == currentAbilityId)
+        {
+            StopAllCoroutines();
+            ResetUI();
+        }
     }
 }

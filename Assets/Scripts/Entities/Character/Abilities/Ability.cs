@@ -77,7 +77,6 @@ public abstract class Ability : MonoBehaviour
     public bool CanBeRecasted { get; protected set; }
     public bool CanMoveWhileActive { get; protected set; }
     public bool CanMoveWhileChanneling { get; protected set; }
-    public bool CannotBeCastIfAnotherAbilityIsActive { get; protected set; }
     public bool CannotCastAnyAbilityWhileActive { get; protected set; }
     public bool CannotRotateWhileCasting { get; protected set; }
     public bool CanUseAnyAbilityWhileChanneling { get; protected set; }
@@ -94,6 +93,7 @@ public abstract class Ability : MonoBehaviour
     public bool ResetBasicAttackCycleOnAbilityFinished { get; protected set; }
 
     public List<Ability> AbilitiesToDisableWhileActive { get; protected set; }
+    public List<Ability> CastableAbilitiesWhileActive { get; protected set; }
 
     public List<Entity> EntitiesAffectedByBuff { get; protected set; }
     public List<Entity> EntitiesAffectedByDebuff { get; protected set; }
@@ -110,6 +110,7 @@ public abstract class Ability : MonoBehaviour
     protected Ability()
     {
         AbilitiesToDisableWhileActive = new List<Ability>();
+        CastableAbilitiesWhileActive = new List<Ability>();
         EntitiesAffectedByBuff = new List<Entity>();
         EntitiesAffectedByDebuff = new List<Entity>();
         SetSpritePaths();
@@ -177,15 +178,15 @@ public abstract class Ability : MonoBehaviour
         {
             if (HasCastTime && HasChannelTime)
             {
-                character.AbilityTimeBarUIManager.SetCastTimeAndChannelTime(castTime, channelTime, abilityName);
+                character.AbilityTimeBarUIManager.SetCastTimeAndChannelTime(castTime, channelTime, abilityName, ID);
             }
             else if (HasCastTime)
             {
-                character.AbilityTimeBarUIManager.SetCastTime(castTime, abilityName);
+                character.AbilityTimeBarUIManager.SetCastTime(castTime, abilityName, ID);
             }
             else if (HasChannelTime)
             {
-                character.AbilityTimeBarUIManager.SetChannelTime(channelTime, abilityName);
+                character.AbilityTimeBarUIManager.SetChannelTime(channelTime, abilityName, ID);
             }
         }
         StartCooldown(true);
@@ -428,7 +429,7 @@ public abstract class Ability : MonoBehaviour
             StopCoroutine(abilityEffectCoroutine);
             if (character.AbilityTimeBarUIManager && (HasCastTime || HasChannelTime))
             {
-                character.AbilityTimeBarUIManager.CancelCastTimeAndChannelTime();
+                character.AbilityTimeBarUIManager.CancelCastTimeAndChannelTime(ID);
             }
             FinishAbilityCast(HasReducedCooldownOnAbilityCancel);
         }

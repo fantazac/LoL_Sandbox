@@ -33,7 +33,8 @@ public class Lucian_R : DirectionTargetedProjectile, CharacterAbility
         cooldown = 110;// 110/100/90
         cooldownPerLevel = -10;
         cooldownBeforeRecast = 0.75f;
-        //Has cast time on League, like 0.01f, does it change anything?
+        castTime = 0.01f;
+        delayCastTime = new WaitForSeconds(castTime);
 
         amountOfProjectilesToShoot = 20;// 20/25/30
         amountOfProjectilesToShootPerLevel = 5;
@@ -56,6 +57,9 @@ public class Lucian_R : DirectionTargetedProjectile, CharacterAbility
         AbilitiesToDisableWhileActive.Add(GetComponent<Lucian_Q>());
         AbilitiesToDisableWhileActive.Add(GetComponent<Lucian_W>());
 
+        CastableAbilitiesWhileActive.Add(GetComponent<Lucian_E>());
+        CastableAbilitiesWhileActive.Add(GetComponent<Teleport>());
+
         base.Start();
     }
 
@@ -71,8 +75,10 @@ public class Lucian_R : DirectionTargetedProjectile, CharacterAbility
         character.CharacterOrientation.RotateCharacterInstantly(destination);
     }
 
-    protected override IEnumerator AbilityWithoutDelay()
+    protected override IEnumerator AbilityWithCastTime()
     {
+        yield return delayCastTime;
+
         ShootProjectile(0);
 
         for (int i = 1; i < amountOfProjectilesToShoot; i++)
