@@ -263,6 +263,11 @@ public class CharacterAbilityManager : MonoBehaviour
             return false;
         }
 
+        if(currentlyUsedAbilities.Count > 0 && abilityToCast.CannotBeCastIfAnotherAbilityIsActive)
+        {
+            return true;
+        }
+
         foreach (Ability ability in currentlyUsedAbilities)
         {
             if (ability.HasCastTime && !(ability.HasChannelTime && ability.IsBeingChanneled && ability.CanUseAnyAbilityWhileChanneling))

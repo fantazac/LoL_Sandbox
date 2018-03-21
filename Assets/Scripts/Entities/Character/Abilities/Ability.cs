@@ -76,6 +76,7 @@ public abstract class Ability : MonoBehaviour
     public bool CanBeRecasted { get; protected set; }
     public bool CanMoveWhileActive { get; protected set; }
     public bool CanMoveWhileChanneling { get; protected set; }
+    public bool CannotBeCastIfAnotherAbilityIsActive { get; protected set; }
     public bool CannotCastAnyAbilityWhileActive { get; protected set; }
     public bool CannotRotateWhileCasting { get; protected set; }
     public bool CanUseAnyAbilityWhileChanneling { get; protected set; }
