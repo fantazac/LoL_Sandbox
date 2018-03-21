@@ -18,6 +18,8 @@ public class Lucian_W : DirectionTargetedProjectile, CharacterAbility
         effectType = AbilityEffectType.SINGLE_TARGET;
         damageType = DamageType.MAGIC;
 
+        MaxLevel = 5;
+
         range = 900;
         speed = 1550;
         damage = 85;// 85/125/165/205/245

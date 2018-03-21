@@ -18,6 +18,8 @@ public class Lucian_Q : UnitTargeted, CharacterAbility
         effectType = AbilityEffectType.AREA_OF_EFFECT;
         damageType = DamageType.PHYSICAL;
 
+        MaxLevel = 5;
+
         range = 500;
         damage = 85;// 85/120/155/190/225
         damagePerLevel = 35;

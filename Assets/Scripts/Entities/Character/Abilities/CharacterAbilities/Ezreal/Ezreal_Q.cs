@@ -16,6 +16,8 @@ public class Ezreal_Q : DirectionTargetedProjectile, CharacterAbility
         effectType = AbilityEffectType.SINGLE_TARGET;
         damageType = DamageType.PHYSICAL;
 
+        MaxLevel = 5;
+
         range = 1150;
         speed = 2000;
         damage = 15;// 15/40/65/90/115

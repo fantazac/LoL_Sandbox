@@ -17,6 +17,8 @@ public class Ezreal_E : GroundTargetedBlink, CharacterAbility
         effectType = AbilityEffectType.SINGLE_TARGET;
         damageType = DamageType.MAGIC;
 
+        MaxLevel = 5;
+
         range = 475;
         speed = 1500;
         damage = 80;// 80/130/180/230/280

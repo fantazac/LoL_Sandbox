@@ -12,12 +12,17 @@ public abstract class DirectionTargetedProjectile : DirectionTargeted
 
         character.CharacterOrientation.RotateCharacterInstantly(destinationOnCast);
 
-        Projectile projectile = (Instantiate(projectilePrefab, transform.position, transform.rotation)).GetComponent<Projectile>();
+        SpawnProjectile(transform.position + (transform.forward * projectilePrefab.transform.localScale.z * 0.5f), transform.rotation);
+
+        FinishAbilityCast();
+    }
+
+    protected void SpawnProjectile(Vector3 position, Quaternion rotation)
+    {
+        Projectile projectile = (Instantiate(projectilePrefab, position, rotation)).GetComponent<Projectile>();
         projectile.ShootProjectile(character.Team, affectedUnitType, speed, range);
         projectile.OnAbilityEffectHit += OnProjectileHit;
         projectile.OnProjectileReachedEnd += OnProjectileReachedEnd;
-
-        FinishAbilityCast();
     }
 
     protected virtual void OnProjectileHit(AbilityEffect projectile, Entity entityHit)

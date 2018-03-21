@@ -14,6 +14,7 @@ public abstract class Ability : MonoBehaviour
     protected IEnumerator abilityEffectCoroutine;
 
     public int ID { get; set; }
+    public int MaxLevel { get; protected set; }
 
     protected int abilityLevel;
     protected string abilityName;
@@ -86,9 +87,10 @@ public abstract class Ability : MonoBehaviour
     public bool IsEnabled { get; protected set; }
     public bool IsOnCooldown { get; protected set; }
     public bool IsOnCooldownForRecast { get; protected set; }
-    public bool OfflineOnly { get; protected set; }
     public bool HasCastTime { get; private set; }
     public bool HasChannelTime { get; private set; }
+    public bool HasReducedCooldownOnAbilityCancel { get; private set; }
+    public bool OfflineOnly { get; protected set; }
     public bool ResetBasicAttackCycleOnAbilityFinished { get; protected set; }
 
     public List<Ability> AbilitiesToDisableWhileActive { get; protected set; }
@@ -129,6 +131,7 @@ public abstract class Ability : MonoBehaviour
     {
         HasCastTime = castTime > 0;
         HasChannelTime = channelTime > 0;
+        HasReducedCooldownOnAbilityCancel = cooldownOnCancel > 0;
 
         ModifyValues();
     }
@@ -188,15 +191,15 @@ public abstract class Ability : MonoBehaviour
         StartCooldown(true);
     }
 
-    protected void FinishAbilityCast()
+    protected void FinishAbilityCast(bool abilityWasCancelled = false)
     {
         abilityEffectCoroutine = null;
         foreach (Ability ability in AbilitiesToDisableWhileActive)
         {
-            if(ability.abilityLevel > 0)
+            if (ability.abilityLevel > 0)
             {
                 ability.EnableAbility();
-            }   
+            }
         }
         if (OnAbilityFinished != null)
         {
@@ -207,7 +210,7 @@ public abstract class Ability : MonoBehaviour
         {
             character.EntityBasicAttack.ResetBasicAttack();
         }
-        StartCooldown(false);
+        StartCooldown(false, abilityWasCancelled);
     }
 
     public void DisableAbility()
@@ -236,11 +239,11 @@ public abstract class Ability : MonoBehaviour
         }
     }
 
-    protected void StartCooldown(bool calledInStartAbilityCast)
+    protected void StartCooldown(bool calledInStartAbilityCast, bool abilityWasCancelled = false)
     {
         if (calledInStartAbilityCast == startCooldownOnAbilityCast && (!StaticObjects.OnlineMode || character.PhotonView.isMine))
         {
-            StartCoroutine(PutAbilityOffCooldown());
+            StartCoroutine(PutAbilityOffCooldown(abilityWasCancelled ? cooldownOnCancel : cooldown));
         }
     }
 
@@ -258,10 +261,10 @@ public abstract class Ability : MonoBehaviour
         rotationOnCast = Quaternion.LookRotation((destinationOnCast - transform.position).normalized);
     }
 
-    protected virtual IEnumerator PutAbilityOffCooldown()
+    protected virtual IEnumerator PutAbilityOffCooldown(float cooldownOnStart)
     {
         IsOnCooldown = true;
-        cooldownRemaining = cooldown;
+        cooldownRemaining = cooldownOnStart;
 
         yield return null;
 
@@ -271,7 +274,7 @@ public abstract class Ability : MonoBehaviour
         {
             cooldownRemaining -= Time.deltaTime;
 
-            character.AbilityUIManager.UpdateAbilityCooldown(ID, cooldown, cooldownRemaining);
+            character.AbilityUIManager.UpdateAbilityCooldown(ID, cooldownOnStart, cooldownRemaining);
 
             yield return null;
         }
@@ -360,9 +363,10 @@ public abstract class Ability : MonoBehaviour
 
     public void LevelUp()
     {
-        abilityLevel++;
-        if (abilityLevel > 1)
+        if (abilityLevel > 0 && abilityLevel < MaxLevel)
         {
+            abilityLevel++;
+
             bonusADScaling += bonusADScalingPerLevel;
             cooldown += cooldownPerLevel;
             damage += damagePerLevel;
@@ -374,10 +378,21 @@ public abstract class Ability : MonoBehaviour
             buffPercentBonus += buffPercentBonusPerLevel;
 
             LevelUpExtraStats();
+
+            if (character.AbilityUIManager)
+            {
+                character.AbilityUIManager.LevelUpAbility(ID, abilityLevel);
+            }
         }
-        else if (abilityLevel == 1)
+        else if (abilityLevel == 0)
         {
+            abilityLevel++;
             EnableAbility();
+
+            if (character.AbilityUIManager)
+            {
+                character.AbilityUIManager.LevelUpAbility(ID, abilityLevel);
+            }
         }
     }
 
@@ -406,7 +421,7 @@ public abstract class Ability : MonoBehaviour
         CancelAbility();
     }
 
-    public virtual void CancelAbility()
+    public void CancelAbility()
     {
         if (abilityEffectCoroutine != null)
         {
@@ -415,7 +430,7 @@ public abstract class Ability : MonoBehaviour
             {
                 character.AbilityTimeBarUIManager.CancelCastTimeAndChannelTime();
             }
-            FinishAbilityCast();
+            FinishAbilityCast(HasReducedCooldownOnAbilityCancel);
         }
     }
 

@@ -39,6 +39,7 @@ public class CharacterAbilityManager : MonoBehaviour
             if(ability is CharacterAbility && !(ability is PassiveCharacterAbility))
             {
                 character.AbilityUIManager.DisableAbility(i);
+                character.AbilityUIManager.SetMaxAbilityLevel(i, ability.MaxLevel);
             }
 
             abilities.Add((AbilityInput)i, ability);

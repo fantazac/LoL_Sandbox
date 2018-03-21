@@ -13,6 +13,8 @@ public class Ezreal_W : DirectionTargetedProjectile, CharacterAbility
         effectType = AbilityEffectType.AREA_OF_EFFECT;
         damageType = DamageType.MAGIC;
 
+        MaxLevel = 5;
+
         range = 1000;
         speed = 1550;
         damage = 70;// 70/115/160/205/250
@@ -35,6 +37,17 @@ public class Ezreal_W : DirectionTargetedProjectile, CharacterAbility
     {
         abilitySpritePath = "Sprites/Characters/CharacterAbilities/Ezreal/EzrealW";
         buffSpritePath = "Sprites/Characters/CharacterAbilities/Ezreal/EzrealW_Buff";
+    }
+
+    protected override IEnumerator AbilityWithCastTime()
+    {
+        yield return delayCastTime;
+
+        character.CharacterOrientation.RotateCharacterInstantly(destinationOnCast);
+
+        SpawnProjectile(transform.position + (transform.forward * projectilePrefab.transform.localScale.z * 0.65f), transform.rotation);
+
+        FinishAbilityCast();
     }
 
     protected override void OnProjectileHit(AbilityEffect projectile, Entity entityHit)

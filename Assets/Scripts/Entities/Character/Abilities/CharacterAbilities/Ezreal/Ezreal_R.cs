@@ -18,6 +18,8 @@ public class Ezreal_R : DirectionTargetedProjectile, CharacterAbility
         effectType = AbilityEffectType.AREA_OF_EFFECT;
         damageType = DamageType.MAGIC;
 
+        MaxLevel = 3;
+
         range = (float)Range.GLOBAL;
         speed = 2000;
         damage = 350;// 350/500/650
@@ -48,10 +50,7 @@ public class Ezreal_R : DirectionTargetedProjectile, CharacterAbility
 
         yield return delayCastTime;
 
-        Projectile projectile = ((GameObject)Instantiate(projectilePrefab, positionOnCast, rotationOnCast)).GetComponent<Projectile>();
-        projectile.ShootProjectile(character.Team, affectedUnitType, speed, range);
-        projectile.OnAbilityEffectHit += OnProjectileHit;
-        projectile.OnProjectileReachedEnd += OnProjectileReachedEnd;
+        SpawnProjectile(positionOnCast, rotationOnCast);
 
         FinishAbilityCast();
     }

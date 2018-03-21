@@ -21,6 +21,8 @@ public class Lucian_R : DirectionTargetedProjectile, CharacterAbility
         effectType = AbilityEffectType.SINGLE_TARGET;
         damageType = DamageType.PHYSICAL;
 
+        MaxLevel = 3;
+
         range = 1200;
         speed = 2000;
         damage = 20;// 20/35/50
@@ -86,7 +88,7 @@ public class Lucian_R : DirectionTargetedProjectile, CharacterAbility
     private void ShootProjectile(int projectileId)
     {
         projectile = ((GameObject)Instantiate(projectilePrefab,
-                transform.position + (transform.forward * 0.6f) + (transform.right * (projectileId % 2 == 0 ? offset : -offset)),
+                transform.position + (transform.forward * projectilePrefab.transform.localScale.z * 0.5f) + (transform.right * (projectileId % 2 == 0 ? offset : -offset)),
                 transform.rotation)).GetComponent<Projectile>();
         projectile.ShootProjectile(character.Team, affectedUnitType, speed, range);
         projectile.OnAbilityEffectHit += OnProjectileHit;

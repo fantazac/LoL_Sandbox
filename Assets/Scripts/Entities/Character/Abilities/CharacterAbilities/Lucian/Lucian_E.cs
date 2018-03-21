@@ -9,6 +9,8 @@ public class Lucian_E : DirectionTargetedDash, CharacterAbility
 
         abilityType = AbilityType.Dash;
 
+        MaxLevel = 5;
+
         range = 425;
         resourceCost = 40;// 40/30/20/10/0
         resourceCostPerLevel = -10;

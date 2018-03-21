@@ -13,19 +13,40 @@ public class AbilityUIManager : MonoBehaviour
     private Image[] abilityOnCooldownForRecastImages;
     [SerializeField]
     private Text[] abilityCooldownTexts;
+    [SerializeField]
+    private GameObject[] abilityLevelPoints;
+    [SerializeField]
+    private GameObject abilityLevelPoint;
 
     private Color abilityColorOnCooldown;
     private Color abilityColorOnCooldownForRecast;
+    private Color abilityLevelPointColor;
 
     private AbilityUIManager()
     {
         abilityColorOnCooldown = Color.gray;
         abilityColorOnCooldownForRecast = new Color(0.7f, 0.7f, 0.7f);
+        abilityLevelPointColor = new Color(0.85f, 0.8f, 0.3f);
     }
 
     public void SetAbilitySprite(int abilityId, Sprite abilitySprite)
     {
         abilityImages[abilityId].sprite = abilitySprite;
+    }
+
+    public void SetMaxAbilityLevel(int abilityId, int abilityMaxLevel)
+    {
+        RectTransform parent = abilityLevelPoints[abilityId - 1].GetComponent<RectTransform>();
+        parent.anchoredPosition = parent.anchoredPosition + (Vector2.left * 4.5f * abilityMaxLevel + Vector2.right);
+        for (int i = 0; i < abilityMaxLevel; i++)
+        {
+            Instantiate(abilityLevelPoint).transform.SetParent(parent, false);
+        }
+    }
+
+    public void LevelUpAbility(int abilityId, int abilityLevel)
+    {
+        abilityLevelPoints[abilityId - 1].transform.GetChild(abilityLevel - 1).GetComponent<Image>().color = abilityLevelPointColor;
     }
 
     public void SetAbilityOnCooldown(int abilityId)

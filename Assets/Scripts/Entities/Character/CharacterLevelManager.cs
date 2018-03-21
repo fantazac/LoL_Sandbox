@@ -29,6 +29,7 @@ public class CharacterLevelManager : MonoBehaviour
         if (character.AbilityLevelUpUIManager)
         {
             character.AbilityLevelUpUIManager.OnAbilityLevelUp += OnAbilityLevelUp;
+            character.CharacterInput.OnAbilityLevelUp += OnAbilityLevelUp;
             PrepareLevelUp();
         }
     }
@@ -99,30 +100,54 @@ public class CharacterLevelManager : MonoBehaviour
 
     private void OnAbilityLevelUp(int abilityId)
     {
-        if (abilityId == 0)
+        if(AbilityPoints > 0)
         {
-            AbilityPoints--;
-            pointsAvailableForQ--;
-            character.CharacterAbilityManager.LevelUpAbility(AbilityInput.Q);
+            if (abilityId == 0 && pointsAvailableForQ > 0)
+            {
+                AbilityPoints--;
+                pointsAvailableForQ--;
+                character.CharacterAbilityManager.LevelUpAbility(AbilityInput.Q);
+            }
+            else if (abilityId == 1 && pointsAvailableForW > 0)
+            {
+                AbilityPoints--;
+                pointsAvailableForW--;
+                character.CharacterAbilityManager.LevelUpAbility(AbilityInput.W);
+            }
+            else if (abilityId == 2 && pointsAvailableForE > 0)
+            {
+                AbilityPoints--;
+                pointsAvailableForE--;
+                character.CharacterAbilityManager.LevelUpAbility(AbilityInput.E);
+            }
+            else if (abilityId == 3 && pointsAvailableForR > 0)
+            {
+                AbilityPoints--;
+                pointsAvailableForR--;
+                character.CharacterAbilityManager.LevelUpAbility(AbilityInput.R);
+            }
+            character.AbilityLevelUpUIManager.SetAbilityPoints(AbilityPoints, pointsAvailableForQ, pointsAvailableForW, pointsAvailableForE, pointsAvailableForR);
         }
-        else if (abilityId == 1)
+    }
+
+    public void ReachMaxLevel()
+    {
+        if (!StaticObjects.OnlineMode)
         {
-            AbilityPoints--;
-            pointsAvailableForW--;
-            character.CharacterAbilityManager.LevelUpAbility(AbilityInput.W);
+            while (Level < MAX_LEVEL)
+            {
+                PrepareLevelUp();
+            }
+            for(int i = 0; i < 5; i++)
+            {
+                OnAbilityLevelUp(0);
+                OnAbilityLevelUp(1);
+                OnAbilityLevelUp(2);
+                if (i < 3)
+                {
+                    OnAbilityLevelUp(3);
+                }
+            }
         }
-        else if (abilityId == 2)
-        {
-            AbilityPoints--;
-            pointsAvailableForE--;
-            character.CharacterAbilityManager.LevelUpAbility(AbilityInput.E);
-        }
-        else if (abilityId == 3)
-        {
-            AbilityPoints--;
-            pointsAvailableForR--;
-            character.CharacterAbilityManager.LevelUpAbility(AbilityInput.R);
-        }
-        character.AbilityLevelUpUIManager.SetAbilityPoints(AbilityPoints, pointsAvailableForQ, pointsAvailableForW, pointsAvailableForE, pointsAvailableForR);
     }
 }

@@ -23,6 +23,9 @@ public class CharacterInput : MonoBehaviour
     public delegate void OnRightClickHandler(Vector3 mousePosition);
     public event OnRightClickHandler OnRightClick;
 
+    public delegate void OnAbilityLevelUpHandler(int abilityId);
+    public event OnAbilityLevelUpHandler OnAbilityLevelUp;
+
     private void Start()
     {
         characterAbilityManager = StaticObjects.Character.CharacterAbilityManager;
@@ -40,21 +43,43 @@ public class CharacterInput : MonoBehaviour
 
     private void CheckForCharacterAbilitiesInputs()
     {
-        if (Input.GetKeyDown(KeyCode.Q))
+        if (Input.GetKey(KeyCode.LeftControl))
         {
-            characterAbilityManager.OnPressedInputForAbility(AbilityInput.Q);
+            if (Input.GetKeyDown(KeyCode.Q))
+            {
+                OnAbilityLevelUp(0);
+            }
+            if (Input.GetKeyDown(KeyCode.W))
+            {
+                OnAbilityLevelUp(1);
+            }
+            if (Input.GetKeyDown(KeyCode.E))
+            {
+                OnAbilityLevelUp(2);
+            }
+            if (Input.GetKeyDown(KeyCode.R))
+            {
+                OnAbilityLevelUp(3);
+            }
         }
-        if (Input.GetKeyDown(KeyCode.W))
+        else
         {
-            characterAbilityManager.OnPressedInputForAbility(AbilityInput.W);
-        }
-        if (Input.GetKeyDown(KeyCode.E))
-        {
-            characterAbilityManager.OnPressedInputForAbility(AbilityInput.E);
-        }
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-            characterAbilityManager.OnPressedInputForAbility(AbilityInput.R);
+            if (Input.GetKeyDown(KeyCode.Q))
+            {
+                characterAbilityManager.OnPressedInputForAbility(AbilityInput.Q);
+            }
+            if (Input.GetKeyDown(KeyCode.W))
+            {
+                characterAbilityManager.OnPressedInputForAbility(AbilityInput.W);
+            }
+            if (Input.GetKeyDown(KeyCode.E))
+            {
+                characterAbilityManager.OnPressedInputForAbility(AbilityInput.E);
+            }
+            if (Input.GetKeyDown(KeyCode.R))
+            {
+                characterAbilityManager.OnPressedInputForAbility(AbilityInput.R);
+            }
         }
     }
 
@@ -76,10 +101,6 @@ public class CharacterInput : MonoBehaviour
         {
             characterAbilityManager.ResetCooldowns();
         }
-        if (Input.GetKeyDown(KeyCode.Equals))
-        {
-            characterLevelManager.PrepareLevelUp();
-        }
         if (Input.GetKey(KeyCode.LeftShift))
         {
             if (Input.GetKeyDown(KeyCode.B))
@@ -94,10 +115,18 @@ public class CharacterInput : MonoBehaviour
             {
                 characterAbilityManager.OnPressedInputForAbility(AbilityInput.SPAWN_ALLY_DUMMY);
             }
+            if (Input.GetKeyDown(KeyCode.Equals))
+            {
+                characterLevelManager.ReachMaxLevel();
+            }
         }
         else if (Input.GetKeyDown(KeyCode.B))
         {
             characterAbilityManager.OnPressedInputForAbility(AbilityInput.RECALL);
+        }
+        else if (Input.GetKeyDown(KeyCode.Equals))
+        {
+            characterLevelManager.PrepareLevelUp();
         }
     }
 
