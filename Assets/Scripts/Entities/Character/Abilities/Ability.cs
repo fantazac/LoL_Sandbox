@@ -36,7 +36,7 @@ public abstract class Ability : MonoBehaviour
     protected float bonusADScalingPerLevel;
     protected float cooldown;
     protected float cooldownPerLevel;
-    protected float cooldownOnCancel;//TODO
+    protected float cooldownOnCancel;
     protected float damage;
     protected float damagePerLevel;
     protected float resourceCost;

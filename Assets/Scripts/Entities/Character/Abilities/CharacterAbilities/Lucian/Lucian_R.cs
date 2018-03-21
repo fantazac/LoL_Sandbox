@@ -31,7 +31,7 @@ public class Lucian_R : DirectionTargetedProjectile, CharacterAbility
         cooldown = 110;// 110/100/90
         cooldownPerLevel = -10;
         cooldownBeforeRecast = 0.75f;
-        //apparently LucianR has a castTime (very very small), check if this affects anything
+        //Has cast time on League, like 0.01f, does it change anything?
 
         amountOfProjectilesToShoot = 20;// 20/25/30
         amountOfProjectilesToShootPerLevel = 5;
