@@ -214,7 +214,7 @@ public class CharacterMovement : MonoBehaviour
         character.EntityBasicAttack.StopBasicAttack();
         character.CharacterActionManager.ResetBufferedAction();
         StopAllCoroutines();
-        character.CharacterOrientation.StopAllRotation();
+        character.CharacterOrientation.StopMovementRotation();
         CharacterIsInRange = null;
         destination = Vector3.down;
         target = null;
@@ -235,7 +235,7 @@ public class CharacterMovement : MonoBehaviour
 
     public void NotifyCharacterMoved()
     {
-        if (CharacterMoved != null && (!StaticObjects.OnlineMode || character.PhotonView.isMine))
+        if (CharacterMoved != null)// && (!StaticObjects.OnlineMode || character.PhotonView.isMine))
         {
             CharacterMoved();
         }

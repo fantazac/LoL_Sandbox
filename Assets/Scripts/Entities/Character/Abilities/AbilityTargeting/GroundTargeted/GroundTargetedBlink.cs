@@ -17,6 +17,17 @@ public abstract class GroundTargetedBlink : GroundTargeted
         FinishAbilityCast();
     }
 
+    protected override IEnumerator AbilityWithChannelTime()
+    {
+        yield return delayChannelTime;
+
+        character.CharacterOrientation.RotateCharacterInstantly(destinationOnCast);
+        transform.position = destinationOnCast;
+        character.CharacterMovement.NotifyCharacterMoved();
+
+        FinishAbilityCast();
+    }
+
     protected override void FinalAdjustments(Vector3 destination)
     {
         destinationOnCast = destination;

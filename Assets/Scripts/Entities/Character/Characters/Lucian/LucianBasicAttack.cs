@@ -88,6 +88,7 @@ public class LucianBasicAttack : CharacterBasicAttack
             yield return delayPassiveShot;
 
             ProjectileUnitTargeted projectile2 = (Instantiate(passiveBasicAttackPrefab, transform.position, transform.rotation)).GetComponent<ProjectileUnitTargeted>();
+            projectile2.transform.LookAt(target.transform);
             projectile2.ShootProjectile(entity.Team, target, speed);
             projectile2.OnAbilityEffectHit += PassiveBasicAttackHit;
         }

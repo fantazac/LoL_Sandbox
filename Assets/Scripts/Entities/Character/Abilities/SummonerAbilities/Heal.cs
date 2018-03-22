@@ -9,6 +9,9 @@ public class Heal : SelfTargeted, SummonerAbility
 
     protected Heal()
     {
+        abilityName = "Heal";
+
+        abilityType = AbilityType.Heal;
         affectedUnitType = AbilityAffectedUnitType.ALLY_CHARACTERS;
         effectType = AbilityEffectType.HEALING;
 
@@ -17,7 +20,7 @@ public class Heal : SelfTargeted, SummonerAbility
 
         startCooldownOnAbilityCast = true;
 
-        CanBeCastAtAnytime = true;
+        CanBeCastDuringOtherAbilityCastTimes = true;
 
         buffDuration = 1;
         buffFlatBonus = 90;
@@ -25,12 +28,14 @@ public class Heal : SelfTargeted, SummonerAbility
 
         debuffDuration = 35;
         debuffPercentBonus = 0.5f;
+
+        IsEnabled = true;
     }
 
     protected override void SetSpritePaths()
     {
         abilitySpritePath = "Sprites/Characters/SummonerAbilities/Heal";
-        buffSpritePath = "Sprites/Characters/SummonerAbilities/Heal";//TODO: Ghost, not Heal
+        buffSpritePath = "Sprites/Characters/SummonerAbilities/Ghost";
         debuffSpritePath = "Sprites/Characters/SummonerAbilities/Heal";
     }
 
@@ -38,7 +43,7 @@ public class Heal : SelfTargeted, SummonerAbility
     {
         base.Start();
 
-        character.CharacterLevelManager.OnLevelUp += OnLevelUp;
+        character.CharacterLevelManager.OnLevelUp += OnCharacterLevelUp;
     }
 
     public override bool CanBeCast(Vector3 mousePosition)
@@ -55,7 +60,7 @@ public class Heal : SelfTargeted, SummonerAbility
         return hit.point + character.CharacterMovement.CharacterHeightOffset;
     }
 
-    public override void OnLevelUp(int level)
+    public override void OnCharacterLevelUp(int level)
     {
         buffFlatBonus = (BASE_HEAL_VALUE + (HEAL_INCREASE_PER_LEVEL * level));
     }

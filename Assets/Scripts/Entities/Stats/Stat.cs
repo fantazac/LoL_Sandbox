@@ -51,6 +51,11 @@ public abstract class Stat : MonoBehaviour
         return total;
     }
 
+    public virtual float GetBonus()
+    {
+        return GetTotal() - GetBaseValue();
+    }
+
     public float GetFlatBonus()
     {
         return flatBonus;

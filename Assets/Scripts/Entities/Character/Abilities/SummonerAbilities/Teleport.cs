@@ -7,9 +7,21 @@ public class Teleport : GroundTargetedBlink, SummonerAbility
 {
     protected Teleport()
     {
-        cooldown = 13;
+        abilityName = "Teleport";
 
-        startCooldownOnAbilityCast = true;
+        abilityType = AbilityType.Blink;
+
+        cooldown = 300;
+        cooldownBeforeRecast = 0.75f;
+        channelTime = 4.5f;
+        delayChannelTime = new WaitForSeconds(channelTime);
+
+        cooldownOnCancel = 200;
+
+        CanBeRecasted = true;
+        CannotCastAnyAbilityWhileActive = true;
+
+        IsEnabled = true;
     }
 
     protected override void SetSpritePaths()
@@ -19,12 +31,12 @@ public class Teleport : GroundTargetedBlink, SummonerAbility
 
     public override void UseAbility(Vector3 destination)
     {
-        character.CharacterOrientation.StopRotationTowardsCastPoint();
-        character.CharacterOrientation.RotateCharacterInstantly(destination);
+        StartAbilityCast();
 
-        transform.position = destination;
-        character.CharacterMovement.NotifyCharacterMoved();
+        character.CharacterMovement.RestartMovementTowardsTargetAfterAbility();
 
-        StartCooldown(startCooldownOnAbilityCast);
+        FinalAdjustments(destination);
+
+        StartCorrectCoroutine();
     }
 }

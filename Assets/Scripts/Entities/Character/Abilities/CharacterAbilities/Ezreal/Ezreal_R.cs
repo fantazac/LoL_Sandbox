@@ -11,21 +11,27 @@ public class Ezreal_R : DirectionTargetedProjectile, CharacterAbility
 
     protected Ezreal_R()
     {
+        abilityName = "Trueshot Barrage";
+
+        abilityType = AbilityType.Skillshot;
         affectedUnitType = AbilityAffectedUnitType.ENEMIES;
         effectType = AbilityEffectType.AREA_OF_EFFECT;
         damageType = DamageType.MAGIC;
 
+        MaxLevel = 3;
+
         range = (float)Range.GLOBAL;
         speed = 2000;
-        damage = 350;// 350/500/650 + BONUS AD % 100 + TOTAL AP % 90
-        resourceCost = 100;
-        cooldown = 120;
+        damage = 350;// 350/500/650
+        damagePerLevel = 150;
+        bonusADScaling = 1;// 100%
+        totalAPScaling = 0.9f;// 90%
+        resourceCost = 100;// 100
+        cooldown = 120;// 120
         castTime = 1;
         delayCastTime = new WaitForSeconds(castTime);
 
         startCooldownOnAbilityCast = true;
-
-        HasCastTime = true;
     }
 
     protected override void SetSpritePaths()
@@ -44,17 +50,14 @@ public class Ezreal_R : DirectionTargetedProjectile, CharacterAbility
 
         yield return delayCastTime;
 
-        Projectile projectile = ((GameObject)Instantiate(projectilePrefab, positionOnCast, rotationOnCast)).GetComponent<Projectile>();
-        projectile.ShootProjectile(character.Team, affectedUnitType, speed, range);
-        projectile.OnAbilityEffectHit += OnProjectileHit;
-        projectile.OnProjectileReachedEnd += OnProjectileReachedEnd;
+        SpawnProjectile(positionOnCast, rotationOnCast);
 
         FinishAbilityCast();
     }
 
     protected override void OnProjectileHit(AbilityEffect projectile, Entity entityHit)
     {
-        entityHit.EntityStats.Health.Reduce(damage * currentDamageMultiplier);
+        entityHit.EntityStats.Health.Reduce(GetAbilityDamage() * currentDamageMultiplier);
         if (currentDamageMultiplier > DAMAGE_REDUCTION_CAP)
         {
             currentDamageMultiplier -= DAMAGE_REDUCTION_PER_TARGET_HIT;

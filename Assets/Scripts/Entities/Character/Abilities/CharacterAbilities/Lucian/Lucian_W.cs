@@ -11,27 +11,34 @@ public class Lucian_W : DirectionTargetedProjectile, CharacterAbility
 
     protected Lucian_W()
     {
+        abilityName = "Ardent Blaze";
+
+        abilityType = AbilityType.Skillshot;
         affectedUnitType = AbilityAffectedUnitType.ENEMIES;
         effectType = AbilityEffectType.SINGLE_TARGET;
         damageType = DamageType.MAGIC;
 
+        MaxLevel = 5;
+
         range = 900;
         speed = 1550;
-        damage = 60;// 60/100/140/180/220 + TOTAL AP % 90
-        resourceCost = 50;
+        damage = 85;// 85/125/165/205/245
+        damagePerLevel = 40;
+        totalAPScaling = 0.9f;// 90%
+        resourceCost = 50;// 50
         cooldown = 14;// 14/13/12/11/10
+        cooldownPerLevel = -1;
         castTime = 0.25f;
         delayCastTime = new WaitForSeconds(castTime);
 
         buffDuration = 1;
         buffFlatBonus = 60;// 60/65/70/75/80
+        buffFlatBonusPerLevel = 5;
         debuffDuration = 6;
 
         startCooldownOnAbilityCast = true;
 
         durationAoE = 0.2f;
-
-        HasCastTime = true;
     }
 
     protected override void SetSpritePaths()
@@ -58,7 +65,7 @@ public class Lucian_W : DirectionTargetedProjectile, CharacterAbility
 
     private void OnAreaOfEffectHit(AbilityEffect projectile, Entity entityHit)
     {
-        entityHit.EntityStats.Health.Reduce(damage);
+        entityHit.EntityStats.Health.Reduce(GetAbilityDamage());
         AddNewDebuffToEntityHit(entityHit);
         AbilityHit();
     }

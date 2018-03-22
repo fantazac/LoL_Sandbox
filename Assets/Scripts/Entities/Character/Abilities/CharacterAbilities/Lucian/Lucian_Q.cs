@@ -11,20 +11,28 @@ public class Lucian_Q : UnitTargeted, CharacterAbility
 
     protected Lucian_Q()
     {
+        abilityName = "Piercing Light";
+
+        abilityType = AbilityType.AreaOfEffect;
         affectedUnitType = AbilityAffectedUnitType.ENEMIES;
         effectType = AbilityEffectType.AREA_OF_EFFECT;
         damageType = DamageType.PHYSICAL;
 
+        MaxLevel = 5;
+
         range = 500;
-        damage = 85;// 85/120/155/190/225 + BONUS AD % 60/70/80/90/100
+        damage = 85;// 85/120/155/190/225
+        damagePerLevel = 35;
+        bonusADScaling = 0.6f;// 60/70/80/90/100 %
+        bonusADScalingPerLevel = 0.1f;
         resourceCost = 50;// 50/60/70/80/90
+        resourceCostPerLevel = 10;
         cooldown = 9;// 9/8/7/6/5
+        cooldownPerLevel = -1;
         castTime = 0.4f;
         delayCastTime = new WaitForSeconds(castTime);
 
         durationAoE = 0.15f;
-
-        HasCastTime = true;
     }
 
     protected override void SetSpritePaths()
@@ -34,15 +42,15 @@ public class Lucian_Q : UnitTargeted, CharacterAbility
 
     protected override void Start()
     {
-        CastableAbilitiesWhileActive.Add(GetComponent<Lucian_W>());
-        CastableAbilitiesWhileActive.Add(GetComponent<Lucian_R>());
+        AbilitiesToDisableWhileActive.Add(this);
+        AbilitiesToDisableWhileActive.Add(GetComponent<Lucian_E>());
 
         base.Start();
 
-        character.CharacterLevelManager.OnLevelUp += OnLevelUp;
+        character.CharacterLevelManager.OnLevelUp += OnCharacterLevelUp;
     }
 
-    public override void OnLevelUp(int level)
+    public override void OnCharacterLevelUp(int level)
     {
         castTime = (0.409f - (0.009f * level));
         delayCastTime = new WaitForSeconds(castTime);

@@ -8,14 +8,14 @@ public class DummyBaseStats : CharacterBaseStats
 
     protected DummyBaseStats()
     {
-        BaseHealth = 3000;
+        BaseHealth = 10000;
         BaseResource = 0;
 
         BaseAttackDamage = 0;
         BaseAbilityPower = 0;
-        BaseArmor = 50;
-        BaseMagicResistance = 50;
-        BaseAttackSpeed = 0.625f;
+        BaseArmor = 100;
+        BaseMagicResistance = 100;
+        BaseAttackSpeed = 0.658f;
         BaseCooldownReduction = 0;
         BaseCriticalStrikeChance = 0;
         BaseMovementSpeed = 325;

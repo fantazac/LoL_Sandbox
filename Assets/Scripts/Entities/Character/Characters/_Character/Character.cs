@@ -17,6 +17,8 @@ public abstract class Character : Entity
     public CharacterOrientation CharacterOrientation { get; private set; }
     public CharacterStatsManager CharacterStatsManager { get; private set; }
 
+    public AbilityLevelUpUIManager AbilityLevelUpUIManager { get; private set; }
+    public AbilityTimeBarUIManager AbilityTimeBarUIManager { get; private set; }
     public AbilityUIManager AbilityUIManager { get; private set; }
     public BuffUIManager BuffUIManager { get; private set; }
     public BuffUIManager DebuffUIManager { get; private set; }
@@ -29,6 +31,8 @@ public abstract class Character : Entity
     {
         if ((!StaticObjects.OnlineMode && EntityId == 0) || PhotonView.isMine)
         {
+            AbilityLevelUpUIManager = transform.parent.GetComponentInChildren<AbilityLevelUpUIManager>();
+            AbilityTimeBarUIManager = transform.parent.GetComponentInChildren<AbilityTimeBarUIManager>();
             AbilityUIManager = transform.parent.GetComponentInChildren<AbilityUIManager>();
             BuffUIManager[] buffUIManagers = transform.parent.GetComponentsInChildren<BuffUIManager>();
             BuffUIManager = buffUIManagers[0];
@@ -72,7 +76,7 @@ public abstract class Character : Entity
     }
 
     [PunRPC]
-    protected void ReceiveFromServer_ConnectionInfo(Vector3 position, Quaternion rotation, EntityTeam team, int characterId, int characterLevel)
+    protected void ReceiveFromServer_ConnectionInfo(Vector3 position, Quaternion rotation, EntityTeam team, int characterId, int characterLevel, int[] characterAbilityLevels)
     {
         if (sentConnectionInfoRequest)
         {
@@ -82,6 +86,7 @@ public abstract class Character : Entity
             Team = team;
             EntityId = characterId;
             CharacterLevelManager.SetLevelFromLoad(characterLevel);
+            CharacterAbilityManager.SetAbilityLevelsFromLoad(characterAbilityLevels);
             OnConnectionInfoReceived(this);
         }
     }
@@ -91,7 +96,7 @@ public abstract class Character : Entity
     {
         if (PhotonView.isMine)
         {
-            PhotonView.RPC("ReceiveFromServer_ConnectionInfo", PhotonTargets.Others, transform.position, transform.rotation, Team, EntityId, CharacterLevelManager.Level);
+            PhotonView.RPC("ReceiveFromServer_ConnectionInfo", PhotonTargets.Others, transform.position, transform.rotation, Team, EntityId, CharacterLevelManager.Level, CharacterAbilityManager.GetCharacterAbilityLevels());
         }
     }
 

@@ -7,12 +7,18 @@ public class Flash : GroundTargetedBlink, SummonerAbility
 {
     protected Flash()
     {
+        abilityName = "Flash";
+
+        abilityType = AbilityType.Blink;
+
         range = 400;
         cooldown = 300;
 
         startCooldownOnAbilityCast = true;
 
-        CanBeCastAtAnytime = true;
+        CanBeCastDuringOtherAbilityCastTimes = true;
+
+        IsEnabled = true;
     }
 
     protected override void SetSpritePaths()

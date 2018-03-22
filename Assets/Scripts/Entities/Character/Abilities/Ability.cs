@@ -8,29 +8,51 @@ public abstract class Ability : MonoBehaviour
 
     protected AbilityAffectedUnitType affectedUnitType;
     protected AbilityEffectType effectType;
+    protected AbilityType abilityType;
     protected DamageType damageType;
 
-    public int ID { get; set; }
+    protected IEnumerator abilityEffectCoroutine;
 
+    public int AbilityLevel { get; protected set; }
+    public int ID { get; set; }
+    public int MaxLevel { get; protected set; }
+
+    protected string abilityName;
     protected float castTime;
-    protected float cooldown;
+    protected float channelTime;
+    protected float cooldownBeforeRecast;
     protected float cooldownRemaining;
-    protected float damage;
     protected WaitForSeconds delayCastTime;
+    protected WaitForSeconds delayChannelTime;
     protected float durationOfActive;
     protected RaycastHit hit;
     protected Vector3 destinationOnCast;
     protected Vector3 positionOnCast;
     protected Quaternion rotationOnCast;
     protected float range;
-    protected float resourceCost;
     protected float speed;
     protected bool startCooldownOnAbilityCast;
+
+    protected float bonusADScaling;
+    protected float bonusADScalingPerLevel;
+    protected float cooldown;
+    protected float cooldownPerLevel;
+    protected float cooldownOnCancel;
+    protected float damage;
+    protected float damagePerLevel;
+    protected float resourceCost;
+    protected float resourceCostPerLevel;
+    protected float totalADScaling;
+    protected float totalADScalingPerLevel;
+    protected float totalAPScaling;
+    protected float totalAPScalingPerLevel;
 
     protected float buffDuration;
     protected int buffMaximumStacks;
     protected float buffFlatBonus;
+    protected float buffFlatBonusPerLevel;
     protected float buffPercentBonus;
+    protected float buffPercentBonusPerLevel;
 
     protected float debuffDuration;
     protected int debuffMaximumStacks;
@@ -40,27 +62,39 @@ public abstract class Ability : MonoBehaviour
     [HideInInspector]
     public Sprite abilitySprite;
     [HideInInspector]
+    public Sprite abilityRecastSprite;
+    [HideInInspector]
     public Sprite buffSprite;
     [HideInInspector]
     public Sprite debuffSprite;
 
     protected string abilitySpritePath;
+    protected string abilityRecastSpritePath;
     protected string buffSpritePath;
     protected string debuffSpritePath;
 
-    public bool CanBeCastAtAnytime { get; protected set; }
-    public bool CanBeCancelled { get; protected set; }
-    public bool CanCastOtherAbilitiesWhileActive { get; private set; }
-    public bool CanMoveWhileCasting { get; protected set; }
+    public bool CanBeCastDuringOtherAbilityCastTimes { get; protected set; }
+    public bool CanBeRecasted { get; protected set; }
+    public bool CanMoveWhileActive { get; protected set; }
+    public bool CanMoveWhileChanneling { get; protected set; }
+    public bool CannotCastAnyAbilityWhileActive { get; protected set; }
     public bool CannotRotateWhileCasting { get; protected set; }
+    public bool CanUseAnyAbilityWhileChanneling { get; protected set; }
     public bool CanUseBasicAttacksWhileCasting { get; protected set; }
-    public bool IsADash { get; protected set; }
+    public bool IsBeingCasted { get; protected set; }
+    public bool IsBeingChanneled { get; protected set; }
+    public bool IsEnabled { get; protected set; }
     public bool IsOnCooldown { get; protected set; }
+    public bool IsOnCooldownForRecast { get; protected set; }
+    public bool HasCastTime { get; private set; }
+    public bool HasChannelTime { get; private set; }
+    public bool HasReducedCooldownOnAbilityCancel { get; private set; }
     public bool OfflineOnly { get; protected set; }
-    public bool HasCastTime { get; protected set; }
     public bool ResetBasicAttackCycleOnAbilityFinished { get; protected set; }
 
+    public List<Ability> AbilitiesToDisableWhileActive { get; protected set; }
     public List<Ability> CastableAbilitiesWhileActive { get; protected set; }
+
     public List<Entity> EntitiesAffectedByBuff { get; protected set; }
     public List<Entity> EntitiesAffectedByDebuff { get; protected set; }
 
@@ -75,6 +109,7 @@ public abstract class Ability : MonoBehaviour
 
     protected Ability()
     {
+        AbilitiesToDisableWhileActive = new List<Ability>();
         CastableAbilitiesWhileActive = new List<Ability>();
         EntitiesAffectedByBuff = new List<Entity>();
         EntitiesAffectedByDebuff = new List<Entity>();
@@ -89,12 +124,15 @@ public abstract class Ability : MonoBehaviour
         if (!StaticObjects.OnlineMode || character.PhotonView.isMine)
         {
             abilitySprite = Resources.Load<Sprite>(abilitySpritePath);
+            abilityRecastSprite = Resources.Load<Sprite>(abilityRecastSpritePath);
         }
     }
 
     protected virtual void Start()
     {
-        CanCastOtherAbilitiesWhileActive = CastableAbilitiesWhileActive.Count > 0;
+        HasCastTime = castTime > 0;
+        HasChannelTime = channelTime > 0;
+        HasReducedCooldownOnAbilityCancel = cooldownOnCancel > 0;
 
         ModifyValues();
     }
@@ -120,24 +158,78 @@ public abstract class Ability : MonoBehaviour
 
     protected void StartAbilityCast()
     {
+        foreach (Ability ability in AbilitiesToDisableWhileActive)
+        {
+            if (ability.AbilityLevel > 0)
+            {
+                ability.DisableAbility();
+            }
+        }
+        if (CanBeRecasted)
+        {
+            StartCooldownForRecast();
+        }
         if (OnAbilityUsed != null)
         {
             OnAbilityUsed(this);
         }
+        IsBeingCasted = true;
+        if (character.AbilityTimeBarUIManager)
+        {
+            if (HasCastTime && HasChannelTime)
+            {
+                character.AbilityTimeBarUIManager.SetCastTimeAndChannelTime(castTime, channelTime, abilityName, ID);
+            }
+            else if (HasCastTime)
+            {
+                character.AbilityTimeBarUIManager.SetCastTime(castTime, abilityName, ID);
+            }
+            else if (HasChannelTime)
+            {
+                character.AbilityTimeBarUIManager.SetChannelTime(channelTime, abilityName, ID);
+            }
+        }
         StartCooldown(true);
     }
 
-    protected void FinishAbilityCast()
+    protected void FinishAbilityCast(bool abilityWasCancelled = false)
     {
+        abilityEffectCoroutine = null;
+        foreach (Ability ability in AbilitiesToDisableWhileActive)
+        {
+            if (ability.AbilityLevel > 0)
+            {
+                ability.EnableAbility();
+            }
+        }
         if (OnAbilityFinished != null)
         {
             OnAbilityFinished(this);
         }
+        IsBeingCasted = false;
         if (ResetBasicAttackCycleOnAbilityFinished)
         {
             character.EntityBasicAttack.ResetBasicAttack();
         }
-        StartCooldown(false);
+        StartCooldown(false, abilityWasCancelled);
+    }
+
+    public void DisableAbility()
+    {
+        IsEnabled = false;
+        if (!IsOnCooldown && character.AbilityUIManager)
+        {
+            character.AbilityUIManager.DisableAbility(ID);
+        }
+    }
+
+    public void EnableAbility()
+    {
+        IsEnabled = true;
+        if (!IsOnCooldown && character.AbilityUIManager)
+        {
+            character.AbilityUIManager.EnableAbility(ID);
+        }
     }
 
     protected void AbilityHit()
@@ -148,11 +240,19 @@ public abstract class Ability : MonoBehaviour
         }
     }
 
-    protected void StartCooldown(bool calledInStartAbilityCast)
+    protected void StartCooldown(bool calledInStartAbilityCast, bool abilityWasCancelled = false)
     {
-        if (calledInStartAbilityCast == startCooldownOnAbilityCast && (!StaticObjects.OnlineMode || character.PhotonView.isMine))
+        if (calledInStartAbilityCast == startCooldownOnAbilityCast && character.AbilityUIManager)
         {
-            StartCoroutine(PutAbilityOffCooldown());
+            StartCoroutine(PutAbilityOffCooldown(abilityWasCancelled ? cooldownOnCancel : cooldown));
+        }
+    }
+
+    protected void StartCooldownForRecast()
+    {
+        if (character.AbilityUIManager)
+        {
+            StartCoroutine(PutAbilityOffCooldownForRecast());
         }
     }
 
@@ -162,10 +262,10 @@ public abstract class Ability : MonoBehaviour
         rotationOnCast = Quaternion.LookRotation((destinationOnCast - transform.position).normalized);
     }
 
-    protected virtual IEnumerator PutAbilityOffCooldown()
+    protected virtual IEnumerator PutAbilityOffCooldown(float cooldownOnStart)
     {
         IsOnCooldown = true;
-        cooldownRemaining = cooldown;
+        cooldownRemaining = cooldownOnStart;
 
         yield return null;
 
@@ -175,13 +275,35 @@ public abstract class Ability : MonoBehaviour
         {
             cooldownRemaining -= Time.deltaTime;
 
-            character.AbilityUIManager.UpdateAbilityCooldown(ID, cooldown, cooldownRemaining);
+            character.AbilityUIManager.UpdateAbilityCooldown(ID, cooldownOnStart, cooldownRemaining);
 
             yield return null;
         }
 
-        character.AbilityUIManager.SetAbilityOffCooldown(ID);
+        character.AbilityUIManager.SetAbilityOffCooldown(ID, IsEnabled);
         IsOnCooldown = false;
+    }
+
+    protected virtual IEnumerator PutAbilityOffCooldownForRecast()
+    {
+        IsOnCooldownForRecast = true;
+        cooldownRemaining = cooldownBeforeRecast;
+
+        yield return null;
+
+        character.AbilityUIManager.SetAbilityOnCooldownForRecast(ID);
+
+        while (cooldownRemaining > 0)
+        {
+            cooldownRemaining -= Time.deltaTime;
+
+            character.AbilityUIManager.UpdateAbilityCooldownForRecast(ID, cooldownBeforeRecast, cooldownRemaining);
+
+            yield return null;
+        }
+
+        character.AbilityUIManager.SetAbilityOffCooldownForRecast(ID);
+        IsOnCooldownForRecast = false;
     }
 
     public void ResetCooldown()
@@ -202,7 +324,7 @@ public abstract class Ability : MonoBehaviour
             buff = new Buff(this, entityHit, false, buffDuration);
             entityHit.EntityBuffManager.ApplyBuff(buff, buffSprite);
         }
-        else
+        else if (buffDuration > 0)
         {
             buff.ResetDurationRemaining();
         }
@@ -240,6 +362,51 @@ public abstract class Ability : MonoBehaviour
         }
     }
 
+    public void LevelUp()
+    {
+        if (AbilityLevel > 0 && AbilityLevel < MaxLevel)
+        {
+            AbilityLevel++;
+
+            bonusADScaling += bonusADScalingPerLevel;
+            cooldown += cooldownPerLevel;
+            damage += damagePerLevel;
+            resourceCost += resourceCostPerLevel;
+            totalADScaling += totalADScalingPerLevel;
+            totalAPScaling += totalAPScalingPerLevel;
+
+            buffFlatBonus += buffFlatBonusPerLevel;
+            buffPercentBonus += buffPercentBonusPerLevel;
+
+            LevelUpExtraStats();
+
+            if (character.AbilityUIManager)
+            {
+                character.AbilityUIManager.LevelUpAbility(ID, AbilityLevel);
+            }
+        }
+        else if (AbilityLevel == 0)
+        {
+            AbilityLevel++;
+            EnableAbility();
+
+            if (character.AbilityUIManager)
+            {
+                character.AbilityUIManager.LevelUpAbility(ID, AbilityLevel);
+            }
+        }
+    }
+
+    protected float GetAbilityDamage()
+    {
+        return damage +
+            (bonusADScaling * character.EntityStats.AttackDamage.GetBonus()) +
+            (totalADScaling * character.EntityStats.AttackDamage.GetTotal()) +
+            (totalAPScaling * character.EntityStats.AbilityPower.GetTotal());
+    }
+
+    public virtual void LevelUpExtraStats() { }
+
     public virtual void ApplyBuffToEntityHit(Entity entityHit, int currentStacks) { }
     public virtual void RemoveBuffFromEntityHit(Entity entityHit, int currentStacks) { }
     protected virtual void UpdateBuffOnAffectedEntities(float oldValue, float newValue) { }
@@ -248,16 +415,56 @@ public abstract class Ability : MonoBehaviour
     public virtual void RemoveDebuffFromEntityHit(Entity entityHit, int currentStacks) { }
     protected virtual void UpdateDebuffOnAffectedEntities(float oldValue, float newValue) { }
 
-    public virtual void OnLevelUp(int level) { }
+    public virtual void OnCharacterLevelUp(int level) { }
 
-    public virtual void CancelAbility()
+    public virtual void RecastAbility()
     {
-        StopAllCoroutines();
-        FinishAbilityCast();
+        CancelAbility();
+    }
+
+    public void CancelAbility()
+    {
+        if (abilityEffectCoroutine != null)
+        {
+            StopCoroutine(abilityEffectCoroutine);
+            if (character.AbilityTimeBarUIManager && (HasCastTime || HasChannelTime))
+            {
+                character.AbilityTimeBarUIManager.CancelCastTimeAndChannelTime(ID);
+            }
+            FinishAbilityCast(HasReducedCooldownOnAbilityCancel);
+        }
+    }
+
+    public AbilityType GetAbilityType()
+    {
+        return abilityType;
+    }
+
+    protected void StartCorrectCoroutine()
+    {
+        if (delayCastTime != null && delayChannelTime != null)
+        {
+            abilityEffectCoroutine = AbilityWithCastTimeAndChannelTime();
+        }
+        else if (delayCastTime != null)
+        {
+            abilityEffectCoroutine = AbilityWithCastTime();
+        }
+        else if (delayChannelTime != null)
+        {
+            abilityEffectCoroutine = AbilityWithChannelTime();
+        }
+        else
+        {
+            abilityEffectCoroutine = AbilityWithoutDelay();
+        }
+        StartCoroutine(abilityEffectCoroutine);
     }
 
     protected virtual IEnumerator AbilityWithCastTime() { yield return null; }
-    protected virtual IEnumerator AbilityWithoutCastTime() { yield return null; }
+    protected virtual IEnumerator AbilityWithCastTimeAndChannelTime() { yield return null; }
+    protected virtual IEnumerator AbilityWithChannelTime() { yield return null; }
+    protected virtual IEnumerator AbilityWithoutDelay() { yield return null; }
 }
 
 public interface PassiveCharacterAbility { }

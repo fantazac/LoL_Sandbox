@@ -8,12 +8,16 @@ public class CharacterOrientation : MonoBehaviour
     private CharacterAbilityManager characterAbilityManager;
 
     private IEnumerator castPointRotation;
+    private IEnumerator movementRotation;
     private bool isRotatingTowardsCastPoint;
 
-    private int rotationSpeed = 15;
+    private int rotationSpeed = 18;// note: rotation under 18 makes EzrealE stop rotation for a short time after the ability is done
 
     private Vector3 rotationAmountLastFrame;
     private Vector3 rotationAmount;
+
+    private Vector3 castPointRotationAmountLastFrame;
+    private Vector3 castPointRotationAmount;
 
     private void Awake()
     {
@@ -23,7 +27,11 @@ public class CharacterOrientation : MonoBehaviour
     public void RotateCharacterInstantly(Vector3 destination)
     {
         lastInstantRotation = destination;
-        transform.rotation = Quaternion.LookRotation((destination - transform.position).normalized);
+        Vector3 rotation = (destination - transform.position).normalized;
+        if (rotation != Vector3.zero)
+        {
+            transform.rotation = Quaternion.LookRotation((destination - transform.position).normalized);
+        }
     }
 
     public void RotateCharacterInstantlyToLastInstantRotation()
@@ -31,17 +39,20 @@ public class CharacterOrientation : MonoBehaviour
         transform.rotation = Quaternion.LookRotation((lastInstantRotation - transform.position).normalized); ;
     }
 
-    public void StopAllRotation()
+    public void StopMovementRotation()
     {
-        castPointRotation = null;
-        isRotatingTowardsCastPoint = false;
-        StopAllCoroutines();
+        if (movementRotation != null)
+        {
+            StopCoroutine(movementRotation);
+            movementRotation = null;
+        }
     }
 
     public void RotateCharacter(Vector3 destination)
     {
-        StopAllRotation();
-        StartCoroutine(Rotate(destination));
+        StopMovementRotation();
+        movementRotation = Rotate(destination);
+        StartCoroutine(movementRotation);
     }
 
     private IEnumerator Rotate(Vector3 destination)
@@ -62,12 +73,15 @@ public class CharacterOrientation : MonoBehaviour
 
             yield return null;
         }
+
+        movementRotation = null;
     }
 
     public void RotateCharacterUntilReachedTarget(Transform target)
     {
-        StopAllRotation();
-        StartCoroutine(RotateUntilReachedTarget(target));
+        StopMovementRotation();
+        movementRotation = RotateUntilReachedTarget(target);
+        StartCoroutine(movementRotation);
     }
 
     private IEnumerator RotateUntilReachedTarget(Transform target)
@@ -88,35 +102,41 @@ public class CharacterOrientation : MonoBehaviour
 
             yield return null;
         }
+
+        movementRotation = null;
     }
 
     public void RotateCharacterTowardsCastPoint(Vector3 castPoint)
     {
+        StopRotationTowardsCastPoint();
         castPointRotation = RotateUntilFacingCastPoint(castPoint);
         StartCoroutine(castPointRotation);
     }
 
     public void StopRotationTowardsCastPoint()
     {
-        StopCoroutine(castPointRotation);
-        castPointRotation = null;
-        isRotatingTowardsCastPoint = false;
+        if (castPointRotation != null)
+        {
+            StopCoroutine(castPointRotation);
+            castPointRotation = null;
+            isRotatingTowardsCastPoint = false;
+        }
     }
 
     private IEnumerator RotateUntilFacingCastPoint(Vector3 castPoint)
     {
         isRotatingTowardsCastPoint = true;
 
-        rotationAmount = Vector3.up;
-        rotationAmountLastFrame = Vector3.zero;
+        castPointRotationAmount = Vector3.up;
+        castPointRotationAmountLastFrame = Vector3.zero;
 
-        while (rotationAmountLastFrame != rotationAmount)
+        while (castPointRotationAmountLastFrame != castPointRotationAmount)
         {
-            rotationAmountLastFrame = rotationAmount;
+            castPointRotationAmountLastFrame = castPointRotationAmount;
 
-            rotationAmount = Vector3.RotateTowards(transform.forward, castPoint - transform.position, Time.deltaTime * rotationSpeed, 0);
+            castPointRotationAmount = Vector3.RotateTowards(transform.forward, castPoint - transform.position, Time.deltaTime * rotationSpeed, 0);
 
-            transform.rotation = Quaternion.LookRotation(rotationAmount);
+            transform.rotation = Quaternion.LookRotation(castPointRotationAmount);
 
             yield return null;
         }
@@ -127,7 +147,8 @@ public class CharacterOrientation : MonoBehaviour
 
     private bool CanRotate()
     {
-        return !(isRotatingTowardsCastPoint || characterAbilityManager.IsUsingAbilityPreventingRotation() || 
-            characterAbilityManager.IsUsingAbilityThatHasACastTime() || characterAbilityManager.IsUsingADashAbility());
+        return !(isRotatingTowardsCastPoint || characterAbilityManager.IsUsingAbilityPreventingRotation() ||
+            characterAbilityManager.IsUsingAbilityThatHasACastTime() || characterAbilityManager.IsUsingAbilityThatHasAChannelTime() ||
+            characterAbilityManager.IsUsingADashAbility());
     }
 }

@@ -78,12 +78,12 @@ GameObject:
   - component: {fileID: 114324357708582316}
   - component: {fileID: 114729605349889214}
   - component: {fileID: 114372474999472434}
-  - component: {fileID: 114361955831427100}
+  - component: {fileID: 114422174247096404}
   - component: {fileID: 114620902814611038}
+  - component: {fileID: 114880949937560802}
   - component: {fileID: 114255252513267966}
   - component: {fileID: 114904757158163134}
   - component: {fileID: 114986620668545128}
-  - component: {fileID: 114165310821136542}
   - component: {fileID: 114363818384739092}
   m_Layer: 8
   m_Name: Lucian
@@ -251,6 +251,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   baseValue: 0
+  perLevelValue: 0
   total: 0
   flatBonus: 0
   percentBonus: 0
@@ -290,6 +291,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   baseValue: 0
+  perLevelValue: 0
   total: 0
   flatBonus: 0
   percentBonus: 0
@@ -309,6 +311,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   baseValue: 0
+  perLevelValue: 0
   total: 0
   flatBonus: 0
   percentBonus: 0
@@ -326,6 +329,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   baseValue: 0
+  perLevelValue: 0
   total: 0
   flatBonus: 0
   percentBonus: 0
@@ -343,25 +347,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   baseValue: 0
+  perLevelValue: 0
   total: 0
   flatBonus: 0
   percentBonus: 0
   flatMalus: 0
   percentMalus: 0
---- !u!114 &114165310821136542
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1507067852754532}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 789237ebabbcd7048b3f884a43158838, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  abilitySprite: {fileID: 0}
-  buffSprite: {fileID: 0}
-  debuffSprite: {fileID: 0}
 --- !u!114 &114186498823218726
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -402,6 +393,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   abilitySprite: {fileID: 0}
+  abilityRecastSprite: {fileID: 0}
   buffSprite: {fileID: 0}
   debuffSprite: {fileID: 0}
   spawnDummyAbilities:
@@ -419,6 +411,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   abilitySprite: {fileID: 21300000, guid: ab5344e185e3a86408b2a63aea61f048, type: 3}
+  abilityRecastSprite: {fileID: 0}
   buffSprite: {fileID: 0}
   debuffSprite: {fileID: 0}
 --- !u!114 &114318922436608908
@@ -444,6 +437,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   abilitySprite: {fileID: 21300000, guid: d5bfd520d124a8f41a496e03d2f3daae, type: 3}
+  abilityRecastSprite: {fileID: 0}
   buffSprite: {fileID: 0}
   debuffSprite: {fileID: 0}
   projectilePrefab: {fileID: 1000011332508624, guid: 2dd65a2c59d731245b6e300dbd615760,
@@ -462,6 +456,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   baseValue: 0
+  perLevelValue: 0
   total: 0
   flatBonus: 0
   percentBonus: 0
@@ -479,25 +474,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   baseValue: 0
+  perLevelValue: 0
   total: 0
   flatBonus: 0
   percentBonus: 0
   flatMalus: 0
   percentMalus: 0
---- !u!114 &114361955831427100
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1507067852754532}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b441fe6c6b8106e4fb9e14d8dc6d3e19, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  abilitySprite: {fileID: 21300000, guid: 7460e194506a93f4fafc79fd1682b3da, type: 3}
-  buffSprite: {fileID: 0}
-  debuffSprite: {fileID: 0}
 --- !u!114 &114363818384739092
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -521,6 +503,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   baseValue: 0
+  perLevelValue: 0
   total: 0
   flatBonus: 0
   percentBonus: 0
@@ -538,10 +521,26 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   abilitySprite: {fileID: 21300000, guid: 708670b0170e08747ab0f57a8f41e5a7, type: 3}
+  abilityRecastSprite: {fileID: 0}
   buffSprite: {fileID: 0}
   debuffSprite: {fileID: 0}
   projectilePrefab: {fileID: 1000010764437680, guid: 518710b74c6e1bb41becee4207ea623b,
     type: 2}
+--- !u!114 &114422174247096404
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1507067852754532}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df099550010c1ba40aedb0da333a97b6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  abilitySprite: {fileID: 0}
+  abilityRecastSprite: {fileID: 0}
+  buffSprite: {fileID: 0}
+  debuffSprite: {fileID: 0}
 --- !u!114 &114439890440468546
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -598,6 +597,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   abilitySprite: {fileID: 21300000, guid: 3068fcef45f70564daa683f96e850931, type: 3}
+  abilityRecastSprite: {fileID: 0}
   buffSprite: {fileID: 0}
   debuffSprite: {fileID: 0}
   areaOfEffectPrefab: {fileID: 1000011639411960, guid: 7d23b316a2ad36249a139ef23be8c616,
@@ -614,6 +614,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   baseValue: 0
+  perLevelValue: 0
   total: 0
   flatBonus: 0
   percentBonus: 0
@@ -632,6 +633,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   baseValue: 0
+  perLevelValue: 0
   total: 0
   flatBonus: 0
   percentBonus: 0
@@ -649,6 +651,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   abilitySprite: {fileID: 21300000, guid: e167926241f6d1a4db7711ab6f823f5e, type: 3}
+  abilityRecastSprite: {fileID: 0}
   buffSprite: {fileID: 0}
   debuffSprite: {fileID: 0}
 --- !u!114 &114625631600227958
@@ -663,6 +666,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   baseValue: 0
+  perLevelValue: 0
   total: 0
   flatBonus: 0
   percentBonus: 0
@@ -680,6 +684,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   baseValue: 0
+  perLevelValue: 0
   total: 0
   flatBonus: 0
   percentBonus: 0
@@ -697,6 +702,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   abilitySprite: {fileID: 21300000, guid: 997af1dc16ff7664ebc7ce6c46e3fbab, type: 3}
+  abilityRecastSprite: {fileID: 0}
   buffSprite: {fileID: 0}
   debuffSprite: {fileID: 0}
 --- !u!114 &114750828589375982
@@ -722,6 +728,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   baseValue: 0
+  perLevelValue: 0
   total: 0
   flatBonus: 0
   percentBonus: 0
@@ -739,6 +746,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   baseValue: 0
+  perLevelValue: 0
   total: 0
   flatBonus: 0
   percentBonus: 0
@@ -756,6 +764,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   baseValue: 0
+  perLevelValue: 0
   total: 0
   flatBonus: 0
   percentBonus: 0
@@ -773,6 +782,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   baseValue: 0
+  perLevelValue: 0
   total: 0
   flatBonus: 0
   percentBonus: 0
@@ -804,6 +814,21 @@ MonoBehaviour:
   instantiationId: -1
   currentMasterID: -1
   isRuntimeInstantiated: 0
+--- !u!114 &114880949937560802
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1507067852754532}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b492e05deb5c3e47a3d40368f3bbc58, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  abilitySprite: {fileID: 0}
+  abilityRecastSprite: {fileID: 0}
+  buffSprite: {fileID: 0}
+  debuffSprite: {fileID: 0}
 --- !u!114 &114904757158163134
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -816,6 +841,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   abilitySprite: {fileID: 0}
+  abilityRecastSprite: {fileID: 0}
   buffSprite: {fileID: 0}
   debuffSprite: {fileID: 0}
 --- !u!114 &114904866682542976
@@ -830,6 +856,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   baseValue: 0
+  perLevelValue: 0
   total: 0
   flatBonus: 0
   percentBonus: 0
@@ -869,6 +896,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   baseValue: 0
+  perLevelValue: 0
   total: 0
   flatBonus: 0
   percentBonus: 0
@@ -898,5 +926,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   abilitySprite: {fileID: 0}
+  abilityRecastSprite: {fileID: 0}
   buffSprite: {fileID: 0}
   debuffSprite: {fileID: 0}

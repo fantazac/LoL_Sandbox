@@ -8,9 +8,8 @@ public abstract class AutoTargetedBlink : AutoTargeted
     {
         StartAbilityCast();
 
-        character.transform.position = destination;
-        character.CharacterMovement.NotifyCharacterMoved();
+        character.CharacterMovement.StopAllMovement();
 
-        FinishAbilityCast();
+        StartCorrectCoroutine();
     }
 }

@@ -9,7 +9,11 @@ public class DestroyAllDummies : AutoTargeted, OtherAbility
 
     protected DestroyAllDummies()
     {
+        abilityName = "Destroy All Dummies";
+
         OfflineOnly = true;
+
+        IsEnabled = true;
     }
 
     protected override void Start()
