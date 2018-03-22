@@ -35,8 +35,11 @@ public class Recall : AutoTargetedBlink, OtherAbility
 
     protected override IEnumerator AbilityWithCastTimeAndChannelTime()
     {
+        IsBeingCasted = true;
+
         yield return delayCastTime;
 
+        IsBeingCasted = false;
         character.CharacterMovement.StopAllMovement();
         AddNewBuffToEntityHit(character);
         IsBeingChanneled = true;

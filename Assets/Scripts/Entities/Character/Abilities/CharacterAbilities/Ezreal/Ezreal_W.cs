@@ -41,8 +41,11 @@ public class Ezreal_W : DirectionTargetedProjectile, CharacterAbility
 
     protected override IEnumerator AbilityWithCastTime()
     {
+        IsBeingCasted = true;
+
         yield return delayCastTime;
 
+        IsBeingCasted = false;
         character.CharacterOrientation.RotateCharacterInstantly(destinationOnCast);
 
         SpawnProjectile(transform.position + (transform.forward * projectilePrefab.transform.localScale.z * 0.65f), transform.rotation);

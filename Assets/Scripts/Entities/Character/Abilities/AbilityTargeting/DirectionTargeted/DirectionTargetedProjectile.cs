@@ -8,8 +8,11 @@ public abstract class DirectionTargetedProjectile : DirectionTargeted
 
     protected override IEnumerator AbilityWithCastTime()
     {
+        IsBeingCasted = true;
+
         yield return delayCastTime;
 
+        IsBeingCasted = false;
         character.CharacterOrientation.RotateCharacterInstantly(destinationOnCast);
 
         SpawnProjectile(transform.position + (transform.forward * projectilePrefab.transform.localScale.z * 0.5f), transform.rotation);

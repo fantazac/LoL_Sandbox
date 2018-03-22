@@ -50,8 +50,11 @@ public class Ezreal_E : GroundTargetedBlink, CharacterAbility
 
     protected override IEnumerator AbilityWithCastTime()
     {
+        IsBeingCasted = true;
+
         yield return delayCastTime;
 
+        IsBeingCasted = false;
         destinationOnCast = FindPointToMoveTo(destinationOnCast, transform.position);
         character.CharacterOrientation.RotateCharacterInstantly(destinationOnCast);
         transform.position = destinationOnCast;

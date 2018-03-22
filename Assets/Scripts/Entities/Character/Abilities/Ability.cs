@@ -81,6 +81,7 @@ public abstract class Ability : MonoBehaviour
     public bool CannotRotateWhileCasting { get; protected set; }
     public bool CanUseAnyAbilityWhileChanneling { get; protected set; }
     public bool CanUseBasicAttacksWhileCasting { get; protected set; }
+    public bool IsActive { get; protected set; }
     public bool IsBeingCasted { get; protected set; }
     public bool IsBeingChanneled { get; protected set; }
     public bool IsEnabled { get; protected set; }
@@ -173,7 +174,7 @@ public abstract class Ability : MonoBehaviour
         {
             OnAbilityUsed(this);
         }
-        IsBeingCasted = true;
+        IsActive = true;
         if (character.AbilityTimeBarUIManager)
         {
             if (HasCastTime && HasChannelTime)
@@ -206,7 +207,7 @@ public abstract class Ability : MonoBehaviour
         {
             OnAbilityFinished(this);
         }
-        IsBeingCasted = false;
+        IsActive = false;
         if (ResetBasicAttackCycleOnAbilityFinished)
         {
             character.EntityBasicAttack.ResetBasicAttack();

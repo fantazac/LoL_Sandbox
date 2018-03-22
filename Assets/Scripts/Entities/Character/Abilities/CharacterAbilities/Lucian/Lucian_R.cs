@@ -58,7 +58,6 @@ public class Lucian_R : DirectionTargetedProjectile, CharacterAbility
         AbilitiesToDisableWhileActive.Add(GetComponent<Lucian_W>());
 
         CastableAbilitiesWhileActive.Add(GetComponent<Lucian_E>());
-        CastableAbilitiesWhileActive.Add(GetComponent<Teleport>());
 
         base.Start();
     }
@@ -77,8 +76,11 @@ public class Lucian_R : DirectionTargetedProjectile, CharacterAbility
 
     protected override IEnumerator AbilityWithCastTime()
     {
+        IsBeingCasted = true;
+
         yield return delayCastTime;
 
+        IsBeingCasted = false;
         ShootProjectile(0);
 
         for (int i = 1; i < amountOfProjectilesToShoot; i++)

@@ -47,9 +47,11 @@ public class Ezreal_R : DirectionTargetedProjectile, CharacterAbility
     protected override IEnumerator AbilityWithCastTime()
     {
         SetPositionAndRotationOnCast(transform.position);
+        IsBeingCasted = true;
 
         yield return delayCastTime;
 
+        IsBeingCasted = false;
         SpawnProjectile(positionOnCast, rotationOnCast);
 
         FinishAbilityCast();

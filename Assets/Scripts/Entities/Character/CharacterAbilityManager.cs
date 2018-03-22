@@ -241,7 +241,7 @@ public class CharacterAbilityManager : MonoBehaviour
     {
         bool abilityToCastIsAvailable = abilityToCast != null;
 
-        if (abilityToCastIsAvailable && (abilityToCast.IsOnCooldown || abilityToCast.IsOnCooldownForRecast || abilityToCast.IsBeingCasted))
+        if (abilityToCastIsAvailable && (abilityToCast.IsOnCooldown || abilityToCast.IsOnCooldownForRecast || abilityToCast.IsActive))
         {
             return false;
         }
@@ -268,13 +268,19 @@ public class CharacterAbilityManager : MonoBehaviour
 
         foreach (Ability ability in currentlyUsedAbilities)
         {
-            if (ability.HasCastTime && !ability.CastableAbilitiesWhileActive.Contains(abilityToCast) && !(ability.HasChannelTime && ability.IsBeingChanneled && ability.CanUseAnyAbilityWhileChanneling))
+            if (CannotCastAbility(abilityToCast, ability))
             {
                 return true;
             }
         }
 
         return false;
+    }
+
+    private bool CannotCastAbility(Ability abilityToCast, Ability ability)
+    {
+        return ability.HasCastTime && ability.IsBeingCasted && !ability.CastableAbilitiesWhileActive.Contains(abilityToCast) &&
+            !(ability.HasChannelTime && ability.IsBeingChanneled && ability.CanUseAnyAbilityWhileChanneling);
     }
 
     public bool IsUsingAbilityPreventingMovement()
