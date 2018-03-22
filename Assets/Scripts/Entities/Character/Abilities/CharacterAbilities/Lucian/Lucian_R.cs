@@ -95,11 +95,6 @@ public class Lucian_R : DirectionTargetedProjectile, CharacterAbility
 
     private void ShootProjectile(int projectileId)
     {
-        projectile = ((GameObject)Instantiate(projectilePrefab,
-                transform.position + (transform.forward * projectilePrefab.transform.localScale.z * 0.5f) + (transform.right * (projectileId % 2 == 0 ? offset : -offset)),
-                transform.rotation)).GetComponent<Projectile>();
-        projectile.ShootProjectile(character.Team, affectedUnitType, speed, range);
-        projectile.OnAbilityEffectHit += OnProjectileHit;
-        projectile.OnProjectileReachedEnd += OnProjectileReachedEnd;
+        SpawnProjectile(transform.position + (transform.forward * projectilePrefab.transform.localScale.z * 0.5f) + (transform.right * (projectileId % 2 == 0 ? offset : -offset)), transform.rotation);
     }
 }
