@@ -51,7 +51,7 @@ public class CharacterLevelManager : MonoBehaviour
 
     public void SetLevelFromLoad(int characterLevel)
     {
-        for (int i = 0; i < characterLevel - 1; i++)
+        for (int i = 0; i < characterLevel; i++)
         {
             LevelUp();
         }
@@ -59,11 +59,11 @@ public class CharacterLevelManager : MonoBehaviour
 
     private void SendToServer_LevelUp()
     {
-        character.PhotonView.RPC("ReceiveFromServer_Level", PhotonTargets.AllViaServer);
+        character.PhotonView.RPC("ReceiveFromServer_LevelUp", PhotonTargets.AllViaServer);
     }
 
     [PunRPC]
-    private void ReceiveFromServer_Level()
+    private void ReceiveFromServer_LevelUp()
     {
         LevelUp();
     }
@@ -71,14 +71,15 @@ public class CharacterLevelManager : MonoBehaviour
     private void LevelUp()
     {
         ++Level;
-        if (!StaticObjects.OnlineMode || character.PhotonView.isMine)
+        SetPointsAvaiableForAbilities();
+        ++AbilityPoints;
+        if (character.AbilityLevelUpUIManager)
         {
-            SetPointsAvaiableForAbilities();
             character.AbilityLevelUpUIManager.gameObject.SetActive(true);
-            character.AbilityLevelUpUIManager.SetAbilityPoints(++AbilityPoints, pointsAvailableForQ, pointsAvailableForW, pointsAvailableForE, pointsAvailableForR);
+            character.AbilityLevelUpUIManager.SetAbilityPoints(AbilityPoints, pointsAvailableForQ, pointsAvailableForW, pointsAvailableForE, pointsAvailableForR);
             character.LevelUIManager.SetLevel(Level);
         }
-        if (OnLevelUp != null)
+        if (Level > 1 && OnLevelUp != null)
         {
             OnLevelUp(Level);
         }
@@ -100,7 +101,30 @@ public class CharacterLevelManager : MonoBehaviour
 
     private void OnAbilityLevelUp(int abilityId)
     {
-        if(AbilityPoints > 0)
+        if (StaticObjects.OnlineMode)
+        {
+            SendToServer_AbilityLevelUp(abilityId);
+        }
+        else
+        {
+            AbilityLevelUp(abilityId);
+        }
+    }
+
+    private void SendToServer_AbilityLevelUp(int abilityId)
+    {
+        character.PhotonView.RPC("ReceiveFromServer_AbilityLevelUp", PhotonTargets.AllViaServer, abilityId);
+    }
+
+    [PunRPC]
+    private void ReceiveFromServer_AbilityLevelUp(int abilityId)
+    {
+        AbilityLevelUp(abilityId);
+    }
+
+    private void AbilityLevelUp(int abilityId)
+    {
+        if (AbilityPoints > 0)
         {
             if (abilityId == 0 && pointsAvailableForQ > 0)
             {
@@ -126,7 +150,11 @@ public class CharacterLevelManager : MonoBehaviour
                 pointsAvailableForR--;
                 character.CharacterAbilityManager.LevelUpAbility(AbilityInput.R);
             }
-            character.AbilityLevelUpUIManager.SetAbilityPoints(AbilityPoints, pointsAvailableForQ, pointsAvailableForW, pointsAvailableForE, pointsAvailableForR);
+
+            if (character.AbilityLevelUpUIManager)
+            {
+                character.AbilityLevelUpUIManager.SetAbilityPoints(AbilityPoints, pointsAvailableForQ, pointsAvailableForW, pointsAvailableForE, pointsAvailableForR);
+            }
         }
     }
 
@@ -138,7 +166,7 @@ public class CharacterLevelManager : MonoBehaviour
             {
                 PrepareLevelUp();
             }
-            for(int i = 0; i < 5; i++)
+            for (int i = 0; i < 5; i++)
             {
                 OnAbilityLevelUp(0);
                 OnAbilityLevelUp(1);

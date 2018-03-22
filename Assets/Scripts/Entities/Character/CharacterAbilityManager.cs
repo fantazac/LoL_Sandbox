@@ -31,17 +31,19 @@ public class CharacterAbilityManager : MonoBehaviour
             Ability ability = abilitiesOnCharacter[i];
             ability.OnAbilityUsed += OnAbilityUsed;
             ability.OnAbilityFinished += OnAbilityFinished;
-            if (!(ability is OtherAbility) && (!StaticObjects.OnlineMode || character.PhotonView.isMine))
+            if (character.AbilityUIManager)
             {
-                ability.ID = i;
-                character.AbilityUIManager.SetAbilitySprite(i, ability.abilitySprite);
+                if (!(ability is OtherAbility))
+                {
+                    ability.ID = i;
+                    character.AbilityUIManager.SetAbilitySprite(i, ability.abilitySprite);
+                }
+                if (ability is CharacterAbility && !(ability is PassiveCharacterAbility))
+                {
+                    character.AbilityUIManager.DisableAbility(i);
+                    character.AbilityUIManager.SetMaxAbilityLevel(i, ability.MaxLevel);
+                }
             }
-            if(ability is CharacterAbility && !(ability is PassiveCharacterAbility))
-            {
-                character.AbilityUIManager.DisableAbility(i);
-                character.AbilityUIManager.SetMaxAbilityLevel(i, ability.MaxLevel);
-            }
-
             abilities.Add((AbilityInput)i, ability);
         }
     }
@@ -271,7 +273,7 @@ public class CharacterAbilityManager : MonoBehaviour
                 return true;
             }
         }
-        
+
         return false;
     }
 
@@ -405,6 +407,31 @@ public class CharacterAbilityManager : MonoBehaviour
         for (int i = 0; i < abilities.Count; i++)
         {
             abilities[(AbilityInput)i].ResetCooldown();
+        }
+    }
+
+    public int[] GetCharacterAbilityLevels()
+    {
+        return new int[] { abilities[AbilityInput.Q].AbilityLevel, abilities[AbilityInput.W].AbilityLevel, abilities[AbilityInput.E].AbilityLevel, abilities[AbilityInput.R].AbilityLevel };
+    }
+
+    public void SetAbilityLevelsFromLoad(int[] characterAbilityLevels)//TODO: Check all this works out
+    {
+        for (int i = 0; i < characterAbilityLevels[0]; i++)
+        {
+            abilities[AbilityInput.Q].LevelUp();
+        }
+        for (int i = 0; i < characterAbilityLevels[1]; i++)
+        {
+            abilities[AbilityInput.W].LevelUp();
+        }
+        for (int i = 0; i < characterAbilityLevels[2]; i++)
+        {
+            abilities[AbilityInput.E].LevelUp();
+        }
+        for (int i = 0; i < characterAbilityLevels[3]; i++)
+        {
+            abilities[AbilityInput.R].LevelUp();
         }
     }
 }

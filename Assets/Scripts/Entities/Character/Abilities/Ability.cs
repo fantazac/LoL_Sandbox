@@ -13,10 +13,10 @@ public abstract class Ability : MonoBehaviour
 
     protected IEnumerator abilityEffectCoroutine;
 
+    public int AbilityLevel { get; protected set; }
     public int ID { get; set; }
     public int MaxLevel { get; protected set; }
 
-    protected int abilityLevel;
     protected string abilityName;
     protected float castTime;
     protected float channelTime;
@@ -160,7 +160,7 @@ public abstract class Ability : MonoBehaviour
     {
         foreach (Ability ability in AbilitiesToDisableWhileActive)
         {
-            if (ability.abilityLevel > 0)
+            if (ability.AbilityLevel > 0)
             {
                 ability.DisableAbility();
             }
@@ -174,7 +174,7 @@ public abstract class Ability : MonoBehaviour
             OnAbilityUsed(this);
         }
         IsBeingCasted = true;
-        if (!StaticObjects.OnlineMode || character.PhotonView.isMine)
+        if (character.AbilityTimeBarUIManager)
         {
             if (HasCastTime && HasChannelTime)
             {
@@ -197,7 +197,7 @@ public abstract class Ability : MonoBehaviour
         abilityEffectCoroutine = null;
         foreach (Ability ability in AbilitiesToDisableWhileActive)
         {
-            if (ability.abilityLevel > 0)
+            if (ability.AbilityLevel > 0)
             {
                 ability.EnableAbility();
             }
@@ -217,7 +217,7 @@ public abstract class Ability : MonoBehaviour
     public void DisableAbility()
     {
         IsEnabled = false;
-        if (!IsOnCooldown && (!StaticObjects.OnlineMode || character.PhotonView.isMine))
+        if (!IsOnCooldown && character.AbilityUIManager)
         {
             character.AbilityUIManager.DisableAbility(ID);
         }
@@ -226,7 +226,7 @@ public abstract class Ability : MonoBehaviour
     public void EnableAbility()
     {
         IsEnabled = true;
-        if (!IsOnCooldown && (!StaticObjects.OnlineMode || character.PhotonView.isMine))
+        if (!IsOnCooldown && character.AbilityUIManager)
         {
             character.AbilityUIManager.EnableAbility(ID);
         }
@@ -242,7 +242,7 @@ public abstract class Ability : MonoBehaviour
 
     protected void StartCooldown(bool calledInStartAbilityCast, bool abilityWasCancelled = false)
     {
-        if (calledInStartAbilityCast == startCooldownOnAbilityCast && (!StaticObjects.OnlineMode || character.PhotonView.isMine))
+        if (calledInStartAbilityCast == startCooldownOnAbilityCast && character.AbilityUIManager)
         {
             StartCoroutine(PutAbilityOffCooldown(abilityWasCancelled ? cooldownOnCancel : cooldown));
         }
@@ -250,7 +250,7 @@ public abstract class Ability : MonoBehaviour
 
     protected void StartCooldownForRecast()
     {
-        if (!StaticObjects.OnlineMode || character.PhotonView.isMine)
+        if (character.AbilityUIManager)
         {
             StartCoroutine(PutAbilityOffCooldownForRecast());
         }
@@ -364,9 +364,9 @@ public abstract class Ability : MonoBehaviour
 
     public void LevelUp()
     {
-        if (abilityLevel > 0 && abilityLevel < MaxLevel)
+        if (AbilityLevel > 0 && AbilityLevel < MaxLevel)
         {
-            abilityLevel++;
+            AbilityLevel++;
 
             bonusADScaling += bonusADScalingPerLevel;
             cooldown += cooldownPerLevel;
@@ -382,17 +382,17 @@ public abstract class Ability : MonoBehaviour
 
             if (character.AbilityUIManager)
             {
-                character.AbilityUIManager.LevelUpAbility(ID, abilityLevel);
+                character.AbilityUIManager.LevelUpAbility(ID, AbilityLevel);
             }
         }
-        else if (abilityLevel == 0)
+        else if (AbilityLevel == 0)
         {
-            abilityLevel++;
+            AbilityLevel++;
             EnableAbility();
 
             if (character.AbilityUIManager)
             {
-                character.AbilityUIManager.LevelUpAbility(ID, abilityLevel);
+                character.AbilityUIManager.LevelUpAbility(ID, AbilityLevel);
             }
         }
     }

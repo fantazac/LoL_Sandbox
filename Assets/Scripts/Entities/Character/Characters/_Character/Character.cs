@@ -76,7 +76,7 @@ public abstract class Character : Entity
     }
 
     [PunRPC]
-    protected void ReceiveFromServer_ConnectionInfo(Vector3 position, Quaternion rotation, EntityTeam team, int characterId, int characterLevel)
+    protected void ReceiveFromServer_ConnectionInfo(Vector3 position, Quaternion rotation, EntityTeam team, int characterId, int characterLevel, int[] characterAbilityLevels)
     {
         if (sentConnectionInfoRequest)
         {
@@ -86,6 +86,7 @@ public abstract class Character : Entity
             Team = team;
             EntityId = characterId;
             CharacterLevelManager.SetLevelFromLoad(characterLevel);
+            CharacterAbilityManager.SetAbilityLevelsFromLoad(characterAbilityLevels);
             OnConnectionInfoReceived(this);
         }
     }
@@ -95,7 +96,7 @@ public abstract class Character : Entity
     {
         if (PhotonView.isMine)
         {
-            PhotonView.RPC("ReceiveFromServer_ConnectionInfo", PhotonTargets.Others, transform.position, transform.rotation, Team, EntityId, CharacterLevelManager.Level);
+            PhotonView.RPC("ReceiveFromServer_ConnectionInfo", PhotonTargets.Others, transform.position, transform.rotation, Team, EntityId, CharacterLevelManager.Level, CharacterAbilityManager.GetCharacterAbilityLevels());
         }
     }
 

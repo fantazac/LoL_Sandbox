@@ -70,7 +70,7 @@ public class AbilityTimeBarUIManager : MonoBehaviour
     {
         float pastCastTime = 0;
 
-        while(pastCastTime < castTime)
+        while (pastCastTime < castTime)
         {
             yield return null;
 
@@ -125,7 +125,7 @@ public class AbilityTimeBarUIManager : MonoBehaviour
 
     public void CancelCastTimeAndChannelTime(int abilityId)
     {
-        if(abilityId == currentAbilityId)
+        if (abilityId == currentAbilityId)
         {
             StopAllCoroutines();
             ResetUI();

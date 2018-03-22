@@ -46,7 +46,7 @@ public class AbilityLevelUpUIManager : MonoBehaviour
         buffsUISecondPosition = buffsUITransform.anchoredPosition + upVector;
         debuffsUISecondPosition = debuffsUITransform.anchoredPosition + upVector;
 
-        foreach(UILevelUpArrow uiLevelUpArrow in uiLevelUpArrows)
+        foreach (UILevelUpArrow uiLevelUpArrow in uiLevelUpArrows)
         {
             uiLevelUpArrow.OnAbilityLevelUp += LevelUpAbility;
         }
@@ -86,7 +86,7 @@ public class AbilityLevelUpUIManager : MonoBehaviour
 
     private void LevelUpAbility(int arrowId)
     {
-        if(OnAbilityLevelUp != null)
+        if (OnAbilityLevelUp != null)
         {
             OnAbilityLevelUp(arrowId);
         }
