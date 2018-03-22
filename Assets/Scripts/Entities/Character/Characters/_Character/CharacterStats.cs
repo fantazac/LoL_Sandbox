@@ -26,7 +26,7 @@ public abstract class CharacterStats : EntityStats
         MagicResistance.SetPerLevelValue(characterBaseStats.MagicResistancePerLevel);
         AttackSpeed.SetPerLevelValue(characterBaseStats.AttackSpeedPerLevel);
 
-        HealthRegenaration.SetPerLevelValue(characterBaseStats.HealthRegenerationPerLevel);
+        HealthRegeneration.SetPerLevelValue(characterBaseStats.HealthRegenerationPerLevel);
         ResourceRegeneration.SetPerLevelValue(characterBaseStats.ResourceRegenerationPerLevel);
     }
 }

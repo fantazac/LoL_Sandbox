@@ -8,6 +8,15 @@ public class CharacterStatsManager : MonoBehaviour
     private CharacterStats characterStats;
     private bool showStats;
 
+    private float regenerationInterval;
+    private WaitForSeconds delayRegeneration;
+
+    private CharacterStatsManager()
+    {
+        regenerationInterval = 0.5f;
+        delayRegeneration = new WaitForSeconds(regenerationInterval);
+    }
+
     private void OnEnable()
     {
         characterLevelManager = GetComponent<CharacterLevelManager>();
@@ -23,8 +32,65 @@ public class CharacterStatsManager : MonoBehaviour
         characterLevelManager.OnLevelUp += characterStats.Armor.OnLevelUp;
         characterLevelManager.OnLevelUp += characterStats.MagicResistance.OnLevelUp;
         characterLevelManager.OnLevelUp += characterStats.AttackSpeed.OnLevelUp;
-        characterLevelManager.OnLevelUp += characterStats.HealthRegenaration.OnLevelUp;
+        characterLevelManager.OnLevelUp += characterStats.HealthRegeneration.OnLevelUp;
         characterLevelManager.OnLevelUp += characterStats.ResourceRegeneration.OnLevelUp;
+
+        if (characterStats.Health != null && characterStats.HealthRegeneration != null)
+        {
+            if (characterStats.Resource != null && characterStats.ResourceRegeneration != null)
+            {
+                StartCoroutine(HealthRegenerationAndResourceRegeneration());
+            }
+            else
+            {
+                StartCoroutine(HealthRegeneration());
+            }
+        }
+    }
+
+    private IEnumerator HealthRegeneration()
+    {
+        Health health = characterStats.Health;
+        HealthRegeneration healthRegen = characterStats.HealthRegeneration;
+
+        while (true)
+        {
+            RegenerateHealth(health, healthRegen);
+
+            yield return delayRegeneration;
+        }
+    }
+
+    private IEnumerator HealthRegenerationAndResourceRegeneration()
+    {
+        Health health = characterStats.Health;
+        HealthRegeneration healthRegen = characterStats.HealthRegeneration;
+        Resource resource = characterStats.Resource;
+        ResourceRegeneration resourceRegen = characterStats.ResourceRegeneration;
+
+        while (true)
+        {
+            RegenerateHealth(health, healthRegen);
+            RegenerateResource(resource, resourceRegen);
+
+            yield return delayRegeneration;
+        }
+    }
+
+    private void RegenerateHealth(Health health, HealthRegeneration healthRegen)
+    {
+        if (health.GetTotal() > health.GetCurrentValue())
+        {
+            health.Restore(healthRegen.GetTotal() * 0.1f);
+        }
+    }
+
+    private void RegenerateResource(Resource resource, ResourceRegeneration resourceRegen)
+    {
+        if (resource.GetTotal() > resource.GetCurrentValue())
+        {
+            resource.Restore(resourceRegen.GetTotal() * 0.1f);
+        }
     }
 
     private void OnGUI()
@@ -47,7 +113,7 @@ public class CharacterStatsManager : MonoBehaviour
             GUILayout.Label(characterStats.CriticalStrikeChance.GetUIText());
             GUILayout.Label(characterStats.MovementSpeed.GetUIText());
 
-            GUILayout.Label(characterStats.HealthRegenaration.GetUIText());
+            GUILayout.Label(characterStats.HealthRegeneration.GetUIText());
             GUILayout.Label(characterStats.ResourceRegeneration.GetUIText());
             GUILayout.Label(characterStats.ArmorPenetration.GetUIText());
             GUILayout.Label(characterStats.MagicPenetration.GetUIText());

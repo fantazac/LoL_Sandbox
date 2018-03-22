@@ -15,7 +15,7 @@ public class EntityStats : MonoBehaviour
     public CriticalStrikeChance CriticalStrikeChance { get; protected set; }
     public MovementSpeed MovementSpeed { get; protected set; }
     
-    public HealthRegeneration HealthRegenaration { get; protected set; }
+    public HealthRegeneration HealthRegeneration { get; protected set; }
     public ResourceRegeneration ResourceRegeneration { get; protected set; }
     public ArmorPenetration ArmorPenetration { get; protected set; }
     public MagicPenetration MagicPenetration { get; protected set; }
@@ -38,7 +38,7 @@ public class EntityStats : MonoBehaviour
         CriticalStrikeChance = GetComponent<CriticalStrikeChance>();
         MovementSpeed = GetComponent<MovementSpeed>();
 
-        HealthRegenaration = GetComponent<HealthRegeneration>();
+        HealthRegeneration = GetComponent<HealthRegeneration>();
         ResourceRegeneration = GetComponent<ResourceRegeneration>();
         ArmorPenetration = GetComponent<ArmorPenetration>();
         MagicPenetration = GetComponent<MagicPenetration>();
@@ -71,7 +71,7 @@ public class EntityStats : MonoBehaviour
         CriticalStrikeChance.SetBaseValue(entityBaseStats.BaseCriticalStrikeChance);
         MovementSpeed.SetBaseValue(entityBaseStats.BaseMovementSpeed);
 
-        HealthRegenaration.SetBaseValue(entityBaseStats.BaseHealthRegeneration);
+        HealthRegeneration.SetBaseValue(entityBaseStats.BaseHealthRegeneration);
         ResourceRegeneration.SetBaseValue(entityBaseStats.BaseResourceRegeneration);
         ArmorPenetration.SetBaseValue(entityBaseStats.BaseArmorPenetration);
         MagicPenetration.SetBaseValue(entityBaseStats.BaseMagicPenetration);

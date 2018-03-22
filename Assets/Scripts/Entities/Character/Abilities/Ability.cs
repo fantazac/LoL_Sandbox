@@ -257,6 +257,8 @@ public abstract class Ability : MonoBehaviour
         }
     }
 
+    //This method is used for projectiles that have their origin at the Character's origin. This means you cannot move the origin of the projectile by flashing mid-cast.
+    //Examples: EzrealR, MorganaQ, CorkiR
     protected void SetPositionAndRotationOnCast(Vector3 position)
     {
         positionOnCast = position;
