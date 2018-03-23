@@ -126,7 +126,7 @@ public class AbilityUIManager : MonoBehaviour
         abilityImages[abilityId].color = Color.white;
     }
 
-    public void SetAbilityNotEnoughMana(int abilityId)
+    public void SetAbilityHasNotEnoughMana(int abilityId)
     {
         if (!abilityNotEnoughManaObjects[abilityId - 1].activeSelf)
         {

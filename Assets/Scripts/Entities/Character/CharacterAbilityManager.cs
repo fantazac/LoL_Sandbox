@@ -28,10 +28,6 @@ public class CharacterAbilityManager : MonoBehaviour
     {
         character = GetComponent<Character>();
         InitAbilities();
-        if (character.AbilityUIManager && character.EntityStats.Resource != null)
-        {
-            StartCoroutine(ManageAbilityResourceCosts());
-        }
     }
 
     private void InitAbilities()
@@ -59,43 +55,6 @@ public class CharacterAbilityManager : MonoBehaviour
         }
     }
 
-    private IEnumerator ManageAbilityResourceCosts()
-    {
-        while (true)
-        {
-            CheckAbilityResourceCosts();
-
-            yield return delayResourceCostCheck;
-        }
-    }
-
-    private void CheckAbilityResourceCosts()
-    {
-        CheckAbilityResourceCost(abilities[AbilityInput.Q]);
-        CheckAbilityResourceCost(abilities[AbilityInput.W]);
-        CheckAbilityResourceCost(abilities[AbilityInput.E]);
-        CheckAbilityResourceCost(abilities[AbilityInput.R]);
-    }
-
-    private void CheckAbilityResourceCost(Ability ability)
-    {
-        if (ability.IsEnabled)
-        {
-            if (ability.GetResourceCost() > character.EntityStats.Resource.GetCurrentValue())
-            {
-                character.AbilityUIManager.SetAbilityNotEnoughMana(ability.ID);
-            }
-            else
-            {
-                character.AbilityUIManager.SetAbilityHasEnoughMana(ability.ID);
-            }
-        }
-        else
-        {
-            character.AbilityUIManager.SetAbilityHasEnoughMana(ability.ID);
-        }
-    }
-
     private void SendToServer_Ability_Destination(AbilityInput abilityInput, Vector3 destination)
     {
         character.PhotonView.RPC("ReceiveFromServer_Ability_Destination", PhotonTargets.AllViaServer, abilityInput, destination);
@@ -104,7 +63,6 @@ public class CharacterAbilityManager : MonoBehaviour
     [PunRPC]
     private void ReceiveFromServer_Ability_Destination(AbilityInput abilityInput, Vector3 destination)
     {
-        CheckAbilityResourceCosts();
         Ability ability = abilities[abilityInput];
         if (AbilityIsCastable(ability))
         {
@@ -120,7 +78,6 @@ public class CharacterAbilityManager : MonoBehaviour
     [PunRPC]
     private void ReceiveFromServer_Ability_Entity(AbilityInput abilityInput, int entityId, EntityType entityType)
     {
-        CheckAbilityResourceCosts();
         Ability ability = abilities[abilityInput];
         if (AbilityIsCastable(ability))
         {
@@ -187,7 +144,6 @@ public class CharacterAbilityManager : MonoBehaviour
 
         character.CharacterMovement.RotateCharacterIfMoving();
 
-        CheckAbilityResourceCosts();
         character.CharacterActionManager.UseBufferedAction();
     }
 
@@ -200,7 +156,6 @@ public class CharacterAbilityManager : MonoBehaviour
     {
         if (abilities.ContainsKey(abilityInput))
         {
-            CheckAbilityResourceCosts();
             Ability ability = abilities[abilityInput];
             if (ability.IsEnabled)
             {

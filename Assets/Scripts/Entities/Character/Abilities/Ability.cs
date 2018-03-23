@@ -438,11 +438,6 @@ public abstract class Ability : MonoBehaviour
         }
     }
 
-    public float GetResourceCost()
-    {
-        return resourceCost;
-    }
-
     public AbilityType GetAbilityType()
     {
         return abilityType;
