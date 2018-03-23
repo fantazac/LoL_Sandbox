@@ -92,6 +92,7 @@ public abstract class Ability : MonoBehaviour
     public bool HasReducedCooldownOnAbilityCancel { get; private set; }
     public bool OfflineOnly { get; protected set; }
     public bool ResetBasicAttackCycleOnAbilityFinished { get; protected set; }
+    public bool UsesResource { get; private set; }
 
     public List<Ability> AbilitiesToDisableWhileActive { get; protected set; }
     public List<Ability> CastableAbilitiesWhileActive { get; protected set; }
@@ -134,6 +135,7 @@ public abstract class Ability : MonoBehaviour
         HasCastTime = castTime > 0;
         HasChannelTime = channelTime > 0;
         HasReducedCooldownOnAbilityCancel = cooldownOnCancel > 0;
+        UsesResource = resourceCost > 0;
 
         ModifyValues();
     }
@@ -381,6 +383,8 @@ public abstract class Ability : MonoBehaviour
             buffFlatBonus += buffFlatBonusPerLevel;
             buffPercentBonus += buffPercentBonusPerLevel;
 
+            UsesResource = resourceCost > 0;
+
             LevelUpExtraStats();
 
             if (character.AbilityUIManager)
@@ -436,6 +440,11 @@ public abstract class Ability : MonoBehaviour
             }
             FinishAbilityCast(HasReducedCooldownOnAbilityCancel);
         }
+    }
+
+    public float GetResourceCost()
+    {
+        return resourceCost;
     }
 
     public AbilityType GetAbilityType()

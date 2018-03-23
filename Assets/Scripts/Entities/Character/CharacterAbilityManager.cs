@@ -9,9 +9,6 @@ public class CharacterAbilityManager : MonoBehaviour
     private Dictionary<AbilityInput, Ability> abilities;
     private List<Ability> currentlyUsedAbilities;
 
-    private float resourceCostCheckTime;
-    private WaitForSeconds delayResourceCostCheck;
-
     public delegate void OnAnAbilityUsedHandler();
     public event OnAnAbilityUsedHandler OnAnAbilityUsed;
 
@@ -19,9 +16,6 @@ public class CharacterAbilityManager : MonoBehaviour
     {
         abilities = new Dictionary<AbilityInput, Ability>();
         currentlyUsedAbilities = new List<Ability>();
-
-        resourceCostCheckTime = 0.2f;
-        delayResourceCostCheck = new WaitForSeconds(resourceCostCheckTime);
     }
 
     private void Start()
@@ -249,6 +243,11 @@ public class CharacterAbilityManager : MonoBehaviour
         bool abilityToCastIsAvailable = abilityToCast != null;
 
         if (abilityToCastIsAvailable && (abilityToCast.IsOnCooldown || abilityToCast.IsOnCooldownForRecast || abilityToCast.IsActive))
+        {
+            return false;
+        }
+
+        if (abilityToCast.UsesResource && abilityToCast.GetResourceCost() > character.EntityStats.Resource.GetCurrentValue())
         {
             return false;
         }
