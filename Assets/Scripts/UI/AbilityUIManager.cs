@@ -14,6 +14,8 @@ public class AbilityUIManager : MonoBehaviour
     [SerializeField]
     private Text[] abilityCooldownTexts;
     [SerializeField]
+    private GameObject[] abilityNotEnoughManaObjects;
+    [SerializeField]
     private GameObject[] abilityLevelPoints;
     [SerializeField]
     private GameObject abilityLevelPoint;
@@ -122,5 +124,21 @@ public class AbilityUIManager : MonoBehaviour
     public void EnableAbility(int abilityId)
     {
         abilityImages[abilityId].color = Color.white;
+    }
+
+    public void SetAbilityNotEnoughMana(int abilityId)
+    {
+        if (!abilityNotEnoughManaObjects[abilityId - 1].activeSelf)
+        {
+            abilityNotEnoughManaObjects[abilityId - 1].SetActive(true);
+        }
+    }
+
+    public void SetAbilityHasEnoughMana(int abilityId)
+    {
+        if (abilityNotEnoughManaObjects[abilityId - 1].activeSelf)
+        {
+            abilityNotEnoughManaObjects[abilityId - 1].SetActive(false);
+        }
     }
 }
