@@ -41,8 +41,10 @@ GameObject:
   - component: {fileID: 114287324183669562}
   - component: {fileID: 114302932967488116}
   - component: {fileID: 114120243521966504}
+  - component: {fileID: 114919985997450226}
   - component: {fileID: 114330234034325364}
   - component: {fileID: 114776301165681092}
+  - component: {fileID: 114396176984048392}
   - component: {fileID: 114509092523909346}
   - component: {fileID: 114451010653664158}
   - component: {fileID: 114441800122878354}
@@ -220,6 +222,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   baseValue: 0
+  perLevelValue: 0
   total: 0
   flatBonus: 0
   percentBonus: 0
@@ -238,6 +241,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   baseValue: 0
+  perLevelValue: 0
   total: 0
   flatBonus: 0
   percentBonus: 0
@@ -267,6 +271,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   baseValue: 0
+  perLevelValue: 0
   total: 0
   flatBonus: 0
   percentBonus: 0
@@ -284,6 +289,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   baseValue: 0
+  perLevelValue: 0
   total: 0
   flatBonus: 0
   percentBonus: 0
@@ -301,6 +307,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   baseValue: 0
+  perLevelValue: 0
   total: 0
   flatBonus: 0
   percentBonus: 0
@@ -318,6 +325,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   baseValue: 0
+  perLevelValue: 0
   total: 0
   flatBonus: 0
   percentBonus: 0
@@ -335,6 +343,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   baseValue: 0
+  perLevelValue: 0
   total: 0
   flatBonus: 0
   percentBonus: 0
@@ -352,6 +361,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   baseValue: 0
+  perLevelValue: 0
   total: 0
   flatBonus: 0
   percentBonus: 0
@@ -369,6 +379,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d0df9919a0b49849bd5e327216b0870, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &114396176984048392
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1484829234854768}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 36a6395ccf86b1447995478d3474c62c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  baseValue: 0
+  perLevelValue: 0
+  total: 0
+  flatBonus: 0
+  percentBonus: 0
+  flatMalus: 0
+  percentMalus: 0
 --- !u!114 &114441800122878354
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -381,6 +409,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   baseValue: 0
+  perLevelValue: 0
   total: 0
   flatBonus: 0
   percentBonus: 0
@@ -398,6 +427,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   baseValue: 0
+  perLevelValue: 0
   total: 0
   flatBonus: 0
   percentBonus: 0
@@ -415,6 +445,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   baseValue: 0
+  perLevelValue: 0
   total: 0
   flatBonus: 0
   percentBonus: 0
@@ -432,6 +463,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   baseValue: 0
+  perLevelValue: 0
   total: 0
   flatBonus: 0
   percentBonus: 0
@@ -460,6 +492,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   baseValue: 0
+  perLevelValue: 0
   total: 0
   flatBonus: 0
   percentBonus: 0
@@ -477,6 +510,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   baseValue: 0
+  perLevelValue: 0
   total: 0
   flatBonus: 0
   percentBonus: 0
@@ -533,6 +567,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   baseValue: 0
+  perLevelValue: 0
   total: 0
   flatBonus: 0
   percentBonus: 0
@@ -550,6 +585,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   baseValue: 0
+  perLevelValue: 0
   total: 0
   flatBonus: 0
   percentBonus: 0
@@ -567,6 +603,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   baseValue: 0
+  perLevelValue: 0
   total: 0
   flatBonus: 0
   percentBonus: 0
@@ -584,6 +621,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   baseValue: 0
+  perLevelValue: 0
+  total: 0
+  flatBonus: 0
+  percentBonus: 0
+  flatMalus: 0
+  percentMalus: 0
+--- !u!114 &114919985997450226
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1484829234854768}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e4b8d6eccd0b54489fbf372c781f667, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  baseValue: 0
+  perLevelValue: 0
   total: 0
   flatBonus: 0
   percentBonus: 0

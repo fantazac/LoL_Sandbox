@@ -22,9 +22,9 @@ public class LucianBaseStats : CharacterBaseStats
 
         BaseHealthRegeneration = 6;
         BaseResourceRegeneration = 8.2f;
-        BaseArmorPenetration = 0;
+        BaseLethality = 0;
         BaseArmorPenetrationPercent = 0;
-        BaseMagicPenetration = 0;
+        BaseMagicPenetrationFlat = 0;
         BaseMagicPenetrationPercent = 0;
         BaseLifeSteal = 0;
         BaseSpellVamp = 0;

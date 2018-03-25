@@ -34,6 +34,7 @@ public class CharacterStatsManager : MonoBehaviour
         characterLevelManager.OnLevelUp += characterStats.AttackSpeed.OnLevelUp;
         characterLevelManager.OnLevelUp += characterStats.HealthRegeneration.OnLevelUp;
         characterLevelManager.OnLevelUp += characterStats.ResourceRegeneration.OnLevelUp;
+        characterLevelManager.OnLevelUp += characterStats.Lethality.OnLevelUp;
 
         if (characterStats.Health != null && characterStats.HealthRegeneration != null)
         {
@@ -115,8 +116,10 @@ public class CharacterStatsManager : MonoBehaviour
 
             GUILayout.Label(characterStats.HealthRegeneration.GetUIText());
             GUILayout.Label(characterStats.ResourceRegeneration.GetUIText());
-            GUILayout.Label(characterStats.ArmorPenetration.GetUIText());
-            GUILayout.Label(characterStats.MagicPenetration.GetUIText());
+            GUILayout.Label(characterStats.Lethality.GetUIText());
+            GUILayout.Label(characterStats.ArmorPenetrationPercent.GetUIText());
+            GUILayout.Label(characterStats.MagicPenetrationFlat.GetUIText());
+            GUILayout.Label(characterStats.MagicPenetrationPercent.GetUIText());
             GUILayout.Label(characterStats.AttackRange.GetUIText());
             GUILayout.Label(characterStats.LifeSteal.GetUIText());
             GUILayout.Label(characterStats.SpellVamp.GetUIText());

@@ -58,8 +58,10 @@ GameObject:
   - component: {fileID: 114358064667167328}
   - component: {fileID: 114298278532424826}
   - component: {fileID: 114415929324514712}
+  - component: {fileID: 114070282524470102}
   - component: {fileID: 114757116894079912}
   - component: {fileID: 114168616111980392}
+  - component: {fileID: 114358940426192964}
   - component: {fileID: 114283814408747172}
   - component: {fileID: 114006066918005824}
   - component: {fileID: 114276517019894162}
@@ -220,6 +222,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   baseValue: 0
+  perLevelValue: 0
   total: 0
   flatBonus: 0
   percentBonus: 0
@@ -237,6 +240,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   baseValue: 0
+  perLevelValue: 0
   total: 0
   flatBonus: 0
   percentBonus: 0
@@ -244,6 +248,24 @@ MonoBehaviour:
   percentMalus: 0
   type: 2
   currentValue: 0
+--- !u!114 &114070282524470102
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1959807088381436}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e4b8d6eccd0b54489fbf372c781f667, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  baseValue: 0
+  perLevelValue: 0
+  total: 0
+  flatBonus: 0
+  percentBonus: 0
+  flatMalus: 0
+  percentMalus: 0
 --- !u!114 &114080886545874470
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -268,6 +290,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   baseValue: 0
+  perLevelValue: 0
   total: 0
   flatBonus: 0
   percentBonus: 0
@@ -285,6 +308,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   baseValue: 0
+  perLevelValue: 0
   total: 0
   flatBonus: 0
   percentBonus: 0
@@ -302,6 +326,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   baseValue: 0
+  perLevelValue: 0
   total: 0
   flatBonus: 0
   percentBonus: 0
@@ -319,6 +344,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   baseValue: 0
+  perLevelValue: 0
   total: 0
   flatBonus: 0
   percentBonus: 0
@@ -336,6 +362,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   baseValue: 0
+  perLevelValue: 0
   total: 0
   flatBonus: 0
   percentBonus: 0
@@ -353,6 +380,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   baseValue: 0
+  perLevelValue: 0
   total: 0
   flatBonus: 0
   percentBonus: 0
@@ -370,6 +398,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   baseValue: 0
+  perLevelValue: 0
   total: 0
   flatBonus: 0
   percentBonus: 0
@@ -387,6 +416,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   baseValue: 0
+  perLevelValue: 0
   total: 0
   flatBonus: 0
   percentBonus: 0
@@ -404,6 +434,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   baseValue: 0
+  perLevelValue: 0
   total: 0
   flatBonus: 0
   percentBonus: 0
@@ -421,6 +452,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   baseValue: 0
+  perLevelValue: 0
+  total: 0
+  flatBonus: 0
+  percentBonus: 0
+  flatMalus: 0
+  percentMalus: 0
+--- !u!114 &114358940426192964
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1959807088381436}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 36a6395ccf86b1447995478d3474c62c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  baseValue: 0
+  perLevelValue: 0
   total: 0
   flatBonus: 0
   percentBonus: 0
@@ -449,6 +499,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   baseValue: 0
+  perLevelValue: 0
   total: 0
   flatBonus: 0
   percentBonus: 0
@@ -467,6 +518,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   baseValue: 0
+  perLevelValue: 0
   total: 0
   flatBonus: 0
   percentBonus: 0
@@ -484,6 +536,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   baseValue: 0
+  perLevelValue: 0
   total: 0
   flatBonus: 0
   percentBonus: 0
@@ -538,6 +591,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   baseValue: 0
+  perLevelValue: 0
   total: 0
   flatBonus: 0
   percentBonus: 0
@@ -555,6 +609,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   baseValue: 0
+  perLevelValue: 0
   total: 0
   flatBonus: 0
   percentBonus: 0
@@ -583,6 +638,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   baseValue: 0
+  perLevelValue: 0
   total: 0
   flatBonus: 0
   percentBonus: 0

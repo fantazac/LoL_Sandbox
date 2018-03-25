@@ -65,7 +65,7 @@ public class Lucian_W : DirectionTargetedProjectile, CharacterAbility
 
     private void OnAreaOfEffectHit(AbilityEffect projectile, Entity entityHit)
     {
-        entityHit.EntityStats.Health.Reduce(GetAbilityDamage());
+        entityHit.EntityStats.Health.Reduce(GetAbilityDamage(entityHit));
         AddNewDebuffToEntityHit(entityHit);
         AbilityHit();
     }

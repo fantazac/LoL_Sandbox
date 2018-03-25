@@ -61,7 +61,7 @@ public class Ezreal_W : DirectionTargetedProjectile, CharacterAbility
         }
         else
         {
-            entityHit.EntityStats.Health.Reduce(GetAbilityDamage());
+            entityHit.EntityStats.Health.Reduce(GetAbilityDamage(entityHit));
         }
         AbilityHit();
     }

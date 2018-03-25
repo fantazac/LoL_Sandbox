@@ -17,8 +17,10 @@ public class EntityStats : MonoBehaviour
 
     public HealthRegeneration HealthRegeneration { get; protected set; }
     public ResourceRegeneration ResourceRegeneration { get; protected set; }
-    public ArmorPenetration ArmorPenetration { get; protected set; }
-    public MagicPenetration MagicPenetration { get; protected set; }
+    public Lethality Lethality { get; protected set; }
+    public ArmorPenetrationPercent ArmorPenetrationPercent { get; protected set; }
+    public MagicPenetrationFlat MagicPenetrationFlat { get; protected set; }
+    public MagicPenetrationPercent MagicPenetrationPercent { get; protected set; }
     public LifeSteal LifeSteal { get; protected set; }
     public SpellVamp SpellVamp { get; protected set; }
     public AttackRange AttackRange { get; protected set; }
@@ -27,25 +29,27 @@ public class EntityStats : MonoBehaviour
     protected virtual void OnEnable()
     {
         Health = GetComponent<Health>();
-        Resource = GetComponent<Resource>();//TODO: need to handle when there is no resource (ex. garen)
+        Resource = GetComponent<Resource>();//supposed to work when no resource is used so check to confirm (ex. garen), also check energy (ex. zed)
 
-        AttackDamage = GetComponent<AttackDamage>();//
-        AbilityPower = GetComponent<AbilityPower>();//
+        AttackDamage = GetComponent<AttackDamage>();
+        AbilityPower = GetComponent<AbilityPower>();
         Armor = GetComponent<Armor>();
         MagicResistance = GetComponent<MagicResistance>();
-        AttackSpeed = GetComponent<AttackSpeed>();//
-        CooldownReduction = GetComponent<CooldownReduction>();
-        CriticalStrikeChance = GetComponent<CriticalStrikeChance>();
-        MovementSpeed = GetComponent<MovementSpeed>();//
-        
-        HealthRegeneration = GetComponent<HealthRegeneration>();//
-        ResourceRegeneration = GetComponent<ResourceRegeneration>();//
-        ArmorPenetration = GetComponent<ArmorPenetration>();
-        MagicPenetration = GetComponent<MagicPenetration>();
-        LifeSteal = GetComponent<LifeSteal>();
-        SpellVamp = GetComponent<SpellVamp>();
-        AttackRange = GetComponent<AttackRange>();//
-        Tenacity = GetComponent<Tenacity>();
+        AttackSpeed = GetComponent<AttackSpeed>();
+        CooldownReduction = GetComponent<CooldownReduction>();//TODO
+        CriticalStrikeChance = GetComponent<CriticalStrikeChance>();//TODO
+        MovementSpeed = GetComponent<MovementSpeed>();
+
+        HealthRegeneration = GetComponent<HealthRegeneration>();
+        ResourceRegeneration = GetComponent<ResourceRegeneration>();
+        Lethality = GetComponent<Lethality>();
+        ArmorPenetrationPercent = GetComponent<ArmorPenetrationPercent>();
+        MagicPenetrationFlat = GetComponent<MagicPenetrationFlat>();
+        MagicPenetrationPercent = GetComponent<MagicPenetrationPercent>();
+        LifeSteal = GetComponent<LifeSteal>();//TODO
+        SpellVamp = GetComponent<SpellVamp>();//TODO
+        AttackRange = GetComponent<AttackRange>();
+        Tenacity = GetComponent<Tenacity>();//TODO
 
         ExtraAdjustments();
 
@@ -79,8 +83,10 @@ public class EntityStats : MonoBehaviour
         {
             ResourceRegeneration.SetBaseValue(entityBaseStats.BaseResourceRegeneration);
         }
-        ArmorPenetration.SetBaseValue(entityBaseStats.BaseArmorPenetration);
-        MagicPenetration.SetBaseValue(entityBaseStats.BaseMagicPenetration);
+        Lethality.SetBaseValue(entityBaseStats.BaseLethality);
+        ArmorPenetrationPercent.SetBaseValue(entityBaseStats.BaseArmorPenetrationPercent);
+        MagicPenetrationFlat.SetBaseValue(entityBaseStats.BaseMagicPenetrationFlat);
+        MagicPenetrationPercent.SetBaseValue(entityBaseStats.BaseMagicPenetrationPercent);
         LifeSteal.SetBaseValue(entityBaseStats.BaseLifeSteal);
         SpellVamp.SetBaseValue(entityBaseStats.BaseSpellVamp);
         AttackRange.SetBaseValue(entityBaseStats.BaseAttackRange);

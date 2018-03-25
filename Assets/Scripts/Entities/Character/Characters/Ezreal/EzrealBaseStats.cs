@@ -22,9 +22,9 @@ public class EzrealBaseStats : CharacterBaseStats
 
         BaseHealthRegeneration = 6.5f;
         BaseResourceRegeneration = 8.1f;
-        BaseArmorPenetration = 0;
+        BaseLethality = 0;
         BaseArmorPenetrationPercent = 0;
-        BaseMagicPenetration = 0;
+        BaseMagicPenetrationFlat = 0;
         BaseMagicPenetrationPercent = 0;
         BaseLifeSteal = 0;
         BaseSpellVamp = 0;

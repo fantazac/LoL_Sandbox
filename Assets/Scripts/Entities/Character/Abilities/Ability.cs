@@ -430,12 +430,41 @@ public abstract class Ability : MonoBehaviour
         }
     }
 
-    protected float GetAbilityDamage()
+    protected float GetAbilityDamage(Entity entityHit)
     {
-        return damage +
+        float abilityDamage = damage +
             (bonusADScaling * character.EntityStats.AttackDamage.GetBonus()) +
             (totalADScaling * character.EntityStats.AttackDamage.GetTotal()) +
             (totalAPScaling * character.EntityStats.AbilityPower.GetTotal());
+
+        if (damageType == DamageType.MAGIC)
+        {
+            float totalResistance = entityHit.EntityStats.MagicResistance.GetTotal();
+            totalResistance *= (1 - character.EntityStats.MagicPenetrationPercent.GetTotal());
+            totalResistance -= character.EntityStats.MagicPenetrationFlat.GetTotal();
+            abilityDamage *= GetResistanceDamageTakenMultiplier(totalResistance);
+        }
+        else if (damageType == DamageType.PHYSICAL)
+        {
+            float totalResistance = entityHit.EntityStats.Armor.GetTotal();
+            totalResistance *= (1 - character.EntityStats.ArmorPenetrationPercent.GetTotal());
+            totalResistance -= character.EntityStats.Lethality.GetCurrentValue();
+            abilityDamage *= GetResistanceDamageTakenMultiplier(totalResistance);
+        }
+
+        return abilityDamage;
+    }
+
+    protected float GetResistanceDamageTakenMultiplier(float totalResistance)
+    {
+        if (totalResistance >= 0)
+        {
+            return 100 / (100 + totalResistance);
+        }
+        else
+        {
+            return 2 - (100 / (100 - totalResistance));
+        }
     }
 
     public virtual void LevelUpExtraStats() { }

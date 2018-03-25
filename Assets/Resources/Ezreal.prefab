@@ -50,8 +50,10 @@ GameObject:
   - component: {fileID: 114457268728068774}
   - component: {fileID: 114404049377019260}
   - component: {fileID: 114075125316149356}
+  - component: {fileID: 114789046327469224}
   - component: {fileID: 114472538333312012}
   - component: {fileID: 114713807835281756}
+  - component: {fileID: 114448816521130024}
   - component: {fileID: 114431114959087674}
   - component: {fileID: 114583660594214464}
   - component: {fileID: 114889793785480940}
@@ -569,6 +571,24 @@ MonoBehaviour:
   percentBonus: 0
   flatMalus: 0
   percentMalus: 0
+--- !u!114 &114448816521130024
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1294391184220730}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 36a6395ccf86b1447995478d3474c62c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  baseValue: 0
+  perLevelValue: 0
+  total: 0
+  flatBonus: 0
+  percentBonus: 0
+  flatMalus: 0
+  percentMalus: 0
 --- !u!114 &114457268728068774
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -748,6 +768,24 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 70ab071ee508e0b46af0d916b45cc1d2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  baseValue: 0
+  perLevelValue: 0
+  total: 0
+  flatBonus: 0
+  percentBonus: 0
+  flatMalus: 0
+  percentMalus: 0
+--- !u!114 &114789046327469224
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1294391184220730}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e4b8d6eccd0b54489fbf372c781f667, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   baseValue: 0

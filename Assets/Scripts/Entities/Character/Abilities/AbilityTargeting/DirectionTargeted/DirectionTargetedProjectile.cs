@@ -31,7 +31,7 @@ public abstract class DirectionTargetedProjectile : DirectionTargeted
 
     protected virtual void OnProjectileHit(AbilityEffect projectile, Entity entityHit)
     {
-        entityHit.EntityStats.Health.Reduce(GetAbilityDamage());
+        entityHit.EntityStats.Health.Reduce(GetAbilityDamage(entityHit));
         if (effectType == AbilityEffectType.SINGLE_TARGET)
         {
             Destroy(projectile.gameObject);

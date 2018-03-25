@@ -60,7 +60,7 @@ public class Ezreal_R : DirectionTargetedProjectile, CharacterAbility
 
     protected override void OnProjectileHit(AbilityEffect projectile, Entity entityHit)
     {
-        entityHit.EntityStats.Health.Reduce(GetAbilityDamage() * currentDamageMultiplier);
+        entityHit.EntityStats.Health.Reduce(GetAbilityDamage(entityHit) * currentDamageMultiplier);
         if (currentDamageMultiplier > DAMAGE_REDUCTION_CAP)
         {
             currentDamageMultiplier -= DAMAGE_REDUCTION_PER_TARGET_HIT;

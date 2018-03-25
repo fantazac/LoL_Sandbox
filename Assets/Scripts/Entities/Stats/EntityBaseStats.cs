@@ -18,9 +18,9 @@ public class EntityBaseStats : MonoBehaviour
 
     public float BaseHealthRegeneration { get; protected set; }
     public float BaseResourceRegeneration { get; protected set; }
-    public float BaseArmorPenetration { get; protected set; }
+    public float BaseLethality { get; protected set; }
     public float BaseArmorPenetrationPercent { get; protected set; }
-    public float BaseMagicPenetration { get; protected set; }
+    public float BaseMagicPenetrationFlat { get; protected set; }
     public float BaseMagicPenetrationPercent { get; protected set; }
     public float BaseLifeSteal { get; protected set; }
     public float BaseSpellVamp { get; protected set; }
