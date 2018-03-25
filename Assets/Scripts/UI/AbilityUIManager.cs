@@ -8,6 +8,8 @@ public class AbilityUIManager : MonoBehaviour
     [SerializeField]
     private Image[] abilityImages;
     [SerializeField]
+    private Text[] abilityCostTexts;
+    [SerializeField]
     private Image[] abilityOnCooldownImages;
     [SerializeField]
     private Image[] abilityOnCooldownForRecastImages;
@@ -34,6 +36,11 @@ public class AbilityUIManager : MonoBehaviour
     public void SetAbilitySprite(int abilityId, Sprite abilitySprite)
     {
         abilityImages[abilityId].sprite = abilitySprite;
+    }
+
+    public void SetAbilityCost(int abilityId, float resourceCost)
+    {
+        abilityCostTexts[abilityId - 1].text = resourceCost == 0 ? "" : ((int)resourceCost).ToString();
     }
 
     public void SetMaxAbilityLevel(int abilityId, int abilityMaxLevel)

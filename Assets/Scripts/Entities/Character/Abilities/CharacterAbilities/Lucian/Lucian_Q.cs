@@ -67,6 +67,7 @@ public class Lucian_Q : UnitTargeted, CharacterAbility
         yield return delayCastTime;
 
         IsBeingCasted = false;
+        UseResource();
         character.CharacterOrientation.RotateCharacterInstantly(destinationOnCast);
 
         AreaOfEffect aoe = ((GameObject)Instantiate(areaOfEffectPrefab, positionOnCast, rotationOnCast)).GetComponent<AreaOfEffect>();

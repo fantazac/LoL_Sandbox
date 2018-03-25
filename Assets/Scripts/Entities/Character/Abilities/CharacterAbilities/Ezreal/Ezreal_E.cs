@@ -55,6 +55,7 @@ public class Ezreal_E : GroundTargetedBlink, CharacterAbility
         yield return delayCastTime;
 
         IsBeingCasted = false;
+        UseResource();
         destinationOnCast = FindPointToMoveTo(destinationOnCast, transform.position);
         character.CharacterOrientation.RotateCharacterInstantly(destinationOnCast);
         transform.position = destinationOnCast;

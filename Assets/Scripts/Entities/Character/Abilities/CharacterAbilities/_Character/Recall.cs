@@ -40,6 +40,7 @@ public class Recall : AutoTargetedBlink, OtherAbility
         yield return delayCastTime;
 
         IsBeingCasted = false;
+        UseResource();
         character.CharacterMovement.StopAllMovement();
         AddNewBuffToEntityHit(character);
         IsBeingChanneled = true;

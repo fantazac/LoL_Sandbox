@@ -137,6 +137,11 @@ public abstract class Ability : MonoBehaviour
         HasReducedCooldownOnAbilityCancel = cooldownOnCancel > 0;
         UsesResource = resourceCost > 0;
 
+        if (character.AbilityUIManager && UsesResource)
+        {
+            character.AbilityUIManager.SetAbilityCost(ID, resourceCost);
+        }
+
         ModifyValues();
     }
 
@@ -193,6 +198,14 @@ public abstract class Ability : MonoBehaviour
             }
         }
         StartCooldown(true);
+    }
+
+    protected void UseResource()
+    {
+        if (UsesResource)
+        {
+            character.EntityStats.Resource.Reduce(resourceCost);
+        }
     }
 
     protected void FinishAbilityCast(bool abilityWasCancelled = false)
@@ -383,13 +396,26 @@ public abstract class Ability : MonoBehaviour
             buffFlatBonus += buffFlatBonusPerLevel;
             buffPercentBonus += buffPercentBonusPerLevel;
 
-            UsesResource = resourceCost > 0;
+            AbilityUIManager abilityUIManager = character.AbilityUIManager;
+
+            if (UsesResource && resourceCost == 0)
+            {
+                UsesResource = false;
+                if (abilityUIManager)
+                {
+                    abilityUIManager.SetAbilityCost(ID, resourceCost);
+                }
+            }
 
             LevelUpExtraStats();
 
-            if (character.AbilityUIManager)
+            if (abilityUIManager)
             {
-                character.AbilityUIManager.LevelUpAbility(ID, AbilityLevel);
+                abilityUIManager.LevelUpAbility(ID, AbilityLevel);
+                if (UsesResource)
+                {
+                    abilityUIManager.SetAbilityCost(ID, resourceCost);
+                }
             }
         }
         else if (AbilityLevel == 0)

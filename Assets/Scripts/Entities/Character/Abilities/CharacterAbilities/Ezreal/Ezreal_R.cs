@@ -52,6 +52,7 @@ public class Ezreal_R : DirectionTargetedProjectile, CharacterAbility
         yield return delayCastTime;
 
         IsBeingCasted = false;
+        UseResource();
         SpawnProjectile(positionOnCast, rotationOnCast);
 
         FinishAbilityCast();

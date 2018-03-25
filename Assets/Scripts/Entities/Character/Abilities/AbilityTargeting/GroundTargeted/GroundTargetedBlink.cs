@@ -12,6 +12,7 @@ public abstract class GroundTargetedBlink : GroundTargeted
         yield return delayCastTime;
 
         IsBeingCasted = false;
+        UseResource();
         destinationOnCast = FindPointToMoveTo(destinationOnCast, transform.position);
         character.CharacterOrientation.RotateCharacterInstantly(destinationOnCast);
         transform.position = destinationOnCast;
@@ -22,6 +23,8 @@ public abstract class GroundTargetedBlink : GroundTargeted
 
     protected override IEnumerator AbilityWithChannelTime()
     {
+        UseResource();
+
         yield return delayChannelTime;
 
         character.CharacterOrientation.RotateCharacterInstantly(destinationOnCast);

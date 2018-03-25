@@ -81,6 +81,7 @@ public class Lucian_R : DirectionTargetedProjectile, CharacterAbility
         yield return delayCastTime;
 
         IsBeingCasted = false;
+        UseResource();
         ShootProjectile(0);
 
         for (int i = 1; i < amountOfProjectilesToShoot; i++)
