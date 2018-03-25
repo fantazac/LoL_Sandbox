@@ -14,7 +14,7 @@ public class EntityStats : MonoBehaviour
     public CooldownReduction CooldownReduction { get; protected set; }
     public CriticalStrikeChance CriticalStrikeChance { get; protected set; }
     public MovementSpeed MovementSpeed { get; protected set; }
-    
+
     public HealthRegeneration HealthRegeneration { get; protected set; }
     public ResourceRegeneration ResourceRegeneration { get; protected set; }
     public ArmorPenetration ArmorPenetration { get; protected set; }
@@ -29,22 +29,22 @@ public class EntityStats : MonoBehaviour
         Health = GetComponent<Health>();
         Resource = GetComponent<Resource>();//TODO: need to handle when there is no resource (ex. garen)
 
-        AttackDamage = GetComponent<AttackDamage>();
-        AbilityPower = GetComponent<AbilityPower>();
+        AttackDamage = GetComponent<AttackDamage>();//
+        AbilityPower = GetComponent<AbilityPower>();//
         Armor = GetComponent<Armor>();
         MagicResistance = GetComponent<MagicResistance>();
-        AttackSpeed = GetComponent<AttackSpeed>();
+        AttackSpeed = GetComponent<AttackSpeed>();//
         CooldownReduction = GetComponent<CooldownReduction>();
         CriticalStrikeChance = GetComponent<CriticalStrikeChance>();
-        MovementSpeed = GetComponent<MovementSpeed>();
-
-        HealthRegeneration = GetComponent<HealthRegeneration>();
-        ResourceRegeneration = GetComponent<ResourceRegeneration>();
+        MovementSpeed = GetComponent<MovementSpeed>();//
+        
+        HealthRegeneration = GetComponent<HealthRegeneration>();//
+        ResourceRegeneration = GetComponent<ResourceRegeneration>();//
         ArmorPenetration = GetComponent<ArmorPenetration>();
         MagicPenetration = GetComponent<MagicPenetration>();
         LifeSteal = GetComponent<LifeSteal>();
         SpellVamp = GetComponent<SpellVamp>();
-        AttackRange = GetComponent<AttackRange>();
+        AttackRange = GetComponent<AttackRange>();//
         Tenacity = GetComponent<Tenacity>();
 
         ExtraAdjustments();
@@ -60,7 +60,10 @@ public class EntityStats : MonoBehaviour
     protected virtual void SetBaseStats(EntityBaseStats entityBaseStats)
     {
         Health.SetBaseValue(entityBaseStats.BaseHealth);
-        Resource.SetBaseValue(entityBaseStats.BaseResource);
+        if (Resource)
+        {
+            Resource.SetBaseValue(entityBaseStats.BaseResource);
+        }
 
         AttackDamage.SetBaseValue(entityBaseStats.BaseAttackDamage);
         AbilityPower.SetBaseValue(entityBaseStats.BaseAbilityPower);
@@ -72,7 +75,10 @@ public class EntityStats : MonoBehaviour
         MovementSpeed.SetBaseValue(entityBaseStats.BaseMovementSpeed);
 
         HealthRegeneration.SetBaseValue(entityBaseStats.BaseHealthRegeneration);
-        ResourceRegeneration.SetBaseValue(entityBaseStats.BaseResourceRegeneration);
+        if (ResourceRegeneration)
+        {
+            ResourceRegeneration.SetBaseValue(entityBaseStats.BaseResourceRegeneration);
+        }
         ArmorPenetration.SetBaseValue(entityBaseStats.BaseArmorPenetration);
         MagicPenetration.SetBaseValue(entityBaseStats.BaseMagicPenetration);
         LifeSteal.SetBaseValue(entityBaseStats.BaseLifeSteal);
