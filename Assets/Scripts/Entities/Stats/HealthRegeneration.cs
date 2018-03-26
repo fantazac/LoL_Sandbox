@@ -1,4 +1,4 @@
-﻿public class HealthRegeneration : Stat //the value of this stat is: per 5 seconds of play, you regenerate this much health
+﻿public class HealthRegeneration : Stat
 {
     public override string GetUIText()
     {

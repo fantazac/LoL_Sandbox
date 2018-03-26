@@ -2,11 +2,11 @@
 {
     public override void UpdateTotal()
     {
-        total = baseValue * (1 + (percentBonus * 0.01f)) * (1 - (percentMalus * 0.01f));
+        total = baseValue + flatBonus - flatMalus;
     }
 
     public override string GetUIText()
     {
-        return "MAGIC PENETRATION PERCENT: " + GetTotal() + " ((" + GetBaseValue() + " * " + GetPercentBonus() + ") * " + GetFlatMalus() + ")";
+        return "MAGIC PENETRATION PERCENT: " + GetTotal() + "% (" + GetBaseValue() + "% + " + GetFlatBonus() + "% - " + GetFlatMalus() + "%)";
     }
 }
