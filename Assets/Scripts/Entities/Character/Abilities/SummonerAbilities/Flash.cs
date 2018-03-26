@@ -12,7 +12,7 @@ public class Flash : GroundTargetedBlink, SummonerAbility
         abilityType = AbilityType.Blink;
 
         range = 400;
-        cooldown = 300;
+        baseCooldown = 300;
 
         startCooldownOnAbilityCast = true;
 

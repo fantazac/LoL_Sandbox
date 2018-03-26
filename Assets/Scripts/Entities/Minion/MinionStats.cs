@@ -6,9 +6,9 @@ public abstract class MinionStats : EntityStats
 {
     //extra stats minions have that other entities don't
 
-    protected override void OnEnable()
+    protected override void Awake()
     {
-        base.OnEnable();
+        base.Awake();
     }
 
     protected override void SetBaseStats(EntityBaseStats entityStats)

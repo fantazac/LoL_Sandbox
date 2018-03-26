@@ -19,7 +19,7 @@ public abstract class Stat : MonoBehaviour
     protected float flatMalus;
     [SerializeField]
     protected float percentMalus;
-	
+
     public float GetBaseValue()
     {
         return baseValue;

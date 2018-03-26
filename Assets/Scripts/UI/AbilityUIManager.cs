@@ -74,9 +74,9 @@ public class AbilityUIManager : MonoBehaviour
     {
         abilityOnCooldownImages[abilityId].fillAmount = cooldownRemaining / cooldown;
 
-        if (cooldownRemaining >= 1)
+        if (cooldownRemaining >= 0.7f)
         {
-            abilityCooldownTexts[abilityId].text = ((int)cooldownRemaining).ToString();
+            abilityCooldownTexts[abilityId].text = Mathf.CeilToInt(cooldownRemaining).ToString();
         }
         else if (cooldownRemaining <= 0)
         {
@@ -92,9 +92,9 @@ public class AbilityUIManager : MonoBehaviour
     {
         abilityOnCooldownImages[abilityId].fillAmount = cooldownRemaining / cooldownForRecast;
 
-        if (cooldownRemaining >= 1)
+        if (cooldownRemaining >= 0.7f)
         {
-            abilityCooldownTexts[abilityId].text = ((int)cooldownRemaining).ToString();
+            abilityCooldownTexts[abilityId].text = Mathf.CeilToInt(cooldownRemaining).ToString();
         }
         else if (cooldownRemaining <= 0)
         {

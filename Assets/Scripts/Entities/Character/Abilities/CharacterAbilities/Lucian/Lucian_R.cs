@@ -30,8 +30,8 @@ public class Lucian_R : DirectionTargetedProjectile, CharacterAbility
         totalADScaling = 0.25f;// 25%
         totalAPScaling = 0.1f;// 10%
         resourceCost = 100;// 100
-        cooldown = 110;// 110/100/90
-        cooldownPerLevel = -10;
+        baseCooldown = 110;// 110/100/90
+        baseCooldownPerLevel = -10;
         cooldownBeforeRecast = 0.75f;
         castTime = 0.01f;
         delayCastTime = new WaitForSeconds(castTime);
@@ -45,6 +45,8 @@ public class Lucian_R : DirectionTargetedProjectile, CharacterAbility
         CanBeRecasted = true;
         CannotRotateWhileCasting = true;
         CanMoveWhileActive = true;
+
+        affectedByCooldownReduction = true;
     }
 
     protected override void SetSpritePaths()

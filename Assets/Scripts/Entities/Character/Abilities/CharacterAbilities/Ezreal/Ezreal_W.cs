@@ -22,10 +22,11 @@ public class Ezreal_W : DirectionTargetedProjectile, CharacterAbility
         totalAPScaling = 0.8f;// 80%
         resourceCost = 50;// 50/60/70/80/90
         resourceCostPerLevel = 10;
-        cooldown = 9;// 9
+        baseCooldown = 9;// 9
         castTime = 0.2f;//TODO: VERIFY ACTUAL VALUE
         delayCastTime = new WaitForSeconds(castTime);
 
+        affectedByCooldownReduction = true;
         startCooldownOnAbilityCast = true;
 
         buffDuration = 5;

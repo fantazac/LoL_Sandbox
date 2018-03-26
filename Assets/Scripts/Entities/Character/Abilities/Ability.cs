@@ -33,11 +33,14 @@ public abstract class Ability : MonoBehaviour
     protected float speed;
     protected bool startCooldownOnAbilityCast;
 
+    protected bool affectedByCooldownReduction;
+    protected float baseCooldown;
+    protected float baseCooldownPerLevel;
+    protected float baseCooldownOnCancel;
     protected float bonusADScaling;
     protected float bonusADScalingPerLevel;
-    protected float cooldown;
-    protected float cooldownPerLevel;
-    protected float cooldownOnCancel;
+    private float cooldown;
+    private float cooldownOnCancel;
     protected float damage;
     protected float damagePerLevel;
     protected float resourceCost;
@@ -134,12 +137,21 @@ public abstract class Ability : MonoBehaviour
     {
         HasCastTime = castTime > 0;
         HasChannelTime = channelTime > 0;
-        HasReducedCooldownOnAbilityCancel = cooldownOnCancel > 0;
+        HasReducedCooldownOnAbilityCancel = baseCooldownOnCancel > 0;
         UsesResource = resourceCost > 0;
 
         if (character.AbilityUIManager && UsesResource)
         {
             character.AbilityUIManager.SetAbilityCost(ID, resourceCost);
+        }
+        if (affectedByCooldownReduction)
+        {
+            character.EntityStats.CooldownReduction.OnCooldownReductionChanged += SetCooldownForAbilityAffectedByCooldownReduction;
+            SetCooldownForAbilityAffectedByCooldownReduction();
+        }
+        else
+        {
+            SetCooldownForAbilityUnaffectedByCooldownReduction();
         }
 
         ModifyValues();
@@ -387,7 +399,7 @@ public abstract class Ability : MonoBehaviour
             AbilityLevel++;
 
             bonusADScaling += bonusADScalingPerLevel;
-            cooldown += cooldownPerLevel;
+            baseCooldown += baseCooldownPerLevel;
             damage += damagePerLevel;
             resourceCost += resourceCostPerLevel;
             totalADScaling += totalADScalingPerLevel;
@@ -404,6 +416,17 @@ public abstract class Ability : MonoBehaviour
                 if (abilityUIManager)
                 {
                     abilityUIManager.SetAbilityCost(ID, resourceCost);
+                }
+            }
+            if (baseCooldownPerLevel != 0)
+            {
+                if (affectedByCooldownReduction)
+                {
+                    SetCooldownForAbilityAffectedByCooldownReduction();
+                }
+                else
+                {
+                    SetCooldownForAbilityUnaffectedByCooldownReduction();
                 }
             }
 
@@ -428,6 +451,23 @@ public abstract class Ability : MonoBehaviour
                 character.AbilityUIManager.LevelUpAbility(ID, AbilityLevel);
             }
         }
+    }
+
+    private void SetCooldownForAbilityAffectedByCooldownReduction()
+    {
+        SetCooldownForAbilityAffectedByCooldownReduction(character.EntityStats.CooldownReduction.GetTotal());
+    }
+
+    private void SetCooldownForAbilityAffectedByCooldownReduction(float cooldownReduction)
+    {
+        cooldown = baseCooldown * (1 - (cooldownReduction * 0.01f));
+        cooldownOnCancel = baseCooldownOnCancel * (1 - (cooldownReduction * 0.01f));
+    }
+
+    private void SetCooldownForAbilityUnaffectedByCooldownReduction()
+    {
+        cooldown = baseCooldown;
+        cooldownOnCancel = baseCooldownOnCancel;
     }
 
     protected float GetAbilityDamage(Entity entityHit)

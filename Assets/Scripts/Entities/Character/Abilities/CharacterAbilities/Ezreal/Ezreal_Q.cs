@@ -26,13 +26,14 @@ public class Ezreal_Q : DirectionTargetedProjectile, CharacterAbility
         totalAPScaling = 0.4f;// 40%
         resourceCost = 28;// 28/31/34/37/40
         resourceCostPerLevel = 3;
-        cooldown = 5.5f;// 5.5f/5.25f/5/4.75f/4.5f
-        cooldownPerLevel = 0.25f;
+        baseCooldown = 5.5f;// 5.5f/5.25f/5/4.75f/4.5f
+        baseCooldownPerLevel = 0.25f;
         castTime = 0.25f;//TODO: VERIFY ACTUAL VALUE
         delayCastTime = new WaitForSeconds(castTime);
 
         cooldownReductionOnProjectileHit = 1.5f;
 
+        affectedByCooldownReduction = true;
         startCooldownOnAbilityCast = true;
     }
 

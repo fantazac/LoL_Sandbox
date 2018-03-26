@@ -26,8 +26,8 @@ public class Lucian_W : DirectionTargetedProjectile, CharacterAbility
         damagePerLevel = 40;
         totalAPScaling = 0.9f;// 90%
         resourceCost = 50;// 50
-        cooldown = 14;// 14/13/12/11/10
-        cooldownPerLevel = -1;
+        baseCooldown = 14;// 14/13/12/11/10
+        baseCooldownPerLevel = -1;
         castTime = 0.25f;
         delayCastTime = new WaitForSeconds(castTime);
 
@@ -36,6 +36,7 @@ public class Lucian_W : DirectionTargetedProjectile, CharacterAbility
         buffFlatBonusPerLevel = 5;
         debuffDuration = 6;
 
+        affectedByCooldownReduction = true;
         startCooldownOnAbilityCast = true;
 
         durationAoE = 0.2f;

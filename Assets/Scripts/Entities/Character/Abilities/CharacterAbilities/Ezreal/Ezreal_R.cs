@@ -27,10 +27,11 @@ public class Ezreal_R : DirectionTargetedProjectile, CharacterAbility
         bonusADScaling = 1;// 100%
         totalAPScaling = 0.9f;// 90%
         resourceCost = 100;// 100
-        cooldown = 120;// 120
+        baseCooldown = 120;// 120
         castTime = 1;
         delayCastTime = new WaitForSeconds(castTime);
 
+        affectedByCooldownReduction = true;
         startCooldownOnAbilityCast = true;
     }
 

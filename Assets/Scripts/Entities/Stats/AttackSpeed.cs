@@ -4,6 +4,8 @@ public class AttackSpeed : Stat
 {
     private EntityBasicAttack entityBasicAttack;
 
+    private const float ATTACK_SPEED_CAP = 2.5f;
+
     public void SetEntityBasicAttack()
     {
         entityBasicAttack = GetComponent<EntityBasicAttack>();
@@ -16,7 +18,7 @@ public class AttackSpeed : Stat
 
     public override void UpdateTotal()
     {
-        total = (baseValue + flatBonus) * (1 + (percentBonus * 0.01f)) * (1 - (percentMalus * 0.01f)) - flatMalus;
+        total = Mathf.Clamp((baseValue + flatBonus) * (1 + (percentBonus * 0.01f)) * (1 - (percentMalus * 0.01f)) - flatMalus, 0, ATTACK_SPEED_CAP);
         entityBasicAttack.ChangeAttackSpeedCycleDuration(total);
     }
 

@@ -26,7 +26,7 @@ public class EntityStats : MonoBehaviour
     public AttackRange AttackRange { get; protected set; }
     public Tenacity Tenacity { get; protected set; }
 
-    protected virtual void OnEnable()
+    protected virtual void Awake()
     {
         Health = GetComponent<Health>();
         Resource = GetComponent<Resource>();//supposed to work when no resource is used so check to confirm (ex. garen), also check energy (ex. zed)
@@ -36,7 +36,7 @@ public class EntityStats : MonoBehaviour
         Armor = GetComponent<Armor>();
         MagicResistance = GetComponent<MagicResistance>();
         AttackSpeed = GetComponent<AttackSpeed>();
-        CooldownReduction = GetComponent<CooldownReduction>();//TODO
+        CooldownReduction = GetComponent<CooldownReduction>();
         CriticalStrikeChance = GetComponent<CriticalStrikeChance>();//TODO
         MovementSpeed = GetComponent<MovementSpeed>();
 
