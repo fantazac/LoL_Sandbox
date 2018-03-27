@@ -247,7 +247,7 @@ public abstract class Ability : MonoBehaviour
         IsEnabled = false;
         if (!IsOnCooldown && character.AbilityUIManager)
         {
-            character.AbilityUIManager.DisableAbility(ID);
+            character.AbilityUIManager.DisableAbility(ID, UsesResource);
         }
     }
 
@@ -256,7 +256,7 @@ public abstract class Ability : MonoBehaviour
         IsEnabled = true;
         if (!IsOnCooldown && character.AbilityUIManager)
         {
-            character.AbilityUIManager.EnableAbility(ID);
+            character.AbilityUIManager.EnableAbility(ID, resourceCost <= character.EntityStats.Resource.GetCurrentValue());
         }
     }
 
@@ -270,9 +270,10 @@ public abstract class Ability : MonoBehaviour
 
     protected void StartCooldown(bool calledInStartAbilityCast, bool abilityWasCancelled = false)
     {
-        if (calledInStartAbilityCast == startCooldownOnAbilityCast && character.AbilityUIManager)
+        float abilityCooldown = abilityWasCancelled ? cooldownOnCancel : cooldown;
+        if (calledInStartAbilityCast == startCooldownOnAbilityCast && abilityCooldown > 0 && character.AbilityUIManager)
         {
-            StartCoroutine(PutAbilityOffCooldown(abilityWasCancelled ? cooldownOnCancel : cooldown));
+            StartCoroutine(PutAbilityOffCooldown(abilityCooldown));
         }
     }
 
@@ -310,7 +311,7 @@ public abstract class Ability : MonoBehaviour
             yield return null;
         }
 
-        character.AbilityUIManager.SetAbilityOffCooldown(ID, IsEnabled);
+        character.AbilityUIManager.SetAbilityOffCooldown(ID, IsEnabled, resourceCost <= character.EntityStats.Resource.GetCurrentValue());
         IsOnCooldown = false;
     }
 
@@ -438,6 +439,7 @@ public abstract class Ability : MonoBehaviour
                 if (UsesResource)
                 {
                     abilityUIManager.SetAbilityCost(ID, resourceCost);
+                    abilityUIManager.UpdateAbilityHasEnoughResource(ID, !IsEnabled || IsOnCooldown || resourceCost <= character.EntityStats.Resource.GetCurrentValue());
                 }
             }
         }

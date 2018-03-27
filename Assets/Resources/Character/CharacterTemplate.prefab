@@ -3017,7 +3017,7 @@ MonoBehaviour:
   - {fileID: 114978572761451624}
   - {fileID: 114454498998050298}
   - {fileID: 114800817462812596}
-  abilityNotEnoughManaObjects:
+  abilityNotEnoughResourceObjects:
   - {fileID: 1980867064119160}
   - {fileID: 1423137379536940}
   - {fileID: 1665981218701388}

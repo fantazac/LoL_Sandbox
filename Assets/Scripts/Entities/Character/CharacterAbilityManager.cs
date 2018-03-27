@@ -8,6 +8,7 @@ public class CharacterAbilityManager : MonoBehaviour
 
     private Dictionary<AbilityInput, Ability> abilities;
     private List<Ability> currentlyUsedAbilities;
+    private List<Ability> characterAbilitiesWithResourceCosts;
 
     public delegate void OnAnAbilityUsedHandler();
     public event OnAnAbilityUsedHandler OnAnAbilityUsed;
@@ -16,12 +17,18 @@ public class CharacterAbilityManager : MonoBehaviour
     {
         abilities = new Dictionary<AbilityInput, Ability>();
         currentlyUsedAbilities = new List<Ability>();
+        characterAbilitiesWithResourceCosts = new List<Ability>();
     }
 
     private void Start()
     {
         character = GetComponent<Character>();
         InitAbilities();
+
+        if (character.AbilityUIManager)
+        {
+            character.EntityStats.Resource.OnCurrentValueChanged += OnResourceCurrentValueChanged;
+        }
     }
 
     private void InitAbilities()
@@ -41,11 +48,34 @@ public class CharacterAbilityManager : MonoBehaviour
                 }
                 if (ability is CharacterAbility && !(ability is PassiveCharacterAbility))
                 {
-                    character.AbilityUIManager.DisableAbility(i);
-                    character.AbilityUIManager.SetMaxAbilityLevel(i, ability.MaxLevel); 
+                    characterAbilitiesWithResourceCosts.Add(ability);
+                    character.AbilityUIManager.DisableAbility(i, false);
+                    character.AbilityUIManager.SetMaxAbilityLevel(i, ability.MaxLevel);
                 }
             }
             abilities.Add((AbilityInput)i, ability);
+        }
+    }
+
+    private void OnResourceCurrentValueChanged(float currentValue)
+    {
+        for (int i = characterAbilitiesWithResourceCosts.Count - 1; i >= 0; i--)
+        {
+            UpdateAbilityHasEnoughResource(characterAbilitiesWithResourceCosts[i], currentValue);
+        }
+    }
+
+    private void UpdateAbilityHasEnoughResource(Ability ability, float currentValue)
+    {
+        if (ability.UsesResource)
+        {
+            bool hasEnoughResourceToCastAbility = !ability.IsEnabled || ability.IsOnCooldown || currentValue >= ability.GetResourceCost();
+            character.AbilityUIManager.UpdateAbilityHasEnoughResource(ability.ID, hasEnoughResourceToCastAbility);
+        }
+        else
+        {
+            character.AbilityUIManager.UpdateAbilityHasEnoughResource(ability.ID, true);
+            characterAbilitiesWithResourceCosts.Remove(ability);
         }
     }
 

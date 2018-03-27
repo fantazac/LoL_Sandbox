@@ -16,7 +16,7 @@ public class AbilityUIManager : MonoBehaviour
     [SerializeField]
     private Text[] abilityCooldownTexts;
     [SerializeField]
-    private GameObject[] abilityNotEnoughManaObjects;
+    private GameObject[] abilityNotEnoughResourceObjects;
     [SerializeField]
     private GameObject[] abilityLevelPoints;
     [SerializeField]
@@ -106,7 +106,7 @@ public class AbilityUIManager : MonoBehaviour
         }
     }
 
-    public void SetAbilityOffCooldown(int abilityId, bool abilityIsEnabled)
+    public void SetAbilityOffCooldown(int abilityId, bool abilityIsEnabled, bool hasEnoughResourceToCastAbility)
     {
         abilityOnCooldownImages[abilityId].fillAmount = 0;
         if (abilityIsEnabled)
@@ -114,8 +114,9 @@ public class AbilityUIManager : MonoBehaviour
             abilityImages[abilityId].color = Color.white;
         }
         abilityCooldownTexts[abilityId].text = "";
+        UpdateAbilityHasEnoughResource(abilityId, hasEnoughResourceToCastAbility);
     }
-
+    
     public void SetAbilityOffCooldownForRecast(int abilityId)
     {
         abilityOnCooldownImages[abilityId].fillAmount = 0;
@@ -123,29 +124,27 @@ public class AbilityUIManager : MonoBehaviour
         abilityCooldownTexts[abilityId].text = "";
     }
 
-    public void DisableAbility(int abilityId)
+    public void DisableAbility(int abilityId, bool abilityUsesResource)
     {
         abilityImages[abilityId].color = abilityColorOnCooldown;
-    }
-
-    public void EnableAbility(int abilityId)
-    {
-        abilityImages[abilityId].color = Color.white;
-    }
-
-    public void SetAbilityHasNotEnoughMana(int abilityId)
-    {
-        if (!abilityNotEnoughManaObjects[abilityId - 1].activeSelf)
+        if (abilityUsesResource)
         {
-            abilityNotEnoughManaObjects[abilityId - 1].SetActive(true);
+            UpdateAbilityHasEnoughResource(abilityId, true);
         }
     }
 
-    public void SetAbilityHasEnoughMana(int abilityId)
+    public void EnableAbility(int abilityId, bool characterHasEnoughResourceToCastAbility)
     {
-        if (abilityNotEnoughManaObjects[abilityId - 1].activeSelf)
+        abilityImages[abilityId].color = Color.white;
+        UpdateAbilityHasEnoughResource(abilityId, characterHasEnoughResourceToCastAbility);
+    }
+
+    public void UpdateAbilityHasEnoughResource(int abilityId, bool characterHasEnoughResourceToCastAbility)
+    {
+        GameObject abilityNotEnoughResourceObject = abilityNotEnoughResourceObjects[abilityId - 1];
+        if ((characterHasEnoughResourceToCastAbility && abilityNotEnoughResourceObject.activeSelf) || (!characterHasEnoughResourceToCastAbility && !abilityNotEnoughResourceObject.activeSelf))
         {
-            abilityNotEnoughManaObjects[abilityId - 1].SetActive(false);
+            abilityNotEnoughResourceObject.SetActive(!characterHasEnoughResourceToCastAbility);
         }
     }
 }
