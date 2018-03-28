@@ -168,12 +168,19 @@ public class CharacterAbilityManager : MonoBehaviour
 
         character.CharacterMovement.RotateCharacterIfMoving();
 
-        character.CharacterBufferedAbilityManager.UseBufferedAbility();
-
-        /*if (AbilityIsCastable(character.CharacterBufferedAbilityManager.GetBufferedAbility()))
+        Ability bufferedAbility = character.CharacterBufferedAbilityManager.GetBufferedAbility();
+        if (bufferedAbility != null)
         {
-            character.CharacterBufferedAbilityManager.UseBufferedAbility();
-        }*/
+            if (!bufferedAbility.UsesResource || bufferedAbility.GetResourceCost() <= character.EntityStats.Resource.GetCurrentValue())
+            {
+                character.CharacterMovement.StopAllMovement(false);
+                character.CharacterBufferedAbilityManager.UseBufferedAbility();
+            }
+            else
+            {
+                character.CharacterBufferedAbilityManager.ResetBufferedAbility();
+            }
+        }
     }
 
     public void LevelUpAbility(AbilityInput abilityId)
@@ -248,7 +255,7 @@ public class CharacterAbilityManager : MonoBehaviour
         }
         else
         {
-            character.CharacterMovement.StopAllMovement();
+            //character.CharacterMovement.StopAllMovement();
             character.CharacterBufferedAbilityManager.BufferPositionTargetedAbility(ability, destination);
         }
     }
@@ -266,7 +273,7 @@ public class CharacterAbilityManager : MonoBehaviour
         }
         else
         {
-            character.CharacterMovement.StopAllMovement();
+            //character.CharacterMovement.StopAllMovement();
             character.CharacterBufferedAbilityManager.BufferUnitTargetedAbility(ability, target);
         }
     }

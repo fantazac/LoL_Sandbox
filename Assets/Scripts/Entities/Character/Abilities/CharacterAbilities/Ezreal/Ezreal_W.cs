@@ -47,6 +47,7 @@ public class Ezreal_W : DirectionTargetedProjectile, CharacterAbility
         yield return delayCastTime;
 
         IsBeingCasted = false;
+        UseResource();
         character.CharacterOrientation.RotateCharacterInstantly(destinationOnCast);
 
         SpawnProjectile(transform.position + (transform.forward * projectilePrefab.transform.localScale.z * 0.65f), transform.rotation);
