@@ -212,7 +212,7 @@ public class CharacterMovement : MonoBehaviour
     public void StopAllMovement()
     {
         character.EntityBasicAttack.StopBasicAttack();
-        character.CharacterActionManager.ResetBufferedAction();
+        character.CharacterBufferedAbilityManager.ResetBufferedAbility();
         StopAllCoroutines();
         character.CharacterOrientation.StopMovementRotation();
         CharacterIsInRange = null;

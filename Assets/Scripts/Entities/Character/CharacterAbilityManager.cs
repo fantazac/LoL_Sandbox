@@ -168,7 +168,12 @@ public class CharacterAbilityManager : MonoBehaviour
 
         character.CharacterMovement.RotateCharacterIfMoving();
 
-        character.CharacterActionManager.UseBufferedAction();
+        character.CharacterBufferedAbilityManager.UseBufferedAbility();
+
+        /*if (AbilityIsCastable(character.CharacterBufferedAbilityManager.GetBufferedAbility()))
+        {
+            character.CharacterBufferedAbilityManager.UseBufferedAbility();
+        }*/
     }
 
     public void LevelUpAbility(AbilityInput abilityId)
@@ -233,7 +238,7 @@ public class CharacterAbilityManager : MonoBehaviour
         {
             if (currentlyUsedAbilities.Count > 0)
             {
-                character.CharacterActionManager.ResetBufferedAction();
+                character.CharacterBufferedAbilityManager.ResetBufferedAbility();
             }
             ability.UseAbility(destination);
             if (ability.HasCastTime || ability.HasChannelTime || ability.CanBeRecasted)
@@ -244,7 +249,7 @@ public class CharacterAbilityManager : MonoBehaviour
         else
         {
             character.CharacterMovement.StopAllMovement();
-            character.CharacterActionManager.SetPositionTargetedAbilityInQueue(ability, destination);
+            character.CharacterBufferedAbilityManager.BufferPositionTargetedAbility(ability, destination);
         }
     }
 
@@ -254,7 +259,7 @@ public class CharacterAbilityManager : MonoBehaviour
         {
             if (currentlyUsedAbilities.Count > 0)
             {
-                character.CharacterActionManager.ResetBufferedAction();
+                character.CharacterBufferedAbilityManager.ResetBufferedAbility();
             }
             character.CharacterMovement.StopAllMovement();
             ability.UseAbility(target);
@@ -262,7 +267,7 @@ public class CharacterAbilityManager : MonoBehaviour
         else
         {
             character.CharacterMovement.StopAllMovement();
-            character.CharacterActionManager.SetUnitTargetedAbilityInQueue(ability, target);
+            character.CharacterBufferedAbilityManager.BufferUnitTargetedAbility(ability, target);
         }
     }
 
@@ -270,9 +275,7 @@ public class CharacterAbilityManager : MonoBehaviour
     //False: Act as if the key was not pressed
     private bool AbilityIsCastable(Ability abilityToCast)
     {
-        bool abilityToCastIsAvailable = abilityToCast != null;
-
-        if (abilityToCastIsAvailable && (abilityToCast.IsOnCooldown || abilityToCast.IsOnCooldownForRecast || abilityToCast.IsActive))
+        if (abilityToCast.IsOnCooldown || abilityToCast.IsOnCooldownForRecast || abilityToCast.IsActive)
         {
             return false;
         }
