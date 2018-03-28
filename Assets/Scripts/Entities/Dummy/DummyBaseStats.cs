@@ -22,9 +22,9 @@ public class DummyBaseStats : CharacterBaseStats
 
         BaseHealthRegeneration = 0;
         BaseResourceRegeneration = 0;
-        BaseArmorPenetration = 0;
+        BaseLethality = 0;
         BaseArmorPenetrationPercent = 0;
-        BaseMagicPenetration = 0;
+        BaseMagicPenetrationFlat = 0;
         BaseMagicPenetrationPercent = 0;
         BaseLifeSteal = 0;
         BaseSpellVamp = 0;

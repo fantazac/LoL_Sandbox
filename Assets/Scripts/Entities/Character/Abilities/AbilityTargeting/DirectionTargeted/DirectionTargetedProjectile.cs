@@ -8,8 +8,12 @@ public abstract class DirectionTargetedProjectile : DirectionTargeted
 
     protected override IEnumerator AbilityWithCastTime()
     {
+        IsBeingCasted = true;
+
         yield return delayCastTime;
 
+        IsBeingCasted = false;
+        UseResource();
         character.CharacterOrientation.RotateCharacterInstantly(destinationOnCast);
 
         SpawnProjectile(transform.position + (transform.forward * projectilePrefab.transform.localScale.z * 0.5f), transform.rotation);
@@ -27,7 +31,7 @@ public abstract class DirectionTargetedProjectile : DirectionTargeted
 
     protected virtual void OnProjectileHit(AbilityEffect projectile, Entity entityHit)
     {
-        entityHit.EntityStats.Health.Reduce(GetAbilityDamage());
+        entityHit.EntityStats.Health.Reduce(GetAbilityDamage(entityHit));
         if (effectType == AbilityEffectType.SINGLE_TARGET)
         {
             Destroy(projectile.gameObject);

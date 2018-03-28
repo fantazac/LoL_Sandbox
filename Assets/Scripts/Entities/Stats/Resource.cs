@@ -7,6 +7,9 @@ public abstract class Resource : Stat
     [SerializeField]
     protected float currentValue;
 
+    public delegate void OnCurrentValueChangedHandler(float currentValue);
+    public event OnCurrentValueChangedHandler OnCurrentValueChanged;
+
     public ResourceType GetResourceType()
     {
         return type;
@@ -20,11 +23,19 @@ public abstract class Resource : Stat
     public void Reduce(float amount)
     {
         currentValue = Mathf.Clamp(currentValue - amount, 0, total);
+        if(OnCurrentValueChanged != null)
+        {
+            OnCurrentValueChanged(currentValue);
+        }
     }
 
     public void Restore(float amount)
     {
         currentValue = Mathf.Clamp(currentValue + amount, 0, total);
+        if (OnCurrentValueChanged != null)
+        {
+            OnCurrentValueChanged(currentValue);
+        }
     }
 
     public float GetPercentLeft()
@@ -41,6 +52,10 @@ public abstract class Resource : Stat
 
         float difference = total - previousTotal;
         currentValue = Mathf.Clamp(currentValue + difference, 0, total);
+        if (OnCurrentValueChanged != null)
+        {
+            OnCurrentValueChanged(currentValue);
+        }
     }
 
     public override string GetUIText()

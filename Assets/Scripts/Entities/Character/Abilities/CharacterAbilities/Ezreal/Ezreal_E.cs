@@ -26,11 +26,12 @@ public class Ezreal_E : GroundTargetedBlink, CharacterAbility
         bonusADScaling = 0.5f;// 50%
         totalAPScaling = 0.75f;// 75%
         resourceCost = 90;// 90
-        cooldown = 19;// 19/17.5f/16/14.5f/13
-        cooldownPerLevel = -1.5f;
+        baseCooldown = 19;// 19/17.5f/16/14.5f/13
+        baseCooldownPerLevel = -1.5f;
         castTime = 0.15f;//TODO: VERIFY ACTUAL VALUE
         delayCastTime = new WaitForSeconds(castTime);
 
+        affectedByCooldownReduction = true;
         startCooldownOnAbilityCast = true;
 
         effectRadius = 600;// Says 750 on wiki, is more like 600 when I tested
@@ -50,8 +51,12 @@ public class Ezreal_E : GroundTargetedBlink, CharacterAbility
 
     protected override IEnumerator AbilityWithCastTime()
     {
+        IsBeingCasted = true;
+
         yield return delayCastTime;
 
+        IsBeingCasted = false;
+        UseResource();
         destinationOnCast = FindPointToMoveTo(destinationOnCast, transform.position);
         character.CharacterOrientation.RotateCharacterInstantly(destinationOnCast);
         transform.position = destinationOnCast;
@@ -93,7 +98,7 @@ public class Ezreal_E : GroundTargetedBlink, CharacterAbility
 
     private void OnProjectileHit(AbilityEffect projectile, Entity entityHit)
     {
-        entityHit.EntityStats.Health.Reduce(GetAbilityDamage());
+        entityHit.EntityStats.Health.Reduce(GetAbilityDamage(entityHit));
         AbilityHit();
         Destroy(projectile.gameObject);
     }

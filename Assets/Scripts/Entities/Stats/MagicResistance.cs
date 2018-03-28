@@ -14,16 +14,21 @@ public class MagicResistance : Stat
         }
     }
 
-    public int GetMagicDamageReductionPercent()
+    public float GetMagicEffectiveHealthPercent()
     {
-        float percent = (1 - GetMagicDamageTakenMultiplier()) * 100;
-        return (int)Mathf.Round(percent);
+        return 1 + (GetMagicDamageReductionPercent() / GetMagicDamageTakenMultiplier());
+    }
+
+    public float GetMagicDamageReductionPercent()
+    {
+        return 1 - GetMagicDamageTakenMultiplier();
     }
 
     public override string GetUIText()
     {
         return "MAGIC RESISTANCE: " + GetTotal() + " ((" + GetBaseValue() + " + " + GetFlatBonus() +
                ") * " + GetPercentBonus() + "% * -" + GetPercentMalus() + "% - " + GetFlatMalus() +
-            ") - Takes " + GetMagicDamageReductionPercent() + "% reduced magic damage";
+               ") - Takes " + (int)Mathf.Round(GetMagicDamageReductionPercent() * 100) + "% reduced magic damage (Eff. HP: " + 
+               GetMagicEffectiveHealthPercent() * 100 + "%)";
     }
 }

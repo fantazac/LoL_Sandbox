@@ -27,12 +27,14 @@ public class Lucian_Q : UnitTargeted, CharacterAbility
         bonusADScalingPerLevel = 0.1f;
         resourceCost = 50;// 50/60/70/80/90
         resourceCostPerLevel = 10;
-        cooldown = 9;// 9/8/7/6/5
-        cooldownPerLevel = -1;
+        baseCooldown = 9;// 9/8/7/6/5
+        baseCooldownPerLevel = -1;
         castTime = 0.4f;
         delayCastTime = new WaitForSeconds(castTime);
 
         durationAoE = 0.15f;
+
+        affectedByCooldownReduction = true;
     }
 
     protected override void SetSpritePaths()
@@ -62,9 +64,12 @@ public class Lucian_Q : UnitTargeted, CharacterAbility
         transform.LookAt(destinationOnCast);
         SetPositionAndRotationOnCast(transform.position + (transform.forward * areaOfEffectPrefab.transform.localScale.z * 0.5f));
         transform.rotation = currentRotation;
+        IsBeingCasted = true;
 
         yield return delayCastTime;
 
+        IsBeingCasted = false;
+        UseResource();
         character.CharacterOrientation.RotateCharacterInstantly(destinationOnCast);
 
         AreaOfEffect aoe = ((GameObject)Instantiate(areaOfEffectPrefab, positionOnCast, rotationOnCast)).GetComponent<AreaOfEffect>();

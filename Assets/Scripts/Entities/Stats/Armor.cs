@@ -10,20 +10,25 @@ public class Armor : Stat
         }
         else
         {
-            return 2 - 100 / (100 - total);
+            return 2 - (100 / (100 - total));
         }
     }
 
-    public int GetPhysicalDamageReductionPercent()
+    public float GetPhysicalEffectiveHealthPercent()
     {
-        float percent = (1 - GetPhysicalDamageTakenMultiplier())*100;
-        return (int)Mathf.Round(percent);
+        return 1 + (GetPhysicalDamageReductionPercent() / GetPhysicalDamageTakenMultiplier());
+    }
+
+    public float GetPhysicalDamageReductionPercent()
+    {
+        return 1 - GetPhysicalDamageTakenMultiplier();
     }
 
     public override string GetUIText()
     {
         return "ARMOR: " + GetTotal() + " ((" + GetBaseValue() + " + " + GetFlatBonus() +
-               ") * " + GetPercentBonus() + "% * -" + GetPercentMalus() + "% - " + GetFlatMalus() + 
-               ") - Takes " + GetPhysicalDamageReductionPercent() + "% reduced physical damage";
+               ") * " + GetPercentBonus() + "% * -" + GetPercentMalus() + "% - " + GetFlatMalus() +
+               ") - Takes " + (int)Mathf.Round(GetPhysicalDamageReductionPercent() * 100) + "% reduced physical damage (Eff. HP: " +
+               GetPhysicalEffectiveHealthPercent() * 100 + "%)";
     }
 }

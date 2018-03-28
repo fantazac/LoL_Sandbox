@@ -79,7 +79,7 @@ public class Lucian_P : PassiveTargeted, CharacterAbility, PassiveCharacterAbili
         //}
         //else
         //{
-        entityHit.EntityStats.Health.Reduce(character.EntityStats.AttackDamage.GetTotal() * GetAbilityDamage());
+        entityHit.EntityStats.Health.Reduce(character.EntityStats.AttackDamage.GetTotal() * GetAbilityDamage(entityHit));
         //} 
         UseAbility(entityHit);
     }

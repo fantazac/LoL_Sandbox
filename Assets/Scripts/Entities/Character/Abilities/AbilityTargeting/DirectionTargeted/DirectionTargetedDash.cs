@@ -35,6 +35,8 @@ public abstract class DirectionTargetedDash : DirectionTargeted
 
     protected override IEnumerator AbilityWithoutDelay()
     {
+        UseResource();
+
         while (transform.position != destination)
         {
             transform.position = Vector3.MoveTowards(transform.position, destination, Time.deltaTime * dashSpeed);

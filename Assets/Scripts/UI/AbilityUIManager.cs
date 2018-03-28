@@ -8,11 +8,15 @@ public class AbilityUIManager : MonoBehaviour
     [SerializeField]
     private Image[] abilityImages;
     [SerializeField]
+    private Text[] abilityCostTexts;
+    [SerializeField]
     private Image[] abilityOnCooldownImages;
     [SerializeField]
     private Image[] abilityOnCooldownForRecastImages;
     [SerializeField]
     private Text[] abilityCooldownTexts;
+    [SerializeField]
+    private GameObject[] abilityNotEnoughResourceObjects;
     [SerializeField]
     private GameObject[] abilityLevelPoints;
     [SerializeField]
@@ -32,6 +36,11 @@ public class AbilityUIManager : MonoBehaviour
     public void SetAbilitySprite(int abilityId, Sprite abilitySprite)
     {
         abilityImages[abilityId].sprite = abilitySprite;
+    }
+
+    public void SetAbilityCost(int abilityId, float resourceCost)
+    {
+        abilityCostTexts[abilityId - 1].text = resourceCost == 0 ? "" : ((int)resourceCost).ToString();
     }
 
     public void SetMaxAbilityLevel(int abilityId, int abilityMaxLevel)
@@ -65,9 +74,9 @@ public class AbilityUIManager : MonoBehaviour
     {
         abilityOnCooldownImages[abilityId].fillAmount = cooldownRemaining / cooldown;
 
-        if (cooldownRemaining >= 1)
+        if (cooldownRemaining >= 0.7f)
         {
-            abilityCooldownTexts[abilityId].text = ((int)cooldownRemaining).ToString();
+            abilityCooldownTexts[abilityId].text = Mathf.CeilToInt(cooldownRemaining).ToString();
         }
         else if (cooldownRemaining <= 0)
         {
@@ -83,9 +92,9 @@ public class AbilityUIManager : MonoBehaviour
     {
         abilityOnCooldownImages[abilityId].fillAmount = cooldownRemaining / cooldownForRecast;
 
-        if (cooldownRemaining >= 1)
+        if (cooldownRemaining >= 0.7f)
         {
-            abilityCooldownTexts[abilityId].text = ((int)cooldownRemaining).ToString();
+            abilityCooldownTexts[abilityId].text = Mathf.CeilToInt(cooldownRemaining).ToString();
         }
         else if (cooldownRemaining <= 0)
         {
@@ -97,7 +106,7 @@ public class AbilityUIManager : MonoBehaviour
         }
     }
 
-    public void SetAbilityOffCooldown(int abilityId, bool abilityIsEnabled)
+    public void SetAbilityOffCooldown(int abilityId, bool abilityIsEnabled, bool hasEnoughResourceToCastAbility)
     {
         abilityOnCooldownImages[abilityId].fillAmount = 0;
         if (abilityIsEnabled)
@@ -105,8 +114,9 @@ public class AbilityUIManager : MonoBehaviour
             abilityImages[abilityId].color = Color.white;
         }
         abilityCooldownTexts[abilityId].text = "";
+        UpdateAbilityHasEnoughResource(abilityId, hasEnoughResourceToCastAbility);
     }
-
+    
     public void SetAbilityOffCooldownForRecast(int abilityId)
     {
         abilityOnCooldownImages[abilityId].fillAmount = 0;
@@ -114,13 +124,27 @@ public class AbilityUIManager : MonoBehaviour
         abilityCooldownTexts[abilityId].text = "";
     }
 
-    public void DisableAbility(int abilityId)
+    public void DisableAbility(int abilityId, bool abilityUsesResource)
     {
         abilityImages[abilityId].color = abilityColorOnCooldown;
+        if (abilityUsesResource)
+        {
+            UpdateAbilityHasEnoughResource(abilityId, true);
+        }
     }
 
-    public void EnableAbility(int abilityId)
+    public void EnableAbility(int abilityId, bool characterHasEnoughResourceToCastAbility)
     {
         abilityImages[abilityId].color = Color.white;
+        UpdateAbilityHasEnoughResource(abilityId, characterHasEnoughResourceToCastAbility);
+    }
+
+    public void UpdateAbilityHasEnoughResource(int abilityId, bool characterHasEnoughResourceToCastAbility)
+    {
+        GameObject abilityNotEnoughResourceObject = abilityNotEnoughResourceObjects[abilityId - 1];
+        if ((characterHasEnoughResourceToCastAbility && abilityNotEnoughResourceObject.activeSelf) || (!characterHasEnoughResourceToCastAbility && !abilityNotEnoughResourceObject.activeSelf))
+        {
+            abilityNotEnoughResourceObject.SetActive(!characterHasEnoughResourceToCastAbility);
+        }
     }
 }

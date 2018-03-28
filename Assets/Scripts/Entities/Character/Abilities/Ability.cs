@@ -33,11 +33,14 @@ public abstract class Ability : MonoBehaviour
     protected float speed;
     protected bool startCooldownOnAbilityCast;
 
+    protected bool affectedByCooldownReduction;
+    protected float baseCooldown;
+    protected float baseCooldownPerLevel;
+    protected float baseCooldownOnCancel;
     protected float bonusADScaling;
     protected float bonusADScalingPerLevel;
-    protected float cooldown;
-    protected float cooldownPerLevel;
-    protected float cooldownOnCancel;
+    private float cooldown;
+    private float cooldownOnCancel;
     protected float damage;
     protected float damagePerLevel;
     protected float resourceCost;
@@ -81,6 +84,7 @@ public abstract class Ability : MonoBehaviour
     public bool CannotRotateWhileCasting { get; protected set; }
     public bool CanUseAnyAbilityWhileChanneling { get; protected set; }
     public bool CanUseBasicAttacksWhileCasting { get; protected set; }
+    public bool IsActive { get; protected set; }
     public bool IsBeingCasted { get; protected set; }
     public bool IsBeingChanneled { get; protected set; }
     public bool IsEnabled { get; protected set; }
@@ -91,6 +95,7 @@ public abstract class Ability : MonoBehaviour
     public bool HasReducedCooldownOnAbilityCancel { get; private set; }
     public bool OfflineOnly { get; protected set; }
     public bool ResetBasicAttackCycleOnAbilityFinished { get; protected set; }
+    public bool UsesResource { get; private set; }
 
     public List<Ability> AbilitiesToDisableWhileActive { get; protected set; }
     public List<Ability> CastableAbilitiesWhileActive { get; protected set; }
@@ -132,7 +137,22 @@ public abstract class Ability : MonoBehaviour
     {
         HasCastTime = castTime > 0;
         HasChannelTime = channelTime > 0;
-        HasReducedCooldownOnAbilityCancel = cooldownOnCancel > 0;
+        HasReducedCooldownOnAbilityCancel = baseCooldownOnCancel > 0;
+        UsesResource = resourceCost > 0;
+
+        if (character.AbilityUIManager && UsesResource)
+        {
+            character.AbilityUIManager.SetAbilityCost(ID, resourceCost);
+        }
+        if (affectedByCooldownReduction)
+        {
+            character.EntityStats.CooldownReduction.OnCooldownReductionChanged += SetCooldownForAbilityAffectedByCooldownReduction;
+            SetCooldownForAbilityAffectedByCooldownReduction();
+        }
+        else
+        {
+            SetCooldownForAbilityUnaffectedByCooldownReduction();
+        }
 
         ModifyValues();
     }
@@ -173,7 +193,7 @@ public abstract class Ability : MonoBehaviour
         {
             OnAbilityUsed(this);
         }
-        IsBeingCasted = true;
+        IsActive = true;
         if (character.AbilityTimeBarUIManager)
         {
             if (HasCastTime && HasChannelTime)
@@ -192,6 +212,14 @@ public abstract class Ability : MonoBehaviour
         StartCooldown(true);
     }
 
+    protected void UseResource()
+    {
+        if (UsesResource)
+        {
+            character.EntityStats.Resource.Reduce(resourceCost);
+        }
+    }
+
     protected void FinishAbilityCast(bool abilityWasCancelled = false)
     {
         abilityEffectCoroutine = null;
@@ -206,7 +234,7 @@ public abstract class Ability : MonoBehaviour
         {
             OnAbilityFinished(this);
         }
-        IsBeingCasted = false;
+        IsActive = false;
         if (ResetBasicAttackCycleOnAbilityFinished)
         {
             character.EntityBasicAttack.ResetBasicAttack();
@@ -219,7 +247,7 @@ public abstract class Ability : MonoBehaviour
         IsEnabled = false;
         if (!IsOnCooldown && character.AbilityUIManager)
         {
-            character.AbilityUIManager.DisableAbility(ID);
+            character.AbilityUIManager.DisableAbility(ID, UsesResource);
         }
     }
 
@@ -228,7 +256,7 @@ public abstract class Ability : MonoBehaviour
         IsEnabled = true;
         if (!IsOnCooldown && character.AbilityUIManager)
         {
-            character.AbilityUIManager.EnableAbility(ID);
+            character.AbilityUIManager.EnableAbility(ID, resourceCost <= character.EntityStats.Resource.GetCurrentValue());
         }
     }
 
@@ -242,9 +270,10 @@ public abstract class Ability : MonoBehaviour
 
     protected void StartCooldown(bool calledInStartAbilityCast, bool abilityWasCancelled = false)
     {
-        if (calledInStartAbilityCast == startCooldownOnAbilityCast && character.AbilityUIManager)
+        float abilityCooldown = abilityWasCancelled ? cooldownOnCancel : cooldown;
+        if (calledInStartAbilityCast == startCooldownOnAbilityCast && abilityCooldown > 0 && character.AbilityUIManager)
         {
-            StartCoroutine(PutAbilityOffCooldown(abilityWasCancelled ? cooldownOnCancel : cooldown));
+            StartCoroutine(PutAbilityOffCooldown(abilityCooldown));
         }
     }
 
@@ -256,6 +285,8 @@ public abstract class Ability : MonoBehaviour
         }
     }
 
+    //This method is used for projectiles that have their origin at the Character's origin. This means you cannot move the origin of the projectile by flashing mid-cast.
+    //Examples: EzrealR, MorganaQ, CorkiR
     protected void SetPositionAndRotationOnCast(Vector3 position)
     {
         positionOnCast = position;
@@ -280,7 +311,7 @@ public abstract class Ability : MonoBehaviour
             yield return null;
         }
 
-        character.AbilityUIManager.SetAbilityOffCooldown(ID, IsEnabled);
+        character.AbilityUIManager.SetAbilityOffCooldown(ID, IsEnabled, resourceCost <= character.EntityStats.Resource.GetCurrentValue());
         IsOnCooldown = false;
     }
 
@@ -369,7 +400,7 @@ public abstract class Ability : MonoBehaviour
             AbilityLevel++;
 
             bonusADScaling += bonusADScalingPerLevel;
-            cooldown += cooldownPerLevel;
+            baseCooldown += baseCooldownPerLevel;
             damage += damagePerLevel;
             resourceCost += resourceCostPerLevel;
             totalADScaling += totalADScalingPerLevel;
@@ -378,11 +409,38 @@ public abstract class Ability : MonoBehaviour
             buffFlatBonus += buffFlatBonusPerLevel;
             buffPercentBonus += buffPercentBonusPerLevel;
 
+            AbilityUIManager abilityUIManager = character.AbilityUIManager;
+
+            if (UsesResource && resourceCost == 0)
+            {
+                UsesResource = false;
+                if (abilityUIManager)
+                {
+                    abilityUIManager.SetAbilityCost(ID, resourceCost);
+                }
+            }
+            if (baseCooldownPerLevel != 0)
+            {
+                if (affectedByCooldownReduction)
+                {
+                    SetCooldownForAbilityAffectedByCooldownReduction();
+                }
+                else
+                {
+                    SetCooldownForAbilityUnaffectedByCooldownReduction();
+                }
+            }
+
             LevelUpExtraStats();
 
-            if (character.AbilityUIManager)
+            if (abilityUIManager)
             {
-                character.AbilityUIManager.LevelUpAbility(ID, AbilityLevel);
+                abilityUIManager.LevelUpAbility(ID, AbilityLevel);
+                if (UsesResource)
+                {
+                    abilityUIManager.SetAbilityCost(ID, resourceCost);
+                    abilityUIManager.UpdateAbilityHasEnoughResource(ID, !IsEnabled || IsOnCooldown || resourceCost <= character.EntityStats.Resource.GetCurrentValue());
+                }
             }
         }
         else if (AbilityLevel == 0)
@@ -397,12 +455,58 @@ public abstract class Ability : MonoBehaviour
         }
     }
 
-    protected float GetAbilityDamage()
+    private void SetCooldownForAbilityAffectedByCooldownReduction()
     {
-        return damage +
+        SetCooldownForAbilityAffectedByCooldownReduction(character.EntityStats.CooldownReduction.GetTotal());
+    }
+
+    private void SetCooldownForAbilityAffectedByCooldownReduction(float cooldownReduction)
+    {
+        cooldown = baseCooldown * (1 - (cooldownReduction * 0.01f));
+        cooldownOnCancel = baseCooldownOnCancel * (1 - (cooldownReduction * 0.01f));
+    }
+
+    private void SetCooldownForAbilityUnaffectedByCooldownReduction()
+    {
+        cooldown = baseCooldown;
+        cooldownOnCancel = baseCooldownOnCancel;
+    }
+
+    protected float GetAbilityDamage(Entity entityHit)
+    {
+        float abilityDamage = damage +
             (bonusADScaling * character.EntityStats.AttackDamage.GetBonus()) +
             (totalADScaling * character.EntityStats.AttackDamage.GetTotal()) +
             (totalAPScaling * character.EntityStats.AbilityPower.GetTotal());
+
+        if (damageType == DamageType.MAGIC)
+        {
+            float totalResistance = entityHit.EntityStats.MagicResistance.GetTotal();
+            totalResistance *= (1 - character.EntityStats.MagicPenetrationPercent.GetTotal());
+            totalResistance -= character.EntityStats.MagicPenetrationFlat.GetTotal();
+            abilityDamage *= GetResistanceDamageTakenMultiplier(totalResistance);
+        }
+        else if (damageType == DamageType.PHYSICAL)
+        {
+            float totalResistance = entityHit.EntityStats.Armor.GetTotal();
+            totalResistance *= (1 - character.EntityStats.ArmorPenetrationPercent.GetTotal());
+            totalResistance -= character.EntityStats.Lethality.GetCurrentValue();
+            abilityDamage *= GetResistanceDamageTakenMultiplier(totalResistance);
+        }
+
+        return abilityDamage;
+    }
+
+    protected float GetResistanceDamageTakenMultiplier(float totalResistance)
+    {
+        if (totalResistance >= 0)
+        {
+            return 100 / (100 + totalResistance);
+        }
+        else
+        {
+            return 2 - (100 / (100 - totalResistance));
+        }
     }
 
     public virtual void LevelUpExtraStats() { }
@@ -433,6 +537,11 @@ public abstract class Ability : MonoBehaviour
             }
             FinishAbilityCast(HasReducedCooldownOnAbilityCancel);
         }
+    }
+
+    public float GetResourceCost()
+    {
+        return resourceCost;
     }
 
     public AbilityType GetAbilityType()

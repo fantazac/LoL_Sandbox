@@ -16,7 +16,7 @@ public class Heal : SelfTargeted, SummonerAbility
         effectType = AbilityEffectType.HEALING;
 
         range = 850;
-        cooldown = 240;
+        baseCooldown = 240;
 
         startCooldownOnAbilityCast = true;
 

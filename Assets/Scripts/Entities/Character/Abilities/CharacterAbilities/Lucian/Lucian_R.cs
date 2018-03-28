@@ -30,8 +30,8 @@ public class Lucian_R : DirectionTargetedProjectile, CharacterAbility
         totalADScaling = 0.25f;// 25%
         totalAPScaling = 0.1f;// 10%
         resourceCost = 100;// 100
-        cooldown = 110;// 110/100/90
-        cooldownPerLevel = -10;
+        baseCooldown = 110;// 110/100/90
+        baseCooldownPerLevel = -10;
         cooldownBeforeRecast = 0.75f;
         castTime = 0.01f;
         delayCastTime = new WaitForSeconds(castTime);
@@ -45,6 +45,8 @@ public class Lucian_R : DirectionTargetedProjectile, CharacterAbility
         CanBeRecasted = true;
         CannotRotateWhileCasting = true;
         CanMoveWhileActive = true;
+
+        affectedByCooldownReduction = true;
     }
 
     protected override void SetSpritePaths()
@@ -58,7 +60,6 @@ public class Lucian_R : DirectionTargetedProjectile, CharacterAbility
         AbilitiesToDisableWhileActive.Add(GetComponent<Lucian_W>());
 
         CastableAbilitiesWhileActive.Add(GetComponent<Lucian_E>());
-        CastableAbilitiesWhileActive.Add(GetComponent<Teleport>());
 
         base.Start();
     }
@@ -77,8 +78,12 @@ public class Lucian_R : DirectionTargetedProjectile, CharacterAbility
 
     protected override IEnumerator AbilityWithCastTime()
     {
+        IsBeingCasted = true;
+
         yield return delayCastTime;
 
+        IsBeingCasted = false;
+        UseResource();
         ShootProjectile(0);
 
         for (int i = 1; i < amountOfProjectilesToShoot; i++)
@@ -93,11 +98,6 @@ public class Lucian_R : DirectionTargetedProjectile, CharacterAbility
 
     private void ShootProjectile(int projectileId)
     {
-        projectile = ((GameObject)Instantiate(projectilePrefab,
-                transform.position + (transform.forward * projectilePrefab.transform.localScale.z * 0.5f) + (transform.right * (projectileId % 2 == 0 ? offset : -offset)),
-                transform.rotation)).GetComponent<Projectile>();
-        projectile.ShootProjectile(character.Team, affectedUnitType, speed, range);
-        projectile.OnAbilityEffectHit += OnProjectileHit;
-        projectile.OnProjectileReachedEnd += OnProjectileReachedEnd;
+        SpawnProjectile(transform.position + (transform.forward * projectilePrefab.transform.localScale.z * 0.5f) + (transform.right * (projectileId % 2 == 0 ? offset : -offset)), transform.rotation);
     }
 }

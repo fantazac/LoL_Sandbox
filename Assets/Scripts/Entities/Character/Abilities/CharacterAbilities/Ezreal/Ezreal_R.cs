@@ -27,10 +27,11 @@ public class Ezreal_R : DirectionTargetedProjectile, CharacterAbility
         bonusADScaling = 1;// 100%
         totalAPScaling = 0.9f;// 90%
         resourceCost = 100;// 100
-        cooldown = 120;// 120
+        baseCooldown = 120;// 120
         castTime = 1;
         delayCastTime = new WaitForSeconds(castTime);
 
+        affectedByCooldownReduction = true;
         startCooldownOnAbilityCast = true;
     }
 
@@ -47,9 +48,12 @@ public class Ezreal_R : DirectionTargetedProjectile, CharacterAbility
     protected override IEnumerator AbilityWithCastTime()
     {
         SetPositionAndRotationOnCast(transform.position);
+        IsBeingCasted = true;
 
         yield return delayCastTime;
 
+        IsBeingCasted = false;
+        UseResource();
         SpawnProjectile(positionOnCast, rotationOnCast);
 
         FinishAbilityCast();
@@ -57,7 +61,7 @@ public class Ezreal_R : DirectionTargetedProjectile, CharacterAbility
 
     protected override void OnProjectileHit(AbilityEffect projectile, Entity entityHit)
     {
-        entityHit.EntityStats.Health.Reduce(GetAbilityDamage() * currentDamageMultiplier);
+        entityHit.EntityStats.Health.Reduce(GetAbilityDamage(entityHit) * currentDamageMultiplier);
         if (currentDamageMultiplier > DAMAGE_REDUCTION_CAP)
         {
             currentDamageMultiplier -= DAMAGE_REDUCTION_PER_TARGET_HIT;

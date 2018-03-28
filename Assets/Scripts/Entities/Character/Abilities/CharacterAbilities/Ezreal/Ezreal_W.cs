@@ -22,10 +22,11 @@ public class Ezreal_W : DirectionTargetedProjectile, CharacterAbility
         totalAPScaling = 0.8f;// 80%
         resourceCost = 50;// 50/60/70/80/90
         resourceCostPerLevel = 10;
-        cooldown = 9;// 9
+        baseCooldown = 9;// 9
         castTime = 0.2f;//TODO: VERIFY ACTUAL VALUE
         delayCastTime = new WaitForSeconds(castTime);
 
+        affectedByCooldownReduction = true;
         startCooldownOnAbilityCast = true;
 
         buffDuration = 5;
@@ -41,8 +42,12 @@ public class Ezreal_W : DirectionTargetedProjectile, CharacterAbility
 
     protected override IEnumerator AbilityWithCastTime()
     {
+        IsBeingCasted = true;
+
         yield return delayCastTime;
 
+        IsBeingCasted = false;
+        UseResource();
         character.CharacterOrientation.RotateCharacterInstantly(destinationOnCast);
 
         SpawnProjectile(transform.position + (transform.forward * projectilePrefab.transform.localScale.z * 0.65f), transform.rotation);
@@ -58,7 +63,7 @@ public class Ezreal_W : DirectionTargetedProjectile, CharacterAbility
         }
         else
         {
-            entityHit.EntityStats.Health.Reduce(GetAbilityDamage());
+            entityHit.EntityStats.Health.Reduce(GetAbilityDamage(entityHit));
         }
         AbilityHit();
     }

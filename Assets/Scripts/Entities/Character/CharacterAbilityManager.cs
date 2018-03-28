@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class CharacterAbilityManager : MonoBehaviour
@@ -7,6 +8,7 @@ public class CharacterAbilityManager : MonoBehaviour
 
     private Dictionary<AbilityInput, Ability> abilities;
     private List<Ability> currentlyUsedAbilities;
+    private List<Ability> characterAbilitiesWithResourceCosts;
 
     public delegate void OnAnAbilityUsedHandler();
     public event OnAnAbilityUsedHandler OnAnAbilityUsed;
@@ -15,12 +17,18 @@ public class CharacterAbilityManager : MonoBehaviour
     {
         abilities = new Dictionary<AbilityInput, Ability>();
         currentlyUsedAbilities = new List<Ability>();
+        characterAbilitiesWithResourceCosts = new List<Ability>();
     }
 
     private void Start()
     {
         character = GetComponent<Character>();
         InitAbilities();
+
+        if (character.AbilityUIManager)
+        {
+            character.EntityStats.Resource.OnCurrentValueChanged += OnResourceCurrentValueChanged;
+        }
     }
 
     private void InitAbilities()
@@ -40,11 +48,34 @@ public class CharacterAbilityManager : MonoBehaviour
                 }
                 if (ability is CharacterAbility && !(ability is PassiveCharacterAbility))
                 {
-                    character.AbilityUIManager.DisableAbility(i);
+                    characterAbilitiesWithResourceCosts.Add(ability);
+                    character.AbilityUIManager.DisableAbility(i, false);
                     character.AbilityUIManager.SetMaxAbilityLevel(i, ability.MaxLevel);
                 }
             }
             abilities.Add((AbilityInput)i, ability);
+        }
+    }
+
+    private void OnResourceCurrentValueChanged(float currentValue)
+    {
+        for (int i = characterAbilitiesWithResourceCosts.Count - 1; i >= 0; i--)
+        {
+            UpdateAbilityHasEnoughResource(characterAbilitiesWithResourceCosts[i], currentValue);
+        }
+    }
+
+    private void UpdateAbilityHasEnoughResource(Ability ability, float currentValue)
+    {
+        if (ability.UsesResource)
+        {
+            bool hasEnoughResourceToCastAbility = !ability.IsEnabled || ability.IsOnCooldown || currentValue >= ability.GetResourceCost();
+            character.AbilityUIManager.UpdateAbilityHasEnoughResource(ability.ID, hasEnoughResourceToCastAbility);
+        }
+        else
+        {
+            character.AbilityUIManager.UpdateAbilityHasEnoughResource(ability.ID, true);
+            characterAbilitiesWithResourceCosts.Remove(ability);
         }
     }
 
@@ -137,7 +168,19 @@ public class CharacterAbilityManager : MonoBehaviour
 
         character.CharacterMovement.RotateCharacterIfMoving();
 
-        character.CharacterActionManager.UseBufferedAction();
+        Ability bufferedAbility = character.CharacterBufferedAbilityManager.GetBufferedAbility();
+        if (bufferedAbility != null)
+        {
+            if (!bufferedAbility.UsesResource || bufferedAbility.GetResourceCost() <= character.EntityStats.Resource.GetCurrentValue())
+            {
+                character.CharacterMovement.StopAllMovement(false);
+                character.CharacterBufferedAbilityManager.UseBufferedAbility();
+            }
+            else
+            {
+                character.CharacterBufferedAbilityManager.ResetBufferedAbility();
+            }
+        }
     }
 
     public void LevelUpAbility(AbilityInput abilityId)
@@ -202,7 +245,7 @@ public class CharacterAbilityManager : MonoBehaviour
         {
             if (currentlyUsedAbilities.Count > 0)
             {
-                character.CharacterActionManager.ResetBufferedAction();
+                character.CharacterBufferedAbilityManager.ResetBufferedAbility();
             }
             ability.UseAbility(destination);
             if (ability.HasCastTime || ability.HasChannelTime || ability.CanBeRecasted)
@@ -212,8 +255,8 @@ public class CharacterAbilityManager : MonoBehaviour
         }
         else
         {
-            character.CharacterMovement.StopAllMovement();
-            character.CharacterActionManager.SetPositionTargetedAbilityInQueue(ability, destination);
+            //character.CharacterMovement.StopAllMovement();
+            character.CharacterBufferedAbilityManager.BufferPositionTargetedAbility(ability, destination);
         }
     }
 
@@ -223,15 +266,15 @@ public class CharacterAbilityManager : MonoBehaviour
         {
             if (currentlyUsedAbilities.Count > 0)
             {
-                character.CharacterActionManager.ResetBufferedAction();
+                character.CharacterBufferedAbilityManager.ResetBufferedAbility();
             }
             character.CharacterMovement.StopAllMovement();
             ability.UseAbility(target);
         }
         else
         {
-            character.CharacterMovement.StopAllMovement();
-            character.CharacterActionManager.SetUnitTargetedAbilityInQueue(ability, target);
+            //character.CharacterMovement.StopAllMovement();
+            character.CharacterBufferedAbilityManager.BufferUnitTargetedAbility(ability, target);
         }
     }
 
@@ -239,9 +282,12 @@ public class CharacterAbilityManager : MonoBehaviour
     //False: Act as if the key was not pressed
     private bool AbilityIsCastable(Ability abilityToCast)
     {
-        bool abilityToCastIsAvailable = abilityToCast != null;
+        if (abilityToCast.IsOnCooldown || abilityToCast.IsOnCooldownForRecast || abilityToCast.IsActive)
+        {
+            return false;
+        }
 
-        if (abilityToCastIsAvailable && (abilityToCast.IsOnCooldown || abilityToCast.IsOnCooldownForRecast || abilityToCast.IsBeingCasted))
+        if (abilityToCast.UsesResource && abilityToCast.GetResourceCost() > character.EntityStats.Resource.GetCurrentValue())
         {
             return false;
         }
@@ -268,13 +314,19 @@ public class CharacterAbilityManager : MonoBehaviour
 
         foreach (Ability ability in currentlyUsedAbilities)
         {
-            if (ability.HasCastTime && !ability.CastableAbilitiesWhileActive.Contains(abilityToCast) && !(ability.HasChannelTime && ability.IsBeingChanneled && ability.CanUseAnyAbilityWhileChanneling))
+            if (CannotCastAbility(abilityToCast, ability))
             {
                 return true;
             }
         }
 
         return false;
+    }
+
+    private bool CannotCastAbility(Ability abilityToCast, Ability ability)
+    {
+        return ability.HasCastTime && ability.IsBeingCasted && !ability.CastableAbilitiesWhileActive.Contains(abilityToCast) &&
+            !(ability.HasChannelTime && ability.IsBeingChanneled && ability.CanUseAnyAbilityWhileChanneling);
     }
 
     public bool IsUsingAbilityPreventingMovement()

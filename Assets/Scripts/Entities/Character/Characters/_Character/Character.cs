@@ -9,7 +9,7 @@ public abstract class Character : Entity
     protected string characterPortraitPath;
 
     public CharacterAbilityManager CharacterAbilityManager { get; private set; }
-    public CharacterActionManager CharacterActionManager { get; private set; }
+    public CharacterBufferedAbilityManager CharacterBufferedAbilityManager { get; private set; }
     public CharacterInput CharacterInput { get; private set; }
     public CharacterLevelManager CharacterLevelManager { get; private set; }
     public CharacterMouseManager CharacterMouseManager { get; private set; }
@@ -66,7 +66,7 @@ public abstract class Character : Entity
         base.InitEntityProperties();
 
         CharacterAbilityManager = GetComponent<CharacterAbilityManager>();
-        CharacterActionManager = GetComponent<CharacterActionManager>();
+        CharacterBufferedAbilityManager = GetComponent<CharacterBufferedAbilityManager>();
         CharacterInput = GetComponent<CharacterInput>();
         CharacterLevelManager = GetComponent<CharacterLevelManager>();
         CharacterMouseManager = GetComponent<CharacterMouseManager>();

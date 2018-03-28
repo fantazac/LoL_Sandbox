@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CharacterActionManager : MonoBehaviour
+public class CharacterBufferedAbilityManager : MonoBehaviour
 {
     private Ability bufferedPositionTargetedAbility;
     private Vector3 bufferedPosition;
@@ -10,7 +10,12 @@ public class CharacterActionManager : MonoBehaviour
     private Ability bufferedUnitTargetedAbility;
     private Entity bufferedUnit;
 
-    public void ResetBufferedAction()
+    public Ability GetBufferedAbility()
+    {
+        return bufferedPositionTargetedAbility != null ? bufferedPositionTargetedAbility : bufferedUnitTargetedAbility;
+    }
+
+    public void ResetBufferedAbility()
     {
         if (bufferedPositionTargetedAbility != null)
         {
@@ -22,7 +27,7 @@ public class CharacterActionManager : MonoBehaviour
         }
     }
 
-    public void SetPositionTargetedAbilityInQueue(Ability positionTargetedAbility, Vector3 destination)
+    public void BufferPositionTargetedAbility(Ability positionTargetedAbility, Vector3 destination)
     {
         bufferedPositionTargetedAbility = positionTargetedAbility;
         bufferedPosition = destination;
@@ -33,7 +38,7 @@ public class CharacterActionManager : MonoBehaviour
         }
     }
 
-    public void SetUnitTargetedAbilityInQueue(Ability unitTargetedAbility, Entity target)
+    public void BufferUnitTargetedAbility(Ability unitTargetedAbility, Entity target)
     {
         bufferedUnitTargetedAbility = unitTargetedAbility;
         bufferedUnit = target;
@@ -44,7 +49,7 @@ public class CharacterActionManager : MonoBehaviour
         }
     }
 
-    public void UseBufferedAction()
+    public void UseBufferedAbility()
     {
         if (bufferedPositionTargetedAbility != null)
         {

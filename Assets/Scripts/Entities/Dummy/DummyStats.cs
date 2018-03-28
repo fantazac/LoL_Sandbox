@@ -6,9 +6,9 @@ public class DummyStats : CharacterStats
 {
     //extra stats the character has that other characters don't
 
-    protected override void OnEnable()
+    protected override void Awake()
     {
-        base.OnEnable();
+        base.Awake();
     }
 
     protected override void SetBaseStats(EntityBaseStats entityStats)
