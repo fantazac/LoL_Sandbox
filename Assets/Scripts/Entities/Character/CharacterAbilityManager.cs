@@ -27,7 +27,7 @@ public class CharacterAbilityManager : MonoBehaviour
 
         if (character.AbilityUIManager)
         {
-            character.EntityStats.Resource.OnCurrentValueChanged += OnResourceCurrentValueChanged;
+            character.EntityStats.Resource.OnCurrentResourceValueChanged += OnResourceCurrentValueChanged;
         }
     }
 
@@ -57,8 +57,9 @@ public class CharacterAbilityManager : MonoBehaviour
         }
     }
 
-    private void OnResourceCurrentValueChanged(float currentValue)
+    private void OnResourceCurrentValueChanged()
     {
+        float currentValue = character.EntityStats.Resource.GetCurrentValue();
         for (int i = characterAbilitiesWithResourceCosts.Count - 1; i >= 0; i--)
         {
             UpdateAbilityHasEnoughResource(characterAbilitiesWithResourceCosts[i], currentValue);

@@ -5,6 +5,12 @@ public class Health : Stat
     public delegate void OnHealthReducedHandler();
     public event OnHealthReducedHandler OnHealthReduced;
 
+    public delegate void OnCurrentHealthValueChangedHandler();
+    public event OnCurrentHealthValueChangedHandler OnCurrentHealthValueChanged;
+
+    public delegate void OnMaxHealthValueChangedHandler();
+    public event OnMaxHealthValueChangedHandler OnMaxHealthValueChanged;
+
     [SerializeField]
     protected float currentValue;
 
@@ -16,15 +22,23 @@ public class Health : Stat
     public void Reduce(float amount)
     {
         currentValue = Mathf.Clamp(currentValue - amount, 0, total);
-        if(OnHealthReduced != null)
+        if (OnHealthReduced != null)
         {
             OnHealthReduced();
+        }
+        if (OnCurrentHealthValueChanged != null)
+        {
+            OnCurrentHealthValueChanged();
         }
     }
 
     public void Restore(float amount)
     {
         currentValue = Mathf.Clamp(currentValue + amount, 0, total);
+        if (OnCurrentHealthValueChanged != null)
+        {
+            OnCurrentHealthValueChanged();
+        }
     }
 
     public float GetPercentLeft()
@@ -46,6 +60,15 @@ public class Health : Stat
 
         float difference = total - previousTotal;
         currentValue = Mathf.Clamp(currentValue + difference, 0, total);
+
+        if (OnMaxHealthValueChanged != null)
+        {
+            OnMaxHealthValueChanged();
+        }
+        if (OnCurrentHealthValueChanged != null)
+        {
+            OnCurrentHealthValueChanged();
+        }
     }
 
     public override string GetUIText()

@@ -7,8 +7,11 @@ public abstract class Resource : Stat
     [SerializeField]
     protected float currentValue;
 
-    public delegate void OnCurrentValueChangedHandler(float currentValue);
-    public event OnCurrentValueChangedHandler OnCurrentValueChanged;
+    public delegate void OnCurrentResourceValueChangedHandler();
+    public event OnCurrentResourceValueChangedHandler OnCurrentResourceValueChanged;
+
+    public delegate void OnMaxResourceValueChangedHandler();
+    public event OnMaxResourceValueChangedHandler OnMaxResourceValueChanged;
 
     public ResourceType GetResourceType()
     {
@@ -23,18 +26,18 @@ public abstract class Resource : Stat
     public void Reduce(float amount)
     {
         currentValue = Mathf.Clamp(currentValue - amount, 0, total);
-        if(OnCurrentValueChanged != null)
+        if (OnCurrentResourceValueChanged != null)
         {
-            OnCurrentValueChanged(currentValue);
+            OnCurrentResourceValueChanged();
         }
     }
 
     public void Restore(float amount)
     {
         currentValue = Mathf.Clamp(currentValue + amount, 0, total);
-        if (OnCurrentValueChanged != null)
+        if (OnCurrentResourceValueChanged != null)
         {
-            OnCurrentValueChanged(currentValue);
+            OnCurrentResourceValueChanged();
         }
     }
 
@@ -52,9 +55,14 @@ public abstract class Resource : Stat
 
         float difference = total - previousTotal;
         currentValue = Mathf.Clamp(currentValue + difference, 0, total);
-        if (OnCurrentValueChanged != null)
+
+        if (OnMaxResourceValueChanged != null)
         {
-            OnCurrentValueChanged(currentValue);
+            OnMaxResourceValueChanged();
+        }
+        if (OnCurrentResourceValueChanged != null)
+        {
+            OnCurrentResourceValueChanged();
         }
     }
 

@@ -481,7 +481,7 @@
     <Compile Include="Assets\Scripts\Entities\Character\Abilities\SummonerAbilities\Heal.cs" />
     <Compile Include="Assets\Scripts\Entities\Character\Abilities\SummonerAbilities\Teleport.cs" />
     <Compile Include="Assets\Scripts\Entities\Character\CharacterAbilityManager.cs" />
-    <Compile Include="Assets\Scripts\Entities\Character\CharacterActionManager.cs" />
+    <Compile Include="Assets\Scripts\Entities\Character\CharacterBufferedAbilityManager.cs" />
     <Compile Include="Assets\Scripts\Entities\Character\CharacterInput.cs" />
     <Compile Include="Assets\Scripts\Entities\Character\CharacterLevelManager.cs" />
     <Compile Include="Assets\Scripts\Entities\Character\CharacterMouseManager.cs" />
@@ -554,6 +554,8 @@
     <Compile Include="Assets\Scripts\UI\AbilityTimeBarUIManager.cs" />
     <Compile Include="Assets\Scripts\UI\AbilityUIManager.cs" />
     <Compile Include="Assets\Scripts\UI\BuffUIManager.cs" />
+    <Compile Include="Assets\Scripts\UI\HealthBar.cs" />
+    <Compile Include="Assets\Scripts\UI\HealthBarManager.cs" />
     <Compile Include="Assets\Scripts\UI\LevelUIManager.cs" />
     <Compile Include="Assets\Scripts\UI\UIAbility.cs" />
     <Compile Include="Assets\Scripts\UI\UILevelUpArrow.cs" />
