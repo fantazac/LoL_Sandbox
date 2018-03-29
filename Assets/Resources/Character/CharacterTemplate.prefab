@@ -3177,7 +3177,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d7550dda973b104297bdd3723d63f6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  healthBarPrefab: {fileID: 1110815762006676, guid: cbd93c9881199394aaf2f19dc45e2b7a,
+  healthBarPrefab: {fileID: 1039601090850380, guid: cbd93c9881199394aaf2f19dc45e2b7a,
     type: 2}
 --- !u!114 &114856688479478294
 MonoBehaviour:
