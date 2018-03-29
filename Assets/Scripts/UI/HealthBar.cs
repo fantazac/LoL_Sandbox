@@ -20,7 +20,7 @@ public class HealthBar : MonoBehaviour
         //canvas = GetComponentInParent<Canvas>().GetComponent<RectTransform>().rect;
         healthBarOffset = Vector2.right * Screen.width * -0.5f + Vector2.up * Screen.height * -0.5f;
         characterXOffset = Vector2.right * GetComponent<RectTransform>().rect.width * -0.5f;
-        characterYOffset = Vector2.up * 120;
+        characterYOffset = Vector2.up * 120;//((120 * Screen.height) / 1080);
         characterYOffset2 = Vector2.up * -40;
     }
 
