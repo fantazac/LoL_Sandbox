@@ -76,12 +76,14 @@ public class HealthBar : MonoBehaviour
         {
             Destroy(childrenTransforms[i].gameObject);
         }
-        float percentPer100Health = 100f / maxHealth;
+        float healthSeparatorFactor = GetHealthSeperatorFactor();
+        float percentPer100Health = healthSeparatorFactor / maxHealth;
         Vector2 widthPer100Health = Vector2.right * (float)(decimal.Round((decimal)(percentPer100Health * healthWidth), 2, System.MidpointRounding.AwayFromZero));
+        float modulo = 1000f / healthSeparatorFactor;
         for (int i = 1; i < maxHealth * 0.01f; i++)
         {
             GameObject separator;
-            if (i % 10 == 0)
+            if (i % modulo == 0)
             {
                 separator = Instantiate(mark1000Prefab);
                 separator.transform.SetParent(healthImage.transform, false);
@@ -95,6 +97,23 @@ public class HealthBar : MonoBehaviour
             }
 
         }
+    }
+
+    private float GetHealthSeperatorFactor()
+    {
+        if(maxHealth < 3000)
+        {
+            return 100f;
+        }
+        else if(maxHealth < 6000)
+        {
+            return 200f;
+        }
+        else if(maxHealth < 10000)
+        {
+            return 250f;
+        }
+        return 500f;
     }
 
     private void OnLevelUp(int level)
