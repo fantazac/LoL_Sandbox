@@ -17,6 +17,8 @@ public class HealthBar : MonoBehaviour
     private Vector2 healthBarOffset;
     private Vector2 characterYOffset;
 
+    private float xRatioOffset;
+
     private Camera characterCamera;
     private Rect canvas;
 
@@ -25,6 +27,11 @@ public class HealthBar : MonoBehaviour
 
     private void Start()
     {
+        Debug.Log(Screen.width + " " + Screen.height);
+
+        decimal aspectRatio = decimal.Round((decimal)Screen.width / Screen.height, 2, System.MidpointRounding.AwayFromZero);
+        xRatioOffset = (float)(aspectRatio / 1.77m);
+
         characterCamera = StaticObjects.CharacterCamera;
         healthBarOffset = Vector2.right * Screen.width * -0.5f + Vector2.up * Screen.height * -0.5f;
         characterYOffset = Vector2.up * 120;
@@ -48,8 +55,8 @@ public class HealthBar : MonoBehaviour
     {
         Vector3 position = characterCamera.WorldToScreenPoint(character.transform.position);
         GetComponent<RectTransform>().anchoredPosition =
-            Vector2.right * (position.x + healthBarOffset.x) +
-            Vector2.up * (position.y + healthBarOffset.y) +
+            Vector2.right * (position.x + healthBarOffset.x) * (1920f / Screen.width) * xRatioOffset +
+            Vector2.up * (position.y + healthBarOffset.y) * (1080f / Screen.height) +
             characterYOffset;
     }
 
