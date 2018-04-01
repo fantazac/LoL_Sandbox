@@ -37,6 +37,7 @@ public abstract class SpawnDummy : GroundTargeted, OtherAbility
     {
         while (dummies.Count > 0)//more efficient way to do this?
         {
+            dummies[0].GetComponent<Character>().RemoveHealthBar();
             Destroy(dummies[0]);
             dummies.RemoveAt(0);
         }
@@ -59,6 +60,7 @@ public abstract class SpawnDummy : GroundTargeted, OtherAbility
         dummy.transform.rotation = Quaternion.LookRotation((transform.position - dummy.transform.position).normalized);
         dummy.SetDummyTeamAndID(team, ++dummyId);
         dummies.Add(dummy.gameObject);
+        StaticObjects.Character.HealthBarManager.SetupHealthBarForCharacter(dummy);
 
         FinishAbilityCast();
     }

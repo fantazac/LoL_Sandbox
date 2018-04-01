@@ -51,6 +51,7 @@ public class MainMenuManager : MonoBehaviour
             {
                 mainMenuCamera.SetActive(true);
                 StaticObjects.Character.CharacterMovement.UnsubscribeCameraEvent();
+                StaticObjects.Character.RemoveHealthBar();
                 PhotonNetwork.Destroy(StaticObjects.Character.transform.parent.gameObject);
                 StaticObjects.Character = null;
                 StaticObjects.CharacterCamera = null;

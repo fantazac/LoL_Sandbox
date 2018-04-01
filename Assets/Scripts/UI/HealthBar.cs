@@ -64,8 +64,16 @@ public class HealthBar : MonoBehaviour
             maxResource = character.EntityStats.Resource.GetTotal();
         }
 
-        character.CharacterLevelManager.OnLevelUp += OnLevelUp;
-        OnLevelUp(1);
+        if (character.CharacterLevelManager)
+        {
+            character.CharacterLevelManager.OnLevelUp += OnLevelUp;
+            OnLevelUp(character.CharacterLevelManager.Level == 0 ? 1 : character.CharacterLevelManager.Level);
+        }
+        else
+        {
+            OnLevelUp(1);
+        }
+
         SetHealthBarSeparators();
     }
 
@@ -80,7 +88,8 @@ public class HealthBar : MonoBehaviour
         float percentPer100Health = healthSeparatorFactor / maxHealth;
         Vector2 widthPer100Health = Vector2.right * (float)(decimal.Round((decimal)(percentPer100Health * healthWidth), 2, System.MidpointRounding.AwayFromZero));
         float modulo = 1000f / healthSeparatorFactor;
-        for (int i = 1; i < maxHealth * 0.01f; i++)
+        float loopValue = maxHealth / healthSeparatorFactor;
+        for (int i = 1; i < loopValue; i++)
         {
             GameObject separator;
             if (i % modulo == 0)
@@ -103,15 +112,15 @@ public class HealthBar : MonoBehaviour
 
     private float GetHealthSeperatorFactor()
     {
-        if(maxHealth < 3000)
+        if (maxHealth < 3000)
         {
             return 100f;
         }
-        else if(maxHealth < 6000)
+        else if (maxHealth < 6000)
         {
             return 200f;
         }
-        else if(maxHealth < 10000)
+        else if (maxHealth < 10000)
         {
             return 250f;
         }
@@ -123,13 +132,25 @@ public class HealthBar : MonoBehaviour
         levelText.text = "" + level;
     }
 
+    public Character GetCharacter()
+    {
+        return character;
+    }
+
     private void LateUpdate()
     {
-        Vector3 position = characterCamera.WorldToScreenPoint(character.transform.position);
-        GetComponent<RectTransform>().anchoredPosition =
-            Vector2.right * (position.x + healthBarOffset.x) * (1920f / Screen.width) +//* xRatioOffset +
-            Vector2.up * (position.y + healthBarOffset.y) * (1080f / Screen.height) +
-            characterYOffset;
+        if (character)
+        {
+            Vector3 position = characterCamera.WorldToScreenPoint(character.transform.position);
+            GetComponent<RectTransform>().anchoredPosition =
+                Vector2.right * (position.x + healthBarOffset.x) * (1920f / Screen.width) * xRatioOffset +
+                Vector2.up * (position.y + healthBarOffset.y) * (1080f / Screen.height) +
+                characterYOffset;
+        }
+        else
+        {
+            enabled = false;
+        }
     }
 
     private void OnCurrentHealthChanged()

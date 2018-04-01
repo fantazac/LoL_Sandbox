@@ -22,6 +22,7 @@ public abstract class Character : Entity
     public AbilityUIManager AbilityUIManager { get; private set; }
     public BuffUIManager BuffUIManager { get; private set; }
     public BuffUIManager DebuffUIManager { get; private set; }
+    public HealthBarManager HealthBarManager { get; private set; }
     public LevelUIManager LevelUIManager { get; private set; }
 
     public delegate void OnConnectionInfoReceivedHandler(Character character);
@@ -38,6 +39,7 @@ public abstract class Character : Entity
             BuffUIManager = buffUIManagers[0];
             DebuffUIManager = buffUIManagers[1];
             EntityBuffManager.SetUIManagers(BuffUIManager, DebuffUIManager);
+            HealthBarManager = transform.parent.GetComponentInChildren<HealthBarManager>();
             LevelUIManager = transform.parent.GetComponentInChildren<LevelUIManager>();
             LevelUIManager.SetPortraitSprite(Resources.Load<Sprite>(characterPortraitPath));
             LevelUIManager.SetLevel(CharacterLevelManager.Level);
@@ -54,6 +56,10 @@ public abstract class Character : Entity
             }
             EntityId = PhotonNetwork.player.ID;
             SendToServer_TeamAndID();
+        }
+        if (StaticObjects.Character && StaticObjects.Character.HealthBarManager)
+        {
+            StaticObjects.Character.HealthBarManager.SetupHealthBarForCharacter(this);
         }
 
         EntityType = EntityType.CHARACTER;
@@ -73,6 +79,19 @@ public abstract class Character : Entity
         CharacterMovement = GetComponent<CharacterMovement>();
         CharacterOrientation = GetComponent<CharacterOrientation>();
         CharacterStatsManager = GetComponent<CharacterStatsManager>();
+    }
+
+    protected void OnDestroy()
+    {
+        RemoveHealthBar();
+    }
+
+    public void RemoveHealthBar()
+    {
+        if (StaticObjects.Character && StaticObjects.Character.HealthBarManager)
+        {
+            StaticObjects.Character.HealthBarManager.RemoveHealthBarOfDeletedCharacter(this);
+        }
     }
 
     [PunRPC]
