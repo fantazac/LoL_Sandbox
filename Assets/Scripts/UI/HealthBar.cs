@@ -27,8 +27,6 @@ public class HealthBar : MonoBehaviour
 
     private void Start()
     {
-        Debug.Log(Screen.width + " " + Screen.height);
-
         decimal aspectRatio = decimal.Round((decimal)Screen.width / Screen.height, 2, System.MidpointRounding.AwayFromZero);
         xRatioOffset = (float)(aspectRatio / 1.77m);
 
@@ -40,8 +38,13 @@ public class HealthBar : MonoBehaviour
     public void SetupHealthBar(Character character)
     {
         this.character = character;
+
+        character.CharacterLevelManager.OnLevelUp += OnLevelUp;
+        OnLevelUp(1);
+
         character.EntityStats.Health.OnCurrentHealthValueChanged += OnCurrentHealthChanged;
         character.EntityStats.Health.OnMaxHealthValueChanged += OnMaxHealthChanged;
+
         maxHealth = character.EntityStats.Health.GetTotal();
         if (character.EntityStats.Resource)
         {
@@ -49,6 +52,11 @@ public class HealthBar : MonoBehaviour
             character.EntityStats.Resource.OnMaxResourceValueChanged += OnMaxResourceChanged;
             maxResource = character.EntityStats.Resource.GetTotal();
         }
+    }
+
+    private void OnLevelUp(int level)
+    {
+        levelText.text = "" + level;
     }
 
     private void LateUpdate()
