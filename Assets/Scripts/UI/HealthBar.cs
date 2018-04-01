@@ -97,6 +97,8 @@ public class HealthBar : MonoBehaviour
             }
 
         }
+        OnCurrentHealthChanged();
+        OnCurrentResourceChanged();
     }
 
     private float GetHealthSeperatorFactor()
