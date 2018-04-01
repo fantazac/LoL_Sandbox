@@ -241,6 +241,10 @@ MonoBehaviour:
   healthImage: {fileID: 114280413982980590}
   resourceImage: {fileID: 114763829977747890}
   levelText: {fileID: 114346459081856412}
+  mark100Prefab: {fileID: 1902206647568890, guid: 4e599da124121ff4781dd5a9f49d4e7a,
+    type: 2}
+  mark1000Prefab: {fileID: 1516839144576642, guid: 31b82c39e421743419a23afa5af3673d,
+    type: 2}
 --- !u!114 &114763829977747890
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -346,7 +350,7 @@ RectTransform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1039601090850380}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:

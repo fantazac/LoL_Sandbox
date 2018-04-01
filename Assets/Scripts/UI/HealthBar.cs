@@ -25,6 +25,20 @@ public class HealthBar : MonoBehaviour
     private float maxHealth;
     private float maxResource;
 
+    [SerializeField]
+    private GameObject mark100Prefab;
+    [SerializeField]
+    private GameObject mark1000Prefab;
+
+    private float healthWidth;
+    private Vector2 healthBarXOrigin;
+
+    private HealthBar()
+    {
+        healthWidth = 105;
+        healthBarXOrigin = Vector2.right * -0.5f * healthWidth;
+    }
+
     private void Start()
     {
         decimal aspectRatio = decimal.Round((decimal)Screen.width / Screen.height, 2, System.MidpointRounding.AwayFromZero);
@@ -39,9 +53,6 @@ public class HealthBar : MonoBehaviour
     {
         this.character = character;
 
-        character.CharacterLevelManager.OnLevelUp += OnLevelUp;
-        OnLevelUp(1);
-
         character.EntityStats.Health.OnCurrentHealthValueChanged += OnCurrentHealthChanged;
         character.EntityStats.Health.OnMaxHealthValueChanged += OnMaxHealthChanged;
 
@@ -51,6 +62,38 @@ public class HealthBar : MonoBehaviour
             character.EntityStats.Resource.OnCurrentResourceValueChanged += OnCurrentResourceChanged;
             character.EntityStats.Resource.OnMaxResourceValueChanged += OnMaxResourceChanged;
             maxResource = character.EntityStats.Resource.GetTotal();
+        }
+
+        character.CharacterLevelManager.OnLevelUp += OnLevelUp;
+        OnLevelUp(1);
+        SetHealthBarSeparators();
+    }
+
+    private void SetHealthBarSeparators()
+    {
+        Transform[] childrenTransforms = healthImage.transform.GetComponentsInChildren<Transform>();
+        for (int i = 1; i < childrenTransforms.Length; i++)
+        {
+            Destroy(childrenTransforms[i].gameObject);
+        }
+        float percentPer100Health = 100f / maxHealth;
+        Vector2 widthPer100Health = Vector2.right * (float)(decimal.Round((decimal)(percentPer100Health * healthWidth), 2, System.MidpointRounding.AwayFromZero));
+        for (int i = 1; i < maxHealth * 0.01f; i++)
+        {
+            GameObject separator;
+            if (i % 10 == 0)
+            {
+                separator = Instantiate(mark1000Prefab);
+                separator.transform.SetParent(healthImage.transform, false);
+                separator.GetComponent<RectTransform>().anchoredPosition = healthBarXOrigin + (widthPer100Health * i);
+            }
+            else
+            {
+                separator = Instantiate(mark100Prefab);
+                separator.transform.SetParent(healthImage.transform, false);
+                separator.GetComponent<RectTransform>().anchoredPosition = healthBarXOrigin + (widthPer100Health * i) + Vector2.up * 3;
+            }
+
         }
     }
 
@@ -63,7 +106,7 @@ public class HealthBar : MonoBehaviour
     {
         Vector3 position = characterCamera.WorldToScreenPoint(character.transform.position);
         GetComponent<RectTransform>().anchoredPosition =
-            Vector2.right * (position.x + healthBarOffset.x) * (1920f / Screen.width) * xRatioOffset +
+            Vector2.right * (position.x + healthBarOffset.x) * (1920f / Screen.width) +//* xRatioOffset +
             Vector2.up * (position.y + healthBarOffset.y) * (1080f / Screen.height) +
             characterYOffset;
     }
@@ -76,7 +119,7 @@ public class HealthBar : MonoBehaviour
     private void OnMaxHealthChanged()
     {
         maxHealth = character.EntityStats.Health.GetTotal();
-        //TODO: black bars to better see how much max health the characters have
+        SetHealthBarSeparators();
     }
 
     private void OnCurrentResourceChanged()
