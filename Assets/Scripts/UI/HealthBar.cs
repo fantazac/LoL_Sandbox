@@ -67,66 +67,38 @@ public class HealthBar : MonoBehaviour
     {
         this.character = character;
 
-        if (StaticObjects.Character)
-        {
-            if (StaticObjects.Character.Team == character.Team)
-            {
-                if (StaticObjects.Character == character)
-                {
-                    healthImage.sprite = Resources.Load<Sprite>(healthSelfPath);
-                }
-                else
-                {
-                    healthImage.sprite = Resources.Load<Sprite>(healthAllyPath);
-                }
-                healthBarImage.sprite = Resources.Load<Sprite>(healthBarAllyPath);
-            }
-            else
-            {
-                healthBarImage.sprite = Resources.Load<Sprite>(healthBarEnemyPath);
-                healthImage.sprite = Resources.Load<Sprite>(healthEnemyPath);
-            }
-            Resource resource = character.EntityStats.Resource;
-            if (resource)
-            {
-                if (resource.GetResourceType() == ResourceType.MANA)
-                {
-                    resourceImage.color = new Color(57f / 255f, 170f / 255f, 222f / 255f);
-                }
-                else if (resource.GetResourceType() == ResourceType.ENERGY)
-                {
-                    resourceImage.color = new Color(234f / 255f, 221f / 255f, 90f / 255f);
-                }
-                else if (resource.GetResourceType() == ResourceType.FURY)
-                {
-                    resourceImage.color = new Color(244f / 255f, 4f / 255f, 13f / 255f);
-                }
-                else
-                {
-                    Destroy(resourceImage.gameObject);
-                }
-            }
-            else
-            {
-                Debug.Log(3);
-                Destroy(resourceImage.gameObject);
-            }
-        }
-        else
-        {
-            healthBarImage.sprite = Resources.Load<Sprite>(healthBarAllyPath);
-            healthImage.sprite = Resources.Load<Sprite>(healthSelfPath);
-        }
-
         character.EntityStats.Health.OnCurrentHealthValueChanged += OnCurrentHealthChanged;
         character.EntityStats.Health.OnMaxHealthValueChanged += OnMaxHealthChanged;
 
         maxHealth = character.EntityStats.Health.GetTotal();
-        if (character.EntityStats.Resource)
+
+        Resource resource = character.EntityStats.Resource;
+        if (resource)
         {
+            if (resource.GetResourceType() == ResourceType.MANA)
+            {
+                resourceImage.color = new Color(57f / 255f, 170f / 255f, 222f / 255f);
+            }
+            else if (resource.GetResourceType() == ResourceType.ENERGY)
+            {
+                resourceImage.color = new Color(234f / 255f, 221f / 255f, 90f / 255f);
+            }
+            else if (resource.GetResourceType() == ResourceType.FURY)
+            {
+                resourceImage.color = new Color(244f / 255f, 4f / 255f, 13f / 255f);
+            }
+            else
+            {
+                Destroy(resourceImage.gameObject);
+            }
+
             character.EntityStats.Resource.OnCurrentResourceValueChanged += OnCurrentResourceChanged;
             character.EntityStats.Resource.OnMaxResourceValueChanged += OnMaxResourceChanged;
             maxResource = character.EntityStats.Resource.GetTotal();
+        }
+        else
+        {
+            Destroy(resourceImage.gameObject);
         }
 
         if (character.CharacterLevelManager)
@@ -137,6 +109,24 @@ public class HealthBar : MonoBehaviour
         else
         {
             OnLevelUp(1);
+        }
+
+        if (StaticObjects.Character.Team == character.Team)
+        {
+            if (StaticObjects.Character == character)
+            {
+                healthImage.sprite = Resources.Load<Sprite>(healthSelfPath);
+            }
+            else
+            {
+                healthImage.sprite = Resources.Load<Sprite>(healthAllyPath);
+            }
+            healthBarImage.sprite = Resources.Load<Sprite>(healthBarAllyPath);
+        }
+        else
+        {
+            healthBarImage.sprite = Resources.Load<Sprite>(healthBarEnemyPath);
+            healthImage.sprite = Resources.Load<Sprite>(healthEnemyPath);
         }
 
         SetHealthBarSeparators();

@@ -25,9 +25,6 @@ public abstract class Character : Entity
     public HealthBarManager HealthBarManager { get; private set; }
     public LevelUIManager LevelUIManager { get; private set; }
 
-    public delegate void OnConnectionInfoReceivedHandler(Character character);
-    public event OnConnectionInfoReceivedHandler OnConnectionInfoReceived;
-
     protected override void Start()
     {
         if ((!StaticObjects.OnlineMode && EntityId == 0) || PhotonView.isMine)
@@ -44,19 +41,7 @@ public abstract class Character : Entity
             LevelUIManager.SetPortraitSprite(Resources.Load<Sprite>(characterPortraitPath));
             LevelUIManager.SetLevel(CharacterLevelManager.Level);
         }
-        if (StaticObjects.OnlineMode && PhotonView.isMine)
-        {
-            if (PhotonNetwork.player.GetTeam() == PunTeams.Team.blue)
-            {
-                Team = EntityTeam.BLUE;
-            }
-            else
-            {
-                Team = EntityTeam.RED;
-            }
-            EntityId = PhotonNetwork.player.ID;
-            SendToServer_TeamAndID();
-        }
+
         if (StaticObjects.Character && StaticObjects.Character.HealthBarManager)
         {
             StaticObjects.Character.HealthBarManager.SetupHealthBarForCharacter(this);
@@ -79,6 +64,20 @@ public abstract class Character : Entity
         CharacterMovement = GetComponent<CharacterMovement>();
         CharacterOrientation = GetComponent<CharacterOrientation>();
         CharacterStatsManager = GetComponent<CharacterStatsManager>();
+
+        if (StaticObjects.OnlineMode && PhotonView.isMine)
+        {
+            if (PhotonNetwork.player.GetTeam() == PunTeams.Team.blue)
+            {
+                Team = EntityTeam.BLUE;
+            }
+            else
+            {
+                Team = EntityTeam.RED;
+            }
+            EntityId = PhotonNetwork.player.ID;
+            SendToServer_TeamAndID();
+        }
     }
 
     protected void OnDestroy()
@@ -106,7 +105,6 @@ public abstract class Character : Entity
             EntityId = characterId;
             CharacterLevelManager.SetLevelFromLoad(characterLevel);
             CharacterAbilityManager.SetAbilityLevelsFromLoad(characterAbilityLevels);
-            OnConnectionInfoReceived(this);
         }
     }
 

@@ -4,10 +4,17 @@ using System.Collections.Generic;
 
 public class NetworkManager : MonoBehaviour
 {
-    private int characterInfoReceived;
+    private float loadingPlayersTime;
+    private WaitForSeconds delayLoadingPlayers;
 
     public delegate void OnConnectedToServerHandler();
     public event OnConnectedToServerHandler OnConnectedToServer;
+
+    private NetworkManager()
+    {
+        loadingPlayersTime = 1;
+        delayLoadingPlayers = new WaitForSeconds(loadingPlayersTime);
+    }
 
     private void Start()
     {
@@ -39,7 +46,6 @@ public class NetworkManager : MonoBehaviour
     {
         if (PhotonNetwork.playerList.Length > 1)
         {
-            characterInfoReceived = PhotonNetwork.playerList.Length - 1;
             StartCoroutine(LoadPlayers());
         }
         else
@@ -52,20 +58,13 @@ public class NetworkManager : MonoBehaviour
     {
         yield return null;
 
-        foreach (GameObject player in GameObject.FindGameObjectsWithTag("Character"))
+        foreach (Character character in FindObjectsOfType<Character>())
         {
-            Character character = player.GetComponent<Character>();
             character.SendToServer_ConnectionInfoRequest();
-            character.OnConnectionInfoReceived += OnConnectionInfoReceived;
         }
-    }
 
-    private void OnConnectionInfoReceived(Character character)
-    {
-        character.OnConnectionInfoReceived -= OnConnectionInfoReceived;
-        if(--characterInfoReceived == 0)
-        {
-            OnConnectedToServer();
-        }
+        yield return delayLoadingPlayers;
+
+        OnConnectedToServer();
     }
 }
