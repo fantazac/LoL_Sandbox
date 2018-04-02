@@ -150,7 +150,7 @@ public class CharacterMovement : MonoBehaviour
     private IEnumerator MoveTowardsTarget(Entity target, float range)
     {
         Transform targetTransform = target.transform;
-        while (Vector3.Distance(targetTransform.position, transform.position) > range)
+        while (targetTransform != null && Vector3.Distance(targetTransform.position, transform.position) > range)
         {
             if (!character.CharacterAbilityManager.IsUsingAbilityPreventingMovement())
             {
@@ -162,16 +162,24 @@ public class CharacterMovement : MonoBehaviour
             yield return null;
         }
 
-        while (character.CharacterAbilityManager.IsUsingAbilityPreventingBasicAttacks())
+        if(targetTransform != null)
         {
-            yield return null;
-        }
+            while (character.CharacterAbilityManager.IsUsingAbilityPreventingBasicAttacks())
+            {
+                yield return null;
+            }
 
-        if (CharacterIsInRange != null)
-        {
-            CharacterIsInRange(target);
+            if (CharacterIsInRange != null)
+            {
+                CharacterIsInRange(target);
+            }
+
+            this.target = null;
         }
-        this.target = null;
+        else
+        {
+            StopAllMovement();
+        }
     }
 
     public void RotateCharacterIfMoving()
