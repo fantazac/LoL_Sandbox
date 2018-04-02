@@ -11,22 +11,41 @@ public class ProjectileUnitTargeted : Projectile
 
     public void ShootProjectile(EntityTeam teamOfCallingEntity, Entity target, float speed)
     {
-        this.teamOfCallingEntity = teamOfCallingEntity;
-        this.target = target;
-        this.speed = speed;
-        targetCollider = target.GetComponent<Collider>();
-        StartCoroutine(ActivateAbilityEffect());
+        if(target != null)
+        {
+            this.teamOfCallingEntity = teamOfCallingEntity;
+            this.target = target;
+            this.speed = speed;
+            targetCollider = target.GetComponent<Collider>();
+            StartCoroutine(ActivateAbilityEffect());
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
     }
 
     protected override IEnumerator ActivateAbilityEffect()
     {
-        while (true)
+        Vector3 lastTargetPosition = transform.position;
+        while (target != null)
         {
+            lastTargetPosition = target.transform.position;
+
             transform.position = Vector3.MoveTowards(transform.position, target.transform.position, Time.deltaTime * speed);
             transform.rotation = Quaternion.LookRotation(Vector3.RotateTowards(transform.forward, target.transform.position - transform.position, Time.deltaTime * speed, 0));
 
             yield return null;
         }
+
+        while (transform.position != lastTargetPosition)
+        {
+            transform.position = Vector3.MoveTowards(transform.position, lastTargetPosition, Time.deltaTime * speed);
+
+            yield return null;
+        }
+
+        Destroy(gameObject);
     }
 
     protected override void OnTriggerEnter(Collider collider)

@@ -106,7 +106,7 @@ public class AbilityUIManager : MonoBehaviour
         }
     }
 
-    public void SetAbilityOffCooldown(int abilityId, bool abilityIsEnabled, bool hasEnoughResourceToCastAbility)
+    public void SetAbilityOffCooldown(int abilityId, bool abilityIsEnabled)
     {
         abilityOnCooldownImages[abilityId].fillAmount = 0;
         if (abilityIsEnabled)
@@ -114,7 +114,6 @@ public class AbilityUIManager : MonoBehaviour
             abilityImages[abilityId].color = Color.white;
         }
         abilityCooldownTexts[abilityId].text = "";
-        UpdateAbilityHasEnoughResource(abilityId, hasEnoughResourceToCastAbility);
     }
     
     public void SetAbilityOffCooldownForRecast(int abilityId)

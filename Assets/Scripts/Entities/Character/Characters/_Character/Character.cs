@@ -22,10 +22,8 @@ public abstract class Character : Entity
     public AbilityUIManager AbilityUIManager { get; private set; }
     public BuffUIManager BuffUIManager { get; private set; }
     public BuffUIManager DebuffUIManager { get; private set; }
+    public HealthBarManager HealthBarManager { get; private set; }
     public LevelUIManager LevelUIManager { get; private set; }
-
-    public delegate void OnConnectionInfoReceivedHandler(Character character);
-    public event OnConnectionInfoReceivedHandler OnConnectionInfoReceived;
 
     protected override void Start()
     {
@@ -38,22 +36,15 @@ public abstract class Character : Entity
             BuffUIManager = buffUIManagers[0];
             DebuffUIManager = buffUIManagers[1];
             EntityBuffManager.SetUIManagers(BuffUIManager, DebuffUIManager);
+            HealthBarManager = transform.parent.GetComponentInChildren<HealthBarManager>();
             LevelUIManager = transform.parent.GetComponentInChildren<LevelUIManager>();
             LevelUIManager.SetPortraitSprite(Resources.Load<Sprite>(characterPortraitPath));
             LevelUIManager.SetLevel(CharacterLevelManager.Level);
         }
-        if (StaticObjects.OnlineMode && PhotonView.isMine)
+
+        if (StaticObjects.Character.HealthBarManager)
         {
-            if (PhotonNetwork.player.GetTeam() == PunTeams.Team.blue)
-            {
-                Team = EntityTeam.BLUE;
-            }
-            else
-            {
-                Team = EntityTeam.RED;
-            }
-            EntityId = PhotonNetwork.player.ID;
-            SendToServer_TeamAndID();
+            StaticObjects.Character.HealthBarManager.SetupHealthBarForCharacter(this);
         }
 
         EntityType = EntityType.CHARACTER;
@@ -73,6 +64,33 @@ public abstract class Character : Entity
         CharacterMovement = GetComponent<CharacterMovement>();
         CharacterOrientation = GetComponent<CharacterOrientation>();
         CharacterStatsManager = GetComponent<CharacterStatsManager>();
+
+        if (StaticObjects.OnlineMode && PhotonView.isMine)
+        {
+            if (PhotonNetwork.player.GetTeam() == PunTeams.Team.blue)
+            {
+                Team = EntityTeam.BLUE;
+            }
+            else
+            {
+                Team = EntityTeam.RED;
+            }
+            EntityId = PhotonNetwork.player.ID;
+            SendToServer_TeamAndID();
+        }
+    }
+
+    protected void OnDestroy()
+    {
+        RemoveHealthBar();
+    }
+
+    public void RemoveHealthBar()
+    {
+        if (StaticObjects.Character && StaticObjects.Character.HealthBarManager)
+        {
+            StaticObjects.Character.HealthBarManager.RemoveHealthBarOfDeletedCharacter(this);
+        }
     }
 
     [PunRPC]
@@ -87,7 +105,6 @@ public abstract class Character : Entity
             EntityId = characterId;
             CharacterLevelManager.SetLevelFromLoad(characterLevel);
             CharacterAbilityManager.SetAbilityLevelsFromLoad(characterAbilityLevels);
-            OnConnectionInfoReceived(this);
         }
     }
 

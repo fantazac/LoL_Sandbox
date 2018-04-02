@@ -270,10 +270,13 @@ public abstract class Ability : MonoBehaviour
 
     protected void StartCooldown(bool calledInStartAbilityCast, bool abilityWasCancelled = false)
     {
-        float abilityCooldown = abilityWasCancelled ? cooldownOnCancel : cooldown;
-        if (calledInStartAbilityCast == startCooldownOnAbilityCast && abilityCooldown > 0 && character.AbilityUIManager)
+        if (character.AbilityUIManager)
         {
-            StartCoroutine(PutAbilityOffCooldown(abilityCooldown));
+            float abilityCooldown = abilityWasCancelled ? cooldownOnCancel : cooldown;
+            if (calledInStartAbilityCast == startCooldownOnAbilityCast && abilityCooldown > 0)
+            {
+                StartCoroutine(PutAbilityOffCooldown(abilityCooldown));
+            }
         }
     }
 
@@ -311,7 +314,11 @@ public abstract class Ability : MonoBehaviour
             yield return null;
         }
 
-        character.AbilityUIManager.SetAbilityOffCooldown(ID, IsEnabled, resourceCost <= character.EntityStats.Resource.GetCurrentValue());
+        character.AbilityUIManager.SetAbilityOffCooldown(ID, IsEnabled);
+        if (UsesResource)
+        {
+            character.AbilityUIManager.UpdateAbilityHasEnoughResource(ID, resourceCost <= character.EntityStats.Resource.GetCurrentValue());
+        }
         IsOnCooldown = false;
     }
 

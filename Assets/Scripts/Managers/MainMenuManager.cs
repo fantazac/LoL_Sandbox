@@ -12,8 +12,20 @@ public class MainMenuManager : MonoBehaviour
 
     private MainMenuState state;
 
+    private Vector3 blueSpawn;
+    private Vector3 redSpawn;
+    private Vector3 offlineSpawn;
+    private Vector3 selectedSpawn;
+
     public delegate void OnConnectingToServerHandler();
     public event OnConnectingToServerHandler OnConnectingToServer;
+
+    private MainMenuManager()
+    {
+        blueSpawn = Vector3.left * 9 + Vector3.up * 0.5f + Vector3.back * 14;
+        redSpawn = Vector3.right * 21 + Vector3.up * 0.5f + Vector3.forward * 9;
+        offlineSpawn = Vector3.up * 0.5f;
+    }
 
     private void Start()
     {
@@ -51,6 +63,7 @@ public class MainMenuManager : MonoBehaviour
             {
                 mainMenuCamera.SetActive(true);
                 StaticObjects.Character.CharacterMovement.UnsubscribeCameraEvent();
+                StaticObjects.Character.RemoveHealthBar();
                 PhotonNetwork.Destroy(StaticObjects.Character.transform.parent.gameObject);
                 StaticObjects.Character = null;
                 StaticObjects.CharacterCamera = null;
@@ -72,6 +85,7 @@ public class MainMenuManager : MonoBehaviour
                 }
                 if (GUILayout.Button("Offline", GUILayout.Height(40)))
                 {
+                    selectedSpawn = offlineSpawn;
                     state = MainMenuState.CHARACTER_SELECT;
                     StaticObjects.OnlineMode = false;
                 }
@@ -86,11 +100,13 @@ public class MainMenuManager : MonoBehaviour
                 }
                 if (GUILayout.Button("BLUE", GUILayout.Height(40)))
                 {
+                    selectedSpawn = blueSpawn;
                     state = MainMenuState.CHARACTER_SELECT;
                     PhotonNetwork.player.SetTeam(PunTeams.Team.blue);
                 }
                 if (GUILayout.Button("RED", GUILayout.Height(40)))
                 {
+                    selectedSpawn = redSpawn;
                     state = MainMenuState.CHARACTER_SELECT;
                     PhotonNetwork.player.SetTeam(PunTeams.Team.red);
                 }
@@ -127,15 +143,15 @@ public class MainMenuManager : MonoBehaviour
     {
         state = MainMenuState.ON_HOLD;
 
-        GameObject characterTemplate = Instantiate(characterParent, new Vector3(), new Quaternion());
+        GameObject characterTemplate = Instantiate(characterParent);
         GameObject character;
         if (StaticObjects.OnlineMode)
         {
-            character = PhotonNetwork.Instantiate(characterName, Vector3.up * 0.5f, new Quaternion(), 0);
+            character = PhotonNetwork.Instantiate(characterName, selectedSpawn, new Quaternion(), 0);
         }
         else
         {
-            character = (GameObject)Instantiate(Resources.Load(characterName), Vector3.up * 0.5f, new Quaternion());
+            character = (GameObject)Instantiate(Resources.Load(characterName), selectedSpawn, new Quaternion());
         }
         character.transform.parent = characterTemplate.transform;
         StaticObjects.Character = character.GetComponent<Character>();
