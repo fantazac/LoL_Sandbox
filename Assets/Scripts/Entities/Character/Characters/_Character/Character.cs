@@ -42,7 +42,7 @@ public abstract class Character : Entity
             LevelUIManager.SetLevel(CharacterLevelManager.Level);
         }
 
-        if (StaticObjects.Character && StaticObjects.Character.HealthBarManager)
+        if (StaticObjects.Character.HealthBarManager)
         {
             StaticObjects.Character.HealthBarManager.SetupHealthBarForCharacter(this);
         }
