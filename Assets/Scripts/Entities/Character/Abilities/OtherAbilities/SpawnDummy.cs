@@ -30,14 +30,17 @@ public abstract class SpawnDummy : GroundTargeted, OtherAbility
 
     public override bool CanBeCast(Vector3 mousePosition)
     {
-        return  (!StaticObjects.OnlineMode || !OfflineOnly) && base.CanBeCast(mousePosition);
+        return (!StaticObjects.OnlineMode || !OfflineOnly) && base.CanBeCast(mousePosition);
     }
 
     public void RemoveAllDummies()
     {
         while (dummies.Count > 0)//more efficient way to do this?
         {
-            dummies[0].GetComponent<Character>().RemoveHealthBar();
+            if (dummies[0])
+            {
+                dummies[0].GetComponent<Character>().RemoveHealthBar();
+            }
             Destroy(dummies[0]);
             dummies.RemoveAt(0);
         }
