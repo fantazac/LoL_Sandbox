@@ -132,7 +132,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: ee9654c669e4d4f45a648ecb320cfbb4, type: 3}
+  m_Sprite: {fileID: 0}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -159,7 +159,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: ee9654c669e4d4f45a648ecb320cfbb4, type: 3}
+  m_Sprite: {fileID: 0}
   m_Type: 3
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -219,7 +219,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: a10da195878cd0040924fb673e383085, type: 3}
+  m_Sprite: {fileID: 0}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -240,6 +240,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   healthImage: {fileID: 114280413982980590}
   resourceImage: {fileID: 114763829977747890}
+  healthBarImage: {fileID: 114403161775460420}
   levelText: {fileID: 114346459081856412}
   mark100Prefab: {fileID: 1902206647568890, guid: 4e599da124121ff4781dd5a9f49d4e7a,
     type: 2}
@@ -264,7 +265,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: 61d352c416970904c9b06e0c1f743c23, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 48f990e7926c7cd4c892e713fa28afe5, type: 3}
   m_Type: 3
   m_PreserveAspect: 0
   m_FillCenter: 1

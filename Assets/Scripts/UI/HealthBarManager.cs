@@ -26,12 +26,15 @@ public class HealthBarManager : MonoBehaviour
 
     public void SetupHealthBarForCharacter(Character character)
     {
-        characters.Add(character);
+        if (!characters.Contains(character))
+        {
+            characters.Add(character);
 
-        HealthBar healthBar = Instantiate(healthBarPrefab).GetComponent<HealthBar>();
-        healthBar.SetupHealthBar(character);
-        healthBar.transform.SetParent(transform, false);
-        healthBars.Add(healthBar);
+            HealthBar healthBar = Instantiate(healthBarPrefab).GetComponent<HealthBar>();
+            healthBar.SetupHealthBar(character);
+            healthBar.transform.SetParent(transform, false);
+            healthBars.Add(healthBar);
+        }
     }
 
     public void RemoveHealthBarOfDeletedCharacter(Character character)
