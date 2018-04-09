@@ -24,10 +24,6 @@ GameObject:
   - component: {fileID: 23346571577559038}
   - component: {fileID: 54289000549148092}
   - component: {fileID: 114742134543594078}
-  - component: {fileID: 114579960026917540}
-  - component: {fileID: 114357480483547512}
-  - component: {fileID: 114179795355532772}
-  - component: {fileID: 114997570847351234}
   - component: {fileID: 114699461314323202}
   - component: {fileID: 114355666221125240}
   - component: {fileID: 114652840779475856}
@@ -49,6 +45,10 @@ GameObject:
   - component: {fileID: 114451010653664158}
   - component: {fileID: 114441800122878354}
   - component: {fileID: 114280005732643346}
+  - component: {fileID: 114579960026917540}
+  - component: {fileID: 114357480483547512}
+  - component: {fileID: 114179795355532772}
+  - component: {fileID: 114997570847351234}
   - component: {fileID: 114999495511641918}
   m_Layer: 8
   m_Name: _AllyDummy

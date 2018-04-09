@@ -106,6 +106,6 @@ public class LucianBasicAttack : CharacterBasicAttack
     {
         passive.OnPassiveHit(entityHit);
         Destroy(basicAttackProjectile.gameObject);
-        CallOnBasicAttackHitEvent();
+        CallOnBasicAttackHitEvent(entityHit);
     }
 }

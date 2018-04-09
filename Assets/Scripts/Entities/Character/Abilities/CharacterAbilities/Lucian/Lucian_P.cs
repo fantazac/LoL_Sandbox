@@ -5,16 +5,25 @@ using UnityEngine;
 public class Lucian_P : PassiveTargeted, CharacterAbility, PassiveCharacterAbility
 {
     private Ability lucianE;
+    private float cooldownReducedOnPassiveHitOnCharacter;
+    private float cooldownReducedOnPassiveHit;
 
     protected Lucian_P()
     {
         abilityName = "Lightslinger";
 
         abilityType = AbilityType.Passive;
+        affectedUnitType = AbilityAffectedUnitType.ENEMIES;
+        damageType = DamageType.PHYSICAL;
+        effectType = AbilityEffectType.BASIC_ATTACK;
 
-        damage = 0.5f;
+        totalADScaling = 0.5f;
+        totalADScalingPerLevel = 0.05f;
 
         buffDuration = 3;
+
+        cooldownReducedOnPassiveHitOnCharacter = 2;
+        cooldownReducedOnPassiveHit = 1;
 
         IsEnabled = true;
     }
@@ -51,23 +60,19 @@ public class Lucian_P : PassiveTargeted, CharacterAbility, PassiveCharacterAbili
     {
         if (target is Character)
         {
-            lucianE.ReduceCooldown(2);
+            lucianE.ReduceCooldown(cooldownReducedOnPassiveHitOnCharacter);
         }
         else
         {
-            lucianE.ReduceCooldown(1);
+            lucianE.ReduceCooldown(cooldownReducedOnPassiveHit);
         }
     }
 
     public override void OnCharacterLevelUp(int level)
     {
-        if (level == 7)
+        if (level == 7 || level == 13)
         {
-            damage = 0.55f;
-        }
-        else if (level == 13)
-        {
-            damage = 0.6f;
+            LevelUpAbilityStats();
         }
     }
 
@@ -75,11 +80,11 @@ public class Lucian_P : PassiveTargeted, CharacterAbility, PassiveCharacterAbili
     {
         //if (entityHit is Minion)
         //{
-        //    entityHit.EntityStats.Health.Reduce(character.EntityStats.AttackDamage.GetTotal());
+        //    entityHit.EntityStats.Health.Reduce(ApplyResistanceToDamage(entityHit, character.EntityStats.AttackDamage.GetTotal()));
         //}
         //else
         //{
-        entityHit.EntityStats.Health.Reduce(character.EntityStats.AttackDamage.GetTotal() * GetAbilityDamage(entityHit));
+        entityHit.EntityStats.Health.Reduce(GetAbilityDamage(entityHit));
         //} 
         UseAbility(entityHit);
     }

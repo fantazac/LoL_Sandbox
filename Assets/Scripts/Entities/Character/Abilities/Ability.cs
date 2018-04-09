@@ -406,15 +406,7 @@ public abstract class Ability : MonoBehaviour
         {
             AbilityLevel++;
 
-            bonusADScaling += bonusADScalingPerLevel;
-            baseCooldown += baseCooldownPerLevel;
-            damage += damagePerLevel;
-            resourceCost += resourceCostPerLevel;
-            totalADScaling += totalADScalingPerLevel;
-            totalAPScaling += totalAPScalingPerLevel;
-
-            buffFlatBonus += buffFlatBonusPerLevel;
-            buffPercentBonus += buffPercentBonusPerLevel;
+            LevelUpAbilityStats();
 
             AbilityUIManager abilityUIManager = character.AbilityUIManager;
 
@@ -462,6 +454,19 @@ public abstract class Ability : MonoBehaviour
         }
     }
 
+    protected void LevelUpAbilityStats()
+    {
+        bonusADScaling += bonusADScalingPerLevel;
+        baseCooldown += baseCooldownPerLevel;
+        damage += damagePerLevel;
+        resourceCost += resourceCostPerLevel;
+        totalADScaling += totalADScalingPerLevel;
+        totalAPScaling += totalAPScalingPerLevel;
+
+        buffFlatBonus += buffFlatBonusPerLevel;
+        buffPercentBonus += buffPercentBonusPerLevel;
+    }
+
     private void SetCooldownForAbilityAffectedByCooldownReduction()
     {
         SetCooldownForAbilityAffectedByCooldownReduction(character.EntityStats.CooldownReduction.GetTotal());
@@ -486,22 +491,27 @@ public abstract class Ability : MonoBehaviour
             (totalADScaling * character.EntityStats.AttackDamage.GetTotal()) +
             (totalAPScaling * character.EntityStats.AbilityPower.GetTotal());
 
+        return ApplyResistanceToDamage(entityHit, abilityDamage);
+    }
+
+    protected float ApplyResistanceToDamage(Entity entityHit, float damage)
+    {
         if (damageType == DamageType.MAGIC)
         {
             float totalResistance = entityHit.EntityStats.MagicResistance.GetTotal();
             totalResistance *= (1 - character.EntityStats.MagicPenetrationPercent.GetTotal());
             totalResistance -= character.EntityStats.MagicPenetrationFlat.GetTotal();
-            abilityDamage *= GetResistanceDamageTakenMultiplier(totalResistance);
+            return damage * GetResistanceDamageTakenMultiplier(totalResistance);
         }
         else if (damageType == DamageType.PHYSICAL)
         {
             float totalResistance = entityHit.EntityStats.Armor.GetTotal();
             totalResistance *= (1 - character.EntityStats.ArmorPenetrationPercent.GetTotal());
             totalResistance -= character.EntityStats.Lethality.GetCurrentValue();
-            abilityDamage *= GetResistanceDamageTakenMultiplier(totalResistance);
+            return damage * GetResistanceDamageTakenMultiplier(totalResistance);
         }
 
-        return abilityDamage;
+        return damage;
     }
 
     protected float GetResistanceDamageTakenMultiplier(float totalResistance)

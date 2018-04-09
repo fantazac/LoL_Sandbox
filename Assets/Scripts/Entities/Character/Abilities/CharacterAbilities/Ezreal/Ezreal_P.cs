@@ -14,6 +14,7 @@ public class Ezreal_P : PassiveTargeted, CharacterAbility, PassiveCharacterAbili
         buffDuration = 6;
         buffMaximumStacks = 5;
         buffPercentBonus = 10;
+        buffPercentBonusPerLevel = 2;
 
         IsEnabled = true;
     }
@@ -41,21 +42,17 @@ public class Ezreal_P : PassiveTargeted, CharacterAbility, PassiveCharacterAbili
 
     public override void OnCharacterLevelUp(int level)
     {
-        if (level == 7)
+        if (level == 7 || level == 13)
         {
-            UpdateBuffOnAffectedEntities(buffPercentBonus, 12);
-            buffPercentBonus = 12;
-        }
-        else if (level == 13)
-        {
-            UpdateBuffOnAffectedEntities(buffPercentBonus, 14);
-            buffPercentBonus = 14;
+            float oldValue = buffPercentBonus;
+            LevelUpAbilityStats();
+            UpdateBuffOnAffectedEntities(oldValue, buffPercentBonus);
         }
     }
 
     protected override void UpdateBuffOnAffectedEntities(float oldValue, float newValue)
     {
-        foreach(Entity affectedEntity in EntitiesAffectedByBuff)
+        foreach (Entity affectedEntity in EntitiesAffectedByBuff)
         {
             Buff buff = affectedEntity.EntityBuffManager.GetBuff(this);
             if (buff != null)

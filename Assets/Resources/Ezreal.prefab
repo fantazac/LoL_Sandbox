@@ -25,9 +25,6 @@ GameObject:
   - component: {fileID: 54342218487387738}
   - component: {fileID: 114264645714451542}
   - component: {fileID: 114519223790839458}
-  - component: {fileID: 114866246300443908}
-  - component: {fileID: 114687265148906610}
-  - component: {fileID: 114187010915273160}
   - component: {fileID: 114173693140930370}
   - component: {fileID: 114159445398811640}
   - component: {fileID: 114958221426692436}
@@ -58,6 +55,9 @@ GameObject:
   - component: {fileID: 114583660594214464}
   - component: {fileID: 114889793785480940}
   - component: {fileID: 114634682214722888}
+  - component: {fileID: 114866246300443908}
+  - component: {fileID: 114687265148906610}
+  - component: {fileID: 114187010915273160}
   - component: {fileID: 114342004944102226}
   - component: {fileID: 114979452670365114}
   - component: {fileID: 114990861650323628}
