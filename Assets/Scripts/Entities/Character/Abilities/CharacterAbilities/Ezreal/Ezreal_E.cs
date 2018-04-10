@@ -74,7 +74,7 @@ public class Ezreal_E : GroundTargetedBlink, CharacterAbility
         float distance = float.MaxValue;
         float tempDistance;
 
-        foreach (Collider collider in Physics.OverlapSphere(transform.position, effectRadius))
+        foreach (Collider collider in Physics.OverlapCapsule(Vector3.right * transform.position.x + Vector3.forward * transform.position.z, transform.position + Vector3.up * 5, effectRadius))
         {
             tempEntity = collider.GetComponent<Entity>();
             if (tempEntity != null && TargetIsValid.CheckIfTargetIsValid(tempEntity, affectedUnitType, character.Team))
@@ -90,7 +90,7 @@ public class Ezreal_E : GroundTargetedBlink, CharacterAbility
 
         if (closestEntity != null)
         {
-            ProjectileUnitTargeted projectile = ((GameObject)Instantiate(projectilePrefab, transform.position, transform.rotation)).GetComponent<ProjectileUnitTargeted>();
+            ProjectileUnitTargeted projectile = Instantiate(projectilePrefab, transform.position, transform.rotation).GetComponent<ProjectileUnitTargeted>();
             projectile.ShootProjectile(character.Team, closestEntity, speed);
             projectile.OnAbilityEffectHit += OnProjectileHit;
         }

@@ -472,6 +472,11 @@
     <Compile Include="Assets\Scripts\Entities\Character\Abilities\CharacterAbilities\Lucian\Lucian_Q.cs" />
     <Compile Include="Assets\Scripts\Entities\Character\Abilities\CharacterAbilities\Lucian\Lucian_R.cs" />
     <Compile Include="Assets\Scripts\Entities\Character\Abilities\CharacterAbilities\Lucian\Lucian_W.cs" />
+    <Compile Include="Assets\Scripts\Entities\Character\Abilities\CharacterAbilities\MissFortune\MissFortune_E.cs" />
+    <Compile Include="Assets\Scripts\Entities\Character\Abilities\CharacterAbilities\MissFortune\MissFortune_P.cs" />
+    <Compile Include="Assets\Scripts\Entities\Character\Abilities\CharacterAbilities\MissFortune\MissFortune_Q.cs" />
+    <Compile Include="Assets\Scripts\Entities\Character\Abilities\CharacterAbilities\MissFortune\MissFortune_R.cs" />
+    <Compile Include="Assets\Scripts\Entities\Character\Abilities\CharacterAbilities\MissFortune\MissFortune_W.cs" />
     <Compile Include="Assets\Scripts\Entities\Character\Abilities\DamageType.cs" />
     <Compile Include="Assets\Scripts\Entities\Character\Abilities\OtherAbilities\DestroyAllDummies.cs" />
     <Compile Include="Assets\Scripts\Entities\Character\Abilities\OtherAbilities\SpawnAllyDummy.cs" />
@@ -499,7 +504,13 @@
     <Compile Include="Assets\Scripts\Entities\Character\Characters\Lucian\LucianBaseStats.cs" />
     <Compile Include="Assets\Scripts\Entities\Character\Characters\Lucian\LucianBasicAttack.cs" />
     <Compile Include="Assets\Scripts\Entities\Character\Characters\Lucian\LucianStats.cs" />
+    <Compile Include="Assets\Scripts\Entities\Character\Characters\MissFortune\MissFortune.cs" />
+    <Compile Include="Assets\Scripts\Entities\Character\Characters\MissFortune\MissFortuneBaseStats.cs" />
+    <Compile Include="Assets\Scripts\Entities\Character\Characters\MissFortune\MissFortuneBasicAttack.cs" />
+    <Compile Include="Assets\Scripts\Entities\Character\Characters\MissFortune\MissFortuneStats.cs" />
     <Compile Include="Assets\Scripts\Entities\Character\CharacterStatsManager.cs" />
+    <Compile Include="Assets\Scripts\Entities\Character\CharacterStatusManager.cs" />
+    <Compile Include="Assets\Scripts\Entities\CrowdControlEffects.cs" />
     <Compile Include="Assets\Scripts\Entities\Dummy\Dummy.cs" />
     <Compile Include="Assets\Scripts\Entities\Dummy\DummyBaseStats.cs" />
     <Compile Include="Assets\Scripts\Entities\Dummy\DummyBasicAttack.cs" />
