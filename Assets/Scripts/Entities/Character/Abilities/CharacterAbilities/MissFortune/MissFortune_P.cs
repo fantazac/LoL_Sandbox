@@ -6,6 +6,9 @@ public class MissFortune_P : PassiveTargeted, CharacterAbility, PassiveCharacter
 {
     private Entity lastEntityHit;
 
+    public delegate void OnPassiveHitHandler();
+    public event OnPassiveHitHandler OnPassiveHit;
+
     protected MissFortune_P()
     {
         abilityName = "Love Tap";
@@ -80,12 +83,17 @@ public class MissFortune_P : PassiveTargeted, CharacterAbility, PassiveCharacter
             //{
             entityHit.EntityStats.Health.Reduce(GetAbilityDamage(entityHit));
             //} 
+
+            if (OnPassiveHit != null)
+            {
+                OnPassiveHit();
+            }
         }
     }
 
     private void OnDestroy()
     {
-        if(lastEntityHit != null)
+        if (lastEntityHit != null)
         {
             ConsumeBuff(lastEntityHit);
         }

@@ -44,7 +44,7 @@ public class CharacterAbilityManager : MonoBehaviour
                 if (!(ability is OtherAbility))
                 {
                     ability.ID = i;
-                    character.AbilityUIManager.SetAbilitySprite(i, ability.abilitySprite);
+                    ability.SetAbilitySprite();
                 }
                 if (ability is CharacterAbility && !(ability is PassiveCharacterAbility))
                 {

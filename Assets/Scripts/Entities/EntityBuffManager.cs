@@ -47,6 +47,14 @@ public class EntityBuffManager : MonoBehaviour
                 buffUIManager.UpdateBuffDuration(buff, buff.DurationForUI, buff.DurationRemaining, buff.CurrentStacks);
             }
         }
+        if (buff.HasValueToSet)
+        {
+            if (hasBuffUIManager)
+            {
+                buffUIManager.UpdateBuffValue(buff, buff.BuffValue);
+            }
+            buff.ValueWasSet();
+        }
         if (buff.HasBeenConsumed)
         {
             if (hasBuffUIManager)

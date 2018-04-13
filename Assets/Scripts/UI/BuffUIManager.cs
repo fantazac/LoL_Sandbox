@@ -49,6 +49,11 @@ public class BuffUIManager : MonoBehaviour
         }
     }
 
+    public void UpdateBuffValue(Buff buff, int buffValue)
+    {
+        buffStacksTexts[buff].text = "" + buffValue;
+    }
+
     public void RemoveExpiredBuff(Buff buff)
     {
         darkImages.Remove(buff);
