@@ -63,7 +63,9 @@ public abstract class Ability : MonoBehaviour
     protected float debuffDuration;
     protected int debuffMaximumStacks;
     protected float debuffFlatBonus;
+    protected float debuffFlatBonusPerLevel;
     protected float debuffPercentBonus;
+    protected float debuffPercentBonusPerLevel;
 
     protected Sprite abilitySprite;
     protected Sprite abilityRecastSprite;
@@ -467,6 +469,8 @@ public abstract class Ability : MonoBehaviour
 
         buffFlatBonus += buffFlatBonusPerLevel;
         buffPercentBonus += buffPercentBonusPerLevel;
+        debuffFlatBonus += debuffFlatBonusPerLevel;
+        debuffPercentBonus += debuffPercentBonusPerLevel;
     }
 
     private void SetCooldownForAbilityAffectedByCooldownReduction()
