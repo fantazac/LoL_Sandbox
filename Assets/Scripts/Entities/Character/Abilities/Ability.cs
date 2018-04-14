@@ -423,7 +423,7 @@ public abstract class Ability : MonoBehaviour
                     abilityUIManager.SetAbilityCost(ID, resourceCost);
                 }
             }
-            if (baseCooldownPerLevel > 0)
+            if (baseCooldownPerLevel != 0)
             {
                 if (affectedByCooldownReduction)
                 {
