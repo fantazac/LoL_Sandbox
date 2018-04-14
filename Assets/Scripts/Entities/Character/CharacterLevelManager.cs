@@ -130,25 +130,25 @@ public class CharacterLevelManager : MonoBehaviour
             {
                 AbilityPoints--;
                 pointsAvailableForQ--;
-                character.CharacterAbilityManager.LevelUpAbility(AbilityInput.Q);
+                character.CharacterAbilityManager.LevelUpAbility(AbilityCategory.CharacterAbility, 0);
             }
             else if (abilityId == 1 && pointsAvailableForW > 0)
             {
                 AbilityPoints--;
                 pointsAvailableForW--;
-                character.CharacterAbilityManager.LevelUpAbility(AbilityInput.W);
+                character.CharacterAbilityManager.LevelUpAbility(AbilityCategory.CharacterAbility, 1);
             }
             else if (abilityId == 2 && pointsAvailableForE > 0)
             {
                 AbilityPoints--;
                 pointsAvailableForE--;
-                character.CharacterAbilityManager.LevelUpAbility(AbilityInput.E);
+                character.CharacterAbilityManager.LevelUpAbility(AbilityCategory.CharacterAbility, 2);
             }
             else if (abilityId == 3 && pointsAvailableForR > 0)
             {
                 AbilityPoints--;
                 pointsAvailableForR--;
-                character.CharacterAbilityManager.LevelUpAbility(AbilityInput.R);
+                character.CharacterAbilityManager.LevelUpAbility(AbilityCategory.CharacterAbility, 3);
             }
 
             if (character.AbilityLevelUpUIManager)
@@ -166,7 +166,7 @@ public class CharacterLevelManager : MonoBehaviour
             {
                 PrepareLevelUp();
             }
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < 5; i++)//TODO: needs to work with each ability (could be 6, like jayce abilities, or 2, like ryze r)
             {
                 OnAbilityLevelUp(0);
                 OnAbilityLevelUp(1);

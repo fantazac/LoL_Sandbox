@@ -15,6 +15,7 @@ public abstract class Ability : MonoBehaviour
 
     public bool DoNotShowAbilityOnUI { get; protected set; }
 
+    public AbilityCategory AbilityCategory { get; set; }
     public int AbilityLevel { get; protected set; }
     public int ID { get; set; }
     public int MaxLevel { get; protected set; }
@@ -176,7 +177,7 @@ public abstract class Ability : MonoBehaviour
 
     public void SetAbilitySprite()
     {
-        character.AbilityUIManager.SetAbilitySprite(ID, abilitySprite);
+        character.AbilityUIManager.SetAbilitySprite(AbilityCategory, ID, abilitySprite);
     }
 
     protected void StartAbilityCast()
@@ -250,7 +251,7 @@ public abstract class Ability : MonoBehaviour
         IsEnabled = false;
         if (!IsOnCooldown && character.AbilityUIManager)
         {
-            character.AbilityUIManager.DisableAbility(ID, UsesResource);
+            character.AbilityUIManager.DisableAbility(AbilityCategory, ID, UsesResource);
         }
     }
 
@@ -259,7 +260,7 @@ public abstract class Ability : MonoBehaviour
         IsEnabled = true;
         if (!IsOnCooldown && character.AbilityUIManager)
         {
-            character.AbilityUIManager.EnableAbility(ID, resourceCost <= character.EntityStats.Resource.GetCurrentValue());
+            character.AbilityUIManager.EnableAbility(AbilityCategory, ID, resourceCost <= character.EntityStats.Resource.GetCurrentValue());
         }
     }
 
@@ -306,18 +307,18 @@ public abstract class Ability : MonoBehaviour
 
         yield return null;
 
-        character.AbilityUIManager.SetAbilityOnCooldown(ID);
+        character.AbilityUIManager.SetAbilityOnCooldown(AbilityCategory, ID);
 
         while (cooldownRemaining > 0)
         {
             cooldownRemaining -= Time.deltaTime;
 
-            character.AbilityUIManager.UpdateAbilityCooldown(ID, cooldownOnStart, cooldownRemaining);
+            character.AbilityUIManager.UpdateAbilityCooldown(AbilityCategory, ID, cooldownOnStart, cooldownRemaining);
 
             yield return null;
         }
 
-        character.AbilityUIManager.SetAbilityOffCooldown(ID, IsEnabled);
+        character.AbilityUIManager.SetAbilityOffCooldown(AbilityCategory, ID, IsEnabled);
         if (UsesResource)
         {
             character.AbilityUIManager.UpdateAbilityHasEnoughResource(ID, resourceCost <= character.EntityStats.Resource.GetCurrentValue());
@@ -332,18 +333,18 @@ public abstract class Ability : MonoBehaviour
 
         yield return null;
 
-        character.AbilityUIManager.SetAbilityOnCooldownForRecast(ID);
+        character.AbilityUIManager.SetAbilityOnCooldownForRecast(AbilityCategory,ID);
 
         while (cooldownRemaining > 0)
         {
             cooldownRemaining -= Time.deltaTime;
 
-            character.AbilityUIManager.UpdateAbilityCooldownForRecast(ID, cooldownBeforeRecast, cooldownRemaining);
+            character.AbilityUIManager.UpdateAbilityCooldownForRecast(AbilityCategory, ID, cooldownBeforeRecast, cooldownRemaining);
 
             yield return null;
         }
 
-        character.AbilityUIManager.SetAbilityOffCooldownForRecast(ID);
+        character.AbilityUIManager.SetAbilityOffCooldownForRecast(AbilityCategory, ID);
         IsOnCooldownForRecast = false;
     }
 
@@ -422,7 +423,7 @@ public abstract class Ability : MonoBehaviour
                     abilityUIManager.SetAbilityCost(ID, resourceCost);
                 }
             }
-            if (baseCooldownPerLevel != 0)
+            if (baseCooldownPerLevel > 0)
             {
                 if (affectedByCooldownReduction)
                 {
@@ -434,25 +435,24 @@ public abstract class Ability : MonoBehaviour
                 }
             }
 
-            if (abilityUIManager)
+            if (UsesResource && abilityUIManager)
             {
-                abilityUIManager.LevelUpAbility(ID, AbilityLevel);
-                if (UsesResource)
-                {
-                    abilityUIManager.SetAbilityCost(ID, resourceCost);
-                    abilityUIManager.UpdateAbilityHasEnoughResource(ID, !IsEnabled || IsOnCooldown || resourceCost <= character.EntityStats.Resource.GetCurrentValue());
-                }
+                abilityUIManager.SetAbilityCost(ID, resourceCost);
+                abilityUIManager.UpdateAbilityHasEnoughResource(ID, !IsEnabled || IsOnCooldown || resourceCost <= character.EntityStats.Resource.GetCurrentValue());
             }
         }
         else if (AbilityLevel == 0)
         {
             AbilityLevel++;
             EnableAbility();
+        }
+    }
 
-            if (character.AbilityUIManager)
-            {
-                character.AbilityUIManager.LevelUpAbility(ID, AbilityLevel);
-            }
+    public void UpdateLevelOnUI()
+    {
+        if (character.AbilityUIManager)
+        {
+            character.AbilityUIManager.LevelUpAbility(ID, AbilityLevel);
         }
     }
 
@@ -595,8 +595,9 @@ public abstract class Ability : MonoBehaviour
     protected virtual IEnumerator AbilityWithoutDelay() { yield return null; }
 }
 
-public interface PassiveCharacterAbility { }
 public interface CharacterAbility { }
+public interface PassiveCharacterAbility { }
+public interface OtherCharacterAbility { }
 public interface SummonerAbility { }
-public interface OtherAbility { }
+public interface OfflineAbility { }
 

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Lucian_P : PassiveTargeted, CharacterAbility, PassiveCharacterAbility
+public class Lucian_P : PassiveTargeted, PassiveCharacterAbility
 {
     private Ability lucianE;
     private float cooldownReducedOnPassiveHitOnCharacter;
@@ -17,9 +17,12 @@ public class Lucian_P : PassiveTargeted, CharacterAbility, PassiveCharacterAbili
         damageType = DamageType.PHYSICAL;
         effectType = AbilityEffectType.BASIC_ATTACK;
 
+        MaxLevel = 3;
+        AbilityLevel = 1;
+
         totalADScaling = 0.5f;
         totalADScalingPerLevel = 0.05f;
-
+        
         buffDuration = 3;
 
         cooldownReducedOnPassiveHitOnCharacter = 2;
@@ -45,7 +48,7 @@ public class Lucian_P : PassiveTargeted, CharacterAbility, PassiveCharacterAbili
     {
         base.Start();
 
-        foreach (Ability ability in GetComponents<CharacterAbility>())
+        foreach (Ability ability in character.CharacterAbilityManager.CharacterAbilities)
         {
             if (!(ability is PassiveCharacterAbility))
             {
@@ -72,7 +75,7 @@ public class Lucian_P : PassiveTargeted, CharacterAbility, PassiveCharacterAbili
     {
         if (level == 7 || level == 13)
         {
-            LevelUpAbilityStats();
+            LevelUp();
         }
     }
 

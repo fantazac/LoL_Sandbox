@@ -3,13 +3,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Ezreal_P : PassiveTargeted, CharacterAbility, PassiveCharacterAbility
+public class Ezreal_P : PassiveTargeted, PassiveCharacterAbility
 {
     protected Ezreal_P()
     {
         abilityName = "Rising Spell Force";
 
         abilityType = AbilityType.Passive;
+
+        MaxLevel = 3;
+        AbilityLevel = 1;
 
         buffDuration = 6;
         buffMaximumStacks = 5;
@@ -45,7 +48,7 @@ public class Ezreal_P : PassiveTargeted, CharacterAbility, PassiveCharacterAbili
         if (level == 7 || level == 13)
         {
             float oldValue = buffPercentBonus;
-            LevelUpAbilityStats();
+            LevelUp();
             UpdateBuffOnAffectedEntities(oldValue, buffPercentBonus);
         }
     }

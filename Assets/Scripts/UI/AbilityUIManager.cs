@@ -33,19 +33,33 @@ public class AbilityUIManager : MonoBehaviour
         abilityLevelPointColor = new Color(0.85f, 0.8f, 0.3f);
     }
 
-    public void SetAbilitySprite(int abilityId, Sprite abilitySprite)
+    public void SetAbilitySprite(AbilityCategory abilityCategory, int abilityId, Sprite abilitySprite)
     {
-        abilityImages[abilityId].sprite = abilitySprite;
+        abilityImages[GetAbilityId(abilityCategory, abilityId)].sprite = abilitySprite;
+    }
+
+    private int GetAbilityId(AbilityCategory abilityCategory, int abilityId)
+    {
+        int id = abilityId;
+        if (abilityCategory == AbilityCategory.CharacterAbility)
+        {
+            id += 1;
+        }
+        else if (abilityCategory == AbilityCategory.SummonerAbility)
+        {
+            id += 5;
+        }
+        return id;
     }
 
     public void SetAbilityCost(int abilityId, float resourceCost)
     {
-        abilityCostTexts[abilityId - 1].text = resourceCost == 0 ? "" : ((int)resourceCost).ToString();
+        abilityCostTexts[abilityId].text = resourceCost == 0 ? "" : ((int)resourceCost).ToString();
     }
 
     public void SetMaxAbilityLevel(int abilityId, int abilityMaxLevel)
     {
-        RectTransform parent = abilityLevelPoints[abilityId - 1].GetComponent<RectTransform>();
+        RectTransform parent = abilityLevelPoints[abilityId].GetComponent<RectTransform>();
         parent.anchoredPosition = parent.anchoredPosition + (Vector2.left * 4.5f * abilityMaxLevel + Vector2.right);
         for (int i = 0; i < abilityMaxLevel; i++)
         {
@@ -55,92 +69,92 @@ public class AbilityUIManager : MonoBehaviour
 
     public void LevelUpAbility(int abilityId, int abilityLevel)
     {
-        abilityLevelPoints[abilityId - 1].transform.GetChild(abilityLevel - 1).GetComponent<Image>().color = abilityLevelPointColor;
+        abilityLevelPoints[abilityId].transform.GetChild(abilityLevel - 1).GetComponent<Image>().color = abilityLevelPointColor;
     }
 
-    public void SetAbilityOnCooldown(int abilityId)
+    public void SetAbilityOnCooldown(AbilityCategory abilityCategory, int abilityId)
     {
-        abilityImages[abilityId].color = abilityColorOnCooldown;
-        abilityOnCooldownImages[abilityId].fillAmount = 1;
+        int id = GetAbilityId(abilityCategory, abilityId);
+        abilityImages[id].color = abilityColorOnCooldown;
+        abilityOnCooldownImages[id].fillAmount = 1;
     }
 
-    public void SetAbilityOnCooldownForRecast(int abilityId)
+    public void SetAbilityOnCooldownForRecast(AbilityCategory abilityCategory, int abilityId)
     {
-        abilityImages[abilityId].color = abilityColorOnCooldownForRecast;
-        abilityOnCooldownImages[abilityId].fillAmount = 1;
+        int id = GetAbilityId(abilityCategory, abilityId);
+        abilityImages[id].color = abilityColorOnCooldownForRecast;
+        abilityOnCooldownImages[id].fillAmount = 1;
     }
 
-    public void UpdateAbilityCooldown(int abilityId, float cooldown, float cooldownRemaining)
+    public void UpdateAbilityCooldown(AbilityCategory abilityCategory, int abilityId, float cooldown, float cooldownRemaining)
     {
-        abilityOnCooldownImages[abilityId].fillAmount = cooldownRemaining / cooldown;
+        int id = GetAbilityId(abilityCategory, abilityId);
 
+        abilityOnCooldownImages[id].fillAmount = cooldownRemaining / cooldown;
+
+        SetCooldownText(id, cooldownRemaining);
+    }
+
+    public void UpdateAbilityCooldownForRecast(AbilityCategory abilityCategory, int abilityId, float cooldownForRecast, float cooldownRemaining)
+    {
+        int id = GetAbilityId(abilityCategory, abilityId);
+
+        abilityOnCooldownImages[id].fillAmount = cooldownRemaining / cooldownForRecast;
+
+        SetCooldownText(id, cooldownRemaining);
+    }
+
+    private void SetCooldownText(int abilityId, float cooldownRemaining)
+    {
+        string cooldownString = "";
         if (cooldownRemaining >= 0.7f)
         {
-            abilityCooldownTexts[abilityId].text = Mathf.CeilToInt(cooldownRemaining).ToString();
+            cooldownString = Mathf.CeilToInt(cooldownRemaining).ToString();
         }
-        else if (cooldownRemaining <= 0)
+        else if (cooldownRemaining > 0)
         {
-            abilityCooldownTexts[abilityId].text = "";
+            cooldownString = cooldownRemaining.ToString("f1");
         }
-        else
-        {
-            abilityCooldownTexts[abilityId].text = cooldownRemaining.ToString("f1");
-        }
+        abilityCooldownTexts[abilityId].text = cooldownString;
     }
 
-    public void UpdateAbilityCooldownForRecast(int abilityId, float cooldownForRecast, float cooldownRemaining)
+    public void SetAbilityOffCooldown(AbilityCategory abilityCategory, int abilityId, bool abilityIsEnabled)
     {
-        abilityOnCooldownImages[abilityId].fillAmount = cooldownRemaining / cooldownForRecast;
-
-        if (cooldownRemaining >= 0.7f)
-        {
-            abilityCooldownTexts[abilityId].text = Mathf.CeilToInt(cooldownRemaining).ToString();
-        }
-        else if (cooldownRemaining <= 0)
-        {
-            abilityCooldownTexts[abilityId].text = "";
-        }
-        else
-        {
-            abilityCooldownTexts[abilityId].text = cooldownRemaining.ToString("f1");
-        }
-    }
-
-    public void SetAbilityOffCooldown(int abilityId, bool abilityIsEnabled)
-    {
-        abilityOnCooldownImages[abilityId].fillAmount = 0;
+        int id = GetAbilityId(abilityCategory, abilityId);
+        abilityOnCooldownImages[id].fillAmount = 0;
         if (abilityIsEnabled)
         {
-            abilityImages[abilityId].color = Color.white;
+            abilityImages[id].color = Color.white;
         }
-        abilityCooldownTexts[abilityId].text = "";
-    }
-    
-    public void SetAbilityOffCooldownForRecast(int abilityId)
-    {
-        abilityOnCooldownImages[abilityId].fillAmount = 0;
-        abilityImages[abilityId].color = Color.white;
-        abilityCooldownTexts[abilityId].text = "";
+        abilityCooldownTexts[id].text = "";
     }
 
-    public void DisableAbility(int abilityId, bool abilityUsesResource)
+    public void SetAbilityOffCooldownForRecast(AbilityCategory abilityCategory, int abilityId)
     {
-        abilityImages[abilityId].color = abilityColorOnCooldown;
+        int id = GetAbilityId(abilityCategory, abilityId);
+        abilityOnCooldownImages[id].fillAmount = 0;
+        abilityImages[id].color = Color.white;
+        abilityCooldownTexts[id].text = "";
+    }
+
+    public void DisableAbility(AbilityCategory abilityCategory, int abilityId, bool abilityUsesResource)
+    {
+        abilityImages[GetAbilityId(abilityCategory, abilityId)].color = abilityColorOnCooldown;
         if (abilityUsesResource)
         {
             UpdateAbilityHasEnoughResource(abilityId, true);
         }
     }
 
-    public void EnableAbility(int abilityId, bool characterHasEnoughResourceToCastAbility)
+    public void EnableAbility(AbilityCategory abilityCategory, int abilityId, bool characterHasEnoughResourceToCastAbility)
     {
-        abilityImages[abilityId].color = Color.white;
+        abilityImages[GetAbilityId(abilityCategory, abilityId)].color = Color.white;
         UpdateAbilityHasEnoughResource(abilityId, characterHasEnoughResourceToCastAbility);
     }
 
     public void UpdateAbilityHasEnoughResource(int abilityId, bool characterHasEnoughResourceToCastAbility)
     {
-        GameObject abilityNotEnoughResourceObject = abilityNotEnoughResourceObjects[abilityId - 1];
+        GameObject abilityNotEnoughResourceObject = abilityNotEnoughResourceObjects[abilityId];
         if ((characterHasEnoughResourceToCastAbility && abilityNotEnoughResourceObject.activeSelf) || (!characterHasEnoughResourceToCastAbility && !abilityNotEnoughResourceObject.activeSelf))
         {
             abilityNotEnoughResourceObject.SetActive(!characterHasEnoughResourceToCastAbility);

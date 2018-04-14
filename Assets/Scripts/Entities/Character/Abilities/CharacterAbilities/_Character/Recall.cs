@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Recall : AutoTargetedBlink, OtherAbility
+public class Recall : AutoTargetedBlink, OtherCharacterAbility
 {
     protected Recall()
     {

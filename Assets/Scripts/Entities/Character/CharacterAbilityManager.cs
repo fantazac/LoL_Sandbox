@@ -6,7 +6,12 @@ public class CharacterAbilityManager : MonoBehaviour
 {
     private Character character;
 
-    private Dictionary<AbilityInput, Ability> abilities;
+    public Ability[] CharacterAbilities { get; private set; }
+    public Ability[] PassiveCharacterAbilities { get; private set; }
+    public Ability[] OtherCharacterAbilities { get; private set; }
+    public Ability[] SummonerAbilities { get; private set; }
+    public Ability[] OfflineAbilities { get; private set; }
+
     private List<Ability> currentlyUsedAbilities;
     private List<Ability> characterAbilitiesWithResourceCosts;
 
@@ -15,7 +20,6 @@ public class CharacterAbilityManager : MonoBehaviour
 
     private CharacterAbilityManager()
     {
-        abilities = new Dictionary<AbilityInput, Ability>();
         currentlyUsedAbilities = new List<Ability>();
         characterAbilitiesWithResourceCosts = new List<Ability>();
     }
@@ -33,27 +37,80 @@ public class CharacterAbilityManager : MonoBehaviour
 
     private void InitAbilities()
     {
-        Ability[] abilitiesOnCharacter = GetComponents<Ability>();
-        for (int i = 0; i < abilitiesOnCharacter.Length; i++)
+        bool isLocalCharacter = character.AbilityUIManager;
+
+        CharacterAbility[] iCharacterAbilities = GetComponents<CharacterAbility>();
+        CharacterAbilities = new Ability[iCharacterAbilities.Length];
+        for (int i = 0; i < CharacterAbilities.Length; i++)
         {
-            Ability ability = abilitiesOnCharacter[i];
+            Ability ability = (Ability)iCharacterAbilities[i];
+            CharacterAbilities[i] = ability;
             ability.OnAbilityUsed += OnAbilityUsed;
             ability.OnAbilityFinished += OnAbilityFinished;
-            if (character.AbilityUIManager)
+            if (isLocalCharacter)
             {
-                if (!(ability is OtherAbility))
-                {
-                    ability.ID = i;
-                    ability.SetAbilitySprite();
-                }
-                if (ability is CharacterAbility && !(ability is PassiveCharacterAbility))
-                {
-                    characterAbilitiesWithResourceCosts.Add(ability);
-                    character.AbilityUIManager.DisableAbility(i, false);
-                    character.AbilityUIManager.SetMaxAbilityLevel(i, ability.MaxLevel);
-                }
+                ability.ID = i;
+                ability.AbilityCategory = AbilityCategory.CharacterAbility;
+                ability.SetAbilitySprite();
+                characterAbilitiesWithResourceCosts.Add(ability);
+                character.AbilityUIManager.DisableAbility(AbilityCategory.CharacterAbility, i, false);
+                character.AbilityUIManager.SetMaxAbilityLevel(i, ability.MaxLevel);
             }
-            abilities.Add((AbilityInput)i, ability);
+        }
+
+        PassiveCharacterAbility[] iPassiveCharacterAbilities = GetComponents<PassiveCharacterAbility>();
+        PassiveCharacterAbilities = new Ability[iPassiveCharacterAbilities.Length];
+        for (int j = 0; j < PassiveCharacterAbilities.Length; j++)
+        {
+            Ability ability2 = (Ability)iPassiveCharacterAbilities[j];
+            PassiveCharacterAbilities[j] = ability2;
+            ability2.OnAbilityUsed += OnAbilityUsed;
+            ability2.OnAbilityFinished += OnAbilityFinished;
+            if (isLocalCharacter)
+            {
+                ability2.ID = j;
+                ability2.AbilityCategory = AbilityCategory.PassiveCharacterAbility;
+                ability2.SetAbilitySprite();
+            }
+        }
+
+        OtherCharacterAbility[] iOtherCharacterAbilities = GetComponents<OtherCharacterAbility>();
+        OtherCharacterAbilities = new Ability[iOtherCharacterAbilities.Length];
+        for (int k = 0; k < OtherCharacterAbilities.Length; k++)
+        {
+            Ability ability3 = (Ability)iOtherCharacterAbilities[k];
+            OtherCharacterAbilities[k] = ability3;
+            ability3.OnAbilityUsed += OnAbilityUsed;
+            ability3.OnAbilityFinished += OnAbilityFinished;
+        }
+
+        SummonerAbility[] iSummonerAbilities = GetComponents<SummonerAbility>();
+        SummonerAbilities = new Ability[iSummonerAbilities.Length];
+        for (int l = 0; l < SummonerAbilities.Length; l++)
+        {
+            Ability ability4 = (Ability)iSummonerAbilities[l];
+            SummonerAbilities[l] = ability4;
+            ability4.OnAbilityUsed += OnAbilityUsed;
+            ability4.OnAbilityFinished += OnAbilityFinished;
+            if (isLocalCharacter)
+            {
+                ability4.ID = l;
+                ability4.AbilityCategory = AbilityCategory.SummonerAbility;
+                ability4.SetAbilitySprite();
+            }
+        }
+
+        if (!StaticObjects.OnlineMode)
+        {
+            OfflineAbility[] iOfflineAbilities = GetComponents<OfflineAbility>();
+            OfflineAbilities = new Ability[iOfflineAbilities.Length];
+            for (int m = 0; m < OfflineAbilities.Length; m++)
+            {
+                Ability ability5 = (Ability)iOfflineAbilities[m];
+                OfflineAbilities[m] = ability5;
+                ability5.OnAbilityUsed += OnAbilityUsed;
+                ability5.OnAbilityFinished += OnAbilityFinished;
+            }
         }
     }
 
@@ -80,45 +137,69 @@ public class CharacterAbilityManager : MonoBehaviour
         }
     }
 
-    private void SendToServer_Ability_Destination(AbilityInput abilityInput, Vector3 destination)
+    private Ability GetAbility(AbilityCategory abilityCategory, int abilityId)
     {
-        character.PhotonView.RPC("ReceiveFromServer_Ability_Destination", PhotonTargets.AllViaServer, abilityInput, destination);
+        Ability ability = null;
+        switch (abilityCategory)
+        {
+            case AbilityCategory.CharacterAbility:
+                ability = CharacterAbilities[abilityId];
+                break;
+            case AbilityCategory.PassiveCharacterAbility:
+                ability = PassiveCharacterAbilities[abilityId];
+                break;
+            case AbilityCategory.OtherCharacterAbility:
+                ability = OtherCharacterAbilities[abilityId];
+                break;
+            case AbilityCategory.SummonerAbility:
+                ability = SummonerAbilities[abilityId];
+                break;
+            case AbilityCategory.OfflineAbility:
+                ability = OfflineAbilities[abilityId];
+                break;
+        }
+        return ability;
+    }
+
+    private void SendToServer_Ability_Destination(AbilityCategory abilityCategory, int abilityId, Vector3 destination)
+    {
+        character.PhotonView.RPC("ReceiveFromServer_Ability_Destination", PhotonTargets.AllViaServer, abilityCategory, abilityId, destination);
     }
 
     [PunRPC]
-    private void ReceiveFromServer_Ability_Destination(AbilityInput abilityInput, Vector3 destination)
+    private void ReceiveFromServer_Ability_Destination(AbilityCategory abilityCategory, int abilityId, Vector3 destination)
     {
-        Ability ability = abilities[abilityInput];
+        Ability ability = GetAbility(abilityCategory, abilityId);
         if (AbilityIsCastable(ability))
         {
             UsePositionTargetedAbility(ability, destination);
         }
     }
 
-    private void SendToServer_Ability_Entity(AbilityInput abilityInput, Entity target)
+    private void SendToServer_Ability_Entity(AbilityCategory abilityCategory, int abilityId, Entity target)
     {
-        character.PhotonView.RPC("ReceiveFromServer_Ability_Entity", PhotonTargets.AllViaServer, abilityInput, target.EntityId, target.EntityType);
+        character.PhotonView.RPC("ReceiveFromServer_Ability_Entity", PhotonTargets.AllViaServer, abilityCategory, abilityId, target.EntityId, target.EntityType);
     }
 
     [PunRPC]
-    private void ReceiveFromServer_Ability_Entity(AbilityInput abilityInput, int entityId, EntityType entityType)
+    private void ReceiveFromServer_Ability_Entity(AbilityCategory abilityCategory, int abilityId, int entityId, EntityType entityType)
     {
-        Ability ability = abilities[abilityInput];
+        Ability ability = GetAbility(abilityCategory, abilityId);
         if (AbilityIsCastable(ability))
         {
             UseUnitTargetedAbility(ability, FindTarget(entityId, entityType));
         }
     }
 
-    private void SendToServer_Ability_Recast(AbilityInput abilityInput)
+    private void SendToServer_Ability_Recast(AbilityCategory abilityCategory, int abilityId)
     {
-        character.PhotonView.RPC("ReceiveFromServer_Ability_Recast", PhotonTargets.AllViaServer, abilityInput);
+        character.PhotonView.RPC("ReceiveFromServer_Ability_Recast", PhotonTargets.AllViaServer, abilityCategory, abilityId);
     }
 
     [PunRPC]
-    private void ReceiveFromServer_Ability_Recast(AbilityInput abilityInput)
+    private void ReceiveFromServer_Ability_Recast(AbilityCategory abilityCategory, int abilityId)
     {
-        Ability ability = abilities[abilityInput];
+        Ability ability = GetAbility(abilityCategory, abilityId);
         if (ability.CanBeRecasted && currentlyUsedAbilities.Contains(ability))
         {
             ability.RecastAbility();
@@ -184,57 +265,56 @@ public class CharacterAbilityManager : MonoBehaviour
         }
     }
 
-    public void LevelUpAbility(AbilityInput abilityId)
+    public void LevelUpAbility(AbilityCategory abilityCategory, int abilityId)
     {
-        abilities[abilityId].LevelUp();
+        Ability ability = GetAbility(abilityCategory, abilityId);
+        ability.LevelUp();
+        ability.UpdateLevelOnUI();
     }
 
-    public void OnPressedInputForAbility(AbilityInput abilityInput)
+    public void OnPressedInputForAbility(AbilityCategory abilityCategory, int abilityId)
     {
-        if (abilities.ContainsKey(abilityInput))
+        Ability ability = GetAbility(abilityCategory, abilityId);
+        if (ability.IsEnabled)
         {
-            Ability ability = abilities[abilityInput];
-            if (ability.IsEnabled)
+            if (AbilityIsCastable(ability))
             {
-                if (AbilityIsCastable(ability))
+                if (ability is UnitTargeted)
                 {
-                    if (ability is UnitTargeted)
-                    {
-                        Entity hoveredEntity = character.CharacterMouseManager.HoveredEntity;
-                        if (hoveredEntity != null && ability.CanBeCast(character.CharacterMouseManager.HoveredEntity))
-                        {
-                            if (StaticObjects.OnlineMode)
-                            {
-                                SendToServer_Ability_Entity(abilityInput, hoveredEntity);
-                            }
-                            else
-                            {
-                                UseUnitTargetedAbility(ability, hoveredEntity);
-                            }
-                        }
-                    }
-                    else if (ability.CanBeCast(Input.mousePosition))
+                    Entity hoveredEntity = character.CharacterMouseManager.HoveredEntity;
+                    if (hoveredEntity != null && ability.CanBeCast(character.CharacterMouseManager.HoveredEntity))
                     {
                         if (StaticObjects.OnlineMode)
                         {
-                            SendToServer_Ability_Destination(abilityInput, ability.GetDestination());
+                            SendToServer_Ability_Entity(abilityCategory, abilityId, hoveredEntity);
                         }
                         else
                         {
-                            UsePositionTargetedAbility(ability, ability.GetDestination());
+                            UseUnitTargetedAbility(ability, hoveredEntity);
                         }
                     }
                 }
-                else if (ability.CanBeRecasted && !ability.IsOnCooldownForRecast && currentlyUsedAbilities.Contains(ability))
+                else if (ability.CanBeCast(Input.mousePosition))
                 {
                     if (StaticObjects.OnlineMode)
                     {
-                        SendToServer_Ability_Recast(abilityInput);
+                        SendToServer_Ability_Destination(abilityCategory, abilityId, ability.GetDestination());
                     }
                     else
                     {
-                        ability.RecastAbility();
+                        UsePositionTargetedAbility(ability, ability.GetDestination());
                     }
+                }
+            }
+            else if (ability.CanBeRecasted && !ability.IsOnCooldownForRecast && currentlyUsedAbilities.Contains(ability))
+            {
+                if (StaticObjects.OnlineMode)
+                {
+                    SendToServer_Ability_Recast(abilityCategory, abilityId);
+                }
+                else
+                {
+                    ability.RecastAbility();
                 }
             }
         }
@@ -457,34 +537,53 @@ public class CharacterAbilityManager : MonoBehaviour
 
     public void ResetCooldowns()
     {
-        for (int i = 0; i < abilities.Count; i++)
+        for (int i = 0; i < CharacterAbilities.Length; i++)
         {
-            abilities[(AbilityInput)i].ResetCooldown();
+            GetAbility(AbilityCategory.CharacterAbility, i).ResetCooldown();
+        }
+        for (int j = 0; j < PassiveCharacterAbilities.Length; j++)
+        {
+            GetAbility(AbilityCategory.PassiveCharacterAbility, j).ResetCooldown();
+        }
+        for (int k = 0; k < OtherCharacterAbilities.Length; k++)
+        {
+            GetAbility(AbilityCategory.OtherCharacterAbility, k).ResetCooldown();
+        }
+        for (int l = 0; l < SummonerAbilities.Length; l++)
+        {
+            GetAbility(AbilityCategory.SummonerAbility, l).ResetCooldown();
+        }
+        if (!StaticObjects.OnlineMode)
+        {
+            for (int m = 0; m < OfflineAbilities.Length; m++)
+            {
+                GetAbility(AbilityCategory.OfflineAbility, m).ResetCooldown();
+            }
         }
     }
 
     public int[] GetCharacterAbilityLevels()
     {
-        return new int[] { abilities[AbilityInput.Q].AbilityLevel, abilities[AbilityInput.W].AbilityLevel, abilities[AbilityInput.E].AbilityLevel, abilities[AbilityInput.R].AbilityLevel };
+        return new int[] { CharacterAbilities[0].AbilityLevel, CharacterAbilities[1].AbilityLevel, CharacterAbilities[2].AbilityLevel, CharacterAbilities[3].AbilityLevel };
     }
 
     public void SetAbilityLevelsFromLoad(int[] characterAbilityLevels)//TODO: Check all this works out
     {
-        for (int i = 0; i < characterAbilityLevels[0]; i++)
+        for (int i = 0; i < CharacterAbilities.Length; i++)
         {
-            abilities[AbilityInput.Q].LevelUp();
+            CharacterAbilities[0].LevelUp();
         }
-        for (int i = 0; i < characterAbilityLevels[1]; i++)
+        for (int j = 0; j < characterAbilityLevels[1]; j++)
         {
-            abilities[AbilityInput.W].LevelUp();
+            CharacterAbilities[1].LevelUp();
         }
-        for (int i = 0; i < characterAbilityLevels[2]; i++)
+        for (int k = 0; k < characterAbilityLevels[2]; k++)
         {
-            abilities[AbilityInput.E].LevelUp();
+            CharacterAbilities[2].LevelUp();
         }
-        for (int i = 0; i < characterAbilityLevels[3]; i++)
+        for (int l = 0; l < characterAbilityLevels[3]; l++)
         {
-            abilities[AbilityInput.R].LevelUp();
+            CharacterAbilities[3].LevelUp();
         }
     }
 }

@@ -70,19 +70,19 @@ public class CharacterInput : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.Q))
             {
-                characterAbilityManager.OnPressedInputForAbility(AbilityInput.Q);
+                characterAbilityManager.OnPressedInputForAbility(AbilityCategory.CharacterAbility, 0);
             }
             if (Input.GetKeyDown(KeyCode.W))
             {
-                characterAbilityManager.OnPressedInputForAbility(AbilityInput.W);
+                characterAbilityManager.OnPressedInputForAbility(AbilityCategory.CharacterAbility, 1);
             }
             if (Input.GetKeyDown(KeyCode.E))
             {
-                characterAbilityManager.OnPressedInputForAbility(AbilityInput.E);
+                characterAbilityManager.OnPressedInputForAbility(AbilityCategory.CharacterAbility, 2);
             }
             if (Input.GetKeyDown(KeyCode.R))
             {
-                characterAbilityManager.OnPressedInputForAbility(AbilityInput.R);
+                characterAbilityManager.OnPressedInputForAbility(AbilityCategory.CharacterAbility, 3);
             }
             /*if (Input.GetKeyDown(KeyCode.Equals))
             {
@@ -95,11 +95,11 @@ public class CharacterInput : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.D))
         {
-            characterAbilityManager.OnPressedInputForAbility(AbilityInput.D);
+            characterAbilityManager.OnPressedInputForAbility(AbilityCategory.SummonerAbility, 0);
         }
         if (Input.GetKeyDown(KeyCode.F))
         {
-            characterAbilityManager.OnPressedInputForAbility(AbilityInput.F);
+            characterAbilityManager.OnPressedInputForAbility(AbilityCategory.SummonerAbility, 1);
         }
     }
 
@@ -113,15 +113,15 @@ public class CharacterInput : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.B))
             {
-                characterAbilityManager.OnPressedInputForAbility(AbilityInput.SPAWN_ENEMY_DUMMY);
+                characterAbilityManager.OnPressedInputForAbility(AbilityCategory.OfflineAbility, 2);
             }
             if (Input.GetKeyDown(KeyCode.M))
             {
-                characterAbilityManager.OnPressedInputForAbility(AbilityInput.DESTROY_ALL_DUMMIES);
+                characterAbilityManager.OnPressedInputForAbility(AbilityCategory.OfflineAbility, 0);
             }
             if (Input.GetKeyDown(KeyCode.N))
             {
-                characterAbilityManager.OnPressedInputForAbility(AbilityInput.SPAWN_ALLY_DUMMY);
+                characterAbilityManager.OnPressedInputForAbility(AbilityCategory.OfflineAbility, 1);
             }
             if (Input.GetKeyDown(KeyCode.Equals))
             {
@@ -132,7 +132,7 @@ public class CharacterInput : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.B))
             {
-                characterAbilityManager.OnPressedInputForAbility(AbilityInput.RECALL);
+                characterAbilityManager.OnPressedInputForAbility(AbilityCategory.OtherCharacterAbility, 0);
             }
             if (Input.GetKeyDown(KeyCode.Equals))
             {
