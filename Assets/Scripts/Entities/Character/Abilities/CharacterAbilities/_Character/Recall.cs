@@ -25,7 +25,15 @@ public class Recall : AutoTargetedBlink, OtherCharacterAbility
     protected override void SetSpritePaths()
     {
         abilitySpritePath = "Sprites/Characters/CharacterAbilities/_Character/Recall";
-        buffSpritePath = "Sprites/Characters/CharacterAbilities/_Character/Recall";
+    }
+
+    protected override void Start()
+    {
+        base.Start();
+
+        AbilityBuffs = new AbilityBuff[] { GetComponent<Recall_Buff>() };
+
+        AbilityBuffs[0].OnAbilityBuffRemoved += RemoveBuffFromEntityHit;
     }
 
     public override Vector3 GetDestination()
@@ -47,7 +55,7 @@ public class Recall : AutoTargetedBlink, OtherCharacterAbility
 
         yield return delayChannelTime;
 
-        ConsumeBuff(character);
+        AbilityBuffs[0].ConsumeBuff(character);
 
         transform.position = GetDestination();
         character.CharacterMovement.NotifyCharacterMoved();
@@ -56,28 +64,27 @@ public class Recall : AutoTargetedBlink, OtherCharacterAbility
         FinishAbilityCast();
     }
 
-    private void CancelRecall()
-    {
-        IsBeingChanneled = false;
-        CancelAbility();
-        ConsumeBuff(character);
-    }
-
-    public override void ApplyBuffToEntityHit(Entity entityHit, int currentStacks)
+    private void AddNewBuffToEntityHit(Entity entityHit)
     {
         entityHit.EntityStats.Health.OnHealthReduced += CancelRecall;
         ((Character)entityHit).CharacterAbilityManager.OnAnAbilityUsed += CancelRecall;
         ((Character)entityHit).CharacterMovement.CharacterMoved += CancelRecall;
         //TODO: if cc'd, cancel aswell
-        EntitiesAffectedByBuff.Add(entityHit);
+        AbilityBuffs[0].AddNewBuffToEntityHit(entityHit);
     }
 
-    public override void RemoveBuffFromEntityHit(Entity entityHit, int currentStacks)
+    private void RemoveBuffFromEntityHit(Entity entityHit)
     {
         entityHit.EntityStats.Health.OnHealthReduced -= CancelRecall;
         ((Character)entityHit).CharacterAbilityManager.OnAnAbilityUsed -= CancelRecall;
         ((Character)entityHit).CharacterMovement.CharacterMoved -= CancelRecall;
         //TODO: remove cc cancel
-        EntitiesAffectedByBuff.Remove(entityHit);
+    }
+
+    private void CancelRecall()
+    {
+        IsBeingChanneled = false;
+        CancelAbility();
+        AbilityBuffs[0].ConsumeBuff(character);
     }
 }

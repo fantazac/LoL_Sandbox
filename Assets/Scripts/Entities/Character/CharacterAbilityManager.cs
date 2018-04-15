@@ -406,8 +406,25 @@ public class CharacterAbilityManager : MonoBehaviour
 
     private bool CannotCastAbility(Ability abilityToCast, Ability ability)
     {
-        return ability.HasCastTime && ability.IsBeingCasted && !ability.CastableAbilitiesWhileActive.Contains(abilityToCast) &&
+        return ability.HasCastTime && ability.IsBeingCasted &&
+            (ability.CastableAbilitiesWhileActive == null || !CanCastAbilityWhileActive(ability.CastableAbilitiesWhileActive, abilityToCast)) &&
             !(ability.HasChannelTime && ability.IsBeingChanneled && ability.CanUseAnyAbilityWhileChanneling);
+    }
+
+    private bool CanCastAbilityWhileActive(Ability[] castableAbilitiesWhileActive, Ability abilityToCast)
+    {
+        bool canCast = false;
+
+        foreach (Ability ability in castableAbilitiesWhileActive)
+        {
+            if (ability == abilityToCast)
+            {
+                canCast = true;
+                break;
+            }
+        }
+
+        return canCast;
     }
 
     public bool IsUsingAbilityPreventingMovement()

@@ -22,8 +22,6 @@ public class Lucian_P : PassiveTargeted, PassiveCharacterAbility
 
         totalADScaling = 0.5f;
         totalADScalingPerLevel = 0.05f;
-        
-        buffDuration = 3;
 
         cooldownReducedOnPassiveHitOnCharacter = 2;
         cooldownReducedOnPassiveHit = 1;
@@ -41,19 +39,17 @@ public class Lucian_P : PassiveTargeted, PassiveCharacterAbility
     protected override void SetSpritePaths()
     {
         abilitySpritePath = "Sprites/Characters/CharacterAbilities/Lucian/LucianP";
-        buffSpritePath = "Sprites/Characters/CharacterAbilities/Lucian/LucianP_Buff";
     }
 
     protected override void Start()
     {
         base.Start();
 
+        AbilityBuffs = new AbilityBuff[] { GetComponent<Lucian_P_Buff>() };
+
         foreach (Ability ability in character.CharacterAbilityManager.CharacterAbilities)
         {
-            if (!(ability is PassiveCharacterAbility))
-            {
-                ability.OnAbilityFinished += PassiveEffect;
-            }
+            ability.OnAbilityFinished += PassiveEffect;
         }
 
         character.CharacterLevelManager.OnLevelUp += OnCharacterLevelUp;

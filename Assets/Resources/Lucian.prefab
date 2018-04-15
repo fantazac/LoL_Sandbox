@@ -76,13 +76,19 @@ GameObject:
   - component: {fileID: 114186498823218726}
   - component: {fileID: 114750828589375982}
   - component: {fileID: 114315950057543016}
+  - component: {fileID: 114812236593298750}
   - component: {fileID: 114536618287389660}
   - component: {fileID: 114324357708582316}
+  - component: {fileID: 114689305987461122}
+  - component: {fileID: 114558832242142328}
   - component: {fileID: 114729605349889214}
   - component: {fileID: 114372474999472434}
-  - component: {fileID: 114422174247096404}
+  - component: {fileID: 114679863561530774}
+  - component: {fileID: 114920789130636616}
+  - component: {fileID: 114408291185669046}
   - component: {fileID: 114620902814611038}
   - component: {fileID: 114880949937560802}
+  - component: {fileID: 114527763667540718}
   - component: {fileID: 114255252513267966}
   - component: {fileID: 114904757158163134}
   - component: {fileID: 114986620668545128}
@@ -412,10 +418,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c7fa87ee87c63641992356d2e6db7c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  abilitySprite: {fileID: 0}
-  abilityRecastSprite: {fileID: 0}
-  buffSprite: {fileID: 0}
-  debuffSprite: {fileID: 0}
   spawnDummyAbilities:
   - {fileID: 114904757158163134}
   - {fileID: 114986620668545128}
@@ -430,10 +432,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3241db5dd3ad7d4448c162bfc433c0f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  abilitySprite: {fileID: 21300000, guid: ab5344e185e3a86408b2a63aea61f048, type: 3}
-  abilityRecastSprite: {fileID: 0}
-  buffSprite: {fileID: 0}
-  debuffSprite: {fileID: 0}
 --- !u!114 &114318922436608908
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -456,10 +454,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a4139fbea1f7a048b58f4963288b590, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  abilitySprite: {fileID: 21300000, guid: d5bfd520d124a8f41a496e03d2f3daae, type: 3}
-  abilityRecastSprite: {fileID: 0}
-  buffSprite: {fileID: 0}
-  debuffSprite: {fileID: 0}
   projectilePrefab: {fileID: 1000011332508624, guid: 2dd65a2c59d731245b6e300dbd615760,
     type: 2}
   explosionAreaOfEffectPrefab: {fileID: 1000013714180132, guid: 72fd8765c72f30f4da560504e8980708,
@@ -540,13 +534,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c165cc7bfb006d644b4461dce582bf14, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  abilitySprite: {fileID: 21300000, guid: 708670b0170e08747ab0f57a8f41e5a7, type: 3}
-  abilityRecastSprite: {fileID: 0}
-  buffSprite: {fileID: 0}
-  debuffSprite: {fileID: 0}
   projectilePrefab: {fileID: 1000010764437680, guid: 518710b74c6e1bb41becee4207ea623b,
     type: 2}
---- !u!114 &114422174247096404
+--- !u!114 &114408291185669046
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -554,13 +544,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1507067852754532}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: df099550010c1ba40aedb0da333a97b6, type: 3}
+  m_Script: {fileID: 11500000, guid: 85fa2641989f37f49b294d69fbca49d0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  abilitySprite: {fileID: 0}
-  abilityRecastSprite: {fileID: 0}
-  buffSprite: {fileID: 0}
-  debuffSprite: {fileID: 0}
 --- !u!114 &114439890440468546
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -605,6 +591,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5ce362c3519933c48b115ae5346e2aea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &114527763667540718
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1507067852754532}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4109899374c95c04ba4a69087f57952a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114536618287389660
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -616,10 +613,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 96d2cf110d9d0b84eb6471fc8c9db4df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  abilitySprite: {fileID: 21300000, guid: 3068fcef45f70564daa683f96e850931, type: 3}
-  abilityRecastSprite: {fileID: 0}
-  buffSprite: {fileID: 0}
-  debuffSprite: {fileID: 0}
   areaOfEffectPrefab: {fileID: 1000011639411960, guid: 7d23b316a2ad36249a139ef23be8c616,
     type: 2}
 --- !u!114 &114554439231744336
@@ -640,6 +633,17 @@ MonoBehaviour:
   percentBonus: 0
   flatMalus: 0
   percentMalus: 0
+--- !u!114 &114558832242142328
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1507067852754532}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93ca446137a49f940ad58833fecc5e16, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114562199205961970
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -688,10 +692,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 43b117018cc795546b1f3ee893e02585, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  abilitySprite: {fileID: 21300000, guid: e167926241f6d1a4db7711ab6f823f5e, type: 3}
-  abilityRecastSprite: {fileID: 0}
-  buffSprite: {fileID: 0}
-  debuffSprite: {fileID: 0}
 --- !u!114 &114625631600227958
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -728,6 +728,28 @@ MonoBehaviour:
   percentBonus: 0
   flatMalus: 0
   percentMalus: 0
+--- !u!114 &114679863561530774
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1507067852754532}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b441fe6c6b8106e4fb9e14d8dc6d3e19, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &114689305987461122
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1507067852754532}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 40703105edb3c0d4f98c869ddb0e038c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114729605349889214
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -739,10 +761,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 321800863ff0e6d4eab2b9a434088623, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  abilitySprite: {fileID: 21300000, guid: 997af1dc16ff7664ebc7ce6c46e3fbab, type: 3}
-  abilityRecastSprite: {fileID: 0}
-  buffSprite: {fileID: 0}
-  debuffSprite: {fileID: 0}
 --- !u!114 &114750828589375982
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -790,6 +808,17 @@ MonoBehaviour:
   percentBonus: 0
   flatMalus: 0
   percentMalus: 0
+--- !u!114 &114812236593298750
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1507067852754532}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b05cc9e295cb5d45a23b6e86cb51444, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114853023981360742
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -863,10 +892,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b492e05deb5c3e47a3d40368f3bbc58, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  abilitySprite: {fileID: 0}
-  abilityRecastSprite: {fileID: 0}
-  buffSprite: {fileID: 0}
-  debuffSprite: {fileID: 0}
 --- !u!114 &114904757158163134
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -878,10 +903,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61628d0fbdcbd8043a9007dc26f796a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  abilitySprite: {fileID: 0}
-  abilityRecastSprite: {fileID: 0}
-  buffSprite: {fileID: 0}
-  debuffSprite: {fileID: 0}
 --- !u!114 &114904866682542976
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -941,6 +962,17 @@ MonoBehaviour:
   flatMalus: 0
   percentMalus: 0
   currentValue: 0
+--- !u!114 &114920789130636616
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1507067852754532}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c50065e502361b44a49687dde9fc7e7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114971362640578986
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -963,7 +995,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 831f3823ef40818438cfbc5ce6de4972, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  abilitySprite: {fileID: 0}
-  abilityRecastSprite: {fileID: 0}
-  buffSprite: {fileID: 0}
-  debuffSprite: {fileID: 0}

@@ -34,6 +34,6 @@ public abstract class PassiveTargeted : Ability
 
     protected void PassiveEffect(Ability ability)
     {
-        AddNewBuffToEntityHit(character);
+        AbilityBuffs[0].AddNewBuffToEntityHit(character);
     }
 }

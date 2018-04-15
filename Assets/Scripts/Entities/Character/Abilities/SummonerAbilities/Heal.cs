@@ -2,9 +2,6 @@
 
 public class Heal : SelfTargeted, SummonerAbility
 {
-    private const float BASE_HEAL_VALUE = 75;
-    private const float HEAL_INCREASE_PER_LEVEL = 15;
-
     private const float MOUSE_RADIUS = 3;
 
     protected Heal()
@@ -19,15 +16,7 @@ public class Heal : SelfTargeted, SummonerAbility
         baseCooldown = 240;
 
         startCooldownOnAbilityCast = true;
-
         CanBeCastDuringOtherAbilityCastTimes = true;
-
-        buffDuration = 1;
-        buffFlatBonus = 90;
-        buffPercentBonus = 30;
-
-        debuffDuration = 35;
-        debuffPercentBonus = 0.5f;
 
         IsEnabled = true;
     }
@@ -35,13 +24,14 @@ public class Heal : SelfTargeted, SummonerAbility
     protected override void SetSpritePaths()
     {
         abilitySpritePath = "Sprites/Characters/SummonerAbilities/Heal";
-        buffSpritePath = "Sprites/Characters/SummonerAbilities/Ghost";
-        debuffSpritePath = "Sprites/Characters/SummonerAbilities/Heal";
     }
 
     protected override void Start()
     {
         base.Start();
+
+        AbilityBuffs = new AbilityBuff[] { GetComponent<Heal_Buff>() };
+        AbilityDebuffs = new AbilityBuff[] { GetComponent<Heal_Debuff>() };
 
         character.CharacterLevelManager.OnLevelUp += OnCharacterLevelUp;
     }
@@ -62,7 +52,7 @@ public class Heal : SelfTargeted, SummonerAbility
 
     public override void OnCharacterLevelUp(int level)
     {
-        buffFlatBonus = (BASE_HEAL_VALUE + (HEAL_INCREASE_PER_LEVEL * level));
+        LevelUp();
     }
 
     public override void UseAbility(Vector3 destination)
@@ -112,44 +102,13 @@ public class Heal : SelfTargeted, SummonerAbility
 
         if (targetedCharacter != null)
         {
-            AddNewBuffToEntityHit(targetedCharacter);
-            AddNewDebuffToEntityHit(targetedCharacter);
+            AbilityBuffs[0].AddNewBuffToEntityHit(targetedCharacter);
+            AbilityDebuffs[0].AddNewDebuffToEntityHit(targetedCharacter);
         }
 
-        AddNewBuffToEntityHit(character);
-        AddNewDebuffToEntityHit(character);
+        AbilityBuffs[0].AddNewBuffToEntityHit(character);
+        AbilityDebuffs[0].AddNewDebuffToEntityHit(character);
 
         StartCooldown(startCooldownOnAbilityCast);
-    }
-
-    protected override void AddNewDebuffToEntityHit(Entity entityHit)
-    {
-        Buff debuff = entityHit.EntityBuffManager.GetDebuffOfSameType(this);
-        if (debuff != null)
-        {
-            debuff.ConsumeBuff();
-        }
-        debuff = new Buff(this, entityHit, true, debuffDuration);
-        entityHit.EntityBuffManager.ApplyDebuff(debuff, debuffSprite);
-    }
-
-    public override void ApplyBuffToEntityHit(Entity entityHit, int currentStacks)
-    {
-        if (entityHit.EntityBuffManager.GetDebuffOfSameType(this) != null)
-        {
-            entityHit.EntityStats.Health.Restore(buffFlatBonus * debuffPercentBonus);
-        }
-        else
-        {
-            entityHit.EntityStats.Health.Restore(buffFlatBonus);
-        }
-        entityHit.EntityStats.MovementSpeed.AddPercentBonus(buffPercentBonus);
-        EntitiesAffectedByBuff.Add(entityHit);
-    }
-
-    public override void RemoveBuffFromEntityHit(Entity entityHit, int currentStacks)
-    {
-        entityHit.EntityStats.MovementSpeed.RemovePercentBonus(buffPercentBonus);
-        EntitiesAffectedByBuff.Remove(entityHit);
     }
 }

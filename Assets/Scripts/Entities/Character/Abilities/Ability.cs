@@ -53,29 +53,11 @@ public abstract class Ability : MonoBehaviour
     protected float totalAPScaling;
     protected float totalAPScalingPerLevel;
 
-    protected float buffDuration;
-    protected int buffMaximumStacks;
-    protected float buffFlatBonus;
-    protected float buffFlatBonusPerLevel;
-    protected float buffPercentBonus;
-    protected float buffPercentBonusPerLevel;
-
-    protected float debuffDuration;
-    protected int debuffMaximumStacks;
-    protected float debuffFlatBonus;
-    protected float debuffFlatBonusPerLevel;
-    protected float debuffPercentBonus;
-    protected float debuffPercentBonusPerLevel;
-
     protected Sprite abilitySprite;
     protected Sprite abilityRecastSprite;
-    protected Sprite buffSprite;
-    protected Sprite debuffSprite;
 
     protected string abilitySpritePath;
     protected string abilityRecastSpritePath;
-    protected string buffSpritePath;
-    protected string debuffSpritePath;
 
     public bool CanBeCastDuringOtherAbilityCastTimes { get; protected set; }
     public bool CanBeRecasted { get; protected set; }
@@ -98,11 +80,11 @@ public abstract class Ability : MonoBehaviour
     public bool ResetBasicAttackCycleOnAbilityFinished { get; protected set; }
     public bool UsesResource { get; private set; }
 
-    public List<Ability> AbilitiesToDisableWhileActive { get; protected set; }
-    public List<Ability> CastableAbilitiesWhileActive { get; protected set; }
+    public Ability[] AbilitiesToDisableWhileActive { get; protected set; }
+    public Ability[] CastableAbilitiesWhileActive { get; protected set; }
 
-    public List<Entity> EntitiesAffectedByBuff { get; protected set; }
-    public List<Entity> EntitiesAffectedByDebuff { get; protected set; }
+    public AbilityBuff[] AbilityBuffs { get; protected set; }
+    public AbilityBuff[] AbilityDebuffs { get; protected set; }
 
     public delegate void OnAbilityUsedHandler(Ability ability);
     public event OnAbilityUsedHandler OnAbilityUsed;
@@ -115,18 +97,12 @@ public abstract class Ability : MonoBehaviour
 
     protected Ability()
     {
-        AbilitiesToDisableWhileActive = new List<Ability>();
-        CastableAbilitiesWhileActive = new List<Ability>();
-        EntitiesAffectedByBuff = new List<Entity>();
-        EntitiesAffectedByDebuff = new List<Entity>();
         SetSpritePaths();
     }
 
     protected virtual void Awake()
     {
         character = GetComponent<Character>();
-        buffSprite = Resources.Load<Sprite>(buffSpritePath);
-        debuffSprite = Resources.Load<Sprite>(debuffSpritePath);
         if (!StaticObjects.OnlineMode || character.PhotonView.isMine)
         {
             abilitySprite = Resources.Load<Sprite>(abilitySpritePath);
@@ -156,6 +132,8 @@ public abstract class Ability : MonoBehaviour
         }
 
         ModifyValues();
+
+        //SetSourceAbility
     }
 
     public abstract bool CanBeCast(Entity target);
@@ -184,11 +162,14 @@ public abstract class Ability : MonoBehaviour
 
     protected void StartAbilityCast()
     {
-        foreach (Ability ability in AbilitiesToDisableWhileActive)
+        if (AbilitiesToDisableWhileActive != null)
         {
-            if (ability.AbilityLevel > 0)
+            foreach (Ability ability in AbilitiesToDisableWhileActive)
             {
-                ability.DisableAbility();
+                if (ability.AbilityLevel > 0)
+                {
+                    ability.DisableAbility();
+                }
             }
         }
         if (CanBeRecasted)
@@ -229,11 +210,14 @@ public abstract class Ability : MonoBehaviour
     protected void FinishAbilityCast(bool abilityWasCancelled = false)
     {
         abilityEffectCoroutine = null;
-        foreach (Ability ability in AbilitiesToDisableWhileActive)
+        if (AbilitiesToDisableWhileActive != null)
         {
-            if (ability.AbilityLevel > 0)
+            foreach (Ability ability in AbilitiesToDisableWhileActive)
             {
-                ability.EnableAbility();
+                if (ability.AbilityLevel > 0)
+                {
+                    ability.EnableAbility();
+                }
             }
         }
         if (OnAbilityFinished != null)
@@ -335,7 +319,7 @@ public abstract class Ability : MonoBehaviour
 
         yield return null;
 
-        character.AbilityUIManager.SetAbilityOnCooldownForRecast(AbilityCategory,ID);
+        character.AbilityUIManager.SetAbilityOnCooldownForRecast(AbilityCategory, ID);
 
         while (cooldownRemaining > 0)
         {
@@ -360,52 +344,6 @@ public abstract class Ability : MonoBehaviour
         cooldownRemaining -= cooldownReductionAmount;
     }
 
-    protected virtual void AddNewBuffToEntityHit(Entity entityHit)
-    {
-        Buff buff = entityHit.EntityBuffManager.GetBuff(this);
-        if (buff == null)
-        {
-            buff = new Buff(this, entityHit, false, buffDuration);
-            entityHit.EntityBuffManager.ApplyBuff(buff, buffSprite);
-        }
-        else if (buffDuration > 0)
-        {
-            buff.ResetDurationRemaining();
-        }
-    }
-
-    protected virtual void AddNewDebuffToEntityHit(Entity entityHit)
-    {
-        Buff debuff = entityHit.EntityBuffManager.GetDebuff(this);
-        if (debuff == null)
-        {
-            debuff = new Buff(this, entityHit, true, debuffDuration);
-            entityHit.EntityBuffManager.ApplyDebuff(debuff, debuffSprite);
-        }
-        else
-        {
-            debuff.ResetDurationRemaining();
-        }
-    }
-
-    public void ConsumeBuff(Entity affectedTarget)
-    {
-        Buff buff = affectedTarget.EntityBuffManager.GetBuff(this);
-        if (buff != null)
-        {
-            buff.ConsumeBuff();
-        }
-    }
-
-    public void ConsumeDebuff(Entity affectedTarget)
-    {
-        Buff debuff = affectedTarget.EntityBuffManager.GetDebuff(this);
-        if (debuff != null)
-        {
-            debuff.ConsumeBuff();
-        }
-    }
-
     public void LevelUp()
     {
         if (AbilityLevel > 0 && AbilityLevel < MaxLevel)
@@ -414,6 +352,7 @@ public abstract class Ability : MonoBehaviour
 
             LevelUpExtraStats();
             LevelUpAbilityStats();
+            LevelUpBuffsAndDebuffs();
 
             AbilityUIManager abilityUIManager = character.AbilityUIManager;
 
@@ -466,11 +405,6 @@ public abstract class Ability : MonoBehaviour
         resourceCost += resourceCostPerLevel;
         totalADScaling += totalADScalingPerLevel;
         totalAPScaling += totalAPScalingPerLevel;
-
-        buffFlatBonus += buffFlatBonusPerLevel;
-        buffPercentBonus += buffPercentBonusPerLevel;
-        debuffFlatBonus += debuffFlatBonusPerLevel;
-        debuffPercentBonus += debuffPercentBonusPerLevel;
     }
 
     private void SetCooldownForAbilityAffectedByCooldownReduction()
@@ -532,15 +466,25 @@ public abstract class Ability : MonoBehaviour
         }
     }
 
+    private void LevelUpBuffsAndDebuffs()
+    {
+        if (AbilityBuffs != null)
+        {
+            foreach(AbilityBuff aBuff in AbilityBuffs)
+            {
+                aBuff.LevelUp();
+            }
+        }
+        if (AbilityDebuffs != null)
+        {
+            foreach (AbilityBuff aDebuff in AbilityDebuffs)
+            {
+                aDebuff.LevelUp();
+            }
+        }
+    }
+
     public virtual void LevelUpExtraStats() { }
-
-    public virtual void ApplyBuffToEntityHit(Entity entityHit, int currentStacksOrBuffValue) { }
-    public virtual void RemoveBuffFromEntityHit(Entity entityHit, int currentStacksOrBuffValue) { }
-    protected virtual void UpdateBuffOnAffectedEntities(float oldValue, float newValue) { }
-
-    public virtual void ApplyDebuffToEntityHit(Entity entityHit, int currentStacksOrBuffValue) { }
-    public virtual void RemoveDebuffFromEntityHit(Entity entityHit, int currentStacksOrBuffValue) { }
-    protected virtual void UpdateDebuffOnAffectedEntities(float oldValue, float newValue) { }
 
     public virtual void OnCharacterLevelUp(int level) { }
 

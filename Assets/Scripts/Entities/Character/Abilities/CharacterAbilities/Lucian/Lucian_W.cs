@@ -31,11 +31,6 @@ public class Lucian_W : DirectionTargetedProjectile, CharacterAbility
         castTime = 0.25f;
         delayCastTime = new WaitForSeconds(castTime);
 
-        buffDuration = 1;
-        buffFlatBonus = 60;// 60/65/70/75/80
-        buffFlatBonusPerLevel = 5;
-        debuffDuration = 6;
-
         affectedByCooldownReduction = true;
         startCooldownOnAbilityCast = true;
 
@@ -45,8 +40,16 @@ public class Lucian_W : DirectionTargetedProjectile, CharacterAbility
     protected override void SetSpritePaths()
     {
         abilitySpritePath = "Sprites/Characters/CharacterAbilities/Lucian/LucianW";
-        buffSpritePath = "Sprites/Characters/CharacterAbilities/Lucian/LucianW_Buff";
-        debuffSpritePath = "Sprites/Characters/CharacterAbilities/Lucian/LucianW_Debuff";
+    }
+
+    protected override void Start()
+    {
+        base.Start();
+
+        AbilityBuffs = new AbilityBuff[] { GetComponent<Lucian_W_Buff>() };
+        AbilityDebuffs = new AbilityBuff[] { GetComponent<Lucian_W_Debuff>() };
+
+        AbilityDebuffs[0].OnAbilityBuffRemoved += RemoveDebuffFromEntityHit;
     }
 
     protected override void OnProjectileHit(AbilityEffect projectile, Entity entityHit)
@@ -58,7 +61,7 @@ public class Lucian_W : DirectionTargetedProjectile, CharacterAbility
 
     protected override void OnProjectileReachedEnd(Projectile projectile)
     {
-        AreaOfEffect aoe = ((GameObject)Instantiate(explosionAreaOfEffectPrefab, projectile.transform.position, projectile.transform.rotation)).GetComponent<AreaOfEffect>();
+        AreaOfEffect aoe = Instantiate(explosionAreaOfEffectPrefab, projectile.transform.position, projectile.transform.rotation).GetComponent<AreaOfEffect>();
         aoe.ActivateAreaOfEffect(projectile.UnitsAlreadyHit, character.Team, affectedUnitType, durationAoE, true);
         aoe.OnAbilityEffectHit += OnAreaOfEffectHit;
         Destroy(projectile.gameObject);
@@ -73,30 +76,17 @@ public class Lucian_W : DirectionTargetedProjectile, CharacterAbility
 
     private void OnEntityDamaged()
     {
-        AddNewBuffToEntityHit(character);
+        AbilityBuffs[0].AddNewBuffToEntityHit(character);
     }
 
-    public override void ApplyBuffToEntityHit(Entity entityHit, int currentStacks)
-    {
-        entityHit.EntityStats.MovementSpeed.AddFlatBonus(buffFlatBonus);
-        EntitiesAffectedByBuff.Add(entityHit);
-    }
-
-    public override void RemoveBuffFromEntityHit(Entity entityHit, int currentStacks)
-    {
-        entityHit.EntityStats.MovementSpeed.RemoveFlatBonus(buffFlatBonus);
-        EntitiesAffectedByBuff.Remove(entityHit);
-    }
-
-    public override void ApplyDebuffToEntityHit(Entity entityHit, int currentStacks)
+    private void AddNewDebuffToEntityHit(Entity entityHit)
     {
         entityHit.EntityStats.Health.OnHealthReduced += OnEntityDamaged;
-        EntitiesAffectedByDebuff.Add(entityHit);
+        AbilityDebuffs[0].AddNewDebuffToEntityHit(entityHit);
     }
 
-    public override void RemoveDebuffFromEntityHit(Entity entityHit, int currentStacks)
+    private void RemoveDebuffFromEntityHit(Entity entityHit)
     {
         entityHit.EntityStats.Health.OnHealthReduced -= OnEntityDamaged;
-        EntitiesAffectedByDebuff.Remove(entityHit);
     }
 }

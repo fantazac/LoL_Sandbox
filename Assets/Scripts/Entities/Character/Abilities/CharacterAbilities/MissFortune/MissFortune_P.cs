@@ -30,12 +30,13 @@ public class MissFortune_P : PassiveTargeted, PassiveCharacterAbility
     protected override void SetSpritePaths()
     {
         abilitySpritePath = "Sprites/Characters/CharacterAbilities/MissFortune/MissFortuneP";
-        buffSpritePath = "Sprites/Characters/CharacterAbilities/MissFortune/MissFortuneP_Buff";
     }
 
     protected override void Start()
     {
         base.Start();
+
+        AbilityBuffs = new AbilityBuff[] { GetComponent<MissFortune_P_Buff>() };
 
         character.CharacterLevelManager.OnLevelUp += OnCharacterLevelUp;
         character.EntityBasicAttack.OnBasicAttackHit += OnBasicAttackHit;
@@ -49,32 +50,12 @@ public class MissFortune_P : PassiveTargeted, PassiveCharacterAbility
         }
     }
 
-    protected override void AddNewBuffToEntityHit(Entity entityHit)
-    {
-        Buff buff = entityHit.EntityBuffManager.GetBuff(this);
-        if (buff == null)
-        {
-            buff = new Buff(this, entityHit, false);
-            entityHit.EntityBuffManager.ApplyBuff(buff, buffSprite);
-        }
-    }
-
-    public override void ApplyBuffToEntityHit(Entity entityHit, int currentStacks)
-    {
-        EntitiesAffectedByBuff.Add(entityHit);
-    }
-
-    public override void RemoveBuffFromEntityHit(Entity entityHit, int currentStacks)
-    {
-        EntitiesAffectedByBuff.Remove(entityHit);
-    }
-
     private void OnBasicAttackHit(Entity entityHit)
     {
         if (entityHit != lastEntityHit)
         {
-            ConsumeBuff(entityHit);
-            AddNewBuffToEntityHit(entityHit);
+            AbilityBuffs[0].ConsumeBuff(lastEntityHit);
+            AbilityBuffs[0].AddNewBuffToEntityHit(entityHit);
 
             lastEntityHit = entityHit;
 
@@ -98,7 +79,7 @@ public class MissFortune_P : PassiveTargeted, PassiveCharacterAbility
     {
         if (lastEntityHit != null)
         {
-            ConsumeBuff(lastEntityHit);
+            AbilityBuffs[0].ConsumeBuff(lastEntityHit);
         }
     }
 }

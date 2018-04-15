@@ -2,9 +2,7 @@
 
 public class Buff
 {
-    private bool isADebuff;
-
-    public Ability SourceAbility { get; private set; }
+    public AbilityBuff SourceAbilityBuff { get; private set; }
     private Entity entityHit;
 
     public float Duration { get; private set; }
@@ -21,11 +19,10 @@ public class Buff
     public bool HasStacks { get; private set; }
     public bool HasValueToSet { get; private set; }
 
-    public Buff(Ability sourceAbility, Entity entityHit, bool isADebuff, float buffDuration, int maximumStacks, float stackDecayingDuration)
+    public Buff(AbilityBuff sourceAbilityBuff, Entity entityHit, float buffDuration, int maximumStacks, float stackDecayingDuration)
     {
-        SourceAbility = sourceAbility;
+        SourceAbilityBuff = sourceAbilityBuff;
         this.entityHit = entityHit;
-        this.isADebuff = isADebuff;
         Duration = buffDuration;
         DurationForUI = buffDuration;
         DurationRemaining = buffDuration;
@@ -41,9 +38,9 @@ public class Buff
         HasStacks = maximumStacks > 0;
     }
 
-    public Buff(Ability sourceAbility, Entity entityHit, bool isADebuff) : this(sourceAbility, entityHit, isADebuff, 0, 0, 0) { }
-    public Buff(Ability sourceAbility, Entity entityHit, bool isADebuff, float duration) : this(sourceAbility, entityHit, isADebuff, duration, 0, 0) { }
-    public Buff(Ability sourceAbility, Entity entityHit, bool isADebuff, float duration, int maximumStacks) : this(sourceAbility, entityHit, isADebuff, duration, maximumStacks, 0) { }
+    public Buff(AbilityBuff sourceAbilityBuff, Entity entityHit) : this(sourceAbilityBuff, entityHit, 0, 0, 0) { }
+    public Buff(AbilityBuff sourceAbilityBuff, Entity entityHit, float duration) : this(sourceAbilityBuff, entityHit, duration, 0, 0) { }
+    public Buff(AbilityBuff sourceAbilityBuff, Entity entityHit, float duration, int maximumStacks) : this(sourceAbilityBuff, entityHit, duration, maximumStacks, 0) { }
 
     public void SetBuffValue(int buffValue)
     {
@@ -58,49 +55,25 @@ public class Buff
 
     public void ApplyBuff()
     {
-        if (isADebuff)
+        if (!HasStacks && BuffValue > 0)
         {
-            if (!HasStacks && BuffValue > 0)
-            {
-                SourceAbility.ApplyDebuffToEntityHit(entityHit, BuffValue);
-            }
-            else
-            {
-                SourceAbility.ApplyDebuffToEntityHit(entityHit, CurrentStacks);
-            }
-
-        }
-        else if (!HasStacks && BuffValue > 0)
-        {
-            SourceAbility.ApplyBuffToEntityHit(entityHit, BuffValue);
+            SourceAbilityBuff.ApplyBuffToEntityHit(entityHit, BuffValue);
         }
         else
         {
-            SourceAbility.ApplyBuffToEntityHit(entityHit, CurrentStacks);
+            SourceAbilityBuff.ApplyBuffToEntityHit(entityHit, CurrentStacks);
         }
     }
 
     public void RemoveBuff()
     {
-        if (isADebuff)
+        if (!HasStacks && BuffValue > 0)
         {
-            if (!HasStacks && BuffValue > 0)
-            {
-                SourceAbility.RemoveDebuffFromEntityHit(entityHit, BuffValue);
-            }
-            else
-            {
-                SourceAbility.RemoveDebuffFromEntityHit(entityHit, CurrentStacks);
-            }
-
-        }
-        else if (!HasStacks && BuffValue > 0)
-        {
-            SourceAbility.RemoveBuffFromEntityHit(entityHit, BuffValue);
+            SourceAbilityBuff.RemoveBuffFromEntityHit(entityHit, BuffValue);
         }
         else
         {
-            SourceAbility.RemoveBuffFromEntityHit(entityHit, CurrentStacks);
+            SourceAbilityBuff.RemoveBuffFromEntityHit(entityHit, CurrentStacks);
         }
     }
 
@@ -148,8 +121,8 @@ public class Buff
     {
         if (CurrentStacks < MaximumStacks)
         {
-            SourceAbility.RemoveBuffFromEntityHit(entityHit, CurrentStacks);
-            SourceAbility.ApplyBuffToEntityHit(entityHit, ++CurrentStacks);
+            SourceAbilityBuff.RemoveBuffFromEntityHit(entityHit, CurrentStacks);
+            SourceAbilityBuff.ApplyBuffToEntityHit(entityHit, ++CurrentStacks);
         }
     }
 
