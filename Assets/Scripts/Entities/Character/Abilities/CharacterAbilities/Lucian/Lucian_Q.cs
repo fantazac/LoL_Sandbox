@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class Lucian_Q : UnitTargeted, CharacterAbility
 {
-    [SerializeField]
-    protected GameObject areaOfEffectPrefab;
+    private string areaOfEffectPrefabPath;
+    private GameObject areaOfEffectPrefab;
 
     protected float durationAoE;
 
@@ -37,15 +37,21 @@ public class Lucian_Q : UnitTargeted, CharacterAbility
         affectedByCooldownReduction = true;
     }
 
-    protected override void SetSpritePaths()
+    protected override void SetResourcePaths()
     {
         abilitySpritePath = "Sprites/Characters/CharacterAbilities/Lucian/LucianQ";
+
+        areaOfEffectPrefabPath = "CharacterAbilities/Lucian/LucianQ";
+    }
+
+    protected override void LoadPrefabs()
+    {
+        areaOfEffectPrefab = Resources.Load<GameObject>(areaOfEffectPrefabPath);
     }
 
     protected override void Start()
     {
-        AbilitiesToDisableWhileActive.Add(this);
-        AbilitiesToDisableWhileActive.Add(GetComponent<Lucian_E>());
+        AbilitiesToDisableWhileActive = new Ability[] { this, GetComponent<Lucian_E>() };
 
         base.Start();
 

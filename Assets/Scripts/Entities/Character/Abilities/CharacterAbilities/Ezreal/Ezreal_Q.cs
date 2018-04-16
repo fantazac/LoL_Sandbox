@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class Ezreal_Q : DirectionTargetedProjectile, CharacterAbility
 {
-    private List<Ability> characterAbilitiesThatGetReducedCooldownOnProjectileHit;
     private float cooldownReductionOnProjectileHit;
 
     protected Ezreal_Q()
@@ -37,28 +36,16 @@ public class Ezreal_Q : DirectionTargetedProjectile, CharacterAbility
         startCooldownOnAbilityCast = true;
     }
 
-    protected override void SetSpritePaths()
+    protected override void SetResourcePaths()
     {
         abilitySpritePath = "Sprites/Characters/CharacterAbilities/Ezreal/EzrealQ";
-    }
 
-    protected override void Start()
-    {
-        base.Start();
-
-        characterAbilitiesThatGetReducedCooldownOnProjectileHit = new List<Ability>();
-        foreach (Ability ability in GetComponents<CharacterAbility>())
-        {
-            if (!(ability is PassiveCharacterAbility))
-            {
-                characterAbilitiesThatGetReducedCooldownOnProjectileHit.Add(ability);
-            }
-        }
+        projectilePrefabPath = "CharacterAbilities/Ezreal/EzrealQ";
     }
 
     protected override void OnProjectileHit(AbilityEffect projectile, Entity entityHit)
     {
-        foreach (Ability ability in characterAbilitiesThatGetReducedCooldownOnProjectileHit)
+        foreach (Ability ability in character.CharacterAbilityManager.CharacterAbilities)
         {
             ability.ReduceCooldown(cooldownReductionOnProjectileHit);
         }

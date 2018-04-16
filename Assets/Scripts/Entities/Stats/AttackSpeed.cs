@@ -19,7 +19,10 @@ public class AttackSpeed : Stat
     public override void UpdateTotal()
     {
         total = Mathf.Clamp((baseValue + flatBonus) * (1 + (percentBonus * 0.01f)) * (1 - (percentMalus * 0.01f)) - flatMalus, 0, ATTACK_SPEED_CAP);
-        entityBasicAttack.ChangeAttackSpeedCycleDuration(total);
+        if (entityBasicAttack)
+        {
+            entityBasicAttack.ChangeAttackSpeedCycleDuration(total);
+        }
     }
 
     public override string GetUIText()

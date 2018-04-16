@@ -28,16 +28,20 @@ public class Ezreal_W : DirectionTargetedProjectile, CharacterAbility
 
         affectedByCooldownReduction = true;
         startCooldownOnAbilityCast = true;
-
-        buffDuration = 5;
-        buffPercentBonus = 20;// 20/25/30/35/40
-        buffPercentBonusPerLevel = 5;
     }
 
-    protected override void SetSpritePaths()
+    protected override void SetResourcePaths()
     {
         abilitySpritePath = "Sprites/Characters/CharacterAbilities/Ezreal/EzrealW";
-        buffSpritePath = "Sprites/Characters/CharacterAbilities/Ezreal/EzrealW_Buff";
+
+        projectilePrefabPath = "CharacterAbilities/Ezreal/EzrealW";
+    }
+
+    protected override void Start()
+    {
+        base.Start();
+
+        AbilityBuffs = new AbilityBuff[] { gameObject.AddComponent<Ezreal_W_Buff>() };
     }
 
     protected override IEnumerator AbilityWithCastTime()
@@ -59,24 +63,12 @@ public class Ezreal_W : DirectionTargetedProjectile, CharacterAbility
     {
         if (entityHit.Team == character.Team)
         {
-            AddNewBuffToEntityHit(entityHit);
+            AbilityBuffs[0].AddNewBuffToEntityHit(entityHit);
         }
         else
         {
             entityHit.EntityStats.Health.Reduce(GetAbilityDamage(entityHit));
         }
         AbilityHit();
-    }
-
-    public override void ApplyBuffToEntityHit(Entity entityHit, int currentStacks)
-    {
-        entityHit.EntityStats.AttackSpeed.AddPercentBonus(buffPercentBonus);
-        EntitiesAffectedByBuff.Add(entityHit);
-    }
-
-    public override void RemoveBuffFromEntityHit(Entity entityHit, int currentStacks)
-    {
-        entityHit.EntityStats.AttackSpeed.RemovePercentBonus(buffPercentBonus);
-        EntitiesAffectedByBuff.Remove(entityHit);
     }
 }

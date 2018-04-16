@@ -15,9 +15,4 @@ public abstract class CharacterBaseStats : EntityBaseStats
 
     public float HealthRegenerationPerLevel { get; protected set; }
     public float ResourceRegenerationPerLevel { get; protected set; }
-
-    protected CharacterBaseStats()
-    {
-
-    }
 }

@@ -8,7 +8,7 @@ public abstract class Character : Entity
 
     protected string characterPortraitPath;
 
-    public CharacterAbilityManager CharacterAbilityManager { get; private set; }
+    public CharacterAbilityManager CharacterAbilityManager { get; protected set; }
     public CharacterBufferedAbilityManager CharacterBufferedAbilityManager { get; private set; }
     public CharacterInput CharacterInput { get; private set; }
     public CharacterLevelManager CharacterLevelManager { get; private set; }
@@ -42,7 +42,7 @@ public abstract class Character : Entity
             LevelUIManager.SetLevel(CharacterLevelManager.Level);
         }
 
-        if (StaticObjects.Character.HealthBarManager)
+        if (StaticObjects.Character && StaticObjects.Character.HealthBarManager)
         {
             StaticObjects.Character.HealthBarManager.SetupHealthBarForCharacter(this);
         }
@@ -56,14 +56,21 @@ public abstract class Character : Entity
     {
         base.InitEntityProperties();
 
-        CharacterAbilityManager = GetComponent<CharacterAbilityManager>();
-        CharacterBufferedAbilityManager = GetComponent<CharacterBufferedAbilityManager>();
-        CharacterInput = GetComponent<CharacterInput>();
-        CharacterLevelManager = GetComponent<CharacterLevelManager>();
-        CharacterMouseManager = GetComponent<CharacterMouseManager>();
-        CharacterMovement = GetComponent<CharacterMovement>();
-        CharacterOrientation = GetComponent<CharacterOrientation>();
-        CharacterStatsManager = GetComponent<CharacterStatsManager>();
+        SetCharacterSpecificScripts();
+
+        if (!(this is Dummy))
+        {
+            CharacterBufferedAbilityManager = gameObject.AddComponent<CharacterBufferedAbilityManager>();
+            CharacterLevelManager = gameObject.AddComponent<CharacterLevelManager>();
+            CharacterMovement = gameObject.AddComponent<CharacterMovement>();
+            CharacterOrientation = gameObject.AddComponent<CharacterOrientation>();
+            CharacterStatsManager = gameObject.AddComponent<CharacterStatsManager>();
+        }
+        if ((!StaticObjects.OnlineMode && !(this is Dummy)) || PhotonView.isMine)
+        {
+            CharacterInput = gameObject.AddComponent<CharacterInput>();
+            CharacterMouseManager = gameObject.AddComponent<CharacterMouseManager>();
+        }
 
         if (StaticObjects.OnlineMode && PhotonView.isMine)
         {
@@ -79,6 +86,8 @@ public abstract class Character : Entity
             SendToServer_TeamAndID();
         }
     }
+
+    protected virtual void SetCharacterSpecificScripts() { }
 
     protected void OnDestroy()
     {

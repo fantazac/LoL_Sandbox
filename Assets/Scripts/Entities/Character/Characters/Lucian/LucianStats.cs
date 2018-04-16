@@ -11,6 +11,21 @@ public class LucianStats : CharacterStats
         base.Awake();
     }
 
+    protected override void SetResource()
+    {
+        Resource = gameObject.AddComponent<Mana>();
+    }
+
+    protected override void SetResourceRegeneration()
+    {
+        ResourceRegeneration = gameObject.AddComponent<ManaRegeneration>();
+    }
+
+    protected override EntityBaseStats GetEntityBaseStats()
+    {
+        return gameObject.AddComponent<LucianBaseStats>();
+    }
+
     protected override void SetBaseStats(EntityBaseStats entityStats)
     {
         base.SetBaseStats(entityStats);

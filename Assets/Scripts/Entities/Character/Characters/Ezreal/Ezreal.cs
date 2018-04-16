@@ -8,4 +8,12 @@ public class Ezreal : Character
     {
         characterPortraitPath = "Sprites/Characters/CharacterPortraits/Ezreal";
     }
+
+    protected override void SetCharacterSpecificScripts()
+    {
+        EntityBasicAttack = gameObject.AddComponent<EzrealBasicAttack>();
+        EntityStats = gameObject.AddComponent<EzrealStats>();
+
+        CharacterAbilityManager = gameObject.AddComponent<EzrealAbilityManager>();
+    }
 }

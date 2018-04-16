@@ -4,9 +4,10 @@ using UnityEngine;
 
 public class LucianBasicAttack : CharacterBasicAttack
 {
-    [SerializeField]
+    private string passiveBasicAttackPrefabPath;
     private GameObject passiveBasicAttackPrefab;
 
+    private float timeBeforePassiveShot;
     private WaitForSeconds delayPassiveShot;
 
     private Lucian_P passive;
@@ -19,14 +20,23 @@ public class LucianBasicAttack : CharacterBasicAttack
         delayPercentBeforeAttack = 0.1666f;
         speed = 2500;
 
-        delayPassiveShot = new WaitForSeconds(0.2f);
+        timeBeforePassiveShot = 0.2f;
+        delayPassiveShot = new WaitForSeconds(timeBeforePassiveShot);
+
+        basicAttackPrefabPath = "BasicAttacks/Characters/Lucian/LucianBA";
+        passiveBasicAttackPrefabPath = "BasicAttacks/Characters/Lucian/LucianBAPassive";
     }
 
-    protected override void OnEnable()
+    public void SetPassive(Lucian_P lucianPassive)
     {
-        base.OnEnable();
+        passive = lucianPassive;
+    }
 
-        passive = GetComponent<Lucian_P>();
+    protected override void LoadPrefabs()
+    {
+        base.LoadPrefabs();
+
+        passiveBasicAttackPrefab = Resources.Load<GameObject>(passiveBasicAttackPrefabPath);
     }
 
     public override void StopBasicAttack()
@@ -55,7 +65,7 @@ public class LucianBasicAttack : CharacterBasicAttack
 
     protected override IEnumerator ShootBasicAttack(Entity target)
     {
-        passiveWasActiveOnBasicAttackCast = entity.EntityBuffManager.GetBuff(passive) != null;
+        passiveWasActiveOnBasicAttackCast = entity.EntityBuffManager.GetBuff(passive.AbilityBuffs[0]) != null;
 
         yield return delayAttack;
 
@@ -63,7 +73,7 @@ public class LucianBasicAttack : CharacterBasicAttack
 
         if (!passiveWasActiveOnBasicAttackCast)
         {
-            passiveWasActiveOnBasicAttackCast = entity.EntityBuffManager.GetBuff(passive) != null;
+            passiveWasActiveOnBasicAttackCast = entity.EntityBuffManager.GetBuff(passive.AbilityBuffs[0]) != null;
         }
 
         entity.EntityBasicAttackCycle.LockBasicAttack();
@@ -83,7 +93,7 @@ public class LucianBasicAttack : CharacterBasicAttack
         if (passiveWasActiveOnBasicAttackCast)
         {
             passiveWasActiveOnBasicAttackCast = false;
-            passive.ConsumeBuff(entity);
+            passive.AbilityBuffs[0].ConsumeBuff(entity);
 
             yield return delayPassiveShot;
 
@@ -106,6 +116,6 @@ public class LucianBasicAttack : CharacterBasicAttack
     {
         passive.OnPassiveHit(entityHit);
         Destroy(basicAttackProjectile.gameObject);
-        CallOnBasicAttackHitEvent();
+        CallOnBasicAttackHitEvent(entityHit);
     }
 }

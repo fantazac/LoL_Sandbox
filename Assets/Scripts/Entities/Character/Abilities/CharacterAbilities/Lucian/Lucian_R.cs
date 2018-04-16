@@ -49,17 +49,17 @@ public class Lucian_R : DirectionTargetedProjectile, CharacterAbility
         affectedByCooldownReduction = true;
     }
 
-    protected override void SetSpritePaths()
+    protected override void SetResourcePaths()
     {
         abilitySpritePath = "Sprites/Characters/CharacterAbilities/Lucian/LucianR";
+
+        projectilePrefabPath = "CharacterAbilities/Lucian/LucianR";
     }
 
     protected override void Start()
     {
-        AbilitiesToDisableWhileActive.Add(GetComponent<Lucian_Q>());
-        AbilitiesToDisableWhileActive.Add(GetComponent<Lucian_W>());
-
-        CastableAbilitiesWhileActive.Add(GetComponent<Lucian_E>());
+        AbilitiesToDisableWhileActive = new Ability[] { GetComponent<Lucian_Q>(), GetComponent<Lucian_W>() };
+        CastableAbilitiesWhileActive = new Ability[] { GetComponent<Lucian_E>() };
 
         base.Start();
     }

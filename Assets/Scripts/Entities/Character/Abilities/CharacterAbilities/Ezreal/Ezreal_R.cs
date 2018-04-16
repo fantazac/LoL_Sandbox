@@ -35,9 +35,11 @@ public class Ezreal_R : DirectionTargetedProjectile, CharacterAbility
         startCooldownOnAbilityCast = true;
     }
 
-    protected override void SetSpritePaths()
+    protected override void SetResourcePaths()
     {
         abilitySpritePath = "Sprites/Characters/CharacterAbilities/Ezreal/EzrealR";
+
+        projectilePrefabPath = "CharacterAbilities/Ezreal/EzrealR";
     }
 
     protected override void FinalAdjustments(Vector3 destination)

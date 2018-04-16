@@ -3,8 +3,13 @@ using System.Collections;
 
 public abstract class DirectionTargetedProjectile : DirectionTargeted
 {
-    [SerializeField]
+    protected string projectilePrefabPath;
     protected GameObject projectilePrefab;
+
+    protected override void LoadPrefabs()
+    {
+        projectilePrefab = Resources.Load<GameObject>(projectilePrefabPath);
+    }
 
     protected override IEnumerator AbilityWithCastTime()
     {

@@ -3,7 +3,7 @@ using System.Collections;
 
 public abstract class EntityBasicAttack : MonoBehaviour
 {
-    [SerializeField]
+    protected string basicAttackPrefabPath;
     protected GameObject basicAttackPrefab;
 
     protected float delayPercentBeforeAttack;//charging before actually launching/doing the attack
@@ -17,7 +17,7 @@ public abstract class EntityBasicAttack : MonoBehaviour
 
     protected float speed;
 
-    public delegate void OnBasicAttackHitHandler();
+    public delegate void OnBasicAttackHitHandler(Entity entityHit);
     public event OnBasicAttackHitHandler OnBasicAttackHit;
 
     protected virtual void OnEnable()
@@ -25,6 +25,16 @@ public abstract class EntityBasicAttack : MonoBehaviour
         entity = GetComponent<Entity>();
 
         ModifyValues();
+    }
+
+    protected virtual void Start()
+    {
+        LoadPrefabs();
+    }
+
+    protected virtual void LoadPrefabs()
+    {
+        basicAttackPrefab = Resources.Load<GameObject>(basicAttackPrefabPath);
     }
 
     protected void ModifyValues()
@@ -104,14 +114,14 @@ public abstract class EntityBasicAttack : MonoBehaviour
     {
         entityHit.EntityStats.Health.Reduce(entity.EntityStats.AttackDamage.GetTotal());
         Destroy(basicAttackProjectile.gameObject);
-        CallOnBasicAttackHitEvent();
+        CallOnBasicAttackHitEvent(entityHit);
     }
 
-    protected void CallOnBasicAttackHitEvent()
+    protected void CallOnBasicAttackHitEvent(Entity entityHit)
     {
         if (OnBasicAttackHit != null)
         {
-            OnBasicAttackHit();
+            OnBasicAttackHit(entityHit);
         }
     }
 }

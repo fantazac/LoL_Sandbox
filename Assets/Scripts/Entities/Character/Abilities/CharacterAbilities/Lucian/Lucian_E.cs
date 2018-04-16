@@ -25,7 +25,7 @@ public class Lucian_E : DirectionTargetedDash, CharacterAbility
         startCooldownOnAbilityCast = true;
     }
 
-    protected override void SetSpritePaths()
+    protected override void SetResourcePaths()
     {
         abilitySpritePath = "Sprites/Characters/CharacterAbilities/Lucian/LucianE";
     }

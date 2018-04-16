@@ -3,7 +3,7 @@ using System.Collections;
 
 public class Ezreal_E : GroundTargetedBlink, CharacterAbility
 {
-    [SerializeField]
+    private string projectilePrefabPath;
     private GameObject projectilePrefab;
 
     private float effectRadius;
@@ -37,9 +37,11 @@ public class Ezreal_E : GroundTargetedBlink, CharacterAbility
         effectRadius = 600;// Says 750 on wiki, is more like 600 when I tested
     }
 
-    protected override void SetSpritePaths()
+    protected override void SetResourcePaths()
     {
         abilitySpritePath = "Sprites/Characters/CharacterAbilities/Ezreal/EzrealE";
+
+        projectilePrefabPath = "CharacterAbilities/Ezreal/EzrealE";
     }
 
     protected override void ModifyValues()
@@ -47,6 +49,11 @@ public class Ezreal_E : GroundTargetedBlink, CharacterAbility
         effectRadius *= StaticObjects.MultiplyingFactor;
 
         base.ModifyValues();
+    }
+
+    protected override void LoadPrefabs()
+    {
+        projectilePrefab = Resources.Load<GameObject>(projectilePrefabPath);
     }
 
     protected override IEnumerator AbilityWithCastTime()
@@ -74,7 +81,8 @@ public class Ezreal_E : GroundTargetedBlink, CharacterAbility
         float distance = float.MaxValue;
         float tempDistance;
 
-        foreach (Collider collider in Physics.OverlapSphere(transform.position, effectRadius))
+        Vector3 groundPosition = Vector3.right * transform.position.x + Vector3.forward * transform.position.z;
+        foreach (Collider collider in Physics.OverlapCapsule(groundPosition, groundPosition + Vector3.up * 5, effectRadius))
         {
             tempEntity = collider.GetComponent<Entity>();
             if (tempEntity != null && TargetIsValid.CheckIfTargetIsValid(tempEntity, affectedUnitType, character.Team))
@@ -90,7 +98,7 @@ public class Ezreal_E : GroundTargetedBlink, CharacterAbility
 
         if (closestEntity != null)
         {
-            ProjectileUnitTargeted projectile = ((GameObject)Instantiate(projectilePrefab, transform.position, transform.rotation)).GetComponent<ProjectileUnitTargeted>();
+            ProjectileUnitTargeted projectile = Instantiate(projectilePrefab, transform.position, transform.rotation).GetComponent<ProjectileUnitTargeted>();
             projectile.ShootProjectile(character.Team, closestEntity, speed);
             projectile.OnAbilityEffectHit += OnProjectileHit;
         }

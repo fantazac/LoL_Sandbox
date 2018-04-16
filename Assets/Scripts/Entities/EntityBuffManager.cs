@@ -47,6 +47,14 @@ public class EntityBuffManager : MonoBehaviour
                 buffUIManager.UpdateBuffDuration(buff, buff.DurationForUI, buff.DurationRemaining, buff.CurrentStacks);
             }
         }
+        if (buff.HasValueToSet)
+        {
+            if (hasBuffUIManager)
+            {
+                buffUIManager.UpdateBuffValue(buff, buff.BuffValue);
+            }
+            buff.ValueWasSet();
+        }
         if (buff.HasBeenConsumed)
         {
             if (hasBuffUIManager)
@@ -58,13 +66,13 @@ public class EntityBuffManager : MonoBehaviour
         }
     }
 
-    public Buff GetBuff(Ability sourceAbility)
+    public Buff GetBuff(AbilityBuff sourceAbilityBuff)
     {
         Buff buff = null;
 
         foreach (Buff activeBuff in buffs)
         {
-            if (activeBuff.SourceAbility == sourceAbility)
+            if (activeBuff.SourceAbilityBuff == sourceAbilityBuff)
             {
                 buff = activeBuff;
                 break;
@@ -74,13 +82,13 @@ public class EntityBuffManager : MonoBehaviour
         return buff;
     }
 
-    public Buff GetDebuff(Ability sourceAbility)
+    public Buff GetDebuff(AbilityBuff sourceAbilityBuff)
     {
         Buff debuff = null;
 
         foreach (Buff activeDebuff in debuffs)
         {
-            if (activeDebuff.SourceAbility == sourceAbility)
+            if (activeDebuff.SourceAbilityBuff == sourceAbilityBuff)
             {
                 debuff = activeDebuff;
                 break;
@@ -90,13 +98,13 @@ public class EntityBuffManager : MonoBehaviour
         return debuff;
     }
 
-    public Buff GetBuffOfSameType(Ability sourceAbility)
+    public Buff GetBuffOfSameType(AbilityBuff sourceAbilityBuff)
     {
         Buff buff = null;
 
         foreach (Buff activeBuff in buffs)
         {
-            if (activeBuff.SourceAbility.GetType() == sourceAbility.GetType())
+            if (activeBuff.SourceAbilityBuff.GetType() == sourceAbilityBuff.GetType())
             {
                 buff = activeBuff;
                 break;
@@ -106,13 +114,13 @@ public class EntityBuffManager : MonoBehaviour
         return buff;
     }
 
-    public Buff GetDebuffOfSameType(Ability sourceAbility)
+    public Buff GetDebuffOfSameType(AbilityBuff sourceAbilityBuff)
     {
         Buff debuff = null;
-
+        
         foreach (Buff activeDebuff in debuffs)
         {
-            if (activeDebuff.SourceAbility.GetType() == sourceAbility.GetType())
+            if (activeDebuff.SourceAbilityBuff.GetType() == sourceAbilityBuff.GetType())
             {
                 debuff = activeDebuff;
                 break;

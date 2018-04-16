@@ -2,19 +2,29 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Lucian_P : PassiveTargeted, CharacterAbility, PassiveCharacterAbility
+public class Lucian_P : PassiveTargeted, PassiveCharacterAbility
 {
     private Ability lucianE;
+    private float cooldownReducedOnPassiveHitOnCharacter;
+    private float cooldownReducedOnPassiveHit;
 
     protected Lucian_P()
     {
         abilityName = "Lightslinger";
 
         abilityType = AbilityType.Passive;
+        affectedUnitType = AbilityAffectedUnitType.ENEMIES;
+        damageType = DamageType.PHYSICAL;
+        effectType = AbilityEffectType.BASIC_ATTACK;
 
-        damage = 0.5f;
+        MaxLevel = 3;
+        AbilityLevel = 1;
 
-        buffDuration = 3;
+        totalADScaling = 0.5f;
+        totalADScalingPerLevel = 0.05f;
+
+        cooldownReducedOnPassiveHitOnCharacter = 2;
+        cooldownReducedOnPassiveHit = 1;
 
         IsEnabled = true;
     }
@@ -23,26 +33,26 @@ public class Lucian_P : PassiveTargeted, CharacterAbility, PassiveCharacterAbili
     {
         base.Awake();
 
-        lucianE = GetComponent<Lucian_E>();
+        GetComponent<LucianBasicAttack>().SetPassive(this);
     }
 
-    protected override void SetSpritePaths()
+    protected override void SetResourcePaths()
     {
         abilitySpritePath = "Sprites/Characters/CharacterAbilities/Lucian/LucianP";
-        buffSpritePath = "Sprites/Characters/CharacterAbilities/Lucian/LucianP_Buff";
     }
 
     protected override void Start()
     {
         base.Start();
 
-        foreach (Ability ability in GetComponents<CharacterAbility>())
+        AbilityBuffs = new AbilityBuff[] { gameObject.AddComponent<Lucian_P_Buff>() };
+
+        foreach (Ability ability in character.CharacterAbilityManager.CharacterAbilities)
         {
-            if (!(ability is PassiveCharacterAbility))
-            {
-                ability.OnAbilityFinished += PassiveEffect;
-            }
+            ability.OnAbilityFinished += PassiveEffect;
         }
+
+        lucianE = character.CharacterAbilityManager.CharacterAbilities[2];
 
         character.CharacterLevelManager.OnLevelUp += OnCharacterLevelUp;
     }
@@ -51,23 +61,19 @@ public class Lucian_P : PassiveTargeted, CharacterAbility, PassiveCharacterAbili
     {
         if (target is Character)
         {
-            lucianE.ReduceCooldown(2);
+            lucianE.ReduceCooldown(cooldownReducedOnPassiveHitOnCharacter);
         }
         else
         {
-            lucianE.ReduceCooldown(1);
+            lucianE.ReduceCooldown(cooldownReducedOnPassiveHit);
         }
     }
 
     public override void OnCharacterLevelUp(int level)
     {
-        if (level == 7)
+        if (level == 7 || level == 13)
         {
-            damage = 0.55f;
-        }
-        else if (level == 13)
-        {
-            damage = 0.6f;
+            LevelUp();
         }
     }
 
@@ -75,11 +81,11 @@ public class Lucian_P : PassiveTargeted, CharacterAbility, PassiveCharacterAbili
     {
         //if (entityHit is Minion)
         //{
-        //    entityHit.EntityStats.Health.Reduce(character.EntityStats.AttackDamage.GetTotal());
+        //    entityHit.EntityStats.Health.Reduce(ApplyResistanceToDamage(entityHit, character.EntityStats.AttackDamage.GetTotal()));
         //}
         //else
         //{
-        entityHit.EntityStats.Health.Reduce(character.EntityStats.AttackDamage.GetTotal() * GetAbilityDamage(entityHit));
+        entityHit.EntityStats.Health.Reduce(GetAbilityDamage(entityHit));
         //} 
         UseAbility(entityHit);
     }

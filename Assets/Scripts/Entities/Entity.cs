@@ -8,10 +8,10 @@ public class Entity : MonoBehaviour
 
     public int EntityId { get; protected set; }
 
-    public EntityBasicAttack EntityBasicAttack { get; private set; }
+    public EntityBasicAttack EntityBasicAttack { get; protected set; }
     public EntityBasicAttackCycle EntityBasicAttackCycle { get; private set; }
     public EntityBuffManager EntityBuffManager { get; private set; }
-    public EntityStats EntityStats { get; private set; }
+    public EntityStats EntityStats { get; protected set; }
 
     public PhotonView PhotonView { get; private set; }
 
@@ -24,11 +24,13 @@ public class Entity : MonoBehaviour
 
     protected virtual void InitEntityProperties()
     {
-        EntityBasicAttack = GetComponent<EntityBasicAttack>();
-        EntityBasicAttackCycle = GetComponent<EntityBasicAttackCycle>();
-        EntityBuffManager = GetComponent<EntityBuffManager>();
-        EntityStats = GetComponent<EntityStats>();
+        if (!(this is Dummy))
+        {
+            EntityBasicAttackCycle = gameObject.AddComponent<EntityBasicAttackCycle>();
+        }
+        EntityBuffManager = gameObject.AddComponent<EntityBuffManager>();
 
         PhotonView = GetComponent<PhotonView>();
+        gameObject.AddComponent<MouseEvent>();
     }
 }

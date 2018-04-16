@@ -2,9 +2,6 @@
 
 public class Heal : SelfTargeted, SummonerAbility
 {
-    private const float BASE_HEAL_VALUE = 75;
-    private const float HEAL_INCREASE_PER_LEVEL = 15;
-
     private const float MOUSE_RADIUS = 3;
 
     protected Heal()
@@ -19,29 +16,22 @@ public class Heal : SelfTargeted, SummonerAbility
         baseCooldown = 240;
 
         startCooldownOnAbilityCast = true;
-
         CanBeCastDuringOtherAbilityCastTimes = true;
-
-        buffDuration = 1;
-        buffFlatBonus = 90;
-        buffPercentBonus = 30;
-
-        debuffDuration = 35;
-        debuffPercentBonus = 0.5f;
 
         IsEnabled = true;
     }
 
-    protected override void SetSpritePaths()
+    protected override void SetResourcePaths()
     {
         abilitySpritePath = "Sprites/Characters/SummonerAbilities/Heal";
-        buffSpritePath = "Sprites/Characters/SummonerAbilities/Ghost";
-        debuffSpritePath = "Sprites/Characters/SummonerAbilities/Heal";
     }
 
     protected override void Start()
     {
         base.Start();
+
+        AbilityBuffs = new AbilityBuff[] { gameObject.AddComponent<Heal_Buff>() };
+        AbilityDebuffs = new AbilityBuff[] { gameObject.AddComponent<Heal_Debuff>() };
 
         character.CharacterLevelManager.OnLevelUp += OnCharacterLevelUp;
     }
@@ -62,7 +52,7 @@ public class Heal : SelfTargeted, SummonerAbility
 
     public override void OnCharacterLevelUp(int level)
     {
-        buffFlatBonus = (BASE_HEAL_VALUE + (HEAL_INCREASE_PER_LEVEL * level));
+        LevelUp();
     }
 
     public override void UseAbility(Vector3 destination)
@@ -70,12 +60,15 @@ public class Heal : SelfTargeted, SummonerAbility
         Character targetedCharacter = null;
         Character tempCharacter;
 
+        //TODO: Extract this into a class/method called 
+
         if (hit.point != Vector3.down)
         {
             float distance = float.MaxValue;
             float tempDistance;
 
-            foreach (Collider collider in Physics.OverlapSphere(hit.point, MOUSE_RADIUS))
+            Vector3 mouseGroundPosition = Vector3.right * hit.point.x + Vector3.forward * hit.point.z;
+            foreach (Collider collider in Physics.OverlapCapsule(mouseGroundPosition, mouseGroundPosition + Vector3.up * 5, MOUSE_RADIUS))
             {
                 tempCharacter = collider.GetComponent<Character>();
                 if (tempCharacter != null && tempCharacter != character && TargetIsValid.CheckIfTargetIsValid(tempCharacter, affectedUnitType, character.Team))
@@ -95,7 +88,8 @@ public class Heal : SelfTargeted, SummonerAbility
             float lowestHealth = float.MaxValue;
             float tempLowestHealth;
 
-            foreach (Collider collider in Physics.OverlapSphere(transform.position, range))
+            Vector3 groundPosition = Vector3.right * transform.position.x + Vector3.forward * transform.position.z;
+            foreach (Collider collider in Physics.OverlapCapsule(groundPosition, groundPosition + Vector3.up * 5, range))
             {
                 tempCharacter = collider.GetComponent<Character>();
                 if (tempCharacter != null && tempCharacter != character && TargetIsValid.CheckIfTargetIsValid(tempCharacter, affectedUnitType, character.Team))
@@ -112,44 +106,13 @@ public class Heal : SelfTargeted, SummonerAbility
 
         if (targetedCharacter != null)
         {
-            AddNewBuffToEntityHit(targetedCharacter);
-            AddNewDebuffToEntityHit(targetedCharacter);
+            AbilityBuffs[0].AddNewBuffToEntityHit(targetedCharacter);
+            AbilityDebuffs[0].AddNewDebuffToEntityHit(targetedCharacter);
         }
 
-        AddNewBuffToEntityHit(character);
-        AddNewDebuffToEntityHit(character);
+        AbilityBuffs[0].AddNewBuffToEntityHit(character);
+        AbilityDebuffs[0].AddNewDebuffToEntityHit(character);
 
         StartCooldown(startCooldownOnAbilityCast);
-    }
-
-    protected override void AddNewDebuffToEntityHit(Entity entityHit)
-    {
-        Buff debuff = entityHit.EntityBuffManager.GetDebuffOfSameType(this);
-        if (debuff != null)
-        {
-            debuff.ConsumeBuff();
-        }
-        debuff = new Buff(this, entityHit, true, debuffDuration);
-        entityHit.EntityBuffManager.ApplyDebuff(debuff, debuffSprite);
-    }
-
-    public override void ApplyBuffToEntityHit(Entity entityHit, int currentStacks)
-    {
-        if (entityHit.EntityBuffManager.GetDebuffOfSameType(this) != null)
-        {
-            entityHit.EntityStats.Health.Restore(buffFlatBonus * debuffPercentBonus);
-        }
-        else
-        {
-            entityHit.EntityStats.Health.Restore(buffFlatBonus);
-        }
-        entityHit.EntityStats.MovementSpeed.AddPercentBonus(buffPercentBonus);
-        EntitiesAffectedByBuff.Add(entityHit);
-    }
-
-    public override void RemoveBuffFromEntityHit(Entity entityHit, int currentStacks)
-    {
-        entityHit.EntityStats.MovementSpeed.RemovePercentBonus(buffPercentBonus);
-        EntitiesAffectedByBuff.Remove(entityHit);
     }
 }
