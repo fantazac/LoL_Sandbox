@@ -59,16 +59,13 @@ GameObject:
   - component: {fileID: 114687265148906610}
   - component: {fileID: 114187010915273160}
   - component: {fileID: 114342004944102226}
-  - component: {fileID: 114391032335363500}
   - component: {fileID: 114979452670365114}
   - component: {fileID: 114990861650323628}
-  - component: {fileID: 114738691870103794}
   - component: {fileID: 114531500282068062}
   - component: {fileID: 114613722554698322}
   - component: {fileID: 114188144321425178}
   - component: {fileID: 114142965070972510}
   - component: {fileID: 114250111868081150}
-  - component: {fileID: 114408848689246642}
   - component: {fileID: 114983581572747220}
   - component: {fileID: 114230160075218552}
   - component: {fileID: 114147638681676846}
@@ -472,17 +469,6 @@ MonoBehaviour:
   percentBonus: 0
   flatMalus: 0
   percentMalus: 0
---- !u!114 &114391032335363500
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1294391184220730}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 70cb7f50c61acba42a2275f9510c39f6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &114401631577452450
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -512,17 +498,6 @@ MonoBehaviour:
   percentBonus: 0
   flatMalus: 0
   percentMalus: 0
---- !u!114 &114408848689246642
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1294391184220730}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4109899374c95c04ba4a69087f57952a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &114419638435089374
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -648,8 +623,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 17d6ede8470f1ad42b6362e9f3de06ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  projectilePrefab: {fileID: 1978247655739888, guid: c6d28b54373dc8f4383b85ee2faa2c18,
-    type: 2}
 --- !u!114 &114583660594214464
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -679,8 +652,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8fafc61995960ee4aac217fd721aa24d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  projectilePrefab: {fileID: 1000014125105712, guid: 21502943dfe1c694ab495b6b2d598488,
-    type: 2}
 --- !u!114 &114634682214722888
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -710,8 +681,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd42ec032cb2e084dbf946d738176e11, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  basicAttackPrefab: {fileID: 1000011696616614, guid: bd720a6723e4df4499d62d8de580edb2,
-    type: 2}
 --- !u!114 &114706553705502816
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -752,17 +721,6 @@ MonoBehaviour:
   percentBonus: 0
   flatMalus: 0
   percentMalus: 0
---- !u!114 &114738691870103794
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1294391184220730}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3f569022fd2c40247b0db9c28e28873e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &114769905678041342
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -828,8 +786,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 60793593f21a6e94aa51471c91d5abfe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movementCapsule: {fileID: 1000014217773866, guid: fce730138d5a1624199e4a657c2026af,
-    type: 2}
 --- !u!114 &114866246300443908
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -899,8 +855,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18f9337b65581b743a0ce541524c6f68, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  projectilePrefab: {fileID: 1000013746244026, guid: 4fd62e8b5155cfe4489fe2e0177cf117,
-    type: 2}
 --- !u!114 &114983581572747220
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -912,9 +866,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c7fa87ee87c63641992356d2e6db7c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spawnDummyAbilities:
-  - {fileID: 114230160075218552}
-  - {fileID: 114147638681676846}
 --- !u!114 &114990861650323628
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -926,8 +877,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd7ea2af004c0734eb5b37952f1dc606, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  projectilePrefab: {fileID: 1000011417396818, guid: a57ad189bcd00744d8b83e74110eda5e,
-    type: 2}
 --- !u!114 &114995869905901432
 MonoBehaviour:
   m_ObjectHideFlags: 1

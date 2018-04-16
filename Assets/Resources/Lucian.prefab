@@ -76,19 +76,13 @@ GameObject:
   - component: {fileID: 114186498823218726}
   - component: {fileID: 114750828589375982}
   - component: {fileID: 114315950057543016}
-  - component: {fileID: 114812236593298750}
   - component: {fileID: 114536618287389660}
   - component: {fileID: 114324357708582316}
-  - component: {fileID: 114689305987461122}
-  - component: {fileID: 114558832242142328}
   - component: {fileID: 114729605349889214}
   - component: {fileID: 114372474999472434}
   - component: {fileID: 114679863561530774}
-  - component: {fileID: 114920789130636616}
-  - component: {fileID: 114408291185669046}
   - component: {fileID: 114620902814611038}
   - component: {fileID: 114880949937560802}
-  - component: {fileID: 114527763667540718}
   - component: {fileID: 114255252513267966}
   - component: {fileID: 114904757158163134}
   - component: {fileID: 114986620668545128}
@@ -390,10 +384,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87ec204b3cce17248be1fcd08e642d4c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  basicAttackPrefab: {fileID: 1000013580955186, guid: eb410a3bfea5d1c4e8735f39c4626e55,
-    type: 2}
-  passiveBasicAttackPrefab: {fileID: 1000013580955186, guid: 42c590e598d3b97458c63d2454cee23a,
-    type: 2}
 --- !u!114 &114244640613273516
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -405,8 +395,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 60793593f21a6e94aa51471c91d5abfe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movementCapsule: {fileID: 1000014217773866, guid: fce730138d5a1624199e4a657c2026af,
-    type: 2}
 --- !u!114 &114255252513267966
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -418,9 +406,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c7fa87ee87c63641992356d2e6db7c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spawnDummyAbilities:
-  - {fileID: 114904757158163134}
-  - {fileID: 114986620668545128}
 --- !u!114 &114315950057543016
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -454,10 +439,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a4139fbea1f7a048b58f4963288b590, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  projectilePrefab: {fileID: 1000011332508624, guid: 2dd65a2c59d731245b6e300dbd615760,
-    type: 2}
-  explosionAreaOfEffectPrefab: {fileID: 1000013714180132, guid: 72fd8765c72f30f4da560504e8980708,
-    type: 2}
 --- !u!114 &114332716081703900
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -534,19 +515,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c165cc7bfb006d644b4461dce582bf14, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  projectilePrefab: {fileID: 1000010764437680, guid: 518710b74c6e1bb41becee4207ea623b,
-    type: 2}
---- !u!114 &114408291185669046
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1507067852754532}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 85fa2641989f37f49b294d69fbca49d0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &114439890440468546
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -591,17 +559,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5ce362c3519933c48b115ae5346e2aea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &114527763667540718
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1507067852754532}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4109899374c95c04ba4a69087f57952a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &114536618287389660
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -613,8 +570,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 96d2cf110d9d0b84eb6471fc8c9db4df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  areaOfEffectPrefab: {fileID: 1000011639411960, guid: 7d23b316a2ad36249a139ef23be8c616,
-    type: 2}
 --- !u!114 &114554439231744336
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -633,17 +588,6 @@ MonoBehaviour:
   percentBonus: 0
   flatMalus: 0
   percentMalus: 0
---- !u!114 &114558832242142328
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1507067852754532}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 93ca446137a49f940ad58833fecc5e16, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &114562199205961970
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -739,17 +683,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b441fe6c6b8106e4fb9e14d8dc6d3e19, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &114689305987461122
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1507067852754532}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 40703105edb3c0d4f98c869ddb0e038c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &114729605349889214
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -808,17 +741,6 @@ MonoBehaviour:
   percentBonus: 0
   flatMalus: 0
   percentMalus: 0
---- !u!114 &114812236593298750
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1507067852754532}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2b05cc9e295cb5d45a23b6e86cb51444, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &114853023981360742
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -962,17 +884,6 @@ MonoBehaviour:
   flatMalus: 0
   percentMalus: 0
   currentValue: 0
---- !u!114 &114920789130636616
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1507067852754532}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7c50065e502361b44a49687dde9fc7e7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &114971362640578986
 MonoBehaviour:
   m_ObjectHideFlags: 1

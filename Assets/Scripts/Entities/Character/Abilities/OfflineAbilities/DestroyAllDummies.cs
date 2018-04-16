@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class DestroyAllDummies : AutoTargeted, OfflineAbility
 {
-    [SerializeField]
     private SpawnDummy[] spawnDummyAbilities;
 
     protected DestroyAllDummies()
@@ -21,6 +20,8 @@ public class DestroyAllDummies : AutoTargeted, OfflineAbility
         if (!StaticObjects.OnlineMode)
         {
             base.Start();
+
+            spawnDummyAbilities = GetComponents<SpawnDummy>();
         }
     }
 
@@ -41,8 +42,10 @@ public class DestroyAllDummies : AutoTargeted, OfflineAbility
 
     protected void RemoveAllDummies()
     {
-        spawnDummyAbilities[0].RemoveAllDummies();
-        spawnDummyAbilities[1].RemoveAllDummies();
+        foreach (SpawnDummy spawnDummy in spawnDummyAbilities)
+        {
+            spawnDummy.RemoveAllDummies();
+        }
     }
 
     protected override void SetResourcePaths() { }

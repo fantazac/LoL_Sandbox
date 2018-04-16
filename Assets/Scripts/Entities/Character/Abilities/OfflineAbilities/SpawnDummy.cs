@@ -6,7 +6,7 @@ public abstract class SpawnDummy : GroundTargeted, OfflineAbility
 {
     protected const int MAXIMUM_DUMMY_AMOUNT = 4;
 
-    protected string dummyResourceName;
+    protected string dummyResourcePath;
     protected int dummyId;
     protected EntityTeam team;
 
@@ -59,7 +59,7 @@ public abstract class SpawnDummy : GroundTargeted, OfflineAbility
         {
             dummyId -= 4;
         }
-        Dummy dummy = ((GameObject)Instantiate(Resources.Load(dummyResourceName), destination, Quaternion.identity)).GetComponent<Dummy>();
+        Dummy dummy = ((GameObject)Instantiate(Resources.Load(dummyResourcePath), destination, Quaternion.identity)).GetComponent<Dummy>();
         dummy.transform.rotation = Quaternion.LookRotation((transform.position - dummy.transform.position).normalized);
         dummy.SetDummyTeamAndID(team, ++dummyId);
         dummies.Add(dummy.gameObject);
