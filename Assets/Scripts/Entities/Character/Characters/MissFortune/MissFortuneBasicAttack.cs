@@ -8,5 +8,7 @@ public class MissFortuneBasicAttack : CharacterBasicAttack
     {
         delayPercentBeforeAttack = 0.1666f;
         speed = 1800;//TODO: Test in game
+
+        basicAttackPrefabPath = "BasicAttacks/Characters/MissFortune/MissFortuneBA";
     }
 }

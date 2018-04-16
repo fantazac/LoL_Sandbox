@@ -3,7 +3,7 @@ using System.Collections;
 
 public abstract class EntityBasicAttack : MonoBehaviour
 {
-    [SerializeField]
+    protected string basicAttackPrefabPath;
     protected GameObject basicAttackPrefab;
 
     protected float delayPercentBeforeAttack;//charging before actually launching/doing the attack
@@ -25,6 +25,16 @@ public abstract class EntityBasicAttack : MonoBehaviour
         entity = GetComponent<Entity>();
 
         ModifyValues();
+    }
+
+    protected virtual void Start()
+    {
+        LoadPrefabs();
+    }
+
+    protected virtual void LoadPrefabs()
+    {
+        basicAttackPrefab = Resources.Load<GameObject>(basicAttackPrefabPath);
     }
 
     protected void ModifyValues()

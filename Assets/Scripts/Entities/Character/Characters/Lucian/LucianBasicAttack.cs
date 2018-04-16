@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class LucianBasicAttack : CharacterBasicAttack
 {
-    [SerializeField]
+    private string passiveBasicAttackPrefabPath;
     private GameObject passiveBasicAttackPrefab;
 
     private WaitForSeconds delayPassiveShot;
@@ -20,6 +20,9 @@ public class LucianBasicAttack : CharacterBasicAttack
         speed = 2500;
 
         delayPassiveShot = new WaitForSeconds(0.2f);
+
+        basicAttackPrefabPath = "BasicAttacks/Characters/Lucian/LucianBA";
+        passiveBasicAttackPrefabPath = "BasicAttacks/Characters/Lucian/LucianBAPassive";
     }
 
     protected override void OnEnable()
@@ -27,6 +30,13 @@ public class LucianBasicAttack : CharacterBasicAttack
         base.OnEnable();
 
         passive = GetComponent<Lucian_P>();
+    }
+
+    protected override void LoadPrefabs()
+    {
+        base.LoadPrefabs();
+
+        passiveBasicAttackPrefab = Resources.Load<GameObject>(passiveBasicAttackPrefabPath);
     }
 
     public override void StopBasicAttack()
