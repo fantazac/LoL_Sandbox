@@ -19,7 +19,7 @@ public class Heal_Debuff : AbilityBuff
         buffSpritePath = "Sprites/Characters/SummonerAbilities/Heal";
     }
 
-    public override void AddNewBuffToEntityHit(Entity entityHit)
+    public override void AddNewDebuffToEntityHit(Entity entityHit)
     {
         Buff debuff = entityHit.EntityBuffManager.GetDebuffOfSameType(this);
         if (debuff != null)

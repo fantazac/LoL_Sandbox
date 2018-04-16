@@ -117,7 +117,7 @@ public class EntityBuffManager : MonoBehaviour
     public Buff GetDebuffOfSameType(AbilityBuff sourceAbilityBuff)
     {
         Buff debuff = null;
-
+        
         foreach (Buff activeDebuff in debuffs)
         {
             if (activeDebuff.SourceAbilityBuff.GetType() == sourceAbilityBuff.GetType())
