@@ -92,9 +92,12 @@ public class HealthBar : MonoBehaviour
                 Destroy(resourceImage.gameObject);
             }
 
-            character.EntityStats.Resource.OnCurrentResourceValueChanged += OnCurrentResourceChanged;
-            character.EntityStats.Resource.OnMaxResourceValueChanged += OnMaxResourceChanged;
-            maxResource = character.EntityStats.Resource.GetTotal();
+            if (character.EntityStats.Resource)
+            {
+                character.EntityStats.Resource.OnCurrentResourceValueChanged += OnCurrentResourceChanged;
+                character.EntityStats.Resource.OnMaxResourceValueChanged += OnMaxResourceChanged;
+                maxResource = character.EntityStats.Resource.GetTotal();
+            }
         }
         else
         {
@@ -162,7 +165,10 @@ public class HealthBar : MonoBehaviour
 
         }
         OnCurrentHealthChanged();
-        OnCurrentResourceChanged();
+        if (maxResource > 0)
+        {
+            OnCurrentResourceChanged();
+        }
     }
 
     private float GetHealthSeperatorFactor()

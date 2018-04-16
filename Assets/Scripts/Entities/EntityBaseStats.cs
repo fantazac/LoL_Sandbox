@@ -26,4 +26,17 @@ public class EntityBaseStats : MonoBehaviour
     public float BaseSpellVamp { get; protected set; }
     public float BaseAttackRange { get; protected set; }
     public float BaseTenacity { get; protected set; }
+
+    protected EntityBaseStats()
+    {
+        SetBaseStats();
+    }
+
+    protected virtual void SetBaseStats()
+    {
+        BaseAttackSpeed = 0.625f;
+        BaseMovementSpeed = 325;
+
+        BaseAttackRange = 125;
+    }
 }

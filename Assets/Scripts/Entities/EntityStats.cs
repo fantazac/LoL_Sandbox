@@ -28,32 +28,35 @@ public class EntityStats : MonoBehaviour
 
     protected virtual void Awake()
     {
-        Health = GetComponent<Health>();
-        Resource = GetComponent<Resource>();//supposed to work when no resource is used so check to confirm (ex. garen), also check energy (ex. zed)
+        Health = gameObject.AddComponent<Health>();
 
-        AttackDamage = GetComponent<AttackDamage>();
-        AbilityPower = GetComponent<AbilityPower>();
-        Armor = GetComponent<Armor>();
-        MagicResistance = GetComponent<MagicResistance>();
-        AttackSpeed = GetComponent<AttackSpeed>();
-        CooldownReduction = GetComponent<CooldownReduction>();
-        CriticalStrikeChance = GetComponent<CriticalStrikeChance>();//TODO
-        MovementSpeed = GetComponent<MovementSpeed>();
+        AttackDamage = gameObject.AddComponent<AttackDamage>();
+        AbilityPower = gameObject.AddComponent<AbilityPower>();
+        Armor = gameObject.AddComponent<Armor>();
+        MagicResistance = gameObject.AddComponent<MagicResistance>();
+        AttackSpeed = gameObject.AddComponent<AttackSpeed>();
+        CooldownReduction = gameObject.AddComponent<CooldownReduction>();
+        CriticalStrikeChance = gameObject.AddComponent<CriticalStrikeChance>();//TODO
+        MovementSpeed = gameObject.AddComponent<MovementSpeed>();
 
-        HealthRegeneration = GetComponent<HealthRegeneration>();
-        ResourceRegeneration = GetComponent<ResourceRegeneration>();
-        Lethality = GetComponent<Lethality>();
-        ArmorPenetrationPercent = GetComponent<ArmorPenetrationPercent>();
-        MagicPenetrationFlat = GetComponent<MagicPenetrationFlat>();
-        MagicPenetrationPercent = GetComponent<MagicPenetrationPercent>();
-        LifeSteal = GetComponent<LifeSteal>();//TODO
-        SpellVamp = GetComponent<SpellVamp>();//TODO
-        AttackRange = GetComponent<AttackRange>();
-        Tenacity = GetComponent<Tenacity>();//TODO
+        HealthRegeneration = gameObject.AddComponent<HealthRegeneration>();
+        Lethality = gameObject.AddComponent<Lethality>();
+        ArmorPenetrationPercent = gameObject.AddComponent<ArmorPenetrationPercent>();
+        MagicPenetrationFlat = gameObject.AddComponent<MagicPenetrationFlat>();
+        MagicPenetrationPercent = gameObject.AddComponent<MagicPenetrationPercent>();
+        LifeSteal = gameObject.AddComponent<LifeSteal>();//TODO
+        SpellVamp = gameObject.AddComponent<SpellVamp>();//TODO
+        AttackRange = gameObject.AddComponent<AttackRange>();
+        Tenacity = gameObject.AddComponent<Tenacity>();//TODO
 
         ExtraAdjustments();
 
-        SetBaseStats(GetComponent<EntityBaseStats>());
+        SetBaseStats(GetEntityBaseStats());
+    }
+
+    protected virtual EntityBaseStats GetEntityBaseStats()
+    {
+        return gameObject.AddComponent<EntityBaseStats>();
     }
 
     protected void ExtraAdjustments()
@@ -63,11 +66,16 @@ public class EntityStats : MonoBehaviour
 
     protected virtual void SetBaseStats(EntityBaseStats entityBaseStats)
     {
-        Health.SetBaseValue(entityBaseStats.BaseHealth);
         if (Resource)
         {
             Resource.SetBaseValue(entityBaseStats.BaseResource);
         }
+        if (ResourceRegeneration)
+        {
+            ResourceRegeneration.SetBaseValue(entityBaseStats.BaseResourceRegeneration);
+        }
+
+        Health.SetBaseValue(entityBaseStats.BaseHealth);
 
         AttackDamage.SetBaseValue(entityBaseStats.BaseAttackDamage);
         AbilityPower.SetBaseValue(entityBaseStats.BaseAbilityPower);
@@ -79,10 +87,6 @@ public class EntityStats : MonoBehaviour
         MovementSpeed.SetBaseValue(entityBaseStats.BaseMovementSpeed);
 
         HealthRegeneration.SetBaseValue(entityBaseStats.BaseHealthRegeneration);
-        if (ResourceRegeneration)
-        {
-            ResourceRegeneration.SetBaseValue(entityBaseStats.BaseResourceRegeneration);
-        }
         Lethality.SetBaseValue(entityBaseStats.BaseLethality);
         ArmorPenetrationPercent.SetBaseValue(entityBaseStats.BaseArmorPenetrationPercent);
         MagicPenetrationFlat.SetBaseValue(entityBaseStats.BaseMagicPenetrationFlat);

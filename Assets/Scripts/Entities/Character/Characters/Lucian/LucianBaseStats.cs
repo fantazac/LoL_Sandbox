@@ -6,7 +6,7 @@ public class LucianBaseStats : CharacterBaseStats
 {
     //extra stats for each character
 
-    protected LucianBaseStats()
+    protected override void SetBaseStats()
     {
         BaseHealth = 554.4f;
         BaseResource = 348.9f;

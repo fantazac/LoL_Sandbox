@@ -33,7 +33,7 @@ public class Lucian_P : PassiveTargeted, PassiveCharacterAbility
     {
         base.Awake();
 
-        lucianE = GetComponent<Lucian_E>();
+        GetComponent<LucianBasicAttack>().SetPassive(this);
     }
 
     protected override void SetResourcePaths()
@@ -51,6 +51,8 @@ public class Lucian_P : PassiveTargeted, PassiveCharacterAbility
         {
             ability.OnAbilityFinished += PassiveEffect;
         }
+
+        lucianE = character.CharacterAbilityManager.CharacterAbilities[2];
 
         character.CharacterLevelManager.OnLevelUp += OnCharacterLevelUp;
     }

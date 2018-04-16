@@ -8,8 +8,17 @@ public abstract class CharacterStats : EntityStats
 
     protected override void Awake()
     {
+        SetResource();
+
         base.Awake();
     }
+
+    protected override EntityBaseStats GetEntityBaseStats()
+    {
+        return gameObject.AddComponent<CharacterBaseStats>();
+    }
+
+    protected virtual void SetResource() { }
 
     protected override void SetBaseStats(EntityBaseStats entityBaseStats)
     {
@@ -18,8 +27,17 @@ public abstract class CharacterStats : EntityStats
         CharacterBaseStats characterBaseStats = (CharacterBaseStats)entityBaseStats;
 
         //set extra character stats
+
+        if (Resource)
+        {
+            Resource.SetPerLevelValue(characterBaseStats.ResourcePerLevel);
+        }
+        if (ResourceRegeneration)
+        {
+            ResourceRegeneration.SetPerLevelValue(characterBaseStats.ResourceRegenerationPerLevel);
+        }
+
         Health.SetPerLevelValue(characterBaseStats.HealthPerLevel);
-        Resource.SetPerLevelValue(characterBaseStats.ResourcePerLevel);
 
         AttackDamage.SetPerLevelValue(characterBaseStats.AttackDamagePerLevel);
         Armor.SetPerLevelValue(characterBaseStats.ArmorPerLevel);
@@ -27,6 +45,5 @@ public abstract class CharacterStats : EntityStats
         AttackSpeed.SetPerLevelValue(characterBaseStats.AttackSpeedPerLevel);
 
         HealthRegeneration.SetPerLevelValue(characterBaseStats.HealthRegenerationPerLevel);
-        ResourceRegeneration.SetPerLevelValue(characterBaseStats.ResourceRegenerationPerLevel);
     }
 }

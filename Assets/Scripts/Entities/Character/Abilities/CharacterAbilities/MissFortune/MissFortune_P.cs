@@ -40,6 +40,8 @@ public class MissFortune_P : PassiveTargeted, PassiveCharacterAbility
 
         character.CharacterLevelManager.OnLevelUp += OnCharacterLevelUp;
         character.EntityBasicAttack.OnBasicAttackHit += OnBasicAttackHit;
+
+        lastEntityHit = character;
     }
 
     public override void OnCharacterLevelUp(int level)

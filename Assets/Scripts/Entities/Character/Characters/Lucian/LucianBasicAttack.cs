@@ -7,6 +7,7 @@ public class LucianBasicAttack : CharacterBasicAttack
     private string passiveBasicAttackPrefabPath;
     private GameObject passiveBasicAttackPrefab;
 
+    private float timeBeforePassiveShot;
     private WaitForSeconds delayPassiveShot;
 
     private Lucian_P passive;
@@ -19,17 +20,16 @@ public class LucianBasicAttack : CharacterBasicAttack
         delayPercentBeforeAttack = 0.1666f;
         speed = 2500;
 
-        delayPassiveShot = new WaitForSeconds(0.2f);
+        timeBeforePassiveShot = 0.2f;
+        delayPassiveShot = new WaitForSeconds(timeBeforePassiveShot);
 
         basicAttackPrefabPath = "BasicAttacks/Characters/Lucian/LucianBA";
         passiveBasicAttackPrefabPath = "BasicAttacks/Characters/Lucian/LucianBAPassive";
     }
 
-    protected override void OnEnable()
+    public void SetPassive(Lucian_P lucianPassive)
     {
-        base.OnEnable();
-
-        passive = GetComponent<Lucian_P>();
+        passive = lucianPassive;
     }
 
     protected override void LoadPrefabs()

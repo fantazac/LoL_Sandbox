@@ -6,7 +6,7 @@ public class EzrealBaseStats : CharacterBaseStats
 {
     //extra stats for each character
 
-    protected EzrealBaseStats()
+    protected override void SetBaseStats()
     {
         BaseHealth = 484.4f;
         BaseResource = 360.6f;

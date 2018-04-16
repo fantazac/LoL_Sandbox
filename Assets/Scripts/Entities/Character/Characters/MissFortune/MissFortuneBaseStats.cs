@@ -6,7 +6,7 @@ public class MissFortuneBaseStats : CharacterBaseStats
 {
     //extra stats for each character
 
-    protected MissFortuneBaseStats()
+    protected override void SetBaseStats()
     {
         BaseHealth = 530;
         BaseResource = 325.8f;

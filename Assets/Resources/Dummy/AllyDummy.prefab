@@ -24,6 +24,8 @@ GameObject:
   - component: {fileID: 23346571577559038}
   - component: {fileID: 54289000549148092}
   - component: {fileID: 114742134543594078}
+  - component: {fileID: 114579960026917540}
+  - component: {fileID: 114997570847351234}
   - component: {fileID: 114699461314323202}
   - component: {fileID: 114355666221125240}
   - component: {fileID: 114652840779475856}
@@ -45,10 +47,6 @@ GameObject:
   - component: {fileID: 114451010653664158}
   - component: {fileID: 114441800122878354}
   - component: {fileID: 114280005732643346}
-  - component: {fileID: 114579960026917540}
-  - component: {fileID: 114357480483547512}
-  - component: {fileID: 114179795355532772}
-  - component: {fileID: 114997570847351234}
   - component: {fileID: 114999495511641918}
   m_Layer: 8
   m_Name: AllyDummy
@@ -247,17 +245,6 @@ MonoBehaviour:
   percentBonus: 0
   flatMalus: 0
   percentMalus: 0
---- !u!114 &114179795355532772
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1484829234854768}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 50f4480639672a84aa200b8effb6dda6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &114280005732643346
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -367,17 +354,6 @@ MonoBehaviour:
   flatMalus: 0
   percentMalus: 0
   currentValue: 0
---- !u!114 &114357480483547512
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1484829234854768}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7d0df9919a0b49849bd5e327216b0870, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &114396176984048392
 MonoBehaviour:
   m_ObjectHideFlags: 1
