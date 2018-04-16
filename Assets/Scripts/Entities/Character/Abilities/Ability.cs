@@ -97,7 +97,7 @@ public abstract class Ability : MonoBehaviour
 
     protected Ability()
     {
-        SetSpritePaths();
+        SetResourcePaths();
     }
 
     protected virtual void Awake()
@@ -105,9 +105,9 @@ public abstract class Ability : MonoBehaviour
         character = GetComponent<Character>();
         if (!StaticObjects.OnlineMode || character.PhotonView.isMine)
         {
-            abilitySprite = Resources.Load<Sprite>(abilitySpritePath);
-            abilityRecastSprite = Resources.Load<Sprite>(abilityRecastSpritePath);
+            LoadSprites();
         }
+        LoadPrefabs();
     }
 
     protected virtual void Start()
@@ -132,8 +132,6 @@ public abstract class Ability : MonoBehaviour
         }
 
         ModifyValues();
-
-        //SetSourceAbility
     }
 
     public abstract bool CanBeCast(Entity target);
@@ -142,7 +140,7 @@ public abstract class Ability : MonoBehaviour
     public abstract void UseAbility(Entity target);
     public abstract void UseAbility(Vector3 destination);
 
-    protected abstract void SetSpritePaths();
+    protected abstract void SetResourcePaths();
 
     protected virtual void RotationOnAbilityCast(Vector3 destination)
     {
@@ -159,6 +157,14 @@ public abstract class Ability : MonoBehaviour
     {
         character.AbilityUIManager.SetAbilitySprite(AbilityCategory, ID, abilitySprite);
     }
+
+    protected void LoadSprites()
+    {
+        abilitySprite = Resources.Load<Sprite>(abilitySpritePath);
+        abilityRecastSprite = Resources.Load<Sprite>(abilityRecastSpritePath);
+    }
+
+    protected virtual void LoadPrefabs() { }
 
     protected void StartAbilityCast()
     {

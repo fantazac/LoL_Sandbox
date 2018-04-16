@@ -3,7 +3,7 @@ using System.Collections;
 
 public class Ezreal_E : GroundTargetedBlink, CharacterAbility
 {
-    [SerializeField]
+    private string projectilePrefabPath;
     private GameObject projectilePrefab;
 
     private float effectRadius;
@@ -37,9 +37,11 @@ public class Ezreal_E : GroundTargetedBlink, CharacterAbility
         effectRadius = 600;// Says 750 on wiki, is more like 600 when I tested
     }
 
-    protected override void SetSpritePaths()
+    protected override void SetResourcePaths()
     {
         abilitySpritePath = "Sprites/Characters/CharacterAbilities/Ezreal/EzrealE";
+
+        projectilePrefabPath = "CharacterAbilities/Ezreal/EzrealE";
     }
 
     protected override void ModifyValues()
@@ -47,6 +49,11 @@ public class Ezreal_E : GroundTargetedBlink, CharacterAbility
         effectRadius *= StaticObjects.MultiplyingFactor;
 
         base.ModifyValues();
+    }
+
+    protected override void LoadPrefabs()
+    {
+        projectilePrefab = Resources.Load<GameObject>(projectilePrefabPath);
     }
 
     protected override IEnumerator AbilityWithCastTime()

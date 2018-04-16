@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Lucian_W : DirectionTargetedProjectile, CharacterAbility
 {
-    [SerializeField]
+    private string explosionAreaOfEffectPrefabPath;
     private GameObject explosionAreaOfEffectPrefab;
 
     private float durationAoE;
@@ -37,9 +37,19 @@ public class Lucian_W : DirectionTargetedProjectile, CharacterAbility
         durationAoE = 0.2f;
     }
 
-    protected override void SetSpritePaths()
+    protected override void SetResourcePaths()
     {
         abilitySpritePath = "Sprites/Characters/CharacterAbilities/Lucian/LucianW";
+
+        projectilePrefabPath = "CharacterAbilities/Lucian/LucianW1";
+        explosionAreaOfEffectPrefabPath = "CharacterAbilities/Lucian/LucianW2";
+    }
+
+    protected override void LoadPrefabs()
+    {
+        base.LoadPrefabs();
+
+        explosionAreaOfEffectPrefab = Resources.Load<GameObject>(explosionAreaOfEffectPrefabPath);
     }
 
     protected override void Start()

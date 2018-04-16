@@ -24,7 +24,7 @@ public class Teleport : GroundTargetedBlink, SummonerAbility
         IsEnabled = true;
     }
 
-    protected override void SetSpritePaths()
+    protected override void SetResourcePaths()
     {
         abilitySpritePath = "Sprites/Characters/SummonerAbilities/Teleport";
     }

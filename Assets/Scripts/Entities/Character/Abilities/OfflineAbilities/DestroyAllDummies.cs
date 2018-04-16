@@ -45,5 +45,5 @@ public class DestroyAllDummies : AutoTargeted, OfflineAbility
         spawnDummyAbilities[1].RemoveAllDummies();
     }
 
-    protected override void SetSpritePaths() { }
+    protected override void SetResourcePaths() { }
 }

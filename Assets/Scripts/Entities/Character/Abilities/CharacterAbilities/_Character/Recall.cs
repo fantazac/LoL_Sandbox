@@ -22,7 +22,7 @@ public class Recall : AutoTargetedBlink, OtherCharacterAbility
         IsEnabled = true;
     }
 
-    protected override void SetSpritePaths()
+    protected override void SetResourcePaths()
     {
         abilitySpritePath = "Sprites/Characters/CharacterAbilities/_Character/Recall";
     }

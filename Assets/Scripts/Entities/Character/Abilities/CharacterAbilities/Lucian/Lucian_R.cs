@@ -49,9 +49,11 @@ public class Lucian_R : DirectionTargetedProjectile, CharacterAbility
         affectedByCooldownReduction = true;
     }
 
-    protected override void SetSpritePaths()
+    protected override void SetResourcePaths()
     {
         abilitySpritePath = "Sprites/Characters/CharacterAbilities/Lucian/LucianR";
+
+        projectilePrefabPath = "CharacterAbilities/Lucian/LucianR";
     }
 
     protected override void Start()

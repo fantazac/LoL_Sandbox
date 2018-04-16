@@ -68,5 +68,5 @@ public abstract class SpawnDummy : GroundTargeted, OfflineAbility
         FinishAbilityCast();
     }
 
-    protected override void SetSpritePaths() { }
+    protected override void SetResourcePaths() { }
 }

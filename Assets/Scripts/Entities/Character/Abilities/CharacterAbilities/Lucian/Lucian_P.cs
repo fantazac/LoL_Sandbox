@@ -36,7 +36,7 @@ public class Lucian_P : PassiveTargeted, PassiveCharacterAbility
         lucianE = GetComponent<Lucian_E>();
     }
 
-    protected override void SetSpritePaths()
+    protected override void SetResourcePaths()
     {
         abilitySpritePath = "Sprites/Characters/CharacterAbilities/Lucian/LucianP";
     }

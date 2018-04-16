@@ -17,7 +17,7 @@ public class Ezreal_P : PassiveTargeted, PassiveCharacterAbility
         IsEnabled = true;
     }
 
-    protected override void SetSpritePaths()
+    protected override void SetResourcePaths()
     {
         abilitySpritePath = "Sprites/Characters/CharacterAbilities/Ezreal/EzrealP";
     }
