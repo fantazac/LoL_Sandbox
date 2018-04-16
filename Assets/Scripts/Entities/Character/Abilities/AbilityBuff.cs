@@ -41,11 +41,6 @@ public abstract class AbilityBuff : MonoBehaviour
 
     protected abstract void SetSpritePaths();
 
-    protected void OnDestroy()
-    {
-
-    }
-
     public virtual void ApplyBuffToEntityHit(Entity entityHit, int currentStacksOrBuffValue)
     {
         EntitiesAffectedByBuff.Add(entityHit);

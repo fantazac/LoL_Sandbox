@@ -6,13 +6,11 @@ public abstract class PassiveTargeted : Ability
 {
     public override bool CanBeCast(Vector3 mousePosition)
     {
-        Debug.Log("This should not happen - CanBeCast(mousePosition) - " + this);
         return true;
     }
 
     public override bool CanBeCast(Entity target)
     {
-        Debug.Log("This should not happen - CanBeCast(target) - " + this);
         return true;
     }
 

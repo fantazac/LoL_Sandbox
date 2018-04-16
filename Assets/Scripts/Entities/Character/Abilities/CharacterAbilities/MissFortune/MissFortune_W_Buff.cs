@@ -3,20 +3,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Ezreal_W_Buff : AbilityBuff
+public class MissFortune_W_Buff : AbilityBuff
 {
-    protected Ezreal_W_Buff()
+    protected MissFortune_W_Buff()
     {
-        buffName = "Essence Flux";
+        buffName = "Guns Blazing";
 
-        buffDuration = 5;
-        buffPercentBonus = 20;
-        buffPercentBonusPerLevel = 5;
+        buffDuration = 4;
+        buffPercentBonus = 40;
+        buffPercentBonusPerLevel = 15;
     }
 
     protected override void SetSpritePaths()
     {
-        buffSpritePath = "Sprites/Characters/CharacterAbilities/Ezreal/EzrealW_Buff";
+        buffSpritePath = "Sprites/Characters/CharacterAbilities/MissFortune/MissFortuneW_Buff";
     }
 
     public override void ApplyBuffToEntityHit(Entity entityHit, int currentStacks)
