@@ -4,8 +4,8 @@ using System.Collections.Generic;
 
 public class CharacterMovement : MonoBehaviour
 {
-    [SerializeField]
-    private GameObject movementCapsule;
+    private string movementCapsulePrefabPath;
+    private GameObject movementCapsulePrefab;
 
     private Vector3 destination;
     private Entity target;
@@ -23,6 +23,8 @@ public class CharacterMovement : MonoBehaviour
     private CharacterMovement()
     {
         destination = Vector3.down;
+
+        movementCapsulePrefabPath = "MovementPoint/MovementCapsule";
     }
 
     private void Awake()
@@ -35,9 +37,16 @@ public class CharacterMovement : MonoBehaviour
         if (!StaticObjects.OnlineMode || character.PhotonView.isMine)
         {
             character.CharacterInput.OnPressedS += StopMovement;
+
+            LoadPrefabs();
         }
 
         CharacterHeightOffset = Vector3.up * transform.position.y;
+    }
+
+    private void LoadPrefabs()
+    {
+        movementCapsulePrefab = Resources.Load<GameObject>(movementCapsulePrefabPath);
     }
 
     public void UnsubscribeCameraEvent()
@@ -55,7 +64,7 @@ public class CharacterMovement : MonoBehaviour
         {
             SetMoveTowardsPoint(pointOnMap + CharacterHeightOffset);
         }
-        Instantiate(movementCapsule, pointOnMap, Quaternion.identity);
+        Instantiate(movementCapsulePrefab, pointOnMap, Quaternion.identity);
     }
 
     public void PrepareMovementTowardsTarget(Entity target)
@@ -129,7 +138,7 @@ public class CharacterMovement : MonoBehaviour
 
     public void RestartMovementTowardsTargetAfterAbility()
     {
-        if(character.EntityBasicAttack.AttackIsInQueue())
+        if (character.EntityBasicAttack.AttackIsInQueue())
         {
             SetMoveTowardsTarget(character.EntityBasicAttack.CurrentTarget(), character.EntityStats.AttackRange.GetTotal(), true);
         }
@@ -162,7 +171,7 @@ public class CharacterMovement : MonoBehaviour
             yield return null;
         }
 
-        if(targetTransform != null)
+        if (targetTransform != null)
         {
             while (character.CharacterAbilityManager.IsUsingAbilityPreventingBasicAttacks())
             {

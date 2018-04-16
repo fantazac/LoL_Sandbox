@@ -7,8 +7,8 @@ public class MainMenuManager : MonoBehaviour
     [SerializeField]
     private GameObject mainMenuCamera;
 
-    [SerializeField]
-    private GameObject characterParent;
+    private string characterParentPrefabPath;
+    private GameObject characterParentPrefab;
 
     private MainMenuState state;
 
@@ -25,6 +25,8 @@ public class MainMenuManager : MonoBehaviour
         blueSpawn = Vector3.left * 9 + Vector3.up * 0.5f + Vector3.back * 14;
         redSpawn = Vector3.right * 21 + Vector3.up * 0.5f + Vector3.forward * 9;
         offlineSpawn = Vector3.up * 0.5f;
+
+        characterParentPrefabPath = "Character/CharacterTemplate";
     }
 
     private void Start()
@@ -33,6 +35,13 @@ public class MainMenuManager : MonoBehaviour
         networkManager.OnConnectedToServer += OnConnectedToServer;
 
         state = MainMenuState.MAIN;
+
+        LoadPrefabs();
+    }
+
+    private void LoadPrefabs()
+    {
+        characterParentPrefab = Resources.Load<GameObject>(characterParentPrefabPath);
     }
 
     private void Update()
@@ -147,7 +156,7 @@ public class MainMenuManager : MonoBehaviour
     {
         state = MainMenuState.ON_HOLD;
 
-        GameObject characterTemplate = Instantiate(characterParent);
+        GameObject characterTemplate = Instantiate(characterParentPrefab);
         GameObject character;
         if (StaticObjects.OnlineMode)
         {
