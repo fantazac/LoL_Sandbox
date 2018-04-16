@@ -28,7 +28,10 @@ public class EntityStats : MonoBehaviour
 
     protected virtual void Awake()
     {
+        EntityBaseStats entityBaseStats = GetEntityBaseStats();
+
         Health = gameObject.AddComponent<Health>();
+        SetResource();
 
         AttackDamage = gameObject.AddComponent<AttackDamage>();
         AbilityPower = gameObject.AddComponent<AbilityPower>();
@@ -40,6 +43,7 @@ public class EntityStats : MonoBehaviour
         MovementSpeed = gameObject.AddComponent<MovementSpeed>();
 
         HealthRegeneration = gameObject.AddComponent<HealthRegeneration>();
+        SetResourceRegeneration();
         Lethality = gameObject.AddComponent<Lethality>();
         ArmorPenetrationPercent = gameObject.AddComponent<ArmorPenetrationPercent>();
         MagicPenetrationFlat = gameObject.AddComponent<MagicPenetrationFlat>();
@@ -51,7 +55,7 @@ public class EntityStats : MonoBehaviour
 
         ExtraAdjustments();
 
-        SetBaseStats(GetEntityBaseStats());
+        SetBaseStats(entityBaseStats);
     }
 
     protected virtual EntityBaseStats GetEntityBaseStats()
@@ -96,4 +100,7 @@ public class EntityStats : MonoBehaviour
         AttackRange.SetBaseValue(entityBaseStats.BaseAttackRange);
         Tenacity.SetBaseValue(entityBaseStats.BaseTenacity);
     }
+
+    protected virtual void SetResource() { }
+    protected virtual void SetResourceRegeneration() { }
 }

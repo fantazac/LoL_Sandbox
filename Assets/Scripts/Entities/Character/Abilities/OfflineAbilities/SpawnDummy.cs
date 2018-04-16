@@ -35,6 +35,7 @@ public abstract class SpawnDummy : GroundTargeted, OfflineAbility
 
     public void RemoveAllDummies()
     {
+        StopAllCoroutines();
         while (dummies.Count > 0)//more efficient way to do this?
         {
             if (dummies[0])
@@ -63,8 +64,7 @@ public abstract class SpawnDummy : GroundTargeted, OfflineAbility
         dummy.transform.rotation = Quaternion.LookRotation((transform.position - dummy.transform.position).normalized);
         dummy.SetDummyTeamAndID(team, ++dummyId);
         dummies.Add(dummy.gameObject);
-        StaticObjects.Character.HealthBarManager.SetupHealthBarForCharacter(dummy);
-
+        
         FinishAbilityCast();
     }
 

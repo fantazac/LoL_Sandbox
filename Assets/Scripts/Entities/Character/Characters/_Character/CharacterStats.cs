@@ -6,19 +6,10 @@ public abstract class CharacterStats : EntityStats
 {
     //extra stats characters have that other entities don't
 
-    protected override void Awake()
-    {
-        SetResource();
-
-        base.Awake();
-    }
-
     protected override EntityBaseStats GetEntityBaseStats()
     {
         return gameObject.AddComponent<CharacterBaseStats>();
     }
-
-    protected virtual void SetResource() { }
 
     protected override void SetBaseStats(EntityBaseStats entityBaseStats)
     {
