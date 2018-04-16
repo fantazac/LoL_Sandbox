@@ -45,7 +45,7 @@ public class Lucian_P : PassiveTargeted, PassiveCharacterAbility
     {
         base.Start();
 
-        AbilityBuffs = new AbilityBuff[] { GetComponent<Lucian_P_Buff>() };
+        AbilityBuffs = new AbilityBuff[] { gameObject.AddComponent<Lucian_P_Buff>() };
 
         foreach (Ability ability in character.CharacterAbilityManager.CharacterAbilities)
         {

@@ -31,7 +31,7 @@ public class Recall : AutoTargetedBlink, OtherCharacterAbility
     {
         base.Start();
 
-        AbilityBuffs = new AbilityBuff[] { GetComponent<Recall_Buff>() };
+        AbilityBuffs = new AbilityBuff[] { gameObject.AddComponent<Recall_Buff>() };
 
         AbilityBuffs[0].OnAbilityBuffRemoved += RemoveBuffFromEntityHit;
     }

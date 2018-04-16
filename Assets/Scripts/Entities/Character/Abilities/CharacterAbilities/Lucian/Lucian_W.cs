@@ -46,8 +46,8 @@ public class Lucian_W : DirectionTargetedProjectile, CharacterAbility
     {
         base.Start();
 
-        AbilityBuffs = new AbilityBuff[] { GetComponent<Lucian_W_Buff>() };
-        AbilityDebuffs = new AbilityBuff[] { GetComponent<Lucian_W_Debuff>() };
+        AbilityBuffs = new AbilityBuff[] { gameObject.AddComponent<Lucian_W_Buff>() };
+        AbilityDebuffs = new AbilityBuff[] { gameObject.AddComponent<Lucian_W_Debuff>() };
 
         AbilityDebuffs[0].OnAbilityBuffRemoved += RemoveDebuffFromEntityHit;
     }

@@ -30,8 +30,8 @@ public class Heal : SelfTargeted, SummonerAbility
     {
         base.Start();
 
-        AbilityBuffs = new AbilityBuff[] { GetComponent<Heal_Buff>() };
-        AbilityDebuffs = new AbilityBuff[] { GetComponent<Heal_Debuff>() };
+        AbilityBuffs = new AbilityBuff[] { gameObject.AddComponent<Heal_Buff>() };
+        AbilityDebuffs = new AbilityBuff[] { gameObject.AddComponent<Heal_Debuff>() };
 
         character.CharacterLevelManager.OnLevelUp += OnCharacterLevelUp;
     }
@@ -60,12 +60,15 @@ public class Heal : SelfTargeted, SummonerAbility
         Character targetedCharacter = null;
         Character tempCharacter;
 
+        //TODO: Extract this into a class/method called 
+
         if (hit.point != Vector3.down)
         {
             float distance = float.MaxValue;
             float tempDistance;
 
-            foreach (Collider collider in Physics.OverlapSphere(hit.point, MOUSE_RADIUS))
+            Vector3 mouseGroundPosition = Vector3.right * hit.point.x + Vector3.forward * hit.point.z;
+            foreach (Collider collider in Physics.OverlapCapsule(mouseGroundPosition, mouseGroundPosition + Vector3.up * 5, MOUSE_RADIUS))
             {
                 tempCharacter = collider.GetComponent<Character>();
                 if (tempCharacter != null && tempCharacter != character && TargetIsValid.CheckIfTargetIsValid(tempCharacter, affectedUnitType, character.Team))
@@ -85,7 +88,8 @@ public class Heal : SelfTargeted, SummonerAbility
             float lowestHealth = float.MaxValue;
             float tempLowestHealth;
 
-            foreach (Collider collider in Physics.OverlapSphere(transform.position, range))
+            Vector3 groundPosition = Vector3.right * transform.position.x + Vector3.forward * transform.position.z;
+            foreach (Collider collider in Physics.OverlapCapsule(groundPosition, groundPosition + Vector3.up * 5, range))
             {
                 tempCharacter = collider.GetComponent<Character>();
                 if (tempCharacter != null && tempCharacter != character && TargetIsValid.CheckIfTargetIsValid(tempCharacter, affectedUnitType, character.Team))

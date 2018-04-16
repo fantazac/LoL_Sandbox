@@ -37,6 +37,8 @@ public abstract class AbilityBuff : MonoBehaviour
         buffSprite = Resources.Load<Sprite>(buffSpritePath);
     }
 
+    protected virtual void Start() { }
+
     protected abstract void SetSpritePaths();
 
     public virtual void ApplyBuffToEntityHit(Entity entityHit, int currentStacksOrBuffValue)

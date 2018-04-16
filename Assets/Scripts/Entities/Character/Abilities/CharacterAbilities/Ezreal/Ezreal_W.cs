@@ -39,7 +39,7 @@ public class Ezreal_W : DirectionTargetedProjectile, CharacterAbility
     {
         base.Start();
 
-        AbilityBuffs = new AbilityBuff[] { GetComponent<Ezreal_W_Buff>() };
+        AbilityBuffs = new AbilityBuff[] { gameObject.AddComponent<Ezreal_W_Buff>() };
     }
 
     protected override IEnumerator AbilityWithCastTime()

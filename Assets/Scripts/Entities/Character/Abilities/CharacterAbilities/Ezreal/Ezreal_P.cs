@@ -26,7 +26,7 @@ public class Ezreal_P : PassiveTargeted, PassiveCharacterAbility
     {
         base.Start();
 
-        AbilityBuffs = new AbilityBuff[] { GetComponent<Ezreal_P_Buff>() };
+        AbilityBuffs = new AbilityBuff[] { gameObject.AddComponent<Ezreal_P_Buff>() };
 
         foreach (Ability ability in character.CharacterAbilityManager.CharacterAbilities)
         {

@@ -26,10 +26,10 @@ public class Heal_Buff : AbilityBuff
         buffSpritePath = "Sprites/Characters/SummonerAbilities/Ghost";
     }
 
-    protected override void Awake()
+    protected override void Start()
     {
-        base.Awake();
-
+        base.Start();
+        
         healDebuff = GetComponent<Heal_Debuff>();
     }
 
