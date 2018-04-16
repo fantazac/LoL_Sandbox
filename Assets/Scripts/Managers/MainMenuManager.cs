@@ -72,8 +72,14 @@ public class MainMenuManager : MonoBehaviour
             {
                 mainMenuCamera.SetActive(true);
                 StaticObjects.Character.CharacterMovement.UnsubscribeCameraEvent();
-                StaticObjects.Character.RemoveHealthBar();
-                PhotonNetwork.Destroy(StaticObjects.Character.transform.parent.gameObject);
+                if (StaticObjects.OnlineMode)
+                {
+                    PhotonNetwork.Destroy(StaticObjects.Character.transform.parent.gameObject);
+                }
+                else
+                {
+                    Destroy(StaticObjects.Character.transform.parent.gameObject);
+                }
                 StaticObjects.Character = null;
                 StaticObjects.CharacterCamera = null;
                 state = MainMenuState.CHARACTER_SELECT;

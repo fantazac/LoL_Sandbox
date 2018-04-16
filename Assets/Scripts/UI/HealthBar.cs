@@ -171,6 +171,17 @@ public class HealthBar : MonoBehaviour
         }
     }
 
+    private void OnDestroy()
+    {
+        character.EntityStats.Health.OnCurrentHealthValueChanged -= OnCurrentHealthChanged;
+        character.EntityStats.Health.OnMaxHealthValueChanged -= OnMaxHealthChanged;
+        if (character.EntityStats.Resource)
+        {
+            character.EntityStats.Resource.OnCurrentResourceValueChanged -= OnCurrentResourceChanged;
+            character.EntityStats.Resource.OnMaxResourceValueChanged -= OnMaxResourceChanged;
+        }
+    }
+
     private float GetHealthSeperatorFactor()
     {
         if (maxHealth < 3000)

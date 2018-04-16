@@ -10,11 +10,11 @@ public abstract class SpawnDummy : GroundTargeted, OfflineAbility
     protected int dummyId;
     protected EntityTeam team;
 
-    protected List<GameObject> dummies;
+    protected List<Dummy> dummies;
 
     protected SpawnDummy()
     {
-        dummies = new List<GameObject>();
+        dummies = new List<Dummy>();
         OfflineOnly = true;
 
         IsEnabled = true;
@@ -40,9 +40,9 @@ public abstract class SpawnDummy : GroundTargeted, OfflineAbility
         {
             if (dummies[0])
             {
-                dummies[0].GetComponent<Character>().RemoveHealthBar();
+                dummies[0].RemoveHealthBar();
             }
-            Destroy(dummies[0]);
+            Destroy(dummies[0].gameObject);
             dummies.RemoveAt(0);
         }
     }
@@ -53,7 +53,7 @@ public abstract class SpawnDummy : GroundTargeted, OfflineAbility
 
         if (dummies.Count == MAXIMUM_DUMMY_AMOUNT)
         {
-            Destroy(dummies[0]);
+            Destroy(dummies[0].gameObject);
             dummies.RemoveAt(0);
         }
         if (dummyId == 4 || dummyId == 8)
@@ -63,7 +63,7 @@ public abstract class SpawnDummy : GroundTargeted, OfflineAbility
         Dummy dummy = ((GameObject)Instantiate(Resources.Load(dummyResourcePath), destination, Quaternion.identity)).GetComponent<Dummy>();
         dummy.transform.rotation = Quaternion.LookRotation((transform.position - dummy.transform.position).normalized);
         dummy.SetDummyTeamAndID(team, ++dummyId);
-        dummies.Add(dummy.gameObject);
+        dummies.Add(dummy);
         
         FinishAbilityCast();
     }
