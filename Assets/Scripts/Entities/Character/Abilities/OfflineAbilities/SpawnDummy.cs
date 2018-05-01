@@ -41,8 +41,8 @@ public abstract class SpawnDummy : GroundTargeted, OfflineAbility
             if (dummies[0])
             {
                 dummies[0].RemoveHealthBar();
+                Destroy(dummies[0].gameObject);
             }
-            Destroy(dummies[0].gameObject);
             dummies.RemoveAt(0);
         }
     }
