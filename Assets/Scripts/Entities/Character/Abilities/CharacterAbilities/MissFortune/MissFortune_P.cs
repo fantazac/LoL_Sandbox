@@ -57,7 +57,7 @@ public class MissFortune_P : PassiveTargeted, PassiveCharacterAbility
         if (entityHit != lastEntityHit)
         {
             AbilityBuffs[0].ConsumeBuff(lastEntityHit);
-            AbilityBuffs[0].AddNewBuffToEntityHit(entityHit);
+            AbilityBuffs[0].AddNewBuffToAffectedEntity(entityHit);
 
             lastEntityHit = entityHit;
 

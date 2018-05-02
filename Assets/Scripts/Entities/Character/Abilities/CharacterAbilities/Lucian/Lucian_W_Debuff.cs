@@ -18,4 +18,9 @@ public class Lucian_W_Debuff : AbilityBuff
     {
         buffSpritePath = "Sprites/Characters/CharacterAbilities/Lucian/LucianW_Debuff";
     }
+
+    protected override Buff CreateNewBuff(Entity affectedEntity)
+    {
+        return new Buff(this, affectedEntity, 0, buffDuration);
+    }
 }

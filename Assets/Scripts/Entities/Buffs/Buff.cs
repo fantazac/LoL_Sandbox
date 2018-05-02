@@ -9,7 +9,7 @@ public class Buff
     public float DurationForUI { get; private set; }
     public float DurationRemaining { get; private set; }
 
-    public int BuffValue { get; private set; }
+    public float BuffValue { get; private set; }
     public int CurrentStacks { get; private set; }
     public int MaximumStacks { get; private set; }
     public float StackDecayingDelay { get; private set; }
@@ -20,7 +20,7 @@ public class Buff
     public bool HasValueToSet { get; private set; }
 
     //With stacks that decay 1 by 1 at a certain delay
-    public Buff(AbilityBuff sourceAbilityBuff, Entity affectedEntity, int buffValue, float buffDuration, int maximumStacks, float stackDecayingDelay)
+    public Buff(AbilityBuff sourceAbilityBuff, Entity affectedEntity, float buffValue, float buffDuration, int maximumStacks, float stackDecayingDelay)
     {
         SourceAbilityBuff = sourceAbilityBuff;
         this.affectedEntity = affectedEntity;
@@ -40,16 +40,13 @@ public class Buff
     public Buff(AbilityBuff sourceAbilityBuff, Entity affectedEntity) : this(sourceAbilityBuff, affectedEntity, 0, 0, 0, 0) { }
 
     //No duration, no stacks
-    public Buff(AbilityBuff sourceAbilityBuff, Entity affectedEntity, int buffValue) : this(sourceAbilityBuff, affectedEntity, buffValue, 0, 0, 0) { }
+    public Buff(AbilityBuff sourceAbilityBuff, Entity affectedEntity, float buffValue) : this(sourceAbilityBuff, affectedEntity, buffValue, 0, 0, 0) { }
 
-    //No buff value, no stacks
-    public Buff(AbilityBuff sourceAbilityBuff, Entity affectedEntity, float duration) : this(sourceAbilityBuff, affectedEntity, 0, duration, 0, 0) { }
+    //No stacks (EzrealW, LucianP)
+    public Buff(AbilityBuff sourceAbilityBuff, Entity affectedEntity, float buffValue, float duration) : this(sourceAbilityBuff, affectedEntity, buffValue, duration, 0, 0) { }
 
-    //No stacks
-    public Buff(AbilityBuff sourceAbilityBuff, Entity affectedEntity, int buffValue, float duration) : this(sourceAbilityBuff, affectedEntity, buffValue, duration, 0, 0) { }
-
-    //With stacks that disappear instantly if the buff expires
-    public Buff(AbilityBuff sourceAbilityBuff, Entity affectedEntity, int buffValue, float duration, int maximumStacks) : this(sourceAbilityBuff, affectedEntity, buffValue, duration, maximumStacks, 0) { }
+    //With stacks that disappear instantly if the buff expires (EzrealP)
+    public Buff(AbilityBuff sourceAbilityBuff, Entity affectedEntity, float buffValue, float duration, int maximumStacks) : this(sourceAbilityBuff, affectedEntity, buffValue, duration, maximumStacks, 0) { }
 
     public void SetBuffValue(int buffValue)
     {
@@ -74,26 +71,12 @@ public class Buff
 
     public void ApplyBuff()
     {
-        if (!HasStacks && BuffValue > 0)
-        {
-            SourceAbilityBuff.ApplyBuffToEntityHit(affectedEntity, BuffValue);
-        }
-        else
-        {
-            SourceAbilityBuff.ApplyBuffToEntityHit(affectedEntity, CurrentStacks);
-        }
+        SourceAbilityBuff.ApplyBuffToAffectedEntity(affectedEntity, BuffValue, CurrentStacks);
     }
 
     public void RemoveBuff()
     {
-        if (!HasStacks && BuffValue > 0)
-        {
-            SourceAbilityBuff.RemoveBuffFromEntityHit(affectedEntity, BuffValue);
-        }
-        else
-        {
-            SourceAbilityBuff.RemoveBuffFromEntityHit(affectedEntity, CurrentStacks);
-        }
+        SourceAbilityBuff.RemoveBuffFromAffectedEntity(affectedEntity, BuffValue, CurrentStacks);
     }
 
     public void ConsumeBuff()
@@ -140,8 +123,8 @@ public class Buff
     {
         if (CurrentStacks < MaximumStacks)
         {
-            SourceAbilityBuff.RemoveBuffFromEntityHit(affectedEntity, CurrentStacks);
-            SourceAbilityBuff.ApplyBuffToEntityHit(affectedEntity, ++CurrentStacks);
+            SourceAbilityBuff.RemoveBuffFromAffectedEntity(affectedEntity, BuffValue, CurrentStacks);
+            SourceAbilityBuff.ApplyBuffToAffectedEntity(affectedEntity, BuffValue, ++CurrentStacks);
         }
     }
 

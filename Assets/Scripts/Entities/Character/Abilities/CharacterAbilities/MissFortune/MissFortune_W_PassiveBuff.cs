@@ -24,17 +24,8 @@ public class MissFortune_W_PassiveBuff : AbilityBuff
         buffSpritePath = "Sprites/Characters/CharacterAbilities/MissFortune/MissFortuneW_PassiveBuff";
     }
 
-    /*public override void ApplyBuffToEntityHit(Entity entityHit, int currentStacks)
+    protected override Buff CreateNewBuff(Entity affectedEntity)
     {
-        entityHit.EntityStats.MovementSpeed.AddFlatBonus(baseBuffFlatBonus);
-
-        base.ApplyBuffToEntityHit(entityHit, currentStacks);
+        return new Buff(this, affectedEntity, baseBuffFlatBonus, timeBeforeFullBuffPower);//TODO
     }
-
-    public override void RemoveBuffFromEntityHit(Entity entityHit, int currentStacks)
-    {
-        entityHit.EntityStats.MovementSpeed.RemoveFlatBonus(baseBuffFlatBonus);
-
-        base.RemoveBuffFromEntityHit(entityHit, currentStacks);
-    }*/
 }

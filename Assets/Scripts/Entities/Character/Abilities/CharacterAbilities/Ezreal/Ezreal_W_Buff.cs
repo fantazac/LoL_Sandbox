@@ -19,17 +19,22 @@ public class Ezreal_W_Buff : AbilityBuff
         buffSpritePath = "Sprites/Characters/CharacterAbilities/Ezreal/EzrealW_Buff";
     }
 
-    public override void ApplyBuffToEntityHit(Entity entityHit, int currentStacks)
+    public override void ApplyBuffToAffectedEntity(Entity affectedEntity, float buffValue, int currentStacks)
     {
-        entityHit.EntityStats.AttackSpeed.AddPercentBonus(buffPercentBonus);
+        affectedEntity.EntityStats.AttackSpeed.AddPercentBonus(buffValue);
 
-        base.ApplyBuffToEntityHit(entityHit, currentStacks);
+        base.ApplyBuffToAffectedEntity(affectedEntity, buffValue, currentStacks);
     }
 
-    public override void RemoveBuffFromEntityHit(Entity entityHit, int currentStacks)
+    public override void RemoveBuffFromAffectedEntity(Entity affectedEntity, float buffValue, int currentStacks)
     {
-        entityHit.EntityStats.AttackSpeed.RemovePercentBonus(buffPercentBonus);
+        affectedEntity.EntityStats.AttackSpeed.RemovePercentBonus(buffValue);
 
-        base.RemoveBuffFromEntityHit(entityHit, currentStacks);
+        base.RemoveBuffFromAffectedEntity(affectedEntity, buffValue, currentStacks);
+    }
+
+    protected override Buff CreateNewBuff(Entity affectedEntity)
+    {
+        return new Buff(this, affectedEntity, buffPercentBonus, buffDuration, buffMaximumStacks);
     }
 }

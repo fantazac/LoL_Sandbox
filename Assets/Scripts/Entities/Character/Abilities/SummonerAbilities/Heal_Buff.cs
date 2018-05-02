@@ -33,7 +33,7 @@ public class Heal_Buff : AbilityBuff
         healDebuff = GetComponent<Heal_Debuff>();
     }
 
-    public override void ApplyBuffToEntityHit(Entity entityHit, int currentStacks)
+    public override void ApplyBuffToAffectedEntity(Entity entityHit, float buffValue, int currentStacks)
     {
         if (entityHit.EntityBuffManager.GetDebuffOfSameType(healDebuff) != null)
         {
@@ -45,13 +45,18 @@ public class Heal_Buff : AbilityBuff
         }
         entityHit.EntityStats.MovementSpeed.AddPercentBonus(buffPercentBonus);
 
-        base.ApplyBuffToEntityHit(entityHit, currentStacks);
+        base.ApplyBuffToAffectedEntity(entityHit, buffValue, currentStacks);
     }
 
-    public override void RemoveBuffFromEntityHit(Entity entityHit, int currentStacks)
+    public override void RemoveBuffFromAffectedEntity(Entity entityHit, float buffValue, int currentStacks)
     {
         entityHit.EntityStats.MovementSpeed.RemovePercentBonus(buffPercentBonus);
 
-        base.RemoveBuffFromEntityHit(entityHit, currentStacks);
+        base.RemoveBuffFromAffectedEntity(entityHit, buffValue, currentStacks);
+    }
+
+    protected override Buff CreateNewBuff(Entity affectedEntity)
+    {
+        return new Buff(this, affectedEntity, buffFlatBonus, buffDuration);
     }
 }

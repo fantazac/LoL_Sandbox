@@ -34,32 +34,22 @@ public class Ezreal_P_Buff : AbilityBuff
         }
     }
 
-    public override void AddNewBuffToEntityHit(Entity entityHit)
+    public override void ApplyBuffToAffectedEntity(Entity affectedEntity, float buffValue, int currentStacks)
     {
-        Buff buff = entityHit.EntityBuffManager.GetBuff(this);
-        if (buff == null)
-        {
-            buff = new Buff(this, entityHit, buffDuration, buffMaximumStacks);
-            entityHit.EntityBuffManager.ApplyBuff(buff, buffSprite);
-        }
-        else
-        {
-            buff.IncreaseCurrentStacks();
-            buff.ResetDurationRemaining();
-        }
+        affectedEntity.EntityStats.AttackSpeed.AddPercentBonus(buffPercentBonus * currentStacks);
+
+        base.ApplyBuffToAffectedEntity(affectedEntity, buffValue, currentStacks);
     }
 
-    public override void ApplyBuffToEntityHit(Entity entityHit, int currentStacks)
+    public override void RemoveBuffFromAffectedEntity(Entity affectedEntity, float buffValue, int currentStacks)
     {
-        entityHit.EntityStats.AttackSpeed.AddPercentBonus(buffPercentBonus * currentStacks);
+        affectedEntity.EntityStats.AttackSpeed.RemovePercentBonus(buffPercentBonus * currentStacks);
 
-        base.ApplyBuffToEntityHit(entityHit, currentStacks);
+        base.RemoveBuffFromAffectedEntity(affectedEntity, buffValue, currentStacks);
     }
 
-    public override void RemoveBuffFromEntityHit(Entity entityHit, int currentStacks)
+    protected override Buff CreateNewBuff(Entity affectedEntity)
     {
-        entityHit.EntityStats.AttackSpeed.RemovePercentBonus(buffPercentBonus * currentStacks);
-
-        base.RemoveBuffFromEntityHit(entityHit, currentStacks);
+        return new Buff(this, affectedEntity, buffPercentBonus, buffDuration, buffMaximumStacks);
     }
 }

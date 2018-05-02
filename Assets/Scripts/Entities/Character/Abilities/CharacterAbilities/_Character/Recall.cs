@@ -70,7 +70,7 @@ public class Recall : AutoTargetedBlink, OtherCharacterAbility
         ((Character)entityHit).CharacterAbilityManager.OnAnAbilityUsed += CancelRecall;
         ((Character)entityHit).CharacterMovement.CharacterMoved += CancelRecall;
         //TODO: if cc'd, cancel aswell
-        AbilityBuffs[0].AddNewBuffToEntityHit(entityHit);
+        AbilityBuffs[0].AddNewBuffToAffectedEntity(entityHit);
     }
 
     private void RemoveBuffFromEntityHit(Entity entityHit)

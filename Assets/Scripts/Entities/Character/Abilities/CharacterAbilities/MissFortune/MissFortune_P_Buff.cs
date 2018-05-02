@@ -14,13 +14,8 @@ public class MissFortune_P_Buff : AbilityBuff
         buffSpritePath = "Sprites/Characters/CharacterAbilities/MissFortune/MissFortuneP_Buff";
     }
 
-    public override void AddNewBuffToEntityHit(Entity entityHit)
+    protected override Buff CreateNewBuff(Entity affectedEntity)
     {
-        Buff buff = entityHit.EntityBuffManager.GetBuff(this);
-        if (buff == null)
-        {
-            buff = new Buff(this, entityHit);
-            entityHit.EntityBuffManager.ApplyBuff(buff, buffSprite);
-        }
+        return new Buff(this, affectedEntity);
     }
 }
