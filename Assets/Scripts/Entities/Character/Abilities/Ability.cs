@@ -5,7 +5,7 @@ using UnityEngine;
 public abstract class Ability : MonoBehaviour
 {
     protected Character character;
-
+    
     protected AbilityAffectedUnitType affectedUnitType;
     protected AbilityEffectType effectType;
     protected AbilityType abilityType;

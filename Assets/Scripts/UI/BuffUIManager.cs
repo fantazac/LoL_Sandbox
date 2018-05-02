@@ -51,7 +51,7 @@ public class BuffUIManager : MonoBehaviour
 
     public void UpdateBuffValue(Buff buff, int buffValue)
     {
-        buffStacksTexts[buff].text = "" + buffValue;
+        buffStacksTexts[buff].text = buffValue > 0 ? "" + buffValue : "";
     }
 
     public void RemoveExpiredBuff(Buff buff)
