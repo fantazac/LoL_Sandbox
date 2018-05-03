@@ -11,8 +11,8 @@ public class Ezreal_P_Buff : AbilityBuff
 
         buffDuration = 6;
         buffMaximumStacks = 5;
-        buffPercentBonus = 10;
-        buffPercentBonusPerLevel = 2;
+        buffPercentValue = 10;
+        buffPercentValuePerLevel = 2;
     }
 
     protected override void SetSpritePaths()
@@ -51,6 +51,6 @@ public class Ezreal_P_Buff : AbilityBuff
 
     protected override Buff CreateNewBuff(Entity affectedEntity)
     {
-        return new Buff(this, affectedEntity, buffPercentBonus, buffDuration, buffMaximumStacks);
+        return new Buff(this, affectedEntity, buffPercentValue, buffDuration, buffMaximumStacks);
     }
 }

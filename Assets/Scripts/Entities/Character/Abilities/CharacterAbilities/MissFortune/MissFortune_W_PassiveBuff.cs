@@ -17,8 +17,8 @@ public class MissFortune_W_PassiveBuff : AbilityBuff
         baseBuffFlatBonus = 25;
         timeBeforeFullBuffPower = 5;
 
-        buffFlatBonus = 60;
-        buffFlatBonusPerLevel = 10;
+        buffFlatValue = 60;
+        buffFlatValuePerLevel = 10;
     }
 
     protected override void SetSpritePaths()
@@ -59,6 +59,6 @@ public class MissFortune_W_PassiveBuff : AbilityBuff
 
     protected override Buff CreateNewBuff(Entity affectedEntity)
     {
-        return new BuffUpdatingWithDelay(this, affectedEntity, baseBuffFlatBonus, timeBeforeFullBuffPower, buffFlatBonus);
+        return new BuffUpdatingWithDelay(this, affectedEntity, baseBuffFlatBonus, timeBeforeFullBuffPower, buffFlatValue);
     }
 }

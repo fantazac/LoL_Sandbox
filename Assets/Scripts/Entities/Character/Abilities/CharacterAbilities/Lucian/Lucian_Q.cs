@@ -79,7 +79,8 @@ public class Lucian_Q : UnitTargeted, CharacterAbility
         character.CharacterOrientation.RotateCharacterInstantly(destinationOnCast);
 
         AreaOfEffect aoe = ((GameObject)Instantiate(areaOfEffectPrefab, positionOnCast, rotationOnCast)).GetComponent<AreaOfEffect>();
-        aoe.ActivateAreaOfEffect(new List<Entity>(), character.Team, affectedUnitType, durationAoE);
+        aoe.CreateAreaOfEffect(new List<Entity>(), character.Team, affectedUnitType, durationAoE);
+        aoe.ActivateAreaOfEffect();
         aoe.OnAbilityEffectHit += OnAreaOfEffectHit;
         FinishAbilityCast();
     }

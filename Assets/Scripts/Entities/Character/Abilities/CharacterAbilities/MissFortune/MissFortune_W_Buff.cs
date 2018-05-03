@@ -10,8 +10,8 @@ public class MissFortune_W_Buff : AbilityBuff
         buffName = "Guns Blazing";
 
         buffDuration = 4;
-        buffPercentBonus = 40;
-        buffPercentBonusPerLevel = 15;
+        buffPercentValue = 40;
+        buffPercentValuePerLevel = 15;
     }
 
     protected override void SetSpritePaths()
@@ -21,20 +21,20 @@ public class MissFortune_W_Buff : AbilityBuff
 
     public override void ApplyBuffToAffectedEntity(Entity affectedEntity, float buffValue, int currentStacks)
     {
-        affectedEntity.EntityStats.AttackSpeed.AddPercentBonus(buffPercentBonus);
+        affectedEntity.EntityStats.AttackSpeed.AddPercentBonus(buffPercentValue);
 
         base.ApplyBuffToAffectedEntity(affectedEntity, buffValue, currentStacks);
     }
 
     public override void RemoveBuffFromAffectedEntity(Entity affectedEntity, float buffValue, int currentStacks)
     {
-        affectedEntity.EntityStats.AttackSpeed.RemovePercentBonus(buffPercentBonus);
+        affectedEntity.EntityStats.AttackSpeed.RemovePercentBonus(buffPercentValue);
 
         base.RemoveBuffFromAffectedEntity(affectedEntity, buffValue, currentStacks);
     }
 
     protected override Buff CreateNewBuff(Entity affectedEntity)
     {
-        return new Buff(this, affectedEntity, buffPercentBonus, buffDuration);
+        return new Buff(this, affectedEntity, buffPercentValue, buffDuration);
     }
 }

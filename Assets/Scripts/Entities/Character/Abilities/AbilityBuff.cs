@@ -13,10 +13,10 @@ public abstract class AbilityBuff : MonoBehaviour
 
     protected float buffDuration;
     protected int buffMaximumStacks;
-    protected float buffFlatBonus;
-    protected float buffFlatBonusPerLevel;
-    protected float buffPercentBonus;
-    protected float buffPercentBonusPerLevel;
+    protected float buffFlatValue;
+    protected float buffFlatValuePerLevel;
+    protected float buffPercentValue;
+    protected float buffPercentValuePerLevel;
 
     protected Sprite buffSprite;
     protected string buffSpritePath;
@@ -60,18 +60,33 @@ public abstract class AbilityBuff : MonoBehaviour
 
     public void LevelUp()
     {
-        float oldFlatValue = buffFlatBonus;
-        float oldPercentValue = buffPercentBonus;
+        float oldFlatValue = buffFlatValue;
+        float oldPercentValue = buffPercentValue;
 
-        buffFlatBonus += buffFlatBonusPerLevel;
-        buffPercentBonus += buffPercentBonusPerLevel;
+        buffFlatValue += buffFlatValuePerLevel;
+        buffPercentValue += buffPercentValuePerLevel;
 
-        UpdateBuffOnAffectedEntities(oldFlatValue, buffFlatBonus, oldPercentValue, buffPercentBonus);
+        UpdateBuffOnAffectedEntities(oldFlatValue, buffFlatValue, oldPercentValue, buffPercentValue);
     }
 
     public virtual void AddNewBuffToAffectedEntity(Entity affectedEntity)
     {
         SetupBuff(isADebuff ? affectedEntity.EntityBuffManager.GetDebuff(this) : affectedEntity.EntityBuffManager.GetBuff(this), affectedEntity);
+    }
+
+    public virtual void AddNewBuffToAffectedEntities(List<Entity> previousEntitiesHit, List<Entity> entitiesHit)
+    {
+        foreach(Entity previousEntityHit in previousEntitiesHit)
+        {
+            if (!entitiesHit.Contains(previousEntityHit))
+            {
+                ConsumeBuff(previousEntityHit);
+            }
+        }
+        foreach(Entity entityHit in entitiesHit)
+        {
+            SetupBuff(isADebuff ? entityHit.EntityBuffManager.GetDebuff(this) : entityHit.EntityBuffManager.GetBuff(this), entityHit);
+        }
     }
 
     protected virtual void SetupBuff(Buff buff, Entity affectedEntity)
