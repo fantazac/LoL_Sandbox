@@ -21,10 +21,10 @@ public class Heal_Debuff : AbilityBuff
 
     public override void AddNewBuffToAffectedEntity(Entity affectedEntity)
     {
-        SetupBuff(affectedEntity.EntityBuffManager.GetDebuffOfSameType(this), affectedEntity, true);
+        SetupBuff(affectedEntity.EntityBuffManager.GetDebuffOfSameType(this), affectedEntity);
     }
 
-    protected override void SetupBuff(Buff buff, Entity affectedEntity, bool isADebuff = false)
+    protected override void SetupBuff(Buff buff, Entity affectedEntity)
     {
         if (buff != null)
         {

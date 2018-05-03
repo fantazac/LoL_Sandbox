@@ -73,7 +73,7 @@ public abstract class AbilityBuff : MonoBehaviour
         SetupBuff(isADebuff ? affectedEntity.EntityBuffManager.GetDebuff(this) : affectedEntity.EntityBuffManager.GetBuff(this), affectedEntity);
     }
 
-    protected virtual void SetupBuff(Buff buff, Entity affectedEntity, bool isADebuff = false)
+    protected virtual void SetupBuff(Buff buff, Entity affectedEntity)
     {
         if (buff == null)
         {
