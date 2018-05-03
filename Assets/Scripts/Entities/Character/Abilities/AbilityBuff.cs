@@ -9,6 +9,7 @@ public abstract class AbilityBuff : MonoBehaviour
     protected Character character;
 
     protected bool isADebuff;
+    protected bool showBuffValueOnUI;
 
     protected float buffDuration;
     protected int buffMaximumStacks;
@@ -77,7 +78,12 @@ public abstract class AbilityBuff : MonoBehaviour
     {
         if (buff == null)
         {
-            affectedEntity.EntityBuffManager.ApplyBuff(CreateNewBuff(affectedEntity), buffSprite, isADebuff);
+            buff = CreateNewBuff(affectedEntity);
+            affectedEntity.EntityBuffManager.ApplyBuff(buff, buffSprite, isADebuff);
+            if (showBuffValueOnUI)
+            {
+                buff.SetBuffValueOnUI();
+            }
         }
         else if (buffDuration > 0)
         {

@@ -60,4 +60,9 @@ public class MissFortune_W : SelfTargeted, CharacterAbility
 
         StartCooldown(startCooldownOnAbilityCast);
     }
+
+    public override void EnableAbilityPassive()
+    {
+        AbilityBuffs[0].AddNewBuffToAffectedEntity(character);
+    }
 }

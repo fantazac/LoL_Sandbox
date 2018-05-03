@@ -3,16 +3,16 @@
 public class Buff
 {
     public AbilityBuff SourceAbilityBuff { get; private set; }
-    private Entity affectedEntity;
+    protected Entity affectedEntity;
 
-    public float Duration { get; private set; }
-    public float DurationForUI { get; private set; }
-    public float DurationRemaining { get; private set; }
+    public float Duration { get; protected set; }
+    public float DurationForUI { get; protected set; }
+    public float DurationRemaining { get; protected set; }
 
-    public float BuffValue { get; private set; }
-    public int CurrentStacks { get; private set; }
-    public int MaximumStacks { get; private set; }
-    public float StackDecayingDelay { get; private set; }
+    public float BuffValue { get; protected set; }
+    public int CurrentStacks { get; protected set; }
+    public int MaximumStacks { get; protected set; }
+    public float StackDecayingDelay { get; protected set; }
 
     public bool HasBeenConsumed { get; private set; }
     public bool HasDuration { get; private set; }
@@ -31,9 +31,14 @@ public class Buff
         MaximumStacks = maximumStacks;
         StackDecayingDelay = stackDecayingDelay;
 
-        CurrentStacks = maximumStacks > 0 ? 1 : 0;
-        HasDuration = buffDuration > 0;
-        HasStacks = maximumStacks > 0;
+        InitProperties();
+    }
+
+    protected void InitProperties()
+    {
+        CurrentStacks = MaximumStacks > 0 ? 1 : 0;
+        HasDuration = Duration > 0;
+        HasStacks = MaximumStacks > 0;
     }
 
     //No buff value, no duration, no stacks
@@ -48,7 +53,7 @@ public class Buff
     //With stacks that disappear instantly if the buff expires (EzrealP)
     public Buff(AbilityBuff sourceAbilityBuff, Entity affectedEntity, float buffValue, float duration, int maximumStacks) : this(sourceAbilityBuff, affectedEntity, buffValue, duration, maximumStacks, 0) { }
 
-    public void SetBuffValue(int buffValue)
+    public void SetBuffValue(float buffValue)
     {
         BuffValue = buffValue;
     }
@@ -58,7 +63,7 @@ public class Buff
         HasValueToSet = true;
     }
 
-    public void SetBuffValueOnUI(int buffValue)
+    public void SetBuffValueOnUI(float buffValue)
     {
         SetBuffValue(buffValue);
         SetBuffValueOnUI();
@@ -79,7 +84,7 @@ public class Buff
         SourceAbilityBuff.RemoveBuffFromAffectedEntity(affectedEntity, BuffValue, CurrentStacks);
     }
 
-    public void ConsumeBuff()
+    public virtual void ConsumeBuff()
     {
         CurrentStacks = 0;
         DurationRemaining = 0;

@@ -30,20 +30,21 @@ public class Ezreal_P_Buff : AbilityBuff
                 int currentStacks = buff.CurrentStacks;
                 affectedEntity.EntityStats.AttackSpeed.RemovePercentBonus(oldPercentValue * currentStacks);
                 affectedEntity.EntityStats.AttackSpeed.AddPercentBonus(newPercentValue * currentStacks);
+                buff.SetBuffValue(newPercentValue);
             }
         }
     }
 
     public override void ApplyBuffToAffectedEntity(Entity affectedEntity, float buffValue, int currentStacks)
     {
-        affectedEntity.EntityStats.AttackSpeed.AddPercentBonus(buffPercentBonus * currentStacks);
+        affectedEntity.EntityStats.AttackSpeed.AddPercentBonus(buffValue * currentStacks);
 
         base.ApplyBuffToAffectedEntity(affectedEntity, buffValue, currentStacks);
     }
 
     public override void RemoveBuffFromAffectedEntity(Entity affectedEntity, float buffValue, int currentStacks)
     {
-        affectedEntity.EntityStats.AttackSpeed.RemovePercentBonus(buffPercentBonus * currentStacks);
+        affectedEntity.EntityStats.AttackSpeed.RemovePercentBonus(buffValue * currentStacks);
 
         base.RemoveBuffFromAffectedEntity(affectedEntity, buffValue, currentStacks);
     }

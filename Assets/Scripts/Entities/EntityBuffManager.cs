@@ -44,7 +44,14 @@ public class EntityBuffManager : MonoBehaviour
             buff.ReduceDurationRemaining(deltaTime);
             if (hasBuffUIManager)
             {
-                selectedUIManager.UpdateBuffDuration(buff, buff.DurationForUI, buff.DurationRemaining, buff.CurrentStacks);
+                if (buff.HasDuration)
+                {
+                    selectedUIManager.UpdateBuffDuration(buff, buff.DurationForUI, buff.DurationRemaining, buff.CurrentStacks);
+                }
+                else
+                {
+                    selectedUIManager.UpdateBuff(buff);
+                }
             }
         }
         if (buff.HasValueToSet)

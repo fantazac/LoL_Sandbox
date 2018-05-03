@@ -256,6 +256,8 @@ public abstract class Ability : MonoBehaviour
         }
     }
 
+    public virtual void EnableAbilityPassive() { }
+
     protected void AbilityHit()
     {
         if (OnAbilityHit != null)
@@ -392,6 +394,7 @@ public abstract class Ability : MonoBehaviour
         {
             AbilityLevel++;
             EnableAbility();
+            EnableAbilityPassive();
         }
     }
 
