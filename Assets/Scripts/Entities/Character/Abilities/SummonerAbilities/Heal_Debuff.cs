@@ -28,7 +28,7 @@ public class Heal_Debuff : AbilityBuff
     {
         if (buff != null)
         {
-            Consume(buff);
+            Consume(affectedEntity, buff);
         }
         affectedEntity.EntityBuffManager.ApplyBuff(CreateNewBuff(affectedEntity), buffSprite, isADebuff);
     }

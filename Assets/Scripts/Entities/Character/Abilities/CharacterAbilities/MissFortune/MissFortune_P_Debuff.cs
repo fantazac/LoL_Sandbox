@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MissFortune_P_Buff : AbilityBuff
+public class MissFortune_P_Debuff : AbilityBuff
 {
-    protected MissFortune_P_Buff()
+    protected MissFortune_P_Debuff()
     {
         buffName = "Love Tap";
+
+        isADebuff = true;
     }
 
     protected override void SetSpritePaths()

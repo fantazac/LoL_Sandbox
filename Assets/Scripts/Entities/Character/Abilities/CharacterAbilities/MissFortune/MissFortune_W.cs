@@ -8,6 +8,10 @@ public class MissFortune_W : SelfTargeted, CharacterAbility
     private float baseCooldownReductionOnPassiveHit;
     private float cooldownReductionOnPassiveHit;
 
+    private IEnumerator passiveBuffCooldownAfterTakingDamage;
+    private float timeBeforeEnablingPassive;
+    private WaitForSeconds delayPassiveBuff;
+
     protected MissFortune_W()
     {
         abilityName = "Strut";
@@ -23,6 +27,9 @@ public class MissFortune_W : SelfTargeted, CharacterAbility
         startCooldownOnAbilityCast = true;
 
         baseCooldownReductionOnPassiveHit = 2;
+
+        timeBeforeEnablingPassive = 5;
+        delayPassiveBuff = new WaitForSeconds(timeBeforeEnablingPassive);
     }
 
     protected override void SetResourcePaths()
@@ -37,6 +44,7 @@ public class MissFortune_W : SelfTargeted, CharacterAbility
         AbilityBuffs = new AbilityBuff[] { gameObject.AddComponent<MissFortune_W_PassiveBuff>(), gameObject.AddComponent<MissFortune_W_Buff>() };
 
         GetComponent<MissFortune_P>().OnPassiveHit += OnPassiveHit;
+        character.EntityStats.Health.OnHealthReduced += OnDamageTaken;
     }
 
     protected override void SetCooldownForAbilityAffectedByCooldownReduction(float cooldownReduction)
@@ -54,6 +62,29 @@ public class MissFortune_W : SelfTargeted, CharacterAbility
         }
     }
 
+    private void OnDamageTaken()
+    {
+        if (AbilityLevel > 0)
+        {
+            AbilityBuffs[0].ConsumeBuff(character);
+
+            if (passiveBuffCooldownAfterTakingDamage != null)
+            {
+                StopCoroutine(passiveBuffCooldownAfterTakingDamage);
+            }
+            passiveBuffCooldownAfterTakingDamage = PassiveBuffCooldownAfterTakingDamage();
+            StartCoroutine(passiveBuffCooldownAfterTakingDamage);
+        }
+    }
+
+    private void OnRevive()//TODO
+    {
+        if (AbilityLevel > 0)
+        {
+            EnableAbilityPassive();
+        }
+    }
+
     public override void UseAbility(Vector3 destination)
     {
         AbilityBuffs[1].AddNewBuffToAffectedEntity(character);
@@ -64,5 +95,13 @@ public class MissFortune_W : SelfTargeted, CharacterAbility
     public override void EnableAbilityPassive()
     {
         AbilityBuffs[0].AddNewBuffToAffectedEntity(character);
+    }
+
+    private IEnumerator PassiveBuffCooldownAfterTakingDamage()
+    {
+        yield return delayPassiveBuff;
+
+        passiveBuffCooldownAfterTakingDamage = null;
+        EnableAbilityPassive();
     }
 }

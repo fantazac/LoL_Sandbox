@@ -97,14 +97,14 @@ public abstract class AbilityBuff : MonoBehaviour
 
     public void ConsumeBuff(Entity affectedEntity)
     {
-        Consume(isADebuff ? affectedEntity.EntityBuffManager.GetDebuff(this) : affectedEntity.EntityBuffManager.GetBuff(this));
+        Consume(affectedEntity, isADebuff ? affectedEntity.EntityBuffManager.GetDebuff(this) : affectedEntity.EntityBuffManager.GetBuff(this));
     }
 
-    protected void Consume(Buff buff)
+    protected void Consume(Entity affectedEntity, Buff buff)
     {
         if (buff != null)
         {
-            character.EntityBuffManager.ConsumeBuff(buff, isADebuff);
+            affectedEntity.EntityBuffManager.ConsumeBuff(buff, isADebuff);
         }
     }
 
