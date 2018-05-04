@@ -7,11 +7,7 @@ public class MissFortune_R : DirectionTargetedProjectile, CharacterAbility
     private int amountOfWavesToShoot;
     private int amountOfWavesToShootPerLevel;
 
-    private float timeBeforeFirstWave;
-    private WaitForSeconds delayFirstWave;
     private WaitForSeconds delayBetweenWaves;
-
-    private Projectile projectile;
 
     protected MissFortune_R()
     {
@@ -34,11 +30,10 @@ public class MissFortune_R : DirectionTargetedProjectile, CharacterAbility
         channelTime = 3;
         delayChannelTime = new WaitForSeconds(channelTime);
 
-        timeBeforeFirstWave = 0.25f;
-        delayFirstWave = new WaitForSeconds(timeBeforeFirstWave);
         amountOfWavesToShoot = 12;// 12/14/16
         amountOfWavesToShootPerLevel = 2;
-        delayBetweenWaves = new WaitForSeconds((channelTime - timeBeforeFirstWave) / amountOfWavesToShoot);//TODO: VERIFY REAL VALUE, CHANGE IN LevelUpExtraStats ASWELL
+        Debug.Log(channelTime / amountOfWavesToShoot);
+        delayBetweenWaves = new WaitForSeconds((channelTime / amountOfWavesToShoot) - 0.015f);
 
 
         CanMoveWhileChanneling = true;
@@ -66,8 +61,8 @@ public class MissFortune_R : DirectionTargetedProjectile, CharacterAbility
     public override void LevelUpExtraStats()
     {
         amountOfWavesToShoot += amountOfWavesToShootPerLevel;
-
-        delayBetweenWaves = new WaitForSeconds((channelTime - timeBeforeFirstWave) / amountOfWavesToShoot);
+        Debug.Log(channelTime / amountOfWavesToShoot);
+        delayBetweenWaves = new WaitForSeconds((channelTime / amountOfWavesToShoot) - 0.015f);
     }
 
     protected override void RotationOnAbilityCast(Vector3 destination)
@@ -82,11 +77,7 @@ public class MissFortune_R : DirectionTargetedProjectile, CharacterAbility
         AddNewBuffToEntityHit(character);
         IsBeingChanneled = true;
 
-        yield return delayFirstWave;
-
-        ShootWave(0);
-
-        for (int i = 1; i < amountOfWavesToShoot; i++)
+        for (int i = 0; i < amountOfWavesToShoot; i++)
         {
             yield return delayBetweenWaves;
 
