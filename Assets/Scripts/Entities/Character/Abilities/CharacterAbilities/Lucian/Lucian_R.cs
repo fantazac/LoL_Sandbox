@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 public class Lucian_R : DirectionTargetedProjectile, CharacterAbility
 {
+    private float durationOfActive;
     private int amountOfProjectilesToShoot;
     private int amountOfProjectilesToShootPerLevel;
     private float offset;

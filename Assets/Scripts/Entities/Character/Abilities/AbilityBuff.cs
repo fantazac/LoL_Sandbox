@@ -110,7 +110,7 @@ public abstract class AbilityBuff : MonoBehaviour
         }
     }
 
-    public void ConsumeBuff(Entity affectedEntity)
+    public virtual void ConsumeBuff(Entity affectedEntity)
     {
         Consume(affectedEntity, isADebuff ? affectedEntity.EntityBuffManager.GetDebuff(this) : affectedEntity.EntityBuffManager.GetBuff(this));
     }

@@ -27,7 +27,6 @@ public abstract class Ability : MonoBehaviour
     protected float cooldownRemaining;
     protected WaitForSeconds delayCastTime;
     protected WaitForSeconds delayChannelTime;
-    protected float durationOfActive;
     protected RaycastHit hit;
     protected Vector3 destinationOnCast;
     protected Vector3 positionOnCast;
