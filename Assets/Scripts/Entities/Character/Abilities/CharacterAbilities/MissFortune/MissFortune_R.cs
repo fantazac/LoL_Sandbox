@@ -32,9 +32,7 @@ public class MissFortune_R : DirectionTargetedProjectile, CharacterAbility
 
         amountOfWavesToShoot = 12;// 12/14/16
         amountOfWavesToShootPerLevel = 2;
-        Debug.Log(channelTime / amountOfWavesToShoot);
         delayBetweenWaves = new WaitForSeconds((channelTime / amountOfWavesToShoot) - 0.015f);
-
 
         CanMoveWhileChanneling = true;
         CanUseAnyAbilityWhileChanneling = true;
@@ -61,7 +59,6 @@ public class MissFortune_R : DirectionTargetedProjectile, CharacterAbility
     public override void LevelUpExtraStats()
     {
         amountOfWavesToShoot += amountOfWavesToShootPerLevel;
-        Debug.Log(channelTime / amountOfWavesToShoot);
         delayBetweenWaves = new WaitForSeconds((channelTime / amountOfWavesToShoot) - 0.015f);
     }
 
@@ -81,7 +78,7 @@ public class MissFortune_R : DirectionTargetedProjectile, CharacterAbility
         {
             yield return delayBetweenWaves;
 
-            ShootWave(i);
+            ShootWave();
         }
 
         IsBeingChanneled = false;
@@ -110,7 +107,7 @@ public class MissFortune_R : DirectionTargetedProjectile, CharacterAbility
         AbilityBuffs[0].ConsumeBuff(character);
     }
 
-    private void ShootWave(int waveId)
+    private void ShootWave()
     {
         SpawnProjectile(transform.position + (transform.forward * projectilePrefab.transform.localScale.z * 0.5f), transform.rotation);
     }

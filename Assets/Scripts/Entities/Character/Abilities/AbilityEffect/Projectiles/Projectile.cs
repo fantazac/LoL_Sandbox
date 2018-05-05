@@ -29,4 +29,6 @@ public abstract class Projectile : AbilityEffect
             OnProjectileReachedEnd(this);
         }
     }
+
+    public virtual void ProjectileEffect() { }
 }

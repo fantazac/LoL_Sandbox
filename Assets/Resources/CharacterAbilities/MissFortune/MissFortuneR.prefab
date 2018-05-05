@@ -22,7 +22,7 @@ GameObject:
   - component: {fileID: 33000010553285332}
   - component: {fileID: 65000012449885062}
   - component: {fileID: 23000014271904136}
-  - component: {fileID: 114010344916072658}
+  - component: {fileID: 114240975611163902}
   m_Layer: 9
   m_Name: MissFortuneR
   m_TagString: Untagged
@@ -38,7 +38,7 @@ Transform:
   m_GameObject: {fileID: 1000010764437680}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 1, z: 0}
-  m_LocalScale: {x: 0.65, y: 0.2, z: 0.5}
+  m_LocalScale: {x: 0.65, y: 0.2, z: 0.85}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -96,7 +96,7 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &114010344916072658
+--- !u!114 &114240975611163902
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -104,6 +104,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 1000010764437680}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8e5ad7c25a0d2d40be54362ddf4408c, type: 3}
+  m_Script: {fileID: 11500000, guid: cb394783722fb144fb4519ec7fd25614, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
