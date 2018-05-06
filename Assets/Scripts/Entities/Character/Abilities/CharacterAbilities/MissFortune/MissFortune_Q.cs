@@ -10,6 +10,9 @@ public class MissFortune_Q : UnitTargetedProjectile
 
     private Vector3 vectorOnCast;
 
+    public delegate void OnMissFortuneQHitHandler(Entity entityHit);
+    public event OnMissFortuneQHitHandler OnMissFortuneQHit;
+
     protected MissFortune_Q()
     {
         abilityName = "Double Up";
@@ -75,23 +78,30 @@ public class MissFortune_Q : UnitTargetedProjectile
     protected override void OnAbilityEffectHit(AbilityEffect projectile, Entity entityHit)
     {
         base.OnAbilityEffectHit(projectile, entityHit);
-
-        Entity nextEntity = FindTargetBehindEntityHit(entityHit);
-        if (nextEntity)
+        if (OnMissFortuneQHit != null)
         {
-            /*if(entityHit is dead)
-            {
-                //crit 100%
-            }
-            else
-            {
-                //normal crit chance
-            }*/
+            OnMissFortuneQHit(entityHit);
+        }
 
-            ProjectileUnitTargeted projectile2 = (Instantiate(projectilePrefab, entityHit.transform.position, transform.rotation)).GetComponent<ProjectileUnitTargeted>();
-            projectile2.transform.LookAt(nextEntity.transform.position);
-            projectile2.ShootProjectile(character.Team, nextEntity, speed);
-            projectile2.OnAbilityEffectHit += base.OnAbilityEffectHit;
+        if (entityHit == targetedEntity)
+        {
+            Entity nextEntity = FindTargetBehindEntityHit(entityHit);
+            if (nextEntity)
+            {
+                /*if(entityHit is dead)
+                {
+                    //crit 100%
+                }
+                else
+                {
+                    //normal crit chance
+                }*/
+
+                ProjectileUnitTargeted projectile2 = (Instantiate(projectilePrefab, entityHit.transform.position, transform.rotation)).GetComponent<ProjectileUnitTargeted>();
+                projectile2.transform.LookAt(nextEntity.transform.position);
+                projectile2.ShootProjectile(character.Team, nextEntity, speed);
+                projectile2.OnAbilityEffectHit += OnAbilityEffectHit;
+            }
         }
     }
 

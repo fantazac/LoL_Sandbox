@@ -39,7 +39,8 @@ public class MissFortune_P : PassiveTargeted
         AbilityBuffs = new AbilityBuff[] { gameObject.AddComponent<MissFortune_P_Debuff>() };
 
         character.CharacterLevelManager.OnLevelUp += OnCharacterLevelUp;
-        character.EntityBasicAttack.OnBasicAttackHit += OnBasicAttackHit;
+        character.EntityBasicAttack.OnBasicAttackHit += SetPassiveEffectOnEntityHit;
+        GetComponent<MissFortune_Q>().OnMissFortuneQHit += SetPassiveEffectOnEntityHit;
 
         lastEntityHit = character;
     }
@@ -52,7 +53,7 @@ public class MissFortune_P : PassiveTargeted
         }
     }
 
-    private void OnBasicAttackHit(Entity entityHit)
+    private void SetPassiveEffectOnEntityHit(Entity entityHit)
     {
         if (entityHit != lastEntityHit)
         {
