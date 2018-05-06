@@ -11,7 +11,7 @@ public class AreaOfEffect : AbilityEffect
     public void CreateAreaOfEffect(List<Entity> unitsAlreadyHit, EntityTeam teamOfShooter, AbilityAffectedUnitType affectedUnitType, float duration)
     {
         UnitsAlreadyHit = unitsAlreadyHit;
-        this.teamOfCallingEntity = teamOfShooter;
+        teamOfCallingEntity = teamOfShooter;
         this.affectedUnitType = affectedUnitType;
         this.duration = duration;
     }
@@ -21,7 +21,7 @@ public class AreaOfEffect : AbilityEffect
         if (collidersInChildren)
         {
             this.collidersInChildren = collidersInChildren;
-            foreach(AreaOfEffectCollider aoeCollider in GetComponentsInChildren<AreaOfEffectCollider>())
+            foreach (AreaOfEffectCollider aoeCollider in GetComponentsInChildren<AreaOfEffectCollider>())
             {
                 aoeCollider.OnTriggerEnterInChild += OnTriggerEnterInChild;
             }

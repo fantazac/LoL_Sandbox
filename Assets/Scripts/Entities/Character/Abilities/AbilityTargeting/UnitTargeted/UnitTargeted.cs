@@ -23,7 +23,7 @@ public abstract class UnitTargeted : Ability
         else
         {
             character.CharacterMovement.SetMoveTowardsTarget(target, range, false);
-            character.CharacterMovement.CharacterIsInRange += UseAbilityInRange;
+            character.CharacterMovement.CharacterIsInTargetRange += UseAbilityInRange;
         }
     }
 
