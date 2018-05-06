@@ -77,7 +77,7 @@ public class Lucian_P : PassiveTargeted
         }
     }
 
-    public void OnPassiveHit(Entity entityHit)
+    public void OnPassiveHit(Entity entityHit, bool isACriticalAttack)
     {
         //if (entityHit is Minion)
         //{
@@ -85,8 +85,16 @@ public class Lucian_P : PassiveTargeted
         //}
         //else
         //{
-        entityHit.EntityStats.Health.Reduce(GetAbilityDamage(entityHit));
+        //    entityHit.EntityStats.Health.Reduce(GetAbilityDamage(entityHit));
         //} 
+        if (isACriticalAttack)
+        {
+            entityHit.EntityStats.Health.Reduce(GetAbilityDamage(entityHit) * 1.75f);//TODO: Crit reduction (randuins)? Crit multiplier different than +100% (Jhin, IE)?
+        }
+        else
+        {
+            entityHit.EntityStats.Health.Reduce(GetAbilityDamage(entityHit));
+        }
         UseAbility(entityHit);
     }
 }

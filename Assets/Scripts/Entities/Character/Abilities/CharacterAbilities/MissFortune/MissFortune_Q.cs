@@ -82,26 +82,44 @@ public class MissFortune_Q : UnitTargetedProjectile
         {
             OnMissFortuneQHit(entityHit);
         }
-
-        if (entityHit == targetedEntity)
+        Entity nextEntity = FindTargetBehindEntityHit(entityHit);
+        if (nextEntity)
         {
-            Entity nextEntity = FindTargetBehindEntityHit(entityHit);
-            if (nextEntity)
+            bool isACriticalAttack;
+            if (entityHit.EntityStats.Health.GetCurrentValue() <= 0)
             {
-                /*if(entityHit is dead)
-                {
-                    //crit 100%
-                }
-                else
-                {
-                    //normal crit chance
-                }*/
-
-                ProjectileUnitTargeted projectile2 = (Instantiate(projectilePrefab, entityHit.transform.position, transform.rotation)).GetComponent<ProjectileUnitTargeted>();
-                projectile2.transform.LookAt(nextEntity.transform.position);
-                projectile2.ShootProjectile(character.Team, nextEntity, speed);
-                projectile2.OnAbilityEffectHit += OnAbilityEffectHit;
+                isACriticalAttack = true;
             }
+            else
+            {
+                isACriticalAttack = AttackIsCritical.CheckIfAttackIsCritical(character.EntityStats.CriticalStrikeChance.GetTotal());
+            }
+
+            ProjectileUnitTargeted projectile2 = (Instantiate(projectilePrefab, entityHit.transform.position, transform.rotation)).GetComponent<ProjectileUnitTargeted>();
+            projectile2.transform.LookAt(nextEntity.transform.position);
+            projectile2.ShootProjectile(character.Team, nextEntity, speed, isACriticalAttack);
+            projectile2.OnProjectileUnitTargetedHit += OnProjectileHit;
+        }
+    }
+
+    private void OnProjectileHit(AbilityEffect projectile, Entity entityHit, bool isACriticalAttack)
+    {
+        if (isACriticalAttack)
+        {
+            entityHit.EntityStats.Health.Reduce(GetAbilityDamage(entityHit) * 2);//TODO: Crit reduction (randuins)? Crit multiplier different than +100% (Jhin, IE)?
+        }
+        else
+        {
+            entityHit.EntityStats.Health.Reduce(GetAbilityDamage(entityHit));
+        }
+        if (effectType == AbilityEffectType.SINGLE_TARGET)
+        {
+            Destroy(projectile.gameObject);
+        }
+        AbilityHit();
+        if (OnMissFortuneQHit != null)
+        {
+            OnMissFortuneQHit(entityHit);
         }
     }
 

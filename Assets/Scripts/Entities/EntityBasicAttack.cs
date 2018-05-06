@@ -106,15 +106,47 @@ public abstract class EntityBasicAttack : MonoBehaviour
         attackIsInQueue = false;
 
         ProjectileUnitTargeted projectile = (Instantiate(basicAttackPrefab, transform.position, transform.rotation)).GetComponent<ProjectileUnitTargeted>();
-        projectile.ShootProjectile(entity.Team, target, speed);
-        projectile.OnAbilityEffectHit += BasicAttackHit;
+        projectile.ShootProjectile(entity.Team, target, speed, AttackIsCritical.CheckIfAttackIsCritical(entity.EntityStats.CriticalStrikeChance.GetTotal()));
+        projectile.OnProjectileUnitTargetedHit += BasicAttackHit;
     }
 
-    protected virtual void BasicAttackHit(AbilityEffect basicAttackProjectile, Entity entityHit)
+    protected virtual void BasicAttackHit(AbilityEffect basicAttackProjectile, Entity entityHit, bool isACriticalAttack)
     {
-        entityHit.EntityStats.Health.Reduce(entity.EntityStats.AttackDamage.GetTotal());
+        if (isACriticalAttack)
+        {
+            entityHit.EntityStats.Health.Reduce(GetBasicAttackDamage(entityHit) * 2);//TODO: Crit reduction (randuins)? Crit multiplier different than +100% (Jhin, IE)?
+        }
+        else
+        {
+            entityHit.EntityStats.Health.Reduce(GetBasicAttackDamage(entityHit));
+        }
         Destroy(basicAttackProjectile.gameObject);
         CallOnBasicAttackHitEvent(entityHit);
+    }
+
+    protected float GetBasicAttackDamage(Entity entityHit)
+    {
+        return ApplyResistanceToDamage(entityHit, entity.EntityStats.AttackDamage.GetTotal());
+    }
+
+    protected float ApplyResistanceToDamage(Entity entityHit, float damage)
+    {
+        float totalResistance = entityHit.EntityStats.Armor.GetTotal();
+        totalResistance *= (1 - entity.EntityStats.ArmorPenetrationPercent.GetTotal());
+        totalResistance -= entity.EntityStats.Lethality.GetCurrentValue();
+        return damage * GetResistanceDamageTakenMultiplier(totalResistance);
+    }
+
+    protected float GetResistanceDamageTakenMultiplier(float totalResistance)
+    {
+        if (totalResistance >= 0)
+        {
+            return 100 / (100 + totalResistance);
+        }
+        else
+        {
+            return 2 - (100 / (100 - totalResistance));
+        }
     }
 
     protected void CallOnBasicAttackHitEvent(Entity entityHit)
