@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Ezreal_E : GroundTargetedBlink, CharacterAbility
+public class Ezreal_E : GroundTargetedBlink
 {
     private string projectilePrefabPath;
     private GameObject projectilePrefab;

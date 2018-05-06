@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class SpawnDummy : GroundTargeted, OfflineAbility
+public abstract class SpawnDummy : GroundTargeted
 {
     protected const int MAXIMUM_DUMMY_AMOUNT = 4;
 

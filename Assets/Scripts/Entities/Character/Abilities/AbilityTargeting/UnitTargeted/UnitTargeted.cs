@@ -34,17 +34,14 @@ public abstract class UnitTargeted : Ability
         character.CharacterMovement.StopAllMovement();
         character.CharacterMovement.SetMoveTowardsTarget(target, character.EntityStats.AttackRange.GetTotal(), true);
 
+        targetedEntity = target;
         destinationOnCast = target.transform.position;
         RotationOnAbilityCast(target.transform.position);
 
         StartCorrectCoroutine();
     }
 
-    protected virtual void OnAreaOfEffectHit(AbilityEffect areaOfEffect, Entity entityHit)
-    {
-        entityHit.EntityStats.Health.Reduce(GetAbilityDamage(entityHit));
-        AbilityHit();
-    }
+    protected virtual void OnAbilityEffectHit(AbilityEffect abilityEffect, Entity entityHit) { }
 
     public override bool CanBeCast(Vector3 mousePosition) { return false; }
     public override Vector3 GetDestination() { return Vector3.down; }

@@ -11,4 +11,17 @@ public abstract class GroundTargetedAoE : GroundTargeted
     {
         areaOfEffectPrefab = Resources.Load<GameObject>(areaOfEffectPrefabPath);
     }
+
+    /*public override void UseAbility(Vector3 destination)
+    {
+        if (Vector3.Distance(destination, transform.position) <= range)
+        {
+            base.UseAbility(destination);
+        }
+        else
+        {
+            character.CharacterMovement.SetMoveTowardsPoint(destination, range);
+            character.CharacterMovement.CharacterIsInRange += base.UseAbility;//TODO: MAKE SURE IT'S THE RIGHT USEABILITY
+        }
+    }*/
 }

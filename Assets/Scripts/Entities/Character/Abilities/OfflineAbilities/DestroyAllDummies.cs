@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DestroyAllDummies : AutoTargeted, OfflineAbility
+public class DestroyAllDummies : AutoTargeted
 {
     private SpawnDummy[] spawnDummyAbilities;
 

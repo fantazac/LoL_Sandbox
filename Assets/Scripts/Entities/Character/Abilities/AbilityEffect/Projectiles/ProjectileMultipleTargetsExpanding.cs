@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ProjectileMultipleTargetsExpanding : ProjectileMultipleTargets
+public class ProjectileMultipleTargetsExpanding : ProjectileMultipleTargets//TODO: Currently only works for MissFortune_R
 {
     private float initialXScale;
     private float finalXScale;

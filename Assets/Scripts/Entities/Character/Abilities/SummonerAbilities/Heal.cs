@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class Heal : SelfTargeted, SummonerAbility
+public class Heal : SelfTargeted
 {
     private const float MOUSE_RADIUS = 3;
 

@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Teleport : GroundTargetedBlink, SummonerAbility
+public class Teleport : GroundTargetedBlink//TODO: UnitTargeted
 {
     protected Teleport()
     {

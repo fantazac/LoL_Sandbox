@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Lucian_W : DirectionTargetedProjectile, CharacterAbility
+public class Lucian_W : DirectionTargetedProjectile
 {
     private string explosionAreaOfEffectPrefabPath;
     private GameObject explosionAreaOfEffectPrefab;

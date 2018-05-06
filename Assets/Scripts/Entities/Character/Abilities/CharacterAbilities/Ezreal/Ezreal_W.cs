@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Ezreal_W : DirectionTargetedProjectile, CharacterAbility
+public class Ezreal_W : DirectionTargetedProjectile
 {
     protected Ezreal_W()
     {

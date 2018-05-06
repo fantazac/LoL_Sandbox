@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class MissFortune_R : DirectionTargetedProjectile, CharacterAbility
+public class MissFortune_R : DirectionTargetedProjectile
 {
     private int amountOfWavesToShoot;
     private int amountOfWavesToShootPerLevel;

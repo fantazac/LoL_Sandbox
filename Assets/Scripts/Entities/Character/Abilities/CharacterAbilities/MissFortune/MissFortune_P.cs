@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MissFortune_P : PassiveTargeted, PassiveCharacterAbility
+public class MissFortune_P : PassiveTargeted
 {
     private Entity lastEntityHit;
 
