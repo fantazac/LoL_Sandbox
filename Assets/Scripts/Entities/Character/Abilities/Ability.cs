@@ -5,15 +5,13 @@ using UnityEngine;
 public abstract class Ability : MonoBehaviour
 {
     protected Character character;
-
+    
     protected AbilityAffectedUnitType affectedUnitType;
     protected AbilityEffectType effectType;
     protected AbilityType abilityType;
     protected DamageType damageType;
 
     protected IEnumerator abilityEffectCoroutine;
-
-    public bool DoNotShowAbilityOnUI { get; protected set; }
 
     public AbilityCategory AbilityCategory { get; set; }
     public int AbilityLevel { get; protected set; }
@@ -27,10 +25,10 @@ public abstract class Ability : MonoBehaviour
     protected float cooldownRemaining;
     protected WaitForSeconds delayCastTime;
     protected WaitForSeconds delayChannelTime;
-    protected float durationOfActive;
     protected RaycastHit hit;
     protected Vector3 destinationOnCast;
     protected Vector3 positionOnCast;
+    protected Entity targetedEntity;
     protected Quaternion rotationOnCast;
     protected float range;
     protected float speed;
@@ -256,6 +254,8 @@ public abstract class Ability : MonoBehaviour
         }
     }
 
+    public virtual void EnableAbilityPassive() { }
+
     protected void AbilityHit()
     {
         if (OnAbilityHit != null)
@@ -392,6 +392,7 @@ public abstract class Ability : MonoBehaviour
         {
             AbilityLevel++;
             EnableAbility();
+            EnableAbilityPassive();
         }
     }
 
@@ -548,10 +549,4 @@ public abstract class Ability : MonoBehaviour
     protected virtual IEnumerator AbilityWithChannelTime() { yield return null; }
     protected virtual IEnumerator AbilityWithoutDelay() { yield return null; }
 }
-
-public interface CharacterAbility { }
-public interface PassiveCharacterAbility { }
-public interface OtherCharacterAbility { }
-public interface SummonerAbility { }
-public interface OfflineAbility { }
 

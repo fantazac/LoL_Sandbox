@@ -36,34 +36,59 @@ public class EntityBuffManager : MonoBehaviour
         }
     }
 
-    private void UpdateBuff(Buff buff, List<Buff> buffs, int position, float deltaTime, BuffUIManager buffUIManager)
+    private void UpdateBuff(Buff buff, List<Buff> buffsList, int position, float deltaTime, BuffUIManager selectedUIManager)
     {
-        bool hasBuffUIManager = buffUIManager != null;
+        bool hasBuffUIManager = selectedUIManager != null;
         if (buff.HasDuration)
         {
             buff.ReduceDurationRemaining(deltaTime);
             if (hasBuffUIManager)
             {
-                buffUIManager.UpdateBuffDuration(buff, buff.DurationForUI, buff.DurationRemaining, buff.CurrentStacks);
+                if (buff.HasDuration)
+                {
+                    selectedUIManager.UpdateBuffDuration(buff, buff.DurationForUI, buff.DurationRemaining, buff.CurrentStacks);
+                }
+                else
+                {
+                    selectedUIManager.UpdateBuff(buff);
+                }
             }
         }
         if (buff.HasValueToSet)
         {
             if (hasBuffUIManager)
             {
-                buffUIManager.UpdateBuffValue(buff, buff.BuffValue);
+                selectedUIManager.UpdateBuffValue(buff, (int)buff.BuffValue);
             }
             buff.ValueWasSet();
         }
         if (buff.HasBeenConsumed)
         {
-            if (hasBuffUIManager)
-            {
-                buffUIManager.RemoveExpiredBuff(buff);
-            }
-            buff.RemoveBuff();
-            buffs.RemoveAt(position);
+            ConsumeBuff(buff, buffsList, position, selectedUIManager);
         }
+    }
+
+    public void ConsumeBuff(Buff buff, bool isADebuff)
+    {
+        int position;
+        List<Buff> buffsList = isADebuff ? debuffs : buffs;
+        for (position = buffsList.Count - 1; position >= 0; position--)
+        {
+            if (buffsList[position] == buff)
+            {
+                ConsumeBuff(buff, buffsList, position, isADebuff ? debuffUIManager : buffUIManager);
+            }
+        }
+    }
+
+    public void ConsumeBuff(Buff buff, List<Buff> buffsList, int position, BuffUIManager selectedUIManager)
+    {
+        if (selectedUIManager)
+        {
+            selectedUIManager.RemoveExpiredBuff(buff);
+        }
+        buff.RemoveBuff();
+        buffsList.RemoveAt(position);
     }
 
     public Buff GetBuff(AbilityBuff sourceAbilityBuff)
@@ -117,7 +142,7 @@ public class EntityBuffManager : MonoBehaviour
     public Buff GetDebuffOfSameType(AbilityBuff sourceAbilityBuff)
     {
         Buff debuff = null;
-        
+
         foreach (Buff activeDebuff in debuffs)
         {
             if (activeDebuff.SourceAbilityBuff.GetType() == sourceAbilityBuff.GetType())
@@ -130,23 +155,26 @@ public class EntityBuffManager : MonoBehaviour
         return debuff;
     }
 
-    public void ApplyBuff(Buff buff, Sprite buffSprite)
+    public void ApplyBuff(Buff buff, Sprite buffSprite, bool isADebuff)
     {
-        buffs.Add(buff);
-        buff.ApplyBuff();
-        if (buffUIManager != null)
+        if (isADebuff)
         {
-            buffUIManager.SetNewBuff(buff, buffSprite);
+            debuffs.Add(buff);
+            buff.ApplyBuff();
+            if (debuffUIManager != null)
+            {
+                debuffUIManager.SetNewBuff(buff, buffSprite);
+            }
         }
-    }
+        else
+        {
+            buffs.Add(buff);
+            buff.ApplyBuff();
+            if (buffUIManager != null)
+            {
+                buffUIManager.SetNewBuff(buff, buffSprite);
+            }
+        }
 
-    public void ApplyDebuff(Buff debuff, Sprite debuffSprite)
-    {
-        debuffs.Add(debuff);
-        debuff.ApplyBuff();
-        if (debuffUIManager != null)
-        {
-            debuffUIManager.SetNewBuff(debuff, debuffSprite);
-        }
     }
 }

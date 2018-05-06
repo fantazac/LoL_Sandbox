@@ -19,14 +19,22 @@ public class Heal_Debuff : AbilityBuff
         buffSpritePath = "Sprites/Characters/SummonerAbilities/Heal";
     }
 
-    public override void AddNewDebuffToEntityHit(Entity entityHit)
+    public override void AddNewBuffToAffectedEntity(Entity affectedEntity)
     {
-        Buff debuff = entityHit.EntityBuffManager.GetDebuffOfSameType(this);
-        if (debuff != null)
+        SetupBuff(affectedEntity.EntityBuffManager.GetDebuffOfSameType(this), affectedEntity);
+    }
+
+    protected override void SetupBuff(Buff buff, Entity affectedEntity)
+    {
+        if (buff != null)
         {
-            debuff.ConsumeBuff();
+            Consume(affectedEntity, buff);
         }
-        debuff = new Buff(this, entityHit, buffDuration);
-        entityHit.EntityBuffManager.ApplyDebuff(debuff, buffSprite);
+        affectedEntity.EntityBuffManager.ApplyBuff(CreateNewBuff(affectedEntity), buffSprite, isADebuff);
+    }
+
+    protected override Buff CreateNewBuff(Entity affectedEntity)
+    {
+        return new Buff(this, affectedEntity, 0, buffDuration);
     }
 }

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Ezreal_Q : DirectionTargetedProjectile, CharacterAbility
+public class Ezreal_Q : DirectionTargetedProjectile
 {
     private float cooldownReductionOnProjectileHit;
 
@@ -26,7 +26,7 @@ public class Ezreal_Q : DirectionTargetedProjectile, CharacterAbility
         resourceCost = 28;// 28/31/34/37/40
         resourceCostPerLevel = 3;
         baseCooldown = 5.5f;// 5.5f/5.25f/5/4.75f/4.5f
-        baseCooldownPerLevel = 0.25f;
+        baseCooldownPerLevel = -0.25f;
         castTime = 0.25f;//TODO: VERIFY ACTUAL VALUE
         delayCastTime = new WaitForSeconds(castTime);
 

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class SpawnDummy : GroundTargeted, OfflineAbility
+public abstract class SpawnDummy : GroundTargeted
 {
     protected const int MAXIMUM_DUMMY_AMOUNT = 4;
 
@@ -41,8 +41,8 @@ public abstract class SpawnDummy : GroundTargeted, OfflineAbility
             if (dummies[0])
             {
                 dummies[0].RemoveHealthBar();
+                Destroy(dummies[0].gameObject);
             }
-            Destroy(dummies[0].gameObject);
             dummies.RemoveAt(0);
         }
     }

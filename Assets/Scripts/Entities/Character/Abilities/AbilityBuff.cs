@@ -9,13 +9,14 @@ public abstract class AbilityBuff : MonoBehaviour
     protected Character character;
 
     protected bool isADebuff;
+    protected bool showBuffValueOnUI;
 
     protected float buffDuration;
     protected int buffMaximumStacks;
-    protected float buffFlatBonus;
-    protected float buffFlatBonusPerLevel;
-    protected float buffPercentBonus;
-    protected float buffPercentBonusPerLevel;
+    protected float buffFlatValue;
+    protected float buffFlatValuePerLevel;
+    protected float buffPercentValue;
+    protected float buffPercentValuePerLevel;
 
     protected Sprite buffSprite;
     protected string buffSpritePath;
@@ -41,22 +42,17 @@ public abstract class AbilityBuff : MonoBehaviour
 
     protected abstract void SetSpritePaths();
 
-    protected void OnDestroy()
+    public virtual void ApplyBuffToAffectedEntity(Entity affectedEntity, float buffValue, int currentStacks)
     {
-
+        EntitiesAffectedByBuff.Add(affectedEntity);
     }
 
-    public virtual void ApplyBuffToEntityHit(Entity entityHit, int currentStacksOrBuffValue)
+    public virtual void RemoveBuffFromAffectedEntity(Entity affectedEntity, float buffValue, int currentStacks)
     {
-        EntitiesAffectedByBuff.Add(entityHit);
-    }
-
-    public virtual void RemoveBuffFromEntityHit(Entity entityHit, int currentStacksOrBuffValue)
-    {
-        EntitiesAffectedByBuff.Remove(entityHit);
+        EntitiesAffectedByBuff.Remove(affectedEntity);
         if (OnAbilityBuffRemoved != null)
         {
-            OnAbilityBuffRemoved(entityHit);
+            OnAbilityBuffRemoved(affectedEntity);
         }
     }
 
@@ -64,58 +60,68 @@ public abstract class AbilityBuff : MonoBehaviour
 
     public void LevelUp()
     {
-        float oldFlatValue = buffFlatBonus;
-        float oldPercentValue = buffPercentBonus;
+        float oldFlatValue = buffFlatValue;
+        float oldPercentValue = buffPercentValue;
 
-        buffFlatBonus += buffFlatBonusPerLevel;
-        buffPercentBonus += buffPercentBonusPerLevel;
+        buffFlatValue += buffFlatValuePerLevel;
+        buffPercentValue += buffPercentValuePerLevel;
 
-        UpdateBuffOnAffectedEntities(oldFlatValue, buffFlatBonus, oldPercentValue, buffPercentBonus);
+        UpdateBuffOnAffectedEntities(oldFlatValue, buffFlatValue, oldPercentValue, buffPercentValue);
     }
 
-    public virtual void AddNewBuffToEntityHit(Entity entityHit)
+    public virtual void AddNewBuffToAffectedEntity(Entity affectedEntity)
     {
-        Buff buff = entityHit.EntityBuffManager.GetBuff(this);
+        SetupBuff(isADebuff ? affectedEntity.EntityBuffManager.GetDebuff(this) : affectedEntity.EntityBuffManager.GetBuff(this), affectedEntity);
+    }
+
+    public virtual void AddNewBuffToAffectedEntities(List<Entity> previousEntitiesHit, List<Entity> entitiesHit)
+    {
+        foreach(Entity previousEntityHit in previousEntitiesHit)
+        {
+            if (!entitiesHit.Contains(previousEntityHit))
+            {
+                ConsumeBuff(previousEntityHit);
+            }
+        }
+        foreach(Entity entityHit in entitiesHit)
+        {
+            SetupBuff(isADebuff ? entityHit.EntityBuffManager.GetDebuff(this) : entityHit.EntityBuffManager.GetBuff(this), entityHit);
+        }
+    }
+
+    protected virtual void SetupBuff(Buff buff, Entity affectedEntity)
+    {
         if (buff == null)
         {
-            buff = new Buff(this, entityHit, buffDuration);
-            entityHit.EntityBuffManager.ApplyBuff(buff, buffSprite);
+            buff = CreateNewBuff(affectedEntity);
+            affectedEntity.EntityBuffManager.ApplyBuff(buff, buffSprite, isADebuff);
+            if (showBuffValueOnUI)
+            {
+                buff.SetBuffValueOnUI();
+            }
         }
         else if (buffDuration > 0)
         {
+            if (buffMaximumStacks > 0)
+            {
+                buff.IncreaseCurrentStacks();
+            }
             buff.ResetDurationRemaining();
         }
     }
 
-    public virtual void AddNewDebuffToEntityHit(Entity entityHit)
+    public virtual void ConsumeBuff(Entity affectedEntity)
     {
-        Buff debuff = entityHit.EntityBuffManager.GetDebuff(this);
-        if (debuff == null)
-        {
-            debuff = new Buff(this, entityHit, buffDuration);
-            entityHit.EntityBuffManager.ApplyDebuff(debuff, buffSprite);
-        }
-        else if (buffDuration > 0)
-        {
-            debuff.ResetDurationRemaining();
-        }
+        Consume(affectedEntity, isADebuff ? affectedEntity.EntityBuffManager.GetDebuff(this) : affectedEntity.EntityBuffManager.GetBuff(this));
     }
 
-    public void ConsumeBuff(Entity affectedTarget)
+    protected void Consume(Entity affectedEntity, Buff buff)
     {
-        Buff buff = affectedTarget.EntityBuffManager.GetBuff(this);
         if (buff != null)
         {
-            buff.ConsumeBuff();
+            affectedEntity.EntityBuffManager.ConsumeBuff(buff, isADebuff);
         }
     }
 
-    public void ConsumeDebuff(Entity affectedTarget)
-    {
-        Buff debuff = affectedTarget.EntityBuffManager.GetDebuff(this);
-        if (debuff != null)
-        {
-            debuff.ConsumeBuff();
-        }
-    }
+    protected abstract Buff CreateNewBuff(Entity affectedEntity);
 }

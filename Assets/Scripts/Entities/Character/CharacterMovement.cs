@@ -17,8 +17,11 @@ public class CharacterMovement : MonoBehaviour
     public delegate void PlayerMovedHandler();
     public event PlayerMovedHandler CharacterMoved;
 
-    public delegate void CharacterIsInRangeHandler(Entity target);
-    public event CharacterIsInRangeHandler CharacterIsInRange;
+    public delegate void CharacterIsInDestinationRangeHandler(Vector3 destination);
+    public event CharacterIsInDestinationRangeHandler CharacterIsInDestinationRange;
+
+    public delegate void CharacterIsInTargetRangeHandler(Entity target);
+    public event CharacterIsInTargetRangeHandler CharacterIsInTargetRange;
 
     private CharacterMovement()
     {
@@ -103,11 +106,18 @@ public class CharacterMovement : MonoBehaviour
         SetMoveTowardsTarget(character.CharacterAbilityManager.FindTarget(entityId, entityType), range, isBasicAttack);
     }
 
-    public void SetMoveTowardsPoint(Vector3 destination)
+    public void SetMoveTowardsPoint(Vector3 destination, float range = 0)
     {
         StopAllMovement();
         this.destination = destination;
-        StartCoroutine(MoveTowardsPoint(destination));
+        if (range > 0)
+        {
+            StartCoroutine(MoveTowardsPoint(destination, range));
+        }
+        else
+        {
+            StartCoroutine(MoveTowardsPoint(destination));
+        }
         character.CharacterOrientation.RotateCharacter(destination);
     }
 
@@ -127,11 +137,34 @@ public class CharacterMovement : MonoBehaviour
         this.destination = Vector3.down;
     }
 
+    private IEnumerator MoveTowardsPoint(Vector3 destination, float range)
+    {
+        while (Vector3.Distance(destination, transform.position) > range)
+        {
+            if (!character.CharacterAbilityManager.IsUsingAbilityPreventingMovement())
+            {
+                transform.position = Vector3.MoveTowards(transform.position, destination, Time.deltaTime * character.EntityStats.MovementSpeed.GetTotal());
+
+                NotifyCharacterMoved();
+            }
+
+            yield return null;
+        }
+
+        if (CharacterIsInDestinationRange != null)
+        {
+            CharacterIsInDestinationRange(destination);
+        }
+
+        this.destination = Vector3.down;
+    }
+
     public void SetCharacterIsInRangeEventForBasicAttack()
     {
         if (target != null)
         {
-            CharacterIsInRange = null;
+            CharacterIsInDestinationRange = null;
+            CharacterIsInTargetRange = null;
             character.EntityBasicAttack.SetupBasicAttack();
         }
     }
@@ -178,9 +211,9 @@ public class CharacterMovement : MonoBehaviour
                 yield return null;
             }
 
-            if (CharacterIsInRange != null)
+            if (CharacterIsInTargetRange != null)
             {
-                CharacterIsInRange(target);
+                CharacterIsInTargetRange(target);
             }
 
             this.target = null;
@@ -235,7 +268,8 @@ public class CharacterMovement : MonoBehaviour
         }
         StopAllCoroutines();
         character.CharacterOrientation.StopMovementRotation();
-        CharacterIsInRange = null;
+        CharacterIsInTargetRange = null;
+        CharacterIsInDestinationRange = null;
         destination = Vector3.down;
         target = null;
     }

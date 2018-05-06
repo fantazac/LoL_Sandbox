@@ -2,11 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Lucian_Q : UnitTargeted, CharacterAbility
+public class Lucian_Q : UnitTargetedAoE
 {
-    private string areaOfEffectPrefabPath;
-    private GameObject areaOfEffectPrefab;
-
     protected float durationAoE;
 
     protected Lucian_Q()
@@ -44,11 +41,6 @@ public class Lucian_Q : UnitTargeted, CharacterAbility
         areaOfEffectPrefabPath = "CharacterAbilities/Lucian/LucianQ";
     }
 
-    protected override void LoadPrefabs()
-    {
-        areaOfEffectPrefab = Resources.Load<GameObject>(areaOfEffectPrefabPath);
-    }
-
     protected override void Start()
     {
         AbilitiesToDisableWhileActive = new Ability[] { this, GetComponent<Lucian_E>() };
@@ -78,9 +70,10 @@ public class Lucian_Q : UnitTargeted, CharacterAbility
         UseResource();
         character.CharacterOrientation.RotateCharacterInstantly(destinationOnCast);
 
-        AreaOfEffect aoe = ((GameObject)Instantiate(areaOfEffectPrefab, positionOnCast, rotationOnCast)).GetComponent<AreaOfEffect>();
-        aoe.ActivateAreaOfEffect(new List<Entity>(), character.Team, affectedUnitType, durationAoE);
-        aoe.OnAbilityEffectHit += OnAreaOfEffectHit;
+        AreaOfEffect aoe = (Instantiate(areaOfEffectPrefab, positionOnCast, rotationOnCast)).GetComponent<AreaOfEffect>();
+        aoe.CreateAreaOfEffect(new List<Entity>(), character.Team, affectedUnitType, durationAoE);
+        aoe.ActivateAreaOfEffect();
+        aoe.OnAbilityEffectHit += OnAbilityEffectHit;
         FinishAbilityCast();
     }
 }

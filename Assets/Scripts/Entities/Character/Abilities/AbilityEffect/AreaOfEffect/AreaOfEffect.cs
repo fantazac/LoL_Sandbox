@@ -8,26 +8,30 @@ public class AreaOfEffect : AbilityEffect
 
     protected bool collidersInChildren;
 
-    public void ActivateAreaOfEffect(List<Entity> unitsAlreadyHit, EntityTeam teamOfShooter, AbilityAffectedUnitType affectedUnitType, float duration)
+    public void CreateAreaOfEffect(List<Entity> unitsAlreadyHit, EntityTeam teamOfShooter, AbilityAffectedUnitType affectedUnitType, float duration)
     {
         UnitsAlreadyHit = unitsAlreadyHit;
-        this.teamOfCallingEntity = teamOfShooter;
+        teamOfCallingEntity = teamOfShooter;
         this.affectedUnitType = affectedUnitType;
         this.duration = duration;
-        StartCoroutine(ActivateAbilityEffect());
     }
 
-    public void ActivateAreaOfEffect(List<Entity> unitsAlreadyHit, EntityTeam teamOfShooter, AbilityAffectedUnitType affectedUnitType, float duration, bool collidersInChildren)
+    public void CreateAreaOfEffect(List<Entity> unitsAlreadyHit, EntityTeam teamOfShooter, AbilityAffectedUnitType affectedUnitType, float duration, bool collidersInChildren)
     {
         if (collidersInChildren)
         {
             this.collidersInChildren = collidersInChildren;
-            foreach(AreaOfEffectCollider aoeCollider in GetComponentsInChildren<AreaOfEffectCollider>())
+            foreach (AreaOfEffectCollider aoeCollider in GetComponentsInChildren<AreaOfEffectCollider>())
             {
                 aoeCollider.OnTriggerEnterInChild += OnTriggerEnterInChild;
             }
         }
-        ActivateAreaOfEffect(unitsAlreadyHit, teamOfShooter, affectedUnitType, duration);
+        CreateAreaOfEffect(unitsAlreadyHit, teamOfShooter, affectedUnitType, duration);
+    }
+
+    public void ActivateAreaOfEffect()
+    {
+        StartCoroutine(ActivateAbilityEffect());
     }
 
     protected override IEnumerator ActivateAbilityEffect()

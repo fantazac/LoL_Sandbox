@@ -10,8 +10,8 @@ public class Lucian_W_Buff : AbilityBuff
         buffName = "Ardent Blaze";
 
         buffDuration = 1;
-        buffFlatBonus = 60;// 60/65/70/75/80
-        buffFlatBonusPerLevel = 5;
+        buffFlatValue = 60;// 60/65/70/75/80
+        buffFlatValuePerLevel = 5;
     }
 
     protected override void SetSpritePaths()
@@ -19,17 +19,22 @@ public class Lucian_W_Buff : AbilityBuff
         buffSpritePath = "Sprites/Characters/CharacterAbilities/Lucian/LucianW_Buff";
     }
 
-    public override void ApplyBuffToEntityHit(Entity entityHit, int currentStacks)
+    public override void ApplyBuffToAffectedEntity(Entity affectedEntity, float buffValue, int currentStacks)
     {
-        entityHit.EntityStats.MovementSpeed.AddFlatBonus(buffFlatBonus);
+        affectedEntity.EntityStats.MovementSpeed.AddFlatBonus(buffFlatValue);
 
-        base.ApplyBuffToEntityHit(entityHit, currentStacks);
+        base.ApplyBuffToAffectedEntity(affectedEntity, buffValue, currentStacks);
     }
 
-    public override void RemoveBuffFromEntityHit(Entity entityHit, int currentStacks)
+    public override void RemoveBuffFromAffectedEntity(Entity affectedEntity, float buffValue, int currentStacks)
     {
-        entityHit.EntityStats.MovementSpeed.RemoveFlatBonus(buffFlatBonus);
+        affectedEntity.EntityStats.MovementSpeed.RemoveFlatBonus(buffFlatValue);
 
-        base.RemoveBuffFromEntityHit(entityHit, currentStacks);
+        base.RemoveBuffFromAffectedEntity(affectedEntity, buffValue, currentStacks);
+    }
+
+    protected override Buff CreateNewBuff(Entity affectedEntity)
+    {
+        return new Buff(this, affectedEntity, buffFlatValue, buffDuration);
     }
 }

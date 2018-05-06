@@ -10,8 +10,8 @@ public class Ezreal_W_Buff : AbilityBuff
         buffName = "Essence Flux";
 
         buffDuration = 5;
-        buffPercentBonus = 20;
-        buffPercentBonusPerLevel = 5;
+        buffPercentValue = 20;
+        buffPercentValuePerLevel = 5;
     }
 
     protected override void SetSpritePaths()
@@ -19,15 +19,22 @@ public class Ezreal_W_Buff : AbilityBuff
         buffSpritePath = "Sprites/Characters/CharacterAbilities/Ezreal/EzrealW_Buff";
     }
 
-    public override void ApplyBuffToEntityHit(Entity entityHit, int currentStacks)
+    public override void ApplyBuffToAffectedEntity(Entity affectedEntity, float buffValue, int currentStacks)
     {
-        entityHit.EntityStats.AttackSpeed.AddPercentBonus(buffPercentBonus);
-        EntitiesAffectedByBuff.Add(entityHit);
+        affectedEntity.EntityStats.AttackSpeed.AddPercentBonus(buffValue);
+
+        base.ApplyBuffToAffectedEntity(affectedEntity, buffValue, currentStacks);
     }
 
-    public override void RemoveBuffFromEntityHit(Entity entityHit, int currentStacks)
+    public override void RemoveBuffFromAffectedEntity(Entity affectedEntity, float buffValue, int currentStacks)
     {
-        entityHit.EntityStats.AttackSpeed.RemovePercentBonus(buffPercentBonus);
-        EntitiesAffectedByBuff.Remove(entityHit);
+        affectedEntity.EntityStats.AttackSpeed.RemovePercentBonus(buffValue);
+
+        base.RemoveBuffFromAffectedEntity(affectedEntity, buffValue, currentStacks);
+    }
+
+    protected override Buff CreateNewBuff(Entity affectedEntity)
+    {
+        return new Buff(this, affectedEntity, buffPercentValue, buffDuration, buffMaximumStacks);
     }
 }

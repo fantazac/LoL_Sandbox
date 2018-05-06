@@ -16,4 +16,9 @@ public class Lucian_P_Buff : AbilityBuff
     {
         buffSpritePath = "Sprites/Characters/CharacterAbilities/Lucian/LucianP_Buff";
     }
+
+    protected override Buff CreateNewBuff(Entity affectedEntity)
+    {
+        return new Buff(this, affectedEntity, 0, buffDuration);
+    }
 }

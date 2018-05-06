@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class Heal : SelfTargeted, SummonerAbility
+public class Heal : SelfTargeted
 {
     private const float MOUSE_RADIUS = 3;
 
@@ -106,12 +106,12 @@ public class Heal : SelfTargeted, SummonerAbility
 
         if (targetedCharacter != null)
         {
-            AbilityBuffs[0].AddNewBuffToEntityHit(targetedCharacter);
-            AbilityDebuffs[0].AddNewDebuffToEntityHit(targetedCharacter);
+            AbilityBuffs[0].AddNewBuffToAffectedEntity(targetedCharacter);
+            AbilityDebuffs[0].AddNewBuffToAffectedEntity(targetedCharacter);
         }
 
-        AbilityBuffs[0].AddNewBuffToEntityHit(character);
-        AbilityDebuffs[0].AddNewDebuffToEntityHit(character);
+        AbilityBuffs[0].AddNewBuffToAffectedEntity(character);
+        AbilityDebuffs[0].AddNewBuffToAffectedEntity(character);
 
         StartCooldown(startCooldownOnAbilityCast);
     }

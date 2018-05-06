@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MissFortune_P : PassiveTargeted, PassiveCharacterAbility
+public class MissFortune_P : PassiveTargeted
 {
     private Entity lastEntityHit;
 
@@ -36,10 +36,11 @@ public class MissFortune_P : PassiveTargeted, PassiveCharacterAbility
     {
         base.Start();
 
-        AbilityBuffs = new AbilityBuff[] { gameObject.AddComponent<MissFortune_P_Buff>() };
+        AbilityBuffs = new AbilityBuff[] { gameObject.AddComponent<MissFortune_P_Debuff>() };
 
         character.CharacterLevelManager.OnLevelUp += OnCharacterLevelUp;
-        character.EntityBasicAttack.OnBasicAttackHit += OnBasicAttackHit;
+        character.EntityBasicAttack.OnBasicAttackHit += SetPassiveEffectOnEntityHit;
+        GetComponent<MissFortune_Q>().OnMissFortuneQHit += SetPassiveEffectOnEntityHit;
 
         lastEntityHit = character;
     }
@@ -52,12 +53,12 @@ public class MissFortune_P : PassiveTargeted, PassiveCharacterAbility
         }
     }
 
-    private void OnBasicAttackHit(Entity entityHit)
+    private void SetPassiveEffectOnEntityHit(Entity entityHit)
     {
         if (entityHit != lastEntityHit)
         {
             AbilityBuffs[0].ConsumeBuff(lastEntityHit);
-            AbilityBuffs[0].AddNewBuffToEntityHit(entityHit);
+            AbilityBuffs[0].AddNewBuffToAffectedEntity(entityHit);
 
             lastEntityHit = entityHit;
 

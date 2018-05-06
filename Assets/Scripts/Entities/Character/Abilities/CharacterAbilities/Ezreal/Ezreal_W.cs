@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Ezreal_W : DirectionTargetedProjectile, CharacterAbility
+public class Ezreal_W : DirectionTargetedProjectile
 {
     protected Ezreal_W()
     {
@@ -63,7 +63,7 @@ public class Ezreal_W : DirectionTargetedProjectile, CharacterAbility
     {
         if (entityHit.Team == character.Team)
         {
-            AbilityBuffs[0].AddNewBuffToEntityHit(entityHit);
+            AbilityBuffs[0].AddNewBuffToAffectedEntity(entityHit);
         }
         else
         {

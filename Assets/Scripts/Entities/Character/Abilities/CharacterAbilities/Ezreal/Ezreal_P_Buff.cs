@@ -11,8 +11,8 @@ public class Ezreal_P_Buff : AbilityBuff
 
         buffDuration = 6;
         buffMaximumStacks = 5;
-        buffPercentBonus = 10;
-        buffPercentBonusPerLevel = 2;
+        buffPercentValue = 10;
+        buffPercentValuePerLevel = 2;
     }
 
     protected override void SetSpritePaths()
@@ -30,36 +30,27 @@ public class Ezreal_P_Buff : AbilityBuff
                 int currentStacks = buff.CurrentStacks;
                 affectedEntity.EntityStats.AttackSpeed.RemovePercentBonus(oldPercentValue * currentStacks);
                 affectedEntity.EntityStats.AttackSpeed.AddPercentBonus(newPercentValue * currentStacks);
+                buff.SetBuffValue(newPercentValue);
             }
         }
     }
 
-    public override void AddNewBuffToEntityHit(Entity entityHit)
+    public override void ApplyBuffToAffectedEntity(Entity affectedEntity, float buffValue, int currentStacks)
     {
-        Buff buff = entityHit.EntityBuffManager.GetBuff(this);
-        if (buff == null)
-        {
-            buff = new Buff(this, entityHit, buffDuration, buffMaximumStacks);
-            entityHit.EntityBuffManager.ApplyBuff(buff, buffSprite);
-        }
-        else
-        {
-            buff.IncreaseCurrentStacks();
-            buff.ResetDurationRemaining();
-        }
+        affectedEntity.EntityStats.AttackSpeed.AddPercentBonus(buffValue * currentStacks);
+
+        base.ApplyBuffToAffectedEntity(affectedEntity, buffValue, currentStacks);
     }
 
-    public override void ApplyBuffToEntityHit(Entity entityHit, int currentStacks)
+    public override void RemoveBuffFromAffectedEntity(Entity affectedEntity, float buffValue, int currentStacks)
     {
-        entityHit.EntityStats.AttackSpeed.AddPercentBonus(buffPercentBonus * currentStacks);
+        affectedEntity.EntityStats.AttackSpeed.RemovePercentBonus(buffValue * currentStacks);
 
-        base.ApplyBuffToEntityHit(entityHit, currentStacks);
+        base.RemoveBuffFromAffectedEntity(affectedEntity, buffValue, currentStacks);
     }
 
-    public override void RemoveBuffFromEntityHit(Entity entityHit, int currentStacks)
+    protected override Buff CreateNewBuff(Entity affectedEntity)
     {
-        entityHit.EntityStats.AttackSpeed.RemovePercentBonus(buffPercentBonus * currentStacks);
-
-        base.RemoveBuffFromEntityHit(entityHit, currentStacks);
+        return new Buff(this, affectedEntity, buffPercentValue, buffDuration, buffMaximumStacks);
     }
 }

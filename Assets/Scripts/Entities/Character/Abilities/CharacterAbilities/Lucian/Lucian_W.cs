@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Lucian_W : DirectionTargetedProjectile, CharacterAbility
+public class Lucian_W : DirectionTargetedProjectile
 {
     private string explosionAreaOfEffectPrefabPath;
     private GameObject explosionAreaOfEffectPrefab;
@@ -72,7 +72,8 @@ public class Lucian_W : DirectionTargetedProjectile, CharacterAbility
     protected override void OnProjectileReachedEnd(Projectile projectile)
     {
         AreaOfEffect aoe = Instantiate(explosionAreaOfEffectPrefab, projectile.transform.position, projectile.transform.rotation).GetComponent<AreaOfEffect>();
-        aoe.ActivateAreaOfEffect(projectile.UnitsAlreadyHit, character.Team, affectedUnitType, durationAoE, true);
+        aoe.CreateAreaOfEffect(projectile.UnitsAlreadyHit, character.Team, affectedUnitType, durationAoE, true);
+        aoe.ActivateAreaOfEffect();
         aoe.OnAbilityEffectHit += OnAreaOfEffectHit;
         Destroy(projectile.gameObject);
     }
@@ -86,13 +87,13 @@ public class Lucian_W : DirectionTargetedProjectile, CharacterAbility
 
     private void OnEntityDamaged()
     {
-        AbilityBuffs[0].AddNewBuffToEntityHit(character);
+        AbilityBuffs[0].AddNewBuffToAffectedEntity(character);
     }
 
     private void AddNewDebuffToEntityHit(Entity entityHit)
     {
         entityHit.EntityStats.Health.OnHealthReduced += OnEntityDamaged;
-        AbilityDebuffs[0].AddNewDebuffToEntityHit(entityHit);
+        AbilityDebuffs[0].AddNewBuffToAffectedEntity(entityHit);
     }
 
     private void RemoveDebuffFromEntityHit(Entity entityHit)

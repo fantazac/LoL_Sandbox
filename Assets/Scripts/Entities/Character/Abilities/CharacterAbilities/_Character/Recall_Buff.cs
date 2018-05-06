@@ -14,4 +14,9 @@ public class Recall_Buff : AbilityBuff
     {
         buffSpritePath = "Sprites/Characters/CharacterAbilities/_Character/Recall";
     }
+
+    protected override Buff CreateNewBuff(Entity affectedEntity)
+    {
+        return new Buff(this, affectedEntity, 0, buffDuration);
+    }
 }

@@ -52,7 +52,7 @@ public abstract class EntityBasicAttack : MonoBehaviour
     public void SetupBasicAttack()
     {
         //TODO: EntityMovement will become the parent of CharacterMovement
-        ((Character)entity).CharacterMovement.CharacterIsInRange += UseBasicAttack;
+        ((Character)entity).CharacterMovement.CharacterIsInTargetRange += UseBasicAttack;
     }
 
     public virtual void StopBasicAttack()

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Ezreal_R : DirectionTargetedProjectile, CharacterAbility
+public class Ezreal_R : DirectionTargetedProjectile
 {
     private const float DAMAGE_REDUCTION_PER_TARGET_HIT = 0.1f;
     private const float DAMAGE_REDUCTION_CAP = 0.3f;
