@@ -22,7 +22,7 @@ public class MissFortune_Q : UnitTargetedProjectile
         MaxLevel = 5;
 
         range = 650;//TODO: Check ingame, apparently becomes bigger when attackrange increases?
-        speed = 1800;//TODO: Check ingame
+        speed = 1700;//TODO: Check ingame
         damage = 20;// 20/40/60/80/100
         damagePerLevel = 20;
         totalADScaling = 1;// 100%
@@ -74,11 +74,56 @@ public class MissFortune_Q : UnitTargetedProjectile
 
     protected override void OnAbilityEffectHit(AbilityEffect projectile, Entity entityHit)
     {
-        entityHit.EntityStats.Health.Reduce(GetAbilityDamage(entityHit));
-        if (effectType == AbilityEffectType.SINGLE_TARGET)
+        base.OnAbilityEffectHit(projectile, entityHit);
+
+        Entity nextEntity = FindTargetBehindEntityHit(entityHit);
+        if (nextEntity)
         {
-            Destroy(projectile.gameObject);
+            /*if(entityHit is dead)
+            {
+                //crit 100%
+            }
+            else
+            {
+                //normal crit chance
+            }*/
+
+            ProjectileUnitTargeted projectile2 = (Instantiate(projectilePrefab, entityHit.transform.position, transform.rotation)).GetComponent<ProjectileUnitTargeted>();
+            projectile2.transform.LookAt(nextEntity.transform.position);
+            projectile2.ShootProjectile(character.Team, nextEntity, speed);
+            projectile2.OnAbilityEffectHit += base.OnAbilityEffectHit;
         }
-        AbilityHit();
+    }
+
+    private Entity FindTargetBehindEntityHit(Entity entityHit)//TODO: How the hell do I make cones...?
+    {
+        Entity closestEnemy = null;
+        float enemyAngle = float.MaxValue;//20, 40, 110, 160 with 150 range
+        float enemyDistance = float.MaxValue;
+        Entity tempEntity;
+        float tempAngle;
+        float tempDistance;
+
+        Vector3 groundPosition = Vector3.right * entityHit.transform.position.x + Vector3.forward * entityHit.transform.position.z;
+        foreach (Collider collider in Physics.OverlapCapsule(groundPosition, groundPosition + Vector3.up * 5, effectRadius))
+        {
+            tempEntity = collider.GetComponent<Entity>();
+            if (tempEntity != null && tempEntity != entityHit && TargetIsValid.CheckIfTargetIsValid(tempEntity, affectedUnitType, character.Team))
+            {
+                tempAngle = Vector3.Angle(vectorOnCast, tempEntity.transform.position - entityHit.transform.position);
+                tempDistance = Vector3.Distance(entityHit.transform.position, tempEntity.transform.position);
+                if ((tempAngle <= 10 && tempDistance < enemyDistance) ||
+                    (enemyAngle > 10 && tempAngle <= 20 && tempDistance < enemyDistance) ||
+                    (enemyAngle > 20 && tempAngle <= 55 && tempDistance < enemyDistance) ||
+                    (enemyAngle > 55 && tempAngle <= 80 && tempDistance <= effectRadiusOnBigAngle && tempDistance < enemyDistance))
+                {
+                    closestEnemy = tempEntity;
+                    enemyAngle = tempAngle;
+                    enemyDistance = tempDistance;
+                }
+            }
+        }
+
+        return closestEnemy;
     }
 }
