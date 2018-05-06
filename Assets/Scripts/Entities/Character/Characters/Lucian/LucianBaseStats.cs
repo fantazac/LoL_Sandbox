@@ -17,7 +17,7 @@ public class LucianBaseStats : CharacterBaseStats
         BaseMagicResistance = 30;
         BaseAttackSpeed = 0.638f;
         BaseCooldownReduction = 0;
-        BaseCriticalStrikeChance = 50;
+        BaseCriticalStrikeChance = 0;
         BaseMovementSpeed = 335;
 
         BaseHealthRegeneration = 6;
