@@ -583,7 +583,7 @@ public class CharacterAbilityManager : MonoBehaviour
         return new int[] { CharacterAbilities[0].AbilityLevel, CharacterAbilities[1].AbilityLevel, CharacterAbilities[2].AbilityLevel, CharacterAbilities[3].AbilityLevel };
     }
 
-    public void SetAbilityLevelsFromLoad(int[] characterAbilityLevels)//TODO: Check all this works out
+    public void SetAbilityLevelsFromLoad(int[] characterAbilityLevels)
     {
         for (int i = 0; i < CharacterAbilities.Length; i++)
         {

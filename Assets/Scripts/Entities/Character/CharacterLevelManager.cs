@@ -166,14 +166,11 @@ public class CharacterLevelManager : MonoBehaviour
             {
                 PrepareLevelUp();
             }
-            for (int i = 0; i < 5; i++)//TODO: needs to work with each ability (could be 6, like jayce abilities, or 2, like ryze r)
+            for (int i = 0; i < character.CharacterAbilityManager.CharacterAbilities.Length; i++)
             {
-                OnAbilityLevelUp(0);
-                OnAbilityLevelUp(1);
-                OnAbilityLevelUp(2);
-                if (i < 3)
+                for (int j = 0; j < character.CharacterAbilityManager.CharacterAbilities[i].MaxLevel; j++)
                 {
-                    OnAbilityLevelUp(3);
+                    OnAbilityLevelUp(i);
                 }
             }
         }

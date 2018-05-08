@@ -62,7 +62,7 @@ public class Heal : SelfTargeted
         Character targetedCharacter = null;
         Character tempCharacter;
 
-        //TODO: Extract this into a class/method called 
+        //TODO: Extract this into a class/method 
 
         if (hit.point != Vector3.down)
         {

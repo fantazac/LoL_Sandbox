@@ -113,10 +113,10 @@ public class MissFortune_Q : UnitTargetedProjectile
         AbilityHit(entityHit, damage);
     }
 
-    private Entity FindTargetBehindEntityHit(Entity entityHit)//TODO: How the hell do I make cones...?
+    private Entity FindTargetBehindEntityHit(Entity entityHit)
     {
         Entity closestEnemy = null;
-        float enemyAngle = float.MaxValue;//20, 40, 110, 160 with 150 range
+        float enemyAngle = float.MaxValue;
         float enemyDistance = float.MaxValue;
         Entity tempEntity;
         float tempAngle;
