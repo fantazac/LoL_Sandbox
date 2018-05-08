@@ -67,6 +67,14 @@ public class Lucian_P : PassiveTargeted
         }
     }
 
+    public override void UseAbility(Entity entityHit)
+    {
+        if (lucianE)
+        {
+            lucianE.ReduceCooldown(entityHit is Character ? cooldownReducedOnPassiveHitOnCharacter : cooldownReducedOnPassiveHit);
+        }
+    }
+
     public void OnPassiveHit(Entity entityHit, bool isACriticalAttack)
     {
         float damage = GetAbilityDamage(entityHit);
@@ -86,10 +94,7 @@ public class Lucian_P : PassiveTargeted
         }
         entityHit.EntityStats.Health.Reduce(damage);
 
-        if (lucianE)
-        {
-            lucianE.ReduceCooldown(entityHit is Character ? cooldownReducedOnPassiveHitOnCharacter : cooldownReducedOnPassiveHit);
-        }
+        UseAbility(entityHit);
 
         AbilityHit(entityHit, damage);
     }
