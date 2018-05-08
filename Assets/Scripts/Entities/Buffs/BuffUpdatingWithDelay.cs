@@ -41,6 +41,17 @@ public class BuffUpdatingWithDelay : Buff // TODO: currently only works if buffD
         SetBuffValueOnUI();
     }
 
+    public void SetBuffValuePostDelay(float newBuffValuePostDelay)
+    {
+        buffValuePostDelay = newBuffValuePostDelay;
+    }
+
+    public void SetBuffValueAndBuffDurationPostDelay(float newBuffValuePostDelay, float newBuffDurationPostDelay)
+    {
+        buffValuePostDelay = newBuffValuePostDelay;
+        buffDurationPostDelay = newBuffDurationPostDelay;
+    }
+
     public override void ConsumeBuff()
     {
         BuffPostDelay();

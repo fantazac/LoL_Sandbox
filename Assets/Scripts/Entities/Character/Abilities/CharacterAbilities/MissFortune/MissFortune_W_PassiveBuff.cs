@@ -29,7 +29,7 @@ public class MissFortune_W_PassiveBuff : AbilityBuff
     {
         foreach (Entity affectedEntity in EntitiesAffectedByBuff)
         {
-            Buff buff = affectedEntity.EntityBuffManager.GetBuff(this);
+            BuffUpdatingWithDelay buff = (BuffUpdatingWithDelay)affectedEntity.EntityBuffManager.GetBuff(this);
             if (buff != null)
             {
                 if (buff.BuffValue != baseBuffFlatBonus)
@@ -40,7 +40,7 @@ public class MissFortune_W_PassiveBuff : AbilityBuff
                 }
                 else
                 {
-                    //TODO: set updated value to new one (ex: 60 -> 70)
+                    buff.SetBuffValuePostDelay(newFlatValue);
                 }
             }
         }
