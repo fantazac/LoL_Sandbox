@@ -61,14 +61,16 @@ public class Ezreal_W : DirectionTargetedProjectile
 
     protected override void OnProjectileHit(AbilityEffect projectile, Entity entityHit)
     {
+        float damage = 0;
         if (entityHit.Team == character.Team)
         {
             AbilityBuffs[0].AddNewBuffToAffectedEntity(entityHit);
         }
         else
         {
-            entityHit.EntityStats.Health.Reduce(GetAbilityDamage(entityHit));
+            damage = GetAbilityDamage(entityHit);
+            entityHit.EntityStats.Health.Reduce(damage);
         }
-        AbilityHit();
+        AbilityHit(entityHit, damage);
     }
 }

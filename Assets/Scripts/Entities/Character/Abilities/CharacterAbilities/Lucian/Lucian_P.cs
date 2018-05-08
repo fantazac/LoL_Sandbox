@@ -26,6 +26,8 @@ public class Lucian_P : PassiveTargeted
         cooldownReducedOnPassiveHitOnCharacter = 2;
         cooldownReducedOnPassiveHit = 1;
 
+        AppliesOnHitEffects = true;
+
         IsEnabled = true;
     }
 
@@ -52,7 +54,7 @@ public class Lucian_P : PassiveTargeted
             ability.OnAbilityFinished += PassiveEffect;
         }
 
-        lucianE = character.CharacterAbilityManager.CharacterAbilities[2];
+        lucianE = GetComponent<Lucian_E>();
 
         character.CharacterLevelManager.OnLevelUp += OnCharacterLevelUp;
     }
@@ -67,6 +69,8 @@ public class Lucian_P : PassiveTargeted
 
     public void OnPassiveHit(Entity entityHit, bool isACriticalAttack)
     {
+        float damage = GetAbilityDamage(entityHit);
+
         //if (entityHit is Minion)
         //{
         //    entityHit.EntityStats.Health.Reduce(ApplyResistanceToDamage(entityHit, character.EntityStats.AttackDamage.GetTotal()));
@@ -78,13 +82,15 @@ public class Lucian_P : PassiveTargeted
 
         if (isACriticalAttack)
         {
-            entityHit.EntityStats.Health.Reduce(GetAbilityDamage(entityHit) * 1.75f);//TODO: Crit reduction (randuins)? Crit multiplier different than +100% (Jhin, IE)?
+            damage *= 1.75f;//TODO: Crit reduction (randuins)? Crit multiplier different than +100% (Jhin, IE)?
         }
-        else
+        entityHit.EntityStats.Health.Reduce(damage);
+
+        if (lucianE)
         {
-            entityHit.EntityStats.Health.Reduce(GetAbilityDamage(entityHit));
+            lucianE.ReduceCooldown(entityHit is Character ? cooldownReducedOnPassiveHitOnCharacter : cooldownReducedOnPassiveHit);
         }
 
-        lucianE.ReduceCooldown(entityHit is Character ? cooldownReducedOnPassiveHitOnCharacter : cooldownReducedOnPassiveHit);
+        AbilityHit(entityHit, damage);
     }
 }

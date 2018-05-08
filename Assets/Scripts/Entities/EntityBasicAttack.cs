@@ -17,9 +17,6 @@ public abstract class EntityBasicAttack : MonoBehaviour
 
     protected float speed;
 
-    public delegate void OnBasicAttackHitHandler(Entity entityHit);
-    public event OnBasicAttackHitHandler OnBasicAttackHit;
-
     protected virtual void OnEnable()
     {
         entity = GetComponent<Entity>();
@@ -112,16 +109,17 @@ public abstract class EntityBasicAttack : MonoBehaviour
 
     protected virtual void BasicAttackHit(AbilityEffect basicAttackProjectile, Entity entityHit, bool isACriticalAttack)
     {
+        float damage = GetBasicAttackDamage(entityHit);
         if (isACriticalAttack)
         {
-            entityHit.EntityStats.Health.Reduce(GetBasicAttackDamage(entityHit) * 2);//TODO: Crit reduction (randuins)? Crit multiplier different than +100% (Jhin, IE)?
+            damage *= 2;//TODO: Crit reduction (randuins)? Crit multiplier different than +100% (Jhin, IE)?
         }
-        else
-        {
-            entityHit.EntityStats.Health.Reduce(GetBasicAttackDamage(entityHit));
-        }
+        entityHit.EntityStats.Health.Reduce(damage);
         Destroy(basicAttackProjectile.gameObject);
-        CallOnBasicAttackHitEvent(entityHit);
+        if (entity is Character)
+        {
+            ((Character)entity).CharacterOnHitEffectsManager.ApplyOnHitEffectsToEntityHit(entityHit, damage);
+        }
     }
 
     protected float GetBasicAttackDamage(Entity entityHit)
@@ -146,14 +144,6 @@ public abstract class EntityBasicAttack : MonoBehaviour
         else
         {
             return 2 - (100 / (100 - totalResistance));
-        }
-    }
-
-    protected void CallOnBasicAttackHitEvent(Entity entityHit)
-    {
-        if (OnBasicAttackHit != null)
-        {
-            OnBasicAttackHit(entityHit);
         }
     }
 }

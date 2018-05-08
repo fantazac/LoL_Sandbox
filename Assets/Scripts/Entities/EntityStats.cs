@@ -48,8 +48,8 @@ public class EntityStats : MonoBehaviour
         ArmorPenetrationPercent = gameObject.AddComponent<ArmorPenetrationPercent>();
         MagicPenetrationFlat = gameObject.AddComponent<MagicPenetrationFlat>();
         MagicPenetrationPercent = gameObject.AddComponent<MagicPenetrationPercent>();
-        LifeSteal = gameObject.AddComponent<LifeSteal>();//TODO
-        SpellVamp = gameObject.AddComponent<SpellVamp>();//TODO
+        LifeSteal = gameObject.AddComponent<LifeSteal>();
+        SpellVamp = gameObject.AddComponent<SpellVamp>();
         AttackRange = gameObject.AddComponent<AttackRange>();
         Tenacity = gameObject.AddComponent<Tenacity>();//TODO
 

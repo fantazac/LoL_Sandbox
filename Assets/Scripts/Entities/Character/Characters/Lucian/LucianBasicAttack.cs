@@ -81,14 +81,7 @@ public class LucianBasicAttack : CharacterBasicAttack
 
         ProjectileUnitTargeted projectile = (Instantiate(basicAttackPrefab, transform.position, transform.rotation)).GetComponent<ProjectileUnitTargeted>();
         projectile.ShootProjectile(entity.Team, target, speed, AttackIsCritical.CheckIfAttackIsCritical(entity.EntityStats.CriticalStrikeChance.GetTotal()));
-        if (passiveWasActiveOnBasicAttackCast)
-        {
-            projectile.OnProjectileUnitTargetedHit += BasicAttackHit;
-        }
-        else
-        {
-            projectile.OnProjectileUnitTargetedHit += base.BasicAttackHit;
-        }
+        projectile.OnProjectileUnitTargetedHit += BasicAttackHit;
 
         if (passiveWasActiveOnBasicAttackCast)
         {
@@ -106,16 +99,9 @@ public class LucianBasicAttack : CharacterBasicAttack
         isShootingPassiveShot = false;
     }
 
-    protected override void BasicAttackHit(AbilityEffect basicAttackProjectile, Entity entityHit, bool isACriticalAttack)
-    {
-        passive.UseAbility(entityHit);
-        base.BasicAttackHit(basicAttackProjectile, entityHit, isACriticalAttack);
-    }
-
     private void PassiveBasicAttackHit(AbilityEffect basicAttackProjectile, Entity entityHit, bool isACriticalAttack)
     {
         passive.OnPassiveHit(entityHit, isACriticalAttack);
         Destroy(basicAttackProjectile.gameObject);
-        CallOnBasicAttackHitEvent(entityHit);
     }
 }

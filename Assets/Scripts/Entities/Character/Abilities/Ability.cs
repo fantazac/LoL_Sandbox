@@ -5,7 +5,7 @@ using UnityEngine;
 public abstract class Ability : MonoBehaviour
 {
     protected Character character;
-    
+
     protected AbilityAffectedUnitType affectedUnitType;
     protected AbilityEffectType effectType;
     protected AbilityType abilityType;
@@ -57,6 +57,8 @@ public abstract class Ability : MonoBehaviour
     protected string abilitySpritePath;
     protected string abilityRecastSpritePath;
 
+    public bool AppliesAbilityEffects { get; protected set; }
+    public bool AppliesOnHitEffects { get; protected set; }
     public bool CanBeCastDuringOtherAbilityCastTimes { get; protected set; }
     public bool CanBeRecasted { get; protected set; }
     public bool CanMoveWhileActive { get; protected set; }
@@ -90,11 +92,13 @@ public abstract class Ability : MonoBehaviour
     public delegate void OnAbilityFinishedHandler(Ability ability);
     public event OnAbilityFinishedHandler OnAbilityFinished;
 
-    public delegate void OnAbilityHitHandler(Ability ability);
+    public delegate void OnAbilityHitHandler(Ability ability, Entity entityHit);
     public event OnAbilityHitHandler OnAbilityHit;
 
     protected Ability()
     {
+        AppliesAbilityEffects = true;//TODO: Est-ce que y'a des abilities qui appliquent pas ca?
+
         SetResourcePaths();
     }
 
@@ -256,11 +260,19 @@ public abstract class Ability : MonoBehaviour
 
     public virtual void EnableAbilityPassive() { }
 
-    protected void AbilityHit()
+    protected void AbilityHit(Entity entityHit, float damage)
     {
+        if (AppliesAbilityEffects)
+        {
+            character.CharacterAbilityEffectsManager.ApplyAbilityEffectsToEntityHit(entityHit, damage);
+        }
+        if (AppliesOnHitEffects)
+        {
+            character.CharacterOnHitEffectsManager.ApplyOnHitEffectsToEntityHit(entityHit, damage);
+        }
         if (OnAbilityHit != null)
         {
-            OnAbilityHit(this);
+            OnAbilityHit(this, entityHit);
         }
     }
 
@@ -477,7 +489,7 @@ public abstract class Ability : MonoBehaviour
     {
         if (AbilityBuffs != null)
         {
-            foreach(AbilityBuff aBuff in AbilityBuffs)
+            foreach (AbilityBuff aBuff in AbilityBuffs)
             {
                 aBuff.LevelUp();
             }

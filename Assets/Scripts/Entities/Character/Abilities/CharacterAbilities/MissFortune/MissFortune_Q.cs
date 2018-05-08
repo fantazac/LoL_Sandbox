@@ -10,9 +10,6 @@ public class MissFortune_Q : UnitTargetedProjectile
 
     private Vector3 vectorOnCast;
 
-    public delegate void OnMissFortuneQHitHandler(Entity entityHit);
-    public event OnMissFortuneQHitHandler OnMissFortuneQHit;
-
     protected MissFortune_Q()
     {
         abilityName = "Double Up";
@@ -39,6 +36,8 @@ public class MissFortune_Q : UnitTargetedProjectile
 
         effectRadius = 500;
         effectRadiusOnBigAngle = 150;
+
+        AppliesOnHitEffects = true;
 
         affectedByCooldownReduction = true;
     }
@@ -79,10 +78,6 @@ public class MissFortune_Q : UnitTargetedProjectile
     protected override void OnAbilityEffectHit(AbilityEffect projectile, Entity entityHit)
     {
         base.OnAbilityEffectHit(projectile, entityHit);
-        if (OnMissFortuneQHit != null)
-        {
-            OnMissFortuneQHit(entityHit);
-        }
         Entity nextEntity = FindTargetBehindEntityHit(entityHit);
         if (nextEntity)
         {
@@ -103,25 +98,19 @@ public class MissFortune_Q : UnitTargetedProjectile
         }
     }
 
-    private void OnProjectileHit(AbilityEffect projectile, Entity entityHit, bool isACriticalAttack)
+    private void OnProjectileHit(AbilityEffect projectile, Entity entityHit, bool isACriticalAttack)//TODO: this should not exist, just call base.OnAbilityEffectHit and pass it if it crits
     {
+        float damage = GetAbilityDamage(entityHit);
         if (isACriticalAttack)
         {
-            entityHit.EntityStats.Health.Reduce(GetAbilityDamage(entityHit) * 2);//TODO: Crit reduction (randuins)? Crit multiplier different than +100% (Jhin, IE)?
+            damage *= 2;//TODO: Crit reduction (randuins)? Crit multiplier different than +100% (Jhin, IE)?
         }
-        else
-        {
-            entityHit.EntityStats.Health.Reduce(GetAbilityDamage(entityHit));
-        }
+        entityHit.EntityStats.Health.Reduce(damage);
         if (effectType == AbilityEffectType.SINGLE_TARGET)
         {
             Destroy(projectile.gameObject);
         }
-        AbilityHit();
-        if (OnMissFortuneQHit != null)
-        {
-            OnMissFortuneQHit(entityHit);
-        }
+        AbilityHit(entityHit, damage);
     }
 
     private Entity FindTargetBehindEntityHit(Entity entityHit)//TODO: How the hell do I make cones...?
