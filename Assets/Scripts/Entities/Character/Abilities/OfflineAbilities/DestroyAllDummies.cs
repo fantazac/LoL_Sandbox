@@ -37,7 +37,11 @@ public class DestroyAllDummies : AutoTargeted
 
     public override void UseAbility(Vector3 destination)
     {
+        StartAbilityCast();
+
         RemoveAllDummies();
+
+        FinishAbilityCast();
     }
 
     protected void RemoveAllDummies()

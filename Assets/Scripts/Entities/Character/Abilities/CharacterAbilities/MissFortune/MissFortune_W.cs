@@ -87,9 +87,11 @@ public class MissFortune_W : SelfTargeted
 
     public override void UseAbility(Vector3 destination)
     {
+        StartAbilityCast();
+
         AbilityBuffs[1].AddNewBuffToAffectedEntity(character);
 
-        StartCooldown(startCooldownOnAbilityCast);
+        FinishAbilityCast();
     }
 
     public override void EnableAbilityPassive()

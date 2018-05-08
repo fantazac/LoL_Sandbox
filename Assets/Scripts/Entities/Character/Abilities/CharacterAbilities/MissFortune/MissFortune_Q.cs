@@ -72,6 +72,7 @@ public class MissFortune_Q : UnitTargetedProjectile
         ProjectileUnitTargeted projectile = (Instantiate(projectilePrefab, transform.position, transform.rotation)).GetComponent<ProjectileUnitTargeted>();
         projectile.ShootProjectile(character.Team, targetedEntity, speed);
         projectile.OnAbilityEffectHit += OnAbilityEffectHit;
+
         FinishAbilityCast();
     }
 

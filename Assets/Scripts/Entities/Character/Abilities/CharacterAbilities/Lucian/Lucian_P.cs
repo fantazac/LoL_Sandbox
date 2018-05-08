@@ -57,18 +57,6 @@ public class Lucian_P : PassiveTargeted
         character.CharacterLevelManager.OnLevelUp += OnCharacterLevelUp;
     }
 
-    public override void UseAbility(Entity target)
-    {
-        if (target is Character)
-        {
-            lucianE.ReduceCooldown(cooldownReducedOnPassiveHitOnCharacter);
-        }
-        else
-        {
-            lucianE.ReduceCooldown(cooldownReducedOnPassiveHit);
-        }
-    }
-
     public override void OnCharacterLevelUp(int level)
     {
         if (level == 7 || level == 13)
@@ -87,6 +75,7 @@ public class Lucian_P : PassiveTargeted
         //{
         //    entityHit.EntityStats.Health.Reduce(GetAbilityDamage(entityHit));
         //} 
+
         if (isACriticalAttack)
         {
             entityHit.EntityStats.Health.Reduce(GetAbilityDamage(entityHit) * 1.75f);//TODO: Crit reduction (randuins)? Crit multiplier different than +100% (Jhin, IE)?
@@ -95,6 +84,7 @@ public class Lucian_P : PassiveTargeted
         {
             entityHit.EntityStats.Health.Reduce(GetAbilityDamage(entityHit));
         }
-        UseAbility(entityHit);
+
+        lucianE.ReduceCooldown(entityHit is Character ? cooldownReducedOnPassiveHitOnCharacter : cooldownReducedOnPassiveHit);
     }
 }

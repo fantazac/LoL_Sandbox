@@ -39,7 +39,7 @@ public class EntityStats : MonoBehaviour
         MagicResistance = gameObject.AddComponent<MagicResistance>();
         AttackSpeed = gameObject.AddComponent<AttackSpeed>();
         CooldownReduction = gameObject.AddComponent<CooldownReduction>();
-        CriticalStrikeChance = gameObject.AddComponent<CriticalStrikeChance>();//TODO
+        CriticalStrikeChance = gameObject.AddComponent<CriticalStrikeChance>();
         MovementSpeed = gameObject.AddComponent<MovementSpeed>();
 
         HealthRegeneration = gameObject.AddComponent<HealthRegeneration>();

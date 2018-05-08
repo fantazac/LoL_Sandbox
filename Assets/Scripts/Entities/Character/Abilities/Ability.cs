@@ -264,7 +264,7 @@ public abstract class Ability : MonoBehaviour
         }
     }
 
-    protected void StartCooldown(bool calledInStartAbilityCast, bool abilityWasCancelled = false)
+    private void StartCooldown(bool calledInStartAbilityCast, bool abilityWasCancelled = false)
     {
         if (character.AbilityUIManager)
         {

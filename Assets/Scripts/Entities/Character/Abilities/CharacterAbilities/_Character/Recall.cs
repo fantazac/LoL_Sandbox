@@ -55,12 +55,12 @@ public class Recall : AutoTargetedBlink
 
         yield return delayChannelTime;
 
+        IsBeingChanneled = false;
         AbilityBuffs[0].ConsumeBuff(character);
 
         transform.position = GetDestination();
         character.CharacterMovement.NotifyCharacterMoved();
 
-        IsBeingChanneled = false;
         FinishAbilityCast();
     }
 

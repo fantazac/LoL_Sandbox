@@ -28,6 +28,8 @@ public class Flash : GroundTargetedBlink
 
     public override void UseAbility(Vector3 destination)
     {
+        StartAbilityCast();
+
         character.CharacterMovement.StopMovementTowardsPoint();
 
         Vector3 newDestination = FindPointToMoveTo(destination, transform.position);
@@ -43,6 +45,6 @@ public class Flash : GroundTargetedBlink
 
         character.CharacterMovement.NotifyCharacterMoved();
 
-        StartCooldown(startCooldownOnAbilityCast);
+        FinishAbilityCast();
     }
 }

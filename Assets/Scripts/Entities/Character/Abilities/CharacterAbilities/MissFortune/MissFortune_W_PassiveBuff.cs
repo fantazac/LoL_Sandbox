@@ -6,7 +6,6 @@ using UnityEngine;
 public class MissFortune_W_PassiveBuff : AbilityBuff
 {
     private float baseBuffFlatBonus;
-    private float timeBeforeFullBuffPower;
 
     protected MissFortune_W_PassiveBuff()
     {
@@ -15,7 +14,7 @@ public class MissFortune_W_PassiveBuff : AbilityBuff
         showBuffValueOnUI = true;
 
         baseBuffFlatBonus = 25;
-        timeBeforeFullBuffPower = 5;
+        buffDuration = 5;
 
         buffFlatValue = 60;
         buffFlatValuePerLevel = 10;
@@ -39,6 +38,10 @@ public class MissFortune_W_PassiveBuff : AbilityBuff
                     affectedEntity.EntityStats.MovementSpeed.AddFlatBonus(newFlatValue);
                     buff.SetBuffValueOnUI(newFlatValue);
                 }
+                else
+                {
+                    //TODO: set updated value to new one (ex: 60 -> 70)
+                }
             }
         }
     }
@@ -59,6 +62,6 @@ public class MissFortune_W_PassiveBuff : AbilityBuff
 
     protected override Buff CreateNewBuff(Entity affectedEntity)
     {
-        return new BuffUpdatingWithDelay(this, affectedEntity, baseBuffFlatBonus, timeBeforeFullBuffPower, buffFlatValue);
+        return new BuffUpdatingWithDelay(this, affectedEntity, baseBuffFlatBonus, buffDuration, buffFlatValue);
     }
 }

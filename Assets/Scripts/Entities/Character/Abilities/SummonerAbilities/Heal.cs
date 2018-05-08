@@ -57,6 +57,8 @@ public class Heal : SelfTargeted
 
     public override void UseAbility(Vector3 destination)
     {
+        StartAbilityCast();
+
         Character targetedCharacter = null;
         Character tempCharacter;
 
@@ -113,6 +115,6 @@ public class Heal : SelfTargeted
         AbilityBuffs[0].AddNewBuffToAffectedEntity(character);
         AbilityDebuffs[0].AddNewBuffToAffectedEntity(character);
 
-        StartCooldown(startCooldownOnAbilityCast);
+        FinishAbilityCast();
     }
 }
