@@ -26,6 +26,8 @@ public class Lucian_P : PassiveTargeted
         cooldownReducedOnPassiveHitOnCharacter = 2;
         cooldownReducedOnPassiveHit = 1;
 
+        AppliesOnHitEffects = true;
+
         IsEnabled = true;
     }
 
@@ -52,21 +54,9 @@ public class Lucian_P : PassiveTargeted
             ability.OnAbilityFinished += PassiveEffect;
         }
 
-        lucianE = character.CharacterAbilityManager.CharacterAbilities[2];
+        lucianE = GetComponent<Lucian_E>();
 
         character.CharacterLevelManager.OnLevelUp += OnCharacterLevelUp;
-    }
-
-    public override void UseAbility(Entity target)
-    {
-        if (target is Character)
-        {
-            lucianE.ReduceCooldown(cooldownReducedOnPassiveHitOnCharacter);
-        }
-        else
-        {
-            lucianE.ReduceCooldown(cooldownReducedOnPassiveHit);
-        }
     }
 
     public override void OnCharacterLevelUp(int level)
@@ -77,16 +67,30 @@ public class Lucian_P : PassiveTargeted
         }
     }
 
-    public void OnPassiveHit(Entity entityHit)
+    public void OnPassiveHit(Entity entityHit, bool isACriticalAttack)
     {
+        float damage = GetAbilityDamage(entityHit);
+
         //if (entityHit is Minion)
         //{
         //    entityHit.EntityStats.Health.Reduce(ApplyResistanceToDamage(entityHit, character.EntityStats.AttackDamage.GetTotal()));
         //}
         //else
         //{
-        entityHit.EntityStats.Health.Reduce(GetAbilityDamage(entityHit));
+        //    entityHit.EntityStats.Health.Reduce(GetAbilityDamage(entityHit));
         //} 
-        UseAbility(entityHit);
+
+        if (isACriticalAttack)
+        {
+            damage *= 1.75f;//TODO: Crit reduction (randuins)? Crit multiplier different than +100% (Jhin, IE)?
+        }
+        entityHit.EntityStats.Health.Reduce(damage);
+
+        if (lucianE)
+        {
+            lucianE.ReduceCooldown(entityHit is Character ? cooldownReducedOnPassiveHitOnCharacter : cooldownReducedOnPassiveHit);
+        }
+
+        AbilityHit(entityHit, damage);
     }
 }

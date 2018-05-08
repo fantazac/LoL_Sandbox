@@ -39,8 +39,7 @@ public class MissFortune_P : PassiveTargeted
         AbilityBuffs = new AbilityBuff[] { gameObject.AddComponent<MissFortune_P_Debuff>() };
 
         character.CharacterLevelManager.OnLevelUp += OnCharacterLevelUp;
-        character.EntityBasicAttack.OnBasicAttackHit += SetPassiveEffectOnEntityHit;
-        GetComponent<MissFortune_Q>().OnMissFortuneQHit += SetPassiveEffectOnEntityHit;
+        character.CharacterOnHitEffectsManager.OnApplyOnHitEffects += SetPassiveEffectOnEntityHit;
 
         lastEntityHit = character;
     }
@@ -53,7 +52,7 @@ public class MissFortune_P : PassiveTargeted
         }
     }
 
-    private void SetPassiveEffectOnEntityHit(Entity entityHit)
+    private void SetPassiveEffectOnEntityHit(Entity entityHit, float damage)
     {
         if (entityHit != lastEntityHit)
         {
@@ -62,14 +61,16 @@ public class MissFortune_P : PassiveTargeted
 
             lastEntityHit = entityHit;
 
+            float passiveDamage = GetAbilityDamage(entityHit);
             //if (entityHit is Minion)
             //{
             //    entityHit.EntityStats.Health.Reduce(ApplyResistanceToDamage(entityHit, character.EntityStats.AttackDamage.GetTotal() * totalADScaling * 0.5f));
             //}
             //else
             //{
-            entityHit.EntityStats.Health.Reduce(GetAbilityDamage(entityHit));
+            entityHit.EntityStats.Health.Reduce(passiveDamage);
             //} 
+            character.EntityStats.Health.Restore(passiveDamage * 0.01f * character.EntityStats.LifeSteal.GetTotal());
 
             if (OnPassiveHit != null)
             {

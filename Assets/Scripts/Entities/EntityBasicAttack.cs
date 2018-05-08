@@ -17,9 +17,6 @@ public abstract class EntityBasicAttack : MonoBehaviour
 
     protected float speed;
 
-    public delegate void OnBasicAttackHitHandler(Entity entityHit);
-    public event OnBasicAttackHitHandler OnBasicAttackHit;
-
     protected virtual void OnEnable()
     {
         entity = GetComponent<Entity>();
@@ -106,22 +103,47 @@ public abstract class EntityBasicAttack : MonoBehaviour
         attackIsInQueue = false;
 
         ProjectileUnitTargeted projectile = (Instantiate(basicAttackPrefab, transform.position, transform.rotation)).GetComponent<ProjectileUnitTargeted>();
-        projectile.ShootProjectile(entity.Team, target, speed);
-        projectile.OnAbilityEffectHit += BasicAttackHit;
+        projectile.ShootProjectile(entity.Team, target, speed, AttackIsCritical.CheckIfAttackIsCritical(entity.EntityStats.CriticalStrikeChance.GetTotal()));
+        projectile.OnProjectileUnitTargetedHit += BasicAttackHit;
     }
 
-    protected virtual void BasicAttackHit(AbilityEffect basicAttackProjectile, Entity entityHit)
+    protected virtual void BasicAttackHit(AbilityEffect basicAttackProjectile, Entity entityHit, bool isACriticalAttack)
     {
-        entityHit.EntityStats.Health.Reduce(entity.EntityStats.AttackDamage.GetTotal());
-        Destroy(basicAttackProjectile.gameObject);
-        CallOnBasicAttackHitEvent(entityHit);
-    }
-
-    protected void CallOnBasicAttackHitEvent(Entity entityHit)
-    {
-        if (OnBasicAttackHit != null)
+        float damage = GetBasicAttackDamage(entityHit);
+        if (isACriticalAttack)
         {
-            OnBasicAttackHit(entityHit);
+            damage *= 2;//TODO: Crit reduction (randuins)? Crit multiplier different than +100% (Jhin, IE)?
+        }
+        entityHit.EntityStats.Health.Reduce(damage);
+        Destroy(basicAttackProjectile.gameObject);
+        if (entity is Character)
+        {
+            ((Character)entity).CharacterOnHitEffectsManager.ApplyOnHitEffectsToEntityHit(entityHit, damage);
+        }
+    }
+
+    protected float GetBasicAttackDamage(Entity entityHit)
+    {
+        return ApplyResistanceToDamage(entityHit, entity.EntityStats.AttackDamage.GetTotal());
+    }
+
+    protected float ApplyResistanceToDamage(Entity entityHit, float damage)
+    {
+        float totalResistance = entityHit.EntityStats.Armor.GetTotal();
+        totalResistance *= (1 - entity.EntityStats.ArmorPenetrationPercent.GetTotal());
+        totalResistance -= entity.EntityStats.Lethality.GetCurrentValue();
+        return damage * GetResistanceDamageTakenMultiplier(totalResistance);
+    }
+
+    protected float GetResistanceDamageTakenMultiplier(float totalResistance)
+    {
+        if (totalResistance >= 0)
+        {
+            return 100 / (100 + totalResistance);
+        }
+        else
+        {
+            return 2 - (100 / (100 - totalResistance));
         }
     }
 }

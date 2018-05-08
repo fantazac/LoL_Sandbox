@@ -230,7 +230,10 @@ public class CharacterAbilityManager : MonoBehaviour
 
     protected void OnAbilityUsed(Ability ability)
     {
-        currentlyUsedAbilities.Add(ability);
+        if (ability.HasCastTime || ability.HasChannelTime || ability is DirectionTargetedDash)
+        {
+            currentlyUsedAbilities.Add(ability);
+        }
         if (OnAnAbilityUsed != null)
         {
             OnAnAbilityUsed();
@@ -239,21 +242,24 @@ public class CharacterAbilityManager : MonoBehaviour
 
     protected void OnAbilityFinished(Ability ability)
     {
-        currentlyUsedAbilities.Remove(ability);
-
-        character.CharacterMovement.RotateCharacterIfMoving();
-
-        Ability bufferedAbility = character.CharacterBufferedAbilityManager.GetBufferedAbility();
-        if (bufferedAbility != null)
+        if (ability.HasCastTime || ability.HasChannelTime || ability is DirectionTargetedDash)
         {
-            if (!bufferedAbility.UsesResource || bufferedAbility.GetResourceCost() <= character.EntityStats.Resource.GetCurrentValue())
+            currentlyUsedAbilities.Remove(ability);
+
+            character.CharacterMovement.RotateCharacterIfMoving();
+
+            Ability bufferedAbility = character.CharacterBufferedAbilityManager.GetBufferedAbility();
+            if (bufferedAbility != null)
             {
-                character.CharacterMovement.StopAllMovement(false);
-                character.CharacterBufferedAbilityManager.UseBufferedAbility();
-            }
-            else
-            {
-                character.CharacterBufferedAbilityManager.ResetBufferedAbility();
+                if (!bufferedAbility.UsesResource || bufferedAbility.GetResourceCost() <= character.EntityStats.Resource.GetCurrentValue())
+                {
+                    character.CharacterMovement.StopAllMovement(false);
+                    character.CharacterBufferedAbilityManager.UseBufferedAbility();
+                }
+                else
+                {
+                    character.CharacterBufferedAbilityManager.ResetBufferedAbility();
+                }
             }
         }
     }

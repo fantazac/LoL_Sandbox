@@ -24,9 +24,11 @@ public abstract class GroundTargetedBlink : GroundTargeted
     protected override IEnumerator AbilityWithChannelTime()
     {
         UseResource();
+        IsBeingChanneled = true;
 
         yield return delayChannelTime;
 
+        IsBeingChanneled = false;
         character.CharacterOrientation.RotateCharacterInstantly(destinationOnCast);
         transform.position = destinationOnCast;
         character.CharacterMovement.NotifyCharacterMoved();

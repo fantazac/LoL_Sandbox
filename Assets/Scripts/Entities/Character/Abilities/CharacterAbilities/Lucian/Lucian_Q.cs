@@ -74,6 +74,7 @@ public class Lucian_Q : UnitTargetedAoE
         aoe.CreateAreaOfEffect(new List<Entity>(), character.Team, affectedUnitType, durationAoE);
         aoe.ActivateAreaOfEffect();
         aoe.OnAbilityEffectHit += OnAbilityEffectHit;
+
         FinishAbilityCast();
     }
 }

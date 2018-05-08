@@ -65,7 +65,6 @@ public class Lucian_W : DirectionTargetedProjectile
     protected override void OnProjectileHit(AbilityEffect projectile, Entity entityHit)
     {
         OnAreaOfEffectHit(projectile, entityHit);
-        AbilityHit();
         OnProjectileReachedEnd((Projectile)projectile);
     }
 
@@ -80,9 +79,10 @@ public class Lucian_W : DirectionTargetedProjectile
 
     private void OnAreaOfEffectHit(AbilityEffect projectile, Entity entityHit)
     {
-        entityHit.EntityStats.Health.Reduce(GetAbilityDamage(entityHit));
+        float damage = GetAbilityDamage(entityHit);
+        entityHit.EntityStats.Health.Reduce(damage);
         AddNewDebuffToEntityHit(entityHit);
-        AbilityHit();
+        AbilityHit(entityHit, damage);
     }
 
     private void OnEntityDamaged()

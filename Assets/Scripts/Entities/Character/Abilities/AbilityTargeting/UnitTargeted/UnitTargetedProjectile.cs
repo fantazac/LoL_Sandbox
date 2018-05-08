@@ -14,11 +14,12 @@ public abstract class UnitTargetedProjectile : UnitTargeted
 
     protected override void OnAbilityEffectHit(AbilityEffect projectile, Entity entityHit)
     {
-        entityHit.EntityStats.Health.Reduce(GetAbilityDamage(entityHit));
+        float damage = GetAbilityDamage(entityHit);
+        entityHit.EntityStats.Health.Reduce(damage);
         if (effectType == AbilityEffectType.SINGLE_TARGET)
         {
             Destroy(projectile.gameObject);
         }
-        AbilityHit();
+        AbilityHit(entityHit, damage);
     }
 }

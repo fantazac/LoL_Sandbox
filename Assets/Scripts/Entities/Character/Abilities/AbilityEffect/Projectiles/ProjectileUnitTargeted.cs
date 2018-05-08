@@ -4,18 +4,23 @@ using UnityEngine;
 
 public class ProjectileUnitTargeted : Projectile
 {
-    private Entity target;
-    private Collider targetCollider;
+    protected Entity target;
+    protected Collider targetCollider;
+    protected bool isACriticalAttack;
 
     protected bool alreadyHitATarget;//This is to prevent OnTriggerEnter to cast multiple times if multiple targets enter the collider at the same time
 
-    public void ShootProjectile(EntityTeam teamOfCallingEntity, Entity target, float speed)
+    public delegate void OnProjectileUnitTargetedHitHandler(AbilityEffect abilityEffect, Entity entityHit, bool isACriticalAttack);
+    public event OnProjectileUnitTargetedHitHandler OnProjectileUnitTargetedHit;
+
+    public void ShootProjectile(EntityTeam teamOfCallingEntity, Entity target, float speed, bool isACriticalAttack = false)
     {
         if(target != null)
         {
             this.teamOfCallingEntity = teamOfCallingEntity;
             this.target = target;
             this.speed = speed;
+            this.isACriticalAttack = isACriticalAttack;
             targetCollider = target.GetComponent<Collider>();
             StartCoroutine(ActivateAbilityEffect());
         }
@@ -53,6 +58,10 @@ public class ProjectileUnitTargeted : Projectile
         if (!alreadyHitATarget && collider == targetCollider)
         {
             UnitsAlreadyHit.Add(target);
+            if(OnProjectileUnitTargetedHit != null)
+            {
+                OnProjectileUnitTargetedHit(this, target, isACriticalAttack);
+            }
             OnAbilityEffectHitTarget(target);
             alreadyHitATarget = true;
             GetComponent<Collider>().enabled = false;

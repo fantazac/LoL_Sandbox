@@ -80,15 +80,8 @@ public class LucianBasicAttack : CharacterBasicAttack
         attackIsInQueue = false;
 
         ProjectileUnitTargeted projectile = (Instantiate(basicAttackPrefab, transform.position, transform.rotation)).GetComponent<ProjectileUnitTargeted>();
-        projectile.ShootProjectile(entity.Team, target, speed);
-        if (passiveWasActiveOnBasicAttackCast)
-        {
-            projectile.OnAbilityEffectHit += BasicAttackHit;
-        }
-        else
-        {
-            projectile.OnAbilityEffectHit += base.BasicAttackHit;
-        }
+        projectile.ShootProjectile(entity.Team, target, speed, AttackIsCritical.CheckIfAttackIsCritical(entity.EntityStats.CriticalStrikeChance.GetTotal()));
+        projectile.OnProjectileUnitTargetedHit += BasicAttackHit;
 
         if (passiveWasActiveOnBasicAttackCast)
         {
@@ -99,23 +92,16 @@ public class LucianBasicAttack : CharacterBasicAttack
 
             ProjectileUnitTargeted projectile2 = (Instantiate(passiveBasicAttackPrefab, transform.position, transform.rotation)).GetComponent<ProjectileUnitTargeted>();
             projectile2.transform.LookAt(target.transform);
-            projectile2.ShootProjectile(entity.Team, target, speed);
-            projectile2.OnAbilityEffectHit += PassiveBasicAttackHit;
+            projectile2.ShootProjectile(entity.Team, target, speed, AttackIsCritical.CheckIfAttackIsCritical(entity.EntityStats.CriticalStrikeChance.GetTotal()));
+            projectile2.OnProjectileUnitTargetedHit += PassiveBasicAttackHit;
         }
 
         isShootingPassiveShot = false;
     }
 
-    protected override void BasicAttackHit(AbilityEffect basicAttackProjectile, Entity entityHit)
+    private void PassiveBasicAttackHit(AbilityEffect basicAttackProjectile, Entity entityHit, bool isACriticalAttack)
     {
-        passive.UseAbility(entityHit);
-        base.BasicAttackHit(basicAttackProjectile, entityHit);
-    }
-
-    private void PassiveBasicAttackHit(AbilityEffect basicAttackProjectile, Entity entityHit)
-    {
-        passive.OnPassiveHit(entityHit);
+        passive.OnPassiveHit(entityHit, isACriticalAttack);
         Destroy(basicAttackProjectile.gameObject);
-        CallOnBasicAttackHitEvent(entityHit);
     }
 }

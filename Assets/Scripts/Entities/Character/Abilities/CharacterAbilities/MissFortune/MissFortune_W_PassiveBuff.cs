@@ -6,7 +6,6 @@ using UnityEngine;
 public class MissFortune_W_PassiveBuff : AbilityBuff
 {
     private float baseBuffFlatBonus;
-    private float timeBeforeFullBuffPower;
 
     protected MissFortune_W_PassiveBuff()
     {
@@ -15,7 +14,7 @@ public class MissFortune_W_PassiveBuff : AbilityBuff
         showBuffValueOnUI = true;
 
         baseBuffFlatBonus = 25;
-        timeBeforeFullBuffPower = 5;
+        buffDuration = 5;
 
         buffFlatValue = 60;
         buffFlatValuePerLevel = 10;
@@ -30,7 +29,7 @@ public class MissFortune_W_PassiveBuff : AbilityBuff
     {
         foreach (Entity affectedEntity in EntitiesAffectedByBuff)
         {
-            Buff buff = affectedEntity.EntityBuffManager.GetBuff(this);
+            BuffUpdatingWithDelay buff = (BuffUpdatingWithDelay)affectedEntity.EntityBuffManager.GetBuff(this);
             if (buff != null)
             {
                 if (buff.BuffValue != baseBuffFlatBonus)
@@ -38,6 +37,10 @@ public class MissFortune_W_PassiveBuff : AbilityBuff
                     affectedEntity.EntityStats.MovementSpeed.RemoveFlatBonus(oldFlatValue);
                     affectedEntity.EntityStats.MovementSpeed.AddFlatBonus(newFlatValue);
                     buff.SetBuffValueOnUI(newFlatValue);
+                }
+                else
+                {
+                    buff.SetBuffValuePostDelay(newFlatValue);
                 }
             }
         }
@@ -59,6 +62,6 @@ public class MissFortune_W_PassiveBuff : AbilityBuff
 
     protected override Buff CreateNewBuff(Entity affectedEntity)
     {
-        return new BuffUpdatingWithDelay(this, affectedEntity, baseBuffFlatBonus, timeBeforeFullBuffPower, buffFlatValue);
+        return new BuffUpdatingWithDelay(this, affectedEntity, baseBuffFlatBonus, buffDuration, buffFlatValue);
     }
 }

@@ -10,9 +10,6 @@ public class MissFortune_Q : UnitTargetedProjectile
 
     private Vector3 vectorOnCast;
 
-    public delegate void OnMissFortuneQHitHandler(Entity entityHit);
-    public event OnMissFortuneQHitHandler OnMissFortuneQHit;
-
     protected MissFortune_Q()
     {
         abilityName = "Double Up";
@@ -39,6 +36,8 @@ public class MissFortune_Q : UnitTargetedProjectile
 
         effectRadius = 500;
         effectRadiusOnBigAngle = 150;
+
+        AppliesOnHitEffects = true;
 
         affectedByCooldownReduction = true;
     }
@@ -72,37 +71,46 @@ public class MissFortune_Q : UnitTargetedProjectile
         ProjectileUnitTargeted projectile = (Instantiate(projectilePrefab, transform.position, transform.rotation)).GetComponent<ProjectileUnitTargeted>();
         projectile.ShootProjectile(character.Team, targetedEntity, speed);
         projectile.OnAbilityEffectHit += OnAbilityEffectHit;
+
         FinishAbilityCast();
     }
 
     protected override void OnAbilityEffectHit(AbilityEffect projectile, Entity entityHit)
     {
         base.OnAbilityEffectHit(projectile, entityHit);
-        if (OnMissFortuneQHit != null)
+        Entity nextEntity = FindTargetBehindEntityHit(entityHit);
+        if (nextEntity)
         {
-            OnMissFortuneQHit(entityHit);
-        }
-
-        if (entityHit == targetedEntity)
-        {
-            Entity nextEntity = FindTargetBehindEntityHit(entityHit);
-            if (nextEntity)
+            bool isACriticalAttack;
+            if (entityHit.EntityStats.Health.GetCurrentValue() <= 0)
             {
-                /*if(entityHit is dead)
-                {
-                    //crit 100%
-                }
-                else
-                {
-                    //normal crit chance
-                }*/
-
-                ProjectileUnitTargeted projectile2 = (Instantiate(projectilePrefab, entityHit.transform.position, transform.rotation)).GetComponent<ProjectileUnitTargeted>();
-                projectile2.transform.LookAt(nextEntity.transform.position);
-                projectile2.ShootProjectile(character.Team, nextEntity, speed);
-                projectile2.OnAbilityEffectHit += OnAbilityEffectHit;
+                isACriticalAttack = true;
             }
+            else
+            {
+                isACriticalAttack = AttackIsCritical.CheckIfAttackIsCritical(character.EntityStats.CriticalStrikeChance.GetTotal());
+            }
+
+            ProjectileUnitTargeted projectile2 = (Instantiate(projectilePrefab, entityHit.transform.position, transform.rotation)).GetComponent<ProjectileUnitTargeted>();
+            projectile2.transform.LookAt(nextEntity.transform.position);
+            projectile2.ShootProjectile(character.Team, nextEntity, speed, isACriticalAttack);
+            projectile2.OnProjectileUnitTargetedHit += OnProjectileHit;
         }
+    }
+
+    private void OnProjectileHit(AbilityEffect projectile, Entity entityHit, bool isACriticalAttack)//TODO: this should not exist, just call base.OnAbilityEffectHit and pass it if it crits
+    {
+        float damage = GetAbilityDamage(entityHit);
+        if (isACriticalAttack)
+        {
+            damage *= 2;//TODO: Crit reduction (randuins)? Crit multiplier different than +100% (Jhin, IE)?
+        }
+        entityHit.EntityStats.Health.Reduce(damage);
+        if (effectType == AbilityEffectType.SINGLE_TARGET)
+        {
+            Destroy(projectile.gameObject);
+        }
+        AbilityHit(entityHit, damage);
     }
 
     private Entity FindTargetBehindEntityHit(Entity entityHit)//TODO: How the hell do I make cones...?
