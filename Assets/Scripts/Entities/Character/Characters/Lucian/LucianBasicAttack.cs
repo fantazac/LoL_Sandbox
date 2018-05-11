@@ -118,13 +118,19 @@ public class LucianBasicAttack : CharacterBasicAttack
 
     protected override void BasicAttackHit(AbilityEffect basicAttackProjectile, Entity entityHit, bool isACriticalAttack)
     {
-        passive.UseAbility(entityHit);
+        if (!entity.EntityStatusManager.IsBlinded())
+        {
+            passive.UseAbility(entityHit);
+        }
         base.BasicAttackHit(basicAttackProjectile, entityHit, isACriticalAttack);
     }
 
     private void PassiveBasicAttackHit(AbilityEffect basicAttackProjectile, Entity entityHit, bool isACriticalAttack)
     {
-        passive.OnPassiveHit(entityHit, isACriticalAttack);
+        if (!entity.EntityStatusManager.IsBlinded())
+        {
+            passive.OnPassiveHit(entityHit, isACriticalAttack);
+        }
         Destroy(basicAttackProjectile.gameObject);
     }
 }

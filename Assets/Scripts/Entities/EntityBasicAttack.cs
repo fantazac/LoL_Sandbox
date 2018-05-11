@@ -125,17 +125,20 @@ public abstract class EntityBasicAttack : MonoBehaviour
 
     protected virtual void BasicAttackHit(AbilityEffect basicAttackProjectile, Entity entityHit, bool isACriticalAttack)
     {
-        float damage = GetBasicAttackDamage(entityHit);
-        if (isACriticalAttack)
+        if (!entity.EntityStatusManager.IsBlinded())
         {
-            damage *= 2;//TODO: Crit reduction (randuins)? Crit multiplier different than +100% (Jhin, IE)?
+            float damage = GetBasicAttackDamage(entityHit);
+            if (isACriticalAttack)
+            {
+                damage *= 2;//TODO: Crit reduction (randuins)? Crit multiplier different than +100% (Jhin, IE)?
+            }
+            entityHit.EntityStats.Health.Reduce(damage);
+            if (entity is Character)
+            {
+                ((Character)entity).CharacterOnHitEffectsManager.ApplyOnHitEffectsToEntityHit(entityHit, damage);
+            }
         }
-        entityHit.EntityStats.Health.Reduce(damage);
         Destroy(basicAttackProjectile.gameObject);
-        if (entity is Character)
-        {
-            ((Character)entity).CharacterOnHitEffectsManager.ApplyOnHitEffectsToEntityHit(entityHit, damage);
-        }
     }
 
     protected float GetBasicAttackDamage(Entity entityHit)

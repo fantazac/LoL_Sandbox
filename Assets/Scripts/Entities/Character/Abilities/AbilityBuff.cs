@@ -17,6 +17,7 @@ public abstract class AbilityBuff : MonoBehaviour
     protected float buffFlatValuePerLevel;
     protected float buffPercentValue;
     protected float buffPercentValuePerLevel;
+    protected CrowdControlEffects buffCrowdControlEffect;
 
     protected Sprite buffSprite;
     protected string buffSpritePath;

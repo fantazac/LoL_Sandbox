@@ -13,6 +13,7 @@ public class CC_W_Debuff : AbilityBuff
 
         buffDuration = 2;
         //buffFlatValue = 10;
+        buffCrowdControlEffect = CrowdControlEffects.CHARM;
     }
 
     protected override void SetSpritePaths()
@@ -23,7 +24,7 @@ public class CC_W_Debuff : AbilityBuff
     public override void ApplyBuffToAffectedEntity(Entity affectedEntity, float buffValue, int currentStacks)
     {
         //affectedEntity.EntityStats.MovementSpeed.AddFlatMalus(buffValue);
-        affectedEntity.EntityStatusManager.AddCrowdControlEffectOnEntity(CrowdControlEffects.STUN);
+        affectedEntity.EntityStatusManager.AddCrowdControlEffectOnEntity(buffCrowdControlEffect);
 
         base.ApplyBuffToAffectedEntity(affectedEntity, buffValue, currentStacks);
     }
@@ -31,7 +32,7 @@ public class CC_W_Debuff : AbilityBuff
     public override void RemoveBuffFromAffectedEntity(Entity affectedEntity, float buffValue, int currentStacks)
     {
         //affectedEntity.EntityStats.MovementSpeed.RemoveFlatMalus(buffValue);
-        affectedEntity.EntityStatusManager.RemoveCrowdControlEffectFromEntity(CrowdControlEffects.STUN);
+        affectedEntity.EntityStatusManager.RemoveCrowdControlEffectFromEntity(buffCrowdControlEffect);
 
         base.RemoveBuffFromAffectedEntity(affectedEntity, buffValue, currentStacks);
     }
