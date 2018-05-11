@@ -131,6 +131,10 @@ public class MainMenuManager : MonoBehaviour
                 {
                     GUILayout.Label("Ping: " + PhotonNetwork.GetPing().ToString() + "  -  Players Online: " + PhotonNetwork.playerList.Length + " - Team: " + PhotonNetwork.player.GetTeam());
                 }
+                if (GUILayout.Button("CC", GUILayout.Height(40)))
+                {
+                    SpawnCharacter("CC");
+                }
                 if (GUILayout.Button("Ezreal", GUILayout.Height(40)))
                 {
                     SpawnCharacter("Ezreal");

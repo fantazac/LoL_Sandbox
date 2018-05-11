@@ -19,6 +19,7 @@ public class Lucian_E : DirectionTargetedDash
         minimumDistanceTravelled = 200;
         dashSpeed = 32;
 
+        IsAMovementAbility = true;
         ResetBasicAttackCycleOnAbilityFinished = true;
 
         affectedByCooldownReduction = true;

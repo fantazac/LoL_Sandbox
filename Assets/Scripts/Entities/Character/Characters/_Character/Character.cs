@@ -70,6 +70,7 @@ public abstract class Character : Entity
             CharacterOrientation = gameObject.AddComponent<CharacterOrientation>();
             CharacterStatsManager = gameObject.AddComponent<CharacterStatsManager>();
         }
+        EntityStatusManager = gameObject.AddComponent<CharacterStatusManager>();
         if ((!StaticObjects.OnlineMode && !(this is Dummy)) || PhotonView.isMine)
         {
             CharacterInput = gameObject.AddComponent<CharacterInput>();

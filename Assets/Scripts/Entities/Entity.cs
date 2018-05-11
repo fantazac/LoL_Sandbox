@@ -12,6 +12,7 @@ public class Entity : MonoBehaviour
     public EntityBasicAttackCycle EntityBasicAttackCycle { get; private set; }
     public EntityBuffManager EntityBuffManager { get; private set; }
     public EntityStats EntityStats { get; protected set; }
+    public EntityStatusManager EntityStatusManager { get; protected set; }
 
     public PhotonView PhotonView { get; private set; }
 
@@ -29,6 +30,10 @@ public class Entity : MonoBehaviour
             EntityBasicAttackCycle = gameObject.AddComponent<EntityBasicAttackCycle>();
         }
         EntityBuffManager = gameObject.AddComponent<EntityBuffManager>();
+        if(!(this is Character))
+        {
+            EntityStatusManager = gameObject.AddComponent<EntityStatusManager>();
+        }
 
         PhotonView = GetComponent<PhotonView>();
         gameObject.AddComponent<MouseEvent>();

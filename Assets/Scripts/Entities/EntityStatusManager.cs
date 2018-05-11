@@ -2,16 +2,43 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CharacterStatusManager : EntityStatusManager
+public class EntityStatusManager : MonoBehaviour
 {
-    protected Character character;
+    protected Entity entity;
 
-    protected override void Start()
+    protected List<CrowdControlEffects> crowdControlEffectsOnCharacter;
+
+    protected int cannotUseBasicAttacksCount;
+    protected int cannotUseBasicAbilitiesCount;
+    protected int cannotUseLongRangedAbilitiesCount;
+    protected int cannotUseMovementCount;
+    protected int cannotUseMovementAbilitiesCount;
+    protected int cannotUseSummonerAbilitiesCount;
+    protected int isBlindedCount;
+
+    protected EntityStatusManager()
     {
-        character = GetComponent<Character>();
+        crowdControlEffectsOnCharacter = new List<CrowdControlEffects>();
     }
 
-    protected override void AddOrRemoveCrowdControlEffectFromEntity(CrowdControlEffects crowdControlEffect, bool remove)
+    protected virtual void Start()
+    {
+        entity = GetComponent<Entity>();
+    }
+
+    public void AddCrowdControlEffectOnEntity(CrowdControlEffects crowdControlEffect)
+    {
+        crowdControlEffectsOnCharacter.Add(crowdControlEffect);
+        AddOrRemoveCrowdControlEffectFromEntity(crowdControlEffect, false);
+    }
+
+    public void RemoveCrowdControlEffectFromEntity(CrowdControlEffects crowdControlEffect)
+    {
+        crowdControlEffectsOnCharacter.Remove(crowdControlEffect);
+        AddOrRemoveCrowdControlEffectFromEntity(crowdControlEffect, true);
+    }
+
+    protected virtual void AddOrRemoveCrowdControlEffectFromEntity(CrowdControlEffects crowdControlEffect, bool remove)
     {
         int count = remove ? -1 : 1;
         switch (crowdControlEffect)
@@ -20,7 +47,6 @@ public class CharacterStatusManager : EntityStatusManager
                 SetIsBlinded(count);
                 break;
             case CrowdControlEffects.CHARM:
-                SetCannotUseBasicAbilities(count);
                 SetCannotUseBasicAttacks(count);
                 SetCannotUseMovement(count);
                 break;
@@ -36,150 +62,126 @@ public class CharacterStatusManager : EntityStatusManager
             case CrowdControlEffects.ENTANGLE:
                 SetCannotUseBasicAttacks(count);
                 SetCannotUseMovement(count);
-                SetCannotUseMovementAbilities(count);
                 break;
             case CrowdControlEffects.FEAR:
-                SetCannotUseBasicAbilities(count);
                 SetCannotUseBasicAttacks(count);
                 SetCannotUseMovement(count);
                 break;
             case CrowdControlEffects.FLEE:
                 break;
             case CrowdControlEffects.GROUND:
-                SetCannotUseMovementAbilities(count);
                 break;
             case CrowdControlEffects.KNOCKASIDE:
-                SetCannotUseBasicAbilities(count);
                 SetCannotUseBasicAttacks(count);
                 SetCannotUseMovement(count);
                 break;
             case CrowdControlEffects.KNOCKBACK:
-                SetCannotUseBasicAbilities(count);
                 SetCannotUseBasicAttacks(count);
                 SetCannotUseMovement(count);
                 break;
             case CrowdControlEffects.KNOCKDOWN:
                 break;
             case CrowdControlEffects.KNOCKUP:
-                SetCannotUseBasicAbilities(count);
                 SetCannotUseBasicAttacks(count);
                 SetCannotUseMovement(count);
                 break;
             case CrowdControlEffects.NEARSIGHT:
-                SetCannotUseLongRangedAbilities(count);
                 break;
             case CrowdControlEffects.PACIFY:
-                SetCannotUseBasicAbilities(count);
                 SetCannotUseBasicAttacks(count);
                 break;
             case CrowdControlEffects.POLYMORPH:
-                SetCannotUseBasicAbilities(count);
                 SetCannotUseBasicAttacks(count);
                 break;
             case CrowdControlEffects.PULL:
-                SetCannotUseBasicAbilities(count);
                 SetCannotUseBasicAttacks(count);
                 SetCannotUseMovement(count);
                 break;
             case CrowdControlEffects.ROOT:
                 SetCannotUseMovement(count);
-                SetCannotUseMovementAbilities(count);
                 break;
             case CrowdControlEffects.SILENCE:
-                SetCannotUseBasicAbilities(count);
                 break;
             case CrowdControlEffects.SLEEP:
-                SetCannotUseBasicAbilities(count);
                 SetCannotUseBasicAttacks(count);
                 SetCannotUseMovement(count);
                 break;
             case CrowdControlEffects.SLOW:
                 break;
             case CrowdControlEffects.STASIS:
-                SetCannotUseBasicAbilities(count);
                 SetCannotUseBasicAttacks(count);
                 SetCannotUseMovement(count);
-                SetCannotUseSummonerAbilities(count);
                 break;
             case CrowdControlEffects.STUN:
-                SetCannotUseBasicAbilities(count);
                 SetCannotUseBasicAttacks(count);
                 SetCannotUseMovement(count);
                 break;
             case CrowdControlEffects.SUPPRESION:
-                SetCannotUseBasicAbilities(count);
                 SetCannotUseBasicAttacks(count);
                 SetCannotUseMovement(count);
-                SetCannotUseSummonerAbilities(count);
                 break;
             case CrowdControlEffects.SUSPENSION:
-                SetCannotUseBasicAbilities(count);
                 SetCannotUseBasicAttacks(count);
                 SetCannotUseMovement(count);
                 break;
             case CrowdControlEffects.TAUNT:
-                SetCannotUseBasicAbilities(count);
                 SetCannotUseBasicAttacks(count);
                 SetCannotUseMovement(count);
                 break;
         }
     }
 
-    protected void SetCannotUseBasicAbilities(int count)
+    protected void SetCannotUseBasicAttacks(int count)//Should not be used since we check CanUseBasicAttacks() in EntityBasicAttack
     {
-        cannotUseBasicAbilitiesCount += count;
-        if (count == 1 && cannotUseBasicAbilitiesCount == 1)
+        cannotUseBasicAttacksCount += count;
+        if (count == 1 && cannotUseBasicAttacksCount == 1)
         {
-            character.CharacterAbilityManager.BlockAllBasicAbilities();
+            //Disable basic attacking
         }
-        else if (count == -1 && cannotUseBasicAbilitiesCount == 0)
+        else if (count == -1 && cannotUseBasicAttacksCount == 0)
         {
-            character.CharacterAbilityManager.UnblockAllBasicAbilities(cannotUseLongRangedAbilitiesCount > 0, cannotUseMovementAbilitiesCount > 0, cannotUseSummonerAbilitiesCount > 0);
+            //Enable basic attacking
         }
     }
 
-    protected void SetCannotUseLongRangedAbilities(int count)
+    protected void SetCannotUseMovement(int count)//Should not be used since we check CanUseMovement() in CharacterMovement
     {
-        cannotUseLongRangedAbilitiesCount += count;
-        if (cannotUseBasicAbilitiesCount == 0)
+        cannotUseMovementCount += count;
+        if (count == 1 && cannotUseMovementCount == 1)
         {
-            if (count == 1 && cannotUseLongRangedAbilitiesCount == 1)
-            {
-                character.CharacterAbilityManager.BlockAllLongRangedAbilities();
-            }
-            else if (count == -1 && cannotUseLongRangedAbilitiesCount == 0)
-            {
-                character.CharacterAbilityManager.UnblockAllLongRangedAbilities();
-            }
+            //Disable normal movement
+        }
+        else if (count == -1 && cannotUseMovementCount == 0)
+        {
+            //Enable normal movement
         }
     }
 
-    protected void SetCannotUseMovementAbilities(int count)
+    protected void SetIsBlinded(int count)
     {
-        cannotUseMovementAbilitiesCount += count;
-        if (cannotUseBasicAbilitiesCount == 0)
+        isBlindedCount += count;
+        if (count == 1 && isBlindedCount == 1)
         {
-            if (count == 1 && cannotUseMovementAbilitiesCount == 1)
-            {
-                character.CharacterAbilityManager.BlockAllMovementAbilities();
-            }
-            else if (count == -1 && cannotUseMovementAbilitiesCount == 0)
-            {
-                character.CharacterAbilityManager.UnblockAllMovementAbilities();
-            }
+            //Enable auto misses
+        }
+        else if (count == -1 && isBlindedCount == 0)
+        {
+            //Disable auto misses
         }
     }
 
-    protected void SetCannotUseSummonerAbilities(int count)
+    public bool CanUseBasicAttacks()
     {
-        cannotUseSummonerAbilitiesCount += count;
-        if (count == 1 && cannotUseSummonerAbilitiesCount == 1)
-        {
-            character.CharacterAbilityManager.BlockAllSummonerAbilities();
-        }
-        else if (count == -1 && cannotUseSummonerAbilitiesCount == 0)
-        {
-            character.CharacterAbilityManager.UnblockAllSummonerAbilities(cannotUseBasicAbilitiesCount > 0);
-        }
+        return cannotUseBasicAbilitiesCount == 0;
+    }
+
+    public bool CanUseMovement()
+    {
+        return cannotUseMovementCount == 0;
+    }
+
+    public bool IsBlinded()
+    {
+        return isBlindedCount > 0;
     }
 }

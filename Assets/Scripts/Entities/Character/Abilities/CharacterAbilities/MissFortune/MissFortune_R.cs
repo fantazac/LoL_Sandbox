@@ -36,6 +36,7 @@ public class MissFortune_R : DirectionTargetedProjectile
 
         CanMoveWhileChanneling = true;
         CanUseAnyAbilityWhileChanneling = true;
+        //IsLongRanged = true;//TODO: VERIFY IN GAME
 
         affectedByCooldownReduction = true;
     }

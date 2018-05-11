@@ -18,6 +18,7 @@ public class Recall : AutoTargetedBlink
 
         CanMoveWhileChanneling = true;
         CanUseAnyAbilityWhileChanneling = true;
+        IsAMovementAbility = true;
 
         IsEnabled = true;
     }

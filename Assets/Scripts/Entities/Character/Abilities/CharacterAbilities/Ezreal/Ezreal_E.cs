@@ -31,6 +31,8 @@ public class Ezreal_E : GroundTargetedBlink
         castTime = 0.15f;//TODO: VERIFY ACTUAL VALUE
         delayCastTime = new WaitForSeconds(castTime);
 
+        IsAMovementAbility = true;
+
         affectedByCooldownReduction = true;
         startCooldownOnAbilityCast = true;
 

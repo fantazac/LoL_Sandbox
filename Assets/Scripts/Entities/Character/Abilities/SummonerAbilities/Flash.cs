@@ -17,6 +17,7 @@ public class Flash : GroundTargetedBlink
         startCooldownOnAbilityCast = true;
 
         CanBeCastDuringOtherAbilityCastTimes = true;
+        IsAMovementAbility = true;
 
         IsEnabled = true;
     }

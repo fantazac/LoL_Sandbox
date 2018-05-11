@@ -120,13 +120,151 @@ public class CharacterAbilityManager : MonoBehaviour
     {
         if (ability.UsesResource)
         {
-            bool hasEnoughResourceToCastAbility = !ability.IsEnabled || ability.IsOnCooldown || currentValue >= ability.GetResourceCost();
+            bool hasEnoughResourceToCastAbility = !ability.IsEnabled || ability.IsBlocked || ability.IsOnCooldown || currentValue >= ability.GetResourceCost();
             character.AbilityUIManager.UpdateAbilityHasEnoughResource(ability.ID, hasEnoughResourceToCastAbility);
         }
         else
         {
             character.AbilityUIManager.UpdateAbilityHasEnoughResource(ability.ID, true);
             characterAbilitiesWithResourceCosts.Remove(ability);
+        }
+    }
+
+    public void BlockAllBasicAbilities()
+    {
+        foreach (Ability ability in CharacterAbilities)
+        {
+            ability.BlockAbility();
+        }
+        foreach (Ability ability in SummonerAbilities)
+        {
+            if (ability.IsAMovementAbility)
+            {
+                ability.BlockAbility();
+            }
+        }
+        foreach (Ability ability in OtherCharacterAbilities)//TODO: TEST IN GAME
+        {
+            if (ability.IsAMovementAbility)
+            {
+                ability.BlockAbility();
+            }
+        }
+    }
+
+    public void UnblockAllBasicAbilities(bool cannotUseLongRangedAbilities, bool cannotUseMovementAbilities, bool cannotUseSummonerAbilities)
+    {
+        foreach (Ability ability in CharacterAbilities)
+        {
+            if (!(ability.IsLongRanged && cannotUseLongRangedAbilities) && !(ability.IsAMovementAbility && cannotUseMovementAbilities))
+            {
+                ability.UnblockAbility();
+            }
+        }
+        foreach (Ability ability in SummonerAbilities)
+        {
+            if (!cannotUseSummonerAbilities && !(ability.IsLongRanged && cannotUseLongRangedAbilities) && !(ability.IsAMovementAbility && cannotUseMovementAbilities))
+            {
+                ability.UnblockAbility();
+            }
+        }
+        foreach (Ability ability in OtherCharacterAbilities)//TODO: See BlockAllBasicAbilities' todo
+        {
+            if (ability.IsAMovementAbility)
+            {
+                ability.UnblockAbility();
+            }
+        }
+    }
+
+    public void BlockAllLongRangedAbilities()
+    {
+        foreach (Ability ability in CharacterAbilities)
+        {
+            if (ability.IsLongRanged)
+            {
+                ability.BlockAbility();
+            }
+        }
+        foreach (Ability ability in SummonerAbilities)
+        {
+            if (ability.IsLongRanged)
+            {
+                ability.BlockAbility();
+            }
+        }
+    }
+
+    public void UnblockAllLongRangedAbilities()
+    {
+        foreach (Ability ability in CharacterAbilities)
+        {
+            if (ability.IsLongRanged)
+            {
+                ability.UnblockAbility();
+            }
+        }
+        foreach (Ability ability in SummonerAbilities)
+        {
+            if (ability.IsLongRanged)
+            {
+                ability.UnblockAbility();
+            }
+        }
+    }
+
+    public void BlockAllMovementAbilities()
+    {
+        foreach (Ability ability in CharacterAbilities)
+        {
+            if (ability.IsAMovementAbility)
+            {
+                ability.BlockAbility();
+            }
+        }
+        foreach (Ability ability in SummonerAbilities)
+        {
+            if (ability.IsAMovementAbility)
+            {
+                ability.UnblockAbility();
+            }
+        }
+    }
+
+    public void UnblockAllMovementAbilities()
+    {
+        foreach (Ability ability in CharacterAbilities)
+        {
+            if (ability.IsAMovementAbility)
+            {
+                ability.UnblockAbility();
+            }
+        }
+        foreach (Ability ability in SummonerAbilities)
+        {
+            if (ability.IsAMovementAbility)
+            {
+                ability.UnblockAbility();
+            }
+        }
+    }
+
+    public void BlockAllSummonerAbilities()
+    {
+        foreach (Ability ability in SummonerAbilities)
+        {
+            ability.UnblockAbility();
+        }
+    }
+
+    public void UnblockAllSummonerAbilities(bool cannotUseBasicAbilities)
+    {
+        foreach (Ability ability in SummonerAbilities)
+        {
+            if (!(ability.IsAMovementAbility && cannotUseBasicAbilities))
+            {
+                ability.UnblockAbility();
+            }
         }
     }
 
@@ -274,7 +412,7 @@ public class CharacterAbilityManager : MonoBehaviour
     public void OnPressedInputForAbility(AbilityCategory abilityCategory, int abilityId)
     {
         Ability ability = GetAbility(abilityCategory, abilityId);
-        if (ability.IsEnabled)
+        if (ability.IsEnabled && !ability.IsBlocked)
         {
             if (AbilityIsCastable(ability))
             {

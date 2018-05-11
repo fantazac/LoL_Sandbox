@@ -18,6 +18,8 @@ public class AbilityUIManager : MonoBehaviour
     [SerializeField]
     private GameObject[] abilityNotEnoughResourceObjects;
     [SerializeField]
+    private GameObject[] abilityBlockedObjects;
+    [SerializeField]
     private GameObject[] abilityLevelPoints;
     [SerializeField]
     private GameObject abilityLevelPoint;
@@ -72,9 +74,13 @@ public class AbilityUIManager : MonoBehaviour
         abilityLevelPoints[abilityId].transform.GetChild(abilityLevel - 1).GetComponent<Image>().color = abilityLevelPointColor;
     }
 
-    public void SetAbilityOnCooldown(AbilityCategory abilityCategory, int abilityId)
+    public void SetAbilityOnCooldown(AbilityCategory abilityCategory, int abilityId, bool abilityIsBlocked)
     {
         int id = GetAbilityId(abilityCategory, abilityId);
+        if (abilityIsBlocked)
+        {
+            abilityBlockedObjects[id - 1].SetActive(false);
+        }
         abilityImages[id].color = abilityColorOnCooldown;
         abilityOnCooldownImages[id].fillAmount = 1;
     }
@@ -118,11 +124,15 @@ public class AbilityUIManager : MonoBehaviour
         abilityCooldownTexts[abilityId].text = cooldownString;
     }
 
-    public void SetAbilityOffCooldown(AbilityCategory abilityCategory, int abilityId, bool abilityIsEnabled)
+    public void SetAbilityOffCooldown(AbilityCategory abilityCategory, int abilityId, bool abilityUsesResource, bool abilityIsEnabled, bool abilityIsBlocked)
     {
         int id = GetAbilityId(abilityCategory, abilityId);
         abilityOnCooldownImages[id].fillAmount = 0;
-        if (abilityIsEnabled)
+        if (abilityIsBlocked)
+        {
+            BlockAbility(abilityCategory, abilityId, abilityUsesResource);
+        }
+        else if (abilityIsEnabled)
         {
             abilityImages[id].color = Color.white;
         }
@@ -149,6 +159,23 @@ public class AbilityUIManager : MonoBehaviour
     public void EnableAbility(AbilityCategory abilityCategory, int abilityId, bool characterHasEnoughResourceToCastAbility)
     {
         abilityImages[GetAbilityId(abilityCategory, abilityId)].color = Color.white;
+        UpdateAbilityHasEnoughResource(abilityId, characterHasEnoughResourceToCastAbility);
+    }
+
+    public void BlockAbility(AbilityCategory abilityCategory, int abilityId, bool abilityUsesResource)
+    {
+        abilityImages[GetAbilityId(abilityCategory, abilityId)].color = abilityColorOnCooldown;
+        abilityBlockedObjects[GetAbilityId(abilityCategory, abilityId) - 1].SetActive(true);
+        if (abilityUsesResource)
+        {
+            UpdateAbilityHasEnoughResource(abilityId, true);
+        }
+    }
+
+    public void UnblockAbility(AbilityCategory abilityCategory, int abilityId, bool characterHasEnoughResourceToCastAbility)
+    {
+        abilityImages[GetAbilityId(abilityCategory, abilityId)].color = Color.white;
+        abilityBlockedObjects[GetAbilityId(abilityCategory, abilityId) - 1].SetActive(false);
         UpdateAbilityHasEnoughResource(abilityId, characterHasEnoughResourceToCastAbility);
     }
 

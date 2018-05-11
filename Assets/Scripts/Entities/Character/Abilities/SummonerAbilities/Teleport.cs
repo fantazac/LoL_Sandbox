@@ -20,6 +20,8 @@ public class Teleport : GroundTargetedBlink//TODO: UnitTargeted
 
         CanBeRecasted = true;
         CannotCastAnyAbilityWhileActive = true;
+        IsAMovementAbility = true;
+        IsLongRanged = true;
 
         IsEnabled = true;
     }

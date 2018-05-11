@@ -1,0 +1,39 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class CC_W : SelfTargeted
+{
+    protected CC_W()
+    {
+        abilityName = "CC BTW HAHA";
+
+        abilityType = AbilityType.Passive;
+        effectType = AbilityEffectType.SINGLE_TARGET;
+
+        MaxLevel = 1;
+
+        baseCooldown = 5.5f;
+    }
+
+    protected override void SetResourcePaths()
+    {
+        abilitySpritePath = "Sprites/Characters/CharacterAbilities/CC/CCW";
+    }
+
+    protected override void Start()
+    {
+        base.Start();
+
+        AbilityDebuffs = new AbilityBuff[] { gameObject.AddComponent<CC_W_Debuff>() };
+    }
+
+    public override void UseAbility(Vector3 destination)
+    {
+        StartAbilityCast();
+
+        AbilityDebuffs[0].AddNewBuffToAffectedEntity(character);
+
+        FinishAbilityCast();
+    }
+}

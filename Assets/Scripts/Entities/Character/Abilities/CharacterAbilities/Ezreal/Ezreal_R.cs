@@ -31,6 +31,8 @@ public class Ezreal_R : DirectionTargetedProjectile
         castTime = 1;
         delayCastTime = new WaitForSeconds(castTime);
 
+        IsLongRanged = true;
+
         affectedByCooldownReduction = true;
         startCooldownOnAbilityCast = true;
     }

@@ -60,6 +60,7 @@ public abstract class Ability : MonoBehaviour
     public bool AppliesAbilityEffects { get; protected set; }
     public bool AppliesOnHitEffects { get; protected set; }
     public bool CanBeCastDuringOtherAbilityCastTimes { get; protected set; }
+    public bool CanBeCastWhileStunned { get; protected set; }
     public bool CanBeRecasted { get; protected set; }
     public bool CanMoveWhileActive { get; protected set; }
     public bool CanMoveWhileChanneling { get; protected set; }
@@ -68,9 +69,12 @@ public abstract class Ability : MonoBehaviour
     public bool CanUseAnyAbilityWhileChanneling { get; protected set; }
     public bool CanUseBasicAttacksWhileCasting { get; protected set; }
     public bool IsActive { get; protected set; }
+    public bool IsAMovementAbility { get; protected set; }
     public bool IsBeingCasted { get; protected set; }
     public bool IsBeingChanneled { get; protected set; }
+    public bool IsBlocked { get; protected set; }
     public bool IsEnabled { get; protected set; }
+    public bool IsLongRanged { get; protected set; }//TODO
     public bool IsOnCooldown { get; protected set; }
     public bool IsOnCooldownForRecast { get; protected set; }
     public bool HasCastTime { get; private set; }
@@ -222,10 +226,7 @@ public abstract class Ability : MonoBehaviour
         {
             foreach (Ability ability in AbilitiesToDisableWhileActive)
             {
-                if (ability.AbilityLevel > 0)
-                {
-                    ability.EnableAbility();
-                }
+                ability.EnableAbility();
             }
         }
         if (OnAbilityFinished != null)
@@ -251,10 +252,31 @@ public abstract class Ability : MonoBehaviour
 
     public virtual void EnableAbility()
     {
-        IsEnabled = true;
+        if (AbilityLevel > 0)
+        {
+            IsEnabled = true;
+            if (!IsOnCooldown && character.AbilityUIManager)
+            {
+                character.AbilityUIManager.EnableAbility(AbilityCategory, ID, resourceCost <= character.EntityStats.Resource.GetCurrentValue());
+            }
+        }
+    }
+
+    public void BlockAbility()
+    {
+        IsBlocked = true;
         if (!IsOnCooldown && character.AbilityUIManager)
         {
-            character.AbilityUIManager.EnableAbility(AbilityCategory, ID, resourceCost <= character.EntityStats.Resource.GetCurrentValue());
+            character.AbilityUIManager.BlockAbility(AbilityCategory, ID, UsesResource);
+        }
+    }
+
+    public void UnblockAbility()
+    {
+        IsBlocked = false;
+        if (!IsOnCooldown && character.AbilityUIManager)
+        {
+            character.AbilityUIManager.UnblockAbility(AbilityCategory, ID, resourceCost <= character.EntityStats.Resource.GetCurrentValue());
         }
     }
 
@@ -311,7 +333,7 @@ public abstract class Ability : MonoBehaviour
 
         yield return null;
 
-        character.AbilityUIManager.SetAbilityOnCooldown(AbilityCategory, ID);
+        character.AbilityUIManager.SetAbilityOnCooldown(AbilityCategory, ID, IsBlocked);
 
         while (cooldownRemaining > 0)
         {
@@ -322,8 +344,8 @@ public abstract class Ability : MonoBehaviour
             yield return null;
         }
 
-        character.AbilityUIManager.SetAbilityOffCooldown(AbilityCategory, ID, IsEnabled);
-        if (UsesResource)
+        character.AbilityUIManager.SetAbilityOffCooldown(AbilityCategory, ID, UsesResource, IsEnabled, IsBlocked);
+        if (UsesResource && IsEnabled && !IsBlocked)
         {
             character.AbilityUIManager.UpdateAbilityHasEnoughResource(ID, resourceCost <= character.EntityStats.Resource.GetCurrentValue());
         }
@@ -397,7 +419,7 @@ public abstract class Ability : MonoBehaviour
             if (UsesResource && abilityUIManager)
             {
                 abilityUIManager.SetAbilityCost(ID, resourceCost);
-                abilityUIManager.UpdateAbilityHasEnoughResource(ID, !IsEnabled || IsOnCooldown || resourceCost <= character.EntityStats.Resource.GetCurrentValue());
+                abilityUIManager.UpdateAbilityHasEnoughResource(ID, !IsEnabled || IsBlocked || IsOnCooldown || resourceCost <= character.EntityStats.Resource.GetCurrentValue());
             }
         }
         else if (AbilityLevel == 0)

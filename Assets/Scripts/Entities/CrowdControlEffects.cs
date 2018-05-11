@@ -8,6 +8,7 @@
     DROWSY,         // Drowsy
     ENTANGLE,       // Rooted + Disarmed
     FEAR,           // Fleeing + Slowed
+    FLEE,           // Fleeing
     GROUND,         // Grounded
     KNOCKASIDE,     // Airborne + Stunned
     KNOCKBACK,      // Airborne + Stunned
