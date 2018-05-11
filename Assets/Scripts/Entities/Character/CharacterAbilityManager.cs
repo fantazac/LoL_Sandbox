@@ -79,6 +79,10 @@ public class CharacterAbilityManager : MonoBehaviour
             Ability ability3 = OtherCharacterAbilities[k];
             ability3.OnAbilityUsed += OnAbilityUsed;
             ability3.OnAbilityFinished += OnAbilityFinished;
+            if (isLocalCharacter)
+            {
+                ability3.AbilityCategory = AbilityCategory.OtherCharacterAbility;
+            }
         }
 
         for (int l = 0; l < SummonerAbilities.Length; l++)
@@ -468,7 +472,7 @@ public class CharacterAbilityManager : MonoBehaviour
             ability.UseAbility(destination);
             if (ability.HasCastTime || ability.HasChannelTime || ability.CanBeRecasted)
             {
-                character.CharacterMovement.SetCharacterIsInRangeEventForBasicAttack();
+                character.CharacterMovement.SetCharacterIsInRangeEventForBasicAttack();//?
             }
         }
         else

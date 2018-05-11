@@ -46,17 +46,28 @@ public abstract class EntityBasicAttack : MonoBehaviour
         delayAttack = new WaitForSeconds(attackSpeedCycleDuration * delayPercentBeforeAttack);
     }
 
-    public void SetupBasicAttack()
+    public void SetupBasicAttack(Entity currentlySelectedTarget)
     {
+        currentTarget = currentlySelectedTarget;
         //TODO: EntityMovement will become the parent of CharacterMovement
         ((Character)entity).CharacterMovement.CharacterIsInTargetRange += UseBasicAttack;
     }
 
-    public virtual void StopBasicAttack()
+    public virtual void StopBasicAttack(bool isCrowdControlled = false)
     {
-        currentTarget = null;
         attackIsInQueue = false;
-        StopAllCoroutines();
+        if (currentTarget != null)
+        {
+            StopAllCoroutines();
+            if (isCrowdControlled)
+            {
+                StartBasicAttack();
+            }
+            else
+            {
+                currentTarget = null;
+            }
+        }
     }
 
     public bool AttackIsInQueue()
@@ -79,9 +90,14 @@ public abstract class EntityBasicAttack : MonoBehaviour
     {
         if (currentTarget != null && !attackIsInQueue && entity.EntityBasicAttackCycle.AttackSpeedCycleIsReady)
         {
-            attackIsInQueue = true;
-            ((Character)entity).CharacterMovement.SetMoveTowardsTarget(currentTarget, entity.EntityStats.AttackRange.GetTotal(), true);
+            StartBasicAttack();
         }
+    }
+
+    protected void StartBasicAttack()
+    {
+        attackIsInQueue = true;
+        ((Character)entity).CharacterMovement.SetMoveTowardsTarget(currentTarget, entity.EntityStats.AttackRange.GetTotal(), true);
     }
 
     protected virtual void UseBasicAttack(Entity target)

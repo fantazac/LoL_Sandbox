@@ -39,13 +39,23 @@ public class LucianBasicAttack : CharacterBasicAttack
         passiveBasicAttackPrefab = Resources.Load<GameObject>(passiveBasicAttackPrefabPath);
     }
 
-    public override void StopBasicAttack()
+    public override void StopBasicAttack(bool isCrowdControlled = false)
     {
-        currentTarget = null;
         attackIsInQueue = false;
-        if (!isShootingPassiveShot)
+        if (currentTarget != null)
         {
-            StopAllCoroutines();
+            if (!isShootingPassiveShot)
+            {
+                StopAllCoroutines();
+            }
+            if (isCrowdControlled)
+            {
+                StartBasicAttack();
+            }
+            else
+            {
+                currentTarget = null;
+            }
         }
     }
 

@@ -257,7 +257,14 @@ public abstract class Ability : MonoBehaviour
             IsEnabled = true;
             if (!IsOnCooldown && character.AbilityUIManager)
             {
-                character.AbilityUIManager.EnableAbility(AbilityCategory, ID, resourceCost <= character.EntityStats.Resource.GetCurrentValue());
+                if (IsBlocked)
+                {
+                    BlockAbility();
+                }
+                else
+                {
+                    character.AbilityUIManager.EnableAbility(AbilityCategory, ID, resourceCost <= character.EntityStats.Resource.GetCurrentValue());
+                }
             }
         }
     }
@@ -265,7 +272,7 @@ public abstract class Ability : MonoBehaviour
     public void BlockAbility()
     {
         IsBlocked = true;
-        if (!IsOnCooldown && character.AbilityUIManager)
+        if (!IsOnCooldown && IsEnabled && character.AbilityUIManager)
         {
             character.AbilityUIManager.BlockAbility(AbilityCategory, ID, UsesResource);
         }
@@ -274,7 +281,7 @@ public abstract class Ability : MonoBehaviour
     public void UnblockAbility()
     {
         IsBlocked = false;
-        if (!IsOnCooldown && character.AbilityUIManager)
+        if (!IsOnCooldown && IsEnabled && character.AbilityUIManager)
         {
             character.AbilityUIManager.UnblockAbility(AbilityCategory, ID, resourceCost <= character.EntityStats.Resource.GetCurrentValue());
         }

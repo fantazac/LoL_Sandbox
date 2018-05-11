@@ -5,6 +5,7 @@ public class CharacterOrientation : MonoBehaviour
 {
     private Vector3 lastInstantRotation;
 
+    private Character character;
     private CharacterAbilityManager characterAbilityManager;
 
     private IEnumerator castPointRotation;
@@ -21,6 +22,7 @@ public class CharacterOrientation : MonoBehaviour
 
     private void Awake()
     {
+        character = GetComponent<Character>();
         characterAbilityManager = GetComponent<CharacterAbilityManager>();
     }
 
@@ -147,7 +149,7 @@ public class CharacterOrientation : MonoBehaviour
 
     private bool CanRotate()
     {
-        return !(isRotatingTowardsCastPoint || characterAbilityManager.IsUsingAbilityPreventingRotation() ||
+        return !(isRotatingTowardsCastPoint || characterAbilityManager.IsUsingAbilityPreventingRotation() || !character.EntityStatusManager.CanUseMovement() ||
             characterAbilityManager.IsUsingAbilityThatHasACastTime() || characterAbilityManager.IsUsingAbilityThatHasAChannelTime() ||
             characterAbilityManager.IsUsingADashAbility());
     }

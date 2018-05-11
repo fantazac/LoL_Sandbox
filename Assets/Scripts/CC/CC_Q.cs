@@ -17,6 +17,7 @@ public class CC_Q : SelfTargeted
 
         damage = 50;
         baseCooldown = 5.5f;
+        resourceCost = 200;
     }
 
     protected override void SetResourcePaths()
@@ -38,6 +39,7 @@ public class CC_Q : SelfTargeted
     {
         StartAbilityCast();
 
+        UseResource();
         AddNewBuffToEntityHit(character);
 
         FinishAbilityCast();

@@ -164,19 +164,27 @@ public class AbilityUIManager : MonoBehaviour
 
     public void BlockAbility(AbilityCategory abilityCategory, int abilityId, bool abilityUsesResource)
     {
-        abilityImages[GetAbilityId(abilityCategory, abilityId)].color = abilityColorOnCooldown;
-        abilityBlockedObjects[GetAbilityId(abilityCategory, abilityId) - 1].SetActive(true);
-        if (abilityUsesResource)
+        if (abilityCategory != AbilityCategory.OfflineAbility && abilityCategory != AbilityCategory.OtherCharacterAbility)
         {
-            UpdateAbilityHasEnoughResource(abilityId, true);
+            int id = GetAbilityId(abilityCategory, abilityId);
+            abilityImages[id].color = abilityColorOnCooldown;
+            abilityBlockedObjects[id - 1].SetActive(true);
+            if (abilityUsesResource)
+            {
+                UpdateAbilityHasEnoughResource(abilityId, true);
+            }
         }
     }
 
     public void UnblockAbility(AbilityCategory abilityCategory, int abilityId, bool characterHasEnoughResourceToCastAbility)
     {
-        abilityImages[GetAbilityId(abilityCategory, abilityId)].color = Color.white;
-        abilityBlockedObjects[GetAbilityId(abilityCategory, abilityId) - 1].SetActive(false);
-        UpdateAbilityHasEnoughResource(abilityId, characterHasEnoughResourceToCastAbility);
+        if (abilityCategory != AbilityCategory.OfflineAbility && abilityCategory != AbilityCategory.OtherCharacterAbility)
+        {
+            int id = GetAbilityId(abilityCategory, abilityId);
+            abilityImages[id].color = Color.white;
+            abilityBlockedObjects[id - 1].SetActive(false);
+            UpdateAbilityHasEnoughResource(abilityId, characterHasEnoughResourceToCastAbility);
+        }
     }
 
     public void UpdateAbilityHasEnoughResource(int abilityId, bool characterHasEnoughResourceToCastAbility)

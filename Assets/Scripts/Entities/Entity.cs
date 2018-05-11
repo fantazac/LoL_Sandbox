@@ -30,10 +30,7 @@ public class Entity : MonoBehaviour
             EntityBasicAttackCycle = gameObject.AddComponent<EntityBasicAttackCycle>();
         }
         EntityBuffManager = gameObject.AddComponent<EntityBuffManager>();
-        if(!(this is Character))
-        {
-            EntityStatusManager = gameObject.AddComponent<EntityStatusManager>();
-        }
+        EntityStatusManager = gameObject.AddComponent<EntityStatusManager>();
 
         PhotonView = GetComponent<PhotonView>();
         gameObject.AddComponent<MouseEvent>();

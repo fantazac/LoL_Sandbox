@@ -7,8 +7,8 @@ public class CharacterMovement : MonoBehaviour
     private string movementCapsulePrefabPath;
     private GameObject movementCapsulePrefab;
 
-    private Vector3 destination;
-    private Entity target;
+    private Vector3 currentlySelectedDestination;
+    private Entity currentlySelectedTarget;
 
     private Character character;
 
@@ -25,7 +25,7 @@ public class CharacterMovement : MonoBehaviour
 
     private CharacterMovement()
     {
-        destination = Vector3.down;
+        currentlySelectedDestination = Vector3.down;
 
         movementCapsulePrefabPath = "MovementPoint/MovementCapsule";
     }
@@ -109,7 +109,7 @@ public class CharacterMovement : MonoBehaviour
     public void SetMoveTowardsPoint(Vector3 destination, float range = 0)
     {
         StopAllMovement();
-        this.destination = destination;
+        currentlySelectedDestination = destination;
         if (range > 0)
         {
             StartCoroutine(MoveTowardsPoint(destination, range));
@@ -125,7 +125,7 @@ public class CharacterMovement : MonoBehaviour
     {
         while (transform.position != destination)
         {
-            if (!character.CharacterAbilityManager.IsUsingAbilityPreventingMovement())
+            if (!character.CharacterAbilityManager.IsUsingAbilityPreventingMovement() && character.EntityStatusManager.CanUseMovement())
             {
                 transform.position = Vector3.MoveTowards(transform.position, destination, Time.deltaTime * character.EntityStats.MovementSpeed.GetTotal());
 
@@ -134,7 +134,7 @@ public class CharacterMovement : MonoBehaviour
 
             yield return null;
         }
-        this.destination = Vector3.down;
+        currentlySelectedDestination = Vector3.down;
     }
 
     private IEnumerator MoveTowardsPoint(Vector3 destination, float range)
@@ -143,9 +143,16 @@ public class CharacterMovement : MonoBehaviour
         {
             if (!character.CharacterAbilityManager.IsUsingAbilityPreventingMovement())
             {
-                transform.position = Vector3.MoveTowards(transform.position, destination, Time.deltaTime * character.EntityStats.MovementSpeed.GetTotal());
+                if (character.EntityStatusManager.CanUseMovement())
+                {
+                    transform.position = Vector3.MoveTowards(transform.position, destination, Time.deltaTime * character.EntityStats.MovementSpeed.GetTotal());
 
-                NotifyCharacterMoved();
+                    NotifyCharacterMoved();
+                }
+                else
+                {
+                    StopAllMovement();
+                }
             }
 
             yield return null;
@@ -156,16 +163,16 @@ public class CharacterMovement : MonoBehaviour
             CharacterIsInDestinationRange(destination);
         }
 
-        this.destination = Vector3.down;
+        currentlySelectedDestination = Vector3.down;
     }
 
-    public void SetCharacterIsInRangeEventForBasicAttack()
+    public void SetCharacterIsInRangeEventForBasicAttack()//Lucian Q -> Lucian W: This cancels the Q cast but continues movement post-W to auto the same target
     {
-        if (target != null)
+        if (currentlySelectedTarget != null)
         {
             CharacterIsInDestinationRange = null;
             CharacterIsInTargetRange = null;
-            character.EntityBasicAttack.SetupBasicAttack();
+            character.EntityBasicAttack.SetupBasicAttack(currentlySelectedTarget);
         }
     }
 
@@ -180,25 +187,32 @@ public class CharacterMovement : MonoBehaviour
     public void SetMoveTowardsTarget(Entity target, float range, bool isBasicAttack)
     {
         StopAllMovement();
+        currentlySelectedTarget = target;
         if (isBasicAttack)
         {
-            character.EntityBasicAttack.SetupBasicAttack();
+            character.EntityBasicAttack.SetupBasicAttack(target);
         }
-        this.target = target;
-        StartCoroutine(MoveTowardsTarget(target, range));
+        StartCoroutine(MoveTowardsTarget(target, range, isBasicAttack));
         character.CharacterOrientation.RotateCharacterUntilReachedTarget(target.transform);
     }
 
-    private IEnumerator MoveTowardsTarget(Entity target, float range)
+    private IEnumerator MoveTowardsTarget(Entity target, float range, bool isBasicAttack)
     {
         Transform targetTransform = target.transform;
         while (targetTransform != null && Vector3.Distance(targetTransform.position, transform.position) > range)
         {
             if (!character.CharacterAbilityManager.IsUsingAbilityPreventingMovement())
             {
-                transform.position = Vector3.MoveTowards(transform.position, targetTransform.position, Time.deltaTime * character.EntityStats.MovementSpeed.GetTotal());
+                if (character.EntityStatusManager.CanUseMovement())
+                {
+                    transform.position = Vector3.MoveTowards(transform.position, targetTransform.position, Time.deltaTime * character.EntityStats.MovementSpeed.GetTotal());
 
-                NotifyCharacterMoved();
+                    NotifyCharacterMoved();
+                }
+                else if (!isBasicAttack)
+                {
+                    StopAllMovement();
+                }
             }
 
             yield return null;
@@ -206,9 +220,14 @@ public class CharacterMovement : MonoBehaviour
 
         if (targetTransform != null)
         {
-            while (character.CharacterAbilityManager.IsUsingAbilityPreventingBasicAttacks())
+            if (isBasicAttack && (character.CharacterAbilityManager.IsUsingAbilityPreventingBasicAttacks() || !character.EntityStatusManager.CanUseBasicAttacks()))
             {
-                yield return null;
+                while (character.CharacterAbilityManager.IsUsingAbilityPreventingBasicAttacks() || !character.EntityStatusManager.CanUseBasicAttacks())
+                {
+                    yield return null;
+                }
+
+                SetMoveTowardsTarget(target, range, true);
             }
 
             if (CharacterIsInTargetRange != null)
@@ -216,7 +235,7 @@ public class CharacterMovement : MonoBehaviour
                 CharacterIsInTargetRange(target);
             }
 
-            this.target = null;
+            currentlySelectedTarget = null;
         }
         else
         {
@@ -226,13 +245,13 @@ public class CharacterMovement : MonoBehaviour
 
     public void RotateCharacterIfMoving()
     {
-        if (destination != Vector3.down)
+        if (currentlySelectedDestination != Vector3.down)
         {
-            character.CharacterOrientation.RotateCharacter(destination);
+            character.CharacterOrientation.RotateCharacter(currentlySelectedDestination);
         }
-        else if (target != null)
+        else if (currentlySelectedTarget != null)
         {
-            character.CharacterOrientation.RotateCharacterUntilReachedTarget(target.transform);
+            character.CharacterOrientation.RotateCharacterUntilReachedTarget(currentlySelectedTarget.transform);
         }
     }
 
@@ -270,13 +289,13 @@ public class CharacterMovement : MonoBehaviour
         character.CharacterOrientation.StopMovementRotation();
         CharacterIsInTargetRange = null;
         CharacterIsInDestinationRange = null;
-        destination = Vector3.down;
-        target = null;
+        currentlySelectedDestination = Vector3.down;
+        currentlySelectedTarget = null;
     }
 
     public void StopMovementTowardsPoint()
     {
-        if (destination != Vector3.down)
+        if (currentlySelectedDestination != Vector3.down)
         {
             StopAllMovement();
         }
@@ -284,7 +303,7 @@ public class CharacterMovement : MonoBehaviour
 
     public Entity GetTarget()
     {
-        return target;
+        return currentlySelectedTarget;
     }
 
     public void NotifyCharacterMoved()
