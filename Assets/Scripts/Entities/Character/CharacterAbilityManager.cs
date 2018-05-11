@@ -124,8 +124,11 @@ public class CharacterAbilityManager : MonoBehaviour
     {
         if (ability.UsesResource)
         {
-            bool hasEnoughResourceToCastAbility = !ability.IsEnabled || ability.IsBlocked || ability.IsOnCooldown || currentValue >= ability.GetResourceCost();
-            character.AbilityUIManager.UpdateAbilityHasEnoughResource(ability.ID, hasEnoughResourceToCastAbility);
+            if (!(ability.IsActive || ability.IsOnCooldown || ability.IsOnCooldownForRecast))
+            {
+                bool hasEnoughResourceToCastAbility = !ability.IsEnabled || ability.IsBlocked || ability.IsOnCooldown || currentValue >= ability.GetResourceCost();
+                character.AbilityUIManager.UpdateAbilityHasEnoughResource(ability.ID, hasEnoughResourceToCastAbility);
+            }
         }
         else
         {
@@ -230,7 +233,7 @@ public class CharacterAbilityManager : MonoBehaviour
         {
             if (ability.IsAMovementAbility)
             {
-                ability.UnblockAbility();
+                ability.BlockAbility();
             }
         }
     }
@@ -257,7 +260,7 @@ public class CharacterAbilityManager : MonoBehaviour
     {
         foreach (Ability ability in SummonerAbilities)
         {
-            ability.UnblockAbility();
+            ability.BlockAbility();
         }
     }
 

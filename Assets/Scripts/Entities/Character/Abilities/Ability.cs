@@ -255,7 +255,7 @@ public abstract class Ability : MonoBehaviour
         if (AbilityLevel > 0)
         {
             IsEnabled = true;
-            if (!IsOnCooldown && character.AbilityUIManager)
+            if (!IsOnCooldown && !IsActive && character.AbilityUIManager)
             {
                 if (IsBlocked)
                 {

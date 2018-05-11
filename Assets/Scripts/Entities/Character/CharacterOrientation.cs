@@ -64,7 +64,7 @@ public class CharacterOrientation : MonoBehaviour
 
         while (rotationAmountLastFrame != rotationAmount)
         {
-            if (CanRotate())
+            if (CanRotate() && character.EntityStatusManager.CanUseMovement())
             {
                 rotationAmountLastFrame = rotationAmount;
 
@@ -79,21 +79,21 @@ public class CharacterOrientation : MonoBehaviour
         movementRotation = null;
     }
 
-    public void RotateCharacterUntilReachedTarget(Transform target)
+    public void RotateCharacterUntilReachedTarget(Transform target, bool isBasicAttack)
     {
         StopMovementRotation();
-        movementRotation = RotateUntilReachedTarget(target);
+        movementRotation = RotateUntilReachedTarget(target, isBasicAttack);
         StartCoroutine(movementRotation);
     }
 
-    private IEnumerator RotateUntilReachedTarget(Transform target)
+    private IEnumerator RotateUntilReachedTarget(Transform target, bool isBasicAttack)
     {
         rotationAmount = Vector3.up;
         rotationAmountLastFrame = Vector3.zero;
 
         while (target != null)
         {
-            if (CanRotate())
+            if (CanRotate() && ((isBasicAttack && character.EntityStatusManager.CanUseBasicAttacks()) || (!isBasicAttack && character.EntityStatusManager.CanUseBasicAbilities())))
             {
                 rotationAmountLastFrame = rotationAmount;
 
@@ -149,7 +149,7 @@ public class CharacterOrientation : MonoBehaviour
 
     private bool CanRotate()
     {
-        return !(isRotatingTowardsCastPoint || characterAbilityManager.IsUsingAbilityPreventingRotation() || !character.EntityStatusManager.CanUseMovement() ||
+        return !(isRotatingTowardsCastPoint || characterAbilityManager.IsUsingAbilityPreventingRotation() ||
             characterAbilityManager.IsUsingAbilityThatHasACastTime() || characterAbilityManager.IsUsingAbilityThatHasAChannelTime() ||
             characterAbilityManager.IsUsingADashAbility());
     }

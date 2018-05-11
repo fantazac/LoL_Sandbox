@@ -13,7 +13,7 @@ public class CC_W_Debuff : AbilityBuff
 
         buffDuration = 2;
         //buffFlatValue = 10;
-        buffCrowdControlEffect = CrowdControlEffects.CHARM;
+        buffCrowdControlEffect = CrowdControlEffects.STUN;
     }
 
     protected override void SetSpritePaths()

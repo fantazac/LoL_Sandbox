@@ -193,7 +193,7 @@ public class CharacterMovement : MonoBehaviour
             character.EntityBasicAttack.SetupBasicAttack(target);
         }
         StartCoroutine(MoveTowardsTarget(target, range, isBasicAttack));
-        character.CharacterOrientation.RotateCharacterUntilReachedTarget(target.transform);
+        character.CharacterOrientation.RotateCharacterUntilReachedTarget(target.transform, isBasicAttack);
     }
 
     private IEnumerator MoveTowardsTarget(Entity target, float range, bool isBasicAttack)
@@ -251,7 +251,7 @@ public class CharacterMovement : MonoBehaviour
         }
         else if (currentlySelectedTarget != null)
         {
-            character.CharacterOrientation.RotateCharacterUntilReachedTarget(currentlySelectedTarget.transform);
+            character.CharacterOrientation.RotateCharacterUntilReachedTarget(currentlySelectedTarget.transform, true);
         }
     }
 

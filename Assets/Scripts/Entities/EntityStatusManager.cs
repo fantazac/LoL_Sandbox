@@ -76,6 +76,9 @@ public class EntityStatusManager : MonoBehaviour
                 SetCannotUseMovement(count);
                 break;
             case CrowdControlEffects.FLEE:
+                SetCannotUseBasicAbilities(count);
+                SetCannotUseBasicAttacks(count);
+                SetCannotUseMovement(count);
                 break;
             case CrowdControlEffects.GROUND:
                 SetCannotUseMovementAbilities(count);
@@ -91,6 +94,10 @@ public class EntityStatusManager : MonoBehaviour
                 SetCannotUseMovement(count);
                 break;
             case CrowdControlEffects.KNOCKDOWN:
+                if (character.CharacterAbilityManager)
+                {
+                    character.CharacterAbilityManager.StopAllDashAbilities();//TODO: cancels all airborne effects in certain cases (VeigarE) 
+                }
                 break;
             case CrowdControlEffects.KNOCKUP:
                 SetCannotUseBasicAbilities(count);
@@ -174,14 +181,6 @@ public class EntityStatusManager : MonoBehaviour
     private void SetIsBlinded(int count)
     {
         isBlindedCount += count;
-        if (count == 1 && isBlindedCount == 1)
-        {
-            //Enable auto misses
-        }
-        else if (count == -1 && isBlindedCount == 0)
-        {
-            //Disable auto misses
-        }
     }
 
     private void SetCannotUseBasicAbilities(int count)
@@ -248,9 +247,14 @@ public class EntityStatusManager : MonoBehaviour
         }
     }
 
-    public bool CanUseBasicAttacks()
+    public bool CanUseBasicAbilities()
     {
         return cannotUseBasicAbilitiesCount == 0;
+    }
+
+    public bool CanUseBasicAttacks()
+    {
+        return cannotUseBasicAttacksCount == 0;
     }
 
     public bool CanUseMovement()
