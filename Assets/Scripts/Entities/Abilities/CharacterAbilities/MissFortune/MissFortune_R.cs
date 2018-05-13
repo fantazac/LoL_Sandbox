@@ -45,7 +45,7 @@ public class MissFortune_R : DirectionTargetedProjectile
     {
         abilitySpritePath = "Sprites/Characters/CharacterAbilities/MissFortune/MissFortuneR";
 
-        projectilePrefabPath = "CharacterAbilities/MissFortune/MissFortuneR";
+        projectilePrefabPath = "CharacterAbilitiesPrefabs/MissFortune/MissFortuneR";
     }
 
     protected override void Start()

@@ -27,7 +27,7 @@ public class CharacterMovement : MonoBehaviour
     {
         currentlySelectedDestination = Vector3.down;
 
-        movementCapsulePrefabPath = "MovementPoint/MovementCapsule";
+        movementCapsulePrefabPath = "MovementCapsulePrefab/MovementCapsule";
     }
 
     private void Awake()

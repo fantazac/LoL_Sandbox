@@ -9,7 +9,7 @@ public class CCBasicAttack : CharacterBasicAttack
         delayPercentBeforeAttack = 0.1666f;
         speed = 1800;
 
-        basicAttackPrefabPath = "BasicAttacks/Characters/CC/CCBA";
+        basicAttackPrefabPath = "BasicAttacksPrefabs/Characters/CC/CCBA";
     }
 }
 

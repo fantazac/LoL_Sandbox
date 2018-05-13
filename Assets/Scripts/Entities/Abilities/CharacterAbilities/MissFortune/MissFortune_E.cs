@@ -43,7 +43,7 @@ public class MissFortune_E : GroundTargetedAoE
     {
         abilitySpritePath = "Sprites/Characters/CharacterAbilities/MissFortune/MissFortuneE";
 
-        areaOfEffectPrefabPath = "CharacterAbilities/MissFortune/MissFortuneE";
+        areaOfEffectPrefabPath = "CharacterAbilitiesPrefabs/MissFortune/MissFortuneE";
     }
 
     protected override void ModifyValues()

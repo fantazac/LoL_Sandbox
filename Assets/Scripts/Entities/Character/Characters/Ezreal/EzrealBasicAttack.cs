@@ -9,7 +9,7 @@ public class EzrealBasicAttack : CharacterBasicAttack
         delayPercentBeforeAttack = 0.1666f;
         speed = 1600;
 
-        basicAttackPrefabPath = "BasicAttacks/Characters/Ezreal/EzrealBA";
+        basicAttackPrefabPath = "BasicAttacksPrefabs/Characters/Ezreal/EzrealBA";
     }
 }
 

@@ -26,7 +26,7 @@ public class MainMenuManager : MonoBehaviour
         redSpawn = Vector3.right * 21 + Vector3.up * 0.5f + Vector3.forward * 9;
         offlineSpawn = Vector3.up * 0.5f;
 
-        characterParentPrefabPath = "Character/CharacterTemplate";
+        characterParentPrefabPath = "CharacterTemplatePrefab/CharacterTemplate";
     }
 
     private void Start()

@@ -38,7 +38,7 @@ public class Lucian_Q : UnitTargetedAoE
     {
         abilitySpritePath = "Sprites/Characters/CharacterAbilities/Lucian/LucianQ";
 
-        areaOfEffectPrefabPath = "CharacterAbilities/Lucian/LucianQ";
+        areaOfEffectPrefabPath = "CharacterAbilitiesPrefabs/Lucian/LucianQ";
     }
 
     protected override void Start()

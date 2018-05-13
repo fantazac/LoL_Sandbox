@@ -23,8 +23,8 @@ public class LucianBasicAttack : CharacterBasicAttack
         timeBeforePassiveShot = 0.2f;
         delayPassiveShot = new WaitForSeconds(timeBeforePassiveShot);
 
-        basicAttackPrefabPath = "BasicAttacks/Characters/Lucian/LucianBA";
-        passiveBasicAttackPrefabPath = "BasicAttacks/Characters/Lucian/LucianBAPassive";
+        basicAttackPrefabPath = "BasicAttacksPrefabs/Characters/Lucian/LucianBA";
+        passiveBasicAttackPrefabPath = "BasicAttacksPrefabs/Characters/Lucian/LucianBAPassive";
     }
 
     public void SetPassive(Lucian_P lucianPassive)

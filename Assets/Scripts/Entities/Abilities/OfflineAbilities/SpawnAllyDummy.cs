@@ -8,7 +8,7 @@ public class SpawnAllyDummy : SpawnDummy
     {
         abilityName = "Spawn Ally Dummy";
 
-        dummyResourcePath = "Dummy/AllyDummy";
+        dummyResourcePath = "DummyPrefabs/AllyDummy";
         team = EntityTeam.BLUE;
         dummyId = 5;
     }

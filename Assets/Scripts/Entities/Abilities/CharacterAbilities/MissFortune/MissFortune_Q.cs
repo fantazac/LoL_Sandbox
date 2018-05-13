@@ -46,7 +46,7 @@ public class MissFortune_Q : UnitTargetedProjectile
     {
         abilitySpritePath = "Sprites/Characters/CharacterAbilities/MissFortune/MissFortuneQ";
 
-        projectilePrefabPath = "CharacterAbilities/MissFortune/MissFortuneQ";
+        projectilePrefabPath = "CharacterAbilitiesPrefabs/MissFortune/MissFortuneQ";
     }
 
     protected override void ModifyValues()
