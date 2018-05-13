@@ -493,7 +493,7 @@ public class CharacterAbilityManager : MonoBehaviour
             {
                 character.CharacterBufferedAbilityManager.ResetBufferedAbility();
             }
-            character.CharacterMovement.StopAllMovement();
+            //character.CharacterMovement.StopAllMovement();
             ability.UseAbility(target);
         }
         else

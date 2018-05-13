@@ -119,13 +119,13 @@ public abstract class EntityBasicAttack : MonoBehaviour
         attackIsInQueue = false;
 
         ProjectileUnitTargeted projectile = (Instantiate(basicAttackPrefab, transform.position, transform.rotation)).GetComponent<ProjectileUnitTargeted>();
-        projectile.ShootProjectile(entity.Team, target, speed, AttackIsCritical.CheckIfAttackIsCritical(entity.EntityStats.CriticalStrikeChance.GetTotal()));
+        projectile.ShootProjectile(entity.Team, target, speed, AttackIsCritical.CheckIfAttackIsCritical(entity.EntityStats.CriticalStrikeChance.GetTotal()), entity.EntityStatusManager.IsBlinded());
         projectile.OnProjectileUnitTargetedHit += BasicAttackHit;
     }
 
-    protected virtual void BasicAttackHit(AbilityEffect basicAttackProjectile, Entity entityHit, bool isACriticalAttack)
+    protected virtual void BasicAttackHit(AbilityEffect basicAttackProjectile, Entity entityHit, bool isACriticalAttack, bool willMiss)
     {
-        if (!entity.EntityStatusManager.IsBlinded())
+        if (!(entity.EntityStatusManager.IsBlinded() || willMiss))
         {
             float damage = GetBasicAttackDamage(entityHit);
             if (isACriticalAttack)

@@ -98,7 +98,7 @@ public class MissFortune_Q : UnitTargetedProjectile
         }
     }
 
-    private void OnProjectileHit(AbilityEffect projectile, Entity entityHit, bool isACriticalAttack)//TODO: this should not exist, just call base.OnAbilityEffectHit and pass it if it crits
+    private void OnProjectileHit(AbilityEffect projectile, Entity entityHit, bool isACriticalAttack, bool willMiss)//TODO: this should not exist, just call base.OnAbilityEffectHit and pass it if it crits
     {
         float damage = GetAbilityDamage(entityHit);
         if (isACriticalAttack)

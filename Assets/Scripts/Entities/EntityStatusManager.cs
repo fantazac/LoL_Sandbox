@@ -7,7 +7,7 @@ public class EntityStatusManager : MonoBehaviour
     private Entity entity;
     private Character character;
 
-    private List<CrowdControlEffects> crowdControlEffectsOnCharacter;
+    public List<CrowdControlEffects> CrowdControlEffectsOnCharacter { get; private set; }
 
     private int cannotUseBasicAttacksCount;
     private int cannotUseBasicAbilitiesCount;
@@ -19,7 +19,7 @@ public class EntityStatusManager : MonoBehaviour
 
     private EntityStatusManager()
     {
-        crowdControlEffectsOnCharacter = new List<CrowdControlEffects>();
+        CrowdControlEffectsOnCharacter = new List<CrowdControlEffects>();
     }
 
     private void Start()
@@ -33,13 +33,13 @@ public class EntityStatusManager : MonoBehaviour
 
     public void AddCrowdControlEffectOnEntity(CrowdControlEffects crowdControlEffect)
     {
-        crowdControlEffectsOnCharacter.Add(crowdControlEffect);
+        CrowdControlEffectsOnCharacter.Add(crowdControlEffect);
         AddOrRemoveCrowdControlEffectFromEntity(crowdControlEffect, false);
     }
 
     public void RemoveCrowdControlEffectFromEntity(CrowdControlEffects crowdControlEffect)
     {
-        crowdControlEffectsOnCharacter.Remove(crowdControlEffect);
+        CrowdControlEffectsOnCharacter.Remove(crowdControlEffect);
         AddOrRemoveCrowdControlEffectFromEntity(crowdControlEffect, true);
     }
 
@@ -51,71 +51,71 @@ public class EntityStatusManager : MonoBehaviour
             case CrowdControlEffects.BLIND:
                 SetIsBlinded(count);
                 break;
-            case CrowdControlEffects.CHARM:
+            case CrowdControlEffects.CHARM://TODO
                 SetCannotUseBasicAbilities(count);
                 SetCannotUseBasicAttacks(count);
                 SetCannotUseMovement(count);
                 break;
-            case CrowdControlEffects.CRIPPLE:
+            case CrowdControlEffects.CRIPPLE://TODO
                 break;
-            case CrowdControlEffects.DISARM:
+            case CrowdControlEffects.DISARM://TODO
                 SetCannotUseBasicAttacks(count);
                 break;
-            case CrowdControlEffects.DISRUPT:
+            case CrowdControlEffects.DISRUPT://TODO
                 break;
-            case CrowdControlEffects.DROWSY:
+            case CrowdControlEffects.DROWSY://TODO
                 break;
-            case CrowdControlEffects.ENTANGLE:
+            case CrowdControlEffects.ENTANGLE://TODO
                 SetCannotUseBasicAttacks(count);
                 SetCannotUseMovement(count);
                 SetCannotUseMovementAbilities(count);
                 break;
-            case CrowdControlEffects.FEAR:
+            case CrowdControlEffects.FEAR://TODO
                 SetCannotUseBasicAbilities(count);
                 SetCannotUseBasicAttacks(count);
                 SetCannotUseMovement(count);
                 break;
-            case CrowdControlEffects.FLEE:
+            case CrowdControlEffects.FLEE://TODO
                 SetCannotUseBasicAbilities(count);
                 SetCannotUseBasicAttacks(count);
                 SetCannotUseMovement(count);
                 break;
-            case CrowdControlEffects.GROUND:
+            case CrowdControlEffects.GROUND://TODO
                 SetCannotUseMovementAbilities(count);
                 break;
-            case CrowdControlEffects.KNOCKASIDE:
+            case CrowdControlEffects.KNOCKASIDE://TODO
                 SetCannotUseBasicAbilities(count);
                 SetCannotUseBasicAttacks(count);
                 SetCannotUseMovement(count);
                 break;
-            case CrowdControlEffects.KNOCKBACK:
+            case CrowdControlEffects.KNOCKBACK://TODO
                 SetCannotUseBasicAbilities(count);
                 SetCannotUseBasicAttacks(count);
                 SetCannotUseMovement(count);
                 break;
-            case CrowdControlEffects.KNOCKDOWN:
+            case CrowdControlEffects.KNOCKDOWN://TODO
                 if (character.CharacterAbilityManager)
                 {
                     character.CharacterAbilityManager.StopAllDashAbilities();//TODO: cancels all airborne effects in certain cases (VeigarE) 
                 }
                 break;
-            case CrowdControlEffects.KNOCKUP:
+            case CrowdControlEffects.KNOCKUP://TODO
                 SetCannotUseBasicAbilities(count);
                 SetCannotUseBasicAttacks(count);
                 SetCannotUseMovement(count);
                 break;
-            case CrowdControlEffects.NEARSIGHT:
+            case CrowdControlEffects.NEARSIGHT://TODO
                 SetCannotUseLongRangedAbilities(count);
                 break;
-            case CrowdControlEffects.PACIFY:
+            case CrowdControlEffects.PACIFY://TODO
                 SetCannotUseBasicAbilities(count);
                 SetCannotUseBasicAttacks(count);
                 break;
-            case CrowdControlEffects.POLYMORPH:
+            case CrowdControlEffects.POLYMORPH://TODO
                 SetCannotUseBasicAbilities(count);
                 SetCannotUseBasicAttacks(count);
                 break;
-            case CrowdControlEffects.PULL:
+            case CrowdControlEffects.PULL://TODO
                 SetCannotUseBasicAbilities(count);
                 SetCannotUseBasicAttacks(count);
                 SetCannotUseMovement(count);
@@ -123,40 +123,41 @@ public class EntityStatusManager : MonoBehaviour
             case CrowdControlEffects.ROOT:
                 SetCannotUseMovement(count);
                 SetCannotUseMovementAbilities(count);
+                character.CharacterMovement.StopMovementTowardsPointIfHasEvent();
                 break;
-            case CrowdControlEffects.SILENCE:
+            case CrowdControlEffects.SILENCE://TODO
                 SetCannotUseBasicAbilities(count);
                 break;
-            case CrowdControlEffects.SLEEP:
-                SetCannotUseBasicAbilities(count);
-                SetCannotUseBasicAttacks(count);
-                SetCannotUseMovement(count);
-                break;
-            case CrowdControlEffects.SLOW:
-                break;
-            case CrowdControlEffects.STASIS:
-                SetCannotUseBasicAbilities(count);
-                SetCannotUseBasicAttacks(count);
-                SetCannotUseMovement(count);
-                SetCannotUseSummonerAbilities(count);
-                break;
-            case CrowdControlEffects.STUN:
+            case CrowdControlEffects.SLEEP://TODO
                 SetCannotUseBasicAbilities(count);
                 SetCannotUseBasicAttacks(count);
                 SetCannotUseMovement(count);
                 break;
-            case CrowdControlEffects.SUPPRESION:
+            case CrowdControlEffects.SLOW://TODO
+                break;
+            case CrowdControlEffects.STASIS://TODO
                 SetCannotUseBasicAbilities(count);
                 SetCannotUseBasicAttacks(count);
                 SetCannotUseMovement(count);
                 SetCannotUseSummonerAbilities(count);
                 break;
-            case CrowdControlEffects.SUSPENSION:
+            case CrowdControlEffects.STUN://TODO
                 SetCannotUseBasicAbilities(count);
                 SetCannotUseBasicAttacks(count);
                 SetCannotUseMovement(count);
                 break;
-            case CrowdControlEffects.TAUNT:
+            case CrowdControlEffects.SUPPRESION://TODO
+                SetCannotUseBasicAbilities(count);
+                SetCannotUseBasicAttacks(count);
+                SetCannotUseMovement(count);
+                SetCannotUseSummonerAbilities(count);
+                break;
+            case CrowdControlEffects.SUSPENSION://TODO
+                SetCannotUseBasicAbilities(count);
+                SetCannotUseBasicAttacks(count);
+                SetCannotUseMovement(count);
+                break;
+            case CrowdControlEffects.TAUNT://TODO
                 SetCannotUseBasicAbilities(count);
                 SetCannotUseBasicAttacks(count);
                 SetCannotUseMovement(count);

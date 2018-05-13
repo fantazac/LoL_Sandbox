@@ -7,13 +7,14 @@ public class ProjectileUnitTargeted : Projectile
     protected Entity target;
     protected Collider targetCollider;
     protected bool isACriticalAttack;
+    protected bool willMiss;
 
     protected bool alreadyHitATarget;//This is to prevent OnTriggerEnter to cast multiple times if multiple targets enter the collider at the same time
 
-    public delegate void OnProjectileUnitTargetedHitHandler(AbilityEffect abilityEffect, Entity entityHit, bool isACriticalAttack);
+    public delegate void OnProjectileUnitTargetedHitHandler(AbilityEffect abilityEffect, Entity entityHit, bool isACriticalAttack, bool willMiss);
     public event OnProjectileUnitTargetedHitHandler OnProjectileUnitTargetedHit;
 
-    public void ShootProjectile(EntityTeam teamOfCallingEntity, Entity target, float speed, bool isACriticalAttack = false)
+    public void ShootProjectile(EntityTeam teamOfCallingEntity, Entity target, float speed, bool isACriticalAttack = false, bool willMiss = false)
     {
         if(target != null)
         {
@@ -21,6 +22,7 @@ public class ProjectileUnitTargeted : Projectile
             this.target = target;
             this.speed = speed;
             this.isACriticalAttack = isACriticalAttack;
+            this.willMiss = willMiss;
             targetCollider = target.GetComponent<Collider>();
             StartCoroutine(ActivateAbilityEffect());
         }
@@ -60,7 +62,7 @@ public class ProjectileUnitTargeted : Projectile
             UnitsAlreadyHit.Add(target);
             if(OnProjectileUnitTargetedHit != null)
             {
-                OnProjectileUnitTargetedHit(this, target, isACriticalAttack);
+                OnProjectileUnitTargetedHit(this, target, isACriticalAttack, willMiss);
             }
             OnAbilityEffectHitTarget(target);
             alreadyHitATarget = true;

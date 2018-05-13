@@ -116,18 +116,18 @@ public class LucianBasicAttack : CharacterBasicAttack
         isShootingPassiveShot = false;
     }
 
-    protected override void BasicAttackHit(AbilityEffect basicAttackProjectile, Entity entityHit, bool isACriticalAttack)
+    protected override void BasicAttackHit(AbilityEffect basicAttackProjectile, Entity entityHit, bool isACriticalAttack, bool willMiss)
     {
-        if (!entity.EntityStatusManager.IsBlinded())
+        if (!(entity.EntityStatusManager.IsBlinded() || willMiss))
         {
             passive.UseAbility(entityHit);
         }
-        base.BasicAttackHit(basicAttackProjectile, entityHit, isACriticalAttack);
+        base.BasicAttackHit(basicAttackProjectile, entityHit, isACriticalAttack, willMiss);
     }
 
-    private void PassiveBasicAttackHit(AbilityEffect basicAttackProjectile, Entity entityHit, bool isACriticalAttack)
+    private void PassiveBasicAttackHit(AbilityEffect basicAttackProjectile, Entity entityHit, bool isACriticalAttack, bool willMiss)
     {
-        if (!entity.EntityStatusManager.IsBlinded())
+        if (!(entity.EntityStatusManager.IsBlinded() || willMiss))
         {
             passive.OnPassiveHit(entityHit, isACriticalAttack);
         }

@@ -93,7 +93,7 @@ public class CharacterOrientation : MonoBehaviour
 
         while (target != null)
         {
-            if (CanRotate() && ((isBasicAttack && character.EntityStatusManager.CanUseBasicAttacks()) || (!isBasicAttack && character.EntityStatusManager.CanUseBasicAbilities())))
+            if (CanRotateTowardsTarget(target.transform, isBasicAttack))
             {
                 rotationAmountLastFrame = rotationAmount;
 
@@ -152,5 +152,20 @@ public class CharacterOrientation : MonoBehaviour
         return !(isRotatingTowardsCastPoint || characterAbilityManager.IsUsingAbilityPreventingRotation() ||
             characterAbilityManager.IsUsingAbilityThatHasACastTime() || characterAbilityManager.IsUsingAbilityThatHasAChannelTime() ||
             characterAbilityManager.IsUsingADashAbility());
+    }
+
+    private bool CanRotateTowardsTarget(Transform targetTransform, bool isBasicAttack)
+    {
+        return CanRotate() && (CanRotateBasicAttack(targetTransform, isBasicAttack) || CanRotateNotBasicAttack(targetTransform, isBasicAttack));
+    }
+
+    private bool CanRotateBasicAttack(Transform targetTransform, bool isBasicAttack)
+    {
+        return isBasicAttack && character.EntityStatusManager.CanUseBasicAttacks() && (character.EntityStatusManager.CanUseMovement() || Vector3.Distance(targetTransform.position, transform.position) <= character.EntityStats.AttackRange.GetTotal());
+    }
+
+    private bool CanRotateNotBasicAttack(Transform targetTransform, bool isBasicAttack)
+    {
+        return !isBasicAttack && character.EntityStatusManager.CanUseBasicAbilities();
     }
 }

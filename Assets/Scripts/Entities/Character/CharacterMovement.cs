@@ -141,18 +141,11 @@ public class CharacterMovement : MonoBehaviour
     {
         while (Vector3.Distance(destination, transform.position) > range)
         {
-            if (!character.CharacterAbilityManager.IsUsingAbilityPreventingMovement())
+            if (!character.CharacterAbilityManager.IsUsingAbilityPreventingMovement() && character.EntityStatusManager.CanUseMovement())
             {
-                if (character.EntityStatusManager.CanUseMovement())
-                {
-                    transform.position = Vector3.MoveTowards(transform.position, destination, Time.deltaTime * character.EntityStats.MovementSpeed.GetTotal());
+                transform.position = Vector3.MoveTowards(transform.position, destination, Time.deltaTime * character.EntityStats.MovementSpeed.GetTotal());
 
-                    NotifyCharacterMoved();
-                }
-                else
-                {
-                    StopAllMovement();
-                }
+                NotifyCharacterMoved();
             }
 
             yield return null;
@@ -209,10 +202,6 @@ public class CharacterMovement : MonoBehaviour
 
                     NotifyCharacterMoved();
                 }
-                else if (!isBasicAttack)
-                {
-                    StopAllMovement();
-                }
             }
 
             yield return null;
@@ -220,7 +209,7 @@ public class CharacterMovement : MonoBehaviour
 
         if (targetTransform != null)
         {
-            if (isBasicAttack && (character.CharacterAbilityManager.IsUsingAbilityPreventingBasicAttacks() || !character.EntityStatusManager.CanUseBasicAttacks()))
+            if (isBasicAttack && (character.CharacterAbilityManager.IsUsingAbilityPreventingBasicAttacks() || !character.EntityStatusManager.CanUseBasicAttacks()))//checks is disarmed
             {
                 while (character.CharacterAbilityManager.IsUsingAbilityPreventingBasicAttacks() || !character.EntityStatusManager.CanUseBasicAttacks())
                 {
@@ -299,6 +288,40 @@ public class CharacterMovement : MonoBehaviour
         {
             StopAllMovement();
         }
+    }
+
+    public void StopMovementTowardsTarget()
+    {
+        if (currentlySelectedTarget != null)
+        {
+            StopAllMovement();
+        }
+    }
+
+    public void StopMovementTowardsPointIfHasEvent()
+    {
+        if (currentlySelectedDestination != Vector3.down && CharacterIsInDestinationRange != null)
+        {
+            StopAllMovement();
+        }
+    }
+
+    public void StopMovementTowardsTargetIfHasEvent()
+    {
+        if (currentlySelectedTarget != null && CharacterIsInTargetRange != null)
+        {
+            StopAllMovement();
+        }
+    }
+
+    public void UnsubscribeMovementTowardsPointEvents()
+    {
+        CharacterIsInDestinationRange = null;
+    }
+
+    public void UnsubscribeMovementTowardsTargetEvents()
+    {
+        CharacterIsInTargetRange = null;
     }
 
     public Entity GetTarget()
