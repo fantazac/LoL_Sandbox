@@ -201,8 +201,6 @@ public class EntityStatusMovementManager : MonoBehaviour
     {
         currentSourceAbilityBuffForForcedAction = sourceAbilityBuff;
 
-        entity.CharacterAutoAttack.StopAutoAttack();
-
         Transform casterTransform = caster.transform;
         while (currentSourceAbilityBuffForForcedAction == sourceAbilityBuff)
         {
@@ -219,6 +217,11 @@ public class EntityStatusMovementManager : MonoBehaviour
             }
 
             yield return null;
+        }
+
+        if (entity.CharacterAutoAttack)
+        {
+            entity.CharacterAutoAttack.EnableAutoAttack();//TODO: Forced?
         }
 
         currentForcedAction = null;
