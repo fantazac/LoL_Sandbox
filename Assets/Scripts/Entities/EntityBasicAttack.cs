@@ -13,7 +13,7 @@ public abstract class EntityBasicAttack : MonoBehaviour
 
     protected Entity currentTarget;
 
-    protected bool attackIsInQueue;
+    public bool AttackIsInQueue { get; protected set; }
 
     protected float speed;
 
@@ -55,10 +55,10 @@ public abstract class EntityBasicAttack : MonoBehaviour
 
     public virtual void StopBasicAttack(bool isCrowdControlled = false)
     {
-        attackIsInQueue = false;
+        AttackIsInQueue = false;
+        StopAllCoroutines();
         if (currentTarget != null)
         {
-            StopAllCoroutines();
             if (isCrowdControlled)
             {
                 StartBasicAttack();
@@ -70,11 +70,6 @@ public abstract class EntityBasicAttack : MonoBehaviour
         }
     }
 
-    public bool AttackIsInQueue()
-    {
-        return attackIsInQueue;
-    }
-
     public Entity CurrentTarget()
     {
         return currentTarget;
@@ -82,13 +77,13 @@ public abstract class EntityBasicAttack : MonoBehaviour
 
     public void ResetBasicAttack()
     {
-        attackIsInQueue = false;
+        AttackIsInQueue = false;
         entity.EntityBasicAttackCycle.ResetBasicAttack();
     }
 
     protected void Update()
     {
-        if (currentTarget != null && !attackIsInQueue && entity.EntityBasicAttackCycle.AttackSpeedCycleIsReady)
+        if (currentTarget != null && !AttackIsInQueue && entity.EntityBasicAttackCycle.AttackSpeedCycleIsReady)
         {
             StartBasicAttack();
         }
@@ -96,8 +91,14 @@ public abstract class EntityBasicAttack : MonoBehaviour
 
     protected void StartBasicAttack()
     {
-        attackIsInQueue = true;
+        AttackIsInQueue = true;
         ((Character)entity).CharacterMovement.SetMoveTowardsTarget(currentTarget, entity.EntityStats.AttackRange.GetTotal(), true);
+    }
+
+    public void UseBasicAttackFromAutoAttack(Entity target)
+    {
+        UseBasicAttack(target);
+        currentTarget = null;
     }
 
     protected virtual void UseBasicAttack(Entity target)
@@ -105,7 +106,7 @@ public abstract class EntityBasicAttack : MonoBehaviour
         currentTarget = target;
         if (entity.EntityBasicAttackCycle.AttackSpeedCycleIsReady)
         {
-            attackIsInQueue = true;
+            AttackIsInQueue = true;
             StopAllCoroutines();
             StartCoroutine(ShootBasicAttack(target));
         }
@@ -113,10 +114,13 @@ public abstract class EntityBasicAttack : MonoBehaviour
 
     protected virtual IEnumerator ShootBasicAttack(Entity target)
     {
+        ((Character)entity).CharacterOrientation.RotateCharacterUntilReachedTarget(target.transform, true, true);
+
         yield return delayAttack;
 
         entity.EntityBasicAttackCycle.LockBasicAttack();
-        attackIsInQueue = false;
+        AttackIsInQueue = false;
+        ((Character)entity).CharacterOrientation.StopTargetRotation();
 
         ProjectileUnitTargeted projectile = (Instantiate(basicAttackPrefab, transform.position, transform.rotation)).GetComponent<ProjectileUnitTargeted>();
         projectile.ShootProjectile(entity.Team, target, speed, AttackIsCritical.CheckIfAttackIsCritical(entity.EntityStats.CriticalStrikeChance.GetTotal()), entity.EntityStatusManager.IsBlinded());

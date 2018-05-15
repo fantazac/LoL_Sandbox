@@ -108,7 +108,7 @@ public class CharacterMovement : MonoBehaviour
 
     public void SetMoveTowardsPoint(Vector3 destination, float range = 0)
     {
-        StopAllMovement();
+        StopAllMovement();//TODO: If you are rooted and you spam click, it cancels your auto-attack but instantly sets one up again, is it intended in LoL?
         currentlySelectedDestination = destination;
         if (range > 0)
         {
@@ -123,6 +123,8 @@ public class CharacterMovement : MonoBehaviour
 
     private IEnumerator MoveTowardsPoint(Vector3 destination)
     {
+        character.CharacterAutoAttack.EnableAutoAttack();
+
         while (transform.position != destination)
         {
             if (!character.CharacterAbilityManager.IsUsingAbilityPreventingMovement() && character.EntityStatusManager.CanUseMovement())
@@ -134,11 +136,14 @@ public class CharacterMovement : MonoBehaviour
 
             yield return null;
         }
+
         currentlySelectedDestination = Vector3.down;
     }
 
     private IEnumerator MoveTowardsPoint(Vector3 destination, float range)
     {
+        character.CharacterAutoAttack.StopAutoAttack();
+
         while (Vector3.Distance(destination, transform.position) > range)
         {
             if (!character.CharacterAbilityManager.IsUsingAbilityPreventingMovement() && character.EntityStatusManager.CanUseMovement())
@@ -156,6 +161,7 @@ public class CharacterMovement : MonoBehaviour
             CharacterIsInDestinationRange(destination);
         }
 
+        character.CharacterAutoAttack.EnableAutoAttack();
         currentlySelectedDestination = Vector3.down;
     }
 
@@ -171,9 +177,13 @@ public class CharacterMovement : MonoBehaviour
 
     public void RestartMovementTowardsTargetAfterAbility()
     {
-        if (character.EntityBasicAttack.AttackIsInQueue())
+        if (character.EntityBasicAttack.AttackIsInQueue)
         {
-            SetMoveTowardsTarget(character.EntityBasicAttack.CurrentTarget(), character.EntityStats.AttackRange.GetTotal(), true);
+            character.EntityBasicAttack.StopBasicAttack();//This is so CharacterAutoAttack doesn't shoot while an ability is active
+            if (character.EntityBasicAttack.CurrentTarget() != null)
+            {
+                SetMoveTowardsTarget(character.EntityBasicAttack.CurrentTarget(), character.EntityStats.AttackRange.GetTotal(), true);
+            }
         }
     }
 
@@ -186,28 +196,38 @@ public class CharacterMovement : MonoBehaviour
             character.EntityBasicAttack.SetupBasicAttack(target);
         }
         StartCoroutine(MoveTowardsTarget(target, range, isBasicAttack));
-        character.CharacterOrientation.RotateCharacterUntilReachedTarget(target.transform, isBasicAttack);
     }
 
     private IEnumerator MoveTowardsTarget(Entity target, float range, bool isBasicAttack)
     {
-        Transform targetTransform = target.transform;
-        while (targetTransform != null && Vector3.Distance(targetTransform.position, transform.position) > range)
+        if (target != null && Vector3.Distance(target.transform.position, transform.position) > range)
         {
-            if (!character.CharacterAbilityManager.IsUsingAbilityPreventingMovement())
-            {
-                if (character.EntityStatusManager.CanUseMovement())
-                {
-                    transform.position = Vector3.MoveTowards(transform.position, targetTransform.position, Time.deltaTime * character.EntityStats.MovementSpeed.GetTotal());
+            character.CharacterAutoAttack.StopAutoAttack();
 
-                    NotifyCharacterMoved();
+            Transform targetTransform = target.transform;
+
+            character.CharacterOrientation.RotateCharacterUntilReachedTarget(targetTransform, isBasicAttack);
+
+            while (targetTransform != null && Vector3.Distance(targetTransform.position, transform.position) > range)
+            {
+                if (!character.CharacterAbilityManager.IsUsingAbilityPreventingMovement())
+                {
+                    if (character.EntityStatusManager.CanUseMovement())
+                    {
+                        transform.position = Vector3.MoveTowards(transform.position, targetTransform.position, Time.deltaTime * character.EntityStats.MovementSpeed.GetTotal());
+
+                        NotifyCharacterMoved();
+                    }
                 }
+
+                yield return null;
             }
 
-            yield return null;
+            character.CharacterAutoAttack.EnableAutoAttack();
+            character.CharacterOrientation.StopRotation();
         }
 
-        if (targetTransform != null)
+        if (target != null)
         {
             if (isBasicAttack && (character.CharacterAbilityManager.IsUsingAbilityPreventingBasicAttacks() || !character.EntityStatusManager.CanUseBasicAttacks()))//checks is disarmed
             {
@@ -229,6 +249,7 @@ public class CharacterMovement : MonoBehaviour
         else
         {
             StopAllMovement();
+            character.CharacterAutoAttack.EnableAutoAttack();
         }
     }
 
@@ -252,6 +273,7 @@ public class CharacterMovement : MonoBehaviour
         }
         else
         {
+            character.CharacterAutoAttack.StopAutoAttack();
             StopAllMovement();
         }
     }
@@ -264,6 +286,7 @@ public class CharacterMovement : MonoBehaviour
     [PunRPC]
     private void ReceiveFromServer_StopMovement()
     {
+        character.CharacterAutoAttack.StopAutoAttack();
         StopAllMovement();
     }
 
@@ -275,7 +298,7 @@ public class CharacterMovement : MonoBehaviour
             character.CharacterBufferedAbilityManager.ResetBufferedAbility();
         }
         StopAllCoroutines();
-        character.CharacterOrientation.StopMovementRotation();
+        character.CharacterOrientation.StopRotation();
         CharacterIsInTargetRange = null;
         CharacterIsInDestinationRange = null;
         currentlySelectedDestination = Vector3.down;
@@ -327,6 +350,11 @@ public class CharacterMovement : MonoBehaviour
     public Entity GetTarget()
     {
         return currentlySelectedTarget;
+    }
+
+    public bool IsMoving()
+    {
+        return currentlySelectedDestination != Vector3.down || currentlySelectedTarget != null;
     }
 
     public void NotifyCharacterMoved()

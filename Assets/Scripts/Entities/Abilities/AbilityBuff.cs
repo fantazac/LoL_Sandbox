@@ -43,19 +43,26 @@ public abstract class AbilityBuff : MonoBehaviour
 
     protected abstract void SetSpritePaths();
 
-    public virtual void ApplyBuffToAffectedEntity(Entity affectedEntity, float buffValue, int currentStacks)
+    public void ApplyBuffToAffectedEntity(Entity affectedEntity, float buffValue, int currentStacks)
     {
+        ApplyBuffEffect(affectedEntity, buffValue, currentStacks);
+
         EntitiesAffectedByBuff.Add(affectedEntity);
     }
 
-    public virtual void RemoveBuffFromAffectedEntity(Entity affectedEntity, float buffValue, int currentStacks)
+    public void RemoveBuffFromAffectedEntity(Entity affectedEntity, float buffValue, int currentStacks)
     {
+        RemoveBuffEffect(affectedEntity, buffValue, currentStacks);
+
         EntitiesAffectedByBuff.Remove(affectedEntity);
         if (OnAbilityBuffRemoved != null)
         {
             OnAbilityBuffRemoved(affectedEntity);
         }
     }
+
+    protected virtual void ApplyBuffEffect(Entity affectedEntity, float buffValue, int currentStacks) { }
+    protected virtual void RemoveBuffEffect(Entity affectedEntity, float buffValue, int currentStacks) { }
 
     public virtual void UpdateBuffOnAffectedEntities(float oldFlatValue, float newFlatValue, float oldPercentValue, float newPercentValue) { }
 

@@ -41,13 +41,13 @@ public class LucianBasicAttack : CharacterBasicAttack
 
     public override void StopBasicAttack(bool isCrowdControlled = false)
     {
-        attackIsInQueue = false;
+        AttackIsInQueue = false;
+        if (!isShootingPassiveShot)
+        {
+            StopAllCoroutines();
+        }
         if (currentTarget != null)
         {
-            if (!isShootingPassiveShot)
-            {
-                StopAllCoroutines();
-            }
             if (isCrowdControlled)
             {
                 StartBasicAttack();
@@ -64,7 +64,7 @@ public class LucianBasicAttack : CharacterBasicAttack
         currentTarget = target;
         if (entity.EntityBasicAttackCycle.AttackSpeedCycleIsReady)
         {
-            attackIsInQueue = true;
+            AttackIsInQueue = true;
             if (!isShootingPassiveShot)
             {
                 StopAllCoroutines();
@@ -87,7 +87,7 @@ public class LucianBasicAttack : CharacterBasicAttack
         }
 
         entity.EntityBasicAttackCycle.LockBasicAttack();
-        attackIsInQueue = false;
+        AttackIsInQueue = false;
 
         ProjectileUnitTargeted projectile = (Instantiate(basicAttackPrefab, transform.position, transform.rotation)).GetComponent<ProjectileUnitTargeted>();
         projectile.ShootProjectile(entity.Team, target, speed, AttackIsCritical.CheckIfAttackIsCritical(entity.EntityStats.CriticalStrikeChance.GetTotal()));

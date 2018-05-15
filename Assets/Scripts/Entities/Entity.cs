@@ -12,7 +12,8 @@ public class Entity : MonoBehaviour
     public EntityBasicAttackCycle EntityBasicAttackCycle { get; private set; }
     public EntityBuffManager EntityBuffManager { get; private set; }
     public EntityStats EntityStats { get; protected set; }
-    public EntityStatusManager EntityStatusManager { get; protected set; }
+    public EntityStatusManager EntityStatusManager { get; private set; }
+    public EntityStatusMovementManager EntityStatusMovementManager { get; private set; }
 
     public PhotonView PhotonView { get; private set; }
 
@@ -31,6 +32,7 @@ public class Entity : MonoBehaviour
         }
         EntityBuffManager = gameObject.AddComponent<EntityBuffManager>();
         EntityStatusManager = gameObject.AddComponent<EntityStatusManager>();
+        EntityStatusMovementManager = gameObject.AddComponent<EntityStatusMovementManager>();
 
         PhotonView = GetComponent<PhotonView>();
         gameObject.AddComponent<MouseEvent>();

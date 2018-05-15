@@ -10,6 +10,7 @@ public abstract class Character : Entity
 
     public CharacterAbilityEffectsManager CharacterAbilityEffectsManager { get; private set; }
     public CharacterAbilityManager CharacterAbilityManager { get; protected set; }
+    public CharacterAutoAttack CharacterAutoAttack { get; private set; }
     public CharacterBufferedAbilityManager CharacterBufferedAbilityManager { get; private set; }
     public CharacterInput CharacterInput { get; private set; }
     public CharacterLevelManager CharacterLevelManager { get; private set; }
@@ -63,6 +64,7 @@ public abstract class Character : Entity
         if (!(this is Dummy))
         {
             CharacterAbilityEffectsManager = gameObject.AddComponent<CharacterAbilityEffectsManager>();
+            CharacterAutoAttack = gameObject.AddComponent<CharacterAutoAttack>();
             CharacterBufferedAbilityManager = gameObject.AddComponent<CharacterBufferedAbilityManager>();
             CharacterLevelManager = gameObject.AddComponent<CharacterLevelManager>();
             CharacterMovement = gameObject.AddComponent<CharacterMovement>();

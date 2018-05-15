@@ -30,7 +30,7 @@ public class AbilityLevelUpUIManager : MonoBehaviour
 
     private AbilityLevelUpUIManager()
     {
-        baseLevelUpText = "Level Up! +";
+        baseLevelUpText = "LEVEL UP! +";
     }
 
     private void Awake()

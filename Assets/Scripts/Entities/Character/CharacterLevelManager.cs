@@ -71,12 +71,17 @@ public class CharacterLevelManager : MonoBehaviour
     private void LevelUp()
     {
         ++Level;
-        SetPointsAvaiableForAbilities();
-        ++AbilityPoints;
-        if (character.AbilityLevelUpUIManager)
+        if (SetPointsAvaiableForAbilities() > AbilityPoints)
+        {
+            ++AbilityPoints;
+        }
+        if (character.AbilityLevelUpUIManager && AbilityPoints > 0)
         {
             character.AbilityLevelUpUIManager.gameObject.SetActive(true);
             character.AbilityLevelUpUIManager.SetAbilityPoints(AbilityPoints, pointsAvailableForQ, pointsAvailableForW, pointsAvailableForE, pointsAvailableForR);
+        }
+        if (character.LevelUIManager)
+        {
             character.LevelUIManager.SetLevel(Level);
         }
         if (Level > 1 && OnLevelUp != null)
@@ -85,18 +90,36 @@ public class CharacterLevelManager : MonoBehaviour
         }
     }
 
-    private void SetPointsAvaiableForAbilities()
+    private int SetPointsAvaiableForAbilities()
     {
+        Ability[] characterAbilities = character.CharacterAbilityManager.CharacterAbilities;
+        float currentMaxLevel;
         if (Level == 1 || Level == 3 || Level == 5 || Level == 7 || Level == 9)
         {
-            pointsAvailableForQ++;
-            pointsAvailableForW++;
-            pointsAvailableForE++;
+            currentMaxLevel = (Level + 1) * 0.5f;
+            if (characterAbilities[0].MaxLevel >= currentMaxLevel)
+            {
+                pointsAvailableForQ++;
+            }
+            if (characterAbilities[1].MaxLevel >= currentMaxLevel)
+            {
+                pointsAvailableForW++;
+            }
+            if (characterAbilities[2].MaxLevel >= currentMaxLevel)
+            {
+                pointsAvailableForE++;
+            }
         }
         else if (Level == 6 || Level == 11 || Level == 16)
         {
-            pointsAvailableForR++;
+            currentMaxLevel = (Level - 1) * 0.2f;
+            if (characterAbilities[3].MaxLevel >= currentMaxLevel)
+            {
+                pointsAvailableForR++;
+            }
         }
+
+        return pointsAvailableForQ + pointsAvailableForW + pointsAvailableForE + pointsAvailableForR;
     }
 
     private void OnAbilityLevelUp(int abilityId)
@@ -166,9 +189,10 @@ public class CharacterLevelManager : MonoBehaviour
             {
                 PrepareLevelUp();
             }
-            for (int i = 0; i < character.CharacterAbilityManager.CharacterAbilities.Length; i++)
+            Ability[] characterAbilities = character.CharacterAbilityManager.CharacterAbilities;
+            for (int i = 0; i < characterAbilities.Length; i++)
             {
-                for (int j = 0; j < character.CharacterAbilityManager.CharacterAbilities[i].MaxLevel; j++)
+                for (int j = 0; j < characterAbilities[i].MaxLevel; j++)
                 {
                     OnAbilityLevelUp(i);
                 }

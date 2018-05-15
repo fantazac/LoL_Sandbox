@@ -19,18 +19,14 @@ public class MissFortune_W_Buff : AbilityBuff
         buffSpritePath = "Sprites/Characters/CharacterAbilities/MissFortune/MissFortuneW_Buff";
     }
 
-    public override void ApplyBuffToAffectedEntity(Entity affectedEntity, float buffValue, int currentStacks)
+    protected override void ApplyBuffEffect(Entity affectedEntity, float buffValue, int currentStacks)
     {
         affectedEntity.EntityStats.AttackSpeed.AddPercentBonus(buffPercentValue);
-
-        base.ApplyBuffToAffectedEntity(affectedEntity, buffValue, currentStacks);
     }
 
-    public override void RemoveBuffFromAffectedEntity(Entity affectedEntity, float buffValue, int currentStacks)
+    protected override void RemoveBuffEffect(Entity affectedEntity, float buffValue, int currentStacks)
     {
         affectedEntity.EntityStats.AttackSpeed.RemovePercentBonus(buffPercentValue);
-
-        base.RemoveBuffFromAffectedEntity(affectedEntity, buffValue, currentStacks);
     }
 
     protected override Buff CreateNewBuff(Entity affectedEntity)

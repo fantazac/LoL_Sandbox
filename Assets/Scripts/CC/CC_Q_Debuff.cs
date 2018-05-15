@@ -12,7 +12,8 @@ public class CC_Q_Debuff : AbilityBuff
         isADebuff = true;
 
         buffDuration = 2;
-        //buffFlatValue = 10;
+        buffPercentValue = 99;
+        buffCrowdControlEffect = CrowdControlEffects.CHARM;
     }
 
     protected override void SetSpritePaths()
@@ -20,25 +21,22 @@ public class CC_Q_Debuff : AbilityBuff
         buffSpritePath = "Sprites/Characters/CharacterAbilities/CC/CCQ_Debuff";
     }
 
-    public override void ApplyBuffToAffectedEntity(Entity affectedEntity, float buffValue, int currentStacks)
+    protected override void ApplyBuffEffect(Entity affectedEntity, float buffValue, int currentStacks)
     {
-        //affectedEntity.EntityStats.MovementSpeed.AddFlatMalus(buffValue);
-        affectedEntity.EntityStatusManager.AddCrowdControlEffectOnEntity(CrowdControlEffects.STUN);
-
-        base.ApplyBuffToAffectedEntity(affectedEntity, buffValue, currentStacks);
+        affectedEntity.EntityStatusManager.AddCrowdControlEffectOnEntity(buffCrowdControlEffect);
+        affectedEntity.EntityStats.MovementSpeed.AddPercentMalus(buffValue);
+        affectedEntity.EntityStatusMovementManager.SetupMovementBlock(buffCrowdControlEffect, this, character, transform.position);
     }
 
-    public override void RemoveBuffFromAffectedEntity(Entity affectedEntity, float buffValue, int currentStacks)
+    protected override void RemoveBuffEffect(Entity affectedEntity, float buffValue, int currentStacks)
     {
-        //affectedEntity.EntityStats.MovementSpeed.RemoveFlatMalus(buffValue);
-        affectedEntity.EntityStatusManager.RemoveCrowdControlEffectFromEntity(CrowdControlEffects.STUN);
-
-        base.RemoveBuffFromAffectedEntity(affectedEntity, buffValue, currentStacks);
+        affectedEntity.EntityStatusManager.RemoveCrowdControlEffectFromEntity(buffCrowdControlEffect);
+        affectedEntity.EntityStats.MovementSpeed.RemovePercentMalus(buffValue);
+        affectedEntity.EntityStatusMovementManager.EndMovementBlock(buffCrowdControlEffect, this);
     }
 
     protected override Buff CreateNewBuff(Entity affectedEntity)
     {
-        //return new Buff(this, affectedEntity, buffPercentValue, buffDuration);
-        return new Buff(this, affectedEntity, buffFlatValue, buffDuration);
+        return new Buff(this, affectedEntity, buffPercentValue, buffDuration);
     }
 }

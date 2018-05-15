@@ -35,18 +35,14 @@ public class Ezreal_P_Buff : AbilityBuff
         }
     }
 
-    public override void ApplyBuffToAffectedEntity(Entity affectedEntity, float buffValue, int currentStacks)
+    protected override void ApplyBuffEffect(Entity affectedEntity, float buffValue, int currentStacks)
     {
         affectedEntity.EntityStats.AttackSpeed.AddPercentBonus(buffValue * currentStacks);
-
-        base.ApplyBuffToAffectedEntity(affectedEntity, buffValue, currentStacks);
     }
 
-    public override void RemoveBuffFromAffectedEntity(Entity affectedEntity, float buffValue, int currentStacks)
+    protected override void RemoveBuffEffect(Entity affectedEntity, float buffValue, int currentStacks)
     {
         affectedEntity.EntityStats.AttackSpeed.RemovePercentBonus(buffValue * currentStacks);
-
-        base.RemoveBuffFromAffectedEntity(affectedEntity, buffValue, currentStacks);
     }
 
     protected override Buff CreateNewBuff(Entity affectedEntity)

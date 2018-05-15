@@ -13,6 +13,7 @@ public class MissFortune_E_Debuff : AbilityBuff
 
         buffPercentValue = 28; // 28/36/44/52/60
         buffPercentValuePerLevel = 8;
+        buffCrowdControlEffect = CrowdControlEffects.SLOW;
     }
 
     protected override void SetSpritePaths()
@@ -20,18 +21,16 @@ public class MissFortune_E_Debuff : AbilityBuff
         buffSpritePath = "Sprites/Characters/CharacterAbilities/MissFortune/MissFortuneE_Debuff";
     }
 
-    public override void ApplyBuffToAffectedEntity(Entity affectedEntity, float buffValue, int currentStacks)
+    protected override void ApplyBuffEffect(Entity affectedEntity, float buffValue, int currentStacks)
     {
+        affectedEntity.EntityStatusManager.AddCrowdControlEffectOnEntity(buffCrowdControlEffect);
         affectedEntity.EntityStats.MovementSpeed.AddPercentMalus(buffValue);
-
-        base.ApplyBuffToAffectedEntity(affectedEntity, buffValue, currentStacks);
     }
 
-    public override void RemoveBuffFromAffectedEntity(Entity affectedEntity, float buffValue, int currentStacks)
+    protected override void RemoveBuffEffect(Entity affectedEntity, float buffValue, int currentStacks)
     {
+        affectedEntity.EntityStatusManager.RemoveCrowdControlEffectFromEntity(buffCrowdControlEffect);
         affectedEntity.EntityStats.MovementSpeed.RemovePercentMalus(buffValue);
-
-        base.RemoveBuffFromAffectedEntity(affectedEntity, buffValue, currentStacks);
     }
 
     protected override Buff CreateNewBuff(Entity affectedEntity)
