@@ -39,12 +39,17 @@ public class CharacterAutoAttack : MonoBehaviour
 
     private IEnumerator AutoAttack()
     {
+        if (!character)
+        {
+            yield return null;
+        }
+
         Vector3 groundPosition;
 
         Entity autoAttackTarget = null;
         while (true)
         {
-            if (!character.CharacterAbilityManager.IsUsingAbilityPreventingBasicAttacks() && character.EntityStatusManager.CanUseBasicAttacks() &&
+            if (character.EntityStatusManager && !character.CharacterAbilityManager.IsUsingAbilityPreventingBasicAttacks() && character.EntityStatusManager.CanUseBasicAttacks() &&
                 (!character.CharacterMovement.IsMoving() || !character.EntityStatusManager.CanUseMovement()) &&
                 !character.EntityBasicAttack.AttackIsInQueue && character.EntityBasicAttackCycle.AttackSpeedCycleIsReady)
             {

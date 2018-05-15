@@ -201,6 +201,8 @@ public class EntityStatusMovementManager : MonoBehaviour
     {
         currentSourceAbilityBuffForForcedAction = sourceAbilityBuff;
 
+        entity.CharacterAutoAttack.StopAutoAttack();
+
         Transform casterTransform = caster.transform;
         while (currentSourceAbilityBuffForForcedAction == sourceAbilityBuff)
         {
@@ -208,9 +210,12 @@ public class EntityStatusMovementManager : MonoBehaviour
             {
                 transform.position = Vector3.MoveTowards(transform.position, casterTransform.position, -Time.deltaTime * entity.EntityStats.MovementSpeed.GetTotal());
 
-                entity.CharacterMovement.NotifyCharacterMoved();
+                if (entity.CharacterMovement)
+                {
+                    entity.CharacterMovement.NotifyCharacterMoved();
+                }
 
-                //TODO: orientation
+                transform.rotation = Quaternion.LookRotation(Vector3.RotateTowards(transform.forward, -(casterTransform.position - transform.position), Time.deltaTime * rotationSpeed, 0));
             }
 
             yield return null;

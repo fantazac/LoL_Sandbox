@@ -13,7 +13,7 @@ public class CC_Q_Debuff : AbilityBuff
 
         buffDuration = 2;
         buffPercentValue = 99;
-        buffCrowdControlEffect = CrowdControlEffects.CHARM;
+        buffCrowdControlEffect = CrowdControlEffects.FLEE;
     }
 
     protected override void SetSpritePaths()
