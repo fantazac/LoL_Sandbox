@@ -12,7 +12,7 @@ public class CC_Q_Debuff : AbilityBuff
         isADebuff = true;
 
         buffDuration = 2;
-        buffPercentValue = 99;
+        buffPercentValue = 90;
         buffCrowdControlEffect = CrowdControlEffects.FLEE;
     }
 

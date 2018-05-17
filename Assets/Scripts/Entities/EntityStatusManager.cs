@@ -51,7 +51,7 @@ public class EntityStatusManager : MonoBehaviour
             case CrowdControlEffects.BLIND:
                 SetIsBlinded(count);
                 break;
-            case CrowdControlEffects.CHARM://TODO
+            case CrowdControlEffects.CHARM:
                 SetCannotUseBasicAbilities(count);
                 SetCannotUseBasicAttacks(count);
                 SetCannotUseMovement(count);
@@ -75,12 +75,12 @@ public class EntityStatusManager : MonoBehaviour
                 SetCannotUseBasicAttacks(count);
                 SetCannotUseMovement(count);
                 break;
-            case CrowdControlEffects.FLEE://TODO
+            case CrowdControlEffects.FLEE:
                 SetCannotUseBasicAbilities(count);
                 SetCannotUseBasicAttacks(count);
                 SetCannotUseMovement(count);
                 break;
-            case CrowdControlEffects.GROUND://TODO
+            case CrowdControlEffects.GROUND:
                 SetCannotUseMovementAbilities(count);
                 break;
             case CrowdControlEffects.KNOCKASIDE://TODO
@@ -141,10 +141,11 @@ public class EntityStatusManager : MonoBehaviour
                 SetCannotUseMovement(count);
                 SetCannotUseSummonerAbilities(count);
                 break;
-            case CrowdControlEffects.STUN://TODO
+            case CrowdControlEffects.STUN:
                 SetCannotUseBasicAbilities(count);
                 SetCannotUseBasicAttacks(count);
                 SetCannotUseMovement(count);
+                character.CharacterMovement.StopMovementTowardsPointIfHasEvent();
                 break;
             case CrowdControlEffects.SUPPRESION://TODO
                 SetCannotUseBasicAbilities(count);
