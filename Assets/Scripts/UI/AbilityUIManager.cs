@@ -51,6 +51,10 @@ public class AbilityUIManager : MonoBehaviour
         {
             id += 5;
         }
+        else if (abilityCategory == AbilityCategory.OtherCharacterAbility)
+        {
+            id += 7;
+        }
         return id;
     }
 

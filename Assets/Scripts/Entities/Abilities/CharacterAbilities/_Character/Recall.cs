@@ -16,6 +16,8 @@ public class Recall : AutoTargetedBlink
         delayCastTime = new WaitForSeconds(castTime);
         delayChannelTime = new WaitForSeconds(channelTime);
 
+        AbilityLevel = 1;
+
         CanMoveWhileChanneling = true;
         CanUseAnyAbilityWhileChanneling = true;
 

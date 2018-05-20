@@ -81,7 +81,9 @@ public class CharacterAbilityManager : MonoBehaviour
             ability3.OnAbilityFinished += OnAbilityFinished;
             if (isLocalCharacter)
             {
+                ability3.ID = k;
                 ability3.AbilityCategory = AbilityCategory.OtherCharacterAbility;
+                ability3.SetAbilitySprite();
             }
         }
 
@@ -462,7 +464,6 @@ public class CharacterAbilityManager : MonoBehaviour
     {
         if (!IsUsingAbilityPreventingAbilityCast(ability))
         {
-            Debug.Log(ability);
             if (currentlyUsedAbilities.Count > 0)
             {
                 character.CharacterBufferedAbilityManager.ResetBufferedAbility();
@@ -475,7 +476,6 @@ public class CharacterAbilityManager : MonoBehaviour
         }
         else
         {
-            //character.CharacterMovement.StopAllMovement();
             character.CharacterBufferedAbilityManager.BufferPositionTargetedAbility(ability, destination);
         }
     }
@@ -488,12 +488,10 @@ public class CharacterAbilityManager : MonoBehaviour
             {
                 character.CharacterBufferedAbilityManager.ResetBufferedAbility();
             }
-            //character.CharacterMovement.StopAllMovement();
             ability.UseAbility(target);
         }
         else
         {
-            //character.CharacterMovement.StopAllMovement();
             character.CharacterBufferedAbilityManager.BufferUnitTargetedAbility(ability, target);
         }
     }

@@ -46,11 +46,14 @@ public abstract class EntityBasicAttack : MonoBehaviour
         delayAttack = new WaitForSeconds(attackSpeedCycleDuration * delayPercentBeforeAttack);
     }
 
-    public void SetupBasicAttack(Entity currentlySelectedTarget)
+    public void SetupBasicAttack(Entity currentlySelectedTarget, bool setupEvent)
     {
         currentTarget = currentlySelectedTarget;
-        //TODO: EntityMovement will become the parent of CharacterMovement
-        ((Character)entity).CharacterMovement.CharacterIsInTargetRange += UseBasicAttack;
+        if (setupEvent)
+        {
+            //TODO: EntityMovement will become the parent of CharacterMovement
+            ((Character)entity).CharacterMovement.CharacterIsInTargetRange += UseBasicAttack;
+        }
     }
 
     public virtual void StopBasicAttack(bool isCrowdControlled = false)
@@ -83,7 +86,8 @@ public abstract class EntityBasicAttack : MonoBehaviour
 
     protected void Update()
     {
-        if (currentTarget != null && !AttackIsInQueue && entity.EntityBasicAttackCycle.AttackSpeedCycleIsReady)
+        if (currentTarget != null && !AttackIsInQueue && entity.EntityBasicAttackCycle.AttackSpeedCycleIsReady && 
+            !((Character)entity).CharacterAbilityManager.IsUsingAbilityPreventingBasicAttacks())
         {
             StartBasicAttack();
         }

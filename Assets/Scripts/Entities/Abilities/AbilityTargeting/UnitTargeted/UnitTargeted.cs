@@ -31,7 +31,6 @@ public abstract class UnitTargeted : Ability
     {
         StartAbilityCast();
 
-        character.CharacterMovement.StopAllMovement();
         character.CharacterMovement.SetMoveTowardsTarget(target, character.EntityStats.AttackRange.GetTotal(), true);
 
         targetedEntity = target;

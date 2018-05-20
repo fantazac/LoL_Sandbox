@@ -172,7 +172,7 @@ public class CharacterMovement : MonoBehaviour
         {
             CharacterIsInDestinationRange = null;
             CharacterIsInTargetRange = null;
-            character.EntityBasicAttack.SetupBasicAttack(currentlySelectedTarget);
+            character.EntityBasicAttack.SetupBasicAttack(currentlySelectedTarget, false);
         }
     }
 
@@ -194,7 +194,7 @@ public class CharacterMovement : MonoBehaviour
         if (isBasicAttack)
         {
             currentlySelectedBasicAttackTarget = target;
-            character.EntityBasicAttack.SetupBasicAttack(target);
+            character.EntityBasicAttack.SetupBasicAttack(target, true);
         }
         else
         {

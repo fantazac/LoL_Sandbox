@@ -127,7 +127,7 @@ public class CharacterAutoAttack : MonoBehaviour
 
                 if (autoAttackTarget != null)
                 {
-                    character.EntityBasicAttack.SetupBasicAttack(autoAttackTarget);
+                    character.EntityBasicAttack.SetupBasicAttack(autoAttackTarget, false);
                     break;
                 }
             }

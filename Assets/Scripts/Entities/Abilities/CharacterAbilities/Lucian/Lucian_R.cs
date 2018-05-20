@@ -59,7 +59,7 @@ public class Lucian_R : DirectionTargetedProjectile
 
     protected override void Start()
     {
-        AbilitiesToDisableWhileActive = new Ability[] { GetComponent<Lucian_Q>(), GetComponent<Lucian_W>() };
+        AbilitiesToDisableWhileActive = new Ability[] { GetComponent<Lucian_Q>(), GetComponent<Lucian_W>(), GetComponent<Recall>() };
         CastableAbilitiesWhileActive = new Ability[] { GetComponent<Lucian_E>() };
 
         base.Start();
