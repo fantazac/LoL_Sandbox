@@ -8,6 +8,8 @@ public class CharacterAutoAttack : MonoBehaviour
     private AttackRange attackRange;
     private float biggerAttackRangeRatio;
 
+    private IEnumerator currentAutoAttackCoroutine;
+
     private bool autoAttackEnabled;
     private AbilityAffectedUnitType affectedUnitType;
 
@@ -31,7 +33,8 @@ public class CharacterAutoAttack : MonoBehaviour
         StopAutoAttack();
         if (autoAttackEnabled || forceEnable)
         {
-            StartCoroutine(AutoAttack());
+            currentAutoAttackCoroutine = AutoAttack();
+            StartCoroutine(currentAutoAttackCoroutine);
         }
     }
 
@@ -40,13 +43,18 @@ public class CharacterAutoAttack : MonoBehaviour
         StopAutoAttack();
         if (autoAttackEnabled || forceEnable)
         {
-            StartCoroutine(AutoAttackWithBiggerRange());
+            currentAutoAttackCoroutine = AutoAttackWithBiggerRange();
+            StartCoroutine(currentAutoAttackCoroutine);
         }
     }
 
     public void StopAutoAttack()
     {
-        StopAllCoroutines();
+        if (currentAutoAttackCoroutine != null)
+        {
+            StopCoroutine(currentAutoAttackCoroutine);
+            currentAutoAttackCoroutine = null;
+        }
     }
 
     private IEnumerator AutoAttack()
@@ -134,5 +142,7 @@ public class CharacterAutoAttack : MonoBehaviour
 
             yield return null;
         }
+
+        currentAutoAttackCoroutine = null;
     }
 }

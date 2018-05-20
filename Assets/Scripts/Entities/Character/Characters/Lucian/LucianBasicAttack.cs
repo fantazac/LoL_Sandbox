@@ -42,9 +42,10 @@ public class LucianBasicAttack : CharacterBasicAttack
     public override void StopBasicAttack(bool isCrowdControlled = false)
     {
         AttackIsInQueue = false;
-        if (!isShootingPassiveShot)
+        if (!isShootingPassiveShot && shootBasicAttackCoroutine != null)
         {
-            StopAllCoroutines();
+            StopCoroutine(shootBasicAttackCoroutine);
+            shootBasicAttackCoroutine = null;
         }
         if (currentTarget != null)
         {
@@ -65,16 +66,18 @@ public class LucianBasicAttack : CharacterBasicAttack
         if (entity.EntityBasicAttackCycle.AttackSpeedCycleIsReady)
         {
             AttackIsInQueue = true;
-            if (!isShootingPassiveShot)
+            if (!isShootingPassiveShot && shootBasicAttackCoroutine != null)
             {
-                StopAllCoroutines();
+                StopCoroutine(shootBasicAttackCoroutine);
             }
-            StartCoroutine(ShootBasicAttack(target));
+            shootBasicAttackCoroutine = ShootBasicAttack(target);
+            StartCoroutine(shootBasicAttackCoroutine);
         }
     }
 
     protected override IEnumerator ShootBasicAttack(Entity target)
     {
+        ((Character)entity).CharacterOrientation.RotateCharacterUntilReachedTarget(target.transform, true, true);
         passiveWasActiveOnBasicAttackCast = entity.EntityBuffManager.GetBuff(passive.AbilityBuffs[0]) != null;
 
         yield return delayAttack;
@@ -88,6 +91,7 @@ public class LucianBasicAttack : CharacterBasicAttack
 
         entity.EntityBasicAttackCycle.LockBasicAttack();
         AttackIsInQueue = false;
+        ((Character)entity).CharacterOrientation.StopTargetRotation();
 
         ProjectileUnitTargeted projectile = (Instantiate(basicAttackPrefab, transform.position, transform.rotation)).GetComponent<ProjectileUnitTargeted>();
         projectile.ShootProjectile(entity.Team, target, speed, AttackIsCritical.CheckIfAttackIsCritical(entity.EntityStats.CriticalStrikeChance.GetTotal()));
@@ -114,6 +118,7 @@ public class LucianBasicAttack : CharacterBasicAttack
         }
 
         isShootingPassiveShot = false;
+        shootBasicAttackCoroutine = null;
     }
 
     protected override void BasicAttackHit(AbilityEffect basicAttackProjectile, Entity entityHit, bool isACriticalAttack, bool willMiss)

@@ -9,6 +9,8 @@ public abstract class EntityBasicAttack : MonoBehaviour
     protected float delayPercentBeforeAttack;//charging before actually launching/doing the attack
     protected WaitForSeconds delayAttack;
 
+    protected IEnumerator shootBasicAttackCoroutine;
+
     protected Entity entity;
 
     protected Entity currentTarget;
@@ -59,7 +61,11 @@ public abstract class EntityBasicAttack : MonoBehaviour
     public virtual void StopBasicAttack(bool isCrowdControlled = false)
     {
         AttackIsInQueue = false;
-        StopAllCoroutines();
+        if(shootBasicAttackCoroutine != null)
+        {
+            StopCoroutine(shootBasicAttackCoroutine);
+            shootBasicAttackCoroutine = null;
+        }
         if (currentTarget != null)
         {
             if (isCrowdControlled)
@@ -111,8 +117,12 @@ public abstract class EntityBasicAttack : MonoBehaviour
         if (entity.EntityBasicAttackCycle.AttackSpeedCycleIsReady)
         {
             AttackIsInQueue = true;
-            StopAllCoroutines();
-            StartCoroutine(ShootBasicAttack(target));
+            if (shootBasicAttackCoroutine != null)
+            {
+                StopCoroutine(shootBasicAttackCoroutine);
+            }
+            shootBasicAttackCoroutine = ShootBasicAttack(target);
+            StartCoroutine(shootBasicAttackCoroutine);
         }
     }
 
@@ -129,6 +139,8 @@ public abstract class EntityBasicAttack : MonoBehaviour
         ProjectileUnitTargeted projectile = (Instantiate(basicAttackPrefab, transform.position, transform.rotation)).GetComponent<ProjectileUnitTargeted>();
         projectile.ShootProjectile(entity.Team, target, speed, AttackIsCritical.CheckIfAttackIsCritical(entity.EntityStats.CriticalStrikeChance.GetTotal()), entity.EntityStatusManager.IsBlinded());
         projectile.OnProjectileUnitTargetedHit += BasicAttackHit;
+
+        shootBasicAttackCoroutine = null;
     }
 
     protected virtual void BasicAttackHit(AbilityEffect basicAttackProjectile, Entity entityHit, bool isACriticalAttack, bool willMiss)

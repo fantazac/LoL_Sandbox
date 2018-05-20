@@ -11,6 +11,8 @@ public class CharacterMovement : MonoBehaviour
     private Entity currentlySelectedTarget;
     private Entity currentlySelectedBasicAttackTarget;
 
+    private IEnumerator currentMovementCoroutine;
+
     private Character character;
 
     public Vector3 CharacterHeightOffset { get; private set; }
@@ -109,16 +111,10 @@ public class CharacterMovement : MonoBehaviour
 
     public void SetMoveTowardsPoint(Vector3 destination, float range = 0)
     {
-        StopAllMovement();//TODO: If you are rooted and you spam click, it cancels your auto-attack but instantly sets one up again, is it intended in LoL?
+        StopAllMovement();//TODO: Currently resets auto-attack cycle while rooted, shouldn't do that
         currentlySelectedDestination = destination;
-        if (range > 0)
-        {
-            StartCoroutine(MoveTowardsPoint(destination, range));
-        }
-        else
-        {
-            StartCoroutine(MoveTowardsPoint(destination));
-        }
+        currentMovementCoroutine = range > 0 ? MoveTowardsPoint(destination, range) : MoveTowardsPoint(destination);
+        StartCoroutine(currentMovementCoroutine);
         character.CharacterOrientation.RotateCharacter(destination);
     }
 
@@ -139,6 +135,7 @@ public class CharacterMovement : MonoBehaviour
         }
 
         currentlySelectedDestination = Vector3.down;
+        currentMovementCoroutine = null;
     }
 
     private IEnumerator MoveTowardsPoint(Vector3 destination, float range)
@@ -164,6 +161,7 @@ public class CharacterMovement : MonoBehaviour
 
         character.CharacterAutoAttack.EnableAutoAttack();
         currentlySelectedDestination = Vector3.down;
+        currentMovementCoroutine = null;
     }
 
     public void SetCharacterIsInRangeEventForBasicAttack()//Lucian Q -> Lucian W: This cancels the Q cast but continues movement post-W to auto the same target
@@ -200,7 +198,8 @@ public class CharacterMovement : MonoBehaviour
         {
             currentlySelectedTarget = target;
         }
-        StartCoroutine(MoveTowardsTarget(target, range, isBasicAttack));
+        currentMovementCoroutine = MoveTowardsTarget(target, range, isBasicAttack);
+        StartCoroutine(currentMovementCoroutine);
     }
 
     private IEnumerator MoveTowardsTarget(Entity target, float range, bool isBasicAttack)
@@ -257,6 +256,8 @@ public class CharacterMovement : MonoBehaviour
             StopAllMovement();
             character.CharacterAutoAttack.EnableAutoAttack();
         }
+
+        currentMovementCoroutine = null;
     }
 
     public void RotateCharacterIfMoving()
@@ -307,7 +308,11 @@ public class CharacterMovement : MonoBehaviour
         {
             character.CharacterBufferedAbilityManager.ResetBufferedAbility();
         }
-        StopAllCoroutines();
+        if (currentMovementCoroutine != null)
+        {
+            StopCoroutine(currentMovementCoroutine);
+            currentMovementCoroutine = null;
+        }
         character.CharacterOrientation.StopRotation();
         CharacterIsInTargetRange = null;
         CharacterIsInDestinationRange = null;

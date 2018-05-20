@@ -6,6 +6,8 @@ public class EntityBasicAttackCycle : MonoBehaviour
 {
     private WaitForSeconds delayPostBasicAttack;
 
+    private IEnumerator basicAttackCycleCoroutine;
+
     public bool AttackSpeedCycleIsReady { get; private set; }
 
     private EntityBasicAttackCycle()
@@ -21,13 +23,18 @@ public class EntityBasicAttackCycle : MonoBehaviour
     public void LockBasicAttack()
     {
         AttackSpeedCycleIsReady = false;
-        StartCoroutine(CompleteBasicAttackCycle());
+        basicAttackCycleCoroutine = CompleteBasicAttackCycle();//Should not have to cancel current coroutine since you cannot basic attack while it's active
+        StartCoroutine(basicAttackCycleCoroutine);
     }
 
     public void ResetBasicAttack()
     {
         AttackSpeedCycleIsReady = true;
-        StopAllCoroutines();
+        if (basicAttackCycleCoroutine != null)
+        {
+            StopCoroutine(basicAttackCycleCoroutine);
+            basicAttackCycleCoroutine = null;
+        }
     }
 
     private IEnumerator CompleteBasicAttackCycle()
@@ -35,5 +42,6 @@ public class EntityBasicAttackCycle : MonoBehaviour
         yield return delayPostBasicAttack;
 
         AttackSpeedCycleIsReady = true;
+        basicAttackCycleCoroutine = null;
     }
 }

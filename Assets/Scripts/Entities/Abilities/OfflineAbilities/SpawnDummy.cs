@@ -35,7 +35,6 @@ public abstract class SpawnDummy : GroundTargeted
 
     public void RemoveAllDummies()
     {
-        StopAllCoroutines();
         while (dummies.Count > 0)//more efficient way to do this?
         {
             if (dummies[0])
