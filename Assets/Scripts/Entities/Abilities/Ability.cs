@@ -178,7 +178,7 @@ public abstract class Ability : MonoBehaviour
         {
             foreach (Ability ability in AbilitiesToDisableWhileActive)
             {
-                if (ability.AbilityLevel > 0)
+                if (ability && ability.AbilityLevel > 0)
                 {
                     ability.DisableAbility();
                 }
@@ -226,7 +226,10 @@ public abstract class Ability : MonoBehaviour
         {
             foreach (Ability ability in AbilitiesToDisableWhileActive)
             {
-                ability.EnableAbility();
+                if (ability)
+                {
+                    ability.EnableAbility();
+                }
             }
         }
         if (OnAbilityFinished != null)

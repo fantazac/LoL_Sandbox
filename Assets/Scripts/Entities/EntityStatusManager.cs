@@ -55,13 +55,27 @@ public class EntityStatusManager : MonoBehaviour
                 SetCannotUseBasicAbilities(count);
                 SetCannotUseBasicAttacks(count);
                 SetCannotUseMovement(count);
+                character.CharacterMovement.StopAllMovement();
+                if (character.CharacterAbilityManager)
+                {
+                    character.CharacterAbilityManager.StopAllChannelledAbilities();
+                    character.CharacterAbilityManager.StopAllSpecialNonChannelledAbilities();
+                }
                 break;
-            case CrowdControlEffects.CRIPPLE://TODO
+            case CrowdControlEffects.CRIPPLE:
                 break;
             case CrowdControlEffects.DISARM://TODO
                 SetCannotUseBasicAttacks(count);
+                if (character.CharacterAbilityManager)
+                {
+                    character.CharacterAbilityManager.StopAllSpecialNonChannelledAbilities();
+                }
                 break;
-            case CrowdControlEffects.DISRUPT://TODO
+            case CrowdControlEffects.DISRUPT:
+                if (character.CharacterAbilityManager)
+                {
+                    character.CharacterAbilityManager.StopAllChannelledAbilities();
+                }
                 break;
             case CrowdControlEffects.DROWSY://TODO
                 break;
@@ -69,16 +83,31 @@ public class EntityStatusManager : MonoBehaviour
                 SetCannotUseBasicAttacks(count);
                 SetCannotUseMovement(count);
                 SetCannotUseMovementAbilities(count);
+                if (character.CharacterAbilityManager)
+                {
+                    character.CharacterAbilityManager.StopAllSpecialNonChannelledAbilities();
+                }
                 break;
             case CrowdControlEffects.FEAR://TODO
                 SetCannotUseBasicAbilities(count);
                 SetCannotUseBasicAttacks(count);
                 SetCannotUseMovement(count);
+                if (character.CharacterAbilityManager)
+                {
+                    character.CharacterAbilityManager.StopAllChannelledAbilities();
+                    character.CharacterAbilityManager.StopAllSpecialNonChannelledAbilities();
+                }
                 break;
             case CrowdControlEffects.FLEE:
                 SetCannotUseBasicAbilities(count);
                 SetCannotUseBasicAttacks(count);
                 SetCannotUseMovement(count);
+                character.CharacterMovement.StopAllMovement();
+                if (character.CharacterAbilityManager)
+                {
+                    character.CharacterAbilityManager.StopAllChannelledAbilities();
+                    character.CharacterAbilityManager.StopAllSpecialNonChannelledAbilities();
+                }
                 break;
             case CrowdControlEffects.GROUND:
                 SetCannotUseMovementAbilities(count);
@@ -87,11 +116,21 @@ public class EntityStatusManager : MonoBehaviour
                 SetCannotUseBasicAbilities(count);
                 SetCannotUseBasicAttacks(count);
                 SetCannotUseMovement(count);
+                if (character.CharacterAbilityManager)
+                {
+                    character.CharacterAbilityManager.StopAllChannelledAbilities();
+                    character.CharacterAbilityManager.StopAllSpecialNonChannelledAbilities();
+                }
                 break;
             case CrowdControlEffects.KNOCKBACK://TODO
                 SetCannotUseBasicAbilities(count);
                 SetCannotUseBasicAttacks(count);
                 SetCannotUseMovement(count);
+                if (character.CharacterAbilityManager)
+                {
+                    character.CharacterAbilityManager.StopAllChannelledAbilities();
+                    character.CharacterAbilityManager.StopAllSpecialNonChannelledAbilities();
+                }
                 break;
             case CrowdControlEffects.KNOCKDOWN://TODO
                 if (character.CharacterAbilityManager)
@@ -103,6 +142,11 @@ public class EntityStatusManager : MonoBehaviour
                 SetCannotUseBasicAbilities(count);
                 SetCannotUseBasicAttacks(count);
                 SetCannotUseMovement(count);
+                if (character.CharacterAbilityManager)
+                {
+                    character.CharacterAbilityManager.StopAllChannelledAbilities();
+                    character.CharacterAbilityManager.StopAllSpecialNonChannelledAbilities();
+                }
                 break;
             case CrowdControlEffects.NEARSIGHT://TODO
                 SetCannotUseLongRangedAbilities(count);
@@ -110,15 +154,30 @@ public class EntityStatusManager : MonoBehaviour
             case CrowdControlEffects.PACIFY://TODO
                 SetCannotUseBasicAbilities(count);
                 SetCannotUseBasicAttacks(count);
+                if (character.CharacterAbilityManager)
+                {
+                    character.CharacterAbilityManager.StopAllChannelledAbilities();
+                    character.CharacterAbilityManager.StopAllSpecialNonChannelledAbilities();
+                }
                 break;
             case CrowdControlEffects.POLYMORPH://TODO
                 SetCannotUseBasicAbilities(count);
                 SetCannotUseBasicAttacks(count);
+                if (character.CharacterAbilityManager)
+                {
+                    character.CharacterAbilityManager.StopAllChannelledAbilities();
+                    character.CharacterAbilityManager.StopAllSpecialNonChannelledAbilities();
+                }
                 break;
             case CrowdControlEffects.PULL://TODO
                 SetCannotUseBasicAbilities(count);
                 SetCannotUseBasicAttacks(count);
                 SetCannotUseMovement(count);
+                if (character.CharacterAbilityManager)
+                {
+                    character.CharacterAbilityManager.StopAllChannelledAbilities();
+                    character.CharacterAbilityManager.StopAllSpecialNonChannelledAbilities();
+                }
                 break;
             case CrowdControlEffects.ROOT:
                 SetCannotUseMovement(count);
@@ -127,41 +186,82 @@ public class EntityStatusManager : MonoBehaviour
                 break;
             case CrowdControlEffects.SILENCE://TODO
                 SetCannotUseBasicAbilities(count);
+                if (character.CharacterAbilityManager)
+                {
+                    character.CharacterAbilityManager.StopAllChannelledAbilities();
+                }
                 break;
             case CrowdControlEffects.SLEEP://TODO
                 SetCannotUseBasicAbilities(count);
                 SetCannotUseBasicAttacks(count);
                 SetCannotUseMovement(count);
+                if (character.CharacterAbilityManager)
+                {
+                    character.CharacterAbilityManager.StopAllChannelledAbilities();
+                    character.CharacterAbilityManager.StopAllSpecialNonChannelledAbilities();
+                }
                 break;
-            case CrowdControlEffects.SLOW://TODO
+            case CrowdControlEffects.SLOW:
                 break;
             case CrowdControlEffects.STASIS://TODO
                 SetCannotUseBasicAbilities(count);
                 SetCannotUseBasicAttacks(count);
                 SetCannotUseMovement(count);
                 SetCannotUseSummonerAbilities(count);
+                if (character.CharacterAbilityManager)
+                {
+                    character.CharacterAbilityManager.StopAllChannelledAbilities();
+                    character.CharacterAbilityManager.StopAllSpecialNonChannelledAbilities();
+                }
                 break;
             case CrowdControlEffects.STUN:
                 SetCannotUseBasicAbilities(count);
                 SetCannotUseBasicAttacks(count);
                 SetCannotUseMovement(count);
                 character.CharacterMovement.StopMovementTowardsPointIfHasEvent();
+                if (character.CharacterAbilityManager)
+                {
+                    character.CharacterAbilityManager.StopAllChannelledAbilities();
+                    character.CharacterAbilityManager.StopAllSpecialNonChannelledAbilities();
+                }
                 break;
             case CrowdControlEffects.SUPPRESION://TODO
                 SetCannotUseBasicAbilities(count);
                 SetCannotUseBasicAttacks(count);
                 SetCannotUseMovement(count);
                 SetCannotUseSummonerAbilities(count);
+                if (character.CharacterAbilityManager)
+                {
+                    character.CharacterAbilityManager.StopAllChannelledAbilities();
+                    character.CharacterAbilityManager.StopAllSpecialNonChannelledAbilities();
+                }
                 break;
-            case CrowdControlEffects.SUSPENSION://TODO
+            case CrowdControlEffects.SUSPENSION:
                 SetCannotUseBasicAbilities(count);
                 SetCannotUseBasicAttacks(count);
                 SetCannotUseMovement(count);
+                if (character.CharacterMovement.IsWalkingTowardsPosition())
+                {
+                    character.CharacterAutoAttack.EnableAutoAttackWithBiggerRange();
+                }
+                character.CharacterMovement.StopMovementTowardsPoint();
+                character.CharacterMovement.StopMovementTowardsTargetIfHasEvent();
+                if (character.CharacterAbilityManager)
+                {
+                    character.CharacterAbilityManager.StopAllChannelledAbilities();
+                    character.CharacterAbilityManager.StopAllSpecialNonChannelledAbilities();
+                }
                 break;
             case CrowdControlEffects.TAUNT://TODO
                 SetCannotUseBasicAbilities(count);
                 SetCannotUseBasicAttacks(count);
                 SetCannotUseMovement(count);
+                character.CharacterMovement.StopAllMovement();
+                if (character.CharacterAbilityManager)
+                {
+                    character.CharacterAbilityManager.StopAllChannelledAbilities();
+                    character.CharacterAbilityManager.StopAllSpecialNonChannelledAbilities();
+                }
                 break;
         }
     }

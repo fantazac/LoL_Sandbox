@@ -6,6 +6,7 @@ public class CharacterAutoAttack : MonoBehaviour
 {
     private Character character;
     private AttackRange attackRange;
+    private float biggerAttackRangeRatio;
 
     private bool autoAttackEnabled;
     private AbilityAffectedUnitType affectedUnitType;
@@ -14,6 +15,8 @@ public class CharacterAutoAttack : MonoBehaviour
     {
         autoAttackEnabled = true;
         affectedUnitType = AbilityAffectedUnitType.ENEMIES;
+
+        biggerAttackRangeRatio = 1.15f;//TODO: try to figure out actual value
     }
 
     private void Start()
@@ -25,10 +28,19 @@ public class CharacterAutoAttack : MonoBehaviour
 
     public void EnableAutoAttack(bool forceEnable = false)
     {
+        StopAutoAttack();
         if (autoAttackEnabled || forceEnable)
         {
-            StopAllCoroutines();
             StartCoroutine(AutoAttack());
+        }
+    }
+
+    public void EnableAutoAttackWithBiggerRange(bool forceEnable = false)
+    {
+        StopAutoAttack();
+        if (autoAttackEnabled || forceEnable)
+        {
+            StartCoroutine(AutoAttackWithBiggerRange());
         }
     }
 
@@ -76,6 +88,47 @@ public class CharacterAutoAttack : MonoBehaviour
                 if (autoAttackTarget != null)
                 {
                     character.EntityBasicAttack.UseBasicAttackFromAutoAttack(autoAttackTarget);
+                }
+            }
+
+            yield return null;
+        }
+    }
+
+    private IEnumerator AutoAttackWithBiggerRange()
+    {
+        if (!character)
+        {
+            yield return null;
+        }
+
+        Entity autoAttackTarget = null;
+        Vector3 groundPosition = Vector3.right * transform.position.x + Vector3.forward * transform.position.z;
+        while (true)
+        {
+            if (character.EntityStatusManager && !character.CharacterAbilityManager.IsUsingAbilityPreventingBasicAttacks() && character.EntityStatusManager.CanUseBasicAttacks() &&
+                (!character.CharacterMovement.IsMoving() || !character.EntityStatusManager.CanUseMovement()) &&
+                !character.EntityBasicAttack.AttackIsInQueue && character.EntityBasicAttackCycle.AttackSpeedCycleIsReady)
+            {
+                float distance = float.MaxValue;
+                foreach (Collider collider in Physics.OverlapCapsule(groundPosition, groundPosition + Vector3.up * 5, attackRange.GetTotal() * biggerAttackRangeRatio))
+                {
+                    Entity tempEntity = collider.GetComponent<Entity>();
+                    if (tempEntity != null && TargetIsValid.CheckIfTargetIsValid(tempEntity, affectedUnitType, character.Team))
+                    {
+                        float tempDistance = Vector3.Distance(tempEntity.transform.position, transform.position);
+                        if (tempDistance < distance)
+                        {
+                            autoAttackTarget = tempEntity;
+                            distance = tempDistance;
+                        }
+                    }
+                }
+
+                if (autoAttackTarget != null)
+                {
+                    character.EntityBasicAttack.SetupBasicAttack(autoAttackTarget);
+                    break;
                 }
             }
 

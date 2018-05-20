@@ -130,7 +130,7 @@ public class EntityStatusMovementManager : MonoBehaviour
         currentDisplacement = null;
     }
 
-    private void StartForcedAction(IEnumerator coroutine)
+    private void StartForcedAction(IEnumerator coroutine)//TODO: Dashes have to finish before taking effect
     {
         if (currentForcedAction != null)
         {

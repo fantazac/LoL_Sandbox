@@ -150,12 +150,9 @@ public class CharacterAbilityManager : MonoBehaviour
                 ability.BlockAbility();
             }
         }
-        foreach (Ability ability in OtherCharacterAbilities)//TODO: TEST IN GAME
+        foreach (Ability ability in OtherCharacterAbilities)
         {
-            if (ability.IsAMovementAbility)
-            {
-                ability.BlockAbility();
-            }
+            ability.BlockAbility();
         }
     }
 
@@ -175,12 +172,9 @@ public class CharacterAbilityManager : MonoBehaviour
                 ability.UnblockAbility();
             }
         }
-        foreach (Ability ability in OtherCharacterAbilities)//TODO: See BlockAllBasicAbilities' todo
+        foreach (Ability ability in OtherCharacterAbilities)
         {
-            if (ability.IsAMovementAbility)
-            {
-                ability.UnblockAbility();
-            }
+            ability.UnblockAbility();
         }
     }
 
@@ -468,6 +462,7 @@ public class CharacterAbilityManager : MonoBehaviour
     {
         if (!IsUsingAbilityPreventingAbilityCast(ability))
         {
+            Debug.Log(ability);
             if (currentlyUsedAbilities.Count > 0)
             {
                 character.CharacterBufferedAbilityManager.ResetBufferedAbility();
@@ -475,7 +470,7 @@ public class CharacterAbilityManager : MonoBehaviour
             ability.UseAbility(destination);
             if (ability.HasCastTime || ability.HasChannelTime || ability.CanBeRecasted)
             {
-                character.CharacterMovement.SetCharacterIsInRangeEventForBasicAttack();//?
+                character.CharacterMovement.SetCharacterIsInRangeEventForBasicAttack();
             }
         }
         else
@@ -561,7 +556,7 @@ public class CharacterAbilityManager : MonoBehaviour
 
         foreach (Ability ability in castableAbilitiesWhileActive)
         {
-            if (ability == abilityToCast)
+            if (ability && ability == abilityToCast)
             {
                 canCast = true;
                 break;
@@ -684,12 +679,36 @@ public class CharacterAbilityManager : MonoBehaviour
         return false;
     }
 
+    public void StopAllChannelledAbilities()
+    {
+        for (int i = currentlyUsedAbilities.Count - 1; i >= 0; i--)
+        {
+            Ability ability = currentlyUsedAbilities[i];
+            if (ability.IsBeingChanneled)
+            {
+                ability.CancelAbility();
+            }
+        }
+    }
+
     public void StopAllDashAbilities()
     {
         for (int i = currentlyUsedAbilities.Count - 1; i >= 0; i--)
         {
             Ability ability = currentlyUsedAbilities[i];
             if (ability is DirectionTargetedDash)
+            {
+                ability.CancelAbility();
+            }
+        }
+    }
+
+    public void StopAllSpecialNonChannelledAbilities()//LucianR only so far
+    {
+        for (int i = currentlyUsedAbilities.Count - 1; i >= 0; i--)
+        {
+            Ability ability = currentlyUsedAbilities[i];
+            if (ability is Lucian_R && ability.IsActive)
             {
                 ability.CancelAbility();
             }

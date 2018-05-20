@@ -18,7 +18,6 @@ public class Recall : AutoTargetedBlink
 
         CanMoveWhileChanneling = true;
         CanUseAnyAbilityWhileChanneling = true;
-        IsAMovementAbility = true;
 
         IsEnabled = true;
     }
@@ -70,7 +69,6 @@ public class Recall : AutoTargetedBlink
         entityHit.EntityStats.Health.OnHealthReduced += CancelRecall;
         ((Character)entityHit).CharacterAbilityManager.OnAnAbilityUsed += CancelRecall;
         ((Character)entityHit).CharacterMovement.CharacterMoved += CancelRecall;
-        //TODO: if cc'd, cancel aswell
         AbilityBuffs[0].AddNewBuffToAffectedEntity(entityHit);
     }
 
@@ -79,7 +77,6 @@ public class Recall : AutoTargetedBlink
         entityHit.EntityStats.Health.OnHealthReduced -= CancelRecall;
         ((Character)entityHit).CharacterAbilityManager.OnAnAbilityUsed -= CancelRecall;
         ((Character)entityHit).CharacterMovement.CharacterMoved -= CancelRecall;
-        //TODO: remove cc cancel
     }
 
     private void CancelRecall()

@@ -9,6 +9,7 @@ public class CharacterMovement : MonoBehaviour
 
     private Vector3 currentlySelectedDestination;
     private Entity currentlySelectedTarget;
+    private Entity currentlySelectedBasicAttackTarget;
 
     private Character character;
 
@@ -190,10 +191,14 @@ public class CharacterMovement : MonoBehaviour
     public void SetMoveTowardsTarget(Entity target, float range, bool isBasicAttack)
     {
         StopAllMovement();
-        currentlySelectedTarget = target;
         if (isBasicAttack)
         {
+            currentlySelectedBasicAttackTarget = target;
             character.EntityBasicAttack.SetupBasicAttack(target);
+        }
+        else
+        {
+            currentlySelectedTarget = target;
         }
         StartCoroutine(MoveTowardsTarget(target, range, isBasicAttack));
     }
@@ -245,6 +250,7 @@ public class CharacterMovement : MonoBehaviour
             }
 
             currentlySelectedTarget = null;
+            currentlySelectedBasicAttackTarget = null;
         }
         else
         {
@@ -262,6 +268,10 @@ public class CharacterMovement : MonoBehaviour
         else if (currentlySelectedTarget != null)
         {
             character.CharacterOrientation.RotateCharacterUntilReachedTarget(currentlySelectedTarget.transform, true);
+        }
+        else if (currentlySelectedBasicAttackTarget != null)
+        {
+            character.CharacterOrientation.RotateCharacterUntilReachedTarget(currentlySelectedBasicAttackTarget.transform, true);
         }
     }
 
@@ -303,6 +313,7 @@ public class CharacterMovement : MonoBehaviour
         CharacterIsInDestinationRange = null;
         currentlySelectedDestination = Vector3.down;
         currentlySelectedTarget = null;
+        currentlySelectedBasicAttackTarget = null;
     }
 
     public void StopMovementTowardsPoint()
@@ -315,7 +326,7 @@ public class CharacterMovement : MonoBehaviour
 
     public void StopMovementTowardsTarget()
     {
-        if (currentlySelectedTarget != null)
+        if (currentlySelectedTarget != null || currentlySelectedBasicAttackTarget != null)
         {
             StopAllMovement();
         }
@@ -329,9 +340,9 @@ public class CharacterMovement : MonoBehaviour
         }
     }
 
-    public void StopMovementTowardsTargetIfHasEvent()
+    public void StopMovementTowardsTargetIfHasEvent(bool stopBasicAttack = false)
     {
-        if (currentlySelectedTarget != null && CharacterIsInTargetRange != null)
+        if ((currentlySelectedTarget != null || (stopBasicAttack && currentlySelectedBasicAttackTarget != null)) && CharacterIsInTargetRange != null)
         {
             StopAllMovement();
         }
@@ -347,14 +358,14 @@ public class CharacterMovement : MonoBehaviour
         CharacterIsInTargetRange = null;
     }
 
-    public Entity GetTarget()
-    {
-        return currentlySelectedTarget;
-    }
-
     public bool IsMoving()
     {
-        return currentlySelectedDestination != Vector3.down || currentlySelectedTarget != null;
+        return currentlySelectedDestination != Vector3.down || currentlySelectedTarget != null || currentlySelectedBasicAttackTarget != null;
+    }
+
+    public bool IsWalkingTowardsPosition()
+    {
+        return currentlySelectedDestination != Vector3.down && CharacterIsInDestinationRange == null;
     }
 
     public void NotifyCharacterMoved()
