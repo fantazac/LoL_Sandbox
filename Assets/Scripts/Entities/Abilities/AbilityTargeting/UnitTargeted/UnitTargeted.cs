@@ -33,7 +33,7 @@ public abstract class UnitTargeted : Ability
         
         if (!character.CharacterMovement.IsMovingTowardsTarget() && !character.EntityBasicAttack.CurrentTarget())
         {
-            character.CharacterMovement.SetMoveTowardsTarget(target, character.EntityStats.AttackRange.GetTotal(), true);
+            character.CharacterMovement.SetMoveTowardsTarget(target, character.EntityStats.AttackRange.GetTotal(), true, true);
         }
 
         targetedEntity = target;

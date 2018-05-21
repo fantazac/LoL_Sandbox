@@ -168,6 +168,7 @@ public class CharacterMovement : MonoBehaviour
         if (CharacterIsInDestinationRange != null)
         {
             CharacterIsInDestinationRange(currentlySelectedDestination);
+            CharacterIsInDestinationRange = null;
         }
 
         character.CharacterAutoAttack.EnableAutoAttack();
@@ -197,9 +198,27 @@ public class CharacterMovement : MonoBehaviour
         }
     }
 
-    public void SetMoveTowardsTarget(Entity target, float range, bool isBasicAttack)
+    public void SetMoveTowardsTarget(Entity target, float range, bool isBasicAttack, bool forceNewCoroutine = false)
     {
-        StopAllMovement();
+        if (CharacterIsInTargetRange == null || forceNewCoroutine)
+        {
+            StopAllMovement();
+            SetupCorrectTarget(target, isBasicAttack);
+            currentMovementCoroutine = MoveTowardsTarget(range);
+            StartCoroutine(currentMovementCoroutine);
+        }
+        else
+        {
+            CharacterIsInTargetRange = null;
+            SetupCorrectTarget(target, isBasicAttack);
+            if (Vector3.Distance(target.transform.position, transform.position) > range)
+            {
+                character.CharacterOrientation.RotateCharacterUntilReachedTarget(target.transform, isBasicAttack);
+            }
+        }
+
+        //TODO: Remove this after multiple tests, keeping it as a comment in case the newer version breaks something else
+        /*StopAllMovement();
         if (isBasicAttack)
         {
             currentlySelectedBasicAttackTarget = target;
@@ -209,13 +228,23 @@ public class CharacterMovement : MonoBehaviour
         {
             currentlySelectedTarget = target;
         }
-        currentMovementCoroutine = MoveTowardsTarget(range, isBasicAttack);
-        StartCoroutine(currentMovementCoroutine);
+        currentMovementCoroutine = MoveTowardsTarget(range);
+        StartCoroutine(currentMovementCoroutine);*/
     }
 
-    private IEnumerator MoveTowardsTarget(float range, bool isBasicAttack)
+    private void SetupCorrectTarget(Entity target, bool isBasicAttack)
     {
-        Entity target = isBasicAttack ? currentlySelectedBasicAttackTarget : currentlySelectedTarget;
+        currentlySelectedTarget = !isBasicAttack ? target : null;
+        currentlySelectedBasicAttackTarget = isBasicAttack ? target : null;
+        if (isBasicAttack)
+        {
+            character.EntityBasicAttack.SetupBasicAttack(target, true);
+        }
+    }
+
+    private IEnumerator MoveTowardsTarget(float range)
+    {
+        Entity target = currentlySelectedBasicAttackTarget != null ? currentlySelectedBasicAttackTarget : currentlySelectedTarget;
 
         if (target != null && Vector3.Distance(target.transform.position, transform.position) > range)
         {
@@ -223,7 +252,7 @@ public class CharacterMovement : MonoBehaviour
 
             Transform targetTransform = target.transform;
 
-            character.CharacterOrientation.RotateCharacterUntilReachedTarget(targetTransform, isBasicAttack);
+            character.CharacterOrientation.RotateCharacterUntilReachedTarget(targetTransform, currentlySelectedBasicAttackTarget != null);
 
             while (targetTransform != null && Vector3.Distance(targetTransform.position, transform.position) > range)
             {
@@ -239,7 +268,8 @@ public class CharacterMovement : MonoBehaviour
 
                 yield return null;
 
-                targetTransform = (isBasicAttack ? currentlySelectedBasicAttackTarget : currentlySelectedTarget).transform;
+                target = currentlySelectedBasicAttackTarget != null ? currentlySelectedBasicAttackTarget : currentlySelectedTarget;
+                targetTransform = target ? target.transform : null;
             }
 
             character.CharacterAutoAttack.EnableAutoAttack();
@@ -248,7 +278,7 @@ public class CharacterMovement : MonoBehaviour
 
         if (target != null)
         {
-            if (isBasicAttack && (character.CharacterAbilityManager.IsUsingAbilityPreventingBasicAttacks() || !character.EntityStatusManager.CanUseBasicAttacks()))//checks is disarmed
+            if (target == currentlySelectedBasicAttackTarget && (character.CharacterAbilityManager.IsUsingAbilityPreventingBasicAttacks() || !character.EntityStatusManager.CanUseBasicAttacks()))//checks is disarmed
             {
                 while (character.CharacterAbilityManager.IsUsingAbilityPreventingBasicAttacks() || !character.EntityStatusManager.CanUseBasicAttacks())
                 {
@@ -264,9 +294,10 @@ public class CharacterMovement : MonoBehaviour
             if (CharacterIsInTargetRange != null)
             {
                 CharacterIsInTargetRange(target);
+                CharacterIsInTargetRange = null;
             }
         }
-        else
+        else if (!IsMoving())
         {
             StopAllMovement();
             character.CharacterAutoAttack.EnableAutoAttack();
@@ -324,7 +355,7 @@ public class CharacterMovement : MonoBehaviour
             character.CharacterBufferedAbilityManager.ResetBufferedAbility();
         }
 
-        //TODO: Sometimes, it does not enter the if even when there is a coroutine running, so 2+ are alive at once. Try to find why and remove StopAllCoroutines()!
+        //TODO: Sometimes, it does not enter the if even when there is a coroutine running, so 2+ are alive at once. Try to find why and remove StopAllCoroutines() if possible!
         //if (currentMovementCoroutine != null)
         //{
         //    StopCoroutine(currentMovementCoroutine);
