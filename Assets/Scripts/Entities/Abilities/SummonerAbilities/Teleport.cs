@@ -41,4 +41,26 @@ public class Teleport : GroundTargetedBlink//TODO: UnitTargeted
 
         StartCorrectCoroutine();
     }
+
+    protected override IEnumerator AbilityWithChannelTime()
+    {
+        UseResource();
+        character.CharacterAbilityManager.BlockAllMovementAbilities(this);
+        IsBeingChanneled = true;
+
+        yield return delayChannelTime;
+
+        IsBeingChanneled = false;
+        character.CharacterAbilityManager.UnblockAllMovementAbilities();
+        character.CharacterOrientation.RotateCharacterInstantly(destinationOnCast);
+        transform.position = destinationOnCast;
+        character.CharacterMovement.NotifyCharacterMoved();
+
+        FinishAbilityCast();
+    }
+
+    protected override void ExtraActionsOnCancel()
+    {
+        character.CharacterAbilityManager.UnblockAllMovementAbilities();
+    }
 }

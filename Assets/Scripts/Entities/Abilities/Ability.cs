@@ -12,6 +12,7 @@ public abstract class Ability : MonoBehaviour
     protected DamageType damageType;
 
     protected IEnumerator abilityEffectCoroutine;
+    protected IEnumerator cooldownForRecastCoroutine;
 
     public AbilityCategory AbilityCategory { get; set; }
     public int AbilityLevel { get; protected set; }
@@ -56,6 +57,8 @@ public abstract class Ability : MonoBehaviour
 
     protected string abilitySpritePath;
     protected string abilityRecastSpritePath;
+
+    protected int abilityIsBlockedCount;
 
     public bool AppliesAbilityEffects { get; protected set; }
     public bool AppliesOnHitEffects { get; protected set; }
@@ -274,19 +277,29 @@ public abstract class Ability : MonoBehaviour
 
     public void BlockAbility()
     {
-        IsBlocked = true;
-        if (!IsOnCooldown && IsEnabled && character.AbilityUIManager)
+        abilityIsBlockedCount++;
+        if (!IsBlocked)
         {
-            character.AbilityUIManager.BlockAbility(AbilityCategory, ID, UsesResource);
+            IsBlocked = true;
+            if (!IsOnCooldown && IsEnabled && character.AbilityUIManager)
+            {
+                character.AbilityUIManager.BlockAbility(AbilityCategory, ID, UsesResource);
+            }
         }
     }
 
     public void UnblockAbility()
     {
-        IsBlocked = false;
-        if (!IsOnCooldown && IsEnabled && character.AbilityUIManager)
+        if (IsBlocked)
         {
-            character.AbilityUIManager.UnblockAbility(AbilityCategory, ID, resourceCost <= character.EntityStats.Resource.GetCurrentValue());
+            if(--abilityIsBlockedCount == 0)
+            {
+                IsBlocked = false;
+                if (!IsOnCooldown && IsEnabled && character.AbilityUIManager)
+                {
+                    character.AbilityUIManager.UnblockAbility(AbilityCategory, ID, resourceCost <= character.EntityStats.Resource.GetCurrentValue());
+                }
+            }
         }
     }
 
@@ -315,6 +328,10 @@ public abstract class Ability : MonoBehaviour
             float abilityCooldown = abilityWasCancelled ? cooldownOnCancel : cooldown;
             if (calledInStartAbilityCast == startCooldownOnAbilityCast && abilityCooldown > 0)
             {
+                if (cooldownForRecastCoroutine != null)
+                {
+                    StopCoroutine(cooldownForRecastCoroutine);
+                }
                 StartCoroutine(PutAbilityOffCooldown(abilityCooldown));
             }
         }
@@ -324,7 +341,8 @@ public abstract class Ability : MonoBehaviour
     {
         if (character.AbilityUIManager)
         {
-            StartCoroutine(PutAbilityOffCooldownForRecast());
+            cooldownForRecastCoroutine = PutAbilityOffCooldownForRecast();
+            StartCoroutine(cooldownForRecastCoroutine);
         }
     }
 
@@ -359,6 +377,7 @@ public abstract class Ability : MonoBehaviour
         {
             character.AbilityUIManager.UpdateAbilityHasEnoughResource(ID, resourceCost <= character.EntityStats.Resource.GetCurrentValue());
         }
+        cooldownForRecastCoroutine = null;
         IsOnCooldown = false;
     }
 
@@ -381,6 +400,7 @@ public abstract class Ability : MonoBehaviour
         }
 
         character.AbilityUIManager.SetAbilityOffCooldownForRecast(AbilityCategory, ID);
+        cooldownForRecastCoroutine = null;
         IsOnCooldownForRecast = false;
     }
 
@@ -549,6 +569,7 @@ public abstract class Ability : MonoBehaviour
         if (abilityEffectCoroutine != null)
         {
             StopCoroutine(abilityEffectCoroutine);
+            ExtraActionsOnCancel();
             if (character.AbilityTimeBarUIManager && (HasCastTime || HasChannelTime))
             {
                 character.AbilityTimeBarUIManager.CancelCastTimeAndChannelTime(ID);
@@ -556,6 +577,8 @@ public abstract class Ability : MonoBehaviour
             FinishAbilityCast(HasReducedCooldownOnAbilityCancel);
         }
     }
+
+    protected virtual void ExtraActionsOnCancel() { }
 
     public float GetResourceCost()
     {

@@ -216,18 +216,18 @@ public class CharacterAbilityManager : MonoBehaviour
         }
     }
 
-    public void BlockAllMovementAbilities()
+    public void BlockAllMovementAbilities(Ability abilityToNotBlock = null)
     {
         foreach (Ability ability in CharacterAbilities)
         {
-            if (ability.IsAMovementAbility)
+            if (ability.IsAMovementAbility && ability != abilityToNotBlock)
             {
                 ability.BlockAbility();
             }
         }
         foreach (Ability ability in SummonerAbilities)
         {
-            if (ability.IsAMovementAbility)
+            if (ability.IsAMovementAbility && ability != abilityToNotBlock)
             {
                 ability.BlockAbility();
             }
