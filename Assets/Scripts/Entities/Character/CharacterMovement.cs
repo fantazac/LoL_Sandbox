@@ -323,6 +323,7 @@ public class CharacterMovement : MonoBehaviour
         {
             character.CharacterBufferedAbilityManager.ResetBufferedAbility();
         }
+
         //TODO: Sometimes, it does not enter the if even when there is a coroutine running, so 2+ are alive at once. Try to find why and remove StopAllCoroutines()!
         //if (currentMovementCoroutine != null)
         //{
@@ -400,6 +401,11 @@ public class CharacterMovement : MonoBehaviour
     public bool IsMovingTowardsTarget()
     {
         return currentlySelectedTarget != null || currentlySelectedBasicAttackTarget != null;
+    }
+
+    public Entity GetBasicAttackTarget()
+    {
+        return currentlySelectedBasicAttackTarget;
     }
 
     public void NotifyCharacterMoved()

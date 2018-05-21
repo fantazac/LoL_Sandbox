@@ -92,7 +92,7 @@ public abstract class EntityBasicAttack : MonoBehaviour
 
     protected void Update()
     {
-        if (currentTarget != null && !AttackIsInQueue && entity.EntityBasicAttackCycle.AttackSpeedCycleIsReady && 
+        if (currentTarget != null && ((Character)entity).CharacterMovement.GetBasicAttackTarget() != currentTarget && !AttackIsInQueue && entity.EntityBasicAttackCycle.AttackSpeedCycleIsReady && 
             !((Character)entity).CharacterAbilityManager.IsUsingAbilityPreventingBasicAttacks())
         {
             StartBasicAttack();
