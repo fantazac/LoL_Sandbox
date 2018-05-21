@@ -30,8 +30,11 @@ public abstract class UnitTargeted : Ability
     protected virtual void UseAbilityInRange(Entity target)
     {
         StartAbilityCast();
-
-        character.CharacterMovement.SetMoveTowardsTarget(target, character.EntityStats.AttackRange.GetTotal(), true);
+        
+        if (!character.CharacterMovement.IsMovingTowardsTarget() && !character.EntityBasicAttack.CurrentTarget())
+        {
+            character.CharacterMovement.SetMoveTowardsTarget(target, character.EntityStats.AttackRange.GetTotal(), true);
+        }
 
         targetedEntity = target;
         destinationOnCast = target.transform.position;

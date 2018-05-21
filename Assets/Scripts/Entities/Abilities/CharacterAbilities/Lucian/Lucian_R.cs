@@ -59,7 +59,17 @@ public class Lucian_R : DirectionTargetedProjectile
 
     protected override void Start()
     {
-        AbilitiesToDisableWhileActive = new Ability[] { GetComponent<Lucian_Q>(), GetComponent<Lucian_W>(), GetComponent<Recall>() };
+        List<Ability> abilitiesToDisableWhileActiveList = new List<Ability>();
+        foreach (Ability ability in character.CharacterAbilityManager.CharacterAbilities)
+        {
+            if (!(ability is DirectionTargetedDash))
+            {
+                abilitiesToDisableWhileActiveList.Add(ability);
+            }
+        }
+        abilitiesToDisableWhileActiveList.Add(character.CharacterAbilityManager.OtherCharacterAbilities[0]);
+
+        AbilitiesToDisableWhileActive = abilitiesToDisableWhileActiveList.ToArray();
         CastableAbilitiesWhileActive = new Ability[] { GetComponent<Lucian_E>() };
 
         base.Start();

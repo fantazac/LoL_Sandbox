@@ -240,7 +240,7 @@ public class EntityStatusManager : MonoBehaviour
                 SetCannotUseBasicAbilities(count);
                 SetCannotUseBasicAttacks(count);
                 SetCannotUseMovement(count);
-                if (character.CharacterMovement.IsWalkingTowardsPosition())
+                if (character.CharacterMovement.IsMovingTowardsPosition())
                 {
                     character.CharacterAutoAttack.EnableAutoAttackWithBiggerRange();
                 }
