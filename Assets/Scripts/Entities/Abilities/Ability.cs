@@ -24,21 +24,21 @@ public abstract class Ability : MonoBehaviour
     protected float channelTime;
     protected float cooldownBeforeRecast;
     protected float cooldownRemaining;
+    protected Vector3 destinationOnCast;
     protected WaitForSeconds delayCastTime;
     protected WaitForSeconds delayChannelTime;
     protected RaycastHit hit;
-    protected Vector3 destinationOnCast;
     protected Vector3 positionOnCast;
-    protected Entity targetedEntity;
-    protected Quaternion rotationOnCast;
     protected float range;
+    protected Quaternion rotationOnCast;
     protected float speed;
     protected bool startCooldownOnAbilityCast;
+    protected Entity targetedEntity;
 
     protected bool affectedByCooldownReduction;
     protected float baseCooldown;
-    protected float baseCooldownPerLevel;
     protected float baseCooldownOnCancel;
+    protected float baseCooldownPerLevel;
     protected float bonusADScaling;
     protected float bonusADScalingPerLevel;
     private float cooldown;
@@ -67,10 +67,14 @@ public abstract class Ability : MonoBehaviour
     public bool CanBeRecasted { get; protected set; }
     public bool CanMoveWhileActive { get; protected set; }
     public bool CanMoveWhileChanneling { get; protected set; }
+    public bool CannotCancelChannel { get; protected set; }
     public bool CannotCastAnyAbilityWhileActive { get; protected set; }
     public bool CannotRotateWhileCasting { get; protected set; }
     public bool CanUseAnyAbilityWhileChanneling { get; protected set; }
     public bool CanUseBasicAttacksWhileCasting { get; protected set; }
+    public bool HasCastTime { get; private set; }
+    public bool HasChannelTime { get; private set; }
+    public bool HasReducedCooldownOnAbilityCancel { get; private set; }
     public bool IsActive { get; protected set; }
     public bool IsAMovementAbility { get; protected set; }
     public bool IsBeingCasted { get; protected set; }
@@ -80,9 +84,6 @@ public abstract class Ability : MonoBehaviour
     public bool IsLongRanged { get; protected set; }//TODO
     public bool IsOnCooldown { get; protected set; }
     public bool IsOnCooldownForRecast { get; protected set; }
-    public bool HasCastTime { get; private set; }
-    public bool HasChannelTime { get; private set; }
-    public bool HasReducedCooldownOnAbilityCancel { get; private set; }
     public bool OfflineOnly { get; protected set; }
     public bool ResetBasicAttackCycleOnAbilityFinished { get; protected set; }
     public bool UsesResource { get; private set; }
@@ -292,7 +293,7 @@ public abstract class Ability : MonoBehaviour
     {
         if (IsBlocked)
         {
-            if(--abilityIsBlockedCount == 0)
+            if (--abilityIsBlockedCount == 0)
             {
                 IsBlocked = false;
                 if (!IsOnCooldown && IsEnabled && character.AbilityUIManager)

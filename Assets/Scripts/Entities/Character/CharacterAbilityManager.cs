@@ -682,7 +682,7 @@ public class CharacterAbilityManager : MonoBehaviour
         for (int i = currentlyUsedAbilities.Count - 1; i >= 0; i--)
         {
             Ability ability = currentlyUsedAbilities[i];
-            if (ability.IsBeingChanneled)
+            if (ability.IsBeingChanneled && ability.CannotCancelChannel)
             {
                 ability.CancelAbility();
             }

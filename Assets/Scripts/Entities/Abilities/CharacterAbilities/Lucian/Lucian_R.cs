@@ -62,7 +62,7 @@ public class Lucian_R : DirectionTargetedProjectile
         List<Ability> abilitiesToDisableWhileActiveList = new List<Ability>();
         foreach (Ability ability in character.CharacterAbilityManager.CharacterAbilities)
         {
-            if (!(ability is DirectionTargetedDash || ability is CC_W))
+            if (!(ability is DirectionTargetedDash || ability is CC_W || ability == this))
             {
                 abilitiesToDisableWhileActiveList.Add(ability);
             }
