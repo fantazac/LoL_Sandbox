@@ -8,19 +8,19 @@ public class MissFortuneBaseStats : CharacterBaseStats
 
     protected override void SetBaseStats()
     {
-        BaseHealth = 530;
-        BaseResource = 325.8f;
+        BaseHealth = 541;
+        BaseResource = 325.84f;
 
-        BaseAttackDamage = 54;
+        BaseAttackDamage = 50;
         BaseAbilityPower = 0;
-        BaseArmor = 33;
+        BaseArmor = 28;
         BaseMagicResistance = 30;
         BaseAttackSpeed = 0.656f;
         BaseCooldownReduction = 0;
         BaseCriticalStrikeChance = 0;
         BaseMovementSpeed = 325;
 
-        BaseHealthRegeneration = 6;
+        BaseHealthRegeneration = 3.75f;
         BaseResourceRegeneration = 8;
         BaseLethality = 0;
         BaseArmorPenetrationPercent = 0;
@@ -31,10 +31,10 @@ public class MissFortuneBaseStats : CharacterBaseStats
         BaseAttackRange = 550;
         BaseTenacity = 0;
 
-        HealthPerLevel = 85;
+        HealthPerLevel = 91;
         ResourcePerLevel = 35;
 
-        AttackDamagePerLevel = 2;
+        AttackDamagePerLevel = 2.7f;
         AttackSpeedPerLevel = 3;
 
         HealthRegenerationPerLevel = 0.65f;
