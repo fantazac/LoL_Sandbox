@@ -11,12 +11,12 @@ public class Teleport : GroundTargetedBlink//TODO: UnitTargeted
 
         abilityType = AbilityType.Blink;
 
-        baseCooldown = 300;
+        baseCooldown = 360;
         cooldownBeforeRecast = 0.75f;
         channelTime = 4.5f;
         delayChannelTime = new WaitForSeconds(channelTime);
 
-        baseCooldownOnCancel = 200;
+        baseCooldownOnCancel = 240;
 
         CanBeRecasted = true;
         CannotCastAnyAbilityWhileActive = true;

@@ -27,9 +27,14 @@
         }
     }
 
-    public override string GetUIText()
+    protected override string GetSimpleUIText()
     {
-        return "MOVEMENT SPEED: " + base.GetTotal() + " ((" + GetBaseValue() + " + " + GetFlatBonus() +
+        return "MOVEMENT SPEED: " + base.GetTotal();
+    }
+
+    protected override string GetUIText()
+    {
+        return GetSimpleUIText() + " ((" + GetBaseValue() + " + " + GetFlatBonus() +
                ") * " + GetPercentBonus() + "% * -" + GetPercentMalus() + "% - " + GetFlatMalus() + ")";
     }
 }

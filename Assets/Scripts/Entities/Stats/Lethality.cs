@@ -26,8 +26,13 @@ public class Lethality : Stat
         total = baseValue + flatBonus - flatMalus;
     }
 
-    public override string GetUIText()
+    protected override string GetSimpleUIText()
     {
-        return "LETHALITY: " + GetTotal() + " (Current value: " + GetCurrentValue() + ") (" + GetBaseValue() + " + " + GetFlatBonus() + " - " + GetFlatMalus() + ")";
+        return "LETHALITY: " + GetTotal();
+    }
+
+    protected override string GetUIText()
+    {
+        return GetSimpleUIText() + " (Current value: " + GetCurrentValue() + ") (" + GetBaseValue() + " + " + GetFlatBonus() + " - " + GetFlatMalus() + ")";
     }
 }

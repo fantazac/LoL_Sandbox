@@ -5,8 +5,13 @@
         total = baseValue + flatBonus - flatMalus;
     }
 
-    public override string GetUIText()
+    protected override string GetSimpleUIText()
     {
-        return "TENACITY: " + GetTotal() + "% (" + GetBaseValue() + "% + " + GetFlatBonus() + "% - " + GetFlatMalus() + "%)";
+        return "TENACITY: " + GetTotal() + "%";
+    }
+
+    protected override string GetUIText()
+    {
+        return GetSimpleUIText() + " (" + GetBaseValue() + "% + " + GetFlatBonus() + "% - " + GetFlatMalus() + "%)";
     }
 }

@@ -5,8 +5,13 @@
         total = baseValue + flatBonus - flatMalus;
     }
 
-    public override string GetUIText()
+    protected override string GetSimpleUIText()
     {
-        return "SPELL VAMP: " + GetTotal() + "% (" + GetBaseValue() + "% + " + GetFlatBonus() + "% - " + GetFlatMalus() + "%)";
+        return "SPELL VAMP: " + GetTotal() + "%";
+    }
+
+    protected override string GetUIText()
+    {
+        return GetSimpleUIText() + " (" + GetBaseValue() + "% + " + GetFlatBonus() + "% - " + GetFlatMalus() + "%)";
     }
 }

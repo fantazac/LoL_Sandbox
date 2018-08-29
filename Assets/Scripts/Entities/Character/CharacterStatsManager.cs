@@ -98,32 +98,33 @@ public class CharacterStatsManager : MonoBehaviour
     {
         if (showStats)
         {
+            bool showSimpleStats = !Input.GetKey(KeyCode.C);
             if (StaticObjects.OnlineMode)
             {
                 GUILayout.Label("");//ping goes there in online
             }
-            GUILayout.Label(characterStats.Health.GetUIText());
-            GUILayout.Label(characterStats.Resource.GetUIText());
+            GUILayout.Label(characterStats.Health.GetUIText(showSimpleStats));
+            GUILayout.Label(characterStats.Resource.GetUIText(showSimpleStats));
 
-            GUILayout.Label(characterStats.AttackDamage.GetUIText());
-            GUILayout.Label(characterStats.AbilityPower.GetUIText());
-            GUILayout.Label(characterStats.Armor.GetUIText());
-            GUILayout.Label(characterStats.MagicResistance.GetUIText());
-            GUILayout.Label(characterStats.AttackSpeed.GetUIText());
-            GUILayout.Label(characterStats.CooldownReduction.GetUIText());
-            GUILayout.Label(characterStats.CriticalStrikeChance.GetUIText());
-            GUILayout.Label(characterStats.MovementSpeed.GetUIText());
+            GUILayout.Label(characterStats.AttackDamage.GetUIText(showSimpleStats));
+            GUILayout.Label(characterStats.AbilityPower.GetUIText(showSimpleStats));
+            GUILayout.Label(characterStats.Armor.GetUIText(showSimpleStats));
+            GUILayout.Label(characterStats.MagicResistance.GetUIText(showSimpleStats));
+            GUILayout.Label(characterStats.AttackSpeed.GetUIText(showSimpleStats));
+            GUILayout.Label(characterStats.CooldownReduction.GetUIText(showSimpleStats));
+            GUILayout.Label(characterStats.CriticalStrikeChance.GetUIText(showSimpleStats));
+            GUILayout.Label(characterStats.MovementSpeed.GetUIText(showSimpleStats));
 
-            GUILayout.Label(characterStats.HealthRegeneration.GetUIText());
-            GUILayout.Label(characterStats.ResourceRegeneration.GetUIText());
-            GUILayout.Label(characterStats.Lethality.GetUIText());
-            GUILayout.Label(characterStats.ArmorPenetrationPercent.GetUIText());
-            GUILayout.Label(characterStats.MagicPenetrationFlat.GetUIText());
-            GUILayout.Label(characterStats.MagicPenetrationPercent.GetUIText());
-            GUILayout.Label(characterStats.AttackRange.GetUIText());
-            GUILayout.Label(characterStats.LifeSteal.GetUIText());
-            GUILayout.Label(characterStats.SpellVamp.GetUIText());
-            GUILayout.Label(characterStats.Tenacity.GetUIText());
+            GUILayout.Label(characterStats.HealthRegeneration.GetUIText(showSimpleStats));
+            GUILayout.Label(characterStats.ResourceRegeneration.GetUIText(showSimpleStats));
+            GUILayout.Label(characterStats.Lethality.GetUIText(showSimpleStats));
+            GUILayout.Label(characterStats.ArmorPenetrationPercent.GetUIText(showSimpleStats));
+            GUILayout.Label(characterStats.MagicPenetrationFlat.GetUIText(showSimpleStats));
+            GUILayout.Label(characterStats.MagicPenetrationPercent.GetUIText(showSimpleStats));
+            GUILayout.Label(characterStats.AttackRange.GetUIText(showSimpleStats));
+            GUILayout.Label(characterStats.LifeSteal.GetUIText(showSimpleStats));
+            GUILayout.Label(characterStats.SpellVamp.GetUIText(showSimpleStats));
+            GUILayout.Label(characterStats.Tenacity.GetUIText(showSimpleStats));
 
             GUILayout.Label("POSITION: " + transform.position.x + ", " + transform.position.y + ", " + transform.position.z);
             GUILayout.Label("ROTATION: " + transform.rotation.x + ", " + transform.rotation.y + ", " + transform.rotation.z + ", " + transform.rotation.w);

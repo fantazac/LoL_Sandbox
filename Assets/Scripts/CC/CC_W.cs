@@ -13,7 +13,7 @@ public class CC_W : SelfTargeted
 
         MaxLevel = 1;
 
-        baseCooldown = 5.5f;
+        baseCooldown = 4;
     }
 
     protected override void SetResourcePaths()

@@ -11,7 +11,7 @@ public class Ezreal_P : PassiveTargeted
 
         abilityType = AbilityType.Passive;
 
-        MaxLevel = 3;
+        //MaxLevel = 3;
         AbilityLevel = 1;
 
         IsEnabled = true;
@@ -36,11 +36,11 @@ public class Ezreal_P : PassiveTargeted
         character.CharacterLevelManager.OnLevelUp += OnCharacterLevelUp;
     }
 
-    public override void OnCharacterLevelUp(int level)
+    /*public override void OnCharacterLevelUp(int level)
     {
         if (level == 7 || level == 13)
         {
             LevelUp();
         }
-    }
+    }*/
 }

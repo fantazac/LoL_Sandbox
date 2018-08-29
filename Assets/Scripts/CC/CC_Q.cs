@@ -15,9 +15,9 @@ public class CC_Q : SelfTargeted
 
         MaxLevel = 1;
 
-        damage = 50;
+        damage = 500;
         baseCooldown = 5.5f;
-        resourceCost = 200;
+        resourceCost = 0;
     }
 
     protected override void SetResourcePaths()

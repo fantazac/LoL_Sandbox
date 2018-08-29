@@ -10,9 +10,14 @@ public abstract class ResourceRegeneration : Stat
         return type;
     }
 
-    public override string GetUIText()
+    protected override string GetSimpleUIText()
     {
-        return GetResourceType() + " REGENERATION: " + GetTotal() + " ((" + GetBaseValue() + " + " + GetFlatBonus() +
+        return GetResourceType() + " REGENERATION: " + GetTotal();
+    }
+
+    protected override string GetUIText()
+    {
+        return GetSimpleUIText() + " ((" + GetBaseValue() + " + " + GetFlatBonus() +
                ") * " + GetPercentBonus() + "% * -" + GetPercentMalus() + "% - " + GetFlatMalus() + ")";
     }
 }

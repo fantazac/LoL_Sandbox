@@ -16,8 +16,13 @@ public class CooldownReduction : Stat
         }
     }
 
-    public override string GetUIText()
+    protected override string GetSimpleUIText()
     {
-        return "COOLDOWN REDUCTION: " + GetTotal() + "% (" + GetBaseValue() + "% + " + GetFlatBonus() + "% - " + GetFlatMalus() + "%)";
+        return "COOLDOWN REDUCTION: " + GetTotal();
+    }
+
+    protected override string GetUIText()
+    {
+        return GetSimpleUIText() + "% (" + GetBaseValue() + "% + " + GetFlatBonus() + "% - " + GetFlatMalus() + "%)";
     }
 }

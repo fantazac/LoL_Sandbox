@@ -71,9 +71,14 @@ public class Health : Stat
         }
     }
 
-    public override string GetUIText()
+    protected override string GetSimpleUIText()
     {
-        return "HEALTH: " + GetCurrentValue() + " / " + GetTotal() + " ((" + GetBaseValue() + " + " + GetFlatBonus() +
+        return "HEALTH: " + GetCurrentValue() + " / " + GetTotal();
+    }
+
+    protected override string GetUIText()
+    {
+        return GetSimpleUIText() + " ((" + GetBaseValue() + " + " + GetFlatBonus() +
                ") * " + GetPercentBonus() + "% * -" + GetPercentMalus() + "% - " + GetFlatMalus() + ")";
     }
 }

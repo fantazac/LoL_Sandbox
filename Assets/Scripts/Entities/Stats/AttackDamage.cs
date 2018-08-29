@@ -1,8 +1,13 @@
 ﻿public class AttackDamage : Stat
 {
-    public override string GetUIText()
+    protected override string GetSimpleUIText()
     {
-        return "ATTACK DAMAGE: " + GetTotal() + " ((" + GetBaseValue() + " + " + GetFlatBonus() +
+        return "ATTACK DAMAGE: " + GetTotal();
+    }
+
+    protected override string GetUIText()
+    {
+        return GetSimpleUIText() + " ((" + GetBaseValue() + " + " + GetFlatBonus() +
                ") * " + GetPercentBonus() + "% * -" + GetPercentMalus() + "% - " + GetFlatMalus() + ")";
     }
 }

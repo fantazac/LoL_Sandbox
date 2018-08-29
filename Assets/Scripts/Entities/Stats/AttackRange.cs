@@ -5,9 +5,14 @@
         return base.GetTotal() * StaticObjects.MultiplyingFactor;
     }
 
-    public override string GetUIText()
+    protected override string GetSimpleUIText()
     {
-        return "ATTACK RANGE: " + base.GetTotal() + " ((" + GetBaseValue() + " + " + GetFlatBonus() +
+        return "ATTACK RANGE: " + base.GetTotal();
+    }
+
+    protected override string GetUIText()
+    {
+        return GetSimpleUIText() + " ((" + GetBaseValue() + " + " + GetFlatBonus() +
                ") * " + GetPercentBonus() + "% * -" + GetPercentMalus() + "% - " + GetFlatMalus() + ")";
     }
 }

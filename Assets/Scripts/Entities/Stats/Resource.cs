@@ -66,9 +66,14 @@ public abstract class Resource : Stat
         }
     }
 
-    public override string GetUIText()
+    protected override string GetSimpleUIText()
     {
-        return GetResourceType() + ": " + GetCurrentValue() + " / " + GetTotal() + " ((" + GetBaseValue() + " + " + GetFlatBonus() +
+        return GetResourceType() + ": " + GetCurrentValue() + " / " + GetTotal();
+    }
+
+    protected override string GetUIText()
+    {
+        return GetSimpleUIText() + " ((" + GetBaseValue() + " + " + GetFlatBonus() +
                ") * " + GetPercentBonus() + "% * -" + GetPercentMalus() + "% - " + GetFlatMalus() + ")";
     }
 }

@@ -1,8 +1,13 @@
 ﻿public class HealthRegeneration : Stat
 {
-    public override string GetUIText()
+    protected override string GetSimpleUIText()
     {
-        return "HEALTH REGENERATION: " + GetTotal() + " ((" + GetBaseValue() + " + " + GetFlatBonus() +
+        return "HEALTH REGENERATION: " + GetTotal();
+    }
+
+    protected override string GetUIText()
+    {
+        return GetSimpleUIText() + " ((" + GetBaseValue() + " + " + GetFlatBonus() +
                ") * " + GetPercentBonus() + "% * -" + GetPercentMalus() + "% - " + GetFlatMalus() + ")";
     }
 }

@@ -24,9 +24,14 @@ public class MagicResistance : Stat
         return 1 - GetMagicDamageTakenMultiplier();
     }
 
-    public override string GetUIText()
+    protected override string GetSimpleUIText()
     {
-        return "MAGIC RESISTANCE: " + GetTotal() + " ((" + GetBaseValue() + " + " + GetFlatBonus() +
+        return "MAGIC RESISTANCE: " + GetTotal();
+    }
+
+    protected override string GetUIText()
+    {
+        return GetSimpleUIText() + " ((" + GetBaseValue() + " + " + GetFlatBonus() +
                ") * " + GetPercentBonus() + "% * -" + GetPercentMalus() + "% - " + GetFlatMalus() +
                ") - Takes " + (int)Mathf.Round(GetMagicDamageReductionPercent() * 100) + "% reduced magic damage (Eff. HP: " + 
                GetMagicEffectiveHealthPercent() * 100 + "%)";

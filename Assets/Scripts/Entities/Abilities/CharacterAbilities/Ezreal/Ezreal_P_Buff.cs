@@ -12,7 +12,7 @@ public class Ezreal_P_Buff : AbilityBuff
         buffDuration = 6;
         buffMaximumStacks = 5;
         buffPercentValue = 10;
-        buffPercentValuePerLevel = 2;
+        //buffPercentValuePerLevel = 2;
     }
 
     protected override void SetSpritePaths()
@@ -20,7 +20,7 @@ public class Ezreal_P_Buff : AbilityBuff
         buffSpritePath = "Sprites/Characters/CharacterAbilities/Ezreal/EzrealP_Buff";
     }
 
-    public override void UpdateBuffOnAffectedEntities(float oldFlatValue, float newFlatValue, float oldPercentValue, float newPercentValue)
+    /*public override void UpdateBuffOnAffectedEntities(float oldFlatValue, float newFlatValue, float oldPercentValue, float newPercentValue)
     {
         foreach (Entity affectedEntity in EntitiesAffectedByBuff)
         {
@@ -33,7 +33,7 @@ public class Ezreal_P_Buff : AbilityBuff
                 buff.SetBuffValue(newPercentValue);
             }
         }
-    }
+    }*/
 
     protected override void ApplyBuffEffect(Entity affectedEntity, float buffValue, int currentStacks)
     {

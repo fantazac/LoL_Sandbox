@@ -55,7 +55,10 @@ public class EntityStatusManager : MonoBehaviour
                 SetCannotUseBasicAbilities(count);
                 SetCannotUseBasicAttacks(count);
                 SetCannotUseMovement(count);
-                character.CharacterMovement.StopAllMovement();
+                if (character.CharacterMovement)
+                {
+                    character.CharacterMovement.StopAllMovement();
+                }
                 if (character.CharacterAbilityManager)
                 {
                     character.CharacterAbilityManager.StopAllChannelledAbilities();
@@ -64,7 +67,7 @@ public class EntityStatusManager : MonoBehaviour
                 break;
             case CrowdControlEffects.CRIPPLE:
                 break;
-            case CrowdControlEffects.DISARM://TODO
+            case CrowdControlEffects.DISARM:
                 SetCannotUseBasicAttacks(count);
                 if (character.CharacterAbilityManager)
                 {
@@ -79,7 +82,7 @@ public class EntityStatusManager : MonoBehaviour
                 break;
             case CrowdControlEffects.DROWSY://TODO
                 break;
-            case CrowdControlEffects.ENTANGLE://TODO
+            case CrowdControlEffects.ENTANGLE:
                 SetCannotUseBasicAttacks(count);
                 SetCannotUseMovement(count);
                 SetCannotUseMovementAbilities(count);
@@ -102,7 +105,10 @@ public class EntityStatusManager : MonoBehaviour
                 SetCannotUseBasicAbilities(count);
                 SetCannotUseBasicAttacks(count);
                 SetCannotUseMovement(count);
-                character.CharacterMovement.StopAllMovement();
+                if (character.CharacterMovement)
+                {
+                    character.CharacterMovement.StopAllMovement();
+                }
                 if (character.CharacterAbilityManager)
                 {
                     character.CharacterAbilityManager.StopAllChannelledAbilities();
@@ -256,7 +262,10 @@ public class EntityStatusManager : MonoBehaviour
                 SetCannotUseBasicAbilities(count);
                 SetCannotUseBasicAttacks(count);
                 SetCannotUseMovement(count);
-                character.CharacterMovement.StopAllMovement();
+                if (character.CharacterMovement)
+                {
+                    character.CharacterMovement.StopAllMovement();
+                }
                 if (character.CharacterAbilityManager)
                 {
                     character.CharacterAbilityManager.StopAllChannelledAbilities();

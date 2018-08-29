@@ -5,8 +5,13 @@
         total = baseValue + flatBonus - flatMalus;
     }
 
-    public override string GetUIText()
+    protected override string GetSimpleUIText()
     {
-        return "ARMOR PENETRATION PERCENT: " + GetTotal() + "% (" + GetBaseValue() + "% + " + GetFlatBonus() + "% - " + GetFlatMalus() + "%)";
+        return "ARMOR PENETRATION PERCENT: " + GetTotal() + "%";
+    }
+
+    protected override string GetUIText()
+    {
+        return GetSimpleUIText() + " (" + GetBaseValue() + "% + " + GetFlatBonus() + "% - " + GetFlatMalus() + "%)";
     }
 }
