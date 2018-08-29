@@ -7,6 +7,8 @@ public class Lucian_P : PassiveTargeted
     private Ability lucianE;
     private float cooldownReducedOnPassiveHitOnCharacter;
     private float cooldownReducedOnPassiveHit;
+    private float criticalStrikeMultiplier;
+    private float criticalStrikeMultiplierAgainstMinions;
 
     protected Lucian_P()
     {
@@ -20,11 +22,13 @@ public class Lucian_P : PassiveTargeted
         MaxLevel = 3;
         AbilityLevel = 1;
 
-        totalADScaling = 0.5f;
+        totalADScaling = 0.5f;// 50/55/60
         totalADScalingPerLevel = 0.05f;
 
         cooldownReducedOnPassiveHitOnCharacter = 2;
         cooldownReducedOnPassiveHit = 1;
+        criticalStrikeMultiplier = 1.75f;
+        criticalStrikeMultiplierAgainstMinions = 2;
 
         AppliesOnHitEffects = true;
 
@@ -88,9 +92,10 @@ public class Lucian_P : PassiveTargeted
         //    entityHit.EntityStats.Health.Reduce(GetAbilityDamage(entityHit));
         //} 
 
-        if (isACriticalAttack)
+        if (isACriticalAttack)//TODO: This should be in GetAbilityDamage(entityHit, isACriticalStrike)
         {
-            damage *= 1.75f;//TODO: Crit reduction (randuins)? Crit multiplier different than +100% (Jhin, IE)?
+            //damage *= entityHit is Minion ? criticalStrikeMultiplierAgainstMinions : criticalStrikeMultiplier;
+            damage *= criticalStrikeMultiplier;//TODO: Crit reduction (randuins)? Crit multiplier different than +100% (Jhin, IE)?
         }
         entityHit.EntityStats.Health.Reduce(damage);
 

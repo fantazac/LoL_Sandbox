@@ -148,7 +148,7 @@ public abstract class EntityBasicAttack : MonoBehaviour
         if (!(entity.EntityStatusManager.IsBlinded() || willMiss))
         {
             float damage = GetBasicAttackDamage(entityHit);
-            if (isACriticalAttack)
+            if (isACriticalAttack)//TODO: Should be in GetBasicAttackDamage(entityHit, isACriticalStrike);
             {
                 damage *= 2;//TODO: Crit reduction (randuins)? Crit multiplier different than +100% (Jhin, IE)?
             }

@@ -503,7 +503,12 @@ public abstract class Ability : MonoBehaviour
             (totalADScaling * character.EntityStats.AttackDamage.GetTotal()) +
             (totalAPScaling * character.EntityStats.AbilityPower.GetTotal());
 
-        return ApplyResistanceToDamage(entityHit, abilityDamage);
+        return ApplyResistanceToDamage(entityHit, abilityDamage) * ApplyDamageModifier(entityHit);
+    }
+
+    protected virtual float ApplyDamageModifier(Entity entityHit)
+    {
+        return 1f;
     }
 
     protected float ApplyResistanceToDamage(Entity entityHit, float damage)

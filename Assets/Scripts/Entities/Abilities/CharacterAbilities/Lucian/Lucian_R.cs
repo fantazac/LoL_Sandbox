@@ -7,7 +7,9 @@ public class Lucian_R : DirectionTargetedProjectile
     private float durationOfActive;
     private int amountOfProjectilesToShoot;
     private int amountOfProjectilesToShootPerLevel;
-    private float offset;
+    private float damageMultiplierAgainstMinions;
+
+    private float projectileOffset;
 
     private WaitForSeconds delayBetweenBullets;
 
@@ -39,8 +41,9 @@ public class Lucian_R : DirectionTargetedProjectile
 
         amountOfProjectilesToShoot = 20;// 20/25/30
         amountOfProjectilesToShootPerLevel = 5;
+        damageMultiplierAgainstMinions = 2f;
         durationOfActive = 3;
-        offset = 0.2f;
+        projectileOffset = 0.2f;
         delayBetweenBullets = new WaitForSeconds(durationOfActive / amountOfProjectilesToShoot);
 
         CanBeRecasted = true;
@@ -110,6 +113,12 @@ public class Lucian_R : DirectionTargetedProjectile
 
     private void ShootProjectile(int projectileId)
     {
-        SpawnProjectile(transform.position + (transform.forward * projectilePrefab.transform.localScale.z * 0.5f) + (transform.right * (projectileId % 2 == 0 ? offset : -offset)), transform.rotation);
+        SpawnProjectile(transform.position + (transform.forward * projectilePrefab.transform.localScale.z * 0.5f) + (transform.right * (projectileId % 2 == 0 ? projectileOffset : -projectileOffset)), transform.rotation);
+    }
+
+    protected override float ApplyDamageModifier(Entity entityHit)
+    {
+        //TODO when Minion exists: return entityHit is Minion ? damageMultiplierAgainstMinions : 1f ;
+        return 1f;
     }
 }
