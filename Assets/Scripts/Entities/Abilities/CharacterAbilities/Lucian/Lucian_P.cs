@@ -8,7 +8,7 @@ public class Lucian_P : PassiveTargeted
     private float cooldownReducedOnPassiveHitOnCharacter;
     private float cooldownReducedOnPassiveHit;
     private float criticalStrikeMultiplier;
-    private float criticalStrikeMultiplierAgainstMinions;
+    //private float criticalStrikeMultiplierAgainstMinions;
 
     protected Lucian_P()
     {
@@ -28,7 +28,7 @@ public class Lucian_P : PassiveTargeted
         cooldownReducedOnPassiveHitOnCharacter = 2;
         cooldownReducedOnPassiveHit = 1;
         criticalStrikeMultiplier = 1.75f;
-        criticalStrikeMultiplierAgainstMinions = 2;
+        //criticalStrikeMultiplierAgainstMinions = 2;
 
         AppliesOnHitEffects = true;
 

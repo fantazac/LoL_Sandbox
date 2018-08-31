@@ -7,7 +7,7 @@ public class Lucian_R : DirectionTargetedProjectile
     private float durationOfActive;
     private int amountOfProjectilesToShoot;
     private int amountOfProjectilesToShootPerLevel;
-    private float damageMultiplierAgainstMinions;
+    //private float damageMultiplierAgainstMinions;
 
     private float projectileOffset;
 
@@ -41,7 +41,7 @@ public class Lucian_R : DirectionTargetedProjectile
 
         amountOfProjectilesToShoot = 20;// 20/25/30
         amountOfProjectilesToShootPerLevel = 5;
-        damageMultiplierAgainstMinions = 2f;
+        //damageMultiplierAgainstMinions = 2f;
         durationOfActive = 3;
         projectileOffset = 0.2f;
         delayBetweenBullets = new WaitForSeconds(durationOfActive / amountOfProjectilesToShoot);

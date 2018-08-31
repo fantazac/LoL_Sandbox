@@ -97,6 +97,13 @@ public class CharacterLevelManager : MonoBehaviour
         if (Level == 1 || Level == 3 || Level == 5 || Level == 7 || Level == 9)
         {
             currentMaxLevel = (Level + 1) * 0.5f;
+            /*Debug.Log(character);
+            Debug.Log(character.CharacterAbilityManager);
+            Debug.Log(character.CharacterAbilityManager.CharacterAbilities);
+            Debug.Log(characterAbilities);
+            Debug.Log(characterAbilities[0]);
+            Debug.Log(characterAbilities[0].MaxLevel);
+            Debug.Log(currentMaxLevel);*/
             if (characterAbilities[0].MaxLevel >= currentMaxLevel)
             {
                 pointsAvailableForQ++;

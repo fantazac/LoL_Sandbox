@@ -37,6 +37,7 @@ public class CharacterAbilityManager : MonoBehaviour
 
     protected virtual void InitAbilities()
     {
+        //Debug.Log("YEEEEEEEEEEEEET");
         OtherCharacterAbilities = new Ability[] { gameObject.AddComponent<Recall>() };
         if (!StaticObjects.OnlineMode)
         {
