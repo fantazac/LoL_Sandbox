@@ -30,7 +30,7 @@ public abstract class Character : Entity
 
     protected override void Start()
     {
-        if ((!StaticObjects.OnlineMode && EntityId == 0) || PhotonView.isMine)
+        if (IsLocalCharacter())
         {
             AbilityLevelUpUIManager = transform.parent.GetComponentInChildren<AbilityLevelUpUIManager>();
             AbilityTimeBarUIManager = transform.parent.GetComponentInChildren<AbilityTimeBarUIManager>();
@@ -72,7 +72,7 @@ public abstract class Character : Entity
             CharacterOrientation = gameObject.AddComponent<CharacterOrientation>();
             CharacterStatsManager = gameObject.AddComponent<CharacterStatsManager>();
         }
-        if ((!StaticObjects.OnlineMode && !(this is Dummy)) || PhotonView.isMine)
+        if (IsLocalCharacter())
         {
             CharacterInput = gameObject.AddComponent<CharacterInput>();
             CharacterMouseManager = gameObject.AddComponent<CharacterMouseManager>();
@@ -91,6 +91,11 @@ public abstract class Character : Entity
             EntityId = PhotonNetwork.player.ID;
             SendToServer_TeamAndID();
         }
+    }
+
+    public bool IsLocalCharacter()
+    {
+        return (!StaticObjects.OnlineMode && !(this is Dummy)) || PhotonView.isMine;
     }
 
     protected virtual void SetCharacterSpecificScripts() { }

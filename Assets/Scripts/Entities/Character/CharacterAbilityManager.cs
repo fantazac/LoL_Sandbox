@@ -24,27 +24,30 @@ public class CharacterAbilityManager : MonoBehaviour
         characterAbilitiesWithResourceCosts = new List<Ability>();
     }
 
-    protected void Start()
+    protected void Awake()
     {
         character = GetComponent<Character>();
         InitAbilities();
+    }
 
-        if (character.AbilityUIManager)
+    protected void Start()
+    {
+        if (character.IsLocalCharacter())
         {
+            InitAbilityUIManager();
             character.EntityStats.Resource.OnCurrentResourceValueChanged += OnResourceCurrentValueChanged;
         }
     }
 
     protected virtual void InitAbilities()
     {
-        //Debug.Log("YEEEEEEEEEEEEET");
         OtherCharacterAbilities = new Ability[] { gameObject.AddComponent<Recall>() };
         if (!StaticObjects.OnlineMode)
         {
             OfflineAbilities = new Ability[] { gameObject.AddComponent<DestroyAllDummies>(), gameObject.AddComponent<SpawnAllyDummy>(), gameObject.AddComponent<SpawnEnemyDummy>() };
         }
 
-        bool isLocalCharacter = character.AbilityUIManager;
+        bool isLocalCharacter = character.IsLocalCharacter();
 
         for (int i = 0; i < CharacterAbilities.Length; i++)
         {
@@ -55,10 +58,6 @@ public class CharacterAbilityManager : MonoBehaviour
             {
                 ability.ID = i;
                 ability.AbilityCategory = AbilityCategory.CharacterAbility;
-                ability.SetAbilitySprite();
-                characterAbilitiesWithResourceCosts.Add(ability);
-                character.AbilityUIManager.DisableAbility(AbilityCategory.CharacterAbility, i, false);
-                character.AbilityUIManager.SetMaxAbilityLevel(i, ability.MaxLevel);
             }
         }
 
@@ -71,7 +70,6 @@ public class CharacterAbilityManager : MonoBehaviour
             {
                 ability2.ID = j;
                 ability2.AbilityCategory = AbilityCategory.PassiveCharacterAbility;
-                ability2.SetAbilitySprite();
             }
         }
 
@@ -84,7 +82,6 @@ public class CharacterAbilityManager : MonoBehaviour
             {
                 ability3.ID = k;
                 ability3.AbilityCategory = AbilityCategory.OtherCharacterAbility;
-                ability3.SetAbilitySprite();
             }
         }
 
@@ -97,7 +94,6 @@ public class CharacterAbilityManager : MonoBehaviour
             {
                 ability4.ID = l;
                 ability4.AbilityCategory = AbilityCategory.SummonerAbility;
-                ability4.SetAbilitySprite();
             }
         }
 
@@ -111,6 +107,29 @@ public class CharacterAbilityManager : MonoBehaviour
                 ability5.ID = m;
                 ability5.AbilityCategory = AbilityCategory.OfflineAbility;
             }
+        }
+    }
+
+    protected void InitAbilityUIManager()
+    {
+        foreach(Ability characterAbility in CharacterAbilities)
+        {
+            characterAbility.SetAbilitySprite();
+            characterAbilitiesWithResourceCosts.Add(characterAbility);
+            character.AbilityUIManager.DisableAbility(AbilityCategory.CharacterAbility, characterAbility.ID, false);
+            character.AbilityUIManager.SetMaxAbilityLevel(characterAbility.ID, characterAbility.MaxLevel);
+        }
+        foreach (Ability passiveCharacterAbility in PassiveCharacterAbilities)
+        {
+            passiveCharacterAbility.SetAbilitySprite();
+        }
+        foreach (Ability otherCharacterAbility in OtherCharacterAbilities)
+        {
+            otherCharacterAbility.SetAbilitySprite();
+        }
+        foreach (Ability summonerAbility in SummonerAbilities)
+        {
+            summonerAbility.SetAbilitySprite();
         }
     }
 
