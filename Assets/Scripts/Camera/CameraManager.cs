@@ -22,7 +22,6 @@ public class CameraManager : MonoBehaviour
 
     private Vector3 mousePositionOnFrame;
 
-
     private void Start()
     {
         characterInput = StaticObjects.Character.CharacterInput;
