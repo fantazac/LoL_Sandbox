@@ -28,7 +28,7 @@ public class EntityStatusMovementManager : MonoBehaviour
         }
     }
 
-    public void SetupMovementBlock(CrowdControlEffects crowdControlEffect, AbilityBuff sourceAbilityBuff, Entity caster, Vector3 position)
+    public void SetupMovementBlock(CrowdControlEffects crowdControlEffect, AbilityBuff sourceAbilityBuff, Entity caster, Vector3 position, float duration)
     {
         switch (crowdControlEffect)
         {
@@ -40,7 +40,7 @@ public class EntityStatusMovementManager : MonoBehaviour
                 StartDisplacement(Knockback());
                 break;
             case CrowdControlEffects.KNOCKUP:
-                StartDisplacement(Knockup());
+                StartDisplacement(Knockup(sourceAbilityBuff, duration));
                 break;
             case CrowdControlEffects.PULL:
                 StartDisplacement(Pull());
@@ -116,9 +116,22 @@ public class EntityStatusMovementManager : MonoBehaviour
         currentDisplacement = null;
     }
 
-    private IEnumerator Knockup()
+    private IEnumerator Knockup(AbilityBuff sourceAbilityBuff, float duration)
     {
-        yield return null;
+        currentSourceAbilityBuffForDisplacement = sourceAbilityBuff;
+
+        Vector3 initialPosition = transform.position;
+        Vector3 up = Vector3.up * 10;
+        float upSpeed = 2;
+
+        while (currentSourceAbilityBuffForDisplacement == sourceAbilityBuff)
+        {
+            transform.position = Vector3.MoveTowards(transform.position, transform.position + up, Time.deltaTime * upSpeed);
+
+            yield return null;
+        }
+
+        transform.position = initialPosition;
 
         currentDisplacement = null;
     }

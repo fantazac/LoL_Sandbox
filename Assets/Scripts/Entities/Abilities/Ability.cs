@@ -85,6 +85,7 @@ public abstract class Ability : MonoBehaviour
     public bool IsOnCooldown { get; protected set; }
     public bool IsOnCooldownForRecast { get; protected set; }
     public bool OfflineOnly { get; protected set; }
+    public bool ResetBasicAttackCycleOnAbilityCast { get; protected set; }
     public bool ResetBasicAttackCycleOnAbilityFinished { get; protected set; }
     public bool UsesResource { get; private set; }
 
@@ -211,6 +212,10 @@ public abstract class Ability : MonoBehaviour
             {
                 character.AbilityTimeBarUIManager.SetChannelTime(channelTime, abilityName, ID);
             }
+        }
+        if (ResetBasicAttackCycleOnAbilityCast)
+        {
+            character.EntityBasicAttack.ResetBasicAttack();
         }
         StartCooldown(true);
     }

@@ -13,7 +13,7 @@ public class CC_Q_Debuff : AbilityBuff
 
         buffDuration = 2;
         buffPercentValue = 90;
-        buffCrowdControlEffect = CrowdControlEffects.FLEE;
+        buffCrowdControlEffect = CrowdControlEffects.KNOCKUP;
     }
 
     protected override void SetSpritePaths()
@@ -25,7 +25,7 @@ public class CC_Q_Debuff : AbilityBuff
     {
         affectedEntity.EntityStatusManager.AddCrowdControlEffectOnEntity(buffCrowdControlEffect);
         affectedEntity.EntityStats.MovementSpeed.AddPercentMalus(buffValue);
-        affectedEntity.EntityStatusMovementManager.SetupMovementBlock(buffCrowdControlEffect, this, character, transform.position);
+        affectedEntity.EntityStatusMovementManager.SetupMovementBlock(buffCrowdControlEffect, this, character, transform.position, buffDuration);
     }
 
     protected override void RemoveBuffEffect(Entity affectedEntity, float buffValue, int currentStacks)

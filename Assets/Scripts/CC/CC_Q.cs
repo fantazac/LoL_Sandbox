@@ -18,6 +18,10 @@ public class CC_Q : SelfTargeted
         damage = 500;
         baseCooldown = 5.5f;
         resourceCost = 0;
+
+        ResetBasicAttackCycleOnAbilityCast = true;
+
+        affectedByCooldownReduction = true;
     }
 
     protected override void SetResourcePaths()
@@ -27,6 +31,8 @@ public class CC_Q : SelfTargeted
 
     protected override void Start()
     {
+        AbilitiesToDisableWhileActive = new Ability[] { this };
+
         base.Start();
 
         AbilityBuffs = new AbilityBuff[] { gameObject.AddComponent<CC_Q_Buff>() };
@@ -41,13 +47,10 @@ public class CC_Q : SelfTargeted
 
         UseResource();
         AddNewBuffToEntityHit(character);
-
-        FinishAbilityCast();
     }
 
     private void SetAbilityEffectOnEntityHit(Entity entityHit, float damage)
     {
-        RemoveBuffFromEntityHit(character);
         AbilityBuffs[0].ConsumeBuff(character);
 
         entityHit.EntityStats.Health.Reduce(GetAbilityDamage(entityHit));
@@ -56,12 +59,14 @@ public class CC_Q : SelfTargeted
 
     private void AddNewBuffToEntityHit(Entity entityHit)
     {
-        character.CharacterOnHitEffectsManager.OnApplyOnHitEffects += SetAbilityEffectOnEntityHit;
+        character.CharacterOnHitEffectsManager.OnApplyOnHitEffects += SetAbilityEffectOnEntityHit;//TODO: this should affect the NEXT basic attack, not the one currently flying
         AbilityBuffs[0].AddNewBuffToAffectedEntity(character);
     }
 
     private void RemoveBuffFromEntityHit(Entity entityHit)
     {
         character.CharacterOnHitEffectsManager.OnApplyOnHitEffects -= SetAbilityEffectOnEntityHit;
+        
+        FinishAbilityCast();
     }
 }
