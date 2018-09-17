@@ -13,6 +13,10 @@ public class HealthBar : MonoBehaviour
     private Image healthBarImage;
     [SerializeField]
     private Text levelText;
+    [SerializeField]
+    private Image statusImage;
+    [SerializeField]
+    private Text statusText;
 
     private Character character;
 
