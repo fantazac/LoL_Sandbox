@@ -1,11 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class FuryRegeneration : ResourceRegeneration
+﻿public class FuryRegeneration : ResourceRegeneration
 {
-    protected FuryRegeneration()
+    public FuryRegeneration(ResourceType resourceType) : base(resourceType)
     {
-        type = ResourceType.FURY;
+
     }
 }

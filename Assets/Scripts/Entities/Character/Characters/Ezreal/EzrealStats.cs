@@ -8,20 +8,12 @@ public class EzrealStats : CharacterStats
 
     protected override void Awake()
     {
+        ResourceType = ResourceType.MANA;
+
         base.Awake();
     }
 
-    protected override void SetResource()
-    {
-        Resource = gameObject.AddComponent<Mana>();
-    }
-
-    protected override void SetResourceRegeneration()
-    {
-        ResourceRegeneration = gameObject.AddComponent<ManaRegeneration>();
-    }
-
-    protected override EntityBaseStats GetEntityBaseStats()
+    protected override EntityBaseStats SetEntityBaseStats()
     {
         return gameObject.AddComponent<EzrealBaseStats>();
     }

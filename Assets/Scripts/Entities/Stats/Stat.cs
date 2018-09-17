@@ -1,23 +1,11 @@
-﻿using UnityEngine;
-
-public abstract class Stat : MonoBehaviour
+﻿public abstract class Stat
 {
-    protected const float BASE_PERCENTAGE_ON_LEVEL_UP = 0.65f;
-    protected const float ADDITIVE_PERCENTAGE_PER_LEVEL = 0.035f;
-
-    [SerializeField]
     protected float baseValue;
-    [SerializeField]
     protected float perLevelValue;
-    [SerializeField]
     protected float total;
-    [SerializeField]
     protected float flatBonus;
-    [SerializeField]
     protected float percentBonus;
-    [SerializeField]
     protected float flatMalus;
-    [SerializeField]
     protected float percentMalus;
 
     public float GetBaseValue()
@@ -43,7 +31,7 @@ public abstract class Stat : MonoBehaviour
 
     public virtual void OnLevelUp(int level)
     {
-        SetBaseValue(((BASE_PERCENTAGE_ON_LEVEL_UP + (ADDITIVE_PERCENTAGE_PER_LEVEL * level)) * perLevelValue) + baseValue);
+        SetBaseValue(((StatValues.BASE_PERCENTAGE_ON_LEVEL_UP + (StatValues.ADDITIVE_PERCENTAGE_PER_LEVEL * level)) * perLevelValue) + baseValue);
     }
 
     public virtual float GetTotal()

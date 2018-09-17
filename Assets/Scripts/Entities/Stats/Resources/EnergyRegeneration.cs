@@ -1,11 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class EnergyRegeneration : ResourceRegeneration
+﻿public class EnergyRegeneration : ResourceRegeneration
 {
-    protected EnergyRegeneration()
+    public EnergyRegeneration(ResourceType resourceType) : base(resourceType)
     {
-        type = ResourceType.ENERGY;
+
     }
 }

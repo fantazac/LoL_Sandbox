@@ -11,7 +11,7 @@ public class DummyStats : CharacterStats
         base.Awake();
     }
 
-    protected override EntityBaseStats GetEntityBaseStats()
+    protected override EntityBaseStats SetEntityBaseStats()
     {
         return gameObject.AddComponent<DummyBaseStats>();
     }

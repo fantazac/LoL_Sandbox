@@ -1,10 +1,8 @@
-﻿using UnityEngine;
-
-public class Lethality : Stat
+﻿public class Lethality : Stat
 {
     private int characterLevel;
 
-    private Lethality()
+    public Lethality()
     {
         characterLevel = 1;
     }

@@ -34,7 +34,6 @@ public class Ezreal_E : GroundTargetedBlink
         IsAMovementAbility = true;
 
         affectedByCooldownReduction = true;
-        startCooldownOnAbilityCast = true;
 
         effectRadius = 600;// Says 750 on wiki, is more like 600 when I tested
     }

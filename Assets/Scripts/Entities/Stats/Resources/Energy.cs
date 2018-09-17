@@ -1,11 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class Energy : Resource
+﻿public class Energy : Resource
 {
-    protected Energy()
+    public Energy(ResourceType resourceType) : base(resourceType)
     {
-        type = ResourceType.ENERGY;
+
     }
 }

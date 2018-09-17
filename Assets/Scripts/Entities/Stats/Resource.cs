@@ -1,10 +1,8 @@
 ﻿using UnityEngine;
 
-public abstract class Resource : Stat
+public class Resource : Stat
 {
-    [SerializeField]
     protected ResourceType type;
-    [SerializeField]
     protected float currentValue;
 
     public delegate void OnCurrentResourceValueChangedHandler();
@@ -12,6 +10,11 @@ public abstract class Resource : Stat
 
     public delegate void OnMaxResourceValueChangedHandler();
     public event OnMaxResourceValueChangedHandler OnMaxResourceValueChanged;
+
+    public Resource(ResourceType resourceType)
+    {
+        type = resourceType;
+    }
 
     public ResourceType GetResourceType()
     {
@@ -76,11 +79,4 @@ public abstract class Resource : Stat
         return GetSimpleUIText() + " ((" + GetBaseValue() + " + " + GetFlatBonus() +
                ") * " + GetPercentBonus() + "% * -" + GetPercentMalus() + "% - " + GetFlatMalus() + ")";
     }
-}
-
-public enum ResourceType
-{
-    ENERGY,
-    FURY,
-    MANA,
 }

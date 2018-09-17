@@ -6,7 +6,7 @@ public abstract class CharacterStats : EntityStats
 {
     //extra stats characters have that other entities don't
 
-    protected override EntityBaseStats GetEntityBaseStats()
+    protected override EntityBaseStats SetEntityBaseStats()
     {
         return gameObject.AddComponent<CharacterBaseStats>();
     }
@@ -19,11 +19,11 @@ public abstract class CharacterStats : EntityStats
 
         //set extra character stats
 
-        if (Resource)
+        if (Resource != null)
         {
             Resource.SetPerLevelValue(characterBaseStats.ResourcePerLevel);
         }
-        if (ResourceRegeneration)
+        if (ResourceRegeneration != null)
         {
             ResourceRegeneration.SetPerLevelValue(characterBaseStats.ResourceRegenerationPerLevel);
         }

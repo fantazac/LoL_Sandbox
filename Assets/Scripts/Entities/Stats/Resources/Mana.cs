@@ -1,11 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class Mana : Resource
+﻿public class Mana : Resource
 {
-    protected Mana()
+    public Mana(ResourceType resourceType) : base(resourceType)
     {
-        type = ResourceType.MANA;
+
     }
 }

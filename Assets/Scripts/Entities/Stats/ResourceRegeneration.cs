@@ -1,9 +1,11 @@
-﻿using UnityEngine;
-
-public abstract class ResourceRegeneration : Stat
+﻿public class ResourceRegeneration : Stat
 {
-    [SerializeField]
     protected ResourceType type;
+
+    public ResourceRegeneration(ResourceType resourceType)
+    {
+        type = resourceType;
+    }
 
     public ResourceType GetResourceType()
     {

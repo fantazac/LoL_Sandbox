@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class EntityStats : MonoBehaviour
 {
@@ -26,55 +25,57 @@ public class EntityStats : MonoBehaviour
     public AttackRange AttackRange { get; protected set; }
     public Tenacity Tenacity { get; protected set; }
 
+    public ResourceType ResourceType { get; protected set; }
+
     protected virtual void Awake()
     {
-        EntityBaseStats entityBaseStats = GetEntityBaseStats();
+        EntityBaseStats entityBaseStats = SetEntityBaseStats();
 
-        Health = gameObject.AddComponent<Health>();
-        SetResource();
+        Health = new Health();
+        Resource = new Resource(ResourceType);
 
-        AttackDamage = gameObject.AddComponent<AttackDamage>();
-        AbilityPower = gameObject.AddComponent<AbilityPower>();
-        Armor = gameObject.AddComponent<Armor>();
-        MagicResistance = gameObject.AddComponent<MagicResistance>();
-        AttackSpeed = gameObject.AddComponent<AttackSpeed>();
-        CooldownReduction = gameObject.AddComponent<CooldownReduction>();
-        CriticalStrikeChance = gameObject.AddComponent<CriticalStrikeChance>();
-        MovementSpeed = gameObject.AddComponent<MovementSpeed>();
+        AttackDamage = new AttackDamage();
+        AbilityPower = new AbilityPower();
+        Armor = new Armor();
+        MagicResistance = new MagicResistance();
+        AttackSpeed = new AttackSpeed();
+        CooldownReduction = new CooldownReduction();
+        CriticalStrikeChance = new CriticalStrikeChance();
+        MovementSpeed = new MovementSpeed();
 
-        HealthRegeneration = gameObject.AddComponent<HealthRegeneration>();
-        SetResourceRegeneration();
-        Lethality = gameObject.AddComponent<Lethality>();
-        ArmorPenetrationPercent = gameObject.AddComponent<ArmorPenetrationPercent>();
-        MagicPenetrationFlat = gameObject.AddComponent<MagicPenetrationFlat>();
-        MagicPenetrationPercent = gameObject.AddComponent<MagicPenetrationPercent>();
-        LifeSteal = gameObject.AddComponent<LifeSteal>();
-        SpellVamp = gameObject.AddComponent<SpellVamp>();
-        AttackRange = gameObject.AddComponent<AttackRange>();
-        Tenacity = gameObject.AddComponent<Tenacity>();//TODO
+        HealthRegeneration = new HealthRegeneration();
+        ResourceRegeneration = new ResourceRegeneration(ResourceType);
+        Lethality = new Lethality();
+        ArmorPenetrationPercent = new ArmorPenetrationPercent();
+        MagicPenetrationFlat = new MagicPenetrationFlat();
+        MagicPenetrationPercent = new MagicPenetrationPercent();
+        LifeSteal = new LifeSteal();
+        SpellVamp = new SpellVamp();
+        AttackRange = new AttackRange();
+        Tenacity = new Tenacity();//TODO
 
         ExtraAdjustments();
 
         SetBaseStats(entityBaseStats);
     }
 
-    protected virtual EntityBaseStats GetEntityBaseStats()
+    protected virtual EntityBaseStats SetEntityBaseStats()
     {
         return gameObject.AddComponent<EntityBaseStats>();
     }
 
     protected void ExtraAdjustments()
     {
-        AttackSpeed.SetEntityBasicAttack();
+        AttackSpeed.SetEntityBasicAttack(GetComponent<EntityBasicAttack>());
     }
 
     protected virtual void SetBaseStats(EntityBaseStats entityBaseStats)
     {
-        if (Resource)
+        if (Resource != null)
         {
             Resource.SetBaseValue(entityBaseStats.BaseResource);
         }
-        if (ResourceRegeneration)
+        if (ResourceRegeneration != null)
         {
             ResourceRegeneration.SetBaseValue(entityBaseStats.BaseResourceRegeneration);
         }
@@ -100,7 +101,4 @@ public class EntityStats : MonoBehaviour
         AttackRange.SetBaseValue(entityBaseStats.BaseAttackRange);
         Tenacity.SetBaseValue(entityBaseStats.BaseTenacity);
     }
-
-    protected virtual void SetResource() { }
-    protected virtual void SetResourceRegeneration() { }
 }

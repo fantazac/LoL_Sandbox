@@ -34,7 +34,6 @@ public class Ezreal_R : DirectionTargetedProjectile
         IsLongRanged = true;
 
         affectedByCooldownReduction = true;
-        startCooldownOnAbilityCast = true;
     }
 
     protected override void SetResourcePaths()

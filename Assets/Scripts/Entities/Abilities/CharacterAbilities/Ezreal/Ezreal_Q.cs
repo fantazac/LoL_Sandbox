@@ -35,7 +35,6 @@ public class Ezreal_Q : DirectionTargetedProjectile
         AppliesOnHitEffects = true;
 
         affectedByCooldownReduction = true;
-        startCooldownOnAbilityCast = true;
     }
 
     protected override void SetResourcePaths()

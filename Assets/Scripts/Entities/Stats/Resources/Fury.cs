@@ -1,11 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class Fury : Resource
+﻿public class Fury : Resource
 {
-    protected Fury()
+    public Fury(ResourceType resourceType) : base(resourceType)
     {
-        type = ResourceType.FURY;
+
     }
 }

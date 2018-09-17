@@ -1,11 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class ManaRegeneration : ResourceRegeneration
+﻿public class ManaRegeneration : ResourceRegeneration
 {
-    protected ManaRegeneration()
+    public ManaRegeneration(ResourceType resourceType) : base(resourceType)
     {
-        type = ResourceType.MANA;
+
     }
 }

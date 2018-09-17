@@ -27,7 +27,6 @@ public class Ezreal_W : DirectionTargetedProjectile
         delayCastTime = new WaitForSeconds(castTime);
 
         affectedByCooldownReduction = true;
-        startCooldownOnAbilityCast = true;
     }
 
     protected override void SetResourcePaths()

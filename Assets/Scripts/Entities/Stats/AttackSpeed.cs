@@ -6,14 +6,14 @@ public class AttackSpeed : Stat
 
     private const float ATTACK_SPEED_CAP = 2.5f;
 
-    public void SetEntityBasicAttack()
+    public void SetEntityBasicAttack(EntityBasicAttack entityBasicAttack)
     {
-        entityBasicAttack = GetComponent<EntityBasicAttack>();
+        this.entityBasicAttack = entityBasicAttack;
     }
 
     public override void OnLevelUp(int level)
     {
-        AddPercentBonus((BASE_PERCENTAGE_ON_LEVEL_UP + (ADDITIVE_PERCENTAGE_PER_LEVEL * level)) * perLevelValue);
+        AddPercentBonus((StatValues.BASE_PERCENTAGE_ON_LEVEL_UP + (StatValues.ADDITIVE_PERCENTAGE_PER_LEVEL * level)) * perLevelValue);
     }
 
     public override void UpdateTotal()
