@@ -23,17 +23,4 @@ public class Armor : Stat
     {
         return 1 - GetPhysicalDamageTakenMultiplier();
     }
-
-    protected override string GetSimpleUIText()
-    {
-        return "ARMOR: " + GetTotal();
-    }
-
-    protected override string GetUIText()
-    {
-        return GetSimpleUIText() + " ((" + GetBaseValue() + " + " + GetFlatBonus() +
-               ") * " + GetPercentBonus() + "% * -" + GetPercentMalus() + "% - " + GetFlatMalus() +
-               ") - Takes " + (int)Mathf.Round(GetPhysicalDamageReductionPercent() * 100) + "% reduced physical damage (Eff. HP: " +
-               GetPhysicalEffectiveHealthPercent() * 100 + "%)";
-    }
 }

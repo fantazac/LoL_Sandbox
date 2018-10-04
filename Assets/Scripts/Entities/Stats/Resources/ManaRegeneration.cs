@@ -1,7 +1,7 @@
-﻿public class ManaRegeneration : ResourceRegeneration
+﻿public class ManaRegeneration// : ResourceRegeneration
 {
-    public ManaRegeneration(ResourceType resourceType) : base(resourceType)
+    /*public ManaRegeneration(ResourceType resourceType) : base(resourceType)
     {
 
-    }
+    }*/
 }

@@ -1,7 +1,7 @@
-﻿public class Mana : Resource
+﻿public class Mana// : Resource
 {
-    public Mana(ResourceType resourceType) : base(resourceType)
+    /*public Mana(ResourceType resourceType) : base(resourceType)
     {
 
-    }
+    }*/
 }

@@ -27,6 +27,7 @@ public abstract class Character : Entity
     public BuffUIManager DebuffUIManager { get; private set; }
     public HealthBarManager HealthBarManager { get; private set; }
     public LevelUIManager LevelUIManager { get; private set; }
+    public StatsUIManager StatsUIManager { get; private set; }
 
     protected override void Start()
     {
@@ -43,6 +44,7 @@ public abstract class Character : Entity
             LevelUIManager = transform.parent.GetComponentInChildren<LevelUIManager>();
             LevelUIManager.SetPortraitSprite(Resources.Load<Sprite>(characterPortraitPath));
             LevelUIManager.SetLevel(CharacterLevelManager.Level);
+            StatsUIManager = gameObject.AddComponent<StatsUIManager>();
         }
 
         if (StaticObjects.Character && StaticObjects.Character.HealthBarManager)

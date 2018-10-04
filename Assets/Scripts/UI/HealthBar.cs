@@ -76,18 +76,17 @@ public class HealthBar : MonoBehaviour
 
         maxHealth = character.EntityStats.Health.GetTotal();
 
-        Resource resource = character.EntityStats.Resource;
-        if (resource != null)
+        if (character.EntityStats.ResourceType != ResourceType.NONE)
         {
-            if (resource.GetResourceType() == ResourceType.MANA)
+            if (character.EntityStats.ResourceType == ResourceType.MANA)
             {
                 resourceImage.color = new Color(57f / 255f, 170f / 255f, 222f / 255f);
             }
-            else if (resource.GetResourceType() == ResourceType.ENERGY)
+            else if (character.EntityStats.ResourceType == ResourceType.ENERGY)
             {
                 resourceImage.color = new Color(234f / 255f, 221f / 255f, 90f / 255f);
             }
-            else if (resource.GetResourceType() == ResourceType.FURY)
+            else if (character.EntityStats.ResourceType == ResourceType.FURY)
             {
                 resourceImage.color = new Color(244f / 255f, 4f / 255f, 13f / 255f);
             }

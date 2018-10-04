@@ -116,7 +116,7 @@ public class EntityStatusMovementManager : MonoBehaviour
         currentDisplacement = null;
     }
 
-    private IEnumerator Knockup(AbilityBuff sourceAbilityBuff, float duration)
+    private IEnumerator Knockup(AbilityBuff sourceAbilityBuff, float duration)//TODO: actually, this is only happening with the animation, not the hitbox
     {
         currentSourceAbilityBuffForDisplacement = sourceAbilityBuff;
 

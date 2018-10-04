@@ -2,7 +2,6 @@
 
 public class Resource : Stat
 {
-    protected ResourceType type;
     protected float currentValue;
 
     public delegate void OnCurrentResourceValueChangedHandler();
@@ -10,16 +9,6 @@ public class Resource : Stat
 
     public delegate void OnMaxResourceValueChangedHandler();
     public event OnMaxResourceValueChangedHandler OnMaxResourceValueChanged;
-
-    public Resource(ResourceType resourceType)
-    {
-        type = resourceType;
-    }
-
-    public ResourceType GetResourceType()
-    {
-        return type;
-    }
 
     public float GetCurrentValue()
     {
@@ -67,16 +56,5 @@ public class Resource : Stat
         {
             OnCurrentResourceValueChanged();
         }
-    }
-
-    protected override string GetSimpleUIText()
-    {
-        return GetResourceType() + ": " + GetCurrentValue() + " / " + GetTotal();
-    }
-
-    protected override string GetUIText()
-    {
-        return GetSimpleUIText() + " ((" + GetBaseValue() + " + " + GetFlatBonus() +
-               ") * " + GetPercentBonus() + "% * -" + GetPercentMalus() + "% - " + GetFlatMalus() + ")";
     }
 }

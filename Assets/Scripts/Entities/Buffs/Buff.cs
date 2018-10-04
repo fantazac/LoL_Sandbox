@@ -1,6 +1,4 @@
-﻿using UnityEngine;
-
-public class Buff
+﻿public class Buff
 {
     public AbilityBuff SourceAbilityBuff { get; private set; }
     protected Entity affectedEntity;

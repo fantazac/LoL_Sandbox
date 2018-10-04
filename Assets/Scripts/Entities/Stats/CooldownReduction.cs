@@ -15,14 +15,4 @@ public class CooldownReduction : Stat
             OnCooldownReductionChanged(total);
         }
     }
-
-    protected override string GetSimpleUIText()
-    {
-        return "COOLDOWN REDUCTION: " + GetTotal();
-    }
-
-    protected override string GetUIText()
-    {
-        return GetSimpleUIText() + "% (" + GetBaseValue() + "% + " + GetFlatBonus() + "% - " + GetFlatMalus() + "%)";
-    }
 }

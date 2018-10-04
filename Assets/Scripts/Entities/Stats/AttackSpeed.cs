@@ -24,15 +24,4 @@ public class AttackSpeed : Stat
             entityBasicAttack.ChangeAttackSpeedCycleDuration(total);
         }
     }
-
-    protected override string GetSimpleUIText()
-    {
-        return "ATTACK SPEED: " + GetTotal().ToString("0.00");
-    }
-
-    protected override string GetUIText()
-    {
-        return GetSimpleUIText() + " ((" + GetBaseValue() + " + " + GetFlatBonus() +
-               ") * " + GetPercentBonus() + "% * -" + GetPercentMalus() + "% - " + GetFlatMalus() + ")";
-    }
 }

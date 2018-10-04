@@ -26,15 +26,4 @@
             total = (total * 0.5f) + 110;
         }
     }
-
-    protected override string GetSimpleUIText()
-    {
-        return "MOVEMENT SPEED: " + base.GetTotal();
-    }
-
-    protected override string GetUIText()
-    {
-        return GetSimpleUIText() + " ((" + GetBaseValue() + " + " + GetFlatBonus() +
-               ") * " + GetPercentBonus() + "% * -" + GetPercentMalus() + "% - " + GetFlatMalus() + ")";
-    }
 }

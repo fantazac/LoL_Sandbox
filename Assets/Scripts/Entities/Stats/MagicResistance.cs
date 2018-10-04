@@ -2,7 +2,7 @@
 
 public class MagicResistance : Stat
 {
-    public float GetMagicDamageTakenMultiplier()
+    private float GetMagicDamageTakenMultiplier()
     {
         if (total >= 0)
         {
@@ -22,18 +22,5 @@ public class MagicResistance : Stat
     public float GetMagicDamageReductionPercent()
     {
         return 1 - GetMagicDamageTakenMultiplier();
-    }
-
-    protected override string GetSimpleUIText()
-    {
-        return "MAGIC RESISTANCE: " + GetTotal();
-    }
-
-    protected override string GetUIText()
-    {
-        return GetSimpleUIText() + " ((" + GetBaseValue() + " + " + GetFlatBonus() +
-               ") * " + GetPercentBonus() + "% * -" + GetPercentMalus() + "% - " + GetFlatMalus() +
-               ") - Takes " + (int)Mathf.Round(GetMagicDamageReductionPercent() * 100) + "% reduced magic damage (Eff. HP: " + 
-               GetMagicEffectiveHealthPercent() * 100 + "%)";
     }
 }

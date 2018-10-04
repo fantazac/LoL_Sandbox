@@ -32,7 +32,7 @@ public class EntityStats : MonoBehaviour
         EntityBaseStats entityBaseStats = SetEntityBaseStats();
 
         Health = new Health();
-        Resource = new Resource(ResourceType);
+        Resource = new Resource();
 
         AttackDamage = new AttackDamage();
         AbilityPower = new AbilityPower();
@@ -44,7 +44,7 @@ public class EntityStats : MonoBehaviour
         MovementSpeed = new MovementSpeed();
 
         HealthRegeneration = new HealthRegeneration();
-        ResourceRegeneration = new ResourceRegeneration(ResourceType);
+        ResourceRegeneration = new ResourceRegeneration();
         Lethality = new Lethality();
         ArmorPenetrationPercent = new ArmorPenetrationPercent();
         MagicPenetrationFlat = new MagicPenetrationFlat();

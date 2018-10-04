@@ -1,7 +1,7 @@
-﻿public class FuryRegeneration : ResourceRegeneration
+﻿public class FuryRegeneration// : ResourceRegeneration
 {
-    public FuryRegeneration(ResourceType resourceType) : base(resourceType)
+    /*public FuryRegeneration(ResourceType resourceType) : base(resourceType)
     {
 
-    }
+    }*/
 }

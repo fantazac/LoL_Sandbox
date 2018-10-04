@@ -2,6 +2,8 @@
 
 public class Health : Stat
 {
+    protected float currentValue;
+
     public delegate void OnHealthReducedHandler();
     public event OnHealthReducedHandler OnHealthReduced;
 
@@ -10,9 +12,6 @@ public class Health : Stat
 
     public delegate void OnMaxHealthValueChangedHandler();
     public event OnMaxHealthValueChangedHandler OnMaxHealthValueChanged;
-
-    [SerializeField]
-    protected float currentValue;
 
     public float GetCurrentValue()
     {
@@ -69,16 +68,5 @@ public class Health : Stat
         {
             OnCurrentHealthValueChanged();
         }
-    }
-
-    protected override string GetSimpleUIText()
-    {
-        return "HEALTH: " + GetCurrentValue() + " / " + GetTotal();
-    }
-
-    protected override string GetUIText()
-    {
-        return GetSimpleUIText() + " ((" + GetBaseValue() + " + " + GetFlatBonus() +
-               ") * " + GetPercentBonus() + "% * -" + GetPercentMalus() + "% - " + GetFlatMalus() + ")";
     }
 }

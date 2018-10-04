@@ -23,14 +23,4 @@
     {
         total = baseValue + flatBonus - flatMalus;
     }
-
-    protected override string GetSimpleUIText()
-    {
-        return "LETHALITY: " + GetTotal();
-    }
-
-    protected override string GetUIText()
-    {
-        return GetSimpleUIText() + " (Current value: " + GetCurrentValue() + ") (" + GetBaseValue() + " + " + GetFlatBonus() + " - " + GetFlatMalus() + ")";
-    }
 }

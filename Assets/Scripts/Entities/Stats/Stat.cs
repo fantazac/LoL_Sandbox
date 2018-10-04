@@ -13,7 +13,7 @@
         return baseValue;
     }
 
-    public void SetBaseValue(float baseValue)
+    public virtual void SetBaseValue(float baseValue)
     {
         this.baseValue = baseValue;
         UpdateTotal();
@@ -21,7 +21,7 @@
 
     public float GetPerLevelValue()
     {
-        return baseValue;
+        return perLevelValue;
     }
 
     public void SetPerLevelValue(float perLevelValue)
@@ -31,7 +31,7 @@
 
     public virtual void OnLevelUp(int level)
     {
-        SetBaseValue(((StatValues.BASE_PERCENTAGE_ON_LEVEL_UP + (StatValues.ADDITIVE_PERCENTAGE_PER_LEVEL * level)) * perLevelValue) + baseValue);
+        SetBaseValue(baseValue + perLevelValue * (StatValues.ADDITIVE_PERCENTAGE_PER_LEVEL * level + StatValues.BASE_PERCENTAGE_ON_LEVEL_UP));
     }
 
     public virtual float GetTotal()
@@ -66,13 +66,13 @@
         return percentBonus;
     }
 
-    public void AddPercentBonus(float percentBonus)
+    public virtual void AddPercentBonus(float percentBonus)
     {
         this.percentBonus += percentBonus;
         UpdateTotal();
     }
 
-    public void RemovePercentBonus(float percentBonus)
+    public virtual void RemovePercentBonus(float percentBonus)
     {
         this.percentBonus -= percentBonus;
         UpdateTotal();
@@ -116,12 +116,4 @@
     {
         total = (baseValue + flatBonus) * (1 + (percentBonus * 0.01f)) * (1 - (percentMalus * 0.01f)) - flatMalus;
     }
-
-    // TODO FIXME: the UI is not this class' concern. Move these methods somewhere else.
-    public string GetUIText(bool getSimpleText)
-    {
-        return getSimpleText ? GetSimpleUIText() : GetUIText();
-    }
-    protected abstract string GetSimpleUIText();
-    protected abstract string GetUIText();
 }

@@ -1,7 +1,7 @@
-﻿public class Fury : Resource
+﻿public class Fury// : Resource
 {
-    public Fury(ResourceType resourceType) : base(resourceType)
+    /*public Fury(ResourceType resourceType) : base(resourceType)
     {
 
-    }
+    }*/
 }

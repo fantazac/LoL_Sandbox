@@ -1,6 +1,7 @@
 ﻿public enum ResourceType
 {
-    ENERGY = 1,
+    NONE,
+    ENERGY,
     FURY,
     MANA,
 }
