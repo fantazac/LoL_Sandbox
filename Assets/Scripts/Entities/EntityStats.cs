@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class EntityStats : MonoBehaviour
+public abstract class EntityStats : MonoBehaviour
 {
     public Health Health { get; protected set; }
     public Resource Resource { get; protected set; }//mana, energy, fury, ...
@@ -29,76 +29,39 @@ public class EntityStats : MonoBehaviour
 
     protected virtual void Awake()
     {
-        EntityBaseStats entityBaseStats = SetEntityBaseStats();
+        InitializeEntityStats(GetEntityBaseStats());
+    }
 
-        Health = new Health();
-        Resource = new Resource();
+    protected virtual void InitializeEntityStats(EntityBaseStats entityBaseStats)
+    {
+        Health = new Health(entityBaseStats.BaseHealth);
 
-        AttackDamage = new AttackDamage();
+        AttackDamage = new AttackDamage(entityBaseStats.BaseAttackDamage);
         AbilityPower = new AbilityPower();
-        Armor = new Armor();
-        MagicResistance = new MagicResistance();
-        AttackSpeed = new AttackSpeed();
+        Armor = new Armor(entityBaseStats.BaseArmor);
+        MagicResistance = new MagicResistance(entityBaseStats.BaseMagicResistance);
+        AttackSpeed = new AttackSpeed(entityBaseStats.BaseAttackSpeed);
         CooldownReduction = new CooldownReduction();
         CriticalStrikeChance = new CriticalStrikeChance();
-        MovementSpeed = new MovementSpeed();
+        MovementSpeed = new MovementSpeed(entityBaseStats.BaseMovementSpeed);
 
-        HealthRegeneration = new HealthRegeneration();
-        ResourceRegeneration = new ResourceRegeneration();
+        HealthRegeneration = new HealthRegeneration(entityBaseStats.BaseHealthRegeneration);
         Lethality = new Lethality();
         ArmorPenetrationPercent = new ArmorPenetrationPercent();
         MagicPenetrationFlat = new MagicPenetrationFlat();
         MagicPenetrationPercent = new MagicPenetrationPercent();
         LifeSteal = new LifeSteal();
         SpellVamp = new SpellVamp();
-        AttackRange = new AttackRange();
-        Tenacity = new Tenacity();//TODO
+        AttackRange = new AttackRange(entityBaseStats.BaseAttackRange);
+        Tenacity = new Tenacity();
 
         ExtraAdjustments();
-
-        SetBaseStats(entityBaseStats);
     }
 
-    protected virtual EntityBaseStats SetEntityBaseStats()
-    {
-        return gameObject.AddComponent<EntityBaseStats>();
-    }
+    protected abstract EntityBaseStats GetEntityBaseStats();
 
     protected void ExtraAdjustments()
     {
         AttackSpeed.SetEntityBasicAttack(GetComponent<EntityBasicAttack>());
-    }
-
-    protected virtual void SetBaseStats(EntityBaseStats entityBaseStats)
-    {
-        if (Resource != null)
-        {
-            Resource.SetBaseValue(entityBaseStats.BaseResource);
-        }
-        if (ResourceRegeneration != null)
-        {
-            ResourceRegeneration.SetBaseValue(entityBaseStats.BaseResourceRegeneration);
-        }
-
-        Health.SetBaseValue(entityBaseStats.BaseHealth);
-
-        AttackDamage.SetBaseValue(entityBaseStats.BaseAttackDamage);
-        AbilityPower.SetBaseValue(entityBaseStats.BaseAbilityPower);
-        Armor.SetBaseValue(entityBaseStats.BaseArmor);
-        MagicResistance.SetBaseValue(entityBaseStats.BaseMagicResistance);
-        AttackSpeed.SetBaseValue(entityBaseStats.BaseAttackSpeed);
-        CooldownReduction.SetBaseValue(entityBaseStats.BaseCooldownReduction);
-        CriticalStrikeChance.SetBaseValue(entityBaseStats.BaseCriticalStrikeChance);
-        MovementSpeed.SetBaseValue(entityBaseStats.BaseMovementSpeed);
-
-        HealthRegeneration.SetBaseValue(entityBaseStats.BaseHealthRegeneration);
-        Lethality.SetBaseValue(entityBaseStats.BaseLethality);
-        ArmorPenetrationPercent.SetBaseValue(entityBaseStats.BaseArmorPenetrationPercent);
-        MagicPenetrationFlat.SetBaseValue(entityBaseStats.BaseMagicPenetrationFlat);
-        MagicPenetrationPercent.SetBaseValue(entityBaseStats.BaseMagicPenetrationPercent);
-        LifeSteal.SetBaseValue(entityBaseStats.BaseLifeSteal);
-        SpellVamp.SetBaseValue(entityBaseStats.BaseSpellVamp);
-        AttackRange.SetBaseValue(entityBaseStats.BaseAttackRange);
-        Tenacity.SetBaseValue(entityBaseStats.BaseTenacity);
     }
 }

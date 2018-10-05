@@ -2,9 +2,14 @@
 {
     private int characterLevel;
 
-    public Lethality()
+    /*public Lethality() //TODO: Is this really necessary?
     {
         characterLevel = 1;
+    }*/
+
+    public override void UpdateTotal()
+    {
+        total = currentBaseValue + flatBonus;
     }
 
     public override void OnLevelUp(int level)
@@ -17,10 +22,5 @@
     public float GetCurrentValue()
     {
         return total * (0.6f + ((0.4f * characterLevel) / 18));
-    }
-
-    public override void UpdateTotal()
-    {
-        total = baseValue + flatBonus - flatMalus;
     }
 }

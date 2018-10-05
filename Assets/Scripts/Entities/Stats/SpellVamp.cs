@@ -1,7 +1,9 @@
 ﻿public class SpellVamp : Stat
 {
+    public SpellVamp() : base() { }
+
     public override void UpdateTotal()
     {
-        total = baseValue + flatBonus - flatMalus;
+        total = currentBaseValue + percentBonus;
     }
 }

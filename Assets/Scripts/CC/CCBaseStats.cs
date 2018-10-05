@@ -16,6 +16,7 @@ public class CCBaseStats : CharacterBaseStats
         BaseArmor = 30;
         BaseMagicResistance = 30;
         BaseAttackSpeed = 0.625f;
+        AttackDelay = 0;
         BaseCooldownReduction = 0;
         BaseCriticalStrikeChance = 0;
         BaseMovementSpeed = 325;

@@ -45,72 +45,72 @@ public class StatsUIManager : MonoBehaviour
         }
         else
         {
-            statsText.AppendFormat("HEALTH: {0} / {1} (({2} + {3}) * {4}% * -{5}% - {6})",
-                characterStats.Health.GetCurrentValue(), characterStats.Health.GetTotal(), characterStats.Health.GetBaseValue(),
-                characterStats.Health.GetFlatBonus(), characterStats.Health.GetPercentBonus(), characterStats.Health.GetPercentMalus(),
-                characterStats.Health.GetFlatMalus()).AppendLine();
-            statsText.AppendFormat("{0}: {1} / {2} (({3} + {4}) * {5}% * -{6}% - {7})", characterStats.ResourceType,
-                characterStats.Resource.GetCurrentValue(), characterStats.Resource.GetTotal(), characterStats.Resource.GetBaseValue(),
-                characterStats.Resource.GetFlatBonus(), characterStats.Resource.GetPercentBonus(), characterStats.Resource.GetPercentMalus(),
-                characterStats.Resource.GetFlatMalus()).AppendLine();
+            statsText.AppendFormat("HEALTH: {0} / {1} (({2} + {3}) + {4}%)",
+                characterStats.Health.GetCurrentValue(), characterStats.Health.GetTotal(), characterStats.Health.GetCurrentBaseValue(),
+                characterStats.Health.GetFlatBonus(), characterStats.Health.GetPercentBonus()).AppendLine();
+            statsText.AppendFormat("{0}: {1} / {2} (({3} + {4}) + {5}%)", characterStats.ResourceType,
+                characterStats.Resource.GetCurrentValue(), characterStats.Resource.GetTotal(), characterStats.Resource.GetCurrentBaseValue(),
+                characterStats.Resource.GetFlatBonus(), characterStats.Resource.GetPercentBonus()).AppendLine();
 
-            statsText.AppendFormat("ATTACK DAMAGE: {0} (({1} + {2}) * {3}% * -{4}% - {5})",
-                characterStats.AttackDamage.GetTotal(), characterStats.AttackDamage.GetBaseValue(), characterStats.AttackDamage.GetFlatBonus(),
-                characterStats.AttackDamage.GetPercentBonus(), characterStats.AttackDamage.GetPercentMalus(), characterStats.AttackDamage.GetFlatMalus()).AppendLine();
-            statsText.AppendFormat("ABILITY POWER: {0} (({1} + {2}) * {3}% * -{4}% - {5})",
-                characterStats.AbilityPower.GetTotal(), characterStats.AbilityPower.GetBaseValue(), characterStats.AbilityPower.GetFlatBonus(),
-                characterStats.AbilityPower.GetPercentBonus(), characterStats.AbilityPower.GetPercentMalus(), characterStats.AbilityPower.GetFlatMalus()).AppendLine();
-            statsText.AppendFormat("ARMOR: {0} (({1} + {2}) * {3}% * -{4}% - {5}) Takes {6}% reduced physical damage (Eff HP: {7}%)",
-                characterStats.Armor.GetTotal(), characterStats.Armor.GetBaseValue(), characterStats.Armor.GetFlatBonus(),
-                characterStats.Armor.GetPercentBonus(), characterStats.Armor.GetPercentMalus(), characterStats.Armor.GetFlatMalus(),
+            statsText.AppendFormat("ATTACK DAMAGE: {0} (({1} + {2}) + {3}% - {4})",
+                characterStats.AttackDamage.GetTotal(), characterStats.AttackDamage.GetCurrentBaseValue(), characterStats.AttackDamage.GetFlatBonus(),
+                characterStats.AttackDamage.GetPercentBonus(), characterStats.AttackDamage.GetFlatMalus()).AppendLine();
+            statsText.AppendFormat("ABILITY POWER: {0} (({1} + {2}) + {3}%)",
+                characterStats.AbilityPower.GetTotal(), characterStats.AbilityPower.GetCurrentBaseValue(), characterStats.AbilityPower.GetFlatBonus(),
+                characterStats.AbilityPower.GetPercentBonus()).AppendLine();
+            statsText.AppendFormat("ARMOR: {0} ((({1} + {2}) + {3}% - {4}) - {5}%)  Takes {6}% reduced physical damage (Eff HP: {7}%)",
+                characterStats.Armor.GetTotal(), characterStats.Armor.GetCurrentBaseValue(), characterStats.Armor.GetFlatBonus(),
+                characterStats.Armor.GetPercentBonus(), characterStats.Armor.GetFlatMalus(), characterStats.Armor.GetPercentMalus(),
                 (int)Mathf.Round(characterStats.Armor.GetPhysicalDamageReductionPercent() * 100), characterStats.Armor.GetPhysicalEffectiveHealthPercent() * 100).AppendLine();
-            statsText.AppendFormat("MAGIC RESISTANCE: {0} (({1} + {2}) * {3}% * -{4}% - {5}) Takes {6}% reduced magic damage (Eff HP: {7}%)",
-                characterStats.MagicResistance.GetTotal(), characterStats.MagicResistance.GetBaseValue(), characterStats.MagicResistance.GetFlatBonus(),
-                characterStats.MagicResistance.GetPercentBonus(), characterStats.MagicResistance.GetPercentMalus(), characterStats.MagicResistance.GetFlatMalus(),
+            statsText.AppendFormat("MAGIC RESISTANCE: {0} ((({1} + {2}) + {3}% - {4}) - {5}%) Takes {6}% reduced magic damage (Eff HP: {7}%)",
+                characterStats.MagicResistance.GetTotal(), characterStats.MagicResistance.GetCurrentBaseValue(), characterStats.MagicResistance.GetFlatBonus(),
+                characterStats.MagicResistance.GetPercentBonus(), characterStats.MagicResistance.GetFlatMalus(), characterStats.MagicResistance.GetPercentMalus(),
                 (int)Mathf.Round(characterStats.MagicResistance.GetMagicDamageReductionPercent() * 100), characterStats.MagicResistance.GetMagicEffectiveHealthPercent() * 100).AppendLine();
-            statsText.AppendFormat("ATTACK SPEED: {0} (({1} + {2}) * {3}% * -{4}% - {5})",
-                characterStats.AttackSpeed.GetTotal(), characterStats.AttackSpeed.GetBaseValue(), characterStats.AttackSpeed.GetFlatBonus(),
-                characterStats.AttackSpeed.GetPercentBonus(), characterStats.AttackSpeed.GetPercentMalus(), characterStats.AttackSpeed.GetFlatMalus()).AppendLine();
-            statsText.AppendFormat("COOLDOWN REDUCTION: {0}% ({1}% + {2}% - {3}%)",
-                characterStats.CooldownReduction.GetTotal(), characterStats.CooldownReduction.GetBaseValue(),
-                characterStats.CooldownReduction.GetFlatBonus(), characterStats.CooldownReduction.GetFlatMalus()).AppendLine();
-            statsText.AppendFormat("CRITICAL STRIKE CHANCE: {0}% ({1}% + {2}% - {3}%)",
-                characterStats.CriticalStrikeChance.GetTotal(), characterStats.CriticalStrikeChance.GetBaseValue(),
-                characterStats.CriticalStrikeChance.GetFlatBonus(), characterStats.CriticalStrikeChance.GetFlatMalus()).AppendLine();
-            statsText.AppendFormat("MOVEMENT SPEED: {0} (({1} + {2}) * {3}% * -{4}% - {5})",
-                characterStats.MovementSpeed.GetTotal() * 100, characterStats.MovementSpeed.GetBaseValue(), characterStats.MovementSpeed.GetFlatBonus(),
-                characterStats.MovementSpeed.GetPercentBonus(), characterStats.MovementSpeed.GetPercentMalus(), characterStats.MovementSpeed.GetFlatMalus()).AppendLine();
+            statsText.AppendFormat("ATTACK SPEED: {0} ({1} + {2}% - {3}% + {4}%)",
+                characterStats.AttackSpeed.GetTotal(), characterStats.AttackSpeed.GetInitialBaseValue(),
+                characterStats.AttackSpeed.GetPercentBonus(), characterStats.AttackSpeed.GetPercentMalus(),
+                characterStats.AttackSpeed.GetMultiplicativePercentBonus()).AppendLine();
+            statsText.AppendFormat("COOLDOWN REDUCTION: {0}% ({1}% + {2}%)",
+                characterStats.CooldownReduction.GetTotal(), characterStats.CooldownReduction.GetCurrentBaseValue(),
+                characterStats.CooldownReduction.GetPercentBonus()).AppendLine();
+            statsText.AppendFormat("CRITICAL STRIKE CHANCE: {0}% ({1}% + {2}%)",
+                characterStats.CriticalStrikeChance.GetTotal(), characterStats.CriticalStrikeChance.GetCurrentBaseValue(),
+                characterStats.CriticalStrikeChance.GetPercentBonus()).AppendLine();
+            statsText.AppendFormat("MOVEMENT SPEED: {0} (({1} + {2}) + {3}% - {4}% + {5}%)",
+                characterStats.MovementSpeed.GetTotal() * 100, characterStats.MovementSpeed.GetCurrentBaseValue(), characterStats.MovementSpeed.GetFlatBonus(),
+                characterStats.MovementSpeed.GetPercentBonus(), characterStats.MovementSpeed.GetBiggestSlow(),
+                characterStats.MovementSpeed.GetMultiplicativePercentBonus()).AppendLine();
 
-            statsText.AppendFormat("HEALTH REGENERATION: {0} (({1} + {2}) * {3}% * -{4}% - {5})",
-                characterStats.HealthRegeneration.GetTotal(), characterStats.HealthRegeneration.GetBaseValue(), characterStats.HealthRegeneration.GetFlatBonus(),
-                characterStats.HealthRegeneration.GetPercentBonus(), characterStats.HealthRegeneration.GetPercentMalus(), characterStats.HealthRegeneration.GetFlatMalus()).AppendLine();
-            statsText.AppendFormat("{0} REGENERATION: {1} (({2} + {3}) * {4}% * -{5}% - {6})", characterStats.ResourceType,
-                characterStats.ResourceRegeneration.GetTotal(), characterStats.ResourceRegeneration.GetBaseValue(), characterStats.ResourceRegeneration.GetFlatBonus(),
-                characterStats.ResourceRegeneration.GetPercentBonus(), characterStats.ResourceRegeneration.GetPercentMalus(), characterStats.ResourceRegeneration.GetFlatMalus()).AppendLine();
-            statsText.AppendFormat("LETHALITY: {0} (Current value: {1}) ({2} + {3} - {4})",
+            statsText.AppendFormat("HEALTH REGENERATION: {0} (({1} + {2}) + {3}% - {4}%)",
+                characterStats.HealthRegeneration.GetTotal(), characterStats.HealthRegeneration.GetCurrentBaseValue(), characterStats.HealthRegeneration.GetFlatBonus(),
+                characterStats.HealthRegeneration.GetPercentBonus(), characterStats.HealthRegeneration.GetPercentMalus()).AppendLine();
+            statsText.AppendFormat("{0} REGENERATION: {1} (({2} + {3}) + {4}%)", characterStats.ResourceType,
+                characterStats.ResourceRegeneration.GetTotal(), characterStats.ResourceRegeneration.GetCurrentBaseValue(), characterStats.ResourceRegeneration.GetFlatBonus(),
+                characterStats.ResourceRegeneration.GetPercentBonus()).AppendLine();
+            statsText.AppendFormat("LETHALITY: {0} (Current value: {1}) ({2} + {3})",
                 characterStats.Lethality.GetTotal(), characterStats.Lethality.GetCurrentValue(),
-                characterStats.Lethality.GetBaseValue(), characterStats.Lethality.GetFlatBonus(), characterStats.Lethality.GetFlatMalus()).AppendLine();
-            statsText.AppendFormat("ARMOR PENETRATION PERCENT: {0}% ({1}% + {2}% - {3}%)",
-                characterStats.ArmorPenetrationPercent.GetTotal(), characterStats.ArmorPenetrationPercent.GetBaseValue(),
-                characterStats.ArmorPenetrationPercent.GetFlatBonus(), characterStats.ArmorPenetrationPercent.GetFlatMalus()).AppendLine();
-            statsText.AppendFormat("MAGIC PENETRATION FLAT: {0} ({1} + {2} - {3})",
-                characterStats.MagicPenetrationFlat.GetTotal(), characterStats.MagicPenetrationFlat.GetBaseValue(),
-                characterStats.MagicPenetrationFlat.GetFlatBonus(), characterStats.MagicPenetrationFlat.GetFlatMalus()).AppendLine();
-            statsText.AppendFormat("MAGIC PENETRATION PERCENT: {0}% ({1}% + {2}% - {3}%)",
-                characterStats.MagicPenetrationPercent.GetTotal(), characterStats.MagicPenetrationPercent.GetBaseValue(),
-                characterStats.MagicPenetrationPercent.GetFlatBonus(), characterStats.MagicPenetrationPercent.GetFlatMalus()).AppendLine();
-            statsText.AppendFormat("LIFE STEAL: {0}% ({1}% + {2}% - {3}%)",
-                characterStats.LifeSteal.GetTotal(), characterStats.LifeSteal.GetBaseValue(),
-                characterStats.LifeSteal.GetFlatBonus(), characterStats.LifeSteal.GetFlatMalus()).AppendLine();
-            statsText.AppendFormat("SPELL VAMP: {0}% ({1}% + {2}% - {3}%)",
-                characterStats.SpellVamp.GetTotal(), characterStats.SpellVamp.GetBaseValue(),
-                characterStats.SpellVamp.GetFlatBonus(), characterStats.SpellVamp.GetFlatMalus()).AppendLine();
-            statsText.AppendFormat("ATTACK RANGE: {0} (({1} + {2}) * {3}% * -{4}% - {5})",
-                characterStats.AttackRange.GetTotal() * 100, characterStats.AttackRange.GetBaseValue(), characterStats.AttackRange.GetFlatBonus(),
-                characterStats.AttackRange.GetPercentBonus(), characterStats.AttackRange.GetPercentMalus(), characterStats.AttackRange.GetFlatMalus()).AppendLine();
-            statsText.AppendFormat("TENACITY: {0}% ({1}% + {2}% - {3}%)",
-                characterStats.Tenacity.GetTotal(), characterStats.Tenacity.GetBaseValue(),
-                characterStats.Tenacity.GetFlatBonus(), characterStats.Tenacity.GetFlatMalus()).AppendLine();
+                characterStats.Lethality.GetCurrentBaseValue(), characterStats.Lethality.GetFlatBonus()).AppendLine();
+            statsText.AppendFormat("ARMOR PENETRATION PERCENT: {0}% ({1}% -> {2}%)",
+                characterStats.ArmorPenetrationPercent.GetTotal(), characterStats.ArmorPenetrationPercent.GetCurrentBaseValue(),
+                characterStats.ArmorPenetrationPercent.GetPercentBonus()).AppendLine();
+            statsText.AppendFormat("MAGIC PENETRATION FLAT: {0} ({1} + {2})",
+                characterStats.MagicPenetrationFlat.GetTotal(), characterStats.MagicPenetrationFlat.GetCurrentBaseValue(),
+                characterStats.MagicPenetrationFlat.GetFlatBonus()).AppendLine();
+            statsText.AppendFormat("MAGIC PENETRATION PERCENT: {0}% ({1}% -> {2}%)",
+                characterStats.MagicPenetrationPercent.GetTotal(), characterStats.MagicPenetrationPercent.GetCurrentBaseValue(),
+                characterStats.MagicPenetrationPercent.GetPercentBonus()).AppendLine();
+            statsText.AppendFormat("LIFE STEAL: {0}% ({1}% + {2}%)",
+                characterStats.LifeSteal.GetTotal(), characterStats.LifeSteal.GetCurrentBaseValue(),
+                characterStats.LifeSteal.GetPercentBonus()).AppendLine();
+            statsText.AppendFormat("SPELL VAMP: {0}% ({1}% + {2}%)",
+                characterStats.SpellVamp.GetTotal(), characterStats.SpellVamp.GetCurrentBaseValue(),
+                characterStats.SpellVamp.GetPercentBonus()).AppendLine();
+            statsText.AppendFormat("ATTACK RANGE: {0} (({1} + {2}) + {3}%)",
+                characterStats.AttackRange.GetTotal() * 100, characterStats.AttackRange.GetCurrentBaseValue(), characterStats.AttackRange.GetFlatBonus(),
+                characterStats.AttackRange.GetPercentBonus()).AppendLine();
+            statsText.AppendFormat("TENACITY: {0}% (({1}% -> {2}%) - {3}%)",
+                characterStats.Tenacity.GetTotal(), characterStats.Tenacity.GetCurrentBaseValue(),
+                characterStats.Tenacity.GetPercentBonus(), characterStats.Tenacity.GetPercentMalus()).AppendLine();
         }
         GUILayout.Label(statsText.ToString());
         GUILayout.Label("POSITION: " + transform.position.x + ", " + transform.position.y + ", " + transform.position.z);

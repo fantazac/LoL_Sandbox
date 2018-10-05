@@ -1,26 +1,19 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class EzrealStats : CharacterStats
+﻿public class EzrealStats : CharacterStats
 {
     //extra stats the character has that other characters don't
 
-    protected override void Awake()
+    protected override EntityBaseStats GetEntityBaseStats()
     {
+        return new EzrealBaseStats();
+    }
+
+    protected override void InitializeCharacterStats(CharacterBaseStats characterBaseStats)
+    {
+        base.InitializeCharacterStats(characterBaseStats);
+
         ResourceType = ResourceType.MANA;
-
-        base.Awake();
-    }
-
-    protected override EntityBaseStats SetEntityBaseStats()
-    {
-        return gameObject.AddComponent<EzrealBaseStats>();
-    }
-
-    protected override void SetBaseStats(EntityBaseStats entityStats)
-    {
-        base.SetBaseStats(entityStats);
+        Resource = new Resource(characterBaseStats.BaseResource, characterBaseStats.ResourcePerLevel);
+        ResourceRegeneration = new ResourceRegeneration(characterBaseStats.BaseResourceRegeneration, characterBaseStats.ResourceRegenerationPerLevel);
 
         //set extra character stats
     }

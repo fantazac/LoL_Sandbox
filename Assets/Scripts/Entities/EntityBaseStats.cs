@@ -1,8 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class EntityBaseStats : MonoBehaviour
+﻿public class EntityBaseStats
 {
     public float BaseHealth { get; protected set; }
     public float BaseResource { get; protected set; }//mana, energy, fury, ...
@@ -12,6 +8,7 @@ public class EntityBaseStats : MonoBehaviour
     public float BaseArmor { get; protected set; }
     public float BaseMagicResistance { get; protected set; }
     public float BaseAttackSpeed { get; protected set; }
+    public float AttackDelay { get; protected set; }
     public float BaseCooldownReduction { get; protected set; }
     public float BaseCriticalStrikeChance { get; protected set; }
     public float BaseMovementSpeed { get; protected set; }
@@ -27,7 +24,7 @@ public class EntityBaseStats : MonoBehaviour
     public float BaseAttackRange { get; protected set; }
     public float BaseTenacity { get; protected set; }
 
-    protected EntityBaseStats()
+    public EntityBaseStats()
     {
         SetBaseStats();
     }
@@ -35,6 +32,7 @@ public class EntityBaseStats : MonoBehaviour
     protected virtual void SetBaseStats()
     {
         BaseAttackSpeed = 0.625f;
+        AttackDelay = 0;
         BaseMovementSpeed = 325;
 
         BaseAttackRange = 125;

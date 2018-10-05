@@ -1,27 +1,19 @@
 ﻿public class ArmorPenetrationPercent : Stat
 {
-    public override void SetBaseValue(float baseValue)
-    {
-        RemovePercentBonus(this.baseValue);
-        this.baseValue = baseValue;
-        AddPercentBonus(this.baseValue);
-        UpdateTotal();
-    }
+    public ArmorPenetrationPercent() : base() { }
 
     public override void UpdateTotal()
     {
-        total = baseValue + flatBonus - flatMalus;
+        total = percentBonus;
     }
 
-    public override void AddPercentBonus(float percentBonus)
+    protected override void CalculatePercentBonusIncrease(float percentBonus)
     {
-        this.percentBonus += (100 - this.percentBonus) * percentBonus * 0.01f;
-        UpdateTotal();
+        this.percentBonus = 100 - (100 - this.percentBonus) * (100 - percentBonus) * 0.01f;
     }
 
-    public override void RemovePercentBonus(float percentBonus)
+    protected override void CalculatePercentBonusReduction(float percentBonus)
     {
-        this.percentBonus -= (100 - this.percentBonus) * percentBonus * 0.01f;
-        UpdateTotal();
+        this.percentBonus = 100 - (100 - this.percentBonus) / ((100 - percentBonus) * 0.01f);
     }
 }

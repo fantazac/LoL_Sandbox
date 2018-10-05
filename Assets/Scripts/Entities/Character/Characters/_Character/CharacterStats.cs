@@ -1,40 +1,37 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public abstract class CharacterStats : EntityStats
+﻿public abstract class CharacterStats : EntityStats
 {
     //extra stats characters have that other entities don't
 
-    protected override EntityBaseStats SetEntityBaseStats()
+    protected override void InitializeEntityStats(EntityBaseStats entityBaseStats)
     {
-        return gameObject.AddComponent<CharacterBaseStats>();
+        InitializeCharacterStats((CharacterBaseStats)entityBaseStats);
     }
 
-    protected override void SetBaseStats(EntityBaseStats entityBaseStats)
+    protected virtual void InitializeCharacterStats(CharacterBaseStats characterBaseStats)
     {
-        base.SetBaseStats(entityBaseStats);
+        Health = new Health(characterBaseStats.BaseHealth, characterBaseStats.HealthPerLevel);
 
-        CharacterBaseStats characterBaseStats = (CharacterBaseStats)entityBaseStats;
+        AttackDamage = new AttackDamage(characterBaseStats.BaseAttackDamage, characterBaseStats.AttackDamagePerLevel);
+        AbilityPower = new AbilityPower();
+        Armor = new Armor(characterBaseStats.BaseArmor, characterBaseStats.ArmorPerLevel);
+        MagicResistance = new MagicResistance(characterBaseStats.BaseMagicResistance, characterBaseStats.MagicResistancePerLevel);
+        AttackSpeed = new AttackSpeed(characterBaseStats.BaseAttackSpeed, characterBaseStats.AttackSpeedPerLevel, characterBaseStats.AttackDelay);
+        CooldownReduction = new CooldownReduction();
+        CriticalStrikeChance = new CriticalStrikeChance();
+        MovementSpeed = new MovementSpeed(characterBaseStats.BaseMovementSpeed);
+
+        HealthRegeneration = new HealthRegeneration(characterBaseStats.BaseHealthRegeneration, characterBaseStats.HealthRegenerationPerLevel);
+        Lethality = new Lethality();
+        ArmorPenetrationPercent = new ArmorPenetrationPercent();
+        MagicPenetrationFlat = new MagicPenetrationFlat();
+        MagicPenetrationPercent = new MagicPenetrationPercent();
+        LifeSteal = new LifeSteal();
+        SpellVamp = new SpellVamp();
+        AttackRange = new AttackRange(characterBaseStats.BaseAttackRange);
+        Tenacity = new Tenacity();
 
         //set extra character stats
 
-        if (Resource != null)
-        {
-            Resource.SetPerLevelValue(characterBaseStats.ResourcePerLevel);
-        }
-        if (ResourceRegeneration != null)
-        {
-            ResourceRegeneration.SetPerLevelValue(characterBaseStats.ResourceRegenerationPerLevel);
-        }
-
-        Health.SetPerLevelValue(characterBaseStats.HealthPerLevel);
-
-        AttackDamage.SetPerLevelValue(characterBaseStats.AttackDamagePerLevel);
-        Armor.SetPerLevelValue(characterBaseStats.ArmorPerLevel);
-        MagicResistance.SetPerLevelValue(characterBaseStats.MagicResistancePerLevel);
-        AttackSpeed.SetPerLevelValue(characterBaseStats.AttackSpeedPerLevel);
-
-        HealthRegeneration.SetPerLevelValue(characterBaseStats.HealthRegenerationPerLevel);
+        ExtraAdjustments();
     }
 }

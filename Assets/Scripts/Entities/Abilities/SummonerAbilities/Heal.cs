@@ -52,7 +52,7 @@ public class Heal : SelfTargeted
 
     public override void OnCharacterLevelUp(int level)
     {
-        LevelUp();
+        LevelUpBuffsAndDebuffs();
     }
 
     public override void UseAbility(Vector3 destination)

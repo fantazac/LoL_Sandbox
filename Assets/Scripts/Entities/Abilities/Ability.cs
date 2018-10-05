@@ -548,7 +548,7 @@ public abstract class Ability : MonoBehaviour
         }
     }
 
-    private void LevelUpBuffsAndDebuffs()
+    protected void LevelUpBuffsAndDebuffs()
     {
         if (AbilityBuffs != null)
         {

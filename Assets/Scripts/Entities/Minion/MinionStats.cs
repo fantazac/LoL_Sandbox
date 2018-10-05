@@ -11,9 +11,9 @@ public abstract class MinionStats : EntityStats
         base.Awake();
     }
 
-    protected override void SetBaseStats(EntityBaseStats entityStats)
+    protected override void InitializeEntityStats(EntityBaseStats entityBaseStats)
     {
-        base.SetBaseStats(entityStats);
+        base.InitializeEntityStats(entityBaseStats);
 
         //set extra minion stats
     }

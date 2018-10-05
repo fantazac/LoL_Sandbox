@@ -12,7 +12,8 @@ public class DummyBaseStats : CharacterBaseStats
 
         BaseArmor = 100;
         BaseMagicResistance = 100;
-        BaseAttackSpeed = 0.658f;
+        BaseAttackSpeed = 0.625f;
+        AttackDelay = -0.05f;
         BaseMovementSpeed = 325;
     }
 }

@@ -1,52 +1,43 @@
 ﻿public abstract class Stat
 {
-    protected float baseValue;
-    protected float perLevelValue;
+    private static float BASE_PERCENT_VALUE = 0.7025f;
+    private static float BASE_PERCENT_PER_LEVEL_VALUE = 0.0175f;
+
+    protected readonly float initialBaseValue;
+    protected readonly float perLevelValue;
+
+    protected float currentBaseValue;
     protected float total;
     protected float flatBonus;
     protected float percentBonus;
     protected float flatMalus;
     protected float percentMalus;
 
-    public float GetBaseValue()
+    public Stat() : this(0, 0) { }
+    public Stat(float initialBaseValue) : this(initialBaseValue, 0) { }
+    public Stat(float initialBaseValue, float perLevelValue)
     {
-        return baseValue;
-    }
-
-    public virtual void SetBaseValue(float baseValue)
-    {
-        this.baseValue = baseValue;
-        UpdateTotal();
-    }
-
-    public float GetPerLevelValue()
-    {
-        return perLevelValue;
-    }
-
-    public void SetPerLevelValue(float perLevelValue)
-    {
+        this.initialBaseValue = initialBaseValue;
         this.perLevelValue = perLevelValue;
+        OnLevelUp(1);
     }
+
+    public abstract void UpdateTotal();
 
     public virtual void OnLevelUp(int level)
     {
-        SetBaseValue(baseValue + perLevelValue * (StatValues.ADDITIVE_PERCENTAGE_PER_LEVEL * level + StatValues.BASE_PERCENTAGE_ON_LEVEL_UP));
+        currentBaseValue = initialBaseValue + calculateStatTotalLevelBonus(level);
+        UpdateTotal();
     }
 
-    public virtual float GetTotal()
+    protected virtual float calculateStatTotalLevelBonus(int level)
     {
-        return total;
+        return perLevelValue * (level - 1) * (BASE_PERCENT_VALUE + BASE_PERCENT_PER_LEVEL_VALUE * (level - 1));
     }
 
-    public virtual float GetBonus()
+    public float GetBonus()
     {
-        return GetTotal() - GetBaseValue();
-    }
-
-    public float GetFlatBonus()
-    {
-        return flatBonus;
+        return GetTotal() - GetCurrentBaseValue();
     }
 
     public void AddFlatBonus(float flatBonus)
@@ -61,26 +52,26 @@
         UpdateTotal();
     }
 
-    public float GetPercentBonus()
+    public void AddPercentBonus(float percentBonus)
     {
-        return percentBonus;
+        CalculatePercentBonusIncrease(percentBonus);
+        UpdateTotal();
     }
 
-    public virtual void AddPercentBonus(float percentBonus)
+    protected virtual void CalculatePercentBonusIncrease(float percentBonus)
     {
         this.percentBonus += percentBonus;
+    }
+
+    public void RemovePercentBonus(float percentBonus)
+    {
+        CalculatePercentBonusReduction(percentBonus);
         UpdateTotal();
     }
 
-    public virtual void RemovePercentBonus(float percentBonus)
+    protected virtual void CalculatePercentBonusReduction(float percentBonus)
     {
         this.percentBonus -= percentBonus;
-        UpdateTotal();
-    }
-
-    public float GetFlatMalus()
-    {
-        return flatMalus;
     }
 
     public void AddFlatMalus(float flatMalus)
@@ -95,25 +86,65 @@
         UpdateTotal();
     }
 
-    public float GetPercentMalus()
-    {
-        return percentMalus;
-    }
-
     public void AddPercentMalus(float percentMalus)
     {
-        this.percentMalus += percentMalus;
+        CalculatePercentMalusIncrease(percentMalus);
         UpdateTotal();
+    }
+
+    protected virtual void CalculatePercentMalusIncrease(float percentMalus)
+    {
+        this.percentMalus += percentMalus;
     }
 
     public void RemovePercentMalus(float percentMalus)
     {
-        this.percentMalus -= percentMalus;
+        CalculatePercentMalusReduction(percentMalus);
         UpdateTotal();
     }
 
-    public virtual void UpdateTotal()
+    protected virtual void CalculatePercentMalusReduction(float percentMalus)
     {
-        total = (baseValue + flatBonus) * (1 + (percentBonus * 0.01f)) * (1 - (percentMalus * 0.01f)) - flatMalus;
+        this.percentMalus -= percentMalus;
+    }
+
+    public float GetInitialBaseValue()
+    {
+        return initialBaseValue;
+    }
+
+    public float GetCurrentBaseValue()
+    {
+        return currentBaseValue;
+    }
+
+    public float GetPerLevelValue()
+    {
+        return perLevelValue;
+    }
+
+    public virtual float GetTotal()
+    {
+        return total;
+    }
+
+    public float GetFlatBonus()
+    {
+        return flatBonus;
+    }
+
+    public float GetPercentBonus()
+    {
+        return percentBonus;
+    }
+
+    public float GetFlatMalus()
+    {
+        return flatMalus;
+    }
+
+    public float GetPercentMalus()
+    {
+        return percentMalus;
     }
 }

@@ -1,24 +1,15 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class DummyStats : CharacterStats
+﻿public class DummyStats : CharacterStats
 {
     //extra stats the character has that other characters don't
 
-    protected override void Awake()
+    protected override EntityBaseStats GetEntityBaseStats()
     {
-        base.Awake();
+        return new DummyBaseStats();
     }
 
-    protected override EntityBaseStats SetEntityBaseStats()
+    protected override void InitializeCharacterStats(CharacterBaseStats characterBaseStats)
     {
-        return gameObject.AddComponent<DummyBaseStats>();
-    }
-
-    protected override void SetBaseStats(EntityBaseStats entityStats)
-    {
-        base.SetBaseStats(entityStats);
+        base.InitializeCharacterStats(characterBaseStats);
 
         //set extra character stats
     }

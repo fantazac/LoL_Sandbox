@@ -1,8 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class LucianBaseStats : CharacterBaseStats
+﻿public class LucianBaseStats : CharacterBaseStats
 {
     //extra stats for each character
 
@@ -15,7 +11,8 @@ public class LucianBaseStats : CharacterBaseStats
         BaseAbilityPower = 0;
         BaseArmor = 28;
         BaseMagicResistance = 30;
-        BaseAttackSpeed = 0.638f;
+        BaseAttackSpeed = 0.625f;
+        AttackDelay = -0.02f;
         BaseCooldownReduction = 0;
         BaseCriticalStrikeChance = 0;
         BaseMovementSpeed = 335;

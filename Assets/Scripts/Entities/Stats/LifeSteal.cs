@@ -1,7 +1,9 @@
 ﻿public class LifeSteal : Stat
 {
+    public LifeSteal() : base() { }
+
     public override void UpdateTotal()
     {
-        total = baseValue + flatBonus - flatMalus;
+        total = currentBaseValue + percentBonus;
     }
 }

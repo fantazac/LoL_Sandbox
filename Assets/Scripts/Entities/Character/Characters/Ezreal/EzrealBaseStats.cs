@@ -1,8 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class EzrealBaseStats : CharacterBaseStats
+﻿public class EzrealBaseStats : CharacterBaseStats
 {
     //extra stats for each character
 
@@ -16,6 +12,7 @@ public class EzrealBaseStats : CharacterBaseStats
         BaseArmor = 22;
         BaseMagicResistance = 30;
         BaseAttackSpeed = 0.625f;
+        AttackDelay = 0;
         BaseCooldownReduction = 0;
         BaseCriticalStrikeChance = 0;
         BaseMovementSpeed = 325;

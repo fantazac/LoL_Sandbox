@@ -11,9 +11,9 @@ public abstract class MonsterStats : EntityStats
         base.Awake();
     }
 
-    protected override void SetBaseStats(EntityBaseStats entityStats)
+    protected override void InitializeEntityStats(EntityBaseStats entityBaseStats)
     {
-        base.SetBaseStats(entityStats);
+        base.InitializeEntityStats(entityBaseStats);
 
         //set extra monster stats
     }

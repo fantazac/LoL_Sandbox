@@ -1,8 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class MissFortuneBaseStats : CharacterBaseStats
+﻿public class MissFortuneBaseStats : CharacterBaseStats
 {
     //extra stats for each character
 
@@ -15,7 +11,8 @@ public class MissFortuneBaseStats : CharacterBaseStats
         BaseAbilityPower = 0;
         BaseArmor = 28;
         BaseMagicResistance = 30;
-        BaseAttackSpeed = 0.656f;
+        BaseAttackSpeed = 0.625f;
+        AttackDelay = -0.0473f;
         BaseCooldownReduction = 0;
         BaseCriticalStrikeChance = 0;
         BaseMovementSpeed = 325;
