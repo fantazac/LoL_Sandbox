@@ -121,17 +121,18 @@ public class EntityStatusMovementManager : MonoBehaviour
         currentSourceAbilityBuffForDisplacement = sourceAbilityBuff;
 
         Vector3 initialPosition = transform.position;
+        Transform modelTransform = entity.EntityModelObject.transform;
         Vector3 up = Vector3.up * 10;
         float upSpeed = 2;
 
         while (currentSourceAbilityBuffForDisplacement == sourceAbilityBuff)
         {
-            transform.position = Vector3.MoveTowards(transform.position, transform.position + up, Time.deltaTime * upSpeed);
+            modelTransform.position = Vector3.MoveTowards(modelTransform.position, modelTransform.position + up, Time.deltaTime * upSpeed);
 
             yield return null;
         }
 
-        transform.position = initialPosition;
+        entity.EntityModelObject.transform.position = initialPosition;
 
         currentDisplacement = null;
     }

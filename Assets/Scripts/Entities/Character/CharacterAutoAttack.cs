@@ -80,7 +80,7 @@ public class CharacterAutoAttack : MonoBehaviour
                     groundPosition = Vector3.right * transform.position.x + Vector3.forward * transform.position.z;
                     foreach (Collider collider in Physics.OverlapCapsule(groundPosition, groundPosition + Vector3.up * 5, attackRange.GetTotal()))
                     {
-                        Entity tempEntity = collider.GetComponent<Entity>();
+                        Entity tempEntity = collider.GetComponentInParent<Entity>();
                         if (tempEntity != null && TargetIsValid.CheckIfTargetIsValid(tempEntity, affectedUnitType, character.Team))
                         {
                             float tempDistance = Vector3.Distance(tempEntity.transform.position, transform.position);
@@ -121,7 +121,7 @@ public class CharacterAutoAttack : MonoBehaviour
                 float distance = float.MaxValue;
                 foreach (Collider collider in Physics.OverlapCapsule(groundPosition, groundPosition + Vector3.up * 5, attackRange.GetTotal() * biggerAttackRangeRatio))
                 {
-                    Entity tempEntity = collider.GetComponent<Entity>();
+                    Entity tempEntity = collider.GetComponentInParent<Entity>();
                     if (tempEntity != null && TargetIsValid.CheckIfTargetIsValid(tempEntity, affectedUnitType, character.Team))
                     {
                         float tempDistance = Vector3.Distance(tempEntity.transform.position, transform.position);

@@ -12,7 +12,7 @@ public class CC_W_Debuff : AbilityBuff
         isADebuff = true;
 
         buffDuration = 2;
-        buffCrowdControlEffect = CrowdControlEffects.ENTANGLE;
+        buffCrowdControlEffect = CrowdControlEffects.KNOCKUP;
     }
 
     protected override void SetSpritePaths()
@@ -23,11 +23,13 @@ public class CC_W_Debuff : AbilityBuff
     protected override void ApplyBuffEffect(Entity affectedEntity, float buffValue, int currentStacks)
     {
         affectedEntity.EntityStatusManager.AddCrowdControlEffectOnEntity(buffCrowdControlEffect);
+        affectedEntity.EntityStatusMovementManager.SetupMovementBlock(buffCrowdControlEffect, this, character, transform.position, buffDuration);
     }
 
     protected override void RemoveBuffEffect(Entity affectedEntity, float buffValue, int currentStacks)
     {
         affectedEntity.EntityStatusManager.RemoveCrowdControlEffectFromEntity(buffCrowdControlEffect);
+        affectedEntity.EntityStatusMovementManager.EndMovementBlock(buffCrowdControlEffect, this);
     }
 
     protected override Buff CreateNewBuff(Entity affectedEntity)

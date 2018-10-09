@@ -73,7 +73,7 @@ public class CharacterMouseManager : MonoBehaviour
         Entity closestEnemyEntity = null;
         foreach (Collider collider in Physics.OverlapSphere(hit.point, RADIUS_RUBBER_BANDING))
         {
-            closestEnemyEntity = collider.GetComponent<Entity>();
+            closestEnemyEntity = collider.GetComponentInParent<Entity>();
             if (closestEnemyEntity != null && closestEnemyEntity.Team != character.Team)
             {
                 break;

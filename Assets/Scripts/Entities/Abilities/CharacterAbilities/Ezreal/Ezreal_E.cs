@@ -85,7 +85,7 @@ public class Ezreal_E : GroundTargetedBlink
         Vector3 groundPosition = Vector3.right * transform.position.x + Vector3.forward * transform.position.z;
         foreach (Collider collider in Physics.OverlapCapsule(groundPosition, groundPosition + Vector3.up * 5, effectRadius))
         {
-            tempEntity = collider.GetComponent<Entity>();
+            tempEntity = collider.GetComponentInParent<Entity>();
             if (tempEntity != null && TargetIsValid.CheckIfTargetIsValid(tempEntity, affectedUnitType, character.Team))
             {
                 tempDistance = Vector3.Distance(transform.position, tempEntity.transform.position);

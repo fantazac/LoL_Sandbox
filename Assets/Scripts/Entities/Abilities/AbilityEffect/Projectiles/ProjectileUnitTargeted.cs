@@ -23,7 +23,7 @@ public class ProjectileUnitTargeted : Projectile
             this.speed = speed;
             this.isACriticalAttack = isACriticalAttack;
             this.willMiss = willMiss;
-            targetCollider = target.GetComponent<Collider>();
+            targetCollider = target.GetComponentInChildren<Collider>();
             StartCoroutine(ActivateAbilityEffect());
         }
         else

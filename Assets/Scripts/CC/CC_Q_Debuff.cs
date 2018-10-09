@@ -12,7 +12,7 @@ public class CC_Q_Debuff : AbilityBuff
         isADebuff = true;
 
         buffDuration = 2;
-        buffPercentValue = 90;
+        //buffPercentValue = 90;
         buffCrowdControlEffect = CrowdControlEffects.KNOCKUP;
     }
 
@@ -24,14 +24,14 @@ public class CC_Q_Debuff : AbilityBuff
     protected override void ApplyBuffEffect(Entity affectedEntity, float buffValue, int currentStacks)
     {
         affectedEntity.EntityStatusManager.AddCrowdControlEffectOnEntity(buffCrowdControlEffect);
-        affectedEntity.EntityStats.MovementSpeed.AddPercentMalus(buffValue);
+        //affectedEntity.EntityStats.MovementSpeed.AddPercentMalus(buffValue);
         affectedEntity.EntityStatusMovementManager.SetupMovementBlock(buffCrowdControlEffect, this, character, transform.position, buffDuration);
     }
 
     protected override void RemoveBuffEffect(Entity affectedEntity, float buffValue, int currentStacks)
     {
         affectedEntity.EntityStatusManager.RemoveCrowdControlEffectFromEntity(buffCrowdControlEffect);
-        affectedEntity.EntityStats.MovementSpeed.RemovePercentMalus(buffValue);
+        //affectedEntity.EntityStats.MovementSpeed.RemovePercentMalus(buffValue);
         affectedEntity.EntityStatusMovementManager.EndMovementBlock(buffCrowdControlEffect, this);
     }
 
