@@ -61,7 +61,7 @@ public class AreaOfEffectGround : AbilityEffect
         Vector3 groundPosition = Vector3.right * transform.position.x + Vector3.forward * transform.position.z;
         foreach (Collider collider in Physics.OverlapCapsule(groundPosition, groundPosition + Vector3.up * 5, radius))
         {
-            entityInArea = collider.GetComponent<Entity>();
+            entityInArea = GetEntityHit(collider);
             if (entityInArea != null && CanAffectTarget(entityInArea))
             {
                 affectedEntities.Add(entityInArea);

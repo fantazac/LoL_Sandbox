@@ -6,7 +6,7 @@ public class ProjectileMultipleTargets : ProjectileDirectionTargeted
 {
     protected override void OnTriggerEnter(Collider collider)
     {
-        Entity entityHit = collider.gameObject.GetComponent<Entity>();
+        Entity entityHit = GetEntityHit(collider);
 
         if (entityHit != null && CanAffectTarget(entityHit))
         {

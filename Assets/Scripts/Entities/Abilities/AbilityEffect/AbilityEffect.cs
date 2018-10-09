@@ -46,4 +46,9 @@ public abstract class AbilityEffect : MonoBehaviour
             OnAbilityEffectHit(this, entityHit);
         }
     }
+
+    protected Entity GetEntityHit(Collider collider)
+    {
+        return collider.GetComponentInParent<Entity>();
+    }
 }

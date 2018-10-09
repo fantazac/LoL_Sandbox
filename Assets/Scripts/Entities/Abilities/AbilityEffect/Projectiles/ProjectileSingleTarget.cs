@@ -10,7 +10,7 @@ public class ProjectileSingleTarget : ProjectileDirectionTargeted
     {
         if (!alreadyHitATarget)
         {
-            Entity entityHit = collider.gameObject.GetComponent<Entity>();
+            Entity entityHit = GetEntityHit(collider);
 
             if (entityHit != null && CanAffectTarget(entityHit))
             {
