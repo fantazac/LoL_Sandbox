@@ -10,6 +10,7 @@ public class Entity : MonoBehaviour
     public EntityBasicAttack EntityBasicAttack { get; protected set; }
     public EntityBasicAttackCycle EntityBasicAttackCycle { get; private set; }
     public EntityBuffManager EntityBuffManager { get; private set; }
+    public EntityEffectSourceManager EntityEffectSourceManager { get; private set; }
     public GameObject EntityHitboxObject { get; private set; }
     public GameObject EntityModelObject { get; private set; }
     public EntityStats EntityStats { get; protected set; }
@@ -32,6 +33,7 @@ public class Entity : MonoBehaviour
             EntityBasicAttackCycle = gameObject.AddComponent<EntityBasicAttackCycle>();
         }
         EntityBuffManager = gameObject.AddComponent<EntityBuffManager>();
+        EntityEffectSourceManager = gameObject.AddComponent<EntityEffectSourceManager>();
         EntityHitboxObject = gameObject.GetComponentInChildren<Collider>().gameObject;
         EntityModelObject = gameObject.GetComponentInChildren<MeshRenderer>().gameObject;
         EntityStatusManager = gameObject.AddComponent<EntityStatusManager>();
