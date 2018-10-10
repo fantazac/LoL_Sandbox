@@ -1,8 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class MissFortuneAbilityManager : CharacterAbilityManager
+﻿public class MissFortuneAbilityManager : CharacterAbilityManager
 {
     protected override void InitAbilities()
     {

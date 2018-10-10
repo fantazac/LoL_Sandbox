@@ -1,8 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public abstract class MonsterStats : EntityStats
+﻿public abstract class MonsterStats : EntityStats
 {
     //extra stats monsters have that other entities don't
 

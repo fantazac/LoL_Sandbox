@@ -2,11 +2,6 @@
 {
     private int characterLevel;
 
-    /*public Lethality() //TODO: Is this really necessary?
-    {
-        characterLevel = 1;
-    }*/
-
     public override void UpdateTotal()
     {
         total = currentBaseValue + flatBonus;

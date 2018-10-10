@@ -61,7 +61,7 @@ public abstract class EntityBasicAttack : MonoBehaviour
     public virtual void StopBasicAttack(bool isCrowdControlled = false)
     {
         AttackIsInQueue = false;
-        if(shootBasicAttackCoroutine != null)
+        if (shootBasicAttackCoroutine != null)
         {
             StopCoroutine(shootBasicAttackCoroutine);
             shootBasicAttackCoroutine = null;
@@ -92,7 +92,7 @@ public abstract class EntityBasicAttack : MonoBehaviour
 
     protected void Update()
     {
-        if (currentTarget != null && ((Character)entity).CharacterMovement.GetBasicAttackTarget() != currentTarget && !AttackIsInQueue && entity.EntityBasicAttackCycle.AttackSpeedCycleIsReady && 
+        if (currentTarget != null && ((Character)entity).CharacterMovement.GetBasicAttackTarget() != currentTarget && !AttackIsInQueue && entity.EntityBasicAttackCycle.AttackSpeedCycleIsReady &&
             !((Character)entity).CharacterAbilityManager.IsUsingAbilityPreventingBasicAttacks())
         {
             StartBasicAttack();

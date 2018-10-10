@@ -17,6 +17,18 @@
     public bool HasStacks { get; private set; }
     public bool HasValueToSet { get; private set; }
 
+    //No buff value, no duration, no stacks
+    public Buff(AbilityBuff sourceAbilityBuff, Entity affectedEntity) : this(sourceAbilityBuff, affectedEntity, 0, 0, 0, 0) { }
+
+    //No duration, no stacks
+    public Buff(AbilityBuff sourceAbilityBuff, Entity affectedEntity, float buffValue) : this(sourceAbilityBuff, affectedEntity, buffValue, 0, 0, 0) { }
+
+    //No stacks (EzrealW, LucianP)
+    public Buff(AbilityBuff sourceAbilityBuff, Entity affectedEntity, float buffValue, float duration) : this(sourceAbilityBuff, affectedEntity, buffValue, duration, 0, 0) { }
+
+    //With stacks that disappear instantly if the buff expires (Old EzrealP)
+    public Buff(AbilityBuff sourceAbilityBuff, Entity affectedEntity, float buffValue, float duration, int maximumStacks) : this(sourceAbilityBuff, affectedEntity, buffValue, duration, maximumStacks, 0) { }
+
     //With stacks that decay 1 by 1 at a certain delay
     public Buff(AbilityBuff sourceAbilityBuff, Entity affectedEntity, float buffValue, float buffDuration, int maximumStacks, float stackDecayingDelay)
     {
@@ -38,18 +50,6 @@
         HasDuration = Duration > 0;
         HasStacks = MaximumStacks > 0;
     }
-
-    //No buff value, no duration, no stacks
-    public Buff(AbilityBuff sourceAbilityBuff, Entity affectedEntity) : this(sourceAbilityBuff, affectedEntity, 0, 0, 0, 0) { }
-
-    //No duration, no stacks
-    public Buff(AbilityBuff sourceAbilityBuff, Entity affectedEntity, float buffValue) : this(sourceAbilityBuff, affectedEntity, buffValue, 0, 0, 0) { }
-
-    //No stacks (EzrealW, LucianP)
-    public Buff(AbilityBuff sourceAbilityBuff, Entity affectedEntity, float buffValue, float duration) : this(sourceAbilityBuff, affectedEntity, buffValue, duration, 0, 0) { }
-
-    //With stacks that disappear instantly if the buff expires (EzrealP)
-    public Buff(AbilityBuff sourceAbilityBuff, Entity affectedEntity, float buffValue, float duration, int maximumStacks) : this(sourceAbilityBuff, affectedEntity, buffValue, duration, maximumStacks, 0) { }
 
     public void SetBuffValue(float buffValue)
     {

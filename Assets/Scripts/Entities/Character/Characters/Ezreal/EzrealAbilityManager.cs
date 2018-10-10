@@ -1,8 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class EzrealAbilityManager : CharacterAbilityManager
+﻿public class EzrealAbilityManager : CharacterAbilityManager
 {
     protected override void InitAbilities()
     {

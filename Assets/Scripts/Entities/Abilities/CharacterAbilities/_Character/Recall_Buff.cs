@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class Recall_Buff : AbilityBuff
+﻿public class Recall_Buff : AbilityBuff
 {
     protected Recall_Buff()
     {

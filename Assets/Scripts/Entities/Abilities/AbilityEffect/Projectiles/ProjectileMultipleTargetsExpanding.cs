@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class ProjectileMultipleTargetsExpanding : ProjectileMultipleTargets//TODO: Currently only works for MissFortune_R

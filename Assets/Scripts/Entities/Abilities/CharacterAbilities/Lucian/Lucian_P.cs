@@ -1,8 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class Lucian_P : PassiveTargeted
+﻿public class Lucian_P : PassiveTargeted
 {
     private Ability lucianE;
     private float cooldownReducedOnPassiveHitOnCharacter;

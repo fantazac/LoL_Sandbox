@@ -1,8 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class MissFortune_P : PassiveTargeted
+﻿public class MissFortune_P : PassiveTargeted
 {
     private Entity lastEntityHit;
 

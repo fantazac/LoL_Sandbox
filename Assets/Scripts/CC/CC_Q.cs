@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class CC_Q : SelfTargeted
 {
@@ -22,6 +20,13 @@ public class CC_Q : SelfTargeted
         ResetBasicAttackCycleOnAbilityCast = true;
 
         affectedByCooldownReduction = true;
+    }
+
+    protected override void Awake()
+    {
+        base.Awake();
+
+        GetComponent<CCBasicAttack>().SetQ(this);
     }
 
     protected override void SetResourcePaths()
@@ -49,7 +54,7 @@ public class CC_Q : SelfTargeted
         AddNewBuffToEntityHit(character);
     }
 
-    private void SetAbilityEffectOnEntityHit(Entity entityHit, float damage)
+    private void SetAbilityEffectOnEntityHit(Entity entityHit)
     {
         AbilityBuffs[0].ConsumeBuff(character);
 
@@ -59,14 +64,16 @@ public class CC_Q : SelfTargeted
 
     private void AddNewBuffToEntityHit(Entity entityHit)
     {
-        character.CharacterOnHitEffectsManager.OnApplyOnHitEffects += SetAbilityEffectOnEntityHit;//TODO: this should affect the NEXT basic attack, not the one currently flying
         AbilityBuffs[0].AddNewBuffToAffectedEntity(character);
     }
 
     private void RemoveBuffFromEntityHit(Entity entityHit)
     {
-        character.CharacterOnHitEffectsManager.OnApplyOnHitEffects -= SetAbilityEffectOnEntityHit;
-        
         FinishAbilityCast();
+    }
+
+    public void OnQHit(Entity entityHit)
+    {
+        SetAbilityEffectOnEntityHit(entityHit);
     }
 }

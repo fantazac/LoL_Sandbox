@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -30,7 +29,7 @@ public class AbilityTimeBarUIManager : MonoBehaviour
 
     private void SetupUI(int fillAmount, string name, string channelTime, bool activateUI)
     {
-        if(currentTimeBarCoroutine != null)
+        if (currentTimeBarCoroutine != null)
         {
             StopCoroutine(currentTimeBarCoroutine);
             currentTimeBarCoroutine = null;

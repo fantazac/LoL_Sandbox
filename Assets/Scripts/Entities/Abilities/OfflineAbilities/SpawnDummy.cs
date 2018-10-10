@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public abstract class SpawnDummy : GroundTargeted
@@ -35,7 +34,7 @@ public abstract class SpawnDummy : GroundTargeted
 
     public void RemoveAllDummies()
     {
-        while (dummies.Count > 0)//more efficient way to do this?
+        while (dummies.Count > 0)//TODO: more efficient way to do this?
         {
             if (dummies[0])
             {
@@ -63,7 +62,7 @@ public abstract class SpawnDummy : GroundTargeted
         dummy.transform.rotation = Quaternion.LookRotation((transform.position - dummy.transform.position).normalized);
         dummy.SetDummyTeamAndID(team, ++dummyId);
         dummies.Add(dummy);
-        
+
         FinishAbilityCast();
     }
 

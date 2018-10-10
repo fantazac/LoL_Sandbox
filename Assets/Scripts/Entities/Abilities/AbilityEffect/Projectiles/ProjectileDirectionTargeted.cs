@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System;
 using UnityEngine;
 
 public abstract class ProjectileDirectionTargeted : Projectile

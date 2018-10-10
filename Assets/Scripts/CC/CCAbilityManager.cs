@@ -1,8 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class CCAbilityManager : CharacterAbilityManager
+﻿public class CCAbilityManager : CharacterAbilityManager
 {
     protected override void InitAbilities()
     {

@@ -58,7 +58,7 @@ public class Health : Stat
         float previousTotal = total;
 
         total = Mathf.Clamp((currentBaseValue + flatBonus) * (1 + (percentBonus * 0.01f)), 0, float.MaxValue);
-        
+
         float difference = total - previousTotal;
         currentValue = Mathf.Clamp(currentValue + (difference > 0 ? difference : 0), 0, total);
 

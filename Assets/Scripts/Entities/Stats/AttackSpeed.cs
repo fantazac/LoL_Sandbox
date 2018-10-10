@@ -30,7 +30,7 @@ public class AttackSpeed : Stat
 
     public override void OnLevelUp(int level)
     {
-        if(level > 1)
+        if (level > 1)
         {
             AddPercentBonus(calculateStatTotalLevelBonus(level));
         }

@@ -1,8 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class MissFortune_R_Buff : AbilityBuff
+﻿public class MissFortune_R_Buff : AbilityBuff
 {
     protected MissFortune_R_Buff()
     {

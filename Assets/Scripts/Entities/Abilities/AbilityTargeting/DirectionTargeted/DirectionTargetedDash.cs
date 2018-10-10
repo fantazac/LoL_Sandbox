@@ -45,7 +45,7 @@ public abstract class DirectionTargetedDash : DirectionTargeted
 
             yield return null;
         }
-        
+
         FinishAbilityCast();
     }
 

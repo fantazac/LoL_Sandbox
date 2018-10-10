@@ -1,8 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class BuffUpdatingWithDelay : Buff // TODO: currently only works if buffDurationPostDelay = 0
+﻿public class BuffUpdatingWithDelay : Buff // TODO: currently only works if buffDurationPostDelay = 0
 {
     private float buffDurationPostDelay;
     private float buffValuePostDelay;

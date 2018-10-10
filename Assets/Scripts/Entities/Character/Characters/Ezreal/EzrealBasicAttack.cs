@@ -1,8 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class EzrealBasicAttack : CharacterBasicAttack
+﻿public class EzrealBasicAttack : CharacterBasicAttack
 {
     protected EzrealBasicAttack()
     {

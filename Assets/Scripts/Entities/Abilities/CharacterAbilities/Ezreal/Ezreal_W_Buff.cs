@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class Ezreal_W_Buff : AbilityBuff
+﻿public class Ezreal_W_Buff : AbilityBuff
 {
     protected Ezreal_W_Buff()
     {

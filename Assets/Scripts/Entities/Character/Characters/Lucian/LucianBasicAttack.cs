@@ -1,16 +1,15 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class LucianBasicAttack : CharacterBasicAttack
 {
-    private string passiveBasicAttackPrefabPath;
-    private GameObject passiveBasicAttackPrefab;
+    private string lucianPassiveBasicAttackPrefabPath;
+    private GameObject lucianPassiveBasicAttackPrefab;
 
     private float timeBeforePassiveShot;
     private WaitForSeconds delayPassiveShot;
 
-    private Lucian_P passive;
+    private Lucian_P lucianPassive;
 
     private bool isShootingPassiveShot;
     private bool passiveWasActiveOnBasicAttackCast;
@@ -24,19 +23,19 @@ public class LucianBasicAttack : CharacterBasicAttack
         delayPassiveShot = new WaitForSeconds(timeBeforePassiveShot);
 
         basicAttackPrefabPath = "BasicAttacksPrefabs/Characters/Lucian/LucianBA";
-        passiveBasicAttackPrefabPath = "BasicAttacksPrefabs/Characters/Lucian/LucianBAPassive";
+        lucianPassiveBasicAttackPrefabPath = "BasicAttacksPrefabs/Characters/Lucian/LucianBAPassive";
     }
 
     public void SetPassive(Lucian_P lucianPassive)
     {
-        passive = lucianPassive;
+        this.lucianPassive = lucianPassive;
     }
 
     protected override void LoadPrefabs()
     {
         base.LoadPrefabs();
 
-        passiveBasicAttackPrefab = Resources.Load<GameObject>(passiveBasicAttackPrefabPath);
+        lucianPassiveBasicAttackPrefab = Resources.Load<GameObject>(lucianPassiveBasicAttackPrefabPath);
     }
 
     public override void StopBasicAttack(bool isCrowdControlled = false)
@@ -78,7 +77,7 @@ public class LucianBasicAttack : CharacterBasicAttack
     protected override IEnumerator ShootBasicAttack(Entity target)
     {
         ((Character)entity).CharacterOrientation.RotateCharacterUntilReachedTarget(target.transform, true, true);
-        passiveWasActiveOnBasicAttackCast = entity.EntityBuffManager.GetBuff(passive.AbilityBuffs[0]) != null;
+        passiveWasActiveOnBasicAttackCast = entity.EntityBuffManager.GetBuff(lucianPassive.AbilityBuffs[0]) != null;
 
         yield return delayAttack;
 
@@ -86,7 +85,7 @@ public class LucianBasicAttack : CharacterBasicAttack
 
         if (!passiveWasActiveOnBasicAttackCast)
         {
-            passiveWasActiveOnBasicAttackCast = entity.EntityBuffManager.GetBuff(passive.AbilityBuffs[0]) != null;
+            passiveWasActiveOnBasicAttackCast = entity.EntityBuffManager.GetBuff(lucianPassive.AbilityBuffs[0]) != null;
         }
 
         entity.EntityBasicAttackCycle.LockBasicAttack();
@@ -107,11 +106,11 @@ public class LucianBasicAttack : CharacterBasicAttack
         if (passiveWasActiveOnBasicAttackCast)
         {
             passiveWasActiveOnBasicAttackCast = false;
-            passive.AbilityBuffs[0].ConsumeBuff(entity);
+            lucianPassive.AbilityBuffs[0].ConsumeBuff(entity);
 
             yield return delayPassiveShot;
 
-            ProjectileUnitTargeted projectile2 = (Instantiate(passiveBasicAttackPrefab, transform.position, transform.rotation)).GetComponent<ProjectileUnitTargeted>();
+            ProjectileUnitTargeted projectile2 = (Instantiate(lucianPassiveBasicAttackPrefab, transform.position, transform.rotation)).GetComponent<ProjectileUnitTargeted>();
             projectile2.transform.LookAt(target.transform);
             projectile2.ShootProjectile(entity.Team, target, speed, AttackIsCritical.CheckIfAttackIsCritical(entity.EntityStats.CriticalStrikeChance.GetTotal()));
             projectile2.OnProjectileUnitTargetedHit += PassiveBasicAttackHit;
@@ -125,7 +124,7 @@ public class LucianBasicAttack : CharacterBasicAttack
     {
         if (!(entity.EntityStatusManager.IsBlinded() || willMiss))
         {
-            passive.UseAbility(entityHit);
+            lucianPassive.UseAbility(entityHit);
         }
         base.BasicAttackHit(basicAttackProjectile, entityHit, isACriticalAttack, willMiss);
     }
@@ -134,7 +133,7 @@ public class LucianBasicAttack : CharacterBasicAttack
     {
         if (!(entity.EntityStatusManager.IsBlinded() || willMiss))
         {
-            passive.OnPassiveHit(entityHit, isACriticalAttack);
+            lucianPassive.OnPassiveHit(entityHit, isACriticalAttack);
         }
         Destroy(basicAttackProjectile.gameObject);
     }

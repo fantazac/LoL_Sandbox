@@ -1,8 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class MissFortune_P_Debuff : AbilityBuff
+﻿public class MissFortune_P_Debuff : AbilityBuff
 {
     protected MissFortune_P_Debuff()
     {

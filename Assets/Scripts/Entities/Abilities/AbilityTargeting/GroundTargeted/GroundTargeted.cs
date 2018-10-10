@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public abstract class GroundTargeted : Ability // Curently same as DirectionTargeted, might change when other abilities are created
 {

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class Heal_Buff : AbilityBuff
+﻿public class Heal_Buff : AbilityBuff
 {
     private float ratioIfAffectedByHealDebuff;
 

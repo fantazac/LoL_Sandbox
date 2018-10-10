@@ -1,8 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class CC : Character
+﻿public class CC : Character
 {
     protected CC()
     {

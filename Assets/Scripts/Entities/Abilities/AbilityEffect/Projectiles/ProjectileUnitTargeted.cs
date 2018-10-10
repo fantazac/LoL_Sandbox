@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class ProjectileUnitTargeted : Projectile
@@ -16,7 +15,7 @@ public class ProjectileUnitTargeted : Projectile
 
     public void ShootProjectile(EntityTeam teamOfCallingEntity, Entity target, float speed, bool isACriticalAttack = false, bool willMiss = false)
     {
-        if(target != null)
+        if (target != null)
         {
             this.teamOfCallingEntity = teamOfCallingEntity;
             this.target = target;
@@ -60,7 +59,7 @@ public class ProjectileUnitTargeted : Projectile
         if (!alreadyHitATarget && collider == targetCollider)
         {
             UnitsAlreadyHit.Add(target);
-            if(OnProjectileUnitTargetedHit != null)
+            if (OnProjectileUnitTargetedHit != null)
             {
                 OnProjectileUnitTargetedHit(this, target, isACriticalAttack, willMiss);
             }

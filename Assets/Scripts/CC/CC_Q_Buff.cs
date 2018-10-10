@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class CC_Q_Buff : AbilityBuff
+﻿public class CC_Q_Buff : AbilityBuff
 {
     protected CC_Q_Buff()
     {

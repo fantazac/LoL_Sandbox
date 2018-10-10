@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class CharacterAbilityManager : MonoBehaviour
@@ -112,7 +111,7 @@ public class CharacterAbilityManager : MonoBehaviour
 
     protected void InitAbilityUIManager()
     {
-        foreach(Ability characterAbility in CharacterAbilities)
+        foreach (Ability characterAbility in CharacterAbilities)
         {
             characterAbility.SetAbilitySprite();
             characterAbilitiesWithResourceCosts.Add(characterAbility);

@@ -1,16 +1,14 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public static class AttackIsCritical
 {
     public static bool CheckIfAttackIsCritical(float criticalStrikeChance)
     {
-        if(criticalStrikeChance == 0)
+        if (criticalStrikeChance == 0)
         {
             return false;
         }
-        if(criticalStrikeChance == 100)
+        if (criticalStrikeChance == 100)
         {
             return true;
         }

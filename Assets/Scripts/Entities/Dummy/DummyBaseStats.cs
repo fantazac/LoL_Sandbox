@@ -1,8 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class DummyBaseStats : CharacterBaseStats
+﻿public class DummyBaseStats : CharacterBaseStats
 {
     //extra stats for each character
 

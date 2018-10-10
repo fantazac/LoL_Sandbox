@@ -1,8 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class MissFortuneBasicAttack : CharacterBasicAttack
+﻿public class MissFortuneBasicAttack : CharacterBasicAttack
 {
     protected MissFortuneBasicAttack()
     {

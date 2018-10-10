@@ -1,7 +1,4 @@
-﻿using UnityEngine;
-using System.Collections;
-
-public class Lucian_E : DirectionTargetedDash
+﻿public class Lucian_E : DirectionTargetedDash
 {
     protected Lucian_E()
     {

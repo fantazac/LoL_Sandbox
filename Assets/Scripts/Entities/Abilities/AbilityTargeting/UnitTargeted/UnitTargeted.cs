@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public abstract class UnitTargeted : Ability
 {
@@ -30,7 +28,7 @@ public abstract class UnitTargeted : Ability
     protected virtual void UseAbilityInRange(Entity target)
     {
         StartAbilityCast();
-        
+
         if (!character.CharacterMovement.IsMovingTowardsTarget() && !character.EntityBasicAttack.CurrentTarget())
         {
             character.CharacterMovement.SetMoveTowardsTarget(target, character.EntityStats.AttackRange.GetTotal(), true, true);

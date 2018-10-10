@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class Heal_Debuff : AbilityBuff
+﻿public class Heal_Debuff : AbilityBuff
 {
     protected Heal_Debuff()
     {
