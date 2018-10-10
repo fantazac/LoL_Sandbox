@@ -35,7 +35,7 @@
     {
         base.Awake();
 
-        GetComponent<LucianBasicAttack>().SetPassive(this);
+        GetComponent<LucianBasicAttack>().SetBasicAttackEmpoweringAbility(this);
     }
 
     protected override void SetResourcePaths()
@@ -75,7 +75,7 @@
         }
     }
 
-    public void OnPassiveHit(Entity entityHit, bool isACriticalAttack)
+    public override void OnEmpoweredBasicAttackHit(Entity entityHit, bool isACriticalAttack)
     {
         float damage = GetAbilityDamage(entityHit);
 

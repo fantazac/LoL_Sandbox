@@ -590,6 +590,8 @@ public abstract class Ability : MonoBehaviour
 
     protected virtual void ExtraActionsOnCancel() { }
 
+    public virtual void OnEmpoweredBasicAttackHit(Entity entityHit, bool isACriticalAttack = false) { }
+
     public float GetResourceCost()
     {
         return resourceCost;

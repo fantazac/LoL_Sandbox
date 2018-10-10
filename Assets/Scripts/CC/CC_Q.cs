@@ -26,7 +26,7 @@ public class CC_Q : SelfTargeted
     {
         base.Awake();
 
-        GetComponent<CCBasicAttack>().SetQ(this);
+        GetComponent<CCBasicAttack>().SetBasicAttackEmpoweringAbility(this);
     }
 
     protected override void SetResourcePaths()
@@ -54,14 +54,6 @@ public class CC_Q : SelfTargeted
         AddNewBuffToEntityHit(character);
     }
 
-    private void SetAbilityEffectOnEntityHit(Entity entityHit)
-    {
-        AbilityBuffs[0].ConsumeBuff(character);
-
-        entityHit.EntityStats.Health.Reduce(GetAbilityDamage(entityHit));
-        AbilityDebuffs[0].AddNewBuffToAffectedEntity(entityHit);
-    }
-
     private void AddNewBuffToEntityHit(Entity entityHit)
     {
         AbilityBuffs[0].AddNewBuffToAffectedEntity(character);
@@ -72,8 +64,11 @@ public class CC_Q : SelfTargeted
         FinishAbilityCast();
     }
 
-    public void OnQHit(Entity entityHit)
+    public override void OnEmpoweredBasicAttackHit(Entity entityHit, bool isACriticalAttack = false)
     {
-        SetAbilityEffectOnEntityHit(entityHit);
+        AbilityBuffs[0].ConsumeBuff(character);
+
+        entityHit.EntityStats.Health.Reduce(GetAbilityDamage(entityHit));
+        AbilityDebuffs[0].AddNewBuffToAffectedEntity(entityHit);
     }
 }

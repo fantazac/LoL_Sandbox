@@ -1,18 +1,12 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-public class LucianBasicAttack : CharacterBasicAttack
+public class LucianBasicAttack : EmpoweredCharacterBasicAttack
 {
-    private string lucianPassiveBasicAttackPrefabPath;
-    private GameObject lucianPassiveBasicAttackPrefab;
-
     private float timeBeforePassiveShot;
     private WaitForSeconds delayPassiveShot;
 
-    private Lucian_P lucianPassive;
-
     private bool isShootingPassiveShot;
-    private bool passiveWasActiveOnBasicAttackCast;
 
     protected LucianBasicAttack()
     {
@@ -23,19 +17,7 @@ public class LucianBasicAttack : CharacterBasicAttack
         delayPassiveShot = new WaitForSeconds(timeBeforePassiveShot);
 
         basicAttackPrefabPath = "BasicAttacksPrefabs/Characters/Lucian/LucianBA";
-        lucianPassiveBasicAttackPrefabPath = "BasicAttacksPrefabs/Characters/Lucian/LucianBAPassive";
-    }
-
-    public void SetPassive(Lucian_P lucianPassive)
-    {
-        this.lucianPassive = lucianPassive;
-    }
-
-    protected override void LoadPrefabs()
-    {
-        base.LoadPrefabs();
-
-        lucianPassiveBasicAttackPrefab = Resources.Load<GameObject>(lucianPassiveBasicAttackPrefabPath);
+        empoweredBasicAttackPrefabPath = "BasicAttacksPrefabs/Characters/Lucian/LucianBAPassive";
     }
 
     public override void StopBasicAttack(bool isCrowdControlled = false)
@@ -76,41 +58,27 @@ public class LucianBasicAttack : CharacterBasicAttack
 
     protected override IEnumerator ShootBasicAttack(Entity target)
     {
-        ((Character)entity).CharacterOrientation.RotateCharacterUntilReachedTarget(target.transform, true, true);
-        passiveWasActiveOnBasicAttackCast = entity.EntityBuffManager.GetBuff(lucianPassive.AbilityBuffs[0]) != null;
+        SetupBeforeAttackDelay(target);
 
         yield return delayAttack;
 
         isShootingPassiveShot = true;
 
-        if (!passiveWasActiveOnBasicAttackCast)
+        if (!empoweringAbilityWasActiveOnBasicAttackCast)
         {
-            passiveWasActiveOnBasicAttackCast = entity.EntityBuffManager.GetBuff(lucianPassive.AbilityBuffs[0]) != null;
+            empoweringAbilityWasActiveOnBasicAttackCast = entity.EntityBuffManager.GetBuff(basicAttackEmpoweringAbility.AbilityBuffs[0]) != null;
         }
 
-        entity.EntityBasicAttackCycle.LockBasicAttack();
-        AttackIsInQueue = false;
-        ((Character)entity).CharacterOrientation.StopTargetRotation();
+        SetupAfterAttackDelay(target, basicAttackPrefab);
 
-        ProjectileUnitTargeted projectile = (Instantiate(basicAttackPrefab, transform.position, transform.rotation)).GetComponent<ProjectileUnitTargeted>();
-        projectile.ShootProjectile(entity.Team, target, speed, AttackIsCritical.CheckIfAttackIsCritical(entity.EntityStats.CriticalStrikeChance.GetTotal()));
-        if (passiveWasActiveOnBasicAttackCast)
+        if (empoweringAbilityWasActiveOnBasicAttackCast)
         {
-            projectile.OnProjectileUnitTargetedHit += BasicAttackHit;
-        }
-        else
-        {
-            projectile.OnProjectileUnitTargetedHit += base.BasicAttackHit;
-        }
-
-        if (passiveWasActiveOnBasicAttackCast)
-        {
-            passiveWasActiveOnBasicAttackCast = false;
-            lucianPassive.AbilityBuffs[0].ConsumeBuff(entity);
+            empoweringAbilityWasActiveOnBasicAttackCast = false;
+            basicAttackEmpoweringAbility.AbilityBuffs[0].ConsumeBuff(entity);
 
             yield return delayPassiveShot;
 
-            ProjectileUnitTargeted projectile2 = (Instantiate(lucianPassiveBasicAttackPrefab, transform.position, transform.rotation)).GetComponent<ProjectileUnitTargeted>();
+            ProjectileUnitTargeted projectile2 = (Instantiate(empoweredBasicAttackPrefab, transform.position, transform.rotation)).GetComponent<ProjectileUnitTargeted>();
             projectile2.transform.LookAt(target.transform);
             projectile2.ShootProjectile(entity.Team, target, speed, AttackIsCritical.CheckIfAttackIsCritical(entity.EntityStats.CriticalStrikeChance.GetTotal()));
             projectile2.OnProjectileUnitTargetedHit += PassiveBasicAttackHit;
@@ -120,20 +88,16 @@ public class LucianBasicAttack : CharacterBasicAttack
         shootBasicAttackCoroutine = null;
     }
 
-    protected override void BasicAttackHit(AbilityEffect basicAttackProjectile, Entity entityHit, bool isACriticalAttack, bool willMiss)
+    protected override void OnEmpoweredBasicAttackHit(Entity entityHit, bool isACriticalAttack)
     {
-        if (!(entity.EntityStatusManager.IsBlinded() || willMiss))
-        {
-            lucianPassive.UseAbility(entityHit);
-        }
-        base.BasicAttackHit(basicAttackProjectile, entityHit, isACriticalAttack, willMiss);
+        basicAttackEmpoweringAbility.UseAbility(entityHit);
     }
 
     private void PassiveBasicAttackHit(AbilityEffect basicAttackProjectile, Entity entityHit, bool isACriticalAttack, bool willMiss)
     {
         if (!(entity.EntityStatusManager.IsBlinded() || willMiss))
         {
-            lucianPassive.OnPassiveHit(entityHit, isACriticalAttack);
+            basicAttackEmpoweringAbility.OnEmpoweredBasicAttackHit(entityHit, isACriticalAttack);
         }
         Destroy(basicAttackProjectile.gameObject);
     }
