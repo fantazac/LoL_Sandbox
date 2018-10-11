@@ -12,7 +12,7 @@ public class Ezreal_W : DirectionTargetedProjectile
         abilityName = "Essence Flux";
 
         abilityType = AbilityType.Skillshot;
-        affectedUnitType = AbilityAffectedUnitType.ENEMY_CHARACTERS;//TODO: ENEMY_STRUCTURES and EPIC_MONSTERS too, so make a new AbilityAffectedUnitType called OBJECTIVES
+        affectedUnitType = AbilityAffectedUnitType.OBJECTIVES_AND_ENEMY_CHARACTERS;
         effectType = AbilityEffectType.SINGLE_TARGET;
         damageType = DamageType.MAGIC;
 
@@ -108,5 +108,6 @@ public class Ezreal_W : DirectionTargetedProjectile
         AbilityDebuffs[0].ConsumeBuff(entityHit);
         character.EntityStats.Resource.Restore(manaRefundedOnDamageDealt + (sourceAbility != null ? sourceAbility.GetResourceCost() : 0));
         entityHit.EntityStats.Health.Reduce(GetAbilityDamage(entityHit));
+        AbilityHit(entityHit, damage, false);
     }
 }

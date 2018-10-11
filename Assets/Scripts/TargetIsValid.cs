@@ -72,6 +72,11 @@
             case AbilityAffectedUnitType.ENEMY_NEXUS:
                 return EntityIsAnEnemyNexus(entityHit.Team, entityHit.EntityType);
 
+            case AbilityAffectedUnitType.OBJECTIVES:
+                return EntityIsAnObjective(entityHit.Team, entityHit.EntityType);
+            case AbilityAffectedUnitType.OBJECTIVES_AND_ENEMY_CHARACTERS:
+                return EntityIsAnObjectiveOrAnEnemyCharacter(entityHit.Team, entityHit.EntityType);
+
             case AbilityAffectedUnitType.TERRAIN:
                 return EntityIsTerrain(entityHit.EntityType);
         }
@@ -187,6 +192,16 @@
     private static bool EntityIsAnInhibitor(EntityType entityType)
     {
         return entityType == EntityType.INHIBITOR;
+    }
+
+    private static bool EntityIsAnObjective(EntityTeam entityTeam, EntityType entityType)
+    {
+        return EntityIsAnEnemyStructure(entityTeam, entityType) || EntityIsAnEpicMonster(entityType);
+    }
+
+    private static bool EntityIsAnObjectiveOrAnEnemyCharacter(EntityTeam entityTeam, EntityType entityType)
+    {
+        return EntityIsAnObjective(entityTeam, entityType) || EntityIsAnEnemyCharacter(entityTeam, entityType);
     }
 
     private static bool EntityIsAPet(EntityType entityType)

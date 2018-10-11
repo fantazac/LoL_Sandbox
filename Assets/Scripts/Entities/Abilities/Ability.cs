@@ -310,18 +310,21 @@ public abstract class Ability : MonoBehaviour
 
     public virtual void EnableAbilityPassive() { }
 
-    protected void AbilityHit(Entity entityHit, float damage)
+    protected void AbilityHit(Entity entityHit, float damage, bool callOnAbilityHit = true)
     {
-        if (AppliesAbilityEffects)
+        if(damage > 0)
         {
-            character.CharacterAbilityEffectsManager.ApplyAbilityEffectsToEntityHit(entityHit, damage);
-        }
-        if (AppliesOnHitEffects)
-        {
-            character.CharacterOnHitEffectsManager.ApplyOnHitEffectsToEntityHit(entityHit, damage);
+            if (AppliesAbilityEffects)
+            {
+                character.CharacterAbilityEffectsManager.ApplyAbilityEffectsToEntityHit(entityHit, damage);
+            }
+            if (AppliesOnHitEffects)
+            {
+                character.CharacterOnHitEffectsManager.ApplyOnHitEffectsToEntityHit(entityHit, damage);
+            }
         }
         entityHit.EntityEffectSourceManager.EntityHitByAbility(this);
-        if (OnAbilityHit != null)
+        if (OnAbilityHit != null && callOnAbilityHit)
         {
             OnAbilityHit(this, entityHit);
         }
