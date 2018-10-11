@@ -3,8 +3,7 @@
     private Ability lucianE;
     private float cooldownReducedOnPassiveHitOnCharacter;
     private float cooldownReducedOnPassiveHit;
-    private float criticalStrikeMultiplier;
-    //private float criticalStrikeMultiplierAgainstMinions;
+    private float criticalStrikeMultiplierAgainstNonMinions;
 
     protected Lucian_P()
     {
@@ -23,8 +22,7 @@
 
         cooldownReducedOnPassiveHitOnCharacter = 2;
         cooldownReducedOnPassiveHit = 1;
-        criticalStrikeMultiplier = 1.75f;
-        //criticalStrikeMultiplierAgainstMinions = 2;
+        criticalStrikeMultiplierAgainstNonMinions = 1.75f;
 
         AppliesOnHitEffects = true;
 
@@ -77,22 +75,9 @@
 
     public override void OnEmpoweredBasicAttackHit(Entity entityHit, bool isACriticalAttack)
     {
-        float damage = GetAbilityDamage(entityHit);
+        float damage = GetAbilityDamage(entityHit, isACriticalAttack, criticalStrikeMultiplierAgainstNonMinions, true);
+        //TODO: Minions basically take a normal basic attack worth of damage, see what i can do instead of calling ability's GetAbilityDamage
 
-        //if (entityHit is Minion)
-        //{
-        //    entityHit.EntityStats.Health.Reduce(ApplyResistanceToDamage(entityHit, character.EntityStats.AttackDamage.GetTotal()));
-        //}
-        //else
-        //{
-        //    entityHit.EntityStats.Health.Reduce(GetAbilityDamage(entityHit));
-        //} 
-
-        if (isACriticalAttack)//TODO: This should be in GetAbilityDamage(entityHit, isACriticalStrike)
-        {
-            //damage *= entityHit is Minion ? criticalStrikeMultiplierAgainstMinions : criticalStrikeMultiplier;
-            damage *= criticalStrikeMultiplier;//TODO: Crit reduction (randuins)? Crit multiplier different than +100% (Jhin, IE)?
-        }
         entityHit.EntityStats.Health.Reduce(damage);
 
         UseAbility(entityHit);

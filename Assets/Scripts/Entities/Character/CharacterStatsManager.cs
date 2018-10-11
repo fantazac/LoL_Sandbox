@@ -6,12 +6,14 @@ public class CharacterStatsManager : MonoBehaviour
     private CharacterLevelManager characterLevelManager;
     private CharacterStats characterStats;
 
+    private float regenerationPercentPerTick;
     private float regenerationInterval;
     private WaitForSeconds delayRegeneration;
 
     private CharacterStatsManager()
     {
         regenerationInterval = 0.5f;
+        regenerationPercentPerTick = regenerationInterval / 5f;
         delayRegeneration = new WaitForSeconds(regenerationInterval);
     }
 
@@ -76,7 +78,7 @@ public class CharacterStatsManager : MonoBehaviour
     {
         if (health.GetTotal() > health.GetCurrentValue())
         {
-            health.Restore(healthRegen.GetTotal() * 0.1f);
+            health.Restore(healthRegen.GetTotal() * regenerationPercentPerTick);
         }
     }
 
@@ -84,7 +86,7 @@ public class CharacterStatsManager : MonoBehaviour
     {
         if (resource.GetTotal() > resource.GetCurrentValue())
         {
-            resource.Restore(resourceRegen.GetTotal() * 0.1f);
+            resource.Restore(resourceRegen.GetTotal() * regenerationPercentPerTick);
         }
     }
 }

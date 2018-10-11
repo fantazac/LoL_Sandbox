@@ -30,6 +30,8 @@
         AttackRange = new AttackRange(characterBaseStats.BaseAttackRange);
         Tenacity = new Tenacity();
 
+        CriticalStrikeDamage = new CriticalStrikeDamage(characterBaseStats.BaseCriticalStrikeDamage);
+
         //set extra character stats
 
         ExtraAdjustments();

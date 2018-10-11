@@ -312,7 +312,7 @@ public abstract class Ability : MonoBehaviour
 
     protected void AbilityHit(Entity entityHit, float damage, bool callOnAbilityHit = true)
     {
-        if(damage > 0)
+        if (damage > 0)
         {
             if (AppliesAbilityEffects)
             {
@@ -504,14 +504,21 @@ public abstract class Ability : MonoBehaviour
         cooldownOnCancel = baseCooldownOnCancel;
     }
 
-    protected float GetAbilityDamage(Entity entityHit)
+    protected float GetAbilityDamage(Entity entityHit, bool isACriticalStrike = false, float criticalStrikeDamage = 0, bool isABasicAttack = false)
     {
+        if (isACriticalStrike && criticalStrikeDamage == 0)
+        {
+            criticalStrikeDamage = character.EntityStats.CriticalStrikeDamage.GetTotal();
+        }
         float abilityDamage = damage +
             (bonusADScaling * character.EntityStats.AttackDamage.GetBonus()) +
             (totalADScaling * character.EntityStats.AttackDamage.GetTotal()) +
             (totalAPScaling * character.EntityStats.AbilityPower.GetTotal());
 
-        return ApplyResistanceToDamage(entityHit, abilityDamage) * ApplyDamageModifier(entityHit);
+        return ApplyResistanceToDamage(entityHit, abilityDamage) *
+            ApplyDamageModifier(entityHit) *
+            (isACriticalStrike ? criticalStrikeDamage : 1f);
+        // * (isABasicAttack ? 1f - entityHit.EntityStats.CriticalStrikeDamageReduction.GetTotal() : 1)
     }
 
     protected virtual float ApplyDamageModifier(Entity entityHit)

@@ -24,6 +24,8 @@
     public float BaseAttackRange { get; protected set; }
     public float BaseTenacity { get; protected set; }
 
+    public float BaseCriticalStrikeDamage { get; protected set; }
+
     public EntityBaseStats()
     {
         SetBaseStats();

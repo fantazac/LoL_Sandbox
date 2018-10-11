@@ -27,6 +27,8 @@ public abstract class EntityStats : MonoBehaviour
 
     public ResourceType ResourceType { get; protected set; }
 
+    public CriticalStrikeDamage CriticalStrikeDamage { get; protected set; }
+
     protected virtual void Awake()
     {
         InitializeEntityStats(GetEntityBaseStats());
@@ -54,6 +56,8 @@ public abstract class EntityStats : MonoBehaviour
         SpellVamp = new SpellVamp();
         AttackRange = new AttackRange(entityBaseStats.BaseAttackRange);
         Tenacity = new Tenacity();
+
+        CriticalStrikeDamage = new CriticalStrikeDamage(entityBaseStats.BaseCriticalStrikeDamage);
 
         ExtraAdjustments();
     }
