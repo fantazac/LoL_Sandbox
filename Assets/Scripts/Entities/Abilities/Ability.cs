@@ -320,6 +320,7 @@ public abstract class Ability : MonoBehaviour
         {
             character.CharacterOnHitEffectsManager.ApplyOnHitEffectsToEntityHit(entityHit, damage);
         }
+        entityHit.EntityEffectSourceManager.EntityHitByAbility(this);
         if (OnAbilityHit != null)
         {
             OnAbilityHit(this, entityHit);

@@ -157,6 +157,7 @@ public abstract class EntityBasicAttack : MonoBehaviour
             {
                 ((Character)entity).CharacterOnHitEffectsManager.ApplyOnHitEffectsToEntityHit(entityHit, damage);
             }
+            entityHit.EntityEffectSourceManager.EntityHitByBasicAttack(entity);
         }
         Destroy(basicAttackProjectile.gameObject);
     }

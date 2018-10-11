@@ -1,29 +1,35 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Ezreal_W : DirectionTargetedProjectile
 {
+    private float manaRefundedOnDamageDealt;
+    private List<Ability> abilitiesToTriggerMark;
+
     protected Ezreal_W()
     {
         abilityName = "Essence Flux";
 
         abilityType = AbilityType.Skillshot;
-        affectedUnitType = AbilityAffectedUnitType.CHARACTERS;
-        effectType = AbilityEffectType.AREA_OF_EFFECT;
+        affectedUnitType = AbilityAffectedUnitType.ENEMY_CHARACTERS;//TODO: ENEMY_STRUCTURES and EPIC_MONSTERS too, so make a new AbilityAffectedUnitType called OBJECTIVES
+        effectType = AbilityEffectType.SINGLE_TARGET;
         damageType = DamageType.MAGIC;
 
         MaxLevel = 5;
 
-        range = 1000;
+        range = 1150;
         speed = 1550;
-        damage = 70;// 70/115/160/205/250
+        damage = 75;// 75/120/165/210/255
         damagePerLevel = 45;
-        totalAPScaling = 0.8f;// 80%
-        resourceCost = 50;// 50/60/70/80/90
-        resourceCostPerLevel = 10;
-        baseCooldown = 9;// 9
+        bonusADScaling = 0.6f;// 60%
+        totalAPScaling = 0.7f;// 70%
+        resourceCost = 50;
+        baseCooldown = 12;// 12
         castTime = 0.2f;//TODO: VERIFY ACTUAL VALUE
         delayCastTime = new WaitForSeconds(castTime);
+
+        manaRefundedOnDamageDealt = 60;
 
         affectedByCooldownReduction = true;
     }
@@ -39,7 +45,11 @@ public class Ezreal_W : DirectionTargetedProjectile
     {
         base.Start();
 
-        AbilityBuffs = new AbilityBuff[] { gameObject.AddComponent<Ezreal_W_Buff>() };
+        AbilityDebuffs = new AbilityBuff[] { gameObject.AddComponent<Ezreal_W_Debuff>() };
+
+        AbilityDebuffs[0].OnAbilityBuffRemoved += RemoveDebuffFromEntityHit;
+
+        abilitiesToTriggerMark = new List<Ability>() { character.CharacterAbilityManager.CharacterAbilities[0], character.CharacterAbilityManager.CharacterAbilities[2], character.CharacterAbilityManager.CharacterAbilities[3] };
     }
 
     protected override IEnumerator AbilityWithCastTime()
@@ -59,16 +69,44 @@ public class Ezreal_W : DirectionTargetedProjectile
 
     protected override void OnProjectileHit(AbilityEffect projectile, Entity entityHit)
     {
-        float damage = 0;
-        if (entityHit.Team == character.Team)
+        Destroy(projectile.gameObject);
+        AddNewDebuffToEntityHit(entityHit);
+        AbilityHit(entityHit, 0);
+    }
+
+    private void AddNewDebuffToEntityHit(Entity entityHit)
+    {
+        entityHit.EntityEffectSourceManager.OnEntityHitByAbility += OnMarkedEntityHitByAbility;
+        entityHit.EntityEffectSourceManager.OnEntityHitByBasicAttack += OnMarkedEntityHitByBasicAttack;
+        AbilityDebuffs[0].AddNewBuffToAffectedEntity(entityHit);
+    }
+
+    private void RemoveDebuffFromEntityHit(Entity entityHit)
+    {
+        entityHit.EntityEffectSourceManager.OnEntityHitByAbility -= OnMarkedEntityHitByAbility;
+        entityHit.EntityEffectSourceManager.OnEntityHitByBasicAttack -= OnMarkedEntityHitByBasicAttack;
+    }
+
+    private void OnMarkedEntityHitByAbility(Entity entityHit, Ability sourceAbility)
+    {
+        if (entityHit.EntityBuffManager.GetDebuff(AbilityDebuffs[0]) != null && abilitiesToTriggerMark.Contains(sourceAbility))
         {
-            AbilityBuffs[0].AddNewBuffToAffectedEntity(entityHit);
+            DealDamageToMarkedEntity(entityHit, sourceAbility);
         }
-        else
+    }
+
+    private void OnMarkedEntityHitByBasicAttack(Entity entityHit, Entity sourceEntity)
+    {
+        if (entityHit.EntityBuffManager.GetDebuff(AbilityDebuffs[0]) != null && sourceEntity == character)
         {
-            damage = GetAbilityDamage(entityHit);
-            entityHit.EntityStats.Health.Reduce(damage);
+            DealDamageToMarkedEntity(entityHit);
         }
-        AbilityHit(entityHit, damage);
+    }
+
+    private void DealDamageToMarkedEntity(Entity entityHit, Ability sourceAbility = null)
+    {
+        AbilityDebuffs[0].ConsumeBuff(entityHit);
+        character.EntityStats.Resource.Restore(manaRefundedOnDamageDealt + (sourceAbility != null ? sourceAbility.GetResourceCost() : 0));
+        entityHit.EntityStats.Health.Reduce(GetAbilityDamage(entityHit));
     }
 }

@@ -7,7 +7,7 @@ public class EntityEffectSourceManager : MonoBehaviour
     public delegate void OnEntityHitByAbilityHandler(Entity entity, Ability ability);
     public event OnEntityHitByAbilityHandler OnEntityHitByAbility;
 
-    public delegate void OnEntityHitByBasicAttackHandler(Entity entity);
+    public delegate void OnEntityHitByBasicAttackHandler(Entity entity, Entity sourceEntity);
     public event OnEntityHitByBasicAttackHandler OnEntityHitByBasicAttack;
 
     private void Awake()
@@ -23,11 +23,11 @@ public class EntityEffectSourceManager : MonoBehaviour
         }
     }
 
-    public void EntityHitByBasicAttack()
+    public void EntityHitByBasicAttack(Entity sourceEntity)
     {
         if (OnEntityHitByBasicAttack != null)
         {
-            OnEntityHitByBasicAttack(entity);
+            OnEntityHitByBasicAttack(entity, sourceEntity);
         }
     }
 }

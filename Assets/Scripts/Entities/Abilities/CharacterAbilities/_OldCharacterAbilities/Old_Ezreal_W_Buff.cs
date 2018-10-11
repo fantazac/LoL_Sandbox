@@ -1,6 +1,6 @@
-﻿public class Ezreal_W_Buff : AbilityBuff
+﻿public class Old_Ezreal_W_Buff : AbilityBuff
 {
-    protected Ezreal_W_Buff()
+    protected Old_Ezreal_W_Buff()
     {
         buffName = "Essence Flux";
 
