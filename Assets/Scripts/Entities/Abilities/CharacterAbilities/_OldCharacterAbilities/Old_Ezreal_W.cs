@@ -22,7 +22,7 @@ public class Old_Ezreal_W : DirectionTargetedProjectile
         resourceCost = 50;// 50/60/70/80/90
         resourceCostPerLevel = 10;
         baseCooldown = 9;// 9
-        castTime = 0.2f;//TODO: VERIFY ACTUAL VALUE
+        castTime = 0.2f;//VERIFY ACTUAL VALUE
         delayCastTime = new WaitForSeconds(castTime);
 
         affectedByCooldownReduction = true;

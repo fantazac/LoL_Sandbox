@@ -105,7 +105,7 @@ public abstract class Ability : MonoBehaviour
 
     protected Ability()
     {
-        AppliesAbilityEffects = true;//TODO: Est-ce que y'a des abilities qui appliquent pas ca?
+        AppliesAbilityEffects = true;//TODO: Certaines abilities appliquent pas ca (ex. darius w) mais pourquoi?
 
         SetResourcePaths();
     }
