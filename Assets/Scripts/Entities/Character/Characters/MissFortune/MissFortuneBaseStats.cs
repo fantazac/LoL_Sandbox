@@ -29,6 +29,7 @@
         BaseTenacity = 0;
 
         BaseCriticalStrikeDamage = 2f;
+        BaseCriticalStrikeDamageReduction = 0;
 
         HealthPerLevel = 91;
         ResourcePerLevel = 35;

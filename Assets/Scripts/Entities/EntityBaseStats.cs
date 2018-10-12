@@ -25,6 +25,7 @@
     public float BaseTenacity { get; protected set; }
 
     public float BaseCriticalStrikeDamage { get; protected set; }
+    public float BaseCriticalStrikeDamageReduction { get; protected set; }
 
     public EntityBaseStats()
     {

@@ -14,6 +14,7 @@ public abstract class Character : Entity
     public CharacterLevelManager CharacterLevelManager { get; private set; }
     public CharacterMouseManager CharacterMouseManager { get; private set; }
     public CharacterMovement CharacterMovement { get; private set; }
+    public CharacterOnAttackEffectsManager CharacterOnAttackEffectsManager { get; private set; }
     public CharacterOnHitEffectsManager CharacterOnHitEffectsManager { get; private set; }
     public CharacterOrientation CharacterOrientation { get; private set; }
     public CharacterStatsManager CharacterStatsManager { get; private set; }
@@ -68,6 +69,7 @@ public abstract class Character : Entity
             CharacterBufferedAbilityManager = gameObject.AddComponent<CharacterBufferedAbilityManager>();
             CharacterLevelManager = gameObject.AddComponent<CharacterLevelManager>();
             CharacterMovement = gameObject.AddComponent<CharacterMovement>();
+            CharacterOnAttackEffectsManager = gameObject.AddComponent<CharacterOnAttackEffectsManager>();
             CharacterOnHitEffectsManager = gameObject.AddComponent<CharacterOnHitEffectsManager>();
             CharacterOrientation = gameObject.AddComponent<CharacterOrientation>();
             CharacterStatsManager = gameObject.AddComponent<CharacterStatsManager>();

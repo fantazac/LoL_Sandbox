@@ -28,6 +28,7 @@ public abstract class EntityStats : MonoBehaviour
     public ResourceType ResourceType { get; protected set; }
 
     public CriticalStrikeDamage CriticalStrikeDamage { get; protected set; }
+    public CriticalStrikeDamageReduction CriticalStrikeDamageReduction { get; protected set; }
 
     protected virtual void Awake()
     {
@@ -58,6 +59,7 @@ public abstract class EntityStats : MonoBehaviour
         Tenacity = new Tenacity();
 
         CriticalStrikeDamage = new CriticalStrikeDamage(entityBaseStats.BaseCriticalStrikeDamage);
+        CriticalStrikeDamageReduction = new CriticalStrikeDamageReduction();
 
         ExtraAdjustments();
     }

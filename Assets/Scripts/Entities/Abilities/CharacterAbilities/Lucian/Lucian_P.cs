@@ -75,13 +75,26 @@
 
     public override void OnEmpoweredBasicAttackHit(Entity entityHit, bool isACriticalAttack)
     {
-        float damage = GetAbilityDamage(entityHit, isACriticalAttack, criticalStrikeMultiplierAgainstNonMinions, true);
-        //TODO: Minions basically take a normal basic attack worth of damage, see what i can do instead of calling ability's GetAbilityDamage
-
+        float damage = GetAbilityDamage(entityHit, isACriticalAttack, character.EntityStats.CriticalStrikeDamage.GetTotal());
         entityHit.EntityStats.Health.Reduce(damage);
-
         UseAbility(entityHit);
-
         AbilityHit(entityHit, damage);
+    }
+
+    protected override float GetAbilityDamage(Entity entityHit, bool isACriticalStrike = false, float criticalStrikeDamage = 0)
+    {
+        float abilityDamage;
+        //if(entityHit is Minion)
+        //{
+        //    abilityDamage = damage + character.EntityStats.AttackDamage.GetTotal();
+        //}
+        //else
+        //{
+        abilityDamage = damage + (totalADScaling * character.EntityStats.AttackDamage.GetTotal());
+        criticalStrikeDamage *= criticalStrikeMultiplierAgainstNonMinions * 0.5f;
+        //}
+        return ApplyResistanceToDamage(entityHit, abilityDamage) *
+            ApplyDamageModifier(entityHit) *
+            (isACriticalStrike ? criticalStrikeDamage * (1f - entityHit.EntityStats.CriticalStrikeDamageReduction.GetTotal()) : 1f);
     }
 }

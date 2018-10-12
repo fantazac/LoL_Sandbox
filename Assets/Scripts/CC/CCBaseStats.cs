@@ -28,6 +28,9 @@
         BaseAttackRange = 550;
         BaseTenacity = 0;
 
+        BaseCriticalStrikeDamage = 2f;
+        BaseCriticalStrikeDamageReduction = 0;
+
         HealthPerLevel = 80;
         ResourcePerLevel = 40;
 

@@ -152,6 +152,7 @@ public abstract class EntityBasicAttack : MonoBehaviour
             if (entity is Character)
             {
                 ((Character)entity).CharacterOnHitEffectsManager.ApplyOnHitEffectsToEntityHit(entityHit, damage);
+                ((Character)entity).CharacterOnAttackEffectsManager.ApplyOnAttackEffectsToEntityHit(entityHit, damage);
             }
             entityHit.EntityEffectSourceManager.EntityHitByBasicAttack(entity);
         }
@@ -160,9 +161,8 @@ public abstract class EntityBasicAttack : MonoBehaviour
 
     protected float GetBasicAttackDamage(Entity entityHit, bool IsACriticalAttack)
     {
-        return ApplyResistanceToDamage(entityHit, entity.EntityStats.AttackDamage.GetTotal()) * 
-            (IsACriticalAttack ? entity.EntityStats.CriticalStrikeDamage.GetTotal() : 1f);
-        // * (1f - entityHit.EntityStats.CriticalStrikeDamageReduction.GetTotal())
+        return ApplyResistanceToDamage(entityHit, entity.EntityStats.AttackDamage.GetTotal()) *
+            (IsACriticalAttack ? entity.EntityStats.CriticalStrikeDamage.GetTotal() * (1f - entityHit.EntityStats.CriticalStrikeDamageReduction.GetTotal()) : 1f);
     }
 
     protected float ApplyResistanceToDamage(Entity entityHit, float damage)
