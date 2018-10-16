@@ -30,6 +30,7 @@
     public float BaseMagicDamageModifier { get; protected set; }
     public float BasePhysicalDamageReceivedModifier { get; protected set; }
     public float BaseMagicDamageReceivedModifier { get; protected set; }
+    public float BaseHealAndShieldPower { get; protected set; }
 
     public EntityBaseStats()
     {

@@ -33,6 +33,7 @@ public abstract class EntityStats : MonoBehaviour
     public MagicDamageModifier MagicDamageModifier { get; protected set; }
     public PhysicalDamageReceivedModifier PhysicalDamageReceivedModifier { get; protected set; }
     public MagicDamageReceivedModifier MagicDamageReceivedModifier { get; protected set; }
+    public HealAndShieldPower HealAndShieldPower { get; protected set; }
 
     protected virtual void Awake()
     {
@@ -68,6 +69,7 @@ public abstract class EntityStats : MonoBehaviour
         MagicDamageModifier = new MagicDamageModifier();
         PhysicalDamageReceivedModifier = new PhysicalDamageReceivedModifier();
         MagicDamageReceivedModifier = new MagicDamageReceivedModifier();
+        HealAndShieldPower = new HealAndShieldPower();
 
         ExtraAdjustments();
     }

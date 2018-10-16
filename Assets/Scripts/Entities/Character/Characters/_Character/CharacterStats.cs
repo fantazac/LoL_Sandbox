@@ -36,6 +36,7 @@
         MagicDamageModifier = new MagicDamageModifier();
         PhysicalDamageReceivedModifier = new PhysicalDamageReceivedModifier();
         MagicDamageReceivedModifier = new MagicDamageReceivedModifier();
+        HealAndShieldPower = new HealAndShieldPower();
 
         //set extra character stats
 

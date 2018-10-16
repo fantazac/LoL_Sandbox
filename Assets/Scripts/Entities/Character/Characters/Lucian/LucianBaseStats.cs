@@ -34,6 +34,7 @@
         BaseMagicDamageModifier = 1f;
         BasePhysicalDamageReceivedModifier = 1f;
         BaseMagicDamageReceivedModifier = 1f;
+        BaseHealAndShieldPower = 1f;
 
         HealthPerLevel = 86;
         ResourcePerLevel = 38;
