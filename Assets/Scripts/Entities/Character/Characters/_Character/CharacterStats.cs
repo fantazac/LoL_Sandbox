@@ -32,8 +32,10 @@
 
         CriticalStrikeDamage = new CriticalStrikeDamage(characterBaseStats.BaseCriticalStrikeDamage);
         CriticalStrikeDamageReduction = new CriticalStrikeDamageReduction();
-        PhysicalDamageIncreaseModifier = new PhysicalDamageIncreaseModifier();
-        MagicDamageIncreaseModifier = new MagicDamageIncreaseModifier();
+        PhysicalDamageModifier = new PhysicalDamageModifier();
+        MagicDamageModifier = new MagicDamageModifier();
+        PhysicalDamageReceivedModifier = new PhysicalDamageReceivedModifier();
+        MagicDamageReceivedModifier = new MagicDamageReceivedModifier();
 
         //set extra character stats
 

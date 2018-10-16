@@ -528,14 +528,14 @@ public abstract class Ability : MonoBehaviour
             float totalResistance = entityHit.EntityStats.MagicResistance.GetTotal();
             totalResistance *= (1 - character.EntityStats.MagicPenetrationPercent.GetTotal());
             totalResistance -= character.EntityStats.MagicPenetrationFlat.GetTotal();
-            return damage * GetResistanceDamageReceivedModifier(totalResistance) * character.EntityStats.MagicDamageIncreaseModifier.GetTotal();
+            return damage * GetResistanceDamageReceivedModifier(totalResistance) * entityHit.EntityStats.MagicDamageReceivedModifier.GetTotal() * character.EntityStats.MagicDamageModifier.GetTotal();
         }
         else if (damageType == DamageType.PHYSICAL)
         {
             float totalResistance = entityHit.EntityStats.Armor.GetTotal();
             totalResistance *= (1 - character.EntityStats.ArmorPenetrationPercent.GetTotal());
             totalResistance -= character.EntityStats.Lethality.GetCurrentValue();
-            return damage * GetResistanceDamageReceivedModifier(totalResistance) * character.EntityStats.PhysicalDamageIncreaseModifier.GetTotal();
+            return damage * GetResistanceDamageReceivedModifier(totalResistance) * entityHit.EntityStats.PhysicalDamageReceivedModifier.GetTotal() * character.EntityStats.PhysicalDamageModifier.GetTotal();
         }
 
         return damage;

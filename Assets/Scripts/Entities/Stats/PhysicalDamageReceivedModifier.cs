@@ -1,6 +1,6 @@
-﻿public class MagicDamageIncreaseModifier : Stat
+﻿public class PhysicalDamageReceivedModifier : Stat
 {
-    public MagicDamageIncreaseModifier() : base(1f)
+    public PhysicalDamageReceivedModifier() : base(1f)
     {
         percentBonus = 1f;
         percentMalus = 1f;

@@ -159,10 +159,11 @@ public abstract class EntityBasicAttack : MonoBehaviour
         Destroy(basicAttackProjectile.gameObject);
     }
 
-    protected float GetBasicAttackDamage(Entity entityHit, bool IsACriticalAttack)
+    protected float GetBasicAttackDamage(Entity entityHit, bool isACriticalAttack)
     {
+        //TODO: Right now, it considers the basic attack will ALWAYS do physical damage. Will need to implement damage type check (ex. corki autos deal 80% magic, 20% physical)
         return ApplyDamageModifiers(entityHit, entity.EntityStats.AttackDamage.GetTotal()) *
-            (IsACriticalAttack ? entity.EntityStats.CriticalStrikeDamage.GetTotal() * (1f - entityHit.EntityStats.CriticalStrikeDamageReduction.GetTotal()) : 1f);
+            (isACriticalAttack ? entity.EntityStats.CriticalStrikeDamage.GetTotal() * (1f - entityHit.EntityStats.CriticalStrikeDamageReduction.GetTotal()) : 1f);
     }
 
     protected float ApplyDamageModifiers(Entity entityHit, float damage)
@@ -170,7 +171,7 @@ public abstract class EntityBasicAttack : MonoBehaviour
         float totalResistance = entityHit.EntityStats.Armor.GetTotal();
         totalResistance *= (1 - entity.EntityStats.ArmorPenetrationPercent.GetTotal());
         totalResistance -= entity.EntityStats.Lethality.GetCurrentValue();
-        return damage * GetResistanceDamageReceivedModifier(totalResistance) * entity.EntityStats.PhysicalDamageIncreaseModifier.GetTotal();
+        return damage * GetResistanceDamageReceivedModifier(totalResistance) * entityHit.EntityStats.PhysicalDamageReceivedModifier.GetTotal() * entity.EntityStats.PhysicalDamageModifier.GetTotal();
     }
 
     protected float GetResistanceDamageReceivedModifier(float totalResistance)
