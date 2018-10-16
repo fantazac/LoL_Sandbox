@@ -511,37 +511,37 @@ public abstract class Ability : MonoBehaviour
             (totalADScaling * character.EntityStats.AttackDamage.GetTotal()) +
             (totalAPScaling * character.EntityStats.AbilityPower.GetTotal());
 
-        return ApplyResistanceToDamage(entityHit, abilityDamage) *
-            ApplyDamageModifier(entityHit) *
+        return ApplyDamageModifiers(entityHit, abilityDamage) *
             (isACriticalStrike ? criticalStrikeDamage : 1f);
     }
 
-    protected virtual float ApplyDamageModifier(Entity entityHit)
+    protected virtual float ApplyAbilityDamageModifier(Entity entityHit)
     {
         return 1f;
     }
 
-    protected float ApplyResistanceToDamage(Entity entityHit, float damage)
+    protected float ApplyDamageModifiers(Entity entityHit, float damage)
     {
+        damage *= ApplyAbilityDamageModifier(entityHit);
         if (damageType == DamageType.MAGIC)
         {
             float totalResistance = entityHit.EntityStats.MagicResistance.GetTotal();
             totalResistance *= (1 - character.EntityStats.MagicPenetrationPercent.GetTotal());
             totalResistance -= character.EntityStats.MagicPenetrationFlat.GetTotal();
-            return damage * GetResistanceDamageTakenMultiplier(totalResistance);
+            return damage * GetResistanceDamageReceivedModifier(totalResistance) * character.EntityStats.MagicDamageIncreaseModifier.GetTotal();
         }
         else if (damageType == DamageType.PHYSICAL)
         {
             float totalResistance = entityHit.EntityStats.Armor.GetTotal();
             totalResistance *= (1 - character.EntityStats.ArmorPenetrationPercent.GetTotal());
             totalResistance -= character.EntityStats.Lethality.GetCurrentValue();
-            return damage * GetResistanceDamageTakenMultiplier(totalResistance);
+            return damage * GetResistanceDamageReceivedModifier(totalResistance) * character.EntityStats.PhysicalDamageIncreaseModifier.GetTotal();
         }
 
         return damage;
     }
 
-    protected float GetResistanceDamageTakenMultiplier(float totalResistance)
+    protected float GetResistanceDamageReceivedModifier(float totalResistance)
     {
         if (totalResistance >= 0)
         {

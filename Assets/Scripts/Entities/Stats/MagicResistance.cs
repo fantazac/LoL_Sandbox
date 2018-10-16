@@ -18,7 +18,7 @@
         this.percentMalus = 100 - (100 - this.percentMalus) / ((100 - percentMalus) * 0.01f);
     }
 
-    private float GetMagicDamageTakenMultiplier()
+    private float GetResistanceDamageReceivedModifier()
     {
         if (total >= 0)
         {
@@ -32,11 +32,11 @@
 
     public float GetMagicEffectiveHealthPercent()
     {
-        return 1 + (GetMagicDamageReductionPercent() / GetMagicDamageTakenMultiplier());
+        return 1 + (GetMagicDamageReductionPercent() / GetResistanceDamageReceivedModifier());
     }
 
     public float GetMagicDamageReductionPercent()
     {
-        return 1 - GetMagicDamageTakenMultiplier();
+        return 1 - GetResistanceDamageReceivedModifier();
     }
 }

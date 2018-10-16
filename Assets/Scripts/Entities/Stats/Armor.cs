@@ -18,7 +18,7 @@
         this.percentMalus = 100 - (100 - this.percentMalus) / ((100 - percentMalus) * 0.01f);
     }
 
-    private float GetPhysicalDamageTakenMultiplier()
+    private float GetResistanceDamageReceivedModifier()
     {
         if (total >= 0)
         {
@@ -32,11 +32,11 @@
 
     public float GetPhysicalEffectiveHealthPercent()
     {
-        return 1 + (GetPhysicalDamageReductionPercent() / GetPhysicalDamageTakenMultiplier());
+        return 1 + (GetPhysicalDamageReductionPercent() / GetResistanceDamageReceivedModifier());
     }
 
     public float GetPhysicalDamageReductionPercent()
     {
-        return 1 - GetPhysicalDamageTakenMultiplier();
+        return 1 - GetResistanceDamageReceivedModifier();
     }
 }

@@ -116,7 +116,7 @@ public class Lucian_R : DirectionTargetedProjectile
         SpawnProjectile(transform.position + (transform.forward * projectilePrefab.transform.localScale.z * 0.5f) + (transform.right * (projectileId % 2 == 0 ? projectileOffset : -projectileOffset)), transform.rotation);
     }
 
-    protected override float ApplyDamageModifier(Entity entityHit)
+    protected override float ApplyAbilityDamageModifier(Entity entityHit)
     {
         //TODO when Minion exists: return entityHit is Minion ? damageMultiplierAgainstMinions : 1f ;
         return 1f;

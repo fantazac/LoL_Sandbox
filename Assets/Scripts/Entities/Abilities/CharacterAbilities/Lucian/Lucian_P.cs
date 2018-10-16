@@ -93,8 +93,8 @@
         abilityDamage = damage + (totalADScaling * character.EntityStats.AttackDamage.GetTotal());
         criticalStrikeDamage *= criticalStrikeMultiplierAgainstNonMinions * 0.5f;
         //}
-        return ApplyResistanceToDamage(entityHit, abilityDamage) *
-            ApplyDamageModifier(entityHit) *
+        return ApplyDamageModifiers(entityHit, abilityDamage) *
+            ApplyAbilityDamageModifier(entityHit) *
             (isACriticalStrike ? criticalStrikeDamage * (1f - entityHit.EntityStats.CriticalStrikeDamageReduction.GetTotal()) : 1f);
     }
 }

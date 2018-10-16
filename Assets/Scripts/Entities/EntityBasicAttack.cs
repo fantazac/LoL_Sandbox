@@ -161,19 +161,19 @@ public abstract class EntityBasicAttack : MonoBehaviour
 
     protected float GetBasicAttackDamage(Entity entityHit, bool IsACriticalAttack)
     {
-        return ApplyResistanceToDamage(entityHit, entity.EntityStats.AttackDamage.GetTotal()) *
+        return ApplyDamageModifiers(entityHit, entity.EntityStats.AttackDamage.GetTotal()) *
             (IsACriticalAttack ? entity.EntityStats.CriticalStrikeDamage.GetTotal() * (1f - entityHit.EntityStats.CriticalStrikeDamageReduction.GetTotal()) : 1f);
     }
 
-    protected float ApplyResistanceToDamage(Entity entityHit, float damage)
+    protected float ApplyDamageModifiers(Entity entityHit, float damage)
     {
         float totalResistance = entityHit.EntityStats.Armor.GetTotal();
         totalResistance *= (1 - entity.EntityStats.ArmorPenetrationPercent.GetTotal());
         totalResistance -= entity.EntityStats.Lethality.GetCurrentValue();
-        return damage * GetResistanceDamageTakenMultiplier(totalResistance);
+        return damage * GetResistanceDamageReceivedModifier(totalResistance) * entity.EntityStats.PhysicalDamageIncreaseModifier.GetTotal();
     }
 
-    protected float GetResistanceDamageTakenMultiplier(float totalResistance)
+    protected float GetResistanceDamageReceivedModifier(float totalResistance)
     {
         if (totalResistance >= 0)
         {
