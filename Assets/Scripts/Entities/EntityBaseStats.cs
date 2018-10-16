@@ -26,6 +26,8 @@
 
     public float BaseCriticalStrikeDamage { get; protected set; }
     public float BaseCriticalStrikeDamageReduction { get; protected set; }
+    public float BasePhysicalDamageModifier { get; protected set; }
+    public float BaseMagicDamageModifier { get; protected set; }
 
     public EntityBaseStats()
     {

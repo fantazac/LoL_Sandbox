@@ -9,7 +9,7 @@ public abstract class AbilityEffect : MonoBehaviour
 
     public List<Entity> UnitsAlreadyHit { get; protected set; }
 
-    public delegate void OnAbilityEffectHitHandler(AbilityEffect abilityEffect, Entity entityHit);
+    public delegate void OnAbilityEffectHitHandler(AbilityEffect abilityEffect, Entity entityHit, bool isACriticalStrike, bool willMiss);
     public event OnAbilityEffectHitHandler OnAbilityEffectHit;
 
     protected AbilityEffect()
@@ -39,11 +39,11 @@ public abstract class AbilityEffect : MonoBehaviour
         return false;
     }
 
-    protected void OnAbilityEffectHitTarget(Entity entityHit)
+    protected void OnAbilityEffectHitTarget(Entity entityHit, bool isACriticalStrike = false, bool willMiss = false)
     {
         if (OnAbilityEffectHit != null)
         {
-            OnAbilityEffectHit(this, entityHit);
+            OnAbilityEffectHit(this, entityHit, isACriticalStrike, willMiss);
         }
     }
 

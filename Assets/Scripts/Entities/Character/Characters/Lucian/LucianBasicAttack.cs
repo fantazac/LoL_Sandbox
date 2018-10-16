@@ -81,23 +81,23 @@ public class LucianBasicAttack : EmpoweredCharacterBasicAttack
             ProjectileUnitTargeted projectile2 = (Instantiate(empoweredBasicAttackPrefab, transform.position, transform.rotation)).GetComponent<ProjectileUnitTargeted>();
             projectile2.transform.LookAt(target.transform);
             projectile2.ShootProjectile(entity.Team, target, speed, AttackIsCritical.CheckIfAttackIsCritical(entity.EntityStats.CriticalStrikeChance.GetTotal()));
-            projectile2.OnProjectileUnitTargetedHit += PassiveBasicAttackHit;
+            projectile2.OnAbilityEffectHit += PassiveBasicAttackHit;
         }
 
         isShootingPassiveShot = false;
         shootBasicAttackCoroutine = null;
     }
 
-    protected override void OnEmpoweredBasicAttackHit(Entity entityHit, bool isACriticalAttack)
+    protected override void OnEmpoweredBasicAttackHit(Entity entityHit, bool isACriticalStrike)
     {
         basicAttackEmpoweringAbility.UseAbility(entityHit);
     }
 
-    private void PassiveBasicAttackHit(AbilityEffect basicAttackProjectile, Entity entityHit, bool isACriticalAttack, bool willMiss)
+    private void PassiveBasicAttackHit(AbilityEffect basicAttackProjectile, Entity entityHit, bool isACriticalStrike, bool willMiss)
     {
         if (!(entity.EntityStatusManager.IsBlinded() || willMiss))
         {
-            basicAttackEmpoweringAbility.OnEmpoweredBasicAttackHit(entityHit, isACriticalAttack);
+            basicAttackEmpoweringAbility.OnEmpoweredBasicAttackHit(entityHit, isACriticalStrike);
         }
         Destroy(basicAttackProjectile.gameObject);
     }

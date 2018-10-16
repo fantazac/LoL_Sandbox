@@ -73,42 +73,27 @@ public class MissFortune_Q : UnitTargetedProjectile
         FinishAbilityCast();
     }
 
-    protected override void OnAbilityEffectHit(AbilityEffect projectile, Entity entityHit)
+    protected override void OnAbilityEffectHit(AbilityEffect projectile, Entity entityHit, bool isACriticalStrike, bool willMiss)
     {
-        base.OnAbilityEffectHit(projectile, entityHit);
+        base.OnAbilityEffectHit(projectile, entityHit, isACriticalStrike, willMiss);
         Entity nextEntity = FindTargetBehindEntityHit(entityHit);
         if (nextEntity)
         {
-            bool isACriticalAttack;
-            if (entityHit.EntityStats.Health.GetCurrentValue() <= 0)
+            bool secondHitIsACriticalStrike;
+            if (entityHit.EntityStats.Health.IsDead())
             {
-                isACriticalAttack = true;
+                secondHitIsACriticalStrike = true;
             }
             else
             {
-                isACriticalAttack = AttackIsCritical.CheckIfAttackIsCritical(character.EntityStats.CriticalStrikeChance.GetTotal());
+                secondHitIsACriticalStrike = AttackIsCritical.CheckIfAttackIsCritical(character.EntityStats.CriticalStrikeChance.GetTotal());
             }
 
             ProjectileUnitTargeted projectile2 = (Instantiate(projectilePrefab, entityHit.transform.position, transform.rotation)).GetComponent<ProjectileUnitTargeted>();
             projectile2.transform.LookAt(nextEntity.transform.position);
-            projectile2.ShootProjectile(character.Team, nextEntity, speed, isACriticalAttack);
-            projectile2.OnProjectileUnitTargetedHit += OnProjectileHit;
+            projectile2.ShootProjectile(character.Team, nextEntity, speed, secondHitIsACriticalStrike);
+            projectile2.OnAbilityEffectHit += base.OnAbilityEffectHit;
         }
-    }
-
-    private void OnProjectileHit(AbilityEffect projectile, Entity entityHit, bool isACriticalAttack, bool willMiss)//TODO: this should not exist, just call base.OnAbilityEffectHit and pass it if it crits
-    {
-        float damage = GetAbilityDamage(entityHit);
-        if (isACriticalAttack)
-        {
-            damage *= 2;//TODO: Crit reduction (randuins)? Crit multiplier different than +100% (Jhin, IE)?
-        }
-        entityHit.EntityStats.Health.Reduce(damage);
-        if (effectType == AbilityEffectType.SINGLE_TARGET)
-        {
-            Destroy(projectile.gameObject);
-        }
-        AbilityHit(entityHit, damage);
     }
 
     private Entity FindTargetBehindEntityHit(Entity entityHit)

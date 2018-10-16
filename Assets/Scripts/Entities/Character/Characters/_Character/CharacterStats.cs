@@ -31,6 +31,9 @@
         Tenacity = new Tenacity();
 
         CriticalStrikeDamage = new CriticalStrikeDamage(characterBaseStats.BaseCriticalStrikeDamage);
+        CriticalStrikeDamageReduction = new CriticalStrikeDamageReduction();
+        PhysicalDamageIncreaseModifier = new PhysicalDamageIncreaseModifier();
+        MagicDamageIncreaseModifier = new MagicDamageIncreaseModifier();
 
         //set extra character stats
 

@@ -5,18 +5,22 @@ public abstract class Projectile : AbilityEffect
 {
     protected float speed;
     protected float range;
+    protected bool isACriticalStrike;
+    protected bool willMiss;
 
     protected Vector3 initialPosition;
 
     public delegate void OnProjectileReachedEndHandler(Projectile projectile);
     public event OnProjectileReachedEndHandler OnProjectileReachedEnd;
 
-    public void ShootProjectile(EntityTeam teamOfCallingEntity, AbilityAffectedUnitType affectedUnitType, float speed, float range)
+    public void ShootProjectile(EntityTeam teamOfCallingEntity, AbilityAffectedUnitType affectedUnitType, float speed, float range, bool isACriticalStrike = false, bool willMiss = false)
     {
         this.teamOfCallingEntity = teamOfCallingEntity;
         this.affectedUnitType = affectedUnitType;
         this.speed = speed;
         this.range = range;
+        this.isACriticalStrike = isACriticalStrike;
+        this.willMiss = willMiss;
         initialPosition = transform.position;
         StartCoroutine(ActivateAbilityEffect());
     }

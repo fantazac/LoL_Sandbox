@@ -64,7 +64,7 @@ public class CC_Q : SelfTargeted
         FinishAbilityCast();
     }
 
-    public override void OnEmpoweredBasicAttackHit(Entity entityHit, bool isACriticalAttack = false)
+    public override void OnEmpoweredBasicAttackHit(Entity entityHit, bool isACriticalStrike)
     {
         AbilityBuffs[0].ConsumeBuff(character);
 

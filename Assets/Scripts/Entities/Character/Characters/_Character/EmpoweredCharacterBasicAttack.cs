@@ -49,25 +49,25 @@ public abstract class EmpoweredCharacterBasicAttack : CharacterBasicAttack
         projectile.ShootProjectile(entity.Team, target, speed, AttackIsCritical.CheckIfAttackIsCritical(entity.EntityStats.CriticalStrikeChance.GetTotal()));
         if (empoweringAbilityWasActiveOnBasicAttackCast)
         {
-            projectile.OnProjectileUnitTargetedHit += BasicAttackHit;
+            projectile.OnAbilityEffectHit += BasicAttackHit;
         }
         else
         {
-            projectile.OnProjectileUnitTargetedHit += base.BasicAttackHit;
+            projectile.OnAbilityEffectHit += base.BasicAttackHit;
         }
     }
 
-    protected override void BasicAttackHit(AbilityEffect basicAttackProjectile, Entity entityHit, bool isACriticalAttack, bool willMiss)
+    protected override void BasicAttackHit(AbilityEffect basicAttackProjectile, Entity entityHit, bool isACriticalStrike, bool willMiss)
     {
         if (!(entity.EntityStatusManager.IsBlinded() || willMiss))
         {
-            OnEmpoweredBasicAttackHit(entityHit, isACriticalAttack);
+            OnEmpoweredBasicAttackHit(entityHit, isACriticalStrike);
         }
-        base.BasicAttackHit(basicAttackProjectile, entityHit, isACriticalAttack, willMiss);
+        base.BasicAttackHit(basicAttackProjectile, entityHit, isACriticalStrike, willMiss);
     }
 
-    protected virtual void OnEmpoweredBasicAttackHit(Entity entityHit, bool isACriticalAttack)
+    protected virtual void OnEmpoweredBasicAttackHit(Entity entityHit, bool isACriticalStrike)
     {
-        basicAttackEmpoweringAbility.OnEmpoweredBasicAttackHit(entityHit, isACriticalAttack);
+        basicAttackEmpoweringAbility.OnEmpoweredBasicAttackHit(entityHit, isACriticalStrike);
     }
 }

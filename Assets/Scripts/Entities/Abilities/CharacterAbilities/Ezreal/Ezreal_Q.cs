@@ -42,12 +42,12 @@ public class Ezreal_Q : DirectionTargetedProjectile
         projectilePrefabPath = "CharacterAbilitiesPrefabs/Ezreal/EzrealQ";
     }
 
-    protected override void OnProjectileHit(AbilityEffect projectile, Entity entityHit)
+    protected override void OnProjectileHit(AbilityEffect projectile, Entity entityHit, bool isACriticalStrike, bool willMiss)
     {
         foreach (Ability ability in character.CharacterAbilityManager.CharacterAbilities)
         {
             ability.ReduceCooldown(cooldownReductionOnProjectileHit);
         }
-        base.OnProjectileHit(projectile, entityHit);
+        base.OnProjectileHit(projectile, entityHit, isACriticalStrike, willMiss);
     }
 }

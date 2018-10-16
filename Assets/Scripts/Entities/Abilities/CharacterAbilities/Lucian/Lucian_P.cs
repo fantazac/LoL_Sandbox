@@ -73,9 +73,9 @@
         }
     }
 
-    public override void OnEmpoweredBasicAttackHit(Entity entityHit, bool isACriticalAttack)
+    public override void OnEmpoweredBasicAttackHit(Entity entityHit, bool isACriticalStrike)
     {
-        float damage = GetAbilityDamage(entityHit, isACriticalAttack, character.EntityStats.CriticalStrikeDamage.GetTotal());
+        float damage = GetAbilityDamage(entityHit, isACriticalStrike, character.EntityStats.CriticalStrikeDamage.GetTotal());
         entityHit.EntityStats.Health.Reduce(damage);
         UseAbility(entityHit);
         AbilityHit(entityHit, damage);

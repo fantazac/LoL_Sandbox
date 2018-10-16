@@ -60,9 +60,9 @@ public class Lucian_W : DirectionTargetedProjectile
         AbilityDebuffs[0].OnAbilityBuffRemoved += RemoveDebuffFromEntityHit;
     }
 
-    protected override void OnProjectileHit(AbilityEffect projectile, Entity entityHit)
+    protected override void OnProjectileHit(AbilityEffect projectile, Entity entityHit, bool isACriticalStrike, bool willMiss)
     {
-        OnAreaOfEffectHit(projectile, entityHit);
+        OnAreaOfEffectHit(projectile, entityHit, isACriticalStrike, willMiss);
         OnProjectileReachedEnd((Projectile)projectile);
     }
 
@@ -75,7 +75,7 @@ public class Lucian_W : DirectionTargetedProjectile
         Destroy(projectile.gameObject);
     }
 
-    private void OnAreaOfEffectHit(AbilityEffect projectile, Entity entityHit)
+    private void OnAreaOfEffectHit(AbilityEffect projectile, Entity entityHit, bool isACriticalStrike, bool willMiss)
     {
         float damage = GetAbilityDamage(entityHit);
         entityHit.EntityStats.Health.Reduce(damage);

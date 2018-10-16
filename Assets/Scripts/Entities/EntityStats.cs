@@ -29,6 +29,8 @@ public abstract class EntityStats : MonoBehaviour
 
     public CriticalStrikeDamage CriticalStrikeDamage { get; protected set; }
     public CriticalStrikeDamageReduction CriticalStrikeDamageReduction { get; protected set; }
+    public PhysicalDamageIncreaseModifier PhysicalDamageIncreaseModifier { get; protected set; }
+    public MagicDamageIncreaseModifier MagicDamageIncreaseModifier { get; protected set; }
 
     protected virtual void Awake()
     {
@@ -60,6 +62,8 @@ public abstract class EntityStats : MonoBehaviour
 
         CriticalStrikeDamage = new CriticalStrikeDamage(entityBaseStats.BaseCriticalStrikeDamage);
         CriticalStrikeDamageReduction = new CriticalStrikeDamageReduction();
+        PhysicalDamageIncreaseModifier = new PhysicalDamageIncreaseModifier();
+        MagicDamageIncreaseModifier = new MagicDamageIncreaseModifier();
 
         ExtraAdjustments();
     }

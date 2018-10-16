@@ -30,6 +30,8 @@
 
         BaseCriticalStrikeDamage = 2f;
         BaseCriticalStrikeDamageReduction = 0;
+        BasePhysicalDamageModifier = 0;
+        BaseMagicDamageModifier = 0;
 
         HealthPerLevel = 80;
         ResourcePerLevel = 40;

@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-public class ProjectileMultipleTargetsExpanding : ProjectileMultipleTargets//TODO: Currently only works for MissFortune_R
+public class ProjectileMultipleTargetsExpanding : ProjectileMultipleTargets//TODO: Currently only used for MissFortune_R
 {
     private float initialXScale;
     private float finalXScale;

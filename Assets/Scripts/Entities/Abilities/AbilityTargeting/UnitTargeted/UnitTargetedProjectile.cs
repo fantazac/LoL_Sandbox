@@ -10,9 +10,9 @@ public abstract class UnitTargetedProjectile : UnitTargeted
         projectilePrefab = Resources.Load<GameObject>(projectilePrefabPath);
     }
 
-    protected override void OnAbilityEffectHit(AbilityEffect projectile, Entity entityHit)
+    protected override void OnAbilityEffectHit(AbilityEffect projectile, Entity entityHit, bool isACriticalStrike, bool willMiss)
     {
-        float damage = GetAbilityDamage(entityHit);
+        float damage = GetAbilityDamage(entityHit, isACriticalStrike);
         entityHit.EntityStats.Health.Reduce(damage);
         if (effectType == AbilityEffectType.SINGLE_TARGET)
         {
