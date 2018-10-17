@@ -30,7 +30,7 @@
         AttackRange = new AttackRange(characterBaseStats.BaseAttackRange);
         Tenacity = new Tenacity();
 
-        CriticalStrikeDamage = new CriticalStrikeDamage(characterBaseStats.BaseCriticalStrikeDamage);
+        CriticalStrikeDamage = new CriticalStrikeDamage();
         CriticalStrikeDamageReduction = new CriticalStrikeDamageReduction();
         PhysicalDamageModifier = new PhysicalDamageModifier();
         MagicDamageModifier = new MagicDamageModifier();

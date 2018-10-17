@@ -4,38 +4,19 @@
 
     protected override void SetBaseStats()
     {
-        BaseHealth = 491f;
+        BaseHealth = 491;
         BaseResource = 360.6f;
 
         BaseAttackDamage = 60;
-        BaseAbilityPower = 0;
         BaseArmor = 22;
         BaseMagicResistance = 30;
         BaseAttackSpeed = 0.625f;
         AttackDelay = 0;
-        BaseCooldownReduction = 0;
-        BaseCriticalStrikeChance = 0;
         BaseMovementSpeed = 325;
 
-        BaseHealthRegeneration = 4f;
+        BaseHealthRegeneration = 4;
         BaseResourceRegeneration = 8.092f;
-        BaseLethality = 0;
-        BaseArmorPenetrationPercent = 0;
-        BaseMagicPenetrationFlat = 0;
-        BaseMagicPenetrationPercent = 0;
-        BaseLifeSteal = 0;
-        BaseSpellVamp = 0;
         BaseAttackRange = 550;
-        BaseTenacity = 0;
-
-        BaseCriticalStrikeDamage = 2f;
-        BaseCriticalStrikeDamageReduction = 0;
-        BasePhysicalDamageModifier = 1f;
-        BaseMagicDamageModifier = 1f;
-        BasePhysicalDamageReceivedModifier = 1f;
-        BaseMagicDamageReceivedModifier = 1f;
-        BaseHealAndShieldPower = 0;
-        BaseSlowResistance = 0;
 
         HealthPerLevel = 86;
         ResourcePerLevel = 42;

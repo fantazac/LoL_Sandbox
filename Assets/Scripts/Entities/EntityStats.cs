@@ -54,7 +54,7 @@ public abstract class EntityStats : MonoBehaviour
         CriticalStrikeChance = new CriticalStrikeChance();
         MovementSpeed = new MovementSpeed(entityBaseStats.BaseMovementSpeed);
 
-        HealthRegeneration = new HealthRegeneration(entityBaseStats.BaseHealthRegeneration);
+        HealthRegeneration = new HealthRegeneration();
         Lethality = new Lethality();
         ArmorPenetrationPercent = new ArmorPenetrationPercent();
         MagicPenetrationFlat = new MagicPenetrationFlat();
@@ -64,7 +64,7 @@ public abstract class EntityStats : MonoBehaviour
         AttackRange = new AttackRange(entityBaseStats.BaseAttackRange);
         Tenacity = new Tenacity();
 
-        CriticalStrikeDamage = new CriticalStrikeDamage(entityBaseStats.BaseCriticalStrikeDamage);
+        CriticalStrikeDamage = new CriticalStrikeDamage();
         CriticalStrikeDamageReduction = new CriticalStrikeDamageReduction();
         PhysicalDamageModifier = new PhysicalDamageModifier();
         MagicDamageModifier = new MagicDamageModifier();

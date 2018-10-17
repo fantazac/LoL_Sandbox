@@ -1,6 +1,6 @@
 ﻿public class CriticalStrikeDamage : Stat
 {
-    public CriticalStrikeDamage(float initialBaseValue) : base(initialBaseValue) { }
+    public CriticalStrikeDamage() : base(2f) { }
 
     public override void UpdateTotal()
     {

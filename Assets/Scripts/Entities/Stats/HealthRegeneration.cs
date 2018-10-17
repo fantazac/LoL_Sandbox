@@ -1,5 +1,6 @@
 ﻿public class HealthRegeneration : Stat
 {
+    public HealthRegeneration() : base() { }
     public HealthRegeneration(float initialBaseValue) : base(initialBaseValue) { }
     public HealthRegeneration(float initialBaseValue, float perLevelValue) : base(initialBaseValue, perLevelValue) { }
 
