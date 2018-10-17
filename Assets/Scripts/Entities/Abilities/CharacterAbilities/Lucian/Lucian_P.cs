@@ -91,6 +91,7 @@
         //else
         //{
         abilityDamage = damage + (totalADScaling * character.EntityStats.AttackDamage.GetTotal());
+        //Here, 0.5f is for "/2" because the base criticalStrikeDamage is 2f, which increases the criticalStrikeMultiplierAgainstNonMinions if criticalStrikeDamage is not 2f.
         criticalStrikeDamage *= criticalStrikeMultiplierAgainstNonMinions * 0.5f;
         //}
         return ApplyDamageModifiers(entityHit, abilityDamage) *

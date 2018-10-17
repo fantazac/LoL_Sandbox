@@ -4,6 +4,6 @@
 
     public override void UpdateTotal()//TODO: Check if this stacks multiplicatively
     {
-        total = currentBaseValue + percentBonus;
+        total = percentBonus * 0.01f;
     }
 }

@@ -4,7 +4,7 @@
 
     public override void UpdateTotal()
     {
-        total = currentBaseValue + flatBonus;
+        total = flatBonus;
     }
 
     public override void OnLevelUp(int level)

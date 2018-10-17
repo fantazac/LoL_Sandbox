@@ -494,8 +494,8 @@ public abstract class Ability : MonoBehaviour
 
     protected virtual void SetCooldownForAbilityAffectedByCooldownReduction(float cooldownReduction)
     {
-        cooldown = baseCooldown * (1 - (cooldownReduction * 0.01f));
-        cooldownOnCancel = baseCooldownOnCancel * (1 - (cooldownReduction * 0.01f));
+        cooldown = baseCooldown * (1 - cooldownReduction);
+        cooldownOnCancel = baseCooldownOnCancel * (1 - cooldownReduction);
     }
 
     private void SetCooldownForAbilityUnaffectedByCooldownReduction()

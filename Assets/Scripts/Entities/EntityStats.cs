@@ -34,6 +34,7 @@ public abstract class EntityStats : MonoBehaviour
     public PhysicalDamageReceivedModifier PhysicalDamageReceivedModifier { get; protected set; }
     public MagicDamageReceivedModifier MagicDamageReceivedModifier { get; protected set; }
     public HealAndShieldPower HealAndShieldPower { get; protected set; }
+    public SlowResistance SlowResistance { get; protected set; }
 
     protected virtual void Awake()
     {
@@ -70,6 +71,7 @@ public abstract class EntityStats : MonoBehaviour
         PhysicalDamageReceivedModifier = new PhysicalDamageReceivedModifier();
         MagicDamageReceivedModifier = new MagicDamageReceivedModifier();
         HealAndShieldPower = new HealAndShieldPower();
+        SlowResistance = new SlowResistance();
 
         ExtraAdjustments();
     }
@@ -79,5 +81,6 @@ public abstract class EntityStats : MonoBehaviour
     protected void ExtraAdjustments()
     {
         AttackSpeed.SetEntityBasicAttack(GetComponent<EntityBasicAttack>());
+        MovementSpeed.SubscribeToSlowResistanceChangedEvent(SlowResistance);
     }
 }

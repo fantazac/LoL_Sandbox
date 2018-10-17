@@ -11,7 +11,7 @@ public class CooldownReduction : Stat
 
     public override void UpdateTotal()
     {
-        total = Mathf.Clamp(currentBaseValue + percentBonus, 0, COOLDOWN_REDUCTION_CAP);
+        total = Mathf.Clamp(percentBonus, 0, COOLDOWN_REDUCTION_CAP) * 0.01f;
         if (OnCooldownReductionChanged != null)
         {
             OnCooldownReductionChanged(total);

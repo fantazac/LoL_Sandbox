@@ -4,6 +4,6 @@
 
     public override void UpdateTotal()
     {
-        total = currentBaseValue + flatBonus;
+        total = flatBonus;
     }
 }

@@ -4,7 +4,7 @@
 
     public override void UpdateTotal()
     {
-        total = percentBonus * (1 - (percentMalus * 0.01f));
+        total = (percentBonus * 0.01f) * (1 - (percentMalus * 0.01f));
     }
 
     protected override void CalculatePercentBonusIncrease(float percentBonus)

@@ -8,6 +8,6 @@ public class CriticalStrikeChance : Stat
 
     public override void UpdateTotal()
     {
-        total = Mathf.Clamp(currentBaseValue + percentBonus, 0, CRITICAL_STRIKE_CHANCE_CAP);
+        total = Mathf.Clamp(percentBonus, 0, CRITICAL_STRIKE_CHANCE_CAP);
     }
 }

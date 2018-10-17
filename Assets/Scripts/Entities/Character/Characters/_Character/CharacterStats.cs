@@ -37,6 +37,7 @@
         PhysicalDamageReceivedModifier = new PhysicalDamageReceivedModifier();
         MagicDamageReceivedModifier = new MagicDamageReceivedModifier();
         HealAndShieldPower = new HealAndShieldPower();
+        SlowResistance = new SlowResistance();
 
         //set extra character stats
 

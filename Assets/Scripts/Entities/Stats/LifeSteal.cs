@@ -4,6 +4,6 @@
 
     public override void UpdateTotal()
     {
-        total = currentBaseValue + percentBonus;
+        total = percentBonus * 0.01f;
     }
 }

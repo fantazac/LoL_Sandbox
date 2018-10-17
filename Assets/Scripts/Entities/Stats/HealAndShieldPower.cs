@@ -1,9 +1,9 @@
 ﻿public class HealAndShieldPower : Stat
 {
-    public HealAndShieldPower() : base(1f) { }
+    public HealAndShieldPower() : base() { }
 
     public override void UpdateTotal()
     {
-        total = currentBaseValue + percentBonus;
+        total = percentBonus * 0.01f;
     }
 }
