@@ -67,7 +67,7 @@
 
     public override void UseAbility(Entity entityHit)
     {
-        if (lucianE)
+        if (lucianE)//This null check is only there if I decide to use Lucian_P without the character having Lucian_E
         {
             lucianE.ReduceCooldown(entityHit is Character ? cooldownReducedOnPassiveHitOnCharacter : cooldownReducedOnPassiveHit);
         }

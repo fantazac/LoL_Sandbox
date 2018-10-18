@@ -49,7 +49,14 @@ public class Ezreal_W : DirectionTargetedProjectile
 
         AbilityDebuffs[0].OnAbilityBuffRemoved += RemoveDebuffFromEntityHit;
 
-        abilitiesToTriggerMark = new List<Ability>() { character.CharacterAbilityManager.CharacterAbilities[0], character.CharacterAbilityManager.CharacterAbilities[2], character.CharacterAbilityManager.CharacterAbilities[3] };
+        abilitiesToTriggerMark = new List<Ability>();
+        foreach (Ability ability in character.CharacterAbilityManager.CharacterAbilities)
+        {
+            if (ability != this)
+            {
+                abilitiesToTriggerMark.Add(ability);
+            }
+        }
     }
 
     protected override IEnumerator AbilityWithCastTime()

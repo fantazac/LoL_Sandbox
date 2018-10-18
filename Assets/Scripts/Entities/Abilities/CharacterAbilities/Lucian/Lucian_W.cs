@@ -30,7 +30,6 @@ public class Lucian_W : DirectionTargetedProjectile
         delayCastTime = new WaitForSeconds(castTime);
 
         affectedByCooldownReduction = true;
-        startCooldownOnAbilityCast = true;
 
         durationAoE = 0.2f;
     }

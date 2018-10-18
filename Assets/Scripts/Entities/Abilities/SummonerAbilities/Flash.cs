@@ -11,8 +11,6 @@ public class Flash : GroundTargetedBlink
         range = 400;
         baseCooldown = 300;
 
-        startCooldownOnAbilityCast = true;
-
         CanBeCastDuringOtherAbilityCastTimes = true;
         IsAMovementAbility = true;
 

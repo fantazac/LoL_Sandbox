@@ -15,7 +15,6 @@ public class Heal : SelfTargeted
         range = 850;
         baseCooldown = 240;
 
-        startCooldownOnAbilityCast = true;
         CanBeCastDuringOtherAbilityCastTimes = true;
 
         IsEnabled = true;
