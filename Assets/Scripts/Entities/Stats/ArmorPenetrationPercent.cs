@@ -1,7 +1,5 @@
 ﻿public class ArmorPenetrationPercent : Stat
 {
-    public ArmorPenetrationPercent() : base() { }
-
     public override void UpdateTotal()
     {
         total = percentBonus * 0.01f;

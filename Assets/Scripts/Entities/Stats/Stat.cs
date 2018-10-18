@@ -35,11 +35,6 @@
         return perLevelValue * (level - 1) * (BASE_PERCENT_VALUE + BASE_PERCENT_PER_LEVEL_VALUE * (level - 1));
     }
 
-    public float GetBonus()
-    {
-        return GetTotal() - GetCurrentBaseValue();
-    }
-
     public void AddFlatBonus(float flatBonus)
     {
         this.flatBonus += flatBonus;

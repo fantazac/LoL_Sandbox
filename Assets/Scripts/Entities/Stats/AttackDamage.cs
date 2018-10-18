@@ -7,4 +7,9 @@
     {
         total = (currentBaseValue + flatBonus) * (1 + (percentBonus * 0.01f)) - flatMalus;
     }
+
+    public float GetBonus()
+    {
+        return total - currentBaseValue;
+    }
 }

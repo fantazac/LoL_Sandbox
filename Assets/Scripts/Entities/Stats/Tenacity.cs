@@ -1,7 +1,5 @@
 ﻿public class Tenacity : Stat
 {
-    public Tenacity() : base() { }
-
     public override void UpdateTotal()
     {
         total = (percentBonus * 0.01f) * (1 - (percentMalus * 0.01f));

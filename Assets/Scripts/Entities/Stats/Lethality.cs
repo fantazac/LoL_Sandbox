@@ -2,8 +2,6 @@
 {
     private int characterLevel;
 
-    public Lethality() : base() { }
-
     public override void UpdateTotal()
     {
         total = flatBonus;

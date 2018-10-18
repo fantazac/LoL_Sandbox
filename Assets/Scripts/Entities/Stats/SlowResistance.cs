@@ -3,8 +3,6 @@
     public delegate void OnSlowResistanceChangedHandler(float slowResistance);
     public event OnSlowResistanceChangedHandler OnSlowResistanceChanged;
 
-    public SlowResistance() : base() { }
-
     public override void UpdateTotal()
     {
         total = percentBonus * 0.01f;
