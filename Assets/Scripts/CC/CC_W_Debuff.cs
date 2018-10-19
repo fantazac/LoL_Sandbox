@@ -1,5 +1,7 @@
 ﻿public class CC_W_Debuff : AbilityBuff
 {
+    private float knockupSpeed;
+
     protected CC_W_Debuff()
     {
         buffName = "CC BTW HAHA";
@@ -8,6 +10,8 @@
 
         buffDuration = 2;
         buffCrowdControlEffect = CrowdControlEffects.KNOCKUP;
+
+        knockupSpeed = 2;
     }
 
     protected override void SetSpritePaths()
@@ -18,7 +22,7 @@
     protected override void ApplyBuffEffect(Entity affectedEntity, float buffValue, int currentStacks)
     {
         affectedEntity.EntityStatusManager.AddCrowdControlEffectOnEntity(buffCrowdControlEffect);
-        affectedEntity.EntityStatusMovementManager.SetupMovementBlock(buffCrowdControlEffect, this, character, transform.position, buffDuration);
+        affectedEntity.EntityStatusMovementManager.SetupMovementBlock(buffCrowdControlEffect, this, character, transform.position, buffDuration, knockupSpeed);
     }
 
     protected override void RemoveBuffEffect(Entity affectedEntity, float buffValue, int currentStacks)

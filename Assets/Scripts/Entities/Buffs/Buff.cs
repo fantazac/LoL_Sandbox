@@ -11,6 +11,7 @@
     public int CurrentStacks { get; protected set; }
     public int MaximumStacks { get; protected set; }
     public float StackDecayingDelay { get; protected set; }
+    public bool HasStacksToUpdate { get; protected set; }
 
     public bool HasBeenConsumed { get; private set; }
     public bool HasDuration { get; private set; }
@@ -49,6 +50,7 @@
         CurrentStacks = MaximumStacks > 0 ? 1 : 0;
         HasDuration = Duration > 0;
         HasStacks = MaximumStacks > 0;
+        HasStacksToUpdate = HasStacks;
     }
 
     public void SetBuffValue(float buffValue)
@@ -100,6 +102,7 @@
                 if (StackDecayingDelay > 0)
                 {
                     CurrentStacks--;
+                    HasStacksToUpdate = true;
                     ApplyBuff();
                     DurationRemaining = StackDecayingDelay;
                     DurationForUI = StackDecayingDelay;
@@ -128,7 +131,18 @@
         {
             SourceAbilityBuff.RemoveBuffFromAffectedEntity(affectedEntity, BuffValue, CurrentStacks);
             SourceAbilityBuff.ApplyBuffToAffectedEntity(affectedEntity, BuffValue, ++CurrentStacks);
+            HasStacksToUpdate = true;
         }
+    }
+
+    public void StacksWereUpdated()
+    {
+        HasStacksToUpdate = false;
+    }
+
+    public bool IsAtMaximumStacks()
+    {
+        return MaximumStacks == CurrentStacks;
     }
 
     public bool HasExpired()

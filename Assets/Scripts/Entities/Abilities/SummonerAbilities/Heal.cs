@@ -8,7 +8,7 @@ public class Heal : SelfTargeted
     {
         abilityName = "Heal";
 
-        abilityType = AbilityType.Heal;
+        abilityType = AbilityType.HEAL;
         affectedUnitType = AbilityAffectedUnitType.ALLY_CHARACTERS;
         effectType = AbilityEffectType.HEALING;
 

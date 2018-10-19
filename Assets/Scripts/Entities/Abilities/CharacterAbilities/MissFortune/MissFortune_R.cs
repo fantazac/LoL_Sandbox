@@ -12,7 +12,7 @@ public class MissFortune_R : DirectionTargetedProjectile
     {
         abilityName = "Bullet Time";
 
-        abilityType = AbilityType.Skillshot;
+        abilityType = AbilityType.SKILLSHOT;
         affectedUnitType = AbilityAffectedUnitType.ENEMIES;
         effectType = AbilityEffectType.AREA_OF_EFFECT;
         damageType = DamageType.PHYSICAL;

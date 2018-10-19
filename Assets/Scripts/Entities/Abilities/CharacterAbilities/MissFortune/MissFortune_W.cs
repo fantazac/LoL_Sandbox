@@ -14,7 +14,7 @@ public class MissFortune_W : SelfTargeted
     {
         abilityName = "Strut";
 
-        abilityType = AbilityType.Passive;
+        abilityType = AbilityType.PASSIVE;
 
         MaxLevel = 5;
 
@@ -22,7 +22,6 @@ public class MissFortune_W : SelfTargeted
         baseCooldown = 12;
 
         affectedByCooldownReduction = true;
-        startCooldownOnAbilityCast = true;
 
         baseCooldownReductionOnPassiveHit = 2;
 

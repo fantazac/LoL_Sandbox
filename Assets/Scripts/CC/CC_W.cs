@@ -6,7 +6,7 @@ public class CC_W : SelfTargeted
     {
         abilityName = "CC BTW HAHA";
 
-        abilityType = AbilityType.Passive;
+        abilityType = AbilityType.PASSIVE;
         effectType = AbilityEffectType.SINGLE_TARGET;
 
         MaxLevel = 1;

@@ -4,7 +4,7 @@
     {
         abilityName = "Relentless Pursuit";
 
-        abilityType = AbilityType.Dash;
+        abilityType = AbilityType.DASH;
 
         MaxLevel = 5;
 

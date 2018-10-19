@@ -4,7 +4,7 @@
     {
         abilityName = "Rising Spell Force";
 
-        abilityType = AbilityType.Passive;
+        abilityType = AbilityType.PASSIVE;
 
         //MaxLevel = 3;
         AbilityLevel = 1;

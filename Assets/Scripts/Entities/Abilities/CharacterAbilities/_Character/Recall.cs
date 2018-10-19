@@ -7,7 +7,7 @@ public class Recall : AutoTargetedBlink
     {
         abilityName = "Recall";
 
-        abilityType = AbilityType.Blink;
+        abilityType = AbilityType.BLINK;
 
         castTime = 0.5f;
         channelTime = 8;

@@ -14,7 +14,7 @@ public class MissFortune_E : GroundTargetedAoE
     {
         abilityName = "Make It Rain";
 
-        abilityType = AbilityType.AreaOfEffect;
+        abilityType = AbilityType.AREA_OF_EFFECT;
         affectedUnitType = AbilityAffectedUnitType.ENEMIES;
         damageType = DamageType.MAGIC;
         effectType = AbilityEffectType.AREA_OF_EFFECT;

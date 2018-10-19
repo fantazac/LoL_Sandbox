@@ -6,7 +6,7 @@ public class Flash : GroundTargetedBlink
     {
         abilityName = "Flash";
 
-        abilityType = AbilityType.Blink;
+        abilityType = AbilityType.BLINK;
 
         range = 400;
         baseCooldown = 300;

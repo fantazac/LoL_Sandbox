@@ -44,13 +44,21 @@ public class EntityBuffManager : MonoBehaviour
             {
                 if (buff.HasDuration)
                 {
-                    selectedUIManager.UpdateBuffDuration(buff, buff.DurationForUI, buff.DurationRemaining, buff.CurrentStacks);
+                    selectedUIManager.UpdateBuffDuration(buff, buff.DurationForUI, buff.DurationRemaining);
                 }
                 else
                 {
                     selectedUIManager.UpdateBuff(buff);
                 }
             }
+        }
+        if (buff.HasStacksToUpdate)
+        {
+            if (hasBuffUIManager)
+            {
+                selectedUIManager.UpdateBuffStacks(buff, buff.CurrentStacks);
+            }
+            buff.StacksWereUpdated();
         }
         if (buff.HasValueToSet)
         {

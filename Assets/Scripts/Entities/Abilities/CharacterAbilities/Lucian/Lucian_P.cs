@@ -9,7 +9,7 @@
     {
         abilityName = "Lightslinger";
 
-        abilityType = AbilityType.Passive;
+        abilityType = AbilityType.PASSIVE;
         affectedUnitType = AbilityAffectedUnitType.ENEMIES;
         damageType = DamageType.PHYSICAL;
         effectType = AbilityEffectType.BASIC_ATTACK;
@@ -94,7 +94,7 @@
         //Here, 0.5f is for "/2" because the base criticalStrikeDamage is 2f, which increases the criticalStrikeMultiplierAgainstNonMinions if criticalStrikeDamage is not 2f.
         criticalStrikeDamage *= criticalStrikeMultiplierAgainstNonMinions * 0.5f;
         //}
-        return ApplyDamageModifiers(entityHit, abilityDamage) *
+        return ApplyDamageModifiers(entityHit, abilityDamage, damageType) *
             ApplyAbilityDamageModifier(entityHit) *
             (isACriticalStrike ? criticalStrikeDamage * (1f - entityHit.EntityStats.CriticalStrikeDamageReduction.GetTotal()) : 1f);
     }

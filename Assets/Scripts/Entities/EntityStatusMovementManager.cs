@@ -27,22 +27,22 @@ public class EntityStatusMovementManager : MonoBehaviour
         }
     }
 
-    public void SetupMovementBlock(CrowdControlEffects crowdControlEffect, AbilityBuff sourceAbilityBuff, Entity caster, Vector3 position, float duration)
+    public void SetupMovementBlock(CrowdControlEffects crowdControlEffect, AbilityBuff sourceAbilityBuff, Entity caster, Vector3 destination, float durationOrDistance, float speed)
     {
         switch (crowdControlEffect)
         {
             //Displacements
             case CrowdControlEffects.KNOCKASIDE:
-                StartDisplacement(Knockaside());
+                StartDisplacement(Knockaside(sourceAbilityBuff));
                 break;
             case CrowdControlEffects.KNOCKBACK:
-                StartDisplacement(Knockback());
+                StartDisplacement(Knockback(sourceAbilityBuff, destination, durationOrDistance, speed));
                 break;
             case CrowdControlEffects.KNOCKUP:
-                StartDisplacement(Knockup(sourceAbilityBuff, duration));
+                StartDisplacement(Knockup(sourceAbilityBuff, durationOrDistance, speed));
                 break;
             case CrowdControlEffects.PULL:
-                StartDisplacement(Pull());
+                StartDisplacement(Pull(sourceAbilityBuff));
                 break;
             //Forced actions
             case CrowdControlEffects.CHARM:
@@ -101,46 +101,66 @@ public class EntityStatusMovementManager : MonoBehaviour
         StartCoroutine(currentDisplacement);
     }
 
-    private IEnumerator Knockaside()
+    private void FinishDisplacement(AbilityBuff sourceAbilityBuff)
     {
-        yield return null;
-
+        sourceAbilityBuff.ConsumeBuff(entity);
+        isBeingDisplaced = false;
         currentDisplacement = null;
     }
 
-    private IEnumerator Knockback()
+    private IEnumerator Knockaside(AbilityBuff sourceAbilityBuff)
     {
         yield return null;
 
-        currentDisplacement = null;
+        FinishDisplacement(sourceAbilityBuff);
     }
 
-    private IEnumerator Knockup(AbilityBuff sourceAbilityBuff, float duration)//TODO: actually, this is only happening with the animation, not the hitbox
+    private IEnumerator Knockback(AbilityBuff sourceAbilityBuff, Vector3 destination, float distance, float knockbackSpeed)
+    {
+        currentSourceAbilityBuffForDisplacement = sourceAbilityBuff;
+
+        destination += transform.position;
+
+        while (transform.position != destination)
+        {
+            transform.position = Vector3.MoveTowards(transform.position, destination, Time.deltaTime * knockbackSpeed);
+
+            if (entity is Character && !(entity is Dummy))
+            {
+                ((Character)entity).CharacterMovement.NotifyCharacterMoved();
+            }
+
+            yield return null;
+        }
+
+        FinishDisplacement(sourceAbilityBuff);
+    }
+
+    private IEnumerator Knockup(AbilityBuff sourceAbilityBuff, float duration, float knockupSpeed)
     {
         currentSourceAbilityBuffForDisplacement = sourceAbilityBuff;
 
         Vector3 initialPosition = transform.position;
         Transform modelTransform = entity.EntityModelObject.transform;
         Vector3 up = Vector3.up * 10;
-        float upSpeed = 2;
 
         while (currentSourceAbilityBuffForDisplacement == sourceAbilityBuff)
         {
-            modelTransform.position = Vector3.MoveTowards(modelTransform.position, modelTransform.position + up, Time.deltaTime * upSpeed);
+            modelTransform.position = Vector3.MoveTowards(modelTransform.position, modelTransform.position + up, Time.deltaTime * knockupSpeed);
 
             yield return null;
         }
 
         entity.EntityModelObject.transform.position = initialPosition;
 
-        currentDisplacement = null;
+        FinishDisplacement(sourceAbilityBuff);
     }
 
-    private IEnumerator Pull()
+    private IEnumerator Pull(AbilityBuff sourceAbilityBuff)
     {
         yield return null;
 
-        currentDisplacement = null;
+        FinishDisplacement(sourceAbilityBuff);
     }
 
     private void StartForcedAction(IEnumerator coroutine)//TODO: Dashes have to finish before taking effect

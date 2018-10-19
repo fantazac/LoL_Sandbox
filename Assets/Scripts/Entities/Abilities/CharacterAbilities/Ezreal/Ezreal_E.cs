@@ -12,7 +12,7 @@ public class Ezreal_E : GroundTargetedBlink
     {
         abilityName = "Arcane Shift";
 
-        abilityType = AbilityType.Blink;
+        abilityType = AbilityType.BLINK;
         affectedUnitType = AbilityAffectedUnitType.ENEMIES;
         effectType = AbilityEffectType.SINGLE_TARGET;
         damageType = DamageType.MAGIC;

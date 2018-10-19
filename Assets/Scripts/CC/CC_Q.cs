@@ -6,7 +6,7 @@ public class CC_Q : SelfTargeted
     {
         abilityName = "CC BTW";
 
-        abilityType = AbilityType.Passive;
+        abilityType = AbilityType.PASSIVE;
         affectedUnitType = AbilityAffectedUnitType.ENEMIES;
         damageType = DamageType.PHYSICAL;
         effectType = AbilityEffectType.SINGLE_TARGET;

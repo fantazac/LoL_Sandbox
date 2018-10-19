@@ -1,10 +1,10 @@
 ﻿public enum AbilityType
 {
-    Blink,
-    Dash,
-    Skillshot,
-    AreaOfEffect,
-    Shield,
-    Heal,
-    Passive
+    BLINK,
+    DASH,
+    SKILLSHOT,
+    AREA_OF_EFFECT,
+    SHIELD,
+    HEAL,
+    PASSIVE
 }

@@ -11,6 +11,7 @@ public abstract class AbilityBuff : MonoBehaviour
     protected bool showBuffValueOnUI;
 
     protected float buffDuration;
+    protected float buffDurationPerLevel;
     protected int buffMaximumStacks;
     protected float buffFlatValue;
     protected float buffFlatValuePerLevel;
@@ -20,6 +21,8 @@ public abstract class AbilityBuff : MonoBehaviour
 
     protected Sprite buffSprite;
     protected string buffSpritePath;
+
+    protected Vector3 normalizedVector;
 
     public List<Entity> EntitiesAffectedByBuff { get; protected set; }
 
@@ -72,6 +75,7 @@ public abstract class AbilityBuff : MonoBehaviour
 
         buffFlatValue += buffFlatValuePerLevel;
         buffPercentValue += buffPercentValuePerLevel;
+        buffDuration += buffDurationPerLevel;
 
         UpdateBuffOnAffectedEntities(oldFlatValue, buffFlatValue, oldPercentValue, buffPercentValue);
     }
@@ -128,6 +132,11 @@ public abstract class AbilityBuff : MonoBehaviour
         {
             affectedEntity.EntityBuffManager.ConsumeBuff(buff, isADebuff);
         }
+    }
+
+    public void SetNormalizedVector(Vector3 casterPositionOnCast, Vector3 targetPositionOnCast)
+    {
+        normalizedVector = Vector3.Normalize(targetPositionOnCast - casterPositionOnCast);
     }
 
     protected abstract Buff CreateNewBuff(Entity affectedEntity);

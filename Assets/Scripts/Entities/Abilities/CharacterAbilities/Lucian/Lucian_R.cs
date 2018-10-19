@@ -19,7 +19,7 @@ public class Lucian_R : DirectionTargetedProjectile
     {
         abilityName = "The Culling";
 
-        abilityType = AbilityType.Skillshot;
+        abilityType = AbilityType.SKILLSHOT;
         affectedUnitType = AbilityAffectedUnitType.ENEMIES;
         effectType = AbilityEffectType.SINGLE_TARGET;
         damageType = DamageType.PHYSICAL;

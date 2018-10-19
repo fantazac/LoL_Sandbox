@@ -12,7 +12,7 @@ public class MissFortune_Q : UnitTargetedProjectile
     {
         abilityName = "Double Up";
 
-        abilityType = AbilityType.Skillshot;
+        abilityType = AbilityType.SKILLSHOT;
         affectedUnitType = AbilityAffectedUnitType.ENEMIES;
         effectType = AbilityEffectType.SINGLE_TARGET;
         damageType = DamageType.PHYSICAL;

@@ -41,11 +41,15 @@ public abstract class EntityBasicAttack : MonoBehaviour
         speed *= StaticObjects.MultiplyingFactor;
     }
 
-    public virtual void ChangeAttackSpeedCycleDuration(float totalAttackSpeed)
+    public virtual void ChangeAttackSpeedCycleDuration(float totalAttackSpeed, bool attackSpeedIncreased)
     {
         float attackSpeedCycleDuration = 1f / totalAttackSpeed;
         entity.EntityBasicAttackCycle.SetAttackSpeedCycleDuration(attackSpeedCycleDuration * (1 - delayPercentBeforeAttack));
         delayAttack = new WaitForSeconds(attackSpeedCycleDuration * delayPercentBeforeAttack);
+        if(attackSpeedIncreased && shootBasicAttackCoroutine != null && entity.EntityBasicAttackCycle.AttackSpeedCycleIsReady)
+        {
+            ResetBasicAttack();
+        }
     }
 
     public void SetupBasicAttack(Entity currentlySelectedTarget, bool setupEvent)
@@ -140,6 +144,11 @@ public abstract class EntityBasicAttack : MonoBehaviour
         projectile.ShootProjectile(entity.Team, target, speed, AttackIsCritical.CheckIfAttackIsCritical(entity.EntityStats.CriticalStrikeChance.GetTotal()), entity.EntityStatusManager.IsBlinded());
         projectile.OnAbilityEffectHit += BasicAttackHit;
 
+        if (entity is Character)
+        {
+            ((Character)entity).CharacterOnAttackEffectsManager.ApplyOnAttackEffectsToEntityHit(target);
+        }
+
         shootBasicAttackCoroutine = null;
     }
 
@@ -147,16 +156,20 @@ public abstract class EntityBasicAttack : MonoBehaviour
     {
         if (!(entity.EntityStatusManager.IsBlinded() || willMiss))
         {
-            float damage = GetBasicAttackDamage(entityHit, isACriticalStrike);
-            entityHit.EntityStats.Health.Reduce(damage);
-            if (entity is Character)
-            {
-                ((Character)entity).CharacterOnHitEffectsManager.ApplyOnHitEffectsToEntityHit(entityHit, damage);
-                ((Character)entity).CharacterOnAttackEffectsManager.ApplyOnAttackEffectsToEntityHit(entityHit, damage);
-            }
-            entityHit.EntityEffectSourceManager.EntityHitByBasicAttack(entity);
+            ApplyDamageToEntityHit(entityHit, isACriticalStrike);
         }
         Destroy(basicAttackProjectile.gameObject);
+    }
+
+    protected virtual void ApplyDamageToEntityHit(Entity entityHit, bool isACriticalStrike)
+    {
+        float damage = GetBasicAttackDamage(entityHit, isACriticalStrike);
+        entityHit.EntityStats.Health.Reduce(damage);
+        if (entity is Character)
+        {
+            ((Character)entity).CharacterOnHitEffectsManager.ApplyOnHitEffectsToEntityHit(entityHit, damage);
+        }
+        entityHit.EntityEffectSourceManager.EntityHitByBasicAttack(entity);
     }
 
     protected float GetBasicAttackDamage(Entity entityHit, bool isACriticalAttack)

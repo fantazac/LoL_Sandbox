@@ -1,10 +1,14 @@
 ﻿public class CC_Q_Debuff : AbilityBuff
 {
+    private float knockupSpeed;
+
     protected CC_Q_Debuff()
     {
         buffName = "CC BTW";
 
         isADebuff = true;
+
+        knockupSpeed = 2;
 
         buffDuration = 2;
         //buffPercentValue = 90;
@@ -20,7 +24,7 @@
     {
         affectedEntity.EntityStatusManager.AddCrowdControlEffectOnEntity(buffCrowdControlEffect);
         //affectedEntity.EntityStats.MovementSpeed.AddPercentMalus(buffValue);
-        affectedEntity.EntityStatusMovementManager.SetupMovementBlock(buffCrowdControlEffect, this, character, transform.position, buffDuration);
+        affectedEntity.EntityStatusMovementManager.SetupMovementBlock(buffCrowdControlEffect, this, character, transform.position, buffDuration, knockupSpeed);
     }
 
     protected override void RemoveBuffEffect(Entity affectedEntity, float buffValue, int currentStacks)

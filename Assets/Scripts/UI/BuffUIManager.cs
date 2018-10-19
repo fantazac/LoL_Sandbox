@@ -36,16 +36,12 @@ public class BuffUIManager : MonoBehaviour
 
     public void UpdateBuffDuration(Buff buff, float duration, float durationRemaining)
     {
-        UpdateBuffDuration(buff, duration, durationRemaining, 0);
+        darkImages[buff].fillAmount = durationRemaining / duration;
     }
 
-    public void UpdateBuffDuration(Buff buff, float duration, float durationRemaining, int buffStacks)
+    public void UpdateBuffStacks(Buff buff, int buffStacks)
     {
-        darkImages[buff].fillAmount = durationRemaining / duration;
-        if (buffStacks > 1)
-        {
-            buffStacksTexts[buff].text = "" + buffStacks;
-        }
+        buffStacksTexts[buff].text = buffStacks > 0 ? "" + buffStacks : "";
     }
 
     public void UpdateBuffValue(Buff buff, int buffValue)

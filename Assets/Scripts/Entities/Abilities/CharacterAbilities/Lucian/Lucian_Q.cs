@@ -10,7 +10,7 @@ public class Lucian_Q : UnitTargetedAoE
     {
         abilityName = "Piercing Light";
 
-        abilityType = AbilityType.AreaOfEffect;
+        abilityType = AbilityType.AREA_OF_EFFECT;
         affectedUnitType = AbilityAffectedUnitType.ENEMIES;
         effectType = AbilityEffectType.AREA_OF_EFFECT;
         damageType = DamageType.PHYSICAL;

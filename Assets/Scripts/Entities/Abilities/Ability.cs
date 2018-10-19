@@ -5,7 +5,7 @@ public abstract class Ability : MonoBehaviour
 {
     protected Character character;
 
-    protected AbilityAffectedUnitType affectedUnitType;
+    protected AbilityAffectedUnitType affectedUnitType;//TODO: make this an array/list to support multiple types (ex. Tristana_E targetting enemies and turrets)
     protected AbilityEffectType effectType;
     protected AbilityType abilityType;
     protected DamageType damageType;
@@ -511,7 +511,7 @@ public abstract class Ability : MonoBehaviour
             (totalADScaling * character.EntityStats.AttackDamage.GetTotal()) +
             (totalAPScaling * character.EntityStats.AbilityPower.GetTotal());
 
-        return ApplyDamageModifiers(entityHit, abilityDamage) *
+        return ApplyDamageModifiers(entityHit, abilityDamage, damageType) *
             (isACriticalStrike ? criticalStrikeDamage : 1f);
     }
 
@@ -520,7 +520,7 @@ public abstract class Ability : MonoBehaviour
         return 1f;
     }
 
-    protected float ApplyDamageModifiers(Entity entityHit, float damage)
+    protected virtual float ApplyDamageModifiers(Entity entityHit, float damage, DamageType damageType)
     {
         damage *= ApplyAbilityDamageModifier(entityHit);
         if (damageType == DamageType.MAGIC)
@@ -597,6 +597,11 @@ public abstract class Ability : MonoBehaviour
     protected virtual void ExtraActionsOnCancel() { }
 
     public virtual void OnEmpoweredBasicAttackHit(Entity entityHit, bool isACriticalStrike = false) { }
+
+    public void SetRange(float range)
+    {
+        this.range = range * StaticObjects.MultiplyingFactor;
+    }
 
     public float GetResourceCost()
     {

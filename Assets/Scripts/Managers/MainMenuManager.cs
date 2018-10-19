@@ -145,6 +145,10 @@ public class MainMenuManager : MonoBehaviour
                 {
                     SpawnCharacter("MissFortune");
                 }
+                if (GUILayout.Button("Tristana", GUILayout.Height(40)))
+                {
+                    SpawnCharacter("Tristana");
+                }
                 break;
             case MainMenuState.ON_HOLD:
                 if (StaticObjects.OnlineMode)

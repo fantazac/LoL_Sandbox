@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class EntityBasicAttackCycle : MonoBehaviour
 {
-    private WaitForSeconds delayPostBasicAttack;
+    private float delayPostBasicAttackDuration;
 
     private IEnumerator basicAttackCycleCoroutine;
 
@@ -16,7 +16,7 @@ public class EntityBasicAttackCycle : MonoBehaviour
 
     public void SetAttackSpeedCycleDuration(float postBasicAttackDuration)
     {
-        delayPostBasicAttack = new WaitForSeconds(postBasicAttackDuration);
+        delayPostBasicAttackDuration = postBasicAttackDuration;
     }
 
     public void LockBasicAttack()
@@ -38,7 +38,13 @@ public class EntityBasicAttackCycle : MonoBehaviour
 
     private IEnumerator CompleteBasicAttackCycle()
     {
-        yield return delayPostBasicAttack;
+        float currentDelay = 0;
+        while (currentDelay < delayPostBasicAttackDuration)
+        {
+            yield return null;
+
+            currentDelay += Time.deltaTime;
+        }
 
         AttackSpeedCycleIsReady = true;
         basicAttackCycleCoroutine = null;

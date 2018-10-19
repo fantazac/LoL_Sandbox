@@ -15,16 +15,17 @@ public class AttackSpeed : Stat
         if (entityBasicAttack)
         {
             this.entityBasicAttack = entityBasicAttack;
-            entityBasicAttack.ChangeAttackSpeedCycleDuration(total);
+            entityBasicAttack.ChangeAttackSpeedCycleDuration(total, false);
         }
     }
 
     public override void UpdateTotal()
     {
+        float oldTotal = total;
         total = Mathf.Clamp(initialBaseValue * (1 + (percentBonus * 0.01f)) * (1 - (percentMalus * 0.01f)) * (1 + (multiplicativePercentBonus * 0.01f)), 0, ATTACK_SPEED_CAP);
         if (entityBasicAttack)
         {
-            entityBasicAttack.ChangeAttackSpeedCycleDuration(total);
+            entityBasicAttack.ChangeAttackSpeedCycleDuration(total, oldTotal < total);
         }
     }
 

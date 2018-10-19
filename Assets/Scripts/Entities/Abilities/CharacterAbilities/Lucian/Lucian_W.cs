@@ -11,7 +11,7 @@ public class Lucian_W : DirectionTargetedProjectile
     {
         abilityName = "Ardent Blaze";
 
-        abilityType = AbilityType.Skillshot;
+        abilityType = AbilityType.SKILLSHOT;
         affectedUnitType = AbilityAffectedUnitType.ENEMIES;
         effectType = AbilityEffectType.SINGLE_TARGET;
         damageType = DamageType.MAGIC;

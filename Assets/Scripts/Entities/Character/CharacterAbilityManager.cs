@@ -651,7 +651,7 @@ public class CharacterAbilityManager : MonoBehaviour
 
         foreach (Ability ability in currentlyUsedAbilities)
         {
-            if (ability.GetAbilityType() == AbilityType.Dash)
+            if (ability.GetAbilityType() == AbilityType.DASH)
             {
                 return true;
             }

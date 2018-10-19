@@ -9,7 +9,7 @@
     {
         abilityName = "Love Tap";
 
-        abilityType = AbilityType.Passive;
+        abilityType = AbilityType.PASSIVE;
         affectedUnitType = AbilityAffectedUnitType.ENEMIES;
         damageType = DamageType.PHYSICAL;
         effectType = AbilityEffectType.SINGLE_TARGET;
@@ -66,7 +66,7 @@
             //{
             entityHit.EntityStats.Health.Reduce(passiveDamage);
             //} 
-            character.EntityStats.Health.Restore(passiveDamage * 0.01f * character.EntityStats.LifeSteal.GetTotal());
+            character.EntityStats.Health.Restore(passiveDamage * character.EntityStats.LifeSteal.GetTotal());
 
             if (OnPassiveHit != null)
             {

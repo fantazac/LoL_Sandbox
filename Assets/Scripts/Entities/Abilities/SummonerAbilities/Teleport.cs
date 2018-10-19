@@ -7,7 +7,7 @@ public class Teleport : GroundTargetedBlink//TODO: UnitTargeted
     {
         abilityName = "Teleport";
 
-        abilityType = AbilityType.Blink;
+        abilityType = AbilityType.BLINK;
 
         baseCooldown = 360;
         cooldownBeforeRecast = 0.75f;
