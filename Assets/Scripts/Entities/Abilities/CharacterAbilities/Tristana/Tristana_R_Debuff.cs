@@ -13,9 +13,9 @@ public class Tristana_R_Debuff : AbilityBuff
         buffFlatValue = 6;// 600/800/1000 * StaticObjects.MultiplyingFactor
         buffFlatValuePerLevel = 2;
 
-        buffCrowdControlEffect = CrowdControlEffects.KNOCKBACK;
-
         knockbackSpeed = 20;
+
+        buffCrowdControlEffect = CrowdControlEffects.KNOCKBACK;
     }
 
     protected override void SetSpritePaths()
@@ -36,6 +36,6 @@ public class Tristana_R_Debuff : AbilityBuff
 
     protected override Buff CreateNewBuff(Entity affectedEntity)
     {
-        return new Buff(this, affectedEntity, buffPercentValue, buffDuration);
+        return new Buff(this, affectedEntity);
     }
 }

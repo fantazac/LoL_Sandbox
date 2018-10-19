@@ -11,8 +11,10 @@ public class CC_W_Debuff : AbilityBuff
 
         isADebuff = true;
 
-        knockupSpeed = 2;
-        knockupDestination = Vector3.up * 3;
+        buffDuration = 2;
+
+        knockupSpeed = 3;
+        knockupDestination = Vector3.up * knockupSpeed * buffDuration * 0.5f;
 
         buffCrowdControlEffect = CrowdControlEffects.KNOCKUP;
     }
@@ -35,6 +37,6 @@ public class CC_W_Debuff : AbilityBuff
 
     protected override Buff CreateNewBuff(Entity affectedEntity)
     {
-        return new Buff(this, affectedEntity);
+        return new Buff(this, affectedEntity, 0, buffDuration);
     }
 }
