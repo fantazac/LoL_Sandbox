@@ -10,12 +10,13 @@ public class Entity : MonoBehaviour
     public EntityBasicAttack EntityBasicAttack { get; protected set; }
     public EntityBasicAttackCycle EntityBasicAttackCycle { get; private set; }
     public EntityBuffManager EntityBuffManager { get; private set; }
+    public EntityDisplacementManager EntityDisplacementManager { get; private set; }
     public EntityEffectSourceManager EntityEffectSourceManager { get; private set; }
+    public EntityForcedActionManager EntityForcedActionManager { get; private set; }
     public GameObject EntityHitboxObject { get; private set; }
     public GameObject EntityModelObject { get; private set; }
     public EntityStats EntityStats { get; protected set; }
     public EntityStatusManager EntityStatusManager { get; private set; }
-    public EntityStatusMovementManager EntityStatusMovementManager { get; private set; }
 
     public PhotonView PhotonView { get; private set; }
 
@@ -33,11 +34,12 @@ public class Entity : MonoBehaviour
             EntityBasicAttackCycle = gameObject.AddComponent<EntityBasicAttackCycle>();
         }
         EntityBuffManager = gameObject.AddComponent<EntityBuffManager>();
+        EntityDisplacementManager = gameObject.AddComponent<EntityDisplacementManager>();
         EntityEffectSourceManager = gameObject.AddComponent<EntityEffectSourceManager>();
+        EntityForcedActionManager = gameObject.AddComponent<EntityForcedActionManager>();
         EntityHitboxObject = gameObject.GetComponentInChildren<Collider>().gameObject;
         EntityModelObject = gameObject.GetComponentInChildren<MeshRenderer>().gameObject;
         EntityStatusManager = gameObject.AddComponent<EntityStatusManager>();
-        EntityStatusMovementManager = gameObject.AddComponent<EntityStatusMovementManager>();
 
         PhotonView = GetComponent<PhotonView>();
         EntityHitboxObject.AddComponent<MouseEvent>();

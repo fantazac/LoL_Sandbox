@@ -1,6 +1,9 @@
-﻿public class CC_Q_Debuff : AbilityBuff
+﻿using UnityEngine;
+
+public class CC_Q_Debuff : AbilityBuff
 {
     private float knockupSpeed;
+    private Vector3 knockupDestination;
 
     protected CC_Q_Debuff()
     {
@@ -9,9 +12,8 @@
         isADebuff = true;
 
         knockupSpeed = 2;
+        knockupDestination = Vector3.up * 3;
 
-        buffDuration = 2;
-        //buffPercentValue = 90;
         buffCrowdControlEffect = CrowdControlEffects.KNOCKUP;
     }
 
@@ -23,19 +25,16 @@
     protected override void ApplyBuffEffect(Entity affectedEntity, float buffValue, int currentStacks)
     {
         affectedEntity.EntityStatusManager.AddCrowdControlEffectOnEntity(buffCrowdControlEffect);
-        //affectedEntity.EntityStats.MovementSpeed.AddPercentMalus(buffValue);
-        affectedEntity.EntityStatusMovementManager.SetupMovementBlock(buffCrowdControlEffect, this, character, transform.position, buffDuration, knockupSpeed);
+        affectedEntity.EntityDisplacementManager.SetupDisplacement(knockupDestination, knockupSpeed, this, true);
     }
 
     protected override void RemoveBuffEffect(Entity affectedEntity, float buffValue, int currentStacks)
     {
         affectedEntity.EntityStatusManager.RemoveCrowdControlEffectFromEntity(buffCrowdControlEffect);
-        //affectedEntity.EntityStats.MovementSpeed.RemovePercentMalus(buffValue);
-        affectedEntity.EntityStatusMovementManager.EndMovementBlock(buffCrowdControlEffect, this);
     }
 
     protected override Buff CreateNewBuff(Entity affectedEntity)
     {
-        return new Buff(this, affectedEntity, buffPercentValue, buffDuration);
+        return new Buff(this, affectedEntity);
     }
 }

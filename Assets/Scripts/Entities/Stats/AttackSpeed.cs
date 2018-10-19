@@ -2,7 +2,7 @@
 
 public class AttackSpeed : Stat
 {
-    private const float ATTACK_SPEED_CAP = 2.5f;
+    private static float ATTACK_SPEED_CAP = 2.5f;
 
     private EntityBasicAttack entityBasicAttack;
     private float multiplicativePercentBonus;
