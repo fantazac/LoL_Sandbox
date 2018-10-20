@@ -72,7 +72,7 @@ public class EntityForcedActionManager : MonoBehaviour
         Transform casterTransform = caster.transform;
         while (currentSourceAbilityBuffForForcedAction == sourceAbilityBuff)
         {
-            if (!entity.EntityDisplacementManager.isBeingDisplaced)
+            if (!entity.EntityDisplacementManager.IsBeingDisplaced)
             {
                 transform.position = Vector3.MoveTowards(transform.position, casterTransform.position, Time.deltaTime * entity.EntityStats.MovementSpeed.GetTotal());
 
@@ -129,7 +129,7 @@ public class EntityForcedActionManager : MonoBehaviour
         Transform casterTransform = caster.transform;
         while (currentSourceAbilityBuffForForcedAction == sourceAbilityBuff)
         {
-            if (!entity.EntityDisplacementManager.isBeingDisplaced)
+            if (!entity.EntityDisplacementManager.IsBeingDisplaced)
             {
                 transform.position = Vector3.MoveTowards(transform.position, casterTransform.position, -Time.deltaTime * entity.EntityStats.MovementSpeed.GetTotal());
 

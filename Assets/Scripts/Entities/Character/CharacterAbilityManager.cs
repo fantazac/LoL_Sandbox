@@ -642,24 +642,6 @@ public class CharacterAbilityManager : MonoBehaviour
         return false;
     }
 
-    public bool IsUsingADashAbility()
-    {
-        if (currentlyUsedAbilities.Count == 0)
-        {
-            return false;
-        }
-
-        foreach (Ability ability in currentlyUsedAbilities)
-        {
-            if (ability.GetAbilityType() == AbilityType.DASH)
-            {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
     public bool IsUsingAbilityThatHasACastTime()
     {
         if (currentlyUsedAbilities.Count == 0)
@@ -702,18 +684,6 @@ public class CharacterAbilityManager : MonoBehaviour
         {
             Ability ability = currentlyUsedAbilities[i];
             if (ability.IsBeingChanneled && ability.CannotCancelChannel)
-            {
-                ability.CancelAbility();
-            }
-        }
-    }
-
-    public void StopAllDashAbilities()
-    {
-        for (int i = currentlyUsedAbilities.Count - 1; i >= 0; i--)
-        {
-            Ability ability = currentlyUsedAbilities[i];
-            if (ability is DirectionTargetedDash)
             {
                 ability.CancelAbility();
             }

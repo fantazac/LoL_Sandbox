@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-public class Tristana_W : DirectionTargetedDash
+public class Tristana_W : DirectionTargetedDash//TODO: GroundTargetedDash
 {
     private float effectRadius;
 
@@ -58,6 +58,8 @@ public class Tristana_W : DirectionTargetedDash
 
         IsBeingCasted = false;
         UseResource();
+
+        character.EntityDisplacementManager.SetupDisplacement(destination, dashSpeed);
 
         while (transform.position != destination)
         {

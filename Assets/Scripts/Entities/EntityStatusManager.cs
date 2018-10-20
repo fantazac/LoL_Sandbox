@@ -140,7 +140,7 @@ public class EntityStatusManager : MonoBehaviour
             case CrowdControlEffects.KNOCKDOWN://TODO
                 if (character.CharacterAbilityManager)
                 {
-                    character.CharacterAbilityManager.StopAllDashAbilities();//TODO: cancels all airborne effects in certain cases (VeigarE) 
+                    character.EntityDisplacementManager.StopCurrentDisplacement();
                 }
                 break;
             case CrowdControlEffects.KNOCKUP://TODO

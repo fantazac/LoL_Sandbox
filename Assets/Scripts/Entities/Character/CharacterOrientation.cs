@@ -162,7 +162,7 @@ public class CharacterOrientation : MonoBehaviour
     {
         return !(isRotatingTowardsCastPoint || characterAbilityManager.IsUsingAbilityPreventingRotation() ||
             characterAbilityManager.IsUsingAbilityThatHasACastTime() || characterAbilityManager.IsUsingAbilityThatHasAChannelTime() ||
-            characterAbilityManager.IsUsingADashAbility());
+            character.EntityDisplacementManager.IsBeingDisplaced);
     }
 
     private bool CanRotateTowardsTarget(Transform targetTransform, bool isBasicAttack)

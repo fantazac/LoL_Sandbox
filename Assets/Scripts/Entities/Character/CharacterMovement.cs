@@ -134,7 +134,7 @@ public class CharacterMovement : MonoBehaviour
 
         while (transform.position != currentlySelectedDestination)
         {
-            if (!character.CharacterAbilityManager.IsUsingAbilityPreventingMovement() && character.EntityStatusManager.CanUseMovement())
+            if (!character.CharacterAbilityManager.IsUsingAbilityPreventingMovement() && character.EntityStatusManager.CanUseMovement() && !character.EntityDisplacementManager.IsBeingDisplaced)
             {
                 transform.position = Vector3.MoveTowards(transform.position, currentlySelectedDestination, Time.deltaTime * character.EntityStats.MovementSpeed.GetTotal());
 
@@ -154,7 +154,7 @@ public class CharacterMovement : MonoBehaviour
 
         while (Vector3.Distance(currentlySelectedDestination, transform.position) > range)
         {
-            if (!character.CharacterAbilityManager.IsUsingAbilityPreventingMovement() && character.EntityStatusManager.CanUseMovement())
+            if (!character.CharacterAbilityManager.IsUsingAbilityPreventingMovement() && character.EntityStatusManager.CanUseMovement() && !character.EntityDisplacementManager.IsBeingDisplaced)
             {
                 transform.position = Vector3.MoveTowards(transform.position, currentlySelectedDestination, Time.deltaTime * character.EntityStats.MovementSpeed.GetTotal());
 
@@ -255,14 +255,11 @@ public class CharacterMovement : MonoBehaviour
 
             while (targetTransform != null && Vector3.Distance(targetTransform.position, transform.position) > range)
             {
-                if (!character.CharacterAbilityManager.IsUsingAbilityPreventingMovement())
+                if (!character.CharacterAbilityManager.IsUsingAbilityPreventingMovement() && character.EntityStatusManager.CanUseMovement() && !character.EntityDisplacementManager.IsBeingDisplaced)
                 {
-                    if (character.EntityStatusManager.CanUseMovement())
-                    {
-                        transform.position = Vector3.MoveTowards(transform.position, targetTransform.position, Time.deltaTime * character.EntityStats.MovementSpeed.GetTotal());
+                    transform.position = Vector3.MoveTowards(transform.position, targetTransform.position, Time.deltaTime * character.EntityStats.MovementSpeed.GetTotal());
 
-                        NotifyCharacterMoved();
-                    }
+                    NotifyCharacterMoved();
                 }
 
                 yield return null;
@@ -277,9 +274,9 @@ public class CharacterMovement : MonoBehaviour
 
         if (target != null)
         {
-            if (target == currentlySelectedBasicAttackTarget && (character.CharacterAbilityManager.IsUsingAbilityPreventingBasicAttacks() || !character.EntityStatusManager.CanUseBasicAttacks()))//checks is disarmed
+            if (target == currentlySelectedBasicAttackTarget && (character.CharacterAbilityManager.IsUsingAbilityPreventingBasicAttacks() || !character.EntityStatusManager.CanUseBasicAttacks() || character.EntityDisplacementManager.IsBeingDisplaced))//checks is disarmed
             {
-                while (character.CharacterAbilityManager.IsUsingAbilityPreventingBasicAttacks() || !character.EntityStatusManager.CanUseBasicAttacks())
+                while (character.CharacterAbilityManager.IsUsingAbilityPreventingBasicAttacks() || !character.EntityStatusManager.CanUseBasicAttacks() || character.EntityDisplacementManager.IsBeingDisplaced)
                 {
                     yield return null;
                 }

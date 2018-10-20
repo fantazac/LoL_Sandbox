@@ -22,7 +22,18 @@ public abstract class DirectionTargetedDash : DirectionTargeted//TODO: A dash is
 
         FinalAdjustments(destination);
 
-        StartCorrectCoroutine();
+        if (castTime > 0)
+        {
+            StartCorrectCoroutine();
+        }
+        else
+        {
+            UseResource();
+
+            character.EntityDisplacementManager.SetupDisplacement(this.destination, dashSpeed);
+
+            FinishAbilityCast();
+        }
     }
 
     protected override void RotationOnAbilityCast(Vector3 destination)
@@ -31,22 +42,6 @@ public abstract class DirectionTargetedDash : DirectionTargeted//TODO: A dash is
         {
             character.CharacterOrientation.RotateCharacterInstantly(destination);
         }
-    }
-
-    protected override IEnumerator AbilityWithoutDelay()
-    {
-        UseResource();
-
-        while (transform.position != destination)
-        {
-            transform.position = Vector3.MoveTowards(transform.position, destination, Time.deltaTime * dashSpeed);
-
-            character.CharacterMovement.NotifyCharacterMoved();
-
-            yield return null;
-        }
-
-        FinishAbilityCast();
     }
 
     protected override void FinalAdjustments(Vector3 destination)
@@ -60,8 +55,8 @@ public abstract class DirectionTargetedDash : DirectionTargeted//TODO: A dash is
         Vector3 normalizedVector = Vector3.Normalize(destination - currentPosition);
 
         return distanceBetweenBothVectors > range ?
-            (range * normalizedVector + currentPosition) :
+            (range * normalizedVector) :
             distanceBetweenBothVectors < minimumDistanceTravelled ?
-            (minimumDistanceTravelled * normalizedVector + currentPosition) : destination;
+            (minimumDistanceTravelled * normalizedVector) : distanceBetweenBothVectors * normalizedVector;
     }
 }

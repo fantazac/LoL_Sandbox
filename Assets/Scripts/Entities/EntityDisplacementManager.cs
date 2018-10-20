@@ -8,7 +8,7 @@ public class EntityDisplacementManager : MonoBehaviour
     private IEnumerator currentDisplacementCoroutine;
     private AbilityBuff sourceAbilityBuffForCurrentDisplacement;
 
-    public bool isBeingDisplaced { get { return currentDisplacementCoroutine != null; } }
+    public bool IsBeingDisplaced { get { return currentDisplacementCoroutine != null; } }
 
     private void Start()
     {
@@ -25,15 +25,18 @@ public class EntityDisplacementManager : MonoBehaviour
         StartCoroutine(currentDisplacementCoroutine);
     }
 
-    private void StopCurrentDisplacement()
+    public void StopCurrentDisplacement()
     {
         if (currentDisplacementCoroutine != null)
         {
             StopCoroutine(currentDisplacementCoroutine);
+            currentDisplacementCoroutine = null;
             if (sourceAbilityBuffForCurrentDisplacement)
             {
                 sourceAbilityBuffForCurrentDisplacement.ConsumeBuff(entity);
+                sourceAbilityBuffForCurrentDisplacement = null;
             }
+            entity.EntityModelObject.transform.position = transform.position;
         }
     }
 
@@ -51,12 +54,7 @@ public class EntityDisplacementManager : MonoBehaviour
             yield return null;
         }
 
-        if (sourceAbilityBuff)
-        {
-            sourceAbilityBuff.ConsumeBuff(entity);
-        }
-
-        currentDisplacementCoroutine = null;
+        StopCurrentDisplacement();
     }
 
     private IEnumerator Knockup(Vector3 destination, float displacementSpeed, AbilityBuff sourceAbilityBuff)
@@ -82,11 +80,6 @@ public class EntityDisplacementManager : MonoBehaviour
 
         modelTransform.position = initialPosition;
 
-        if (sourceAbilityBuff)
-        {
-            sourceAbilityBuff.ConsumeBuff(entity);
-        }
-
-        currentDisplacementCoroutine = null;
+        StopCurrentDisplacement();
     }
 }

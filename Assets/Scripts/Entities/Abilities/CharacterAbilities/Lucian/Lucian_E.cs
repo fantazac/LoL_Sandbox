@@ -20,7 +20,6 @@
         ResetBasicAttackCycleOnAbilityFinished = true;
 
         affectedByCooldownReduction = true;
-        startCooldownOnAbilityCast = true;
     }
 
     protected override void SetResourcePaths()
