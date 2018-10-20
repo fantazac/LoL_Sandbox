@@ -60,18 +60,7 @@ public class Tristana_W : DirectionTargetedDash//TODO: GroundTargetedDash
         UseResource();
 
         character.EntityDisplacementManager.SetupDisplacement(destination, dashSpeed);
-
-        while (transform.position != destination)
-        {
-            transform.position = Vector3.MoveTowards(transform.position, destination, Time.deltaTime * dashSpeed);
-            //TODO: Make the character model jump in the air (while hitbox remains on the ground)
-
-            character.CharacterMovement.NotifyCharacterMoved();
-
-            yield return null;
-        }
-
-        ApplyDamageAndSlowToAllEnemiesInRadius();
+        character.EntityDisplacementManager.OnDisplacementFinished += ApplyDamageAndSlowToAllEnemiesInRadius;
 
         FinishAbilityCast();
     }

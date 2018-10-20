@@ -68,8 +68,8 @@ public class CharacterAutoAttack : MonoBehaviour
         Entity autoAttackTarget = null;
         while (true)
         {
-            if (character.EntityStatusManager && !character.CharacterAbilityManager.IsUsingAbilityPreventingBasicAttacks() && character.EntityStatusManager.CanUseBasicAttacks() &&
-                (!character.CharacterMovement.IsMoving() || !character.EntityStatusManager.CanUseMovement()) &&
+            if (character.EntityStatusManager && !character.CharacterAbilityManager.IsUsingAbilityPreventingBasicAttacks() && !character.EntityDisplacementManager.IsBeingDisplaced &&
+                character.EntityStatusManager.CanUseBasicAttacks() && (!character.CharacterMovement.IsMoving() || !character.EntityStatusManager.CanUseMovement()) &&
                 !character.EntityBasicAttack.AttackIsInQueue && character.EntityBasicAttackCycle.AttackSpeedCycleIsReady)
             {
                 if (autoAttackTarget == null || Vector3.Distance(autoAttackTarget.transform.position, transform.position) > attackRange.GetTotal())

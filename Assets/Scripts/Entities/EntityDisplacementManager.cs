@@ -10,6 +10,9 @@ public class EntityDisplacementManager : MonoBehaviour
 
     public bool IsBeingDisplaced { get { return currentDisplacementCoroutine != null; } }
 
+    public delegate void OnDisplacementFinishedHandler();
+    public event OnDisplacementFinishedHandler OnDisplacementFinished;
+
     private void Start()
     {
         entity = GetComponent<Character>();
@@ -27,6 +30,7 @@ public class EntityDisplacementManager : MonoBehaviour
 
     public void StopCurrentDisplacement()
     {
+        OnDisplacementFinished = null;
         if (currentDisplacementCoroutine != null)
         {
             StopCoroutine(currentDisplacementCoroutine);
@@ -54,6 +58,10 @@ public class EntityDisplacementManager : MonoBehaviour
             yield return null;
         }
 
+        if (OnDisplacementFinished != null)
+        {
+            OnDisplacementFinished();
+        }
         StopCurrentDisplacement();
     }
 
@@ -80,6 +88,10 @@ public class EntityDisplacementManager : MonoBehaviour
 
         modelTransform.position = initialPosition;
 
+        if (OnDisplacementFinished != null)
+        {
+            OnDisplacementFinished();
+        }
         StopCurrentDisplacement();
     }
 }

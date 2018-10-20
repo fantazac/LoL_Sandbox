@@ -97,7 +97,7 @@ public abstract class EntityBasicAttack : MonoBehaviour
     protected void Update()
     {
         if (currentTarget != null && ((Character)entity).CharacterMovement.GetBasicAttackTarget() != currentTarget && !AttackIsInQueue && entity.EntityBasicAttackCycle.AttackSpeedCycleIsReady &&
-            !((Character)entity).CharacterAbilityManager.IsUsingAbilityPreventingBasicAttacks())
+            !((Character)entity).CharacterAbilityManager.IsUsingAbilityPreventingBasicAttacks() && !entity.EntityDisplacementManager.IsBeingDisplaced)
         {
             StartBasicAttack();
         }
@@ -133,7 +133,7 @@ public abstract class EntityBasicAttack : MonoBehaviour
     protected virtual IEnumerator ShootBasicAttack(Entity target)
     {
         ((Character)entity).CharacterOrientation.RotateCharacterUntilReachedTarget(target.transform, true, true);
-
+        
         yield return delayAttack;
 
         entity.EntityBasicAttackCycle.LockBasicAttack();
