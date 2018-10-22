@@ -57,6 +57,7 @@ public class Tristana_W : DirectionTargetedDash//TODO: GroundTargetedDash
         yield return delayCastTime;
 
         IsBeingCasted = false;
+        FinalAdjustments(destination);
         UseResource();
 
         character.EntityDisplacementManager.SetupDisplacement(destination, dashSpeed);

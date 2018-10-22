@@ -17,10 +17,10 @@ public abstract class DirectionTargetedDash : DirectionTargeted//TODO: A dash is
     {
         StartAbilityCast();
 
+        this.destination = destination;
+
         character.CharacterMovement.RestartMovementTowardsTargetAfterAbility();
         RotationOnAbilityCast(destination);
-
-        FinalAdjustments(destination);
 
         if (castTime > 0)
         {
@@ -28,6 +28,7 @@ public abstract class DirectionTargetedDash : DirectionTargeted//TODO: A dash is
         }
         else
         {
+            FinalAdjustments(destination);
             UseResource();
 
             character.EntityDisplacementManager.SetupDisplacement(this.destination, dashSpeed);

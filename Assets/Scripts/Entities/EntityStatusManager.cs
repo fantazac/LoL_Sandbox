@@ -138,7 +138,7 @@ public class EntityStatusManager : MonoBehaviour
                 }
                 break;
             case CrowdControlEffects.KNOCKDOWN://TODO
-                if (character.CharacterAbilityManager)
+                if (character.EntityDisplacementManager)
                 {
                     character.EntityDisplacementManager.StopCurrentDisplacement();
                 }
