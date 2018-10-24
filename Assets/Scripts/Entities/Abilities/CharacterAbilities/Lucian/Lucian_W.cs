@@ -89,12 +89,12 @@ public class Lucian_W : DirectionTargetedProjectile
 
     private void AddNewDebuffToEntityHit(Entity entityHit)
     {
-        entityHit.EntityStats.Health.OnHealthReduced += OnEntityDamaged;
+        entityHit.EntityStats.Health.OnResourceReduced += OnEntityDamaged;
         AbilityDebuffs[0].AddNewBuffToAffectedEntity(entityHit);
     }
 
     private void RemoveDebuffFromEntityHit(Entity entityHit)
     {
-        entityHit.EntityStats.Health.OnHealthReduced -= OnEntityDamaged;
+        entityHit.EntityStats.Health.OnResourceReduced -= OnEntityDamaged;
     }
 }

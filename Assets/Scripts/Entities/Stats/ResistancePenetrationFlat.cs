@@ -1,4 +1,4 @@
-﻿public class MagicPenetrationFlat : Stat
+﻿public class ResistancePenetrationFlat : Stat
 {
     public override void UpdateTotal()
     {

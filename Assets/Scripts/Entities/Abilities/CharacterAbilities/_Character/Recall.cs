@@ -66,7 +66,7 @@ public class Recall : AutoTargetedBlink
 
     private void AddNewBuffToEntityHit(Entity entityHit)
     {
-        entityHit.EntityStats.Health.OnHealthReduced += CancelRecall;
+        entityHit.EntityStats.Health.OnResourceReduced += CancelRecall;
         ((Character)entityHit).CharacterAbilityManager.OnAnAbilityUsed += CancelRecall;
         ((Character)entityHit).CharacterMovement.CharacterMoved += CancelRecall;
         AbilityBuffs[0].AddNewBuffToAffectedEntity(entityHit);
@@ -74,7 +74,7 @@ public class Recall : AutoTargetedBlink
 
     private void RemoveBuffFromEntityHit(Entity entityHit)
     {
-        entityHit.EntityStats.Health.OnHealthReduced -= CancelRecall;
+        entityHit.EntityStats.Health.OnResourceReduced -= CancelRecall;
         ((Character)entityHit).CharacterAbilityManager.OnAnAbilityUsed -= CancelRecall;
         ((Character)entityHit).CharacterMovement.CharacterMoved -= CancelRecall;
     }

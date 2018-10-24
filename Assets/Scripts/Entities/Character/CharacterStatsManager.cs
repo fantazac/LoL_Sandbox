@@ -48,7 +48,7 @@ public class CharacterStatsManager : MonoBehaviour
     private IEnumerator HealthRegeneration()
     {
         Health health = characterStats.Health;
-        HealthRegeneration healthRegen = characterStats.HealthRegeneration;
+        ResourceRegeneration healthRegen = characterStats.HealthRegeneration;
 
         while (true)
         {
@@ -61,7 +61,7 @@ public class CharacterStatsManager : MonoBehaviour
     private IEnumerator HealthRegenerationAndResourceRegeneration()
     {
         Health health = characterStats.Health;
-        HealthRegeneration healthRegen = characterStats.HealthRegeneration;
+        ResourceRegeneration healthRegen = characterStats.HealthRegeneration;
         Resource resource = characterStats.Resource;
         ResourceRegeneration resourceRegen = characterStats.ResourceRegeneration;
 
@@ -74,7 +74,7 @@ public class CharacterStatsManager : MonoBehaviour
         }
     }
 
-    private void RegenerateHealth(Health health, HealthRegeneration healthRegen)
+    private void RegenerateHealth(Health health, ResourceRegeneration healthRegen)
     {
         if (health.GetTotal() > health.GetCurrentValue())
         {

@@ -1,6 +1,6 @@
-﻿public class MagicDamageReceivedModifier : Stat
+﻿public class DamageModifier : Stat
 {
-    public MagicDamageReceivedModifier() : base()
+    public DamageModifier() : base()
     {
         percentBonus = 100f;
         percentMalus = 100f;

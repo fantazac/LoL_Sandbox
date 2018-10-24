@@ -4,12 +4,16 @@ public class Resource : Stat
 {
     protected float currentValue;
 
-    public delegate void OnCurrentResourceValueChangedHandler();
-    public event OnCurrentResourceValueChangedHandler OnCurrentResourceValueChanged;
+    public delegate void OnResourceReducedHandler();
+    public event OnResourceReducedHandler OnResourceReduced;
+
+    public delegate void OnCurrentResourceChangedHandler();
+    public event OnCurrentResourceChangedHandler OnCurrentResourceChanged;
 
     public delegate void OnMaxResourceValueChangedHandler();
-    public event OnMaxResourceValueChangedHandler OnMaxResourceValueChanged;
+    public event OnMaxResourceValueChangedHandler OnMaxResourceChanged;
 
+    public Resource(float initialBaseValue) : base(initialBaseValue) { }
     public Resource(float initialBaseValue, float perLevelValue) : base(initialBaseValue, perLevelValue) { }
 
     public float GetCurrentValue()
@@ -20,18 +24,22 @@ public class Resource : Stat
     public void Reduce(float amount)
     {
         currentValue = Mathf.Clamp(currentValue - amount, 0, total);
-        if (OnCurrentResourceValueChanged != null)
+        if (OnResourceReduced != null)
         {
-            OnCurrentResourceValueChanged();
+            OnResourceReduced();
+        }
+        if (OnCurrentResourceChanged != null)
+        {
+            OnCurrentResourceChanged();
         }
     }
 
     public void Restore(float amount)
     {
         currentValue = Mathf.Clamp(currentValue + amount, 0, total);
-        if (OnCurrentResourceValueChanged != null)
+        if (OnCurrentResourceChanged != null)
         {
-            OnCurrentResourceValueChanged();
+            OnCurrentResourceChanged();
         }
     }
 
@@ -49,13 +57,13 @@ public class Resource : Stat
         float difference = total - previousTotal;
         currentValue = Mathf.Clamp(currentValue + (difference > 0 ? difference : 0), 0, total);
 
-        if (OnMaxResourceValueChanged != null)
+        if (OnMaxResourceChanged != null)
         {
-            OnMaxResourceValueChanged();
+            OnMaxResourceChanged();
         }
-        if (OnCurrentResourceValueChanged != null)
+        if (OnCurrentResourceChanged != null)
         {
-            OnCurrentResourceValueChanged();
+            OnCurrentResourceChanged();
         }
     }
 }

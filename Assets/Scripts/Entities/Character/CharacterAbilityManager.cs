@@ -34,7 +34,7 @@ public class CharacterAbilityManager : MonoBehaviour
         if (character.IsLocalCharacter())
         {
             InitAbilityUIManager();
-            character.EntityStats.Resource.OnCurrentResourceValueChanged += OnResourceCurrentValueChanged;
+            character.EntityStats.Resource.OnCurrentResourceChanged += OnResourceCurrentValueChanged;
         }
     }
 

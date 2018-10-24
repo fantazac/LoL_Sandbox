@@ -70,11 +70,11 @@ public class StatsUIManager : MonoBehaviour
             statsText.AppendFormat("ARMOR: {0} ((({1} + {2}) + {3}% - {4}) - {5}%)  Takes {6}% reduced physical damage (Eff HP: {7}%)",
                 characterStats.Armor.GetTotal(), characterStats.Armor.GetCurrentBaseValue(), characterStats.Armor.GetFlatBonus(),
                 characterStats.Armor.GetPercentBonus(), characterStats.Armor.GetFlatMalus(), characterStats.Armor.GetPercentMalus(),
-                (int)Mathf.Round(characterStats.Armor.GetPhysicalDamageReductionPercent() * 100), characterStats.Armor.GetPhysicalEffectiveHealthPercent() * 100).AppendLine();
+                (int)Mathf.Round(characterStats.Armor.GetDamageReductionPercent() * 100), characterStats.Armor.GetEffectiveHealthPercent() * 100).AppendLine();
             statsText.AppendFormat("MAGIC RESISTANCE: {0} ((({1} + {2}) + {3}% - {4}) - {5}%) Takes {6}% reduced magic damage (Eff HP: {7}%)",
                 characterStats.MagicResistance.GetTotal(), characterStats.MagicResistance.GetCurrentBaseValue(), characterStats.MagicResistance.GetFlatBonus(),
                 characterStats.MagicResistance.GetPercentBonus(), characterStats.MagicResistance.GetFlatMalus(), characterStats.MagicResistance.GetPercentMalus(),
-                (int)Mathf.Round(characterStats.MagicResistance.GetMagicDamageReductionPercent() * 100), characterStats.MagicResistance.GetMagicEffectiveHealthPercent() * 100).AppendLine();
+                (int)Mathf.Round(characterStats.MagicResistance.GetDamageReductionPercent() * 100), characterStats.MagicResistance.GetEffectiveHealthPercent() * 100).AppendLine();
             statsText.AppendFormat("ATTACK SPEED: {0} ({1} + {2}% - {3}% + {4}%)",
                 characterStats.AttackSpeed.GetTotal(), characterStats.AttackSpeed.GetInitialBaseValue(),
                 characterStats.AttackSpeed.GetPercentBonus(), characterStats.AttackSpeed.GetPercentMalus(),

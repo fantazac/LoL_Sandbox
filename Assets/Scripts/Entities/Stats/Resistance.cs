@@ -1,7 +1,7 @@
-﻿public class MagicResistance : Stat
+﻿public class Resistance : Stat
 {
-    public MagicResistance(float initialBaseValue) : base(initialBaseValue) { }
-    public MagicResistance(float initialBaseValue, float perLevelValue) : base(initialBaseValue, perLevelValue) { }
+    public Resistance(float initialBaseValue) : base(initialBaseValue) { }
+    public Resistance(float initialBaseValue, float perLevelValue) : base(initialBaseValue, perLevelValue) { }
 
     public override void UpdateTotal()
     {
@@ -26,16 +26,16 @@
         }
         else
         {
-            return 2 - 100 / (100 - total);
+            return 2 - (100 / (100 - total));
         }
     }
 
-    public float GetMagicEffectiveHealthPercent()
+    public float GetEffectiveHealthPercent()
     {
-        return 1 + (GetMagicDamageReductionPercent() / GetResistanceDamageReceivedModifier());
+        return 1 + (GetDamageReductionPercent() / GetResistanceDamageReceivedModifier());
     }
 
-    public float GetMagicDamageReductionPercent()
+    public float GetDamageReductionPercent()
     {
         return 1 - GetResistanceDamageReceivedModifier();
     }

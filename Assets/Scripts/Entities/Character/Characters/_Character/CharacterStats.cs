@@ -13,18 +13,18 @@
 
         AttackDamage = new AttackDamage(characterBaseStats.BaseAttackDamage, characterBaseStats.AttackDamagePerLevel);
         AbilityPower = new AbilityPower();
-        Armor = new Armor(characterBaseStats.BaseArmor, characterBaseStats.ArmorPerLevel);
-        MagicResistance = new MagicResistance(characterBaseStats.BaseMagicResistance, characterBaseStats.MagicResistancePerLevel);
+        Armor = new Resistance(characterBaseStats.BaseArmor, characterBaseStats.ArmorPerLevel);
+        MagicResistance = new Resistance(characterBaseStats.BaseMagicResistance, characterBaseStats.MagicResistancePerLevel);
         AttackSpeed = new AttackSpeed(characterBaseStats.BaseAttackSpeed, characterBaseStats.AttackSpeedPerLevel, characterBaseStats.AttackDelay);
         CooldownReduction = new CooldownReduction();
         CriticalStrikeChance = new CriticalStrikeChance();
         MovementSpeed = new MovementSpeed(characterBaseStats.BaseMovementSpeed);
 
-        HealthRegeneration = new HealthRegeneration(characterBaseStats.BaseHealthRegeneration, characterBaseStats.HealthRegenerationPerLevel);
+        HealthRegeneration = new ResourceRegeneration(characterBaseStats.BaseHealthRegeneration, characterBaseStats.HealthRegenerationPerLevel);
         Lethality = new Lethality();
-        ArmorPenetrationPercent = new ArmorPenetrationPercent();
-        MagicPenetrationFlat = new MagicPenetrationFlat();
-        MagicPenetrationPercent = new MagicPenetrationPercent();
+        ArmorPenetrationPercent = new ResistancePenetrationPercent();
+        MagicPenetrationFlat = new ResistancePenetrationFlat();
+        MagicPenetrationPercent = new ResistancePenetrationPercent();
         LifeSteal = new LifeSteal();
         SpellVamp = new SpellVamp();
         AttackRange = new AttackRange(characterBaseStats.BaseAttackRange);
@@ -32,10 +32,10 @@
 
         CriticalStrikeDamage = new CriticalStrikeDamage();
         CriticalStrikeDamageReduction = new CriticalStrikeDamageReduction();
-        PhysicalDamageModifier = new PhysicalDamageModifier();
-        MagicDamageModifier = new MagicDamageModifier();
-        PhysicalDamageReceivedModifier = new PhysicalDamageReceivedModifier();
-        MagicDamageReceivedModifier = new MagicDamageReceivedModifier();
+        PhysicalDamageModifier = new DamageModifier();
+        MagicDamageModifier = new DamageModifier();
+        PhysicalDamageReceivedModifier = new DamageModifier();
+        MagicDamageReceivedModifier = new DamageModifier();
         HealAndShieldPower = new HealAndShieldPower();
         SlowResistance = new SlowResistance();
 

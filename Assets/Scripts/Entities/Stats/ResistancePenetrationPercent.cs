@@ -1,4 +1,4 @@
-﻿public class MagicPenetrationPercent : Stat
+﻿public class ResistancePenetrationPercent : Stat
 {
     public override void UpdateTotal()
     {

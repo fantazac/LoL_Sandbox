@@ -39,9 +39,6 @@ public class MissFortune_W : SelfTargeted
         base.Start();
 
         AbilityBuffs = new AbilityBuff[] { gameObject.AddComponent<MissFortune_W_PassiveBuff>(), gameObject.AddComponent<MissFortune_W_Buff>() };
-
-        GetComponent<MissFortune_P>().OnPassiveHit += OnPassiveHit;
-        character.EntityStats.Health.OnHealthReduced += OnDamageTaken;
     }
 
     protected override void SetCooldownForAbilityAffectedByCooldownReduction(float cooldownReduction)
@@ -49,6 +46,15 @@ public class MissFortune_W : SelfTargeted
         base.SetCooldownForAbilityAffectedByCooldownReduction(cooldownReduction);
 
         cooldownReductionOnPassiveHit = baseCooldownReductionOnPassiveHit * (1 - (cooldownReduction * 0.01f));
+    }
+
+    public override void EnableAbilityPassive()
+    {
+        GetComponent<MissFortune_P>().OnPassiveHit += OnPassiveHit;
+
+        character.EntityStats.Health.OnResourceReduced += OnDamageTaken;
+        //TODO: something.OnRevive += OnRevive;
+        AddNewDebuffToEntityHit(character);
     }
 
     private void OnPassiveHit()
@@ -61,25 +67,24 @@ public class MissFortune_W : SelfTargeted
 
     private void OnDamageTaken()
     {
-        if (AbilityLevel > 0)
-        {
-            AbilityBuffs[0].ConsumeBuff(character);
+        AbilityBuffs[0].ConsumeBuff(character);
 
-            if (passiveBuffCooldownAfterTakingDamage != null)
-            {
-                StopCoroutine(passiveBuffCooldownAfterTakingDamage);
-            }
-            passiveBuffCooldownAfterTakingDamage = PassiveBuffCooldownAfterTakingDamage();
-            StartCoroutine(passiveBuffCooldownAfterTakingDamage);
+        if (passiveBuffCooldownAfterTakingDamage != null)
+        {
+            StopCoroutine(passiveBuffCooldownAfterTakingDamage);
         }
+        passiveBuffCooldownAfterTakingDamage = PassiveBuffCooldownAfterTakingDamage();
+        StartCoroutine(passiveBuffCooldownAfterTakingDamage);
     }
 
-    private void OnRevive()//TODO
+    private void OnRevive()
     {
-        if (AbilityLevel > 0)
+        if (passiveBuffCooldownAfterTakingDamage != null)
         {
-            EnableAbilityPassive();
+            StopCoroutine(passiveBuffCooldownAfterTakingDamage);
+            passiveBuffCooldownAfterTakingDamage = null;
         }
+        AddNewDebuffToEntityHit(character);
     }
 
     public override void UseAbility(Vector3 destination)
@@ -91,16 +96,16 @@ public class MissFortune_W : SelfTargeted
         FinishAbilityCast();
     }
 
-    public override void EnableAbilityPassive()
-    {
-        AbilityBuffs[0].AddNewBuffToAffectedEntity(character);
-    }
-
     private IEnumerator PassiveBuffCooldownAfterTakingDamage()
     {
         yield return delayPassiveBuff;
 
         passiveBuffCooldownAfterTakingDamage = null;
-        EnableAbilityPassive();
+        AddNewDebuffToEntityHit(character);
+    }
+
+    private void AddNewDebuffToEntityHit(Entity entityHit)
+    {
+        AbilityBuffs[0].AddNewBuffToAffectedEntity(entityHit);
     }
 }

@@ -69,8 +69,8 @@ public class HealthBar : MonoBehaviour
     {
         this.character = character;
 
-        character.EntityStats.Health.OnCurrentHealthValueChanged += OnCurrentHealthChanged;
-        character.EntityStats.Health.OnMaxHealthValueChanged += OnMaxHealthChanged;
+        character.EntityStats.Health.OnCurrentResourceChanged += OnCurrentHealthChanged;
+        character.EntityStats.Health.OnMaxResourceChanged += OnMaxHealthChanged;
 
         maxHealth = character.EntityStats.Health.GetTotal();
 
@@ -93,8 +93,8 @@ public class HealthBar : MonoBehaviour
                 Destroy(resourceImage.gameObject);
             }
 
-            character.EntityStats.Resource.OnCurrentResourceValueChanged += OnCurrentResourceChanged;
-            character.EntityStats.Resource.OnMaxResourceValueChanged += OnMaxResourceChanged;
+            character.EntityStats.Resource.OnCurrentResourceChanged += OnCurrentResourceChanged;
+            character.EntityStats.Resource.OnMaxResourceChanged += OnMaxResourceChanged;
             maxResource = character.EntityStats.Resource.GetTotal();
         }
         else
@@ -171,12 +171,12 @@ public class HealthBar : MonoBehaviour
 
     private void OnDestroy()
     {
-        character.EntityStats.Health.OnCurrentHealthValueChanged -= OnCurrentHealthChanged;
-        character.EntityStats.Health.OnMaxHealthValueChanged -= OnMaxHealthChanged;
+        character.EntityStats.Health.OnCurrentResourceChanged -= OnCurrentHealthChanged;
+        character.EntityStats.Health.OnMaxResourceChanged -= OnMaxHealthChanged;
         if (character.EntityStats.Resource != null)
         {
-            character.EntityStats.Resource.OnCurrentResourceValueChanged -= OnCurrentResourceChanged;
-            character.EntityStats.Resource.OnMaxResourceValueChanged -= OnMaxResourceChanged;
+            character.EntityStats.Resource.OnCurrentResourceChanged -= OnCurrentResourceChanged;
+            character.EntityStats.Resource.OnMaxResourceChanged -= OnMaxResourceChanged;
         }
     }
 

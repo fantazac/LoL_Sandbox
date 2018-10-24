@@ -1,11 +1,6 @@
-﻿public class Lethality : Stat
+﻿public class Lethality : ResistancePenetrationFlat
 {
     private int characterLevel;
-
-    public override void UpdateTotal()
-    {
-        total = flatBonus;
-    }
 
     public override void OnLevelUp(int level)
     {
