@@ -464,14 +464,6 @@ public abstract class Ability : MonoBehaviour
         }
     }
 
-    public void UpdateLevelOnUI()
-    {
-        if (character.AbilityUIManager)
-        {
-            character.AbilityUIManager.LevelUpAbility(ID, AbilityLevel);
-        }
-    }
-
     protected void LevelUpAbilityStats()
     {
         bonusADScaling += bonusADScalingPerLevel;

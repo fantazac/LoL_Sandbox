@@ -64,7 +64,7 @@ public class CharacterAbilityManager : MonoBehaviour
             }
         }
     }
-    
+
     protected void OnAbilityUsed(Ability ability)
     {
         if (ability.HasCastTime || ability.HasChannelTime)
@@ -163,7 +163,7 @@ public class CharacterAbilityManager : MonoBehaviour
             characterAbilitiesWithResourceCosts.Remove(ability);
         }
     }
-    /////////////////////////////////////////////////////////////////////
+
     protected void SendToServer_Ability_Destination(AbilityCategory abilityCategory, int abilityId, Vector3 destination)
     {
         character.PhotonView.RPC("ReceiveFromServer_Ability_Destination", PhotonTargets.AllViaServer, abilityCategory, abilityId, destination);
@@ -266,9 +266,12 @@ public class CharacterAbilityManager : MonoBehaviour
     {
         Ability ability = GetAbility(abilityCategory, abilityId);
         ability.LevelUp();
-        ability.UpdateLevelOnUI();
+        if (character.AbilityUIManager)
+        {
+            character.AbilityUIManager.LevelUpAbility(ability.ID, ability.AbilityLevel);
+        }
     }
-
+    /////////////////////////////////////////////////////////////////////
     public void OnPressedInputForAbility(AbilityCategory abilityCategory, int abilityId)
     {
         Ability ability = GetAbility(abilityCategory, abilityId);
