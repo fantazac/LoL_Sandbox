@@ -20,20 +20,20 @@ public abstract class EntityStats : MonoBehaviour
     public ResistancePenetrationPercent ArmorPenetrationPercent { get; protected set; }
     public ResistancePenetrationFlat MagicPenetrationFlat { get; protected set; }
     public ResistancePenetrationPercent MagicPenetrationPercent { get; protected set; }
-    public LifeSteal LifeSteal { get; protected set; }
-    public SpellVamp SpellVamp { get; protected set; }
+    public PercentBonusOnlyStat LifeSteal { get; protected set; }
+    public PercentBonusOnlyStat SpellVamp { get; protected set; }
     public AttackRange AttackRange { get; protected set; }
     public Tenacity Tenacity { get; protected set; }
 
     public ResourceType ResourceType { get; protected set; }
 
     public CriticalStrikeDamage CriticalStrikeDamage { get; protected set; }
-    public CriticalStrikeDamageReduction CriticalStrikeDamageReduction { get; protected set; }
+    public PercentBonusOnlyStat CriticalStrikeDamageReduction { get; protected set; }
     public DamageModifier PhysicalDamageModifier { get; protected set; }
     public DamageModifier MagicDamageModifier { get; protected set; }
     public DamageModifier PhysicalDamageReceivedModifier { get; protected set; }
     public DamageModifier MagicDamageReceivedModifier { get; protected set; }
-    public HealAndShieldPower HealAndShieldPower { get; protected set; }
+    public PercentBonusOnlyStat HealAndShieldPower { get; protected set; }
     public SlowResistance SlowResistance { get; protected set; }
 
     protected virtual void Awake()
@@ -59,18 +59,18 @@ public abstract class EntityStats : MonoBehaviour
         ArmorPenetrationPercent = new ResistancePenetrationPercent();
         MagicPenetrationFlat = new ResistancePenetrationFlat();
         MagicPenetrationPercent = new ResistancePenetrationPercent();
-        LifeSteal = new LifeSteal();
-        SpellVamp = new SpellVamp();
+        LifeSteal = new PercentBonusOnlyStat();
+        SpellVamp = new PercentBonusOnlyStat();
         AttackRange = new AttackRange(entityBaseStats.BaseAttackRange);
         Tenacity = new Tenacity();
 
         CriticalStrikeDamage = new CriticalStrikeDamage();
-        CriticalStrikeDamageReduction = new CriticalStrikeDamageReduction();
+        CriticalStrikeDamageReduction = new PercentBonusOnlyStat();
         PhysicalDamageModifier = new DamageModifier();
         MagicDamageModifier = new DamageModifier();
         PhysicalDamageReceivedModifier = new DamageModifier();
         MagicDamageReceivedModifier = new DamageModifier();
-        HealAndShieldPower = new HealAndShieldPower();
+        HealAndShieldPower = new PercentBonusOnlyStat();
         SlowResistance = new SlowResistance();
 
         ExtraAdjustments();

@@ -1,13 +1,11 @@
 ﻿using System.Collections.Generic;
-using UnityEngine;
 
-public class MovementSpeed : Stat
+public class MovementSpeed : MultiplicativeBonusStat
 {
     private const float LOW_CAP = 220;
     private const float FIRST_CAP = 415;
     private const float SECOND_CAP = 490;
 
-    private float multiplicativePercentBonus;
     private float currentSlowResistance;
 
     private List<float> slows = new List<float>();//This needs to be initialized before the constructor if we don't want to add a null check in GetBiggestSlow.
@@ -70,23 +68,6 @@ public class MovementSpeed : Stat
     protected override void CalculatePercentMalusReduction(float percentMalus)
     {
         slows.Remove(percentMalus);
-        UpdateTotal();
-    }
-
-    public float GetMultiplicativePercentBonus()
-    {
-        return multiplicativePercentBonus;
-    }
-
-    private void AddMultiplicativePercentBonus(float multiplicativePercentBonus)
-    {
-        this.multiplicativePercentBonus += multiplicativePercentBonus;
-        UpdateTotal();
-    }
-
-    private void RemoveMultiplicativePercentBonus(float multiplicativePercentBonus)
-    {
-        this.multiplicativePercentBonus -= multiplicativePercentBonus;
         UpdateTotal();
     }
 }

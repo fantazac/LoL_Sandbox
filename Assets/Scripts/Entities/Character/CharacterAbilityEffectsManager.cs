@@ -3,7 +3,7 @@
 public class CharacterAbilityEffectsManager : MonoBehaviour
 {
     private Character character;
-    private SpellVamp spellVamp;
+    private PercentBonusOnlyStat spellVamp;
 
     public delegate void OnApplyAbilityEffectsHandler(Entity entityHit, float damage);
     public event OnApplyAbilityEffectsHandler OnApplyAbilityEffects;

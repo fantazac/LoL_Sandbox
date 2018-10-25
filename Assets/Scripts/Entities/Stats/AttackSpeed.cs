@@ -1,11 +1,10 @@
 ﻿using UnityEngine;
 
-public class AttackSpeed : Stat
+public class AttackSpeed : MultiplicativeBonusStat
 {
     private static float ATTACK_SPEED_CAP = 2.5f;
 
     private EntityBasicAttack entityBasicAttack;
-    private float multiplicativePercentBonus;
 
     public AttackSpeed(float initialBaseValue) : base(initialBaseValue) { }
     public AttackSpeed(float initialBaseValue, float perLevelValue, float attackDelay) : base(initialBaseValue / (1 + attackDelay), perLevelValue) { }
@@ -54,22 +53,5 @@ public class AttackSpeed : Stat
     protected override void CalculatePercentMalusReduction(float percentMalus)
     {
         this.percentMalus = 100 - (100 - this.percentMalus) / ((100 - percentMalus) * 0.01f);
-    }
-
-    public float GetMultiplicativePercentBonus()
-    {
-        return multiplicativePercentBonus;
-    }
-
-    private void AddMultiplicativePercentBonus(float multiplicativePercentBonus)
-    {
-        this.multiplicativePercentBonus += multiplicativePercentBonus;
-        UpdateTotal();
-    }
-
-    private void RemoveMultiplicativePercentBonus(float multiplicativePercentBonus)
-    {
-        this.multiplicativePercentBonus -= multiplicativePercentBonus;
-        UpdateTotal();
     }
 }

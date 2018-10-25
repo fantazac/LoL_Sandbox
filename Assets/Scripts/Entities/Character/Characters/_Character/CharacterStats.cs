@@ -25,18 +25,18 @@
         ArmorPenetrationPercent = new ResistancePenetrationPercent();
         MagicPenetrationFlat = new ResistancePenetrationFlat();
         MagicPenetrationPercent = new ResistancePenetrationPercent();
-        LifeSteal = new LifeSteal();
-        SpellVamp = new SpellVamp();
+        LifeSteal = new PercentBonusOnlyStat();
+        SpellVamp = new PercentBonusOnlyStat();
         AttackRange = new AttackRange(characterBaseStats.BaseAttackRange);
         Tenacity = new Tenacity();
 
         CriticalStrikeDamage = new CriticalStrikeDamage();
-        CriticalStrikeDamageReduction = new CriticalStrikeDamageReduction();
+        CriticalStrikeDamageReduction = new PercentBonusOnlyStat();
         PhysicalDamageModifier = new DamageModifier();
         MagicDamageModifier = new DamageModifier();
         PhysicalDamageReceivedModifier = new DamageModifier();
         MagicDamageReceivedModifier = new DamageModifier();
-        HealAndShieldPower = new HealAndShieldPower();
+        HealAndShieldPower = new PercentBonusOnlyStat();
         SlowResistance = new SlowResistance();
 
         //set extra character stats

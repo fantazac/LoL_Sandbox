@@ -1,4 +1,4 @@
-﻿public class LifeSteal : Stat
+﻿public class PercentBonusOnlyStat : Stat
 {
     public override void UpdateTotal()
     {

@@ -3,7 +3,7 @@
 public class CharacterOnHitEffectsManager : MonoBehaviour
 {
     private Character character;
-    private LifeSteal lifeSteal;
+    private PercentBonusOnlyStat lifeSteal;
 
     public delegate void OnApplyOnHitEffectsHandler(Entity entityHit, float damage);
     public event OnApplyOnHitEffectsHandler OnApplyOnHitEffects;

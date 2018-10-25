@@ -1,11 +1,11 @@
-﻿public class SlowResistance : Stat
+﻿public class SlowResistance : PercentBonusOnlyStat
 {
     public delegate void OnSlowResistanceChangedHandler(float slowResistance);
     public event OnSlowResistanceChangedHandler OnSlowResistanceChanged;
 
     public override void UpdateTotal()
     {
-        total = percentBonus * 0.01f;
+        base.UpdateTotal();
         if (OnSlowResistanceChanged != null)
         {
             OnSlowResistanceChanged(total);
