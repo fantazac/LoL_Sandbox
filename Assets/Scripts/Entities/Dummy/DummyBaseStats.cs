@@ -4,7 +4,7 @@
 
     protected override void SetBaseStats()
     {
-        BaseHealth = 10000;
+        BaseHealth = 2500;
 
         BaseAttackDamage = 0;
         BaseArmor = 100;
