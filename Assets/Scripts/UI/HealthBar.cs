@@ -162,10 +162,10 @@ public class HealthBar : MonoBehaviour
             }
 
         }
-        OnCurrentHealthChanged();
+        OnCurrentHealthChanged(character.EntityStats.Health.GetCurrentValue());
         if (maxResource > 0)
         {
-            OnCurrentResourceChanged();
+            OnCurrentResourceChanged(character.EntityStats.Resource.GetCurrentValue());
         }
     }
 
@@ -223,9 +223,9 @@ public class HealthBar : MonoBehaviour
         }
     }
 
-    private void OnCurrentHealthChanged()
+    private void OnCurrentHealthChanged(float currentHealthValue)
     {
-        healthImage.fillAmount = character.EntityStats.Health.GetCurrentValue() / maxHealth;
+        healthImage.fillAmount = currentHealthValue / maxHealth;
     }
 
     private void OnMaxHealthChanged()
@@ -234,9 +234,9 @@ public class HealthBar : MonoBehaviour
         SetHealthBarSeparators();
     }
 
-    private void OnCurrentResourceChanged()
+    private void OnCurrentResourceChanged(float currentResourceValue)
     {
-        resourceImage.fillAmount = character.EntityStats.Resource.GetCurrentValue() / maxResource;
+        resourceImage.fillAmount = currentResourceValue / maxResource;
     }
 
     private void OnMaxResourceChanged()

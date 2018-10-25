@@ -7,7 +7,7 @@ public class Resource : Stat
     public delegate void OnResourceReducedHandler();
     public event OnResourceReducedHandler OnResourceReduced;
 
-    public delegate void OnCurrentResourceChangedHandler();
+    public delegate void OnCurrentResourceChangedHandler(float currentValue);
     public event OnCurrentResourceChangedHandler OnCurrentResourceChanged;
 
     public delegate void OnMaxResourceValueChangedHandler();
@@ -30,7 +30,7 @@ public class Resource : Stat
         }
         if (OnCurrentResourceChanged != null)
         {
-            OnCurrentResourceChanged();
+            OnCurrentResourceChanged(currentValue);
         }
     }
 
@@ -39,7 +39,7 @@ public class Resource : Stat
         currentValue = Mathf.Clamp(currentValue + amount, 0, total);
         if (OnCurrentResourceChanged != null)
         {
-            OnCurrentResourceChanged();
+            OnCurrentResourceChanged(currentValue);
         }
     }
 
@@ -63,7 +63,7 @@ public class Resource : Stat
         }
         if (OnCurrentResourceChanged != null)
         {
-            OnCurrentResourceChanged();
+            OnCurrentResourceChanged(currentValue);
         }
     }
 }

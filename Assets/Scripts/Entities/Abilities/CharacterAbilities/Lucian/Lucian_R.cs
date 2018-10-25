@@ -56,6 +56,7 @@ public class Lucian_R : DirectionTargetedProjectile
     protected override void SetResourcePaths()
     {
         abilitySpritePath = "Sprites/Characters/CharacterAbilities/Lucian/LucianR";
+        abilityRecastSpritePath = "Sprites/Characters/CharacterAbilities/Lucian/LucianR";
 
         projectilePrefabPath = "CharacterAbilitiesPrefabs/Lucian/LucianR";
     }

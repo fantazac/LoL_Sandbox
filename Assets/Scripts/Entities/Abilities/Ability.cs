@@ -51,8 +51,8 @@ public abstract class Ability : MonoBehaviour
     protected float totalAPScaling;
     protected float totalAPScalingPerLevel;
 
-    protected Sprite abilitySprite;
-    protected Sprite abilityRecastSprite;
+    public Sprite AbilitySprite { get; protected set; }
+    protected Sprite abilityRecastSprite;//TODO: Not implemented
 
     protected string abilitySpritePath;
     protected string abilityRecastSpritePath;
@@ -163,14 +163,9 @@ public abstract class Ability : MonoBehaviour
         speed *= StaticObjects.MultiplyingFactor;
     }
 
-    public void SetAbilitySprite()
-    {
-        character.AbilityUIManager.SetAbilitySprite(AbilityCategory, ID, abilitySprite);
-    }
-
     protected void LoadSprites()
     {
-        abilitySprite = Resources.Load<Sprite>(abilitySpritePath);
+        AbilitySprite = Resources.Load<Sprite>(abilitySpritePath);
         abilityRecastSprite = Resources.Load<Sprite>(abilityRecastSpritePath);
     }
 

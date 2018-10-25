@@ -27,6 +27,7 @@ public class CharacterAbilityManager : MonoBehaviour
     {
         character = GetComponent<Character>();
         InitAbilities();
+        InitCharacterAbilitiesWithResourceCosts();
     }
 
     protected virtual void InitAbilities()
@@ -63,221 +64,106 @@ public class CharacterAbilityManager : MonoBehaviour
             }
         }
     }
-    //////////////////////////////////////////////////////////////
+    
+    protected void OnAbilityUsed(Ability ability)
+    {
+        if (ability.HasCastTime || ability.HasChannelTime)
+        {
+            currentlyUsedAbilities.Add(ability);
+        }
+        if (OnAnAbilityUsed != null)
+        {
+            OnAnAbilityUsed();
+        }
+    }
+
+    protected void OnAbilityFinished(Ability ability)
+    {
+        if (ability.HasCastTime || ability.HasChannelTime)
+        {
+            currentlyUsedAbilities.Remove(ability);
+
+            character.CharacterMovement.RotateCharacterIfMoving();
+
+            Ability bufferedAbility = character.CharacterBufferedAbilityManager.GetBufferedAbility();
+            if (bufferedAbility != null)
+            {
+                if (HasEnoughResourceToCastAbility(bufferedAbility))
+                {
+                    character.CharacterMovement.StopAllMovement(false);
+                    character.CharacterBufferedAbilityManager.UseBufferedAbility();
+                }
+                else
+                {
+                    character.CharacterBufferedAbilityManager.ResetBufferedAbility();
+                }
+            }
+        }
+    }
+
+    protected void InitCharacterAbilitiesWithResourceCosts()
+    {
+        foreach (Ability characterAbility in CharacterAbilities)
+        {
+            if (characterAbility.UsesResource)
+            {
+                characterAbilitiesWithResourceCosts.Add(characterAbility);
+            }
+        }
+    }
+
     protected void Start()
     {
         if (character.IsLocalCharacter())
         {
             InitAbilityUIManager();
-            character.EntityStats.Resource.OnCurrentResourceChanged += OnResourceCurrentValueChanged;
+            if (character.EntityStats.Resource != null)
+            {
+                character.EntityStats.Resource.OnCurrentResourceChanged += OnCurrentResourceChanged;
+            }
         }
     }
 
     protected void InitAbilityUIManager()
     {
+        SetAbilitySpritesForAbilitiesFromAbilityCategory(CharacterAbilities, AbilityCategory.CharacterAbility);
+        SetAbilitySpritesForAbilitiesFromAbilityCategory(PassiveCharacterAbilities, AbilityCategory.PassiveCharacterAbility);
+        SetAbilitySpritesForAbilitiesFromAbilityCategory(OtherCharacterAbilities, AbilityCategory.OtherCharacterAbility);
+        SetAbilitySpritesForAbilitiesFromAbilityCategory(SummonerAbilities, AbilityCategory.SummonerAbility);
+
         foreach (Ability characterAbility in CharacterAbilities)
         {
-            characterAbility.SetAbilitySprite();
-            characterAbilitiesWithResourceCosts.Add(characterAbility);
             character.AbilityUIManager.DisableAbility(AbilityCategory.CharacterAbility, characterAbility.ID, false);
             character.AbilityUIManager.SetMaxAbilityLevel(characterAbility.ID, characterAbility.MaxLevel);
         }
-        foreach (Ability passiveCharacterAbility in PassiveCharacterAbilities)
+    }
+
+    protected void SetAbilitySpritesForAbilitiesFromAbilityCategory(Ability[] abilities, AbilityCategory abilityCategory)
+    {
+        foreach (Ability ability in abilities)
         {
-            passiveCharacterAbility.SetAbilitySprite();
-        }
-        foreach (Ability otherCharacterAbility in OtherCharacterAbilities)
-        {
-            otherCharacterAbility.SetAbilitySprite();
-        }
-        foreach (Ability summonerAbility in SummonerAbilities)
-        {
-            summonerAbility.SetAbilitySprite();
+            character.AbilityUIManager.SetAbilitySprite(abilityCategory, ability.ID, ability.AbilitySprite);
         }
     }
 
-    protected void OnResourceCurrentValueChanged()
+    protected void OnCurrentResourceChanged(float currentResourceValue)
     {
-        float currentValue = character.EntityStats.Resource.GetCurrentValue();
         for (int i = characterAbilitiesWithResourceCosts.Count - 1; i >= 0; i--)
         {
-            UpdateAbilityHasEnoughResource(characterAbilitiesWithResourceCosts[i], currentValue);
+            UpdateAbilityHasEnoughResource(characterAbilitiesWithResourceCosts[i], currentResourceValue);
         }
     }
 
     protected void UpdateAbilityHasEnoughResource(Ability ability, float currentValue)
     {
-        if (ability.UsesResource)
+        bool hasEnoughResourceToCastAbility = !AbilityIsAvailable(ability) || !AbilityCanBePressed(ability) || HasEnoughResourceToCastAbility(ability);
+        character.AbilityUIManager.UpdateAbilityHasEnoughResource(ability.ID, hasEnoughResourceToCastAbility);
+        if (!ability.UsesResource)
         {
-            if (!(ability.IsActive || ability.IsOnCooldown || ability.IsOnCooldownForRecast))
-            {
-                bool hasEnoughResourceToCastAbility = !ability.IsEnabled || ability.IsBlocked || ability.IsOnCooldown || currentValue >= ability.GetResourceCost();
-                character.AbilityUIManager.UpdateAbilityHasEnoughResource(ability.ID, hasEnoughResourceToCastAbility);
-            }
-        }
-        else
-        {
-            character.AbilityUIManager.UpdateAbilityHasEnoughResource(ability.ID, true);
             characterAbilitiesWithResourceCosts.Remove(ability);
         }
     }
-
-    public void BlockAllBasicAbilities()
-    {
-        foreach (Ability ability in CharacterAbilities)
-        {
-            ability.BlockAbility();
-        }
-        foreach (Ability ability in SummonerAbilities)
-        {
-            if (ability.IsAMovementAbility)
-            {
-                ability.BlockAbility();
-            }
-        }
-        foreach (Ability ability in OtherCharacterAbilities)
-        {
-            ability.BlockAbility();
-        }
-    }
-
-    public void UnblockAllBasicAbilities(bool cannotUseLongRangedAbilities, bool cannotUseMovementAbilities, bool cannotUseSummonerAbilities)
-    {
-        foreach (Ability ability in CharacterAbilities)
-        {
-            if (!(ability.IsLongRanged && cannotUseLongRangedAbilities) && !(ability.IsAMovementAbility && cannotUseMovementAbilities))
-            {
-                ability.UnblockAbility();
-            }
-        }
-        foreach (Ability ability in SummonerAbilities)
-        {
-            if (!cannotUseSummonerAbilities && !(ability.IsLongRanged && cannotUseLongRangedAbilities) && !(ability.IsAMovementAbility && cannotUseMovementAbilities))
-            {
-                ability.UnblockAbility();
-            }
-        }
-        foreach (Ability ability in OtherCharacterAbilities)
-        {
-            ability.UnblockAbility();
-        }
-    }
-
-    public void BlockAllLongRangedAbilities()
-    {
-        foreach (Ability ability in CharacterAbilities)
-        {
-            if (ability.IsLongRanged)
-            {
-                ability.BlockAbility();
-            }
-        }
-        foreach (Ability ability in SummonerAbilities)
-        {
-            if (ability.IsLongRanged)
-            {
-                ability.BlockAbility();
-            }
-        }
-    }
-
-    public void UnblockAllLongRangedAbilities()
-    {
-        foreach (Ability ability in CharacterAbilities)
-        {
-            if (ability.IsLongRanged)
-            {
-                ability.UnblockAbility();
-            }
-        }
-        foreach (Ability ability in SummonerAbilities)
-        {
-            if (ability.IsLongRanged)
-            {
-                ability.UnblockAbility();
-            }
-        }
-    }
-
-    public void BlockAllMovementAbilities(Ability abilityToNotBlock = null)
-    {
-        foreach (Ability ability in CharacterAbilities)
-        {
-            if (ability.IsAMovementAbility && ability != abilityToNotBlock)
-            {
-                ability.BlockAbility();
-            }
-        }
-        foreach (Ability ability in SummonerAbilities)
-        {
-            if (ability.IsAMovementAbility && ability != abilityToNotBlock)
-            {
-                ability.BlockAbility();
-            }
-        }
-    }
-
-    public void UnblockAllMovementAbilities()
-    {
-        foreach (Ability ability in CharacterAbilities)
-        {
-            if (ability.IsAMovementAbility)
-            {
-                ability.UnblockAbility();
-            }
-        }
-        foreach (Ability ability in SummonerAbilities)
-        {
-            if (ability.IsAMovementAbility)
-            {
-                ability.UnblockAbility();
-            }
-        }
-    }
-
-    public void BlockAllSummonerAbilities()
-    {
-        foreach (Ability ability in SummonerAbilities)
-        {
-            ability.BlockAbility();
-        }
-    }
-
-    public void UnblockAllSummonerAbilities(bool cannotUseBasicAbilities)
-    {
-        foreach (Ability ability in SummonerAbilities)
-        {
-            if (!(ability.IsAMovementAbility && cannotUseBasicAbilities))
-            {
-                ability.UnblockAbility();
-            }
-        }
-    }
-
-    protected Ability GetAbility(AbilityCategory abilityCategory, int abilityId)
-    {
-        Ability ability = null;
-        switch (abilityCategory)
-        {
-            case AbilityCategory.CharacterAbility:
-                ability = CharacterAbilities[abilityId];
-                break;
-            case AbilityCategory.PassiveCharacterAbility:
-                ability = PassiveCharacterAbilities[abilityId];
-                break;
-            case AbilityCategory.OtherCharacterAbility:
-                ability = OtherCharacterAbilities[abilityId];
-                break;
-            case AbilityCategory.SummonerAbility:
-                ability = SummonerAbilities[abilityId];
-                break;
-            case AbilityCategory.OfflineAbility:
-                ability = OfflineAbilities[abilityId];
-                break;
-        }
-        return ability;
-    }
-
+    /////////////////////////////////////////////////////////////////////
     protected void SendToServer_Ability_Destination(AbilityCategory abilityCategory, int abilityId, Vector3 destination)
     {
         character.PhotonView.RPC("ReceiveFromServer_Ability_Destination", PhotonTargets.AllViaServer, abilityCategory, abilityId, destination);
@@ -323,6 +209,30 @@ public class CharacterAbilityManager : MonoBehaviour
         }
     }
 
+    protected Ability GetAbility(AbilityCategory abilityCategory, int abilityId)
+    {
+        Ability ability = null;
+        switch (abilityCategory)
+        {
+            case AbilityCategory.CharacterAbility:
+                ability = CharacterAbilities[abilityId];
+                break;
+            case AbilityCategory.PassiveCharacterAbility:
+                ability = PassiveCharacterAbilities[abilityId];
+                break;
+            case AbilityCategory.OtherCharacterAbility:
+                ability = OtherCharacterAbilities[abilityId];
+                break;
+            case AbilityCategory.SummonerAbility:
+                ability = SummonerAbilities[abilityId];
+                break;
+            case AbilityCategory.OfflineAbility:
+                ability = OfflineAbilities[abilityId];
+                break;
+        }
+        return ability;
+    }
+
     public Entity FindTarget(int entityId, EntityType entityType) // TODO: when adding an EntityType
     {
         Entity entity = null;
@@ -352,42 +262,6 @@ public class CharacterAbilityManager : MonoBehaviour
         return entity;
     }
 
-    protected void OnAbilityUsed(Ability ability)
-    {
-        if (ability.HasCastTime || ability.HasChannelTime || ability is DirectionTargetedDash)
-        {
-            currentlyUsedAbilities.Add(ability);
-        }
-        if (OnAnAbilityUsed != null)
-        {
-            OnAnAbilityUsed();
-        }
-    }
-
-    protected void OnAbilityFinished(Ability ability)
-    {
-        if (ability.HasCastTime || ability.HasChannelTime || ability is DirectionTargetedDash)
-        {
-            currentlyUsedAbilities.Remove(ability);
-
-            character.CharacterMovement.RotateCharacterIfMoving();
-
-            Ability bufferedAbility = character.CharacterBufferedAbilityManager.GetBufferedAbility();
-            if (bufferedAbility != null)
-            {
-                if (!bufferedAbility.UsesResource || bufferedAbility.GetResourceCost() <= character.EntityStats.Resource.GetCurrentValue())
-                {
-                    character.CharacterMovement.StopAllMovement(false);
-                    character.CharacterBufferedAbilityManager.UseBufferedAbility();
-                }
-                else
-                {
-                    character.CharacterBufferedAbilityManager.ResetBufferedAbility();
-                }
-            }
-        }
-    }
-
     public void LevelUpAbility(AbilityCategory abilityCategory, int abilityId)
     {
         Ability ability = GetAbility(abilityCategory, abilityId);
@@ -398,7 +272,7 @@ public class CharacterAbilityManager : MonoBehaviour
     public void OnPressedInputForAbility(AbilityCategory abilityCategory, int abilityId)
     {
         Ability ability = GetAbility(abilityCategory, abilityId);
-        if (ability.IsEnabled && !ability.IsBlocked)
+        if (AbilityIsAvailable(ability))
         {
             if (AbilityIsCastable(ability))
             {
@@ -479,8 +353,11 @@ public class CharacterAbilityManager : MonoBehaviour
         }
     }
 
-    //True: Allow ability to be cast
-    //False: Act as if the key was not pressed
+    protected bool AbilityIsAvailable(Ability abilityToCast)
+    {
+        return abilityToCast.IsEnabled && !abilityToCast.IsBlocked;
+    }
+
     protected bool AbilityIsCastable(Ability abilityToCast)
     {
         return AbilityCanBePressed(abilityToCast) && HasEnoughResourceToCastAbility(abilityToCast) && CanCastAbilityWhileOtherAbilitiesAreActive(abilityToCast);
@@ -645,6 +522,132 @@ public class CharacterAbilityManager : MonoBehaviour
         }
 
         return false;
+    }
+
+    public void BlockAllBasicAbilities()
+    {
+        BlockAbilities(CharacterAbilities);
+        BlockMovementAbilities(SummonerAbilities);
+        BlockAbilities(OtherCharacterAbilities);
+    }
+
+    public void BlockAllLongRangedAbilities()
+    {
+        BlockLongRangedAbilities(CharacterAbilities);
+        BlockLongRangedAbilities(SummonerAbilities);
+    }
+
+    public void BlockAllMovementAbilities(Ability abilityToNotBlock = null)
+    {
+        BlockMovementAbilities(CharacterAbilities, abilityToNotBlock);
+        BlockMovementAbilities(SummonerAbilities, abilityToNotBlock);
+    }
+
+    public void BlockAllSummonerAbilities()
+    {
+        BlockAbilities(SummonerAbilities);
+    }
+
+    public void UnblockAllBasicAbilities(bool cannotUseLongRangedAbilities, bool cannotUseMovementAbilities, bool cannotUseSummonerAbilities)
+    {
+        foreach (Ability ability in CharacterAbilities)
+        {
+            if (!(ability.IsLongRanged && cannotUseLongRangedAbilities) && !(ability.IsAMovementAbility && cannotUseMovementAbilities))
+            {
+                ability.UnblockAbility();
+            }
+        }
+        foreach (Ability ability in SummonerAbilities)
+        {
+            if (!cannotUseSummonerAbilities && !(ability.IsLongRanged && cannotUseLongRangedAbilities) && !(ability.IsAMovementAbility && cannotUseMovementAbilities))
+            {
+                ability.UnblockAbility();
+            }
+        }
+        UnblockAbilities(OtherCharacterAbilities);
+    }
+
+    public void UnblockAllLongRangedAbilities()
+    {
+        UnblockLongRangedAbilities(CharacterAbilities);
+        UnblockLongRangedAbilities(SummonerAbilities);
+    }
+
+    public void UnblockAllMovementAbilities()
+    {
+        UnblockMovementAbilities(CharacterAbilities);
+        UnblockMovementAbilities(SummonerAbilities);
+    }
+
+    public void UnblockAllSummonerAbilities(bool cannotUseBasicAbilities)
+    {
+        foreach (Ability ability in SummonerAbilities)
+        {
+            if (!(ability.IsAMovementAbility && cannotUseBasicAbilities))
+            {
+                ability.UnblockAbility();
+            }
+        }
+    }
+
+    protected void BlockAbilities(Ability[] abilities)
+    {
+        foreach (Ability ability in abilities)
+        {
+            ability.BlockAbility();
+        }
+    }
+
+    protected void BlockLongRangedAbilities(Ability[] abilities)
+    {
+        foreach (Ability ability in abilities)
+        {
+            if (ability.IsLongRanged)
+            {
+                ability.BlockAbility();
+            }
+        }
+    }
+
+    protected void BlockMovementAbilities(Ability[] abilities, Ability abilityToNotBlock = null)
+    {
+        foreach (Ability ability in abilities)
+        {
+            if (ability.IsAMovementAbility && ability != abilityToNotBlock)
+            {
+                ability.BlockAbility();
+            }
+        }
+    }
+
+    protected void UnblockAbilities(Ability[] abilities)
+    {
+        foreach (Ability ability in abilities)
+        {
+            ability.UnblockAbility();
+        }
+    }
+
+    protected void UnblockLongRangedAbilities(Ability[] abilities)
+    {
+        foreach (Ability ability in abilities)
+        {
+            if (ability.IsLongRanged)
+            {
+                ability.UnblockAbility();
+            }
+        }
+    }
+
+    protected void UnblockMovementAbilities(Ability[] abilities)
+    {
+        foreach (Ability ability in abilities)
+        {
+            if (ability.IsAMovementAbility)
+            {
+                ability.UnblockAbility();
+            }
+        }
     }
 
     public void StopAllChannelledAbilities()

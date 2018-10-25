@@ -27,6 +27,7 @@ public class Teleport : GroundTargetedBlink//TODO: UnitTargeted
     protected override void SetResourcePaths()
     {
         abilitySpritePath = "Sprites/Characters/SummonerAbilities/Teleport";
+        abilityRecastSpritePath = "Sprites/Characters/SummonerAbilities/Teleport";
     }
 
     public override void UseAbility(Vector3 destination)

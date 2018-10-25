@@ -49,7 +49,7 @@ public class Recall : AutoTargetedBlink
 
         IsBeingCasted = false;
         UseResource();
-        character.CharacterMovement.StopAllMovement();
+        character.CharacterMovement.StopAllMovement();//This is to cancel any movement command made during the cast time
         AddNewBuffToEntityHit(character);
         IsBeingChanneled = true;
 
