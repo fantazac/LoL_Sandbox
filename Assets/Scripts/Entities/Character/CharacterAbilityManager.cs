@@ -271,7 +271,7 @@ public class CharacterAbilityManager : MonoBehaviour
             character.AbilityUIManager.LevelUpAbility(ability.ID, ability.AbilityLevel);
         }
     }
-    /////////////////////////////////////////////////////////////////////
+
     public void OnPressedInputForAbility(AbilityCategory abilityCategory, int abilityId)
     {
         Ability ability = GetAbility(abilityCategory, abilityId);
@@ -306,7 +306,7 @@ public class CharacterAbilityManager : MonoBehaviour
                     }
                 }
             }
-            else if (ability.CanBeRecasted && !ability.IsOnCooldownForRecast && currentlyUsedAbilities.Contains(ability))
+            else if (AbilityIsRecastable(ability))
             {
                 if (StaticObjects.OnlineMode)
                 {
@@ -319,7 +319,7 @@ public class CharacterAbilityManager : MonoBehaviour
             }
         }
     }
-
+    /////////////////////////////////////////////////////////////////////
     protected void UsePositionTargetedAbility(Ability ability, Vector3 destination)
     {
         if (!IsUsingAbilityPreventingAbilityCast(ability))
@@ -387,6 +387,11 @@ public class CharacterAbilityManager : MonoBehaviour
         }
 
         return true;
+    }
+
+    protected bool AbilityIsRecastable(Ability abilityToCast)
+    {
+        return abilityToCast.CanBeRecasted && !abilityToCast.IsOnCooldownForRecast && currentlyUsedAbilities.Contains(abilityToCast);
     }
 
     //True: Put ability in the buffer
