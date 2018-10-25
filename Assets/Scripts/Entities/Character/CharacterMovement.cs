@@ -175,7 +175,7 @@ public class CharacterMovement : MonoBehaviour
         currentMovementCoroutine = null;
     }
 
-    public void SetCharacterIsInRangeEventForBasicAttack()//Lucian Q -> Lucian W: This cancels the Q cast but continues movement post-W to auto the same target
+    public void SetCharacterIsInRangeEventForBasicAttack()//example: Lucian Q out of range -> Lucian W while walking: This cancels the Q cast but continues movement post-W to auto the same target
     {
         if (currentlySelectedTarget != null)
         {

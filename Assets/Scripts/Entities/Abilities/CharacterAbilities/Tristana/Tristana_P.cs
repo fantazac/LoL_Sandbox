@@ -49,7 +49,7 @@ public class Tristana_P : PassiveTargeted
 
         foreach (Ability ability in abilitiesToIncreaseCastRange)
         {
-            ability.SetRange(character.EntityStats.AttackRange.GetCurrentBaseValue() + currentRangeBonus);
+            ability.SetRange(currentRangeBonus * StaticObjects.MultiplyingFactor + character.EntityStats.AttackRange.GetCurrentBaseValue());
         }
     }
 }

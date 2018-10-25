@@ -8,18 +8,13 @@ public class MovementSpeed : MultiplicativeBonusStat
 
     private float currentSlowResistance;
 
-    private List<float> slows = new List<float>();//This needs to be initialized before the constructor if we don't want to add a null check in GetBiggestSlow.
+    private List<float> slows = new List<float>();//This needs to be initialized before the parent constructor if we don't want to add a null check in GetBiggestSlow.
 
     public MovementSpeed(float initialBaseValue) : base(initialBaseValue) { }
 
     public void SubscribeToSlowResistanceChangedEvent(SlowResistance slowResistance)
     {
         slowResistance.OnSlowResistanceChanged += OnSlowResistanceChanged;
-    }
-
-    public override float GetTotal()
-    {
-        return base.GetTotal() * StaticObjects.MultiplyingFactor;
     }
 
     public override void UpdateTotal()
@@ -38,11 +33,13 @@ public class MovementSpeed : MultiplicativeBonusStat
         {
             total = (total * 0.5f) + 110;
         }
+
+        total *= 0.01f;
     }
 
     private void OnSlowResistanceChanged(float slowResistance)
     {
-        currentSlowResistance = slowResistance * 0.01f;
+        currentSlowResistance = slowResistance;
         UpdateTotal();
     }
 

@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public abstract class DirectionTargetedDash : DirectionTargeted//TODO: A dash is a "forced movement" on the same level as displacements. The ability should end after the cast time and another class should take care of the displacement
+public abstract class DirectionTargetedDash : DirectionTargeted
 {
     protected float minimumDistanceTravelled;
     protected float dashSpeed;

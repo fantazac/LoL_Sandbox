@@ -29,83 +29,47 @@ public class CharacterAbilityManager : MonoBehaviour
         InitAbilities();
     }
 
+    protected virtual void InitAbilities()
+    {
+        bool isLocalCharacter = character.IsLocalCharacter();
+
+        SetupAbilitiesFromAbilityCategory(CharacterAbilities, AbilityCategory.CharacterAbility, isLocalCharacter);
+
+        SetupAbilitiesFromAbilityCategory(PassiveCharacterAbilities, AbilityCategory.PassiveCharacterAbility, isLocalCharacter);
+
+        OtherCharacterAbilities = new Ability[] { gameObject.AddComponent<Recall>() };
+        SetupAbilitiesFromAbilityCategory(OtherCharacterAbilities, AbilityCategory.OtherCharacterAbility, isLocalCharacter);
+
+        SetupAbilitiesFromAbilityCategory(SummonerAbilities, AbilityCategory.SummonerAbility, isLocalCharacter);
+
+        if (!StaticObjects.OnlineMode)
+        {
+            OfflineAbilities = new Ability[] { gameObject.AddComponent<DestroyAllDummies>(), gameObject.AddComponent<SpawnAllyDummy>(), gameObject.AddComponent<SpawnEnemyDummy>() };
+            SetupAbilitiesFromAbilityCategory(OfflineAbilities, AbilityCategory.OfflineAbility, isLocalCharacter);
+        }
+    }
+
+    protected void SetupAbilitiesFromAbilityCategory(Ability[] abilities, AbilityCategory abilityCategory, bool isLocalCharacter)
+    {
+        for (int i = 0; i < abilities.Length; i++)
+        {
+            Ability ability = abilities[i];
+            ability.OnAbilityUsed += OnAbilityUsed;
+            ability.OnAbilityFinished += OnAbilityFinished;
+            if (isLocalCharacter)
+            {
+                ability.ID = i;
+                ability.AbilityCategory = abilityCategory;
+            }
+        }
+    }
+    //////////////////////////////////////////////////////////////
     protected void Start()
     {
         if (character.IsLocalCharacter())
         {
             InitAbilityUIManager();
             character.EntityStats.Resource.OnCurrentResourceChanged += OnResourceCurrentValueChanged;
-        }
-    }
-
-    protected virtual void InitAbilities()
-    {
-        OtherCharacterAbilities = new Ability[] { gameObject.AddComponent<Recall>() };
-        if (!StaticObjects.OnlineMode)
-        {
-            OfflineAbilities = new Ability[] { gameObject.AddComponent<DestroyAllDummies>(), gameObject.AddComponent<SpawnAllyDummy>(), gameObject.AddComponent<SpawnEnemyDummy>() };
-        }
-
-        bool isLocalCharacter = character.IsLocalCharacter();
-
-        for (int i = 0; i < CharacterAbilities.Length; i++)
-        {
-            Ability ability = CharacterAbilities[i];
-            ability.OnAbilityUsed += OnAbilityUsed;
-            ability.OnAbilityFinished += OnAbilityFinished;
-            if (isLocalCharacter)
-            {
-                ability.ID = i;
-                ability.AbilityCategory = AbilityCategory.CharacterAbility;
-            }
-        }
-
-        for (int j = 0; j < PassiveCharacterAbilities.Length; j++)
-        {
-            Ability ability2 = PassiveCharacterAbilities[j];
-            ability2.OnAbilityUsed += OnAbilityUsed;
-            ability2.OnAbilityFinished += OnAbilityFinished;
-            if (isLocalCharacter)
-            {
-                ability2.ID = j;
-                ability2.AbilityCategory = AbilityCategory.PassiveCharacterAbility;
-            }
-        }
-
-        for (int k = 0; k < OtherCharacterAbilities.Length; k++)
-        {
-            Ability ability3 = OtherCharacterAbilities[k];
-            ability3.OnAbilityUsed += OnAbilityUsed;
-            ability3.OnAbilityFinished += OnAbilityFinished;
-            if (isLocalCharacter)
-            {
-                ability3.ID = k;
-                ability3.AbilityCategory = AbilityCategory.OtherCharacterAbility;
-            }
-        }
-
-        for (int l = 0; l < SummonerAbilities.Length; l++)
-        {
-            Ability ability4 = SummonerAbilities[l];
-            ability4.OnAbilityUsed += OnAbilityUsed;
-            ability4.OnAbilityFinished += OnAbilityFinished;
-            if (isLocalCharacter)
-            {
-                ability4.ID = l;
-                ability4.AbilityCategory = AbilityCategory.SummonerAbility;
-            }
-        }
-
-        if (OfflineAbilities != null)
-        {
-            for (int m = 0; m < OfflineAbilities.Length; m++)
-            {
-                Ability ability5 = OfflineAbilities[m];
-                ability5.OnAbilityUsed += OnAbilityUsed;
-                ability5.OnAbilityFinished += OnAbilityFinished;
-                ability5.ID = m;
-                ability5.AbilityCategory = AbilityCategory.OfflineAbility;
-            }
         }
     }
 
@@ -519,16 +483,21 @@ public class CharacterAbilityManager : MonoBehaviour
     //False: Act as if the key was not pressed
     protected bool AbilityIsCastable(Ability abilityToCast)
     {
-        if (abilityToCast.IsOnCooldown || abilityToCast.IsOnCooldownForRecast || abilityToCast.IsActive)
-        {
-            return false;
-        }
+        return AbilityCanBePressed(abilityToCast) && HasEnoughResourceToCastAbility(abilityToCast) && CanCastAbilityWhileOtherAbilitiesAreActive(abilityToCast);
+    }
 
-        if (abilityToCast.UsesResource && abilityToCast.GetResourceCost() > character.EntityStats.Resource.GetCurrentValue())
-        {
-            return false;
-        }
+    protected bool AbilityCanBePressed(Ability abilityToCast)
+    {
+        return !abilityToCast.IsOnCooldown && !abilityToCast.IsOnCooldownForRecast && !abilityToCast.IsActive;
+    }
 
+    protected bool HasEnoughResourceToCastAbility(Ability abilityToCast)
+    {
+        return !abilityToCast.UsesResource || abilityToCast.GetResourceCost() <= character.EntityStats.Resource.GetCurrentValue();
+    }
+
+    protected bool CanCastAbilityWhileOtherAbilitiesAreActive(Ability abilityToCast)
+    {
         foreach (Ability ability in currentlyUsedAbilities)
         {
             if (ability.CannotCastAnyAbilityWhileActive)
