@@ -134,7 +134,7 @@ public class CharacterMovement : MonoBehaviour
 
         while (transform.position != currentlySelectedDestination)
         {
-            if (!character.CharacterAbilityManager.IsUsingAbilityPreventingMovement() && character.EntityStatusManager.CanUseMovement() && !character.EntityDisplacementManager.IsBeingDisplaced)
+            if (character.CharacterAbilityManager.CanUseMovement() && character.EntityStatusManager.CanUseMovement() && !character.EntityDisplacementManager.IsBeingDisplaced)
             {
                 transform.position = Vector3.MoveTowards(transform.position, currentlySelectedDestination, Time.deltaTime * character.EntityStats.MovementSpeed.GetTotal());
 
@@ -154,7 +154,7 @@ public class CharacterMovement : MonoBehaviour
 
         while (Vector3.Distance(currentlySelectedDestination, transform.position) > range)
         {
-            if (!character.CharacterAbilityManager.IsUsingAbilityPreventingMovement() && character.EntityStatusManager.CanUseMovement() && !character.EntityDisplacementManager.IsBeingDisplaced)
+            if (character.CharacterAbilityManager.CanUseMovement() && character.EntityStatusManager.CanUseMovement() && !character.EntityDisplacementManager.IsBeingDisplaced)
             {
                 transform.position = Vector3.MoveTowards(transform.position, currentlySelectedDestination, Time.deltaTime * character.EntityStats.MovementSpeed.GetTotal());
 
@@ -255,7 +255,7 @@ public class CharacterMovement : MonoBehaviour
 
             while (targetTransform != null && Vector3.Distance(targetTransform.position, transform.position) > range)
             {
-                if (!character.CharacterAbilityManager.IsUsingAbilityPreventingMovement() && character.EntityStatusManager.CanUseMovement() && !character.EntityDisplacementManager.IsBeingDisplaced)
+                if (character.CharacterAbilityManager.CanUseMovement() && character.EntityStatusManager.CanUseMovement() && !character.EntityDisplacementManager.IsBeingDisplaced)
                 {
                     transform.position = Vector3.MoveTowards(transform.position, targetTransform.position, Time.deltaTime * character.EntityStats.MovementSpeed.GetTotal());
 

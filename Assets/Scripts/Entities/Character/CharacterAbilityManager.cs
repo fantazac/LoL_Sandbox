@@ -319,10 +319,10 @@ public class CharacterAbilityManager : MonoBehaviour
             }
         }
     }
-    /////////////////////////////////////////////////////////////////////
+
     protected void UsePositionTargetedAbility(Ability ability, Vector3 destination)
     {
-        if (!IsUsingAbilityPreventingAbilityCast(ability))
+        if (AbilityCanBeCastDuringActiveAbilitiesCastTimes(ability))
         {
             if (currentlyUsedAbilities.Count > 0)
             {
@@ -342,7 +342,7 @@ public class CharacterAbilityManager : MonoBehaviour
 
     protected void UseUnitTargetedAbility(Ability ability, Entity target)
     {
-        if (!IsUsingAbilityPreventingAbilityCast(ability))
+        if (AbilityCanBeCastDuringActiveAbilitiesCastTimes(ability))
         {
             if (currentlyUsedAbilities.Count > 0)
             {
@@ -363,7 +363,7 @@ public class CharacterAbilityManager : MonoBehaviour
 
     protected bool AbilityIsCastable(Ability abilityToCast)
     {
-        return AbilityCanBePressed(abilityToCast) && HasEnoughResourceToCastAbility(abilityToCast) && CanCastAbilityWhileOtherAbilitiesAreActive(abilityToCast);
+        return AbilityCanBePressed(abilityToCast) && HasEnoughResourceToCastAbility(abilityToCast) && AbilityIsAllowedToBeCastWhileOtherAbilitiesAreActive(abilityToCast);
     }
 
     protected bool AbilityCanBePressed(Ability abilityToCast)
@@ -376,7 +376,7 @@ public class CharacterAbilityManager : MonoBehaviour
         return !abilityToCast.UsesResource || abilityToCast.GetResourceCost() <= character.EntityStats.Resource.GetCurrentValue();
     }
 
-    protected bool CanCastAbilityWhileOtherAbilitiesAreActive(Ability abilityToCast)
+    protected bool AbilityIsAllowedToBeCastWhileOtherAbilitiesAreActive(Ability abilityToCast)
     {
         foreach (Ability ability in currentlyUsedAbilities)
         {
@@ -394,18 +394,16 @@ public class CharacterAbilityManager : MonoBehaviour
         return abilityToCast.CanBeRecasted && !abilityToCast.IsOnCooldownForRecast && currentlyUsedAbilities.Contains(abilityToCast);
     }
 
-    //True: Put ability in the buffer
-    //False: Allow ability to be cast
-    protected bool IsUsingAbilityPreventingAbilityCast(Ability abilityToCast)
+    protected bool AbilityCanBeCastDuringActiveAbilitiesCastTimes(Ability abilityToCast)
     {
-        if (currentlyUsedAbilities.Count == 0 || abilityToCast.CanBeCastDuringOtherAbilityCastTimes)
-        {
-            return false;
-        }
+        return abilityToCast.CanBeCastDuringOtherAbilityCastTimes || !AnAbilityIsBeingCasted(abilityToCast);
+    }
 
+    protected bool AnAbilityIsBeingCasted(Ability abilityToCast)
+    {
         foreach (Ability ability in currentlyUsedAbilities)
         {
-            if (CannotCastAbility(abilityToCast, ability))
+            if (ability.IsBeingCasted)
             {
                 return true;
             }
@@ -413,53 +411,25 @@ public class CharacterAbilityManager : MonoBehaviour
 
         return false;
     }
-
-    protected bool CannotCastAbility(Ability abilityToCast, Ability ability)
+    
+    public bool CanUseMovement()
     {
-        return ability.HasCastTime && ability.IsBeingCasted &&
-            (ability.CastableAbilitiesWhileActive == null || !CanCastAbilityWhileActive(ability.CastableAbilitiesWhileActive, abilityToCast)) &&
-            !(ability.HasChannelTime && ability.IsBeingChanneled && ability.CanUseAnyAbilityWhileChanneling);
-    }
-
-    protected bool CanCastAbilityWhileActive(Ability[] castableAbilitiesWhileActive, Ability abilityToCast)
-    {
-        bool canCast = false;
-
-        foreach (Ability ability in castableAbilitiesWhileActive)
-        {
-            if (ability && ability == abilityToCast)
-            {
-                canCast = true;
-                break;
-            }
-        }
-
-        return canCast;
-    }
-
-    public bool IsUsingAbilityPreventingMovement()
-    {
-        if (currentlyUsedAbilities.Count == 0)
-        {
-            return false;
-        }
-
         foreach (Ability ability in currentlyUsedAbilities)
         {
             if (!CanMoveWhileAbilityIsActive(ability))
             {
-                return true;
+                return false;
             }
         }
 
-        return false;
+        return true;
     }
 
     protected bool CanMoveWhileAbilityIsActive(Ability ability)
     {
         return ability.CanMoveWhileActive || (ability.CanMoveWhileChanneling && ability.IsBeingChanneled);
     }
-
+    /////////////////////////////////////////////////////////////////////
     public bool IsUsingAbilityPreventingBasicAttacks()
     {
         if (currentlyUsedAbilities.Count == 0)

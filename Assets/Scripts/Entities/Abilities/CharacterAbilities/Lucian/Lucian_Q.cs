@@ -43,7 +43,8 @@ public class Lucian_Q : UnitTargetedAoE
 
     protected override void Start()
     {
-        AbilitiesToDisableWhileActive = new Ability[] { this, GetComponent<Lucian_E>() };
+        AbilitiesToDisableWhileActive.Add(this);
+        AbilitiesToDisableWhileActive.Add(GetComponent<Lucian_E>());
 
         base.Start();
 

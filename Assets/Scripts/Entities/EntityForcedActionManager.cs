@@ -92,7 +92,7 @@ public class EntityForcedActionManager : MonoBehaviour
             Vector3 lastCasterPosition = caster.transform.position;
             while (transform.position != lastCasterPosition)
             {
-                if (entity.CharacterMovement.IsMoving() || entity.CharacterAbilityManager.IsUsingAbilityPreventingMovement() || !entity.EntityStatusManager.CanUseMovement() ||
+                if (entity.CharacterMovement.IsMoving() || !entity.CharacterAbilityManager.CanUseMovement() || !entity.EntityStatusManager.CanUseMovement() ||
                     Vector3.Distance(casterTransform.position, transform.position) <= entity.EntityStats.AttackRange.GetTotal())
                 {
                     entity.CharacterMovement.SetMoveTowardsTarget(caster, entity.EntityStats.AttackRange.GetTotal(), true);

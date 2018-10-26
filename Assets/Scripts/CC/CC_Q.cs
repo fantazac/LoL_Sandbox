@@ -36,7 +36,7 @@ public class CC_Q : SelfTargeted
 
     protected override void Start()
     {
-        AbilitiesToDisableWhileActive = new Ability[] { this };
+        AbilitiesToDisableWhileActive.Add(this);
 
         base.Start();
 

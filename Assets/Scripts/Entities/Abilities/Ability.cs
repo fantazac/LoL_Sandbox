@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public abstract class Ability : MonoBehaviour
@@ -88,8 +89,8 @@ public abstract class Ability : MonoBehaviour
     public bool ResetBasicAttackCycleOnAbilityFinished { get; protected set; }
     public bool UsesResource { get; private set; }
 
-    public Ability[] AbilitiesToDisableWhileActive { get; protected set; }
-    public Ability[] CastableAbilitiesWhileActive { get; protected set; }
+    public List<Ability> AbilitiesToDisableWhileActive { get; protected set; }
+    public List<Ability> CastableAbilitiesWhileActive { get; protected set; }
 
     public AbilityBuff[] AbilityBuffs { get; protected set; }
     public AbilityBuff[] AbilityDebuffs { get; protected set; }
@@ -106,6 +107,9 @@ public abstract class Ability : MonoBehaviour
     protected Ability()
     {
         AppliesAbilityEffects = true;//TODO: Certaines abilities appliquent pas ca (ex. darius w) mais pourquoi?
+
+        AbilitiesToDisableWhileActive = new List<Ability>();
+        CastableAbilitiesWhileActive = new List<Ability>();
 
         SetResourcePaths();
     }
