@@ -68,7 +68,7 @@ public class CharacterAutoAttack : MonoBehaviour
         Entity autoAttackTarget = null;
         while (true)
         {
-            if (character.EntityStatusManager && !character.CharacterAbilityManager.IsUsingAbilityPreventingBasicAttacks() && !character.EntityDisplacementManager.IsBeingDisplaced &&
+            if (character.EntityStatusManager && character.CharacterAbilityManager.CanUseBasicAttacks() && !character.EntityDisplacementManager.IsBeingDisplaced &&
                 character.EntityStatusManager.CanUseBasicAttacks() && (!character.CharacterMovement.IsMoving() || !character.EntityStatusManager.CanUseMovement()) &&
                 !character.EntityBasicAttack.AttackIsInQueue && character.EntityBasicAttackCycle.AttackSpeedCycleIsReady)
             {
@@ -113,7 +113,7 @@ public class CharacterAutoAttack : MonoBehaviour
         Vector3 groundPosition = Vector3.right * transform.position.x + Vector3.forward * transform.position.z;
         while (true)
         {
-            if (character.EntityStatusManager && !character.CharacterAbilityManager.IsUsingAbilityPreventingBasicAttacks() && character.EntityStatusManager.CanUseBasicAttacks() &&
+            if (character.EntityStatusManager && character.CharacterAbilityManager.CanUseBasicAttacks() && character.EntityStatusManager.CanUseBasicAttacks() &&
                 (!character.CharacterMovement.IsMoving() || !character.EntityStatusManager.CanUseMovement()) &&
                 !character.EntityBasicAttack.AttackIsInQueue && character.EntityBasicAttackCycle.AttackSpeedCycleIsReady)
             {

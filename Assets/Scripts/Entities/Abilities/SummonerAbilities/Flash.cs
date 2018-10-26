@@ -34,7 +34,7 @@ public class Flash : GroundTargetedBlink
         transform.position = newDestination;
         character.EntityDisplacementManager.StopCurrentDisplacement();
 
-        if (!character.CharacterAbilityManager.IsUsingAbilityPreventingRotation())
+        if (character.CharacterAbilityManager.CanRotate())
         {
             transform.rotation = newRotation;
         }

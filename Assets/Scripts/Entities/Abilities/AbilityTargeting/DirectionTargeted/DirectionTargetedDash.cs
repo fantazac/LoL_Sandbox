@@ -39,7 +39,7 @@ public abstract class DirectionTargetedDash : DirectionTargeted
 
     protected override void RotationOnAbilityCast(Vector3 destination)
     {
-        if (!character.CharacterAbilityManager.IsUsingAbilityPreventingRotation())
+        if (character.CharacterAbilityManager.CanRotate())
         {
             character.CharacterOrientation.RotateCharacterInstantly(destination);
         }

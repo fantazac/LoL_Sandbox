@@ -60,8 +60,8 @@ public class EntityStatusManager : MonoBehaviour
                 }
                 if (character.CharacterAbilityManager)
                 {
-                    character.CharacterAbilityManager.StopAllChannelledAbilities();
-                    character.CharacterAbilityManager.StopAllSpecialNonChannelledAbilities();
+                    character.CharacterAbilityManager.CancelAllChannelingAbilities();
+                    character.CharacterAbilityManager.CancelAllActiveAbilitiesThatAreNotBeingCastedOrChanneled();
                 }
                 break;
             case CrowdControlEffects.CRIPPLE:
@@ -70,13 +70,13 @@ public class EntityStatusManager : MonoBehaviour
                 SetCannotUseBasicAttacks(count);
                 if (character.CharacterAbilityManager)
                 {
-                    character.CharacterAbilityManager.StopAllSpecialNonChannelledAbilities();
+                    character.CharacterAbilityManager.CancelAllActiveAbilitiesThatAreNotBeingCastedOrChanneled();
                 }
                 break;
             case CrowdControlEffects.DISRUPT:
                 if (character.CharacterAbilityManager)
                 {
-                    character.CharacterAbilityManager.StopAllChannelledAbilities();
+                    character.CharacterAbilityManager.CancelAllChannelingAbilities();
                 }
                 break;
             case CrowdControlEffects.DROWSY://TODO
@@ -87,7 +87,7 @@ public class EntityStatusManager : MonoBehaviour
                 SetCannotUseMovementAbilities(count);
                 if (character.CharacterAbilityManager)
                 {
-                    character.CharacterAbilityManager.StopAllSpecialNonChannelledAbilities();
+                    character.CharacterAbilityManager.CancelAllActiveAbilitiesThatAreNotBeingCastedOrChanneled();
                 }
                 break;
             case CrowdControlEffects.FEAR://TODO
@@ -96,8 +96,8 @@ public class EntityStatusManager : MonoBehaviour
                 SetCannotUseMovement(count);
                 if (character.CharacterAbilityManager)
                 {
-                    character.CharacterAbilityManager.StopAllChannelledAbilities();
-                    character.CharacterAbilityManager.StopAllSpecialNonChannelledAbilities();
+                    character.CharacterAbilityManager.CancelAllChannelingAbilities();
+                    character.CharacterAbilityManager.CancelAllActiveAbilitiesThatAreNotBeingCastedOrChanneled();
                 }
                 break;
             case CrowdControlEffects.FLEE:
@@ -110,8 +110,8 @@ public class EntityStatusManager : MonoBehaviour
                 }
                 if (character.CharacterAbilityManager)
                 {
-                    character.CharacterAbilityManager.StopAllChannelledAbilities();
-                    character.CharacterAbilityManager.StopAllSpecialNonChannelledAbilities();
+                    character.CharacterAbilityManager.CancelAllChannelingAbilities();
+                    character.CharacterAbilityManager.CancelAllActiveAbilitiesThatAreNotBeingCastedOrChanneled();
                 }
                 break;
             case CrowdControlEffects.GROUND:
@@ -123,8 +123,8 @@ public class EntityStatusManager : MonoBehaviour
                 SetCannotUseMovement(count);
                 if (character.CharacterAbilityManager)
                 {
-                    character.CharacterAbilityManager.StopAllChannelledAbilities();
-                    character.CharacterAbilityManager.StopAllSpecialNonChannelledAbilities();
+                    character.CharacterAbilityManager.CancelAllChannelingAbilities();
+                    character.CharacterAbilityManager.CancelAllActiveAbilitiesThatAreNotBeingCastedOrChanneled();
                 }
                 break;
             case CrowdControlEffects.KNOCKBACK://TODO
@@ -133,8 +133,8 @@ public class EntityStatusManager : MonoBehaviour
                 SetCannotUseMovement(count);
                 if (character.CharacterAbilityManager)
                 {
-                    character.CharacterAbilityManager.StopAllChannelledAbilities();
-                    character.CharacterAbilityManager.StopAllSpecialNonChannelledAbilities();
+                    character.CharacterAbilityManager.CancelAllChannelingAbilities();
+                    character.CharacterAbilityManager.CancelAllActiveAbilitiesThatAreNotBeingCastedOrChanneled();
                 }
                 break;
             case CrowdControlEffects.KNOCKDOWN://TODO
@@ -149,8 +149,8 @@ public class EntityStatusManager : MonoBehaviour
                 SetCannotUseMovement(count);
                 if (character.CharacterAbilityManager)
                 {
-                    character.CharacterAbilityManager.StopAllChannelledAbilities();
-                    character.CharacterAbilityManager.StopAllSpecialNonChannelledAbilities();
+                    character.CharacterAbilityManager.CancelAllChannelingAbilities();
+                    character.CharacterAbilityManager.CancelAllActiveAbilitiesThatAreNotBeingCastedOrChanneled();
                 }
                 break;
             case CrowdControlEffects.NEARSIGHT://TODO
@@ -161,8 +161,8 @@ public class EntityStatusManager : MonoBehaviour
                 SetCannotUseBasicAttacks(count);
                 if (character.CharacterAbilityManager)
                 {
-                    character.CharacterAbilityManager.StopAllChannelledAbilities();
-                    character.CharacterAbilityManager.StopAllSpecialNonChannelledAbilities();
+                    character.CharacterAbilityManager.CancelAllChannelingAbilities();
+                    character.CharacterAbilityManager.CancelAllActiveAbilitiesThatAreNotBeingCastedOrChanneled();
                 }
                 break;
             case CrowdControlEffects.POLYMORPH://TODO
@@ -170,8 +170,8 @@ public class EntityStatusManager : MonoBehaviour
                 SetCannotUseBasicAttacks(count);
                 if (character.CharacterAbilityManager)
                 {
-                    character.CharacterAbilityManager.StopAllChannelledAbilities();
-                    character.CharacterAbilityManager.StopAllSpecialNonChannelledAbilities();
+                    character.CharacterAbilityManager.CancelAllChannelingAbilities();
+                    character.CharacterAbilityManager.CancelAllActiveAbilitiesThatAreNotBeingCastedOrChanneled();
                 }
                 break;
             case CrowdControlEffects.PULL://TODO
@@ -180,8 +180,8 @@ public class EntityStatusManager : MonoBehaviour
                 SetCannotUseMovement(count);
                 if (character.CharacterAbilityManager)
                 {
-                    character.CharacterAbilityManager.StopAllChannelledAbilities();
-                    character.CharacterAbilityManager.StopAllSpecialNonChannelledAbilities();
+                    character.CharacterAbilityManager.CancelAllChannelingAbilities();
+                    character.CharacterAbilityManager.CancelAllActiveAbilitiesThatAreNotBeingCastedOrChanneled();
                 }
                 break;
             case CrowdControlEffects.ROOT:
@@ -193,7 +193,7 @@ public class EntityStatusManager : MonoBehaviour
                 SetCannotUseBasicAbilities(count);
                 if (character.CharacterAbilityManager)
                 {
-                    character.CharacterAbilityManager.StopAllChannelledAbilities();
+                    character.CharacterAbilityManager.CancelAllChannelingAbilities();
                 }
                 break;
             case CrowdControlEffects.SLEEP://TODO
@@ -202,8 +202,8 @@ public class EntityStatusManager : MonoBehaviour
                 SetCannotUseMovement(count);
                 if (character.CharacterAbilityManager)
                 {
-                    character.CharacterAbilityManager.StopAllChannelledAbilities();
-                    character.CharacterAbilityManager.StopAllSpecialNonChannelledAbilities();
+                    character.CharacterAbilityManager.CancelAllChannelingAbilities();
+                    character.CharacterAbilityManager.CancelAllActiveAbilitiesThatAreNotBeingCastedOrChanneled();
                 }
                 break;
             case CrowdControlEffects.SLOW:
@@ -215,8 +215,8 @@ public class EntityStatusManager : MonoBehaviour
                 SetCannotUseSummonerAbilities(count);
                 if (character.CharacterAbilityManager)
                 {
-                    character.CharacterAbilityManager.StopAllChannelledAbilities();
-                    character.CharacterAbilityManager.StopAllSpecialNonChannelledAbilities();
+                    character.CharacterAbilityManager.CancelAllChannelingAbilities();
+                    character.CharacterAbilityManager.CancelAllActiveAbilitiesThatAreNotBeingCastedOrChanneled();
                 }
                 break;
             case CrowdControlEffects.STUN:
@@ -226,8 +226,8 @@ public class EntityStatusManager : MonoBehaviour
                 character.CharacterMovement.StopMovementTowardsPointIfHasEvent();
                 if (character.CharacterAbilityManager)
                 {
-                    character.CharacterAbilityManager.StopAllChannelledAbilities();
-                    character.CharacterAbilityManager.StopAllSpecialNonChannelledAbilities();
+                    character.CharacterAbilityManager.CancelAllChannelingAbilities();
+                    character.CharacterAbilityManager.CancelAllActiveAbilitiesThatAreNotBeingCastedOrChanneled();
                 }
                 break;
             case CrowdControlEffects.SUPPRESION://TODO
@@ -237,8 +237,8 @@ public class EntityStatusManager : MonoBehaviour
                 SetCannotUseSummonerAbilities(count);
                 if (character.CharacterAbilityManager)
                 {
-                    character.CharacterAbilityManager.StopAllChannelledAbilities();
-                    character.CharacterAbilityManager.StopAllSpecialNonChannelledAbilities();
+                    character.CharacterAbilityManager.CancelAllChannelingAbilities();
+                    character.CharacterAbilityManager.CancelAllActiveAbilitiesThatAreNotBeingCastedOrChanneled();
                 }
                 break;
             case CrowdControlEffects.SUSPENSION:
@@ -253,8 +253,8 @@ public class EntityStatusManager : MonoBehaviour
                 character.CharacterMovement.StopMovementTowardsTargetIfHasEvent();
                 if (character.CharacterAbilityManager)
                 {
-                    character.CharacterAbilityManager.StopAllChannelledAbilities();
-                    character.CharacterAbilityManager.StopAllSpecialNonChannelledAbilities();
+                    character.CharacterAbilityManager.CancelAllChannelingAbilities();
+                    character.CharacterAbilityManager.CancelAllActiveAbilitiesThatAreNotBeingCastedOrChanneled();
                 }
                 break;
             case CrowdControlEffects.TAUNT://TODO
@@ -267,8 +267,8 @@ public class EntityStatusManager : MonoBehaviour
                 }
                 if (character.CharacterAbilityManager)
                 {
-                    character.CharacterAbilityManager.StopAllChannelledAbilities();
-                    character.CharacterAbilityManager.StopAllSpecialNonChannelledAbilities();
+                    character.CharacterAbilityManager.CancelAllChannelingAbilities();
+                    character.CharacterAbilityManager.CancelAllActiveAbilitiesThatAreNotBeingCastedOrChanneled();
                 }
                 break;
         }

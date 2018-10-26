@@ -396,10 +396,10 @@ public class CharacterAbilityManager : MonoBehaviour
 
     protected bool AbilityCanBeCastDuringActiveAbilitiesCastTimes(Ability abilityToCast)
     {
-        return abilityToCast.CanBeCastDuringOtherAbilityCastTimes || !AnAbilityIsBeingCasted(abilityToCast);
+        return abilityToCast.CanBeCastDuringOtherAbilityCastTimes || !AnAbilityIsBeingCasted();
     }
 
-    protected bool AnAbilityIsBeingCasted(Ability abilityToCast)
+    public bool AnAbilityIsBeingCasted()
     {
         foreach (Ability ability in currentlyUsedAbilities)
         {
@@ -411,7 +411,7 @@ public class CharacterAbilityManager : MonoBehaviour
 
         return false;
     }
-    
+
     public bool CanUseMovement()
     {
         foreach (Ability ability in currentlyUsedAbilities)
@@ -429,71 +429,38 @@ public class CharacterAbilityManager : MonoBehaviour
     {
         return ability.CanMoveWhileActive || (ability.CanMoveWhileChanneling && ability.IsBeingChanneled);
     }
-    /////////////////////////////////////////////////////////////////////
-    public bool IsUsingAbilityPreventingBasicAttacks()
-    {
-        if (currentlyUsedAbilities.Count == 0)
-        {
-            return false;
-        }
 
+    public bool CanUseBasicAttacks()
+    {
         foreach (Ability ability in currentlyUsedAbilities)
         {
             if (!ability.CanUseBasicAttacksWhileCasting)
             {
-                return true;
+                return false;
             }
         }
 
-        return false;
+        return true;
     }
 
-    public bool IsUsingAbilityPreventingRotation()
+    public bool CanRotate()
     {
-        if (currentlyUsedAbilities.Count == 0)
-        {
-            return false;
-        }
-
         foreach (Ability ability in currentlyUsedAbilities)
         {
-            if (ability.CannotRotateWhileCasting)
+            if (ability.CannotRotateWhileActive)
             {
-                return true;
+                return false;
             }
         }
 
-        return false;
+        return true;
     }
 
-    public bool IsUsingAbilityThatHasACastTime()
+    public bool AnAbilityInBeingChanneled()
     {
-        if (currentlyUsedAbilities.Count == 0)
-        {
-            return false;
-        }
-
         foreach (Ability ability in currentlyUsedAbilities)
         {
-            if (ability.HasCastTime)
-            {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    public bool IsUsingAbilityThatHasAChannelTime()
-    {
-        if (currentlyUsedAbilities.Count == 0)
-        {
-            return false;
-        }
-
-        foreach (Ability ability in currentlyUsedAbilities)
-        {
-            if (ability.HasChannelTime)
+            if (ability.IsBeingChanneled)
             {
                 return true;
             }
@@ -628,7 +595,7 @@ public class CharacterAbilityManager : MonoBehaviour
         }
     }
 
-    public void StopAllChannelledAbilities()
+    public void CancelAllChannelingAbilities()
     {
         for (int i = currentlyUsedAbilities.Count - 1; i >= 0; i--)
         {
@@ -640,12 +607,12 @@ public class CharacterAbilityManager : MonoBehaviour
         }
     }
 
-    public void StopAllSpecialNonChannelledAbilities()//LucianR only so far
+    public void CancelAllActiveAbilitiesThatAreNotBeingCastedOrChanneled()//This is to stop LucianR in specific conditions, check if could be used for other abilities
     {
         for (int i = currentlyUsedAbilities.Count - 1; i >= 0; i--)
         {
             Ability ability = currentlyUsedAbilities[i];
-            if (ability is Lucian_R && ability.IsActive)
+            if (!ability.IsBeingCasted && !ability.IsBeingChanneled && ability.IsActive)
             {
                 ability.CancelAbility();
             }
@@ -654,28 +621,21 @@ public class CharacterAbilityManager : MonoBehaviour
 
     public void ResetCooldowns()
     {
-        for (int i = 0; i < CharacterAbilities.Length; i++)
-        {
-            GetAbility(AbilityCategory.CharacterAbility, i).ResetCooldown();
-        }
-        for (int j = 0; j < PassiveCharacterAbilities.Length; j++)
-        {
-            GetAbility(AbilityCategory.PassiveCharacterAbility, j).ResetCooldown();
-        }
-        for (int k = 0; k < OtherCharacterAbilities.Length; k++)
-        {
-            GetAbility(AbilityCategory.OtherCharacterAbility, k).ResetCooldown();
-        }
-        for (int l = 0; l < SummonerAbilities.Length; l++)
-        {
-            GetAbility(AbilityCategory.SummonerAbility, l).ResetCooldown();
-        }
+        ResetCooldownsForAbilitiesFromAbilityCategory(CharacterAbilities, AbilityCategory.CharacterAbility);
+        ResetCooldownsForAbilitiesFromAbilityCategory(PassiveCharacterAbilities, AbilityCategory.PassiveCharacterAbility);
+        ResetCooldownsForAbilitiesFromAbilityCategory(OtherCharacterAbilities, AbilityCategory.OtherCharacterAbility);
+        ResetCooldownsForAbilitiesFromAbilityCategory(SummonerAbilities, AbilityCategory.SummonerAbility);
         if (!StaticObjects.OnlineMode)
         {
-            for (int m = 0; m < OfflineAbilities.Length; m++)
-            {
-                GetAbility(AbilityCategory.OfflineAbility, m).ResetCooldown();
-            }
+            ResetCooldownsForAbilitiesFromAbilityCategory(OfflineAbilities, AbilityCategory.OfflineAbility);
+        }
+    }
+
+    protected void ResetCooldownsForAbilitiesFromAbilityCategory(Ability[] abilities, AbilityCategory abilityCategory)
+    {
+        for (int i = 0; i < abilities.Length; i++)
+        {
+            GetAbility(abilityCategory, i).ResetCooldown();
         }
     }
 
@@ -686,21 +646,17 @@ public class CharacterAbilityManager : MonoBehaviour
 
     public void SetAbilityLevelsFromLoad(int[] characterAbilityLevels)
     {
-        for (int i = 0; i < CharacterAbilities.Length; i++)
+        SetAbilityLevelFromLoad(CharacterAbilities[0], characterAbilityLevels[0]);
+        SetAbilityLevelFromLoad(CharacterAbilities[1], characterAbilityLevels[1]);
+        SetAbilityLevelFromLoad(CharacterAbilities[2], characterAbilityLevels[2]);
+        SetAbilityLevelFromLoad(CharacterAbilities[3], characterAbilityLevels[3]);
+    }
+
+    protected void SetAbilityLevelFromLoad(Ability ability, int abilityLevel)
+    {
+        for (int i = 0; i < abilityLevel; i++)
         {
-            CharacterAbilities[0].LevelUp();
-        }
-        for (int j = 0; j < characterAbilityLevels[1]; j++)
-        {
-            CharacterAbilities[1].LevelUp();
-        }
-        for (int k = 0; k < characterAbilityLevels[2]; k++)
-        {
-            CharacterAbilities[2].LevelUp();
-        }
-        for (int l = 0; l < characterAbilityLevels[3]; l++)
-        {
-            CharacterAbilities[3].LevelUp();
+            ability.LevelUp();
         }
     }
 }

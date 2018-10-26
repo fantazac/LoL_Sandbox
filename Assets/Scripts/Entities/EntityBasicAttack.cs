@@ -46,7 +46,7 @@ public abstract class EntityBasicAttack : MonoBehaviour
         float attackSpeedCycleDuration = 1f / totalAttackSpeed;
         entity.EntityBasicAttackCycle.SetAttackSpeedCycleDuration(attackSpeedCycleDuration * (1 - delayPercentBeforeAttack));
         delayAttack = new WaitForSeconds(attackSpeedCycleDuration * delayPercentBeforeAttack);
-        if(attackSpeedIncreased && shootBasicAttackCoroutine != null && entity.EntityBasicAttackCycle.AttackSpeedCycleIsReady)
+        if (attackSpeedIncreased && shootBasicAttackCoroutine != null && entity.EntityBasicAttackCycle.AttackSpeedCycleIsReady)
         {
             ResetBasicAttack();
         }
@@ -97,7 +97,7 @@ public abstract class EntityBasicAttack : MonoBehaviour
     protected void Update()
     {
         if (currentTarget != null && ((Character)entity).CharacterMovement.GetBasicAttackTarget() != currentTarget && !AttackIsInQueue && entity.EntityBasicAttackCycle.AttackSpeedCycleIsReady &&
-            !((Character)entity).CharacterAbilityManager.IsUsingAbilityPreventingBasicAttacks() && !entity.EntityDisplacementManager.IsBeingDisplaced)
+            ((Character)entity).CharacterAbilityManager.CanUseBasicAttacks() && !entity.EntityDisplacementManager.IsBeingDisplaced)
         {
             StartBasicAttack();
         }
@@ -133,7 +133,7 @@ public abstract class EntityBasicAttack : MonoBehaviour
     protected virtual IEnumerator ShootBasicAttack(Entity target)
     {
         ((Character)entity).CharacterOrientation.RotateCharacterUntilReachedTarget(target.transform, true, true);
-        
+
         yield return delayAttack;
 
         entity.EntityBasicAttackCycle.LockBasicAttack();

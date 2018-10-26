@@ -160,8 +160,8 @@ public class CharacterOrientation : MonoBehaviour
 
     private bool CanRotate()
     {
-        return !(isRotatingTowardsCastPoint || characterAbilityManager.IsUsingAbilityPreventingRotation() ||
-            characterAbilityManager.IsUsingAbilityThatHasACastTime() || characterAbilityManager.IsUsingAbilityThatHasAChannelTime() ||
+        return !(isRotatingTowardsCastPoint || !characterAbilityManager.CanRotate() ||
+            characterAbilityManager.AnAbilityIsBeingCasted() || characterAbilityManager.AnAbilityInBeingChanneled() ||
             character.EntityDisplacementManager.IsBeingDisplaced);
     }
 

@@ -274,9 +274,9 @@ public class CharacterMovement : MonoBehaviour
 
         if (target != null)
         {
-            if (target == currentlySelectedBasicAttackTarget && (character.CharacterAbilityManager.IsUsingAbilityPreventingBasicAttacks() || !character.EntityStatusManager.CanUseBasicAttacks() || character.EntityDisplacementManager.IsBeingDisplaced))//checks is disarmed
+            if (target == currentlySelectedBasicAttackTarget && (!character.CharacterAbilityManager.CanUseBasicAttacks() || !character.EntityStatusManager.CanUseBasicAttacks() || character.EntityDisplacementManager.IsBeingDisplaced))//checks is disarmed
             {
-                while (character.CharacterAbilityManager.IsUsingAbilityPreventingBasicAttacks() || !character.EntityStatusManager.CanUseBasicAttacks() || character.EntityDisplacementManager.IsBeingDisplaced)
+                while (!character.CharacterAbilityManager.CanUseBasicAttacks() || !character.EntityStatusManager.CanUseBasicAttacks() || character.EntityDisplacementManager.IsBeingDisplaced)
                 {
                     yield return null;
                 }

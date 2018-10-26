@@ -47,7 +47,7 @@ public class Lucian_R : DirectionTargetedProjectile
         delayBetweenBullets = new WaitForSeconds(durationOfActive / amountOfProjectilesToShoot);
 
         CanBeRecasted = true;
-        CannotRotateWhileCasting = true;
+        CannotRotateWhileActive = true;
         CanMoveWhileActive = true;
 
         affectedByCooldownReduction = true;
