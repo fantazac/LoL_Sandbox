@@ -152,7 +152,8 @@ public class CharacterMovement : MonoBehaviour
     {
         character.CharacterAutoAttack.StopAutoAttack();
 
-        while (Vector3.Distance(currentlySelectedDestination, transform.position) > range)
+        float distance = Vector3.Distance(currentlySelectedDestination, transform.position);
+        while (distance > range || (distance <= range && character.EntityDisplacementManager.IsBeingDisplaced))
         {
             if (character.CharacterAbilityManager.CanUseMovement() && character.EntityStatusManager.CanUseMovement() && !character.EntityDisplacementManager.IsBeingDisplaced)
             {
@@ -162,6 +163,8 @@ public class CharacterMovement : MonoBehaviour
             }
 
             yield return null;
+
+            distance = Vector3.Distance(currentlySelectedDestination, transform.position);
         }
 
         if (CharacterIsInDestinationRange != null)
@@ -215,20 +218,6 @@ public class CharacterMovement : MonoBehaviour
                 character.CharacterOrientation.RotateCharacterUntilReachedTarget(target.transform, isBasicAttack);
             }
         }
-
-        //TODO: Remove this after multiple tests, keeping it as a comment in case the newer version breaks something else
-        /*StopAllMovement();
-        if (isBasicAttack)
-        {
-            currentlySelectedBasicAttackTarget = target;
-            character.EntityBasicAttack.SetupBasicAttack(target, true);
-        }
-        else
-        {
-            currentlySelectedTarget = target;
-        }
-        currentMovementCoroutine = MoveTowardsTarget(range);
-        StartCoroutine(currentMovementCoroutine);*/
     }
 
     private void SetupCorrectTarget(Entity target, bool isBasicAttack)
@@ -253,7 +242,8 @@ public class CharacterMovement : MonoBehaviour
 
             character.CharacterOrientation.RotateCharacterUntilReachedTarget(targetTransform, currentlySelectedBasicAttackTarget != null);
 
-            while (targetTransform != null && Vector3.Distance(targetTransform.position, transform.position) > range)
+            float distance = Vector3.Distance(targetTransform.position, transform.position);
+            while (distance > range || (distance <= range && character.EntityDisplacementManager.IsBeingDisplaced))
             {
                 if (character.CharacterAbilityManager.CanUseMovement() && character.EntityStatusManager.CanUseMovement() && !character.EntityDisplacementManager.IsBeingDisplaced)
                 {
@@ -266,6 +256,12 @@ public class CharacterMovement : MonoBehaviour
 
                 target = currentlySelectedBasicAttackTarget != null ? currentlySelectedBasicAttackTarget : currentlySelectedTarget;
                 targetTransform = target ? target.transform : null;
+
+                if (targetTransform == null)
+                {
+                    break;
+                }
+                distance = Vector3.Distance(targetTransform.position, transform.position);
             }
 
             character.CharacterAutoAttack.EnableAutoAttack();

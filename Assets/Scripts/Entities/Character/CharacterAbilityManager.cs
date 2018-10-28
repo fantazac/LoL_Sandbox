@@ -329,7 +329,7 @@ public class CharacterAbilityManager : MonoBehaviour
                 character.CharacterBufferedAbilityManager.ResetBufferedAbility();
             }
             ability.UseAbility(destination);
-            if (ability.HasCastTime || ability.HasChannelTime || ability.CanBeRecasted)
+            if (ability.HasCastTime || ability.HasChannelTime)
             {
                 character.CharacterMovement.SetCharacterIsInRangeEventForBasicAttack();
             }
