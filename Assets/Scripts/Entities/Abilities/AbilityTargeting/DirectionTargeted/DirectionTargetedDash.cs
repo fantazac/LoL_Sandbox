@@ -19,7 +19,7 @@ public abstract class DirectionTargetedDash : DirectionTargeted
 
         this.destination = destination;
 
-        character.CharacterMovement.RestartMovementTowardsTargetAfterAbility();
+        character.EntityBasicAttack.CancelCurrentBasicAttackToCastAbility();
         RotationOnAbilityCast(destination);
 
         if (castTime > 0)

@@ -83,6 +83,18 @@ public abstract class EntityBasicAttack : MonoBehaviour
         }
     }
 
+    public void CancelCurrentBasicAttackToCastAbility()
+    {
+        if (AttackIsInQueue)
+        {
+            StopBasicAttack();//This is so CharacterAutoAttack doesn't shoot while an ability is active
+            if (currentTarget != null)
+            {
+                ((Character)entity).CharacterMovement.SetMoveTowardsTarget(currentTarget, entity.EntityStats.AttackRange.GetTotal(), true);
+            }
+        }
+    }
+
     public Entity CurrentTarget()
     {
         return currentTarget;
