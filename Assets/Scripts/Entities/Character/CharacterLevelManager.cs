@@ -27,7 +27,7 @@ public class CharacterLevelManager : MonoBehaviour
         if (character.AbilityLevelUpUIManager)
         {
             character.AbilityLevelUpUIManager.OnAbilityLevelUp += OnAbilityLevelUp;
-            character.CharacterInput.OnAbilityLevelUp += OnAbilityLevelUp;
+            character.CharacterInputManager.OnAbilityLevelUp += OnAbilityLevelUp;
             PrepareLevelUp();
         }
     }

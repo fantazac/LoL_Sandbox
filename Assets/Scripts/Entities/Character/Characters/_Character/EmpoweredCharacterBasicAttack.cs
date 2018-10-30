@@ -35,7 +35,7 @@ public abstract class EmpoweredCharacterBasicAttack : CharacterBasicAttack
 
     protected void SetupBeforeAttackDelay(Entity target)
     {
-        ((Character)entity).CharacterOrientation.RotateCharacterUntilReachedTarget(target.transform, true, true);
+        ((Character)entity).CharacterOrientationManager.RotateCharacterUntilReachedTarget(target.transform, true, true);
         empoweringAbilityWasActiveOnBasicAttackCast = entity.EntityBuffManager.GetBuff(basicAttackEmpoweringAbility.AbilityBuffs[0]) != null;
     }
 
@@ -43,7 +43,7 @@ public abstract class EmpoweredCharacterBasicAttack : CharacterBasicAttack
     {
         entity.EntityBasicAttackCycle.LockBasicAttack();
         AttackIsInQueue = false;
-        ((Character)entity).CharacterOrientation.StopTargetRotation();
+        ((Character)entity).CharacterOrientationManager.StopTargetRotation();
 
         ProjectileUnitTargeted projectile = (Instantiate(basicAttackPrefab, transform.position, transform.rotation)).GetComponent<ProjectileUnitTargeted>();
         projectile.ShootProjectile(entity.Team, target, speed, AttackIsCritical.CheckIfAttackIsCritical(entity.EntityStats.CriticalStrikeChance.GetTotal()));

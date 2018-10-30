@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public abstract class DirectionTargetedDash : DirectionTargeted
 {
@@ -45,9 +44,9 @@ public abstract class DirectionTargetedDash : DirectionTargeted
 
     protected void SetupAutoAttackPostDash()
     {
-        if (!character.CharacterMovement.IsMovingTowardsPosition())
+        if (!character.CharacterMovementManager.IsMovingTowardsPosition())
         {
-            character.CharacterAutoAttack.EnableAutoAttackWithBiggerRange();
+            character.CharacterAutoAttackManager.EnableAutoAttackWithBiggerRange();
         }
     }
 
@@ -55,7 +54,7 @@ public abstract class DirectionTargetedDash : DirectionTargeted
     {
         if (character.CharacterAbilityManager.CanRotate())
         {
-            character.CharacterOrientation.RotateCharacterInstantly(destination);
+            character.CharacterOrientationManager.RotateCharacterInstantly(destination);
         }
     }
 

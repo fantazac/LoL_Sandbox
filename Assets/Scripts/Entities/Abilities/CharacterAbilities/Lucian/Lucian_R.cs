@@ -86,7 +86,7 @@ public class Lucian_R : DirectionTargetedProjectile
 
     protected override void RotationOnAbilityCast(Vector3 destination)
     {
-        character.CharacterOrientation.RotateCharacterInstantly(destination);
+        character.CharacterOrientationManager.RotateCharacterInstantly(destination);
     }
 
     protected override IEnumerator AbilityWithCastTime()

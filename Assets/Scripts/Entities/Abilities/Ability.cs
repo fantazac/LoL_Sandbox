@@ -158,7 +158,7 @@ public abstract class Ability : MonoBehaviour
 
     protected virtual void RotationOnAbilityCast(Vector3 destination)
     {
-        character.CharacterOrientation.RotateCharacterTowardsCastPoint(destination);
+        character.CharacterOrientationManager.RotateCharacterTowardsCastPoint(destination);
     }
 
     protected virtual void ModifyValues()

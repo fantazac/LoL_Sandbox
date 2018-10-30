@@ -58,7 +58,7 @@ public abstract class EntityBasicAttack : MonoBehaviour
         if (setupEvent)
         {
             //TODO: EntityMovement will become the parent of CharacterMovement
-            ((Character)entity).CharacterMovement.CharacterIsInTargetRange += UseBasicAttack;
+            ((Character)entity).CharacterMovementManager.CharacterIsInTargetRange += UseBasicAttack;
         }
     }
 
@@ -90,7 +90,7 @@ public abstract class EntityBasicAttack : MonoBehaviour
             StopBasicAttack();//This is so CharacterAutoAttack doesn't shoot while an ability is active
             if (currentTarget != null)
             {
-                ((Character)entity).CharacterMovement.SetMoveTowardsTarget(currentTarget, entity.EntityStats.AttackRange.GetTotal(), true);
+                ((Character)entity).CharacterMovementManager.SetMoveTowardsTarget(currentTarget, entity.EntityStats.AttackRange.GetTotal(), true);
             }
         }
     }
@@ -108,7 +108,7 @@ public abstract class EntityBasicAttack : MonoBehaviour
 
     protected void Update()
     {
-        if (currentTarget != null && ((Character)entity).CharacterMovement.GetBasicAttackTarget() != currentTarget && !AttackIsInQueue && entity.EntityBasicAttackCycle.AttackSpeedCycleIsReady &&
+        if (currentTarget != null && ((Character)entity).CharacterMovementManager.GetBasicAttackTarget() != currentTarget && !AttackIsInQueue && entity.EntityBasicAttackCycle.AttackSpeedCycleIsReady &&
             ((Character)entity).CharacterAbilityManager.CanUseBasicAttacks() && !entity.EntityDisplacementManager.IsBeingDisplaced)
         {
             StartBasicAttack();
@@ -118,7 +118,7 @@ public abstract class EntityBasicAttack : MonoBehaviour
     protected void StartBasicAttack()
     {
         AttackIsInQueue = true;
-        ((Character)entity).CharacterMovement.SetMoveTowardsTarget(currentTarget, entity.EntityStats.AttackRange.GetTotal(), true);
+        ((Character)entity).CharacterMovementManager.SetMoveTowardsTarget(currentTarget, entity.EntityStats.AttackRange.GetTotal(), true);
     }
 
     public void UseBasicAttackFromAutoAttack(Entity target)
@@ -144,13 +144,13 @@ public abstract class EntityBasicAttack : MonoBehaviour
 
     protected virtual IEnumerator ShootBasicAttack(Entity target)
     {
-        ((Character)entity).CharacterOrientation.RotateCharacterUntilReachedTarget(target.transform, true, true);
+        ((Character)entity).CharacterOrientationManager.RotateCharacterUntilReachedTarget(target.transform, true, true);
 
         yield return delayAttack;
 
         entity.EntityBasicAttackCycle.LockBasicAttack();
         AttackIsInQueue = false;
-        ((Character)entity).CharacterOrientation.StopTargetRotation();
+        ((Character)entity).CharacterOrientationManager.StopTargetRotation();
 
         ProjectileUnitTargeted projectile = (Instantiate(basicAttackPrefab, transform.position, transform.rotation)).GetComponent<ProjectileUnitTargeted>();
         projectile.ShootProjectile(entity.Team, target, speed, AttackIsCritical.CheckIfAttackIsCritical(entity.EntityStats.CriticalStrikeChance.GetTotal()), entity.EntityStatusManager.IsBlinded());

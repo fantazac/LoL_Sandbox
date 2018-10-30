@@ -14,9 +14,9 @@ public class EntityForcedActionManager : MonoBehaviour
     private void Start()
     {
         entity = GetComponent<Character>();
-        if (entity.CharacterOrientation)//TODO: Entity
+        if (entity.CharacterOrientationManager)//TODO: Entity
         {
-            rotationSpeed = entity.CharacterOrientation.RotationSpeed;
+            rotationSpeed = entity.CharacterOrientationManager.RotationSpeed;
         }
         else
         {
@@ -76,9 +76,9 @@ public class EntityForcedActionManager : MonoBehaviour
             {
                 transform.position = Vector3.MoveTowards(transform.position, casterTransform.position, Time.deltaTime * entity.EntityStats.MovementSpeed.GetTotal());
 
-                if (entity.CharacterMovement)
+                if (entity.CharacterMovementManager)
                 {
-                    entity.CharacterMovement.NotifyCharacterMoved();
+                    entity.CharacterMovementManager.NotifyCharacterMoved();
                 }
 
                 transform.rotation = Quaternion.LookRotation(Vector3.RotateTowards(transform.forward, casterTransform.position - transform.position, Time.deltaTime * rotationSpeed, 0));
@@ -87,31 +87,31 @@ public class EntityForcedActionManager : MonoBehaviour
             yield return null;
         }
 
-        if (entity.CharacterMovement && !entity.CharacterMovement.IsMoving())
+        if (entity.CharacterMovementManager && !entity.CharacterMovementManager.IsMoving())
         {
             Vector3 lastCasterPosition = caster.transform.position;
             while (transform.position != lastCasterPosition)
             {
-                if (entity.CharacterMovement.IsMoving() || !entity.CharacterAbilityManager.CanUseMovement() || !entity.EntityStatusManager.CanUseMovement() ||
+                if (entity.CharacterMovementManager.IsMoving() || !entity.CharacterAbilityManager.CanUseMovement() || !entity.EntityStatusManager.CanUseMovement() ||
                     Vector3.Distance(casterTransform.position, transform.position) <= entity.EntityStats.AttackRange.GetTotal())
                 {
-                    entity.CharacterMovement.SetMoveTowardsTarget(caster, entity.EntityStats.AttackRange.GetTotal(), true);
+                    entity.CharacterMovementManager.SetMoveTowardsTarget(caster, entity.EntityStats.AttackRange.GetTotal(), true);
                     break;
                 }
                 else
                 {
                     transform.position = Vector3.MoveTowards(transform.position, lastCasterPosition, Time.deltaTime * entity.EntityStats.MovementSpeed.GetTotal());
 
-                    entity.CharacterMovement.NotifyCharacterMoved();
+                    entity.CharacterMovementManager.NotifyCharacterMoved();
                 }
 
                 yield return null;
             }
         }
 
-        if (entity.CharacterAutoAttack)
+        if (entity.CharacterAutoAttackManager)
         {
-            entity.CharacterAutoAttack.EnableAutoAttack(true);
+            entity.CharacterAutoAttackManager.EnableAutoAttack(true);
         }
 
         currentForcedAction = null;
@@ -133,9 +133,9 @@ public class EntityForcedActionManager : MonoBehaviour
             {
                 transform.position = Vector3.MoveTowards(transform.position, casterTransform.position, -Time.deltaTime * entity.EntityStats.MovementSpeed.GetTotal());
 
-                if (entity.CharacterMovement)
+                if (entity.CharacterMovementManager)
                 {
-                    entity.CharacterMovement.NotifyCharacterMoved();
+                    entity.CharacterMovementManager.NotifyCharacterMoved();
                 }
 
                 transform.rotation = Quaternion.LookRotation(Vector3.RotateTowards(transform.forward, -(casterTransform.position - transform.position), Time.deltaTime * rotationSpeed, 0));
@@ -144,9 +144,9 @@ public class EntityForcedActionManager : MonoBehaviour
             yield return null;
         }
 
-        if (entity.CharacterAutoAttack)
+        if (entity.CharacterAutoAttackManager)
         {
-            entity.CharacterAutoAttack.EnableAutoAttack();//TODO: Forced?
+            entity.CharacterAutoAttackManager.EnableAutoAttack();//TODO: Forced?
         }
 
         currentForcedAction = null;

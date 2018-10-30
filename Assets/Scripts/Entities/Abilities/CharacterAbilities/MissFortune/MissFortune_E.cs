@@ -67,7 +67,7 @@ public class MissFortune_E : GroundTargetedAoE
 
         IsBeingCasted = false;
         UseResource();
-        character.CharacterOrientation.RotateCharacterInstantly(destinationOnCast);
+        character.CharacterOrientationManager.RotateCharacterInstantly(destinationOnCast);
 
         AreaOfEffectGround areaOfEffect = (Instantiate(areaOfEffectPrefab, Vector3.right * destinationOnCast.x + Vector3.forward * destinationOnCast.z, Quaternion.identity)).GetComponent<AreaOfEffectGround>();
         areaOfEffect.CreateAreaOfEffect(character.Team, affectedUnitType, tickDelay, totalTicks, radius);

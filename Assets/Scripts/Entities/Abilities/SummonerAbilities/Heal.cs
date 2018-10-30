@@ -46,7 +46,7 @@ public class Heal : SelfTargeted
 
     public override Vector3 GetDestination()
     {
-        return hit.point + character.CharacterMovement.CharacterHeightOffset;
+        return hit.point + character.CharacterMovementManager.CharacterHeightOffset;
     }
 
     public override void OnCharacterLevelUp(int level)

@@ -64,13 +64,13 @@ public class MissFortune_R : DirectionTargetedProjectile
 
     protected override void RotationOnAbilityCast(Vector3 destination)
     {
-        character.CharacterOrientation.RotateCharacterInstantly(destination);
+        character.CharacterOrientationManager.RotateCharacterInstantly(destination);
     }
 
     protected override IEnumerator AbilityWithChannelTime()
     {
         UseResource();
-        character.CharacterMovement.StopAllMovement();
+        character.CharacterMovementManager.StopAllMovement();
         AddNewBuffToEntityHit(character);
         IsBeingChanneled = true;
 
@@ -88,7 +88,7 @@ public class MissFortune_R : DirectionTargetedProjectile
     private void AddNewBuffToEntityHit(Entity entityHit)
     {
         ((Character)entityHit).CharacterAbilityManager.OnAnAbilityUsed += CancelMissFortuneR;
-        ((Character)entityHit).CharacterMovement.CharacterMoved += CancelMissFortuneR;
+        ((Character)entityHit).CharacterMovementManager.CharacterMoved += CancelMissFortuneR;
         //TODO: if hard cc'd, cancel aswell
         AbilityBuffs[0].AddNewBuffToAffectedEntity(entityHit);
     }
@@ -96,7 +96,7 @@ public class MissFortune_R : DirectionTargetedProjectile
     private void RemoveBuffFromEntityHit(Entity entityHit)
     {
         ((Character)entityHit).CharacterAbilityManager.OnAnAbilityUsed -= CancelMissFortuneR;
-        ((Character)entityHit).CharacterMovement.CharacterMoved -= CancelMissFortuneR;
+        ((Character)entityHit).CharacterMovementManager.CharacterMoved -= CancelMissFortuneR;
         //TODO: remove cc cancel
     }
 

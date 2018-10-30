@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class CharacterMovement : MonoBehaviour
+public class CharacterMovementManager : MonoBehaviour
 {
     private string movementCapsulePrefabPath;
     private GameObject movementCapsulePrefab;
@@ -28,7 +28,7 @@ public class CharacterMovement : MonoBehaviour
     public delegate void CharacterIsInTargetRangeHandler(Entity target);
     public event CharacterIsInTargetRangeHandler CharacterIsInTargetRange;
 
-    private CharacterMovement()
+    private CharacterMovementManager()
     {
         currentlySelectedDestination = Vector3.down;
 
@@ -44,7 +44,7 @@ public class CharacterMovement : MonoBehaviour
     {
         if (!StaticObjects.OnlineMode || character.PhotonView.isMine)
         {
-            character.CharacterInput.OnPressedS += StopMovement;
+            character.CharacterInputManager.OnPressedS += StopMovement;
 
             LoadPrefabs();
         }
@@ -118,7 +118,7 @@ public class CharacterMovement : MonoBehaviour
             if (currentlySelectedDestination != Vector3.down && (CharacterIsInDestinationRange == null || range > 0) && (CharacterIsInDestinationRange != null || range == 0))
             {
                 currentlySelectedDestination = destination;
-                character.CharacterOrientation.RotateCharacter(destination);
+                character.CharacterOrientationManager.RotateCharacter(destination);
             }
             else
             {
@@ -127,14 +127,14 @@ public class CharacterMovement : MonoBehaviour
                 destinationRange = range;
                 currentMovementCoroutine = range > 0 ? MoveTowardsPointWithRange() : MoveTowardsPoint();
                 StartCoroutine(currentMovementCoroutine);
-                character.CharacterOrientation.RotateCharacter(destination);
+                character.CharacterOrientationManager.RotateCharacter(destination);
             }
         }
     }
 
     private IEnumerator MoveTowardsPoint()
     {
-        character.CharacterAutoAttack.EnableAutoAttack();
+        character.CharacterAutoAttackManager.EnableAutoAttack();
 
         while (transform.position != currentlySelectedDestination)
         {
@@ -154,7 +154,7 @@ public class CharacterMovement : MonoBehaviour
 
     private IEnumerator MoveTowardsPointWithRange()
     {
-        character.CharacterAutoAttack.StopAutoAttack();
+        character.CharacterAutoAttackManager.StopAutoAttack();
 
         float distance = Vector3.Distance(currentlySelectedDestination, transform.position);
         while (distance > destinationRange || (distance <= destinationRange && character.EntityDisplacementManager.IsBeingDisplaced))
@@ -177,7 +177,7 @@ public class CharacterMovement : MonoBehaviour
             CharacterIsInDestinationRange = null;
         }
 
-        character.CharacterAutoAttack.EnableAutoAttack();
+        character.CharacterAutoAttackManager.EnableAutoAttack();
         currentlySelectedDestination = Vector3.down;
         currentMovementCoroutine = null;
     }
@@ -217,7 +217,7 @@ public class CharacterMovement : MonoBehaviour
             SetupCorrectTarget(target, isBasicAttack);
             if (Vector3.Distance(target.transform.position, transform.position) > range)
             {
-                character.CharacterOrientation.RotateCharacterUntilReachedTarget(target.transform, isBasicAttack);
+                character.CharacterOrientationManager.RotateCharacterUntilReachedTarget(target.transform, isBasicAttack);
             }
         }
     }
@@ -238,11 +238,11 @@ public class CharacterMovement : MonoBehaviour
 
         if (target != null && Vector3.Distance(target.transform.position, transform.position) > targetRange)
         {
-            character.CharacterAutoAttack.StopAutoAttack();
+            character.CharacterAutoAttackManager.StopAutoAttack();
 
             Transform targetTransform = target.transform;
 
-            character.CharacterOrientation.RotateCharacterUntilReachedTarget(targetTransform, currentlySelectedBasicAttackTarget != null);
+            character.CharacterOrientationManager.RotateCharacterUntilReachedTarget(targetTransform, currentlySelectedBasicAttackTarget != null);
 
             float distance = Vector3.Distance(targetTransform.position, transform.position);
             while (distance > targetRange || (distance <= targetRange && character.EntityDisplacementManager.IsBeingDisplaced))
@@ -266,8 +266,8 @@ public class CharacterMovement : MonoBehaviour
                 distance = Vector3.Distance(targetTransform.position, transform.position);
             }
 
-            character.CharacterAutoAttack.EnableAutoAttack();
-            character.CharacterOrientation.StopRotation();
+            character.CharacterAutoAttackManager.EnableAutoAttack();
+            character.CharacterOrientationManager.StopRotation();
         }
 
         if (target != null)
@@ -294,7 +294,7 @@ public class CharacterMovement : MonoBehaviour
         else if (!IsMoving())
         {
             StopAllMovement();
-            character.CharacterAutoAttack.EnableAutoAttack();
+            character.CharacterAutoAttackManager.EnableAutoAttack();
         }
 
         currentMovementCoroutine = null;
@@ -304,15 +304,15 @@ public class CharacterMovement : MonoBehaviour
     {
         if (currentlySelectedDestination != Vector3.down)
         {
-            character.CharacterOrientation.RotateCharacter(currentlySelectedDestination);
+            character.CharacterOrientationManager.RotateCharacter(currentlySelectedDestination);
         }
         else if (currentlySelectedTarget != null)
         {
-            character.CharacterOrientation.RotateCharacterUntilReachedTarget(currentlySelectedTarget.transform, true);
+            character.CharacterOrientationManager.RotateCharacterUntilReachedTarget(currentlySelectedTarget.transform, true);
         }
         else if (currentlySelectedBasicAttackTarget != null)
         {
-            character.CharacterOrientation.RotateCharacterUntilReachedTarget(currentlySelectedBasicAttackTarget.transform, true);
+            character.CharacterOrientationManager.RotateCharacterUntilReachedTarget(currentlySelectedBasicAttackTarget.transform, true);
         }
     }
 
@@ -324,7 +324,7 @@ public class CharacterMovement : MonoBehaviour
         }
         else
         {
-            character.CharacterAutoAttack.StopAutoAttack();
+            character.CharacterAutoAttackManager.StopAutoAttack();
             StopAllMovement();
         }
     }
@@ -337,7 +337,7 @@ public class CharacterMovement : MonoBehaviour
     [PunRPC]
     private void ReceiveFromServer_StopMovement()
     {
-        character.CharacterAutoAttack.StopAutoAttack();
+        character.CharacterAutoAttackManager.StopAutoAttack();
         StopAllMovement();
     }
 
@@ -358,7 +358,7 @@ public class CharacterMovement : MonoBehaviour
         StopAllCoroutines();
         currentMovementCoroutine = null;
 
-        character.CharacterOrientation.StopRotation();
+        character.CharacterOrientationManager.StopRotation();
         CharacterIsInTargetRange = null;
         CharacterIsInDestinationRange = null;
         currentlySelectedDestination = Vector3.down;

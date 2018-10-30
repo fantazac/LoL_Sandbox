@@ -51,9 +51,9 @@ public class Teleport : GroundTargetedBlink//TODO: UnitTargeted
 
         IsBeingChanneled = false;
         character.CharacterAbilityManager.UnblockAllMovementAbilities();
-        character.CharacterOrientation.RotateCharacterInstantly(destinationOnCast);
+        character.CharacterOrientationManager.RotateCharacterInstantly(destinationOnCast);
         transform.position = destinationOnCast;
-        character.CharacterMovement.NotifyCharacterMoved();
+        character.CharacterMovementManager.NotifyCharacterMoved();
 
         FinishAbilityCast();
     }

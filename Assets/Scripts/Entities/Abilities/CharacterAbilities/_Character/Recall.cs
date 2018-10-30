@@ -38,7 +38,7 @@ public class Recall : AutoTargetedBlink
 
     public override Vector3 GetDestination()
     {
-        return character.CharacterMovement.CharacterHeightOffset;
+        return character.CharacterMovementManager.CharacterHeightOffset;
     }
 
     protected override IEnumerator AbilityWithCastTimeAndChannelTime()
@@ -49,7 +49,7 @@ public class Recall : AutoTargetedBlink
 
         IsBeingCasted = false;
         UseResource();
-        character.CharacterMovement.StopAllMovement();//This is to cancel any movement command made during the cast time
+        character.CharacterMovementManager.StopAllMovement();//This is to cancel any movement command made during the cast time
         AddNewBuffToEntityHit(character);
         IsBeingChanneled = true;
 
@@ -59,7 +59,7 @@ public class Recall : AutoTargetedBlink
         AbilityBuffs[0].ConsumeBuff(character);
 
         transform.position = GetDestination();
-        character.CharacterMovement.NotifyCharacterMoved();
+        character.CharacterMovementManager.NotifyCharacterMoved();
 
         FinishAbilityCast();
     }
@@ -68,7 +68,7 @@ public class Recall : AutoTargetedBlink
     {
         entityHit.EntityStats.Health.OnResourceReduced += CancelRecall;
         ((Character)entityHit).CharacterAbilityManager.OnAnAbilityUsed += CancelRecall;
-        ((Character)entityHit).CharacterMovement.CharacterMoved += CancelRecall;
+        ((Character)entityHit).CharacterMovementManager.CharacterMoved += CancelRecall;
         AbilityBuffs[0].AddNewBuffToAffectedEntity(entityHit);
     }
 
@@ -76,7 +76,7 @@ public class Recall : AutoTargetedBlink
     {
         entityHit.EntityStats.Health.OnResourceReduced -= CancelRecall;
         ((Character)entityHit).CharacterAbilityManager.OnAnAbilityUsed -= CancelRecall;
-        ((Character)entityHit).CharacterMovement.CharacterMoved -= CancelRecall;
+        ((Character)entityHit).CharacterMovementManager.CharacterMoved -= CancelRecall;
     }
 
     private void CancelRecall()

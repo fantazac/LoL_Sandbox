@@ -83,14 +83,14 @@ public class CharacterAbilityManager : MonoBehaviour
         {
             currentlyUsedAbilities.Remove(ability);
 
-            character.CharacterMovement.RotateCharacterIfMoving();
+            character.CharacterMovementManager.RotateCharacterIfMoving();
 
             Ability bufferedAbility = character.CharacterBufferedAbilityManager.GetBufferedAbility();
             if (bufferedAbility != null)
             {
                 if (HasEnoughResourceToCastAbility(bufferedAbility))
                 {
-                    character.CharacterMovement.StopAllMovement(false);
+                    character.CharacterMovementManager.StopAllMovement(false);
                     character.CharacterBufferedAbilityManager.UseBufferedAbility();
                 }
                 else
@@ -328,7 +328,7 @@ public class CharacterAbilityManager : MonoBehaviour
             ability.UseAbility(destination);
             if (ability.HasCastTime || ability.HasChannelTime)
             {
-                character.CharacterMovement.SetCharacterIsInTargetRangeEventForBasicAttack();
+                character.CharacterMovementManager.SetCharacterIsInTargetRangeEventForBasicAttack();
             }
         }
         else

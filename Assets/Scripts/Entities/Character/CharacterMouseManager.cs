@@ -16,7 +16,7 @@ public class CharacterMouseManager : MonoBehaviour
         character = StaticObjects.Character;
         if (!StaticObjects.OnlineMode || character.PhotonView.isMine)
         {
-            character.CharacterInput.OnRightClick += PressedRightClick;
+            character.CharacterInputManager.OnRightClick += PressedRightClick;
         }
     }
 
@@ -54,15 +54,15 @@ public class CharacterMouseManager : MonoBehaviour
 
         if (HoveredEntityIsAnEnemy(character.Team))
         {
-            character.CharacterMovement.PrepareMovementTowardsTarget(HoveredEntity);
+            character.CharacterMovementManager.PrepareMovementTowardsTarget(HoveredEntity);
         }
         else if (closestEnemyEntity != null)
         {
-            character.CharacterMovement.PrepareMovementTowardsTarget(closestEnemyEntity);
+            character.CharacterMovementManager.PrepareMovementTowardsTarget(closestEnemyEntity);
         }
         else if (hitTerrain)
         {
-            character.CharacterMovement.PrepareMovementTowardsPoint(hit.point);
+            character.CharacterMovementManager.PrepareMovementTowardsPoint(hit.point);
         }
     }
 

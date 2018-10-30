@@ -54,9 +54,9 @@ public class EntityStatusManager : MonoBehaviour
                 SetCannotUseBasicAbilities(count);
                 SetCannotUseBasicAttacks(count);
                 SetCannotUseMovement(count);
-                if (character.CharacterMovement)
+                if (character.CharacterMovementManager)
                 {
-                    character.CharacterMovement.StopAllMovement();
+                    character.CharacterMovementManager.StopAllMovement();
                 }
                 if (character.CharacterAbilityManager)
                 {
@@ -104,9 +104,9 @@ public class EntityStatusManager : MonoBehaviour
                 SetCannotUseBasicAbilities(count);
                 SetCannotUseBasicAttacks(count);
                 SetCannotUseMovement(count);
-                if (character.CharacterMovement)
+                if (character.CharacterMovementManager)
                 {
-                    character.CharacterMovement.StopAllMovement();
+                    character.CharacterMovementManager.StopAllMovement();
                 }
                 if (character.CharacterAbilityManager)
                 {
@@ -121,7 +121,7 @@ public class EntityStatusManager : MonoBehaviour
                 SetCannotUseBasicAbilities(count);
                 SetCannotUseBasicAttacks(count);
                 SetCannotUseMovement(count);
-                character.CharacterMovement.StopMovementTowardsPointIfHasEvent();
+                character.CharacterMovementManager.StopMovementTowardsPointIfHasEvent();
                 if (character.CharacterAbilityManager)
                 {
                     character.CharacterAbilityManager.CancelAllChannelingAbilities();
@@ -132,8 +132,8 @@ public class EntityStatusManager : MonoBehaviour
                 SetCannotUseBasicAbilities(count);
                 SetCannotUseBasicAttacks(count);
                 SetCannotUseMovement(count);
-                character.CharacterMovement.SetMoveTowardsHalfDistanceOfAbilityCastRange();
-                character.CharacterMovement.SetCharacterIsInTargetRangeEventForBasicAttack();
+                character.CharacterMovementManager.SetMoveTowardsHalfDistanceOfAbilityCastRange();
+                character.CharacterMovementManager.SetCharacterIsInTargetRangeEventForBasicAttack();
                 if (character.CharacterAbilityManager)
                 {
                     character.CharacterAbilityManager.CancelAllChannelingAbilities();
@@ -150,8 +150,8 @@ public class EntityStatusManager : MonoBehaviour
                 SetCannotUseBasicAbilities(count);
                 SetCannotUseBasicAttacks(count);
                 SetCannotUseMovement(count);
-                character.CharacterMovement.SetMoveTowardsHalfDistanceOfAbilityCastRange();
-                character.CharacterMovement.SetCharacterIsInTargetRangeEventForBasicAttack();
+                character.CharacterMovementManager.SetMoveTowardsHalfDistanceOfAbilityCastRange();
+                character.CharacterMovementManager.SetCharacterIsInTargetRangeEventForBasicAttack();
                 if (character.CharacterAbilityManager)
                 {
                     character.CharacterAbilityManager.CancelAllChannelingAbilities();
@@ -183,7 +183,7 @@ public class EntityStatusManager : MonoBehaviour
                 SetCannotUseBasicAbilities(count);
                 SetCannotUseBasicAttacks(count);
                 SetCannotUseMovement(count);
-                character.CharacterMovement.StopMovementTowardsPointIfHasEvent();
+                character.CharacterMovementManager.StopMovementTowardsPointIfHasEvent();
                 if (character.CharacterAbilityManager)
                 {
                     character.CharacterAbilityManager.CancelAllChannelingAbilities();
@@ -193,7 +193,7 @@ public class EntityStatusManager : MonoBehaviour
             case CrowdControlEffects.ROOT:
                 SetCannotUseMovement(count);
                 SetCannotUseMovementAbilities(count);
-                character.CharacterMovement.StopMovementTowardsPointIfHasEvent();
+                character.CharacterMovementManager.StopMovementTowardsPointIfHasEvent();
                 break;
             case CrowdControlEffects.SILENCE:
                 SetCannotUseBasicAbilities(count);
@@ -229,7 +229,7 @@ public class EntityStatusManager : MonoBehaviour
                 SetCannotUseBasicAbilities(count);
                 SetCannotUseBasicAttacks(count);
                 SetCannotUseMovement(count);
-                character.CharacterMovement.StopMovementTowardsPointIfHasEvent();
+                character.CharacterMovementManager.StopMovementTowardsPointIfHasEvent();
                 if (character.CharacterAbilityManager)
                 {
                     character.CharacterAbilityManager.CancelAllChannelingAbilities();
@@ -251,12 +251,12 @@ public class EntityStatusManager : MonoBehaviour
                 SetCannotUseBasicAbilities(count);
                 SetCannotUseBasicAttacks(count);
                 SetCannotUseMovement(count);
-                if (!character.CharacterMovement.IsMovingTowardsPosition())
+                if (!character.CharacterMovementManager.IsMovingTowardsPosition())
                 {
-                    character.CharacterAutoAttack.EnableAutoAttackWithBiggerRange();
+                    character.CharacterAutoAttackManager.EnableAutoAttackWithBiggerRange();
                 }
-                character.CharacterMovement.StopMovementTowardsPoint();
-                character.CharacterMovement.StopMovementTowardsTargetIfHasEvent();
+                character.CharacterMovementManager.StopMovementTowardsPoint();
+                character.CharacterMovementManager.StopMovementTowardsTargetIfHasEvent();
                 if (character.CharacterAbilityManager)
                 {
                     character.CharacterAbilityManager.CancelAllChannelingAbilities();
@@ -267,9 +267,9 @@ public class EntityStatusManager : MonoBehaviour
                 SetCannotUseBasicAbilities(count);
                 SetCannotUseBasicAttacks(count);
                 SetCannotUseMovement(count);
-                if (character.CharacterMovement)
+                if (character.CharacterMovementManager)
                 {
-                    character.CharacterMovement.StopAllMovement();
+                    character.CharacterMovementManager.StopAllMovement();
                 }
                 if (character.CharacterAbilityManager)
                 {

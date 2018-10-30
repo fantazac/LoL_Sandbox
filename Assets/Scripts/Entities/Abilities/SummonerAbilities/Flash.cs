@@ -26,7 +26,7 @@ public class Flash : GroundTargetedBlink
     {
         StartAbilityCast();
 
-        character.CharacterMovement.StopMovementTowardsPoint();
+        character.CharacterMovementManager.StopMovementTowardsPoint();
 
         Vector3 newDestination = FindPointToMoveTo(destination, transform.position);
         Quaternion newRotation = Quaternion.LookRotation((destination - transform.position).normalized);
@@ -39,7 +39,7 @@ public class Flash : GroundTargetedBlink
             transform.rotation = newRotation;
         }
 
-        character.CharacterMovement.NotifyCharacterMoved();
+        character.CharacterMovementManager.NotifyCharacterMoved();
 
         FinishAbilityCast();
     }

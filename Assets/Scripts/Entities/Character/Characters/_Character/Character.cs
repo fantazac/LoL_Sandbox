@@ -8,15 +8,15 @@ public abstract class Character : Entity
 
     public CharacterAbilityEffectsManager CharacterAbilityEffectsManager { get; private set; }
     public CharacterAbilityManager CharacterAbilityManager { get; protected set; }
-    public CharacterAutoAttack CharacterAutoAttack { get; private set; }
+    public CharacterAutoAttackManager CharacterAutoAttackManager { get; private set; }
     public CharacterBufferedAbilityManager CharacterBufferedAbilityManager { get; private set; }
-    public CharacterInput CharacterInput { get; private set; }
+    public CharacterInputManager CharacterInputManager { get; private set; }
     public CharacterLevelManager CharacterLevelManager { get; private set; }
     public CharacterMouseManager CharacterMouseManager { get; private set; }
-    public CharacterMovement CharacterMovement { get; private set; }
+    public CharacterMovementManager CharacterMovementManager { get; private set; }
     public CharacterOnAttackEffectsManager CharacterOnAttackEffectsManager { get; private set; }
     public CharacterOnHitEffectsManager CharacterOnHitEffectsManager { get; private set; }
-    public CharacterOrientation CharacterOrientation { get; private set; }
+    public CharacterOrientationManager CharacterOrientationManager { get; private set; }
     public CharacterStatsManager CharacterStatsManager { get; private set; }
 
     public AbilityLevelUpUIManager AbilityLevelUpUIManager { get; private set; }
@@ -65,18 +65,18 @@ public abstract class Character : Entity
         if (!(this is Dummy))
         {
             CharacterAbilityEffectsManager = gameObject.AddComponent<CharacterAbilityEffectsManager>();
-            CharacterAutoAttack = gameObject.AddComponent<CharacterAutoAttack>();
+            CharacterAutoAttackManager = gameObject.AddComponent<CharacterAutoAttackManager>();
             CharacterBufferedAbilityManager = gameObject.AddComponent<CharacterBufferedAbilityManager>();
             CharacterLevelManager = gameObject.AddComponent<CharacterLevelManager>();
-            CharacterMovement = gameObject.AddComponent<CharacterMovement>();
+            CharacterMovementManager = gameObject.AddComponent<CharacterMovementManager>();
             CharacterOnAttackEffectsManager = gameObject.AddComponent<CharacterOnAttackEffectsManager>();
             CharacterOnHitEffectsManager = gameObject.AddComponent<CharacterOnHitEffectsManager>();
-            CharacterOrientation = gameObject.AddComponent<CharacterOrientation>();
+            CharacterOrientationManager = gameObject.AddComponent<CharacterOrientationManager>();
             CharacterStatsManager = gameObject.AddComponent<CharacterStatsManager>();
         }
         if (IsLocalCharacter())
         {
-            CharacterInput = gameObject.AddComponent<CharacterInput>();
+            CharacterInputManager = gameObject.AddComponent<CharacterInputManager>();
             CharacterMouseManager = gameObject.AddComponent<CharacterMouseManager>();
         }
 

@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-public class CharacterAutoAttack : MonoBehaviour
+public class CharacterAutoAttackManager : MonoBehaviour
 {
     private Character character;
     private AttackRange attackRange;
@@ -12,7 +12,7 @@ public class CharacterAutoAttack : MonoBehaviour
     private bool autoAttackEnabled;
     private AbilityAffectedUnitType affectedUnitType;
 
-    private CharacterAutoAttack()
+    private CharacterAutoAttackManager()
     {
         autoAttackEnabled = true;
         affectedUnitType = AbilityAffectedUnitType.ENEMIES;
@@ -144,7 +144,7 @@ public class CharacterAutoAttack : MonoBehaviour
     protected bool CanUseAutoAttack()
     {
         return character.EntityStatusManager && character.CharacterAbilityManager.CanUseBasicAttacks() && !character.EntityDisplacementManager.IsBeingDisplaced &&
-                character.EntityStatusManager.CanUseBasicAttacks() && (!character.CharacterMovement.IsMoving() || !character.EntityStatusManager.CanUseMovement()) &&
+                character.EntityStatusManager.CanUseBasicAttacks() && (!character.CharacterMovementManager.IsMoving() || !character.EntityStatusManager.CanUseMovement()) &&
                 !character.EntityBasicAttack.AttackIsInQueue && character.EntityBasicAttackCycle.AttackSpeedCycleIsReady;
     }
 }

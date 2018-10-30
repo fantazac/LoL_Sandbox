@@ -50,9 +50,9 @@ public class EntityDisplacementManager : MonoBehaviour
         {
             transform.position = Vector3.MoveTowards(transform.position, destination, Time.deltaTime * displacementSpeed);
 
-            if (entity.CharacterMovement)
+            if (entity.CharacterMovementManager)
             {
-                entity.CharacterMovement.NotifyCharacterMoved();
+                entity.CharacterMovementManager.NotifyCharacterMoved();
             }
 
             yield return null;
