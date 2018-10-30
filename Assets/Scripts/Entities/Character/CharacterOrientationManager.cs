@@ -160,9 +160,9 @@ public class CharacterOrientationManager : MonoBehaviour
 
     private bool CanRotate()
     {
-        return !(isRotatingTowardsCastPoint || !characterAbilityManager.CanRotate() ||
-            characterAbilityManager.AnAbilityIsBeingCasted() || characterAbilityManager.AnAbilityInBeingChanneled() ||
-            character.EntityDisplacementManager.IsBeingDisplaced);
+        return !isRotatingTowardsCastPoint && characterAbilityManager.CanRotate() &&
+            !characterAbilityManager.AnAbilityIsBeingCasted() && !characterAbilityManager.AnAbilityInBeingChanneled() &&
+            !character.EntityDisplacementManager.IsBeingDisplaced;
     }
 
     private bool CanRotateTowardsTarget(Transform targetTransform, bool isBasicAttack)
