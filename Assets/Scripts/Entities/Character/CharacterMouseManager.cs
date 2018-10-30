@@ -14,7 +14,7 @@ public class CharacterMouseManager : MonoBehaviour
     private void Start()
     {
         character = StaticObjects.Character;
-        if (!StaticObjects.OnlineMode || character.PhotonView.isMine)
+        if (character.IsLocalCharacter())
         {
             character.CharacterInputManager.OnRightClick += PressedRightClick;
         }

@@ -18,6 +18,7 @@ public abstract class Ability : MonoBehaviour
     public int AbilityLevel { get; protected set; }
     public int ID { get; set; }
     public int MaxLevel { get; protected set; }
+    public bool IsAnUltimateAbility { get; protected set; }
 
     protected string abilityName;
     protected float castTime;
@@ -117,7 +118,7 @@ public abstract class Ability : MonoBehaviour
     protected virtual void Awake()
     {
         character = GetComponent<Character>();
-        if (!StaticObjects.OnlineMode || character.PhotonView.isMine)
+        if (character.IsLocalCharacter())
         {
             LoadSprites();
         }

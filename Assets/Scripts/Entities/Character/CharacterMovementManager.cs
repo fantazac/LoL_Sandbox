@@ -42,7 +42,7 @@ public class CharacterMovementManager : MonoBehaviour
 
     private void Start()
     {
-        if (!StaticObjects.OnlineMode || character.PhotonView.isMine)
+        if (character.IsLocalCharacter())
         {
             character.CharacterInputManager.OnPressedS += StopMovement;
 
@@ -272,7 +272,7 @@ public class CharacterMovementManager : MonoBehaviour
 
         if (target != null)
         {
-            if (target == currentlySelectedBasicAttackTarget && (!character.CharacterAbilityManager.CanUseBasicAttacks() || !character.EntityStatusManager.CanUseBasicAttacks() || character.EntityDisplacementManager.IsBeingDisplaced))//checks is disarmed
+            if (target == currentlySelectedBasicAttackTarget && (!character.CharacterAbilityManager.CanUseBasicAttacks() || !character.EntityStatusManager.CanUseBasicAttacks() || character.EntityDisplacementManager.IsBeingDisplaced))//Checks if disarmed
             {
                 while (!character.CharacterAbilityManager.CanUseBasicAttacks() || !character.EntityStatusManager.CanUseBasicAttacks() || character.EntityDisplacementManager.IsBeingDisplaced)
                 {
@@ -400,16 +400,6 @@ public class CharacterMovementManager : MonoBehaviour
         }
     }
 
-    public void UnsubscribeMovementTowardsPointEvents()
-    {
-        CharacterIsInDestinationRange = null;
-    }
-
-    public void UnsubscribeMovementTowardsTargetEvents()
-    {
-        CharacterIsInTargetRange = null;
-    }
-
     public bool IsMoving()
     {
         return currentlySelectedDestination != Vector3.down || currentlySelectedTarget != null || currentlySelectedBasicAttackTarget != null;
@@ -437,7 +427,7 @@ public class CharacterMovementManager : MonoBehaviour
 
     public void NotifyCharacterMoved()
     {
-        if (CharacterMoved != null)// && (!StaticObjects.OnlineMode || character.PhotonView.isMine))
+        if (CharacterMoved != null)// && (character.IsLocalCharacter()))
         {
             CharacterMoved();
         }

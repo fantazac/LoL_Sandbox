@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class SpawnDummy : GroundTargeted
+public abstract class SpawnDummy : GroundTargeted//GroundTargetedAoE
 {
     protected const int MAXIMUM_DUMMY_AMOUNT = 4;
 

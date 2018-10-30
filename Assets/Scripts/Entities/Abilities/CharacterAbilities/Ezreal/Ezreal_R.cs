@@ -32,6 +32,8 @@ public class Ezreal_R : DirectionTargetedProjectile
 
         IsLongRanged = true;
 
+        IsAnUltimateAbility = true;
+
         affectedByCooldownReduction = true;
     }
 

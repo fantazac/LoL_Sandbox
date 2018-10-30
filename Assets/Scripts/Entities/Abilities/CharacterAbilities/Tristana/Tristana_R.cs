@@ -29,6 +29,8 @@ public class Tristana_R : UnitTargetedProjectile
 
         effectRadius = 200;
 
+        IsAnUltimateAbility = true;
+
         affectedByCooldownReduction = true;
     }
 

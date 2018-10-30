@@ -50,6 +50,8 @@ public class Lucian_R : DirectionTargetedProjectile
         CannotRotateWhileActive = true;
         CanMoveWhileActive = true;
 
+        IsAnUltimateAbility = true;
+
         affectedByCooldownReduction = true;
     }
 

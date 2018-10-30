@@ -7,7 +7,7 @@ public class CharacterLevelManager : MonoBehaviour
     public int AbilityPoints { get; private set; }
     public int Level { get; private set; }
 
-    private const int MAX_LEVEL = 18;
+    private static int MaxLevel = 18;
 
     private int pointsAvailableForQ;
     private int pointsAvailableForW;
@@ -34,7 +34,7 @@ public class CharacterLevelManager : MonoBehaviour
 
     public void PrepareLevelUp()
     {
-        if (Level < MAX_LEVEL)
+        if (Level < MaxLevel)
         {
             if (StaticObjects.OnlineMode)
             {
@@ -92,32 +92,31 @@ public class CharacterLevelManager : MonoBehaviour
     {
         Ability[] characterAbilities = character.CharacterAbilityManager.CharacterAbilities;
         float currentMaxLevel;
-        if (Level == 1 || Level == 3 || Level == 5 || Level == 7 || Level == 9)
+        if (Level == 1 || Level == 3 || Level == 5 || Level == 7 || Level == 9 || Level == 11)//Level == 11 is for champions that have abilities with a MaxLevel of 6 (ex. RyzeQ)
         {
             currentMaxLevel = (Level + 1) * 0.5f;
-            if (characterAbilities[0].MaxLevel >= currentMaxLevel)
-            {
-                pointsAvailableForQ++;
-            }
-            if (characterAbilities[1].MaxLevel >= currentMaxLevel)
-            {
-                pointsAvailableForW++;
-            }
-            if (characterAbilities[2].MaxLevel >= currentMaxLevel)
-            {
-                pointsAvailableForE++;
-            }
+            pointsAvailableForQ += CanAddAbilityPointToNormalAbility(characterAbilities[0], currentMaxLevel) ? 1 : 0;
+            pointsAvailableForW += CanAddAbilityPointToNormalAbility(characterAbilities[1], currentMaxLevel) ? 1 : 0;
+            pointsAvailableForE += CanAddAbilityPointToNormalAbility(characterAbilities[2], currentMaxLevel) ? 1 : 0;
+            pointsAvailableForR += CanAddAbilityPointToNormalAbility(characterAbilities[3], currentMaxLevel) ? 1 : 0;//Some champions don't have ultimates (ex. Udyr)
         }
         else if (Level == 6 || Level == 11 || Level == 16)
         {
             currentMaxLevel = (Level - 1) * 0.2f;
-            if (characterAbilities[3].MaxLevel >= currentMaxLevel)
-            {
-                pointsAvailableForR++;
-            }
+            pointsAvailableForR += CanAddAbilityPointToUltimateAbility(characterAbilities[3], currentMaxLevel) ? 1 : 0;
         }
 
         return pointsAvailableForQ + pointsAvailableForW + pointsAvailableForE + pointsAvailableForR;
+    }
+
+    private bool CanAddAbilityPointToNormalAbility(Ability ability, float currentMaxLevel)
+    {
+        return !ability.IsAnUltimateAbility && ability.MaxLevel >= currentMaxLevel;
+    }
+
+    private bool CanAddAbilityPointToUltimateAbility(Ability ability, float currentMaxLevel)
+    {
+        return !ability.IsAnUltimateAbility && ability.MaxLevel >= currentMaxLevel;
     }
 
     private void OnAbilityLevelUp(int abilityId)
@@ -128,7 +127,7 @@ public class CharacterLevelManager : MonoBehaviour
         }
         else
         {
-            AbilityLevelUp(abilityId);
+            LevelUpAbility(abilityId);
         }
     }
 
@@ -140,36 +139,32 @@ public class CharacterLevelManager : MonoBehaviour
     [PunRPC]
     private void ReceiveFromServer_AbilityLevelUp(int abilityId)
     {
-        AbilityLevelUp(abilityId);
+        LevelUpAbility(abilityId);
     }
 
-    private void AbilityLevelUp(int abilityId)
+    private void LevelUpAbility(int abilityId)
     {
         if (AbilityPoints > 0)
         {
-            if (abilityId == 0 && pointsAvailableForQ > 0)
+            if (CanLevelUpAbility(abilityId, 0, pointsAvailableForQ))
             {
-                AbilityPoints--;
                 pointsAvailableForQ--;
-                character.CharacterAbilityManager.LevelUpAbility(AbilityCategory.CharacterAbility, 0);
+                AbilityLevelUpActions(abilityId);
             }
-            else if (abilityId == 1 && pointsAvailableForW > 0)
+            else if (CanLevelUpAbility(abilityId, 1, pointsAvailableForW))
             {
-                AbilityPoints--;
                 pointsAvailableForW--;
-                character.CharacterAbilityManager.LevelUpAbility(AbilityCategory.CharacterAbility, 1);
+                AbilityLevelUpActions(abilityId);
             }
-            else if (abilityId == 2 && pointsAvailableForE > 0)
+            else if (CanLevelUpAbility(abilityId, 2, pointsAvailableForE))
             {
-                AbilityPoints--;
                 pointsAvailableForE--;
-                character.CharacterAbilityManager.LevelUpAbility(AbilityCategory.CharacterAbility, 2);
+                AbilityLevelUpActions(abilityId);
             }
-            else if (abilityId == 3 && pointsAvailableForR > 0)
+            else if (CanLevelUpAbility(abilityId, 3, pointsAvailableForR))
             {
-                AbilityPoints--;
                 pointsAvailableForR--;
-                character.CharacterAbilityManager.LevelUpAbility(AbilityCategory.CharacterAbility, 3);
+                AbilityLevelUpActions(abilityId);
             }
 
             if (character.AbilityLevelUpUIManager)
@@ -179,11 +174,22 @@ public class CharacterLevelManager : MonoBehaviour
         }
     }
 
+    private bool CanLevelUpAbility(int abilityId, int requiredAbilityId, int pointsAvailableForAbility)
+    {
+        return abilityId == requiredAbilityId && pointsAvailableForAbility > 0;
+    }
+
+    private void AbilityLevelUpActions(int abilityId)
+    {
+        AbilityPoints--;
+        character.CharacterAbilityManager.LevelUpAbility(AbilityCategory.CharacterAbility, abilityId);
+    }
+
     public void ReachMaxLevel()
     {
         if (!StaticObjects.OnlineMode)
         {
-            while (Level < MAX_LEVEL)
+            while (Level < MaxLevel)
             {
                 PrepareLevelUp();
             }
