@@ -31,9 +31,23 @@ public abstract class DirectionTargetedDash : DirectionTargeted
             FinalAdjustments(destination);
             UseResource();
 
-            character.EntityDisplacementManager.SetupDisplacement(this.destination, dashSpeed);
+            SetupDash();
 
             FinishAbilityCast();
+        }
+    }
+
+    protected void SetupDash()
+    {
+        character.EntityDisplacementManager.SetupDisplacement(this.destination, dashSpeed);
+        character.EntityDisplacementManager.OnDisplacementFinished += SetupAutoAttackPostDash;
+    }
+
+    protected void SetupAutoAttackPostDash()
+    {
+        if (!character.CharacterMovement.IsMovingTowardsPosition())
+        {
+            character.CharacterAutoAttack.EnableAutoAttackWithBiggerRange();
         }
     }
 

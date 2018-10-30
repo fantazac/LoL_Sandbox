@@ -324,14 +324,11 @@ public class CharacterAbilityManager : MonoBehaviour
     {
         if (AbilityCanBeCastDuringActiveAbilitiesCastTimes(ability))
         {
-            if (currentlyUsedAbilities.Count > 0)
-            {
-                character.CharacterBufferedAbilityManager.ResetBufferedAbility();
-            }
+            character.CharacterBufferedAbilityManager.ResetBufferedAbility();
             ability.UseAbility(destination);
             if (ability.HasCastTime || ability.HasChannelTime)
             {
-                character.CharacterMovement.SetCharacterIsInRangeEventForBasicAttack();
+                character.CharacterMovement.SetCharacterIsInTargetRangeEventForBasicAttack();
             }
         }
         else
@@ -344,10 +341,7 @@ public class CharacterAbilityManager : MonoBehaviour
     {
         if (AbilityCanBeCastDuringActiveAbilitiesCastTimes(ability))
         {
-            if (currentlyUsedAbilities.Count > 0)
-            {
-                character.CharacterBufferedAbilityManager.ResetBufferedAbility();
-            }
+            character.CharacterBufferedAbilityManager.ResetBufferedAbility();
             ability.UseAbility(target);
         }
         else

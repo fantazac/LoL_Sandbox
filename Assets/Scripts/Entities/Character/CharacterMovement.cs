@@ -7,8 +7,11 @@ public class CharacterMovement : MonoBehaviour
     private GameObject movementCapsulePrefab;
 
     private Vector3 currentlySelectedDestination;
+    private float destinationRange;
+
     private Entity currentlySelectedTarget;
     private Entity currentlySelectedBasicAttackTarget;
+    private float targetRange;
 
     private IEnumerator currentMovementCoroutine;
 
@@ -121,7 +124,8 @@ public class CharacterMovement : MonoBehaviour
             {
                 StopAllMovement();
                 currentlySelectedDestination = destination;
-                currentMovementCoroutine = range > 0 ? MoveTowardsPoint(range) : MoveTowardsPoint();
+                destinationRange = range;
+                currentMovementCoroutine = range > 0 ? MoveTowardsPointWithRange() : MoveTowardsPoint();
                 StartCoroutine(currentMovementCoroutine);
                 character.CharacterOrientation.RotateCharacter(destination);
             }
@@ -148,12 +152,12 @@ public class CharacterMovement : MonoBehaviour
         currentMovementCoroutine = null;
     }
 
-    private IEnumerator MoveTowardsPoint(float range)
+    private IEnumerator MoveTowardsPointWithRange()
     {
         character.CharacterAutoAttack.StopAutoAttack();
 
         float distance = Vector3.Distance(currentlySelectedDestination, transform.position);
-        while (distance > range || (distance <= range && character.EntityDisplacementManager.IsBeingDisplaced))
+        while (distance > destinationRange || (distance <= destinationRange && character.EntityDisplacementManager.IsBeingDisplaced))
         {
             if (character.CharacterAbilityManager.CanUseMovement() && character.EntityStatusManager.CanUseMovement() && !character.EntityDisplacementManager.IsBeingDisplaced)
             {
@@ -178,7 +182,16 @@ public class CharacterMovement : MonoBehaviour
         currentMovementCoroutine = null;
     }
 
-    public void SetCharacterIsInRangeEventForBasicAttack()//example: Lucian Q out of range -> Lucian W while walking: This cancels the Q cast but continues movement post-W to auto the same target
+    public void SetMoveTowardsHalfDistanceOfAbilityCastRange()
+    {
+        if (IsMovingTowardsPositionForAnEvent())
+        {
+            CharacterIsInDestinationRange = null;
+            destinationRange *= 0.5f;
+        }
+    }
+
+    public void SetCharacterIsInTargetRangeEventForBasicAttack()//example: Lucian Q out of range -> Lucian W while walking: This cancels the Q cast but continues movement post-W to auto the same target
     {
         if (currentlySelectedTarget != null)
         {
@@ -194,7 +207,8 @@ public class CharacterMovement : MonoBehaviour
         {
             StopAllMovement();
             SetupCorrectTarget(target, isBasicAttack);
-            currentMovementCoroutine = MoveTowardsTarget(range);
+            targetRange = range;
+            currentMovementCoroutine = MoveTowardsTarget();
             StartCoroutine(currentMovementCoroutine);
         }
         else
@@ -218,11 +232,11 @@ public class CharacterMovement : MonoBehaviour
         }
     }
 
-    private IEnumerator MoveTowardsTarget(float range)
+    private IEnumerator MoveTowardsTarget()
     {
         Entity target = currentlySelectedBasicAttackTarget != null ? currentlySelectedBasicAttackTarget : currentlySelectedTarget;
 
-        if (target != null && Vector3.Distance(target.transform.position, transform.position) > range)
+        if (target != null && Vector3.Distance(target.transform.position, transform.position) > targetRange)
         {
             character.CharacterAutoAttack.StopAutoAttack();
 
@@ -231,7 +245,7 @@ public class CharacterMovement : MonoBehaviour
             character.CharacterOrientation.RotateCharacterUntilReachedTarget(targetTransform, currentlySelectedBasicAttackTarget != null);
 
             float distance = Vector3.Distance(targetTransform.position, transform.position);
-            while (distance > range || (distance <= range && character.EntityDisplacementManager.IsBeingDisplaced))
+            while (distance > targetRange || (distance <= targetRange && character.EntityDisplacementManager.IsBeingDisplaced))
             {
                 if (character.CharacterAbilityManager.CanUseMovement() && character.EntityStatusManager.CanUseMovement() && !character.EntityDisplacementManager.IsBeingDisplaced)
                 {
@@ -265,7 +279,7 @@ public class CharacterMovement : MonoBehaviour
                     yield return null;
                 }
 
-                SetMoveTowardsTarget(currentlySelectedBasicAttackTarget, range, true);
+                SetMoveTowardsTarget(currentlySelectedBasicAttackTarget, targetRange, true);
             }
 
             currentlySelectedTarget = null;
@@ -348,8 +362,10 @@ public class CharacterMovement : MonoBehaviour
         CharacterIsInTargetRange = null;
         CharacterIsInDestinationRange = null;
         currentlySelectedDestination = Vector3.down;
+        destinationRange = 0;
         currentlySelectedTarget = null;
         currentlySelectedBasicAttackTarget = null;
+        targetRange = 0;
     }
 
     public void StopMovementTowardsPoint()

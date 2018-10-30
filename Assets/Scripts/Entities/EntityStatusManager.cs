@@ -117,36 +117,41 @@ public class EntityStatusManager : MonoBehaviour
             case CrowdControlEffects.GROUND:
                 SetCannotUseMovementAbilities(count);
                 break;
-            case CrowdControlEffects.KNOCKASIDE://TODO
+            case CrowdControlEffects.KNOCKASIDE:
                 SetCannotUseBasicAbilities(count);
                 SetCannotUseBasicAttacks(count);
                 SetCannotUseMovement(count);
+                character.CharacterMovement.StopMovementTowardsPointIfHasEvent();
                 if (character.CharacterAbilityManager)
                 {
                     character.CharacterAbilityManager.CancelAllChannelingAbilities();
                     character.CharacterAbilityManager.CancelAllActiveAbilitiesThatAreNotBeingCastedOrChanneled();
                 }
                 break;
-            case CrowdControlEffects.KNOCKBACK://TODO
+            case CrowdControlEffects.KNOCKBACK:
                 SetCannotUseBasicAbilities(count);
                 SetCannotUseBasicAttacks(count);
                 SetCannotUseMovement(count);
+                character.CharacterMovement.SetMoveTowardsHalfDistanceOfAbilityCastRange();
+                character.CharacterMovement.SetCharacterIsInTargetRangeEventForBasicAttack();
                 if (character.CharacterAbilityManager)
                 {
                     character.CharacterAbilityManager.CancelAllChannelingAbilities();
                     character.CharacterAbilityManager.CancelAllActiveAbilitiesThatAreNotBeingCastedOrChanneled();
                 }
                 break;
-            case CrowdControlEffects.KNOCKDOWN://TODO
+            case CrowdControlEffects.KNOCKDOWN:
                 if (character.EntityDisplacementManager)
                 {
                     character.EntityDisplacementManager.StopCurrentDisplacement();
                 }
                 break;
-            case CrowdControlEffects.KNOCKUP://TODO
+            case CrowdControlEffects.KNOCKUP:
                 SetCannotUseBasicAbilities(count);
                 SetCannotUseBasicAttacks(count);
                 SetCannotUseMovement(count);
+                character.CharacterMovement.SetMoveTowardsHalfDistanceOfAbilityCastRange();
+                character.CharacterMovement.SetCharacterIsInTargetRangeEventForBasicAttack();
                 if (character.CharacterAbilityManager)
                 {
                     character.CharacterAbilityManager.CancelAllChannelingAbilities();
@@ -156,7 +161,7 @@ public class EntityStatusManager : MonoBehaviour
             case CrowdControlEffects.NEARSIGHT://TODO
                 SetCannotUseLongRangedAbilities(count);
                 break;
-            case CrowdControlEffects.PACIFY://TODO
+            case CrowdControlEffects.PACIFY:
                 SetCannotUseBasicAbilities(count);
                 SetCannotUseBasicAttacks(count);
                 if (character.CharacterAbilityManager)
@@ -165,7 +170,7 @@ public class EntityStatusManager : MonoBehaviour
                     character.CharacterAbilityManager.CancelAllActiveAbilitiesThatAreNotBeingCastedOrChanneled();
                 }
                 break;
-            case CrowdControlEffects.POLYMORPH://TODO
+            case CrowdControlEffects.POLYMORPH:
                 SetCannotUseBasicAbilities(count);
                 SetCannotUseBasicAttacks(count);
                 if (character.CharacterAbilityManager)
@@ -174,10 +179,11 @@ public class EntityStatusManager : MonoBehaviour
                     character.CharacterAbilityManager.CancelAllActiveAbilitiesThatAreNotBeingCastedOrChanneled();
                 }
                 break;
-            case CrowdControlEffects.PULL://TODO
+            case CrowdControlEffects.PULL:
                 SetCannotUseBasicAbilities(count);
                 SetCannotUseBasicAttacks(count);
                 SetCannotUseMovement(count);
+                character.CharacterMovement.StopMovementTowardsPointIfHasEvent();
                 if (character.CharacterAbilityManager)
                 {
                     character.CharacterAbilityManager.CancelAllChannelingAbilities();
@@ -189,7 +195,7 @@ public class EntityStatusManager : MonoBehaviour
                 SetCannotUseMovementAbilities(count);
                 character.CharacterMovement.StopMovementTowardsPointIfHasEvent();
                 break;
-            case CrowdControlEffects.SILENCE://TODO
+            case CrowdControlEffects.SILENCE:
                 SetCannotUseBasicAbilities(count);
                 if (character.CharacterAbilityManager)
                 {
@@ -241,11 +247,11 @@ public class EntityStatusManager : MonoBehaviour
                     character.CharacterAbilityManager.CancelAllActiveAbilitiesThatAreNotBeingCastedOrChanneled();
                 }
                 break;
-            case CrowdControlEffects.SUSPENSION:
+            case CrowdControlEffects.SUSPENSION://TODO
                 SetCannotUseBasicAbilities(count);
                 SetCannotUseBasicAttacks(count);
                 SetCannotUseMovement(count);
-                if (character.CharacterMovement.IsMovingTowardsPosition())
+                if (!character.CharacterMovement.IsMovingTowardsPosition())
                 {
                     character.CharacterAutoAttack.EnableAutoAttackWithBiggerRange();
                 }

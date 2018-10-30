@@ -5,7 +5,7 @@ public class CharacterAutoAttack : MonoBehaviour
 {
     private Character character;
     private AttackRange attackRange;
-    private float biggerAttackRangeRatio;
+    private float biggerAttackRange;
 
     private IEnumerator currentAutoAttackCoroutine;
 
@@ -17,7 +17,7 @@ public class CharacterAutoAttack : MonoBehaviour
         autoAttackEnabled = true;
         affectedUnitType = AbilityAffectedUnitType.ENEMIES;
 
-        biggerAttackRangeRatio = 1.15f;//TODO: try to figure out actual value
+        biggerAttackRange = 750 * StaticObjects.MultiplyingFactor;//TODO: try to figure out actual value
     }
 
     private void Start()
@@ -68,9 +68,7 @@ public class CharacterAutoAttack : MonoBehaviour
         Entity autoAttackTarget = null;
         while (true)
         {
-            if (character.EntityStatusManager && character.CharacterAbilityManager.CanUseBasicAttacks() && !character.EntityDisplacementManager.IsBeingDisplaced &&
-                character.EntityStatusManager.CanUseBasicAttacks() && (!character.CharacterMovement.IsMoving() || !character.EntityStatusManager.CanUseMovement()) &&
-                !character.EntityBasicAttack.AttackIsInQueue && character.EntityBasicAttackCycle.AttackSpeedCycleIsReady)
+            if (CanUseAutoAttack())
             {
                 if (autoAttackTarget == null || Vector3.Distance(autoAttackTarget.transform.position, transform.position) > attackRange.GetTotal())
                 {
@@ -113,12 +111,10 @@ public class CharacterAutoAttack : MonoBehaviour
         Vector3 groundPosition = Vector3.right * transform.position.x + Vector3.forward * transform.position.z;
         while (true)
         {
-            if (character.EntityStatusManager && character.CharacterAbilityManager.CanUseBasicAttacks() && character.EntityStatusManager.CanUseBasicAttacks() &&
-                (!character.CharacterMovement.IsMoving() || !character.EntityStatusManager.CanUseMovement()) &&
-                !character.EntityBasicAttack.AttackIsInQueue && character.EntityBasicAttackCycle.AttackSpeedCycleIsReady)
+            if (CanUseAutoAttack())
             {
                 float distance = float.MaxValue;
-                foreach (Collider collider in Physics.OverlapCapsule(groundPosition, groundPosition + Vector3.up * 5, attackRange.GetTotal() * biggerAttackRangeRatio))
+                foreach (Collider collider in Physics.OverlapCapsule(groundPosition, groundPosition + Vector3.up * 5, biggerAttackRange))
                 {
                     Entity tempEntity = collider.GetComponentInParent<Entity>();
                     if (tempEntity != null && TargetIsValid.CheckIfTargetIsValid(tempEntity, affectedUnitType, character.Team))
@@ -143,5 +139,12 @@ public class CharacterAutoAttack : MonoBehaviour
         }
 
         currentAutoAttackCoroutine = null;
+    }
+
+    protected bool CanUseAutoAttack()
+    {
+        return character.EntityStatusManager && character.CharacterAbilityManager.CanUseBasicAttacks() && !character.EntityDisplacementManager.IsBeingDisplaced &&
+                character.EntityStatusManager.CanUseBasicAttacks() && (!character.CharacterMovement.IsMoving() || !character.EntityStatusManager.CanUseMovement()) &&
+                !character.EntityBasicAttack.AttackIsInQueue && character.EntityBasicAttackCycle.AttackSpeedCycleIsReady;
     }
 }
