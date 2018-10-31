@@ -24,7 +24,7 @@ public class EntityForcedActionManager : MonoBehaviour
         }
     }
 
-    public void SetupForcedAction(CrowdControlEffects crowdControlEffect, AbilityBuff sourceAbilityBuff, Entity caster, Vector3 destination, float speed)
+    public void SetupForcedAction(CrowdControlEffects crowdControlEffect, AbilityBuff sourceAbilityBuff, Entity caster)
     {
         switch (crowdControlEffect)
         {
@@ -117,7 +117,7 @@ public class EntityForcedActionManager : MonoBehaviour
         currentForcedAction = null;
     }
 
-    private IEnumerator Fear()//TODO
+    private IEnumerator Fear()//TODO: Same as fear but every X seconds (like 0.5-1) you move in a random direction
     {
         yield return null;
     }
@@ -146,13 +146,13 @@ public class EntityForcedActionManager : MonoBehaviour
 
         if (entity.CharacterAutoAttackManager)
         {
-            entity.CharacterAutoAttackManager.EnableAutoAttack();//TODO: Forced?
+            entity.CharacterAutoAttackManager.EnableAutoAttack();
         }
 
         currentForcedAction = null;
     }
 
-    private IEnumerator Taunt(Entity caster)
+    private IEnumerator Taunt(Entity caster)//TODO: Basic attack caster and continue after if no commands were made
     {
         yield return null;
     }

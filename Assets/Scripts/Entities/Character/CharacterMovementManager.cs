@@ -378,7 +378,7 @@ public class CharacterMovementManager : MonoBehaviour
 
     public void StopMovementTowardsTarget()
     {
-        if (currentlySelectedTarget != null || currentlySelectedBasicAttackTarget != null)
+        if (IsMovingTowardsTarget())
         {
             StopAllMovement();
         }
@@ -386,7 +386,7 @@ public class CharacterMovementManager : MonoBehaviour
 
     public void StopMovementTowardsPointIfHasEvent()
     {
-        if (currentlySelectedDestination != Vector3.down && CharacterIsInDestinationRange != null)
+        if (IsMovingTowardsPositionForAnEvent())
         {
             StopAllMovement();
         }
@@ -402,17 +402,17 @@ public class CharacterMovementManager : MonoBehaviour
 
     public bool IsMoving()
     {
-        return currentlySelectedDestination != Vector3.down || currentlySelectedTarget != null || currentlySelectedBasicAttackTarget != null;
+        return IsMovingTowardsPosition() || IsMovingTowardsTarget();
     }
 
     public bool IsMovingTowardsPosition()
     {
-        return currentlySelectedDestination != Vector3.down && CharacterIsInDestinationRange == null;
+        return currentlySelectedDestination != Vector3.down;
     }
 
     public bool IsMovingTowardsPositionForAnEvent()
     {
-        return currentlySelectedDestination != Vector3.down && CharacterIsInDestinationRange != null;
+        return IsMovingTowardsPosition() && CharacterIsInDestinationRange != null;
     }
 
     public bool IsMovingTowardsTarget()

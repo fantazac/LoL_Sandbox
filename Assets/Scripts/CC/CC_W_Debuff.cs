@@ -16,7 +16,7 @@ public class CC_W_Debuff : AbilityBuff
         knockupSpeed = 3;
         knockupDestination = Vector3.up * knockupSpeed * buffDuration * 0.5f;
 
-        buffCrowdControlEffect = CrowdControlEffects.KNOCKUP;
+        buffCrowdControlEffect = CrowdControlEffects.CHARM;
     }
 
     protected override void SetSpritePaths()
@@ -27,7 +27,8 @@ public class CC_W_Debuff : AbilityBuff
     protected override void ApplyBuffEffect(Entity affectedEntity, float buffValue, int currentStacks)
     {
         affectedEntity.EntityStatusManager.AddCrowdControlEffectOnEntity(buffCrowdControlEffect);
-        affectedEntity.EntityDisplacementManager.SetupDisplacement(knockupDestination, knockupSpeed, this, true);
+        //affectedEntity.EntityForcedActionManager.SetupForcedAction(buffCrowdControlEffect, this, character);
+        //affectedEntity.EntityDisplacementManager.SetupDisplacement(knockupDestination, knockupSpeed, this, true);
     }
 
     protected override void RemoveBuffEffect(Entity affectedEntity, float buffValue, int currentStacks)

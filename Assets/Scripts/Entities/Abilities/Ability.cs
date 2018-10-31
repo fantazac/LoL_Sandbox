@@ -82,7 +82,6 @@ public abstract class Ability : MonoBehaviour
     public bool IsBeingChanneled { get; protected set; }
     public bool IsBlocked { get; protected set; }
     public bool IsEnabled { get; protected set; }
-    public bool IsLongRanged { get; protected set; }//TODO
     public bool IsOnCooldown { get; protected set; }
     public bool IsOnCooldownForRecast { get; protected set; }
     public bool OfflineOnly { get; protected set; }
