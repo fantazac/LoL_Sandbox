@@ -116,7 +116,7 @@ public class CharacterLevelManager : MonoBehaviour
 
     private bool CanAddAbilityPointToUltimateAbility(Ability ability, float currentMaxLevel)
     {
-        return !ability.IsAnUltimateAbility && ability.MaxLevel >= currentMaxLevel;
+        return ability.IsAnUltimateAbility && ability.MaxLevel >= currentMaxLevel;
     }
 
     private void OnAbilityLevelUp(int abilityId)
