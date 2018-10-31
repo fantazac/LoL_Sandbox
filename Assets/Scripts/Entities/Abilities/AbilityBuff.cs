@@ -87,14 +87,14 @@ public abstract class AbilityBuff : MonoBehaviour
 
     public virtual void AddNewBuffToAffectedEntities(List<Entity> previousEntitiesHit, List<Entity> entitiesHit)
     {
-        foreach(Entity previousEntityHit in previousEntitiesHit)
+        foreach (Entity previousEntityHit in previousEntitiesHit)
         {
             if (!entitiesHit.Contains(previousEntityHit))
             {
                 ConsumeBuff(previousEntityHit);
             }
         }
-        foreach(Entity entityHit in entitiesHit)
+        foreach (Entity entityHit in entitiesHit)
         {
             SetupBuff(isADebuff ? entityHit.EntityBuffManager.GetDebuff(this) : entityHit.EntityBuffManager.GetBuff(this), entityHit);
         }
@@ -137,6 +137,19 @@ public abstract class AbilityBuff : MonoBehaviour
     public void SetNormalizedVector(Vector3 casterPositionOnCast, Vector3 targetPositionOnCast)
     {
         normalizedVector = Vector3.Normalize(targetPositionOnCast - casterPositionOnCast);
+    }
+
+    protected float GetBuffDuration(Entity affectedEntity)
+    {
+        if (affectedEntity.EntityStatusManager.IsAnAirborneEffect(buffCrowdControlEffect))
+        {
+            return buffDuration * (1 + affectedEntity.EntityStats.Tenacity.GetPercentMalus());
+        }
+        else if (affectedEntity.EntityStatusManager.CanReduceCrowdControlDuration(buffCrowdControlEffect))
+        {
+            return buffDuration * (1 - affectedEntity.EntityStats.Tenacity.GetTotal());
+        }
+        return buffDuration;
     }
 
     protected abstract Buff CreateNewBuff(Entity affectedEntity);

@@ -2,8 +2,8 @@
 
 public class CC_W_Debuff : AbilityBuff
 {
-    private float knockupSpeed;
-    private Vector3 knockupDestination;
+    //private float knockupSpeed;
+    //private Vector3 knockupDestination;
 
     protected CC_W_Debuff()
     {
@@ -13,8 +13,8 @@ public class CC_W_Debuff : AbilityBuff
 
         buffDuration = 2;
 
-        knockupSpeed = 3;
-        knockupDestination = Vector3.up * knockupSpeed * buffDuration * 0.5f;
+        //knockupSpeed = 3;
+        //knockupDestination = Vector3.up * knockupSpeed * buffDuration * 0.5f;
 
         buffCrowdControlEffect = CrowdControlEffects.CHARM;
     }
@@ -38,6 +38,6 @@ public class CC_W_Debuff : AbilityBuff
 
     protected override Buff CreateNewBuff(Entity affectedEntity)
     {
-        return new Buff(this, affectedEntity, 0, buffDuration);
+        return new Buff(this, affectedEntity, 0, GetBuffDuration(affectedEntity));
     }
 }

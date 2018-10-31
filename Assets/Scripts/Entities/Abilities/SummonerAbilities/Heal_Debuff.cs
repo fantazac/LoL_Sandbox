@@ -30,6 +30,6 @@
 
     protected override Buff CreateNewBuff(Entity affectedEntity)
     {
-        return new Buff(this, affectedEntity, 0, buffDuration);
+        return new Buff(this, affectedEntity, 0, GetBuffDuration(affectedEntity));
     }
 }

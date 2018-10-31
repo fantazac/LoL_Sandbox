@@ -1,5 +1,6 @@
 ﻿public enum CrowdControlEffects
 {
+    NONE,
     BLIND,          // Blinded
     CHARM,          // Charmed + Slowed
     CRIPPLE,        // -
@@ -28,6 +29,7 @@
     SUSPENSION,     // Stunned
     TAUNT,          // Taunted
 }
+
 /*
     AIRBORNE,       // Target is displaced 
     BLIND,          // Target's basic attacks do not damage or apply on-hit effects

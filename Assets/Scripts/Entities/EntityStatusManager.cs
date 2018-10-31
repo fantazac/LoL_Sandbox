@@ -456,4 +456,21 @@ public class EntityStatusManager : MonoBehaviour
     {
         return isBlindedCount > 0;
     }
+
+    public bool CanReduceCrowdControlDuration(CrowdControlEffects buffCrowdControlEffect)
+    {
+        return buffCrowdControlEffect != CrowdControlEffects.NONE &&
+            buffCrowdControlEffect != CrowdControlEffects.SUPPRESION &&
+            buffCrowdControlEffect != CrowdControlEffects.STASIS &&
+            !IsAnAirborneEffect(buffCrowdControlEffect);
+    }
+
+    public bool IsAnAirborneEffect(CrowdControlEffects buffCrowdControlEffect)
+    {
+        return buffCrowdControlEffect == CrowdControlEffects.KNOCKASIDE ||
+            buffCrowdControlEffect == CrowdControlEffects.KNOCKBACK ||
+            buffCrowdControlEffect == CrowdControlEffects.KNOCKUP ||
+            buffCrowdControlEffect == CrowdControlEffects.PULL ||
+            buffCrowdControlEffect == CrowdControlEffects.SUSPENSION;
+    }
 }

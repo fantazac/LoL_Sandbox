@@ -101,8 +101,7 @@ public class StatsUIManager : MonoBehaviour
             statsText.AppendFormat("ATTACK RANGE: {0} (({1} + {2}) + {3}%)",
                 characterStats.AttackRange.GetTotal() * 100, characterStats.AttackRange.GetCurrentBaseValue(), characterStats.AttackRange.GetFlatBonus(),
                 characterStats.AttackRange.GetPercentBonus()).AppendLine();
-            statsText.AppendFormat("TENACITY: {0}% ({1}% * {2}%)",
-                characterStats.Tenacity.GetTotal() * 100, characterStats.Tenacity.GetPercentBonus(), characterStats.Tenacity.GetPercentMalus()).AppendLine();
+            statsText.AppendFormat("TENACITY: {0}%", characterStats.Tenacity.GetTotal() * 100).AppendLine();
 
             statsText.AppendFormat("CRITICAL STRIKE DAMAGE: {0}% ({1}% + {2}%)",
                 characterStats.CriticalStrikeDamage.GetTotal() * 100, characterStats.CriticalStrikeDamage.GetCurrentBaseValue() * 100,

@@ -28,6 +28,6 @@
 
     protected override Buff CreateNewBuff(Entity affectedEntity)
     {
-        return new Buff(this, affectedEntity, buffPercentValue, buffDuration);
+        return new Buff(this, affectedEntity, buffPercentValue, GetBuffDuration(affectedEntity));
     }
 }
