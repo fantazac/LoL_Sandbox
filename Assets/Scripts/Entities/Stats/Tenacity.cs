@@ -22,7 +22,7 @@
             case TenacitySource.ITEM:
                 itemsTenacity += percentBonus;
                 break;
-            default:
+            case TenacitySource.OTHER:
                 this.percentBonus = 100 - (100 - this.percentBonus) * (100 - percentBonus) * 0.01f;
                 break;
         }
@@ -42,7 +42,7 @@
             case TenacitySource.ITEM:
                 itemsTenacity -= percentBonus;
                 break;
-            default:
+            case TenacitySource.OTHER:
                 this.percentBonus = 100 - (100 - this.percentBonus) / ((100 - percentBonus) * 0.01f);
                 break;
         }

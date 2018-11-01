@@ -3,4 +3,5 @@
     ABILITY,
     CONSUMABLE,
     ITEM,
+    OTHER
 }
