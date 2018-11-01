@@ -92,7 +92,7 @@ public class CharacterAutoAttackManager : MonoBehaviour
 
                 if (autoAttackTarget != null)
                 {
-                    character.EntityBasicAttack.UseBasicAttackFromAutoAttack(autoAttackTarget);
+                    character.EntityBasicAttack.UseBasicAttackFromAutoAttackOrTaunt(autoAttackTarget);
                 }
             }
 

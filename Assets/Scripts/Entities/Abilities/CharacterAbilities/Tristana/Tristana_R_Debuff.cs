@@ -15,7 +15,7 @@ public class Tristana_R_Debuff : AbilityBuff
 
         knockbackSpeed = 20;
 
-        buffCrowdControlEffect = CrowdControlEffects.KNOCKBACK;
+        buffCrowdControlEffect = CrowdControlEffect.KNOCKBACK;
     }
 
     protected override void SetSpritePaths()
@@ -25,13 +25,13 @@ public class Tristana_R_Debuff : AbilityBuff
 
     protected override void ApplyBuffEffect(Entity affectedEntity, float buffValue, int currentStacks)
     {
-        affectedEntity.EntityStatusManager.AddCrowdControlEffectOnEntity(buffCrowdControlEffect);
+        affectedEntity.EntityStatusManager.AddCrowdControlEffect(buffCrowdControlEffect);
         affectedEntity.EntityDisplacementManager.SetupDisplacement(normalizedVector * buffFlatValue, knockbackSpeed, this);
     }
 
     protected override void RemoveBuffEffect(Entity affectedEntity, float buffValue, int currentStacks)
     {
-        affectedEntity.EntityStatusManager.RemoveCrowdControlEffectFromEntity(buffCrowdControlEffect);
+        affectedEntity.EntityStatusManager.RemoveCrowdControlEffect(buffCrowdControlEffect);
     }
 
     protected override Buff CreateNewBuff(Entity affectedEntity)

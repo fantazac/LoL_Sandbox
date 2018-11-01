@@ -2,8 +2,8 @@
 
 public class CC_Q_Debuff : AbilityBuff
 {
-    private float knockupSpeed;
-    private Vector3 knockupDestination;
+    //private float knockupSpeed;
+    //private Vector3 knockupDestination;
 
     protected CC_Q_Debuff()
     {
@@ -13,10 +13,10 @@ public class CC_Q_Debuff : AbilityBuff
 
         buffDuration = 2;
 
-        knockupSpeed = 3;
-        knockupDestination = Vector3.up * knockupSpeed * buffDuration * 0.5f;
+        //knockupSpeed = 3;
+        //knockupDestination = Vector3.up * knockupSpeed * buffDuration * 0.5f;
 
-        buffCrowdControlEffect = CrowdControlEffects.KNOCKUP;
+        buffCrowdControlEffect = CrowdControlEffect.TAUNT;
     }
 
     protected override void SetSpritePaths()
@@ -26,13 +26,15 @@ public class CC_Q_Debuff : AbilityBuff
 
     protected override void ApplyBuffEffect(Entity affectedEntity, float buffValue, int currentStacks)
     {
-        affectedEntity.EntityStatusManager.AddCrowdControlEffectOnEntity(buffCrowdControlEffect);
-        affectedEntity.EntityDisplacementManager.SetupDisplacement(knockupDestination, knockupSpeed, this, true);
+        affectedEntity.EntityStatusManager.AddCrowdControlEffect(buffCrowdControlEffect);
+        affectedEntity.EntityForcedActionManager.SetupForcedAction(buffCrowdControlEffect, this, character);
+        //affectedEntity.EntityDisplacementManager.SetupDisplacement(knockupDestination, knockupSpeed, this, true);
     }
 
     protected override void RemoveBuffEffect(Entity affectedEntity, float buffValue, int currentStacks)
     {
-        affectedEntity.EntityStatusManager.RemoveCrowdControlEffectFromEntity(buffCrowdControlEffect);
+        affectedEntity.EntityStatusManager.RemoveCrowdControlEffect(buffCrowdControlEffect);
+        affectedEntity.EntityForcedActionManager.StopCurrentForcedAction(this);
     }
 
     protected override Buff CreateNewBuff(Entity affectedEntity)

@@ -8,7 +8,7 @@
 
         buffPercentValue = 28; // 28/36/44/52/60
         buffPercentValuePerLevel = 8;
-        buffCrowdControlEffect = CrowdControlEffects.SLOW;
+        buffCrowdControlEffect = CrowdControlEffect.SLOW;
     }
 
     protected override void SetSpritePaths()
@@ -18,13 +18,13 @@
 
     protected override void ApplyBuffEffect(Entity affectedEntity, float buffValue, int currentStacks)
     {
-        affectedEntity.EntityStatusManager.AddCrowdControlEffectOnEntity(buffCrowdControlEffect);
+        affectedEntity.EntityStatusManager.AddCrowdControlEffect(buffCrowdControlEffect);
         affectedEntity.EntityStats.MovementSpeed.AddPercentMalus(buffValue);
     }
 
     protected override void RemoveBuffEffect(Entity affectedEntity, float buffValue, int currentStacks)
     {
-        affectedEntity.EntityStatusManager.RemoveCrowdControlEffectFromEntity(buffCrowdControlEffect);
+        affectedEntity.EntityStatusManager.RemoveCrowdControlEffect(buffCrowdControlEffect);
         affectedEntity.EntityStats.MovementSpeed.RemovePercentMalus(buffValue);
     }
 

@@ -92,7 +92,7 @@ public class CharacterLevelManager : MonoBehaviour
     {
         Ability[] characterAbilities = character.CharacterAbilityManager.CharacterAbilities;
         float currentMaxLevel;
-        if (Level == 1 || Level == 3 || Level == 5 || Level == 7 || Level == 9 || Level == 11)//Level == 11 is for champions that have abilities with a MaxLevel of 6 (ex. RyzeQ)
+        if (Level == 1 || Level == 3 || Level == 5 || Level == 7 || Level == 9)//Level == 11 is for champions that have abilities with a MaxLevel of 6 (ex. RyzeQ), have to check that
         {
             currentMaxLevel = (Level + 1) * 0.5f;
             pointsAvailableForQ += CanAddAbilityPointToNormalAbility(characterAbilities[0], currentMaxLevel) ? 1 : 0;

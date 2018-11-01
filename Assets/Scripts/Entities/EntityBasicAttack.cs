@@ -108,7 +108,8 @@ public abstract class EntityBasicAttack : MonoBehaviour
 
     protected void Update()
     {
-        if (currentTarget != null && ((Character)entity).CharacterMovementManager.GetBasicAttackTarget() != currentTarget && !AttackIsInQueue && entity.EntityBasicAttackCycle.AttackSpeedCycleIsReady &&
+        if (currentTarget != null && ((Character)entity).CharacterMovementManager.GetBasicAttackTarget() != currentTarget && !AttackIsInQueue &&
+            entity.EntityBasicAttackCycle.AttackSpeedCycleIsReady && entity.EntityStatusManager.CanUseBasicAttacks() &&
             ((Character)entity).CharacterAbilityManager.CanUseBasicAttacks() && !entity.EntityDisplacementManager.IsBeingDisplaced)
         {
             StartBasicAttack();
@@ -121,7 +122,7 @@ public abstract class EntityBasicAttack : MonoBehaviour
         ((Character)entity).CharacterMovementManager.SetMoveTowardsTarget(currentTarget, entity.EntityStats.AttackRange.GetTotal(), true);
     }
 
-    public void UseBasicAttackFromAutoAttack(Entity target)
+    public void UseBasicAttackFromAutoAttackOrTaunt(Entity target)
     {
         UseBasicAttack(target);
         currentTarget = null;

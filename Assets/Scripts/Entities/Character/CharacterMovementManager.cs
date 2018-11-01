@@ -207,8 +207,8 @@ public class CharacterMovementManager : MonoBehaviour
         {
             StopAllMovement();
             SetupCorrectTarget(target, isBasicAttack);
-            targetRange = range;
-            currentMovementCoroutine = MoveTowardsTarget();
+            targetRange = isBasicAttack ? character.EntityStats.AttackRange.GetTotal() : range;
+            currentMovementCoroutine = MoveTowardsTarget(isBasicAttack);
             StartCoroutine(currentMovementCoroutine);
         }
         else
@@ -232,7 +232,7 @@ public class CharacterMovementManager : MonoBehaviour
         }
     }
 
-    private IEnumerator MoveTowardsTarget()
+    private IEnumerator MoveTowardsTarget(bool isBasicAttack)
     {
         Entity target = currentlySelectedBasicAttackTarget != null ? currentlySelectedBasicAttackTarget : currentlySelectedTarget;
 
@@ -264,6 +264,11 @@ public class CharacterMovementManager : MonoBehaviour
                     break;
                 }
                 distance = Vector3.Distance(targetTransform.position, transform.position);
+
+                if (isBasicAttack)
+                {
+                    targetRange = character.EntityStats.AttackRange.GetTotal();
+                }
             }
 
             character.CharacterAutoAttackManager.EnableAutoAttack();
@@ -278,7 +283,6 @@ public class CharacterMovementManager : MonoBehaviour
                 {
                     yield return null;
                 }
-
                 SetMoveTowardsTarget(currentlySelectedBasicAttackTarget, targetRange, true);
             }
 

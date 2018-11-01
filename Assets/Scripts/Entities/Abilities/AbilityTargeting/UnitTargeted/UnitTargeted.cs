@@ -18,7 +18,7 @@ public abstract class UnitTargeted : Ability
         {
             UseAbilityInRange(target);
         }
-        else if (!character.EntityStatusManager.CrowdControlEffectsOnCharacter.Contains(CrowdControlEffects.ROOT))
+        else if (!character.EntityStatusManager.CrowdControlEffectsOnCharacter.Contains(CrowdControlEffect.ROOT))
         {
             character.CharacterMovementManager.SetMoveTowardsTarget(target, range, false);
             character.CharacterMovementManager.CharacterIsInTargetRange += UseAbilityInRange;

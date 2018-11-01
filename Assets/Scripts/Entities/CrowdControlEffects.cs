@@ -1,4 +1,4 @@
-﻿public enum CrowdControlEffects
+﻿public enum CrowdControlEffect
 {
     NONE,
     BLIND,          // Blinded

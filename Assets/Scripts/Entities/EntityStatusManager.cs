@@ -4,9 +4,9 @@ using UnityEngine;
 public class EntityStatusManager : MonoBehaviour
 {
     private Entity entity;
-    private Character character;
+    private Character character;//TODO: to remove
 
-    public List<CrowdControlEffects> CrowdControlEffectsOnCharacter { get; private set; }
+    public List<CrowdControlEffect> CrowdControlEffectsOnCharacter { get; private set; }
 
     private int blockBasicAttacksCount;
     private int blockBasicAbilitiesCount;
@@ -17,7 +17,7 @@ public class EntityStatusManager : MonoBehaviour
 
     private EntityStatusManager()
     {
-        CrowdControlEffectsOnCharacter = new List<CrowdControlEffects>();
+        CrowdControlEffectsOnCharacter = new List<CrowdControlEffect>();
     }
 
     private void Start()
@@ -29,333 +29,407 @@ public class EntityStatusManager : MonoBehaviour
         }
     }
 
-    public void AddCrowdControlEffectOnEntity(CrowdControlEffects crowdControlEffect)
+    public void AddCrowdControlEffect(CrowdControlEffect crowdControlEffect)
     {
         CrowdControlEffectsOnCharacter.Add(crowdControlEffect);
-        AddOrRemoveCrowdControlEffectFromEntity(crowdControlEffect, false);
+        ApplyCrowdControlAffectToEntity(crowdControlEffect);
     }
 
-    public void RemoveCrowdControlEffectFromEntity(CrowdControlEffects crowdControlEffect)
+    public void RemoveCrowdControlEffect(CrowdControlEffect crowdControlEffect)
     {
         CrowdControlEffectsOnCharacter.Remove(crowdControlEffect);
-        AddOrRemoveCrowdControlEffectFromEntity(crowdControlEffect, true);
+        RemoveCrowdControlEffectFromEntity(crowdControlEffect);
     }
 
-    private void AddOrRemoveCrowdControlEffectFromEntity(CrowdControlEffects crowdControlEffect, bool remove)//TODO: Split it in half
+    private void ApplyCrowdControlAffectToEntity(CrowdControlEffect crowdControlEffect)
     {
-        int count = remove ? -1 : 1;
+        int count = 1;
         switch (crowdControlEffect)
         {
-            case CrowdControlEffects.BLIND:
+            case CrowdControlEffect.BLIND:
                 SetIsBlinded(count);
                 break;
-            case CrowdControlEffects.CHARM:
+            case CrowdControlEffect.CHARM:
                 SetCannotUseBasicAbilities(count);
                 SetCannotUseBasicAttacks(count);
                 SetCannotUseMovement(count);
-                if (!remove)
+                if (character.CharacterMovementManager)
                 {
-                    if (character.CharacterMovementManager)
-                    {
-                        character.CharacterMovementManager.StopAllMovement();
-                    }
-                    if (character.CharacterAbilityManager)
-                    {
-                        character.CharacterAbilityManager.CancelAllChannelingAbilities();
-                        character.CharacterAbilityManager.CancelAllActiveAbilitiesThatAreNotBeingCastedOrChanneled();
-                    }
+                    character.CharacterMovementManager.StopAllMovement();
+                }
+                if (character.CharacterAbilityManager)
+                {
+                    character.CharacterAbilityManager.CancelAllChannelingAbilities();
+                    character.CharacterAbilityManager.CancelAllActiveAbilitiesThatAreNotBeingCastedOrChanneled();
                 }
                 break;
-            case CrowdControlEffects.CRIPPLE:
+            case CrowdControlEffect.CRIPPLE:
                 break;
-            case CrowdControlEffects.DISARM:
+            case CrowdControlEffect.DISARM:
                 SetCannotUseBasicAttacks(count);
-                if (!remove && character.CharacterAbilityManager)
+                if (character.CharacterAbilityManager)
                 {
                     character.CharacterAbilityManager.CancelAllActiveAbilitiesThatAreNotBeingCastedOrChanneled();
                 }
                 break;
-            case CrowdControlEffects.DISRUPT:
-                if (!remove && character.CharacterAbilityManager)
+            case CrowdControlEffect.DISRUPT:
+                if (character.CharacterAbilityManager)
                 {
                     character.CharacterAbilityManager.CancelAllChannelingAbilities();
                 }
                 break;
-            case CrowdControlEffects.DROWSY:
+            case CrowdControlEffect.DROWSY:
                 break;
-            case CrowdControlEffects.ENTANGLE:
+            case CrowdControlEffect.ENTANGLE:
                 SetCannotUseBasicAttacks(count);
                 SetCannotUseMovement(count);
                 SetCannotUseMovementAbilities(count);
-                if (!remove && character.CharacterAbilityManager)
+                if (character.CharacterAbilityManager)
                 {
                     character.CharacterAbilityManager.CancelAllActiveAbilitiesThatAreNotBeingCastedOrChanneled();
                 }
                 break;
-            case CrowdControlEffects.FEAR:
+            case CrowdControlEffect.FEAR:
                 SetCannotUseBasicAbilities(count);
                 SetCannotUseBasicAttacks(count);
                 SetCannotUseMovement(count);
-                if (!remove)
+                if (character.CharacterMovementManager)
                 {
-                    if (character.CharacterMovementManager)
-                    {
-                        character.CharacterMovementManager.StopAllMovement();
-                    }
-                    if (character.CharacterAbilityManager)
-                    {
-                        character.CharacterAbilityManager.CancelAllChannelingAbilities();
-                        character.CharacterAbilityManager.CancelAllActiveAbilitiesThatAreNotBeingCastedOrChanneled();
-                    }
+                    character.CharacterMovementManager.StopAllMovement();
+                }
+                if (character.CharacterAbilityManager)
+                {
+                    character.CharacterAbilityManager.CancelAllChannelingAbilities();
+                    character.CharacterAbilityManager.CancelAllActiveAbilitiesThatAreNotBeingCastedOrChanneled();
                 }
                 break;
-            case CrowdControlEffects.FLEE:
+            case CrowdControlEffect.FLEE:
                 SetCannotUseBasicAbilities(count);
                 SetCannotUseBasicAttacks(count);
                 SetCannotUseMovement(count);
-                if (!remove)
+                if (character.CharacterMovementManager)
                 {
-                    if (character.CharacterMovementManager)
-                    {
-                        character.CharacterMovementManager.StopAllMovement();
-                    }
-                    if (character.CharacterAbilityManager)
-                    {
-                        character.CharacterAbilityManager.CancelAllChannelingAbilities();
-                        character.CharacterAbilityManager.CancelAllActiveAbilitiesThatAreNotBeingCastedOrChanneled();
-                    }
+                    character.CharacterMovementManager.StopAllMovement();
+                }
+                if (character.CharacterAbilityManager)
+                {
+                    character.CharacterAbilityManager.CancelAllChannelingAbilities();
+                    character.CharacterAbilityManager.CancelAllActiveAbilitiesThatAreNotBeingCastedOrChanneled();
                 }
                 break;
-            case CrowdControlEffects.GROUND:
+            case CrowdControlEffect.GROUND:
                 SetCannotUseMovementAbilities(count);
                 break;
-            case CrowdControlEffects.KNOCKASIDE:
+            case CrowdControlEffect.KNOCKASIDE:
                 SetCannotUseBasicAbilities(count);
                 SetCannotUseBasicAttacks(count);
                 SetCannotUseMovement(count);
-                if (!remove)
+                if (character.CharacterMovementManager)
                 {
-                    if (character.CharacterMovementManager)
-                    {
-                        character.CharacterMovementManager.StopMovementTowardsPointIfHasEvent();
-                    }
-                    if (character.CharacterAbilityManager)
-                    {
-                        character.CharacterAbilityManager.CancelAllChannelingAbilities();
-                        character.CharacterAbilityManager.CancelAllActiveAbilitiesThatAreNotBeingCastedOrChanneled();
-                    }
+                    character.CharacterMovementManager.StopMovementTowardsPointIfHasEvent();
+                }
+                if (character.CharacterAbilityManager)
+                {
+                    character.CharacterAbilityManager.CancelAllChannelingAbilities();
+                    character.CharacterAbilityManager.CancelAllActiveAbilitiesThatAreNotBeingCastedOrChanneled();
                 }
                 break;
-            case CrowdControlEffects.KNOCKBACK:
+            case CrowdControlEffect.KNOCKBACK:
                 SetCannotUseBasicAbilities(count);
                 SetCannotUseBasicAttacks(count);
                 SetCannotUseMovement(count);
-                if (!remove)
+                if (character.CharacterMovementManager)
                 {
-                    if (character.CharacterMovementManager)
-                    {
-                        character.CharacterMovementManager.SetMoveTowardsHalfDistanceOfAbilityCastRange();
-                        character.CharacterMovementManager.SetCharacterIsInTargetRangeEventForBasicAttack();
-                    }
-                    if (character.CharacterAbilityManager)
-                    {
-                        character.CharacterAbilityManager.CancelAllChannelingAbilities();
-                        character.CharacterAbilityManager.CancelAllActiveAbilitiesThatAreNotBeingCastedOrChanneled();
-                    }
+                    character.CharacterMovementManager.SetMoveTowardsHalfDistanceOfAbilityCastRange();
+                    character.CharacterMovementManager.SetCharacterIsInTargetRangeEventForBasicAttack();
+                }
+                if (character.CharacterAbilityManager)
+                {
+                    character.CharacterAbilityManager.CancelAllChannelingAbilities();
+                    character.CharacterAbilityManager.CancelAllActiveAbilitiesThatAreNotBeingCastedOrChanneled();
                 }
                 break;
-            case CrowdControlEffects.KNOCKDOWN:
-                if (!remove && character.EntityDisplacementManager)
+            case CrowdControlEffect.KNOCKDOWN:
+                if (character.EntityDisplacementManager)
                 {
                     character.EntityDisplacementManager.StopCurrentDisplacement();
                 }
                 break;
-            case CrowdControlEffects.KNOCKUP:
+            case CrowdControlEffect.KNOCKUP:
                 SetCannotUseBasicAbilities(count);
                 SetCannotUseBasicAttacks(count);
                 SetCannotUseMovement(count);
-                if (!remove)
+                if (character.CharacterMovementManager)
                 {
-                    if (character.CharacterMovementManager)
-                    {
-                        character.CharacterMovementManager.SetMoveTowardsHalfDistanceOfAbilityCastRange();
-                        character.CharacterMovementManager.SetCharacterIsInTargetRangeEventForBasicAttack();
-                    }
-                    if (character.CharacterAbilityManager)
-                    {
-                        character.CharacterAbilityManager.CancelAllChannelingAbilities();
-                        character.CharacterAbilityManager.CancelAllActiveAbilitiesThatAreNotBeingCastedOrChanneled();
-                    }
+                    character.CharacterMovementManager.SetMoveTowardsHalfDistanceOfAbilityCastRange();
+                    character.CharacterMovementManager.SetCharacterIsInTargetRangeEventForBasicAttack();
                 }
-                break;
-            case CrowdControlEffects.NEARSIGHT://TODO
-                break;
-            case CrowdControlEffects.PACIFY:
-                SetCannotUseBasicAbilities(count);
-                SetCannotUseBasicAttacks(count);
-                if (!remove && character.CharacterAbilityManager)
+                if (character.CharacterAbilityManager)
                 {
                     character.CharacterAbilityManager.CancelAllChannelingAbilities();
                     character.CharacterAbilityManager.CancelAllActiveAbilitiesThatAreNotBeingCastedOrChanneled();
                 }
                 break;
-            case CrowdControlEffects.POLYMORPH:
+            case CrowdControlEffect.NEARSIGHT://TODO
+                break;
+            case CrowdControlEffect.PACIFY:
                 SetCannotUseBasicAbilities(count);
                 SetCannotUseBasicAttacks(count);
-                if (!remove && character.CharacterAbilityManager)
+                if (character.CharacterAbilityManager)
                 {
                     character.CharacterAbilityManager.CancelAllChannelingAbilities();
                     character.CharacterAbilityManager.CancelAllActiveAbilitiesThatAreNotBeingCastedOrChanneled();
                 }
                 break;
-            case CrowdControlEffects.PULL:
+            case CrowdControlEffect.POLYMORPH:
+                SetCannotUseBasicAbilities(count);
+                SetCannotUseBasicAttacks(count);
+                if (character.CharacterAbilityManager)
+                {
+                    character.CharacterAbilityManager.CancelAllChannelingAbilities();
+                    character.CharacterAbilityManager.CancelAllActiveAbilitiesThatAreNotBeingCastedOrChanneled();
+                }
+                break;
+            case CrowdControlEffect.PULL:
                 SetCannotUseBasicAbilities(count);
                 SetCannotUseBasicAttacks(count);
                 SetCannotUseMovement(count);
-                if (!remove)
+                if (character.CharacterMovementManager)
                 {
-                    if (character.CharacterMovementManager)
-                    {
-                        character.CharacterMovementManager.StopMovementTowardsPointIfHasEvent();
-                    }
-                    if (character.CharacterAbilityManager)
-                    {
-                        character.CharacterAbilityManager.CancelAllChannelingAbilities();
-                        character.CharacterAbilityManager.CancelAllActiveAbilitiesThatAreNotBeingCastedOrChanneled();
-                    }
+                    character.CharacterMovementManager.StopMovementTowardsPointIfHasEvent();
+                }
+                if (character.CharacterAbilityManager)
+                {
+                    character.CharacterAbilityManager.CancelAllChannelingAbilities();
+                    character.CharacterAbilityManager.CancelAllActiveAbilitiesThatAreNotBeingCastedOrChanneled();
                 }
                 break;
-            case CrowdControlEffects.ROOT:
+            case CrowdControlEffect.ROOT:
                 SetCannotUseMovement(count);
                 SetCannotUseMovementAbilities(count);
-                if (!remove)
+                if (character.CharacterMovementManager)
                 {
-                    if (character.CharacterMovementManager)
-                    {
-                        character.CharacterMovementManager.StopMovementTowardsPointIfHasEvent();
-                    }
-                    if (character.CharacterAbilityManager)
-                    {
-                        character.CharacterAbilityManager.CancelAllChannelingAbilities();
-                    }
+                    character.CharacterMovementManager.StopMovementTowardsPointIfHasEvent();
                 }
-                break;
-            case CrowdControlEffects.SILENCE://TODO: You continue to walk towards the target position if you casted a spell, ground or unit, and you do nothing while you're silenced if you stop moving
-                SetCannotUseBasicAbilities(count);
-                if (!remove && character.CharacterAbilityManager)
+                if (character.CharacterAbilityManager)
                 {
                     character.CharacterAbilityManager.CancelAllChannelingAbilities();
                 }
                 break;
-            case CrowdControlEffects.SLEEP:
+            case CrowdControlEffect.SILENCE://TODO: You continue to walk towards the target position if you casted a spell, ground or unit, and you do nothing while you're silenced if you stop moving
+                SetCannotUseBasicAbilities(count);
+                if (character.CharacterAbilityManager)
+                {
+                    character.CharacterAbilityManager.CancelAllChannelingAbilities();
+                }
+                break;
+            case CrowdControlEffect.SLEEP:
                 SetCannotUseBasicAbilities(count);
                 SetCannotUseBasicAttacks(count);
                 SetCannotUseMovement(count);
-                if (!remove)
+                if (character.CharacterMovementManager)
                 {
-                    if (character.CharacterMovementManager)
-                    {
-                        character.CharacterMovementManager.StopMovementTowardsPointIfHasEvent();
-                    }
-                    if (character.CharacterAbilityManager)
-                    {
-                        character.CharacterAbilityManager.CancelAllChannelingAbilities();
-                        character.CharacterAbilityManager.CancelAllActiveAbilitiesThatAreNotBeingCastedOrChanneled();
-                    }
+                    character.CharacterMovementManager.StopMovementTowardsPointIfHasEvent();
+                }
+                if (character.CharacterAbilityManager)
+                {
+                    character.CharacterAbilityManager.CancelAllChannelingAbilities();
+                    character.CharacterAbilityManager.CancelAllActiveAbilitiesThatAreNotBeingCastedOrChanneled();
                 }
                 break;
-            case CrowdControlEffects.SLOW:
+            case CrowdControlEffect.SLOW:
                 break;
-            case CrowdControlEffects.STASIS:
-                SetCannotUseBasicAbilities(count);
-                SetCannotUseBasicAttacks(count);
-                SetCannotUseMovement(count);
-                SetCannotUseSummonerAbilities(count);
-                if (!remove)
-                {
-                    if (character.CharacterMovementManager)
-                    {
-                        character.CharacterMovementManager.StopMovementTowardsPointIfHasEvent();
-                    }
-                    if (character.CharacterAbilityManager)
-                    {
-                        character.CharacterAbilityManager.CancelAllChannelingAbilities();
-                        character.CharacterAbilityManager.CancelAllActiveAbilitiesThatAreNotBeingCastedOrChanneled();
-                    }
-                }
-                break;
-            case CrowdControlEffects.STUN:
-                SetCannotUseBasicAbilities(count);
-                SetCannotUseBasicAttacks(count);
-                SetCannotUseMovement(count);
-                if (!remove)
-                {
-                    if (character.CharacterMovementManager)
-                    {
-                        character.CharacterMovementManager.StopMovementTowardsPointIfHasEvent();
-                    }
-                    if (character.CharacterAbilityManager)
-                    {
-                        character.CharacterAbilityManager.CancelAllChannelingAbilities();
-                        character.CharacterAbilityManager.CancelAllActiveAbilitiesThatAreNotBeingCastedOrChanneled();
-                    }
-                }
-                break;
-            case CrowdControlEffects.SUPPRESION:
+            case CrowdControlEffect.STASIS:
                 SetCannotUseBasicAbilities(count);
                 SetCannotUseBasicAttacks(count);
                 SetCannotUseMovement(count);
                 SetCannotUseSummonerAbilities(count);
-                if (!remove)
+                if (character.CharacterMovementManager)
                 {
-                    if (character.CharacterMovementManager)
-                    {
-                        character.CharacterMovementManager.StopMovementTowardsPointIfHasEvent();
-                    }
-                    if (character.CharacterAbilityManager)
-                    {
-                        character.CharacterAbilityManager.CancelAllChannelingAbilities();
-                        character.CharacterAbilityManager.CancelAllActiveAbilitiesThatAreNotBeingCastedOrChanneled();
-                    }
+                    character.CharacterMovementManager.StopMovementTowardsPointIfHasEvent();
+                }
+                if (character.CharacterAbilityManager)
+                {
+                    character.CharacterAbilityManager.CancelAllChannelingAbilities();
+                    character.CharacterAbilityManager.CancelAllActiveAbilitiesThatAreNotBeingCastedOrChanneled();
                 }
                 break;
-            case CrowdControlEffects.SUSPENSION:
+            case CrowdControlEffect.STUN:
                 SetCannotUseBasicAbilities(count);
                 SetCannotUseBasicAttacks(count);
                 SetCannotUseMovement(count);
-                if (!remove)
+                if (character.CharacterMovementManager)
                 {
-                    if (character.CharacterMovementManager)
-                    {
-                        if (!character.CharacterMovementManager.IsMovingTowardsPositionForAnEvent() && !character.CharacterMovementManager.IsMovingTowardsTarget())
-                        {
-                            character.CharacterAutoAttackManager.EnableAutoAttackWithBiggerRange();
-                        }
-                        character.CharacterMovementManager.StopAllMovement();
-                    }
-                    if (character.CharacterAbilityManager)
-                    {
-                        character.CharacterAbilityManager.CancelAllChannelingAbilities();
-                        character.CharacterAbilityManager.CancelAllActiveAbilitiesThatAreNotBeingCastedOrChanneled();
-                    }
+                    character.CharacterMovementManager.StopMovementTowardsPointIfHasEvent();
+                }
+                if (character.CharacterAbilityManager)
+                {
+                    character.CharacterAbilityManager.CancelAllChannelingAbilities();
+                    character.CharacterAbilityManager.CancelAllActiveAbilitiesThatAreNotBeingCastedOrChanneled();
                 }
                 break;
-            case CrowdControlEffects.TAUNT:
+            case CrowdControlEffect.SUPPRESION:
                 SetCannotUseBasicAbilities(count);
                 SetCannotUseBasicAttacks(count);
                 SetCannotUseMovement(count);
-                if (!remove)
+                SetCannotUseSummonerAbilities(count);
+                if (character.CharacterMovementManager)
                 {
-                    if (character.CharacterMovementManager)
-                    {
-                        character.CharacterMovementManager.StopAllMovement();
-                    }
-                    if (character.CharacterAbilityManager)
-                    {
-                        character.CharacterAbilityManager.CancelAllChannelingAbilities();
-                        character.CharacterAbilityManager.CancelAllActiveAbilitiesThatAreNotBeingCastedOrChanneled();
-                    }
+                    character.CharacterMovementManager.StopMovementTowardsPointIfHasEvent();
                 }
+                if (character.CharacterAbilityManager)
+                {
+                    character.CharacterAbilityManager.CancelAllChannelingAbilities();
+                    character.CharacterAbilityManager.CancelAllActiveAbilitiesThatAreNotBeingCastedOrChanneled();
+                }
+                break;
+            case CrowdControlEffect.SUSPENSION:
+                SetCannotUseBasicAbilities(count);
+                SetCannotUseBasicAttacks(count);
+                SetCannotUseMovement(count);
+                if (character.CharacterMovementManager)
+                {
+                    if (!character.CharacterMovementManager.IsMovingTowardsPositionForAnEvent() && !character.CharacterMovementManager.IsMovingTowardsTarget())
+                    {
+                        character.CharacterAutoAttackManager.EnableAutoAttackWithBiggerRange();
+                    }
+                    character.CharacterMovementManager.StopAllMovement();
+                }
+                if (character.CharacterAbilityManager)
+                {
+                    character.CharacterAbilityManager.CancelAllChannelingAbilities();
+                    character.CharacterAbilityManager.CancelAllActiveAbilitiesThatAreNotBeingCastedOrChanneled();
+                }
+                break;
+            case CrowdControlEffect.TAUNT:
+                SetCannotUseBasicAbilities(count);
+                SetCannotUseBasicAttacks(count);
+                SetCannotUseMovement(count);
+                if (character.CharacterMovementManager)
+                {
+                    character.CharacterMovementManager.StopAllMovement();
+                }
+                if (character.CharacterAbilityManager)
+                {
+                    character.CharacterAbilityManager.CancelAllChannelingAbilities();
+                    character.CharacterAbilityManager.CancelAllActiveAbilitiesThatAreNotBeingCastedOrChanneled();
+                }
+                break;
+        }
+    }
+
+    private void RemoveCrowdControlEffectFromEntity(CrowdControlEffect crowdControlEffect)
+    {
+        int count = -1;
+        switch (crowdControlEffect)
+        {
+            case CrowdControlEffect.BLIND:
+                SetIsBlinded(count);
+                break;
+            case CrowdControlEffect.CHARM:
+                SetCannotUseBasicAbilities(count);
+                SetCannotUseBasicAttacks(count);
+                SetCannotUseMovement(count);
+                break;
+            case CrowdControlEffect.CRIPPLE:
+                break;
+            case CrowdControlEffect.DISARM:
+                SetCannotUseBasicAttacks(count);
+                break;
+            case CrowdControlEffect.DISRUPT:
+                break;
+            case CrowdControlEffect.DROWSY:
+                break;
+            case CrowdControlEffect.ENTANGLE:
+                SetCannotUseBasicAttacks(count);
+                SetCannotUseMovement(count);
+                SetCannotUseMovementAbilities(count);
+                break;
+            case CrowdControlEffect.FEAR:
+                SetCannotUseBasicAbilities(count);
+                SetCannotUseBasicAttacks(count);
+                SetCannotUseMovement(count);
+                break;
+            case CrowdControlEffect.FLEE:
+                SetCannotUseBasicAbilities(count);
+                SetCannotUseBasicAttacks(count);
+                SetCannotUseMovement(count);
+                break;
+            case CrowdControlEffect.GROUND:
+                SetCannotUseMovementAbilities(count);
+                break;
+            case CrowdControlEffect.KNOCKASIDE:
+                SetCannotUseBasicAbilities(count);
+                SetCannotUseBasicAttacks(count);
+                SetCannotUseMovement(count);
+                break;
+            case CrowdControlEffect.KNOCKBACK:
+                SetCannotUseBasicAbilities(count);
+                SetCannotUseBasicAttacks(count);
+                SetCannotUseMovement(count);
+                break;
+            case CrowdControlEffect.KNOCKDOWN:
+                break;
+            case CrowdControlEffect.KNOCKUP:
+                SetCannotUseBasicAbilities(count);
+                SetCannotUseBasicAttacks(count);
+                SetCannotUseMovement(count);
+                break;
+            case CrowdControlEffect.NEARSIGHT:
+                break;
+            case CrowdControlEffect.PACIFY:
+                SetCannotUseBasicAbilities(count);
+                SetCannotUseBasicAttacks(count);
+                break;
+            case CrowdControlEffect.POLYMORPH:
+                SetCannotUseBasicAbilities(count);
+                SetCannotUseBasicAttacks(count);
+                break;
+            case CrowdControlEffect.PULL:
+                SetCannotUseBasicAbilities(count);
+                SetCannotUseBasicAttacks(count);
+                SetCannotUseMovement(count);
+                break;
+            case CrowdControlEffect.ROOT:
+                SetCannotUseMovement(count);
+                SetCannotUseMovementAbilities(count);
+                break;
+            case CrowdControlEffect.SILENCE:
+                SetCannotUseBasicAbilities(count);
+                break;
+            case CrowdControlEffect.SLEEP:
+                SetCannotUseBasicAbilities(count);
+                SetCannotUseBasicAttacks(count);
+                SetCannotUseMovement(count);
+                break;
+            case CrowdControlEffect.SLOW:
+                break;
+            case CrowdControlEffect.STASIS:
+                SetCannotUseBasicAbilities(count);
+                SetCannotUseBasicAttacks(count);
+                SetCannotUseMovement(count);
+                SetCannotUseSummonerAbilities(count);
+                break;
+            case CrowdControlEffect.STUN:
+                SetCannotUseBasicAbilities(count);
+                SetCannotUseBasicAttacks(count);
+                SetCannotUseMovement(count);
+                break;
+            case CrowdControlEffect.SUPPRESION:
+                SetCannotUseBasicAbilities(count);
+                SetCannotUseBasicAttacks(count);
+                SetCannotUseMovement(count);
+                SetCannotUseSummonerAbilities(count);
+                break;
+            case CrowdControlEffect.SUSPENSION:
+                SetCannotUseBasicAbilities(count);
+                SetCannotUseBasicAttacks(count);
+                SetCannotUseMovement(count);
+                break;
+            case CrowdControlEffect.TAUNT:
+                SetCannotUseBasicAbilities(count);
+                SetCannotUseBasicAttacks(count);
+                SetCannotUseMovement(count);
                 break;
         }
     }
@@ -457,20 +531,20 @@ public class EntityStatusManager : MonoBehaviour
         return isBlindedCount > 0;
     }
 
-    public bool CanReduceCrowdControlDuration(CrowdControlEffects buffCrowdControlEffect)
+    public bool CanReduceCrowdControlDuration(CrowdControlEffect buffCrowdControlEffect)
     {
-        return buffCrowdControlEffect != CrowdControlEffects.NONE &&
-            buffCrowdControlEffect != CrowdControlEffects.SUPPRESION &&
-            buffCrowdControlEffect != CrowdControlEffects.STASIS &&
+        return buffCrowdControlEffect != CrowdControlEffect.NONE &&
+            buffCrowdControlEffect != CrowdControlEffect.SUPPRESION &&
+            buffCrowdControlEffect != CrowdControlEffect.STASIS &&
             !IsAnAirborneEffect(buffCrowdControlEffect);
     }
 
-    public bool IsAnAirborneEffect(CrowdControlEffects buffCrowdControlEffect)
+    public bool IsAnAirborneEffect(CrowdControlEffect buffCrowdControlEffect)
     {
-        return buffCrowdControlEffect == CrowdControlEffects.KNOCKASIDE ||
-            buffCrowdControlEffect == CrowdControlEffects.KNOCKBACK ||
-            buffCrowdControlEffect == CrowdControlEffects.KNOCKUP ||
-            buffCrowdControlEffect == CrowdControlEffects.PULL ||
-            buffCrowdControlEffect == CrowdControlEffects.SUSPENSION;
+        return buffCrowdControlEffect == CrowdControlEffect.KNOCKASIDE ||
+            buffCrowdControlEffect == CrowdControlEffect.KNOCKBACK ||
+            buffCrowdControlEffect == CrowdControlEffect.KNOCKUP ||
+            buffCrowdControlEffect == CrowdControlEffect.PULL ||
+            buffCrowdControlEffect == CrowdControlEffect.SUSPENSION;
     }
 }
