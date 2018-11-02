@@ -62,15 +62,18 @@ public abstract class CharacterStatsManager : EntityStatsManager
     {
         CharacterLevelManager characterLevelManager = GetComponent<CharacterLevelManager>();
 
-        characterLevelManager.OnLevelUp += Health.OnLevelUp;
-        characterLevelManager.OnLevelUp += Resource.OnLevelUp;
-        characterLevelManager.OnLevelUp += AttackDamage.OnLevelUp;
-        characterLevelManager.OnLevelUp += Armor.OnLevelUp;
-        characterLevelManager.OnLevelUp += MagicResistance.OnLevelUp;
-        characterLevelManager.OnLevelUp += AttackSpeed.OnLevelUp;
-        characterLevelManager.OnLevelUp += HealthRegeneration.OnLevelUp;
-        characterLevelManager.OnLevelUp += ResourceRegeneration.OnLevelUp;
-        characterLevelManager.OnLevelUp += Lethality.OnLevelUp;
+        if (characterLevelManager)
+        {
+            characterLevelManager.OnLevelUp += Health.OnLevelUp;
+            characterLevelManager.OnLevelUp += Resource.OnLevelUp;
+            characterLevelManager.OnLevelUp += AttackDamage.OnLevelUp;
+            characterLevelManager.OnLevelUp += Armor.OnLevelUp;
+            characterLevelManager.OnLevelUp += MagicResistance.OnLevelUp;
+            characterLevelManager.OnLevelUp += AttackSpeed.OnLevelUp;
+            characterLevelManager.OnLevelUp += HealthRegeneration.OnLevelUp;
+            characterLevelManager.OnLevelUp += ResourceRegeneration.OnLevelUp;
+            characterLevelManager.OnLevelUp += Lethality.OnLevelUp;
+        }
 
         if (Health != null && HealthRegeneration != null)
         {
