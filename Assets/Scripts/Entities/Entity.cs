@@ -15,6 +15,7 @@ public class Entity : MonoBehaviour
     public EntityForcedActionManager EntityForcedActionManager { get; private set; }
     public GameObject EntityHitboxObject { get; private set; }
     public GameObject EntityModelObject { get; private set; }
+    public EntityShieldManager EntityShieldManager { get; private set; }
     public EntityStats EntityStats { get; protected set; }
     public EntityStatusManager EntityStatusManager { get; private set; }
 
@@ -39,6 +40,7 @@ public class Entity : MonoBehaviour
         EntityForcedActionManager = gameObject.AddComponent<EntityForcedActionManager>();
         EntityHitboxObject = gameObject.GetComponentInChildren<Collider>().gameObject;
         EntityModelObject = gameObject.GetComponentInChildren<MeshRenderer>().gameObject;
+        EntityShieldManager = gameObject.AddComponent<EntityShieldManager>();
         EntityStatusManager = gameObject.AddComponent<EntityStatusManager>();
 
         PhotonView = GetComponent<PhotonView>();

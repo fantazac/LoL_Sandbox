@@ -5,6 +5,18 @@ public class HealthBar : MonoBehaviour
 {
     [SerializeField]
     private Image healthImage;
+    private RectTransform healthImageTransform;
+    [SerializeField]
+    private Image shieldImage;
+    private RectTransform shieldImageTransform;
+    [SerializeField]
+    private Image physicalShieldImage;
+    private RectTransform physicalShieldImageTransform;
+    [SerializeField]
+    private Image magicShieldImage;
+    private RectTransform magicShieldImageTransform;
+    [SerializeField]
+    private GameObject healthSeperators;
     [SerializeField]
     private Image resourceImage;
     [SerializeField]
@@ -28,6 +40,7 @@ public class HealthBar : MonoBehaviour
 
     private float maxHealth;
     private float maxResource;
+    private float[] shields;//0 = Physical, 1 = Magic, 2 = Normal
 
     [SerializeField]
     private GameObject mark100Prefab;
@@ -42,6 +55,9 @@ public class HealthBar : MonoBehaviour
     private string healthEnemyPath;
     private string healthBarAllyPath;
     private string healthBarEnemyPath;
+    private string shieldPath;
+    private string physicalShieldPath;
+    private string magicShieldPath;
 
     private HealthBar()
     {
@@ -53,6 +69,11 @@ public class HealthBar : MonoBehaviour
         healthEnemyPath = "Sprites/UI/health_enemy";
         healthBarAllyPath = "Sprites/UI/healthbar_ally";
         healthBarEnemyPath = "Sprites/UI/healthbar_enemy";
+        shieldPath = "Sprites/UI/healthbar_shield";
+        physicalShieldPath = "Sprites/UI/healthbar_physicalShield";
+        magicShieldPath = "Sprites/UI/healthbar_magicShield";
+
+        shields = new float[] { 0, 0, 0 };
     }
 
     private void Start()
@@ -70,7 +91,8 @@ public class HealthBar : MonoBehaviour
         this.character = character;
 
         character.EntityStats.Health.OnCurrentResourceChanged += OnCurrentHealthChanged;
-        character.EntityStats.Health.OnMaxResourceChanged += OnMaxHealthChanged;
+
+        character.EntityShieldManager.OnShieldChanged += OnShieldChanged;
 
         maxHealth = character.EntityStats.Health.GetTotal();
 
@@ -94,7 +116,6 @@ public class HealthBar : MonoBehaviour
             }
 
             character.EntityStats.Resource.OnCurrentResourceChanged += OnCurrentResourceChanged;
-            character.EntityStats.Resource.OnMaxResourceChanged += OnMaxResourceChanged;
             maxResource = character.EntityStats.Resource.GetTotal();
         }
         else
@@ -129,68 +150,71 @@ public class HealthBar : MonoBehaviour
             healthBarImage.sprite = Resources.Load<Sprite>(healthBarEnemyPath);
             healthImage.sprite = Resources.Load<Sprite>(healthEnemyPath);
         }
+        shieldImage.sprite = Resources.Load<Sprite>(shieldPath);
+        physicalShieldImage.sprite = Resources.Load<Sprite>(physicalShieldPath);
+        magicShieldImage.sprite = Resources.Load<Sprite>(magicShieldPath);
+
+        healthImageTransform = healthImage.GetComponent<RectTransform>();
+        shieldImageTransform = shieldImage.GetComponent<RectTransform>();
+        physicalShieldImageTransform = physicalShieldImage.GetComponent<RectTransform>();
+        magicShieldImageTransform = magicShieldImage.GetComponent<RectTransform>();
 
         SetHealthBarSeparators();
     }
 
     private void SetHealthBarSeparators()
     {
-        Transform[] childrenTransforms = healthImage.transform.GetComponentsInChildren<Transform>();
+        Transform[] childrenTransforms = healthSeperators.transform.GetComponentsInChildren<Transform>();
         for (int i = 1; i < childrenTransforms.Length; i++)
         {
             Destroy(childrenTransforms[i].gameObject);
         }
-        float healthSeparatorFactor = GetHealthSeperatorFactor();
-        float percentPer100Health = healthSeparatorFactor / maxHealth;
+        float totalHealthValue = GetTotalHealthValue();
+        float healthSeparatorFactor = GetHealthSeperatorFactor(totalHealthValue);
+        float percentPer100Health = healthSeparatorFactor / totalHealthValue;
         Vector2 widthPer100Health = Vector2.right * (float)(decimal.Round((decimal)(percentPer100Health * healthWidth), 2, System.MidpointRounding.AwayFromZero));
         float modulo = 1000f / healthSeparatorFactor;
-        float loopValue = maxHealth / healthSeparatorFactor;
+        float loopValue = totalHealthValue / healthSeparatorFactor;
         for (int i = 1; i < loopValue; i++)
         {
             GameObject separator;
             if (i % modulo == 0)
             {
                 separator = Instantiate(mark1000Prefab);
-                separator.transform.SetParent(healthImage.transform, false);
+                separator.transform.SetParent(healthSeperators.transform, false);
                 separator.GetComponent<RectTransform>().anchoredPosition = healthBarXOrigin + (widthPer100Health * i);
             }
             else
             {
                 separator = Instantiate(mark100Prefab);
-                separator.transform.SetParent(healthImage.transform, false);
+                separator.transform.SetParent(healthSeperators.transform, false);
                 separator.GetComponent<RectTransform>().anchoredPosition = healthBarXOrigin + (widthPer100Health * i) + Vector2.up * 3;
             }
 
-        }
-        OnCurrentHealthChanged(character.EntityStats.Health.GetCurrentValue());
-        if (maxResource > 0)
-        {
-            OnCurrentResourceChanged(character.EntityStats.Resource.GetCurrentValue());
         }
     }
 
     private void OnDestroy()
     {
         character.EntityStats.Health.OnCurrentResourceChanged -= OnCurrentHealthChanged;
-        character.EntityStats.Health.OnMaxResourceChanged -= OnMaxHealthChanged;
         if (character.EntityStats.Resource != null)
         {
             character.EntityStats.Resource.OnCurrentResourceChanged -= OnCurrentResourceChanged;
-            character.EntityStats.Resource.OnMaxResourceChanged -= OnMaxResourceChanged;
         }
+        character.EntityShieldManager.OnShieldChanged -= OnShieldChanged;
     }
 
-    private float GetHealthSeperatorFactor()
+    private float GetHealthSeperatorFactor(float totalHealthValue)
     {
-        if (maxHealth < 3000)
+        if (totalHealthValue < 3000)
         {
             return 100f;
         }
-        else if (maxHealth < 6000)
+        else if (totalHealthValue < 6000)
         {
             return 200f;
         }
-        else if (maxHealth < 10000)
+        else if (totalHealthValue < 10000)
         {
             return 250f;
         }
@@ -225,22 +249,146 @@ public class HealthBar : MonoBehaviour
 
     private void OnCurrentHealthChanged(float currentHealthValue)
     {
-        healthImage.fillAmount = currentHealthValue / maxHealth;
-    }
-
-    private void OnMaxHealthChanged()
-    {
-        maxHealth = character.EntityStats.Health.GetTotal();
+        SetMaxHealth();
+        UpdateHealthTransform(currentHealthValue);
+        UpdateShieldTransforms();
         SetHealthBarSeparators();
     }
 
     private void OnCurrentResourceChanged(float currentResourceValue)
     {
+        maxResource = character.EntityStats.Resource.GetTotal();
         resourceImage.fillAmount = currentResourceValue / maxResource;
     }
 
-    private void OnMaxResourceChanged()
+    private void OnShieldChanged(ShieldType shieldType, float shieldValue)
     {
-        maxResource = character.EntityStats.Resource.GetTotal();
+        if (shieldType == ShieldType.PHYSICAL)
+        {
+            UpdateHealthBarWithShields(0, shieldValue);
+        }
+        else if (shieldType == ShieldType.MAGIC)
+        {
+            UpdateHealthBarWithShields(1, shieldValue);
+        }
+        else
+        {
+            UpdateHealthBarWithShields(2, shieldValue);
+        }
+    }
+
+    private void UpdateHealthBarWithShields(int shieldValueId, float shieldValue)
+    {
+        shields[shieldValueId] = shieldValue;
+
+        UpdateHealthTransform(character.EntityStats.Health.GetCurrentValue());
+        UpdateShieldTransforms();
+        SetHealthBarSeparators();
+    }
+
+    private void UpdateHealthTransform(float currentHealthValue)
+    {
+        healthImageTransform.localScale = new Vector3(currentHealthValue / GetTotalHealthValue(), 1, 1);
+    }
+
+    private void SetMaxHealth()
+    {
+        maxHealth = character.EntityStats.Health.GetTotal();
+    }
+
+    private void UpdateShieldTransforms()
+    {
+        float totalHealthValue = GetTotalHealthValue();
+        if (shields[0] == 0)
+        {
+            physicalShieldImage.gameObject.SetActive(false);
+        }
+        else
+        {
+            if (!physicalShieldImage.gameObject.activeSelf)
+            {
+                physicalShieldImage.gameObject.SetActive(true);
+            }
+
+            physicalShieldImageTransform.localScale = new Vector3(shields[0] / totalHealthValue, 1, 1);
+            physicalShieldImageTransform.localPosition = new Vector3(healthImageTransform.localPosition.x + healthImageTransform.localScale.x * healthWidth, 3, 0);
+        }
+
+        if (shields[1] == 0)
+        {
+            magicShieldImage.gameObject.SetActive(false);
+        }
+        else
+        {
+            if (!magicShieldImage.gameObject.activeSelf)
+            {
+                magicShieldImage.gameObject.SetActive(true);
+            }
+
+            if (shields[0] == 0)
+            {
+                magicShieldImageTransform.localScale = new Vector3(shields[1] / totalHealthValue, 1, 1);
+                magicShieldImageTransform.localPosition = new Vector3(healthImageTransform.localPosition.x + healthImageTransform.localScale.x * healthWidth, 3, 0);
+            }
+            else
+            {
+                magicShieldImageTransform.localScale = new Vector3(shields[1] / totalHealthValue, 1, 1);
+                magicShieldImageTransform.localPosition = new Vector3(physicalShieldImageTransform.localPosition.x + physicalShieldImageTransform.localScale.x * healthWidth, 3, 0);
+            }
+        }
+
+        if (shields[2] == 0)
+        {
+            shieldImage.gameObject.SetActive(false);
+        }
+        else
+        {
+            if (!shieldImage.gameObject.activeSelf)
+            {
+                shieldImage.gameObject.SetActive(true);
+            }
+
+            if (shields[1] == 0)
+            {
+                if (shields[0] == 0)
+                {
+                    shieldImageTransform.localScale = new Vector3(shields[2] / totalHealthValue, 1, 1);
+                    shieldImageTransform.localPosition = new Vector3(healthImageTransform.localPosition.x + healthImageTransform.localScale.x * healthWidth, 3, 0);
+                }
+                else
+                {
+                    shieldImageTransform.localScale = new Vector3(shields[2] / totalHealthValue, 1, 1);
+                    shieldImageTransform.localPosition = new Vector3(physicalShieldImageTransform.localPosition.x + physicalShieldImageTransform.localScale.x * healthWidth, 3, 0);
+                }
+            }
+            else if (shields[0] == 0)
+            {
+                shieldImageTransform.localScale = new Vector3(shields[2] / totalHealthValue, 1, 1);
+                shieldImageTransform.localPosition = new Vector3(healthImageTransform.localPosition.x + healthImageTransform.localScale.x * healthWidth, 3, 0);
+            }
+            else
+            {
+                shieldImageTransform.localScale = new Vector3(shields[2] / totalHealthValue, 1, 1);
+                shieldImageTransform.localPosition = new Vector3(magicShieldImageTransform.localPosition.x + magicShieldImageTransform.localScale.x * healthWidth, 3, 0);
+            }
+        }
+    }
+
+    private float GetTotalHealthValue()
+    {
+        float GetCurrentHealthValue = GetTotalShieldValue() + character.EntityStats.Health.GetCurrentValue();
+        if (maxHealth >= GetCurrentHealthValue)
+        {
+            return maxHealth;
+        }
+        else
+        {
+            return GetCurrentHealthValue;
+        }
+    }
+
+    private float GetTotalShieldValue()
+    {
+        return shields[0] + shields[1] + shields[2];
     }
 }

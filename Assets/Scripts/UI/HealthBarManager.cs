@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class HealthBarManager : MonoBehaviour
 {
-    [SerializeField]
+    private string healthBarPrefabPath;
     private GameObject healthBarPrefab;
 
     private List<Character> characters;
@@ -13,10 +13,13 @@ public class HealthBarManager : MonoBehaviour
     {
         characters = new List<Character>();
         healthBars = new List<HealthBar>();
+
+        healthBarPrefabPath = "UIPrefabs/HealthBar";
     }
 
     private void Start()
     {
+        healthBarPrefab = Resources.Load<GameObject>(healthBarPrefabPath);
         foreach (Character character in FindObjectsOfType<Character>())
         {
             SetupHealthBarForCharacter(character);

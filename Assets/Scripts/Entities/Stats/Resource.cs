@@ -10,9 +10,6 @@ public class Resource : Stat
     public delegate void OnCurrentResourceChangedHandler(float currentValue);
     public event OnCurrentResourceChangedHandler OnCurrentResourceChanged;
 
-    public delegate void OnMaxResourceValueChangedHandler();
-    public event OnMaxResourceValueChangedHandler OnMaxResourceChanged;
-
     public Resource(float initialBaseValue) : base(initialBaseValue) { }
     public Resource(float initialBaseValue, float perLevelValue) : base(initialBaseValue, perLevelValue) { }
 
@@ -57,10 +54,6 @@ public class Resource : Stat
         float difference = total - previousTotal;
         currentValue = Mathf.Clamp(currentValue + (difference > 0 ? difference : 0), 0, total);
 
-        if (OnMaxResourceChanged != null)
-        {
-            OnMaxResourceChanged();
-        }
         if (OnCurrentResourceChanged != null)
         {
             OnCurrentResourceChanged(currentValue);

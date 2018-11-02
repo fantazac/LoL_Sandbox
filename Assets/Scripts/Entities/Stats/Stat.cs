@@ -37,8 +37,13 @@
 
     public void AddFlatBonus(float flatBonus)
     {
-        this.flatBonus += flatBonus;
+        CalculateFlatBonusIncrease(flatBonus);
         UpdateTotal();
+    }
+
+    protected virtual void CalculateFlatBonusIncrease(float flatBonus)
+    {
+        this.flatBonus += flatBonus;
     }
 
     public void RemoveFlatBonus(float flatBonus)
