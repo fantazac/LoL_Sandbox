@@ -1,10 +1,10 @@
-﻿public class EzrealStats : CharacterStats
+﻿public class TristanaStatsManager : CharacterStatsManager
 {
     //extra stats the character has that other characters don't
 
     protected override EntityBaseStats GetEntityBaseStats()
     {
-        return new EzrealBaseStats();
+        return new TristanaBaseStats();
     }
 
     protected override void InitializeCharacterStats(CharacterBaseStats characterBaseStats)

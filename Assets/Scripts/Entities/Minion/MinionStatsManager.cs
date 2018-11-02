@@ -1,4 +1,4 @@
-﻿public abstract class MinionStats : EntityStats
+﻿public abstract class MinionStatsManager : EntityStatsManager
 {
     //extra stats minions have that other entities don't
 

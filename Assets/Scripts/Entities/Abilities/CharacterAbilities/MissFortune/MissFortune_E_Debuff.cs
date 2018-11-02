@@ -19,13 +19,13 @@
     protected override void ApplyBuffEffect(Entity affectedEntity, float buffValue, int currentStacks)
     {
         affectedEntity.EntityStatusManager.AddCrowdControlEffect(buffCrowdControlEffect);
-        affectedEntity.EntityStats.MovementSpeed.AddPercentMalus(buffValue);
+        affectedEntity.EntityStatsManager.MovementSpeed.AddPercentMalus(buffValue);
     }
 
     protected override void RemoveBuffEffect(Entity affectedEntity, float buffValue, int currentStacks)
     {
         affectedEntity.EntityStatusManager.RemoveCrowdControlEffect(buffCrowdControlEffect);
-        affectedEntity.EntityStats.MovementSpeed.RemovePercentMalus(buffValue);
+        affectedEntity.EntityStatsManager.MovementSpeed.RemovePercentMalus(buffValue);
     }
 
     protected override Buff CreateNewBuff(Entity affectedEntity)

@@ -68,7 +68,7 @@ public class CC_Q : SelfTargeted
     {
         AbilityBuffs[0].ConsumeBuff(character);
 
-        entityHit.EntityStats.Health.Reduce(GetAbilityDamage(entityHit));
+        entityHit.EntityStatsManager.ReduceHealth(damageType, GetAbilityDamage(entityHit));
         AbilityDebuffs[0].AddNewBuffToAffectedEntity(entityHit);
     }
 }

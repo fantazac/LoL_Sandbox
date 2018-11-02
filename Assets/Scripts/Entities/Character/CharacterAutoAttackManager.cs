@@ -23,7 +23,7 @@ public class CharacterAutoAttackManager : MonoBehaviour
     private void Start()
     {
         character = GetComponent<Character>();
-        attackRange = character.EntityStats.AttackRange;
+        attackRange = character.EntityStatsManager.AttackRange;
         EnableAutoAttack();
     }
 

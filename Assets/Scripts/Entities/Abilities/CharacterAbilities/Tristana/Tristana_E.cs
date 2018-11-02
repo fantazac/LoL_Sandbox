@@ -177,7 +177,7 @@ public class Tristana_E : UnitTargetedProjectile
             if (tempEntity != null && TargetIsValid.CheckIfTargetIsValid(tempEntity, affectedUnitType, character.Team))
             {
                 float damage = GetAbilityDamage(tempEntity) * damageModifier;
-                tempEntity.EntityStats.Health.Reduce(damage);
+                tempEntity.EntityStatsManager.ReduceHealth(damageType, damage);
                 AbilityHit(tempEntity, damage);
             }
         }
@@ -194,7 +194,7 @@ public class Tristana_E : UnitTargetedProjectile
             if (tempEntity != null && tempEntity != killedEntity && TargetIsValid.CheckIfTargetIsValid(tempEntity, affectedUnitType, character.Team))
             {
                 float damage = GetPassiveAbilityDamage(tempEntity);
-                tempEntity.EntityStats.Health.Reduce(damage);
+                tempEntity.EntityStatsManager.ReduceHealth(passiveDamageType, damage);
                 AbilityHit(tempEntity, damage);
             }
         }
@@ -202,7 +202,7 @@ public class Tristana_E : UnitTargetedProjectile
 
     private float GetPassiveAbilityDamage(Entity entityHit)
     {
-        float abilityDamage = damage + (passiveTotalAPScaling * character.EntityStats.AbilityPower.GetTotal());
+        float abilityDamage = damage + (passiveTotalAPScaling * character.EntityStatsManager.AbilityPower.GetTotal());
 
         return ApplyDamageModifiers(entityHit, abilityDamage, passiveDamageType);
     }

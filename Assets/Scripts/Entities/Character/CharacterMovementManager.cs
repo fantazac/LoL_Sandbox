@@ -79,11 +79,11 @@ public class CharacterMovementManager : MonoBehaviour
     {
         if (StaticObjects.OnlineMode)
         {
-            SendToServer_Movement_Target(target, character.EntityStats.AttackRange.GetTotal(), true);
+            SendToServer_Movement_Target(target, character.EntityStatsManager.AttackRange.GetTotal(), true);
         }
         else
         {
-            SetMoveTowardsTarget(target, character.EntityStats.AttackRange.GetTotal(), true);
+            SetMoveTowardsTarget(target, character.EntityStatsManager.AttackRange.GetTotal(), true);
         }
     }
 
@@ -140,7 +140,7 @@ public class CharacterMovementManager : MonoBehaviour
         {
             if (character.CharacterAbilityManager.CanUseMovement() && character.EntityStatusManager.CanUseMovement() && !character.EntityDisplacementManager.IsBeingDisplaced)
             {
-                transform.position = Vector3.MoveTowards(transform.position, currentlySelectedDestination, Time.deltaTime * character.EntityStats.MovementSpeed.GetTotal());
+                transform.position = Vector3.MoveTowards(transform.position, currentlySelectedDestination, Time.deltaTime * character.EntityStatsManager.MovementSpeed.GetTotal());
 
                 NotifyCharacterMoved();
             }
@@ -161,7 +161,7 @@ public class CharacterMovementManager : MonoBehaviour
         {
             if (character.CharacterAbilityManager.CanUseMovement() && character.EntityStatusManager.CanUseMovement() && !character.EntityDisplacementManager.IsBeingDisplaced)
             {
-                transform.position = Vector3.MoveTowards(transform.position, currentlySelectedDestination, Time.deltaTime * character.EntityStats.MovementSpeed.GetTotal());
+                transform.position = Vector3.MoveTowards(transform.position, currentlySelectedDestination, Time.deltaTime * character.EntityStatsManager.MovementSpeed.GetTotal());
 
                 NotifyCharacterMoved();
             }
@@ -207,7 +207,7 @@ public class CharacterMovementManager : MonoBehaviour
         {
             StopAllMovement();
             SetupCorrectTarget(target, isBasicAttack);
-            targetRange = isBasicAttack ? character.EntityStats.AttackRange.GetTotal() : range;
+            targetRange = isBasicAttack ? character.EntityStatsManager.AttackRange.GetTotal() : range;
             currentMovementCoroutine = MoveTowardsTarget(isBasicAttack);
             StartCoroutine(currentMovementCoroutine);
         }
@@ -249,7 +249,7 @@ public class CharacterMovementManager : MonoBehaviour
             {
                 if (character.CharacterAbilityManager.CanUseMovement() && character.EntityStatusManager.CanUseMovement() && !character.EntityDisplacementManager.IsBeingDisplaced)
                 {
-                    transform.position = Vector3.MoveTowards(transform.position, targetTransform.position, Time.deltaTime * character.EntityStats.MovementSpeed.GetTotal());
+                    transform.position = Vector3.MoveTowards(transform.position, targetTransform.position, Time.deltaTime * character.EntityStatsManager.MovementSpeed.GetTotal());
 
                     NotifyCharacterMoved();
                 }
@@ -267,7 +267,7 @@ public class CharacterMovementManager : MonoBehaviour
 
                 if (isBasicAttack)
                 {
-                    targetRange = character.EntityStats.AttackRange.GetTotal();
+                    targetRange = character.EntityStatsManager.AttackRange.GetTotal();
                 }
             }
 

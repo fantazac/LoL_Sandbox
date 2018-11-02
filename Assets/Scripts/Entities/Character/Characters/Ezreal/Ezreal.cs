@@ -8,7 +8,7 @@
     protected override void SetCharacterSpecificScripts()
     {
         EntityBasicAttack = gameObject.AddComponent<EzrealBasicAttack>();
-        EntityStats = gameObject.AddComponent<EzrealStats>();
+        EntityStatsManager = gameObject.AddComponent<EzrealStatsManager>();
 
         CharacterAbilityManager = gameObject.AddComponent<EzrealAbilityManager>();
     }

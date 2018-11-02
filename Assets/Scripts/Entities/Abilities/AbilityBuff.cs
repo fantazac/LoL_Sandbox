@@ -143,11 +143,11 @@ public abstract class AbilityBuff : MonoBehaviour
     {
         if (affectedEntity.EntityStatusManager.IsAnAirborneEffect(buffCrowdControlEffect))
         {
-            return buffDuration * (1 + affectedEntity.EntityStats.Tenacity.GetPercentMalus());
+            return buffDuration * (1 + affectedEntity.EntityStatsManager.Tenacity.GetPercentMalus());
         }
         else if (affectedEntity.EntityStatusManager.CanReduceCrowdControlDuration(buffCrowdControlEffect))
         {
-            return buffDuration * (1 - affectedEntity.EntityStats.Tenacity.GetTotal());
+            return buffDuration * (1 - affectedEntity.EntityStatsManager.Tenacity.GetTotal());
         }
         return buffDuration;
     }

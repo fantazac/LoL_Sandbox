@@ -117,9 +117,9 @@ public class CharacterAbilityManager : MonoBehaviour
         if (character.IsLocalCharacter())
         {
             InitAbilityUIManager();
-            if (character.EntityStats.Resource != null)
+            if (character.EntityStatsManager.Resource != null)
             {
-                character.EntityStats.Resource.OnCurrentResourceChanged += OnCurrentResourceChanged;
+                character.EntityStatsManager.Resource.OnCurrentResourceChanged += OnCurrentResourceChanged;
             }
         }
     }
@@ -367,7 +367,7 @@ public class CharacterAbilityManager : MonoBehaviour
 
     protected bool HasEnoughResourceToCastAbility(Ability abilityToCast)
     {
-        return !abilityToCast.UsesResource || abilityToCast.GetResourceCost() <= character.EntityStats.Resource.GetCurrentValue();
+        return !abilityToCast.UsesResource || abilityToCast.GetResourceCost() <= character.EntityStatsManager.Resource.GetCurrentValue();
     }
 
     protected bool AbilityIsAllowedToBeCastWhileOtherAbilitiesAreActive(Ability abilityToCast)

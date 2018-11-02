@@ -90,7 +90,7 @@ public abstract class EntityBasicAttack : MonoBehaviour
             StopBasicAttack();//This is so CharacterAutoAttack doesn't shoot while an ability is active
             if (currentTarget != null)
             {
-                ((Character)entity).CharacterMovementManager.SetMoveTowardsTarget(currentTarget, entity.EntityStats.AttackRange.GetTotal(), true);
+                ((Character)entity).CharacterMovementManager.SetMoveTowardsTarget(currentTarget, entity.EntityStatsManager.AttackRange.GetTotal(), true);
             }
         }
     }
@@ -119,7 +119,7 @@ public abstract class EntityBasicAttack : MonoBehaviour
     protected void StartBasicAttack()
     {
         AttackIsInQueue = true;
-        ((Character)entity).CharacterMovementManager.SetMoveTowardsTarget(currentTarget, entity.EntityStats.AttackRange.GetTotal(), true);
+        ((Character)entity).CharacterMovementManager.SetMoveTowardsTarget(currentTarget, entity.EntityStatsManager.AttackRange.GetTotal(), true);
     }
 
     public void UseBasicAttackFromAutoAttackOrTaunt(Entity target)
@@ -154,7 +154,7 @@ public abstract class EntityBasicAttack : MonoBehaviour
         ((Character)entity).CharacterOrientationManager.StopTargetRotation();
 
         ProjectileUnitTargeted projectile = (Instantiate(basicAttackPrefab, transform.position, transform.rotation)).GetComponent<ProjectileUnitTargeted>();
-        projectile.ShootProjectile(entity.Team, target, speed, AttackIsCritical.CheckIfAttackIsCritical(entity.EntityStats.CriticalStrikeChance.GetTotal()), entity.EntityStatusManager.IsBlinded());
+        projectile.ShootProjectile(entity.Team, target, speed, AttackIsCritical.CheckIfAttackIsCritical(entity.EntityStatsManager.CriticalStrikeChance.GetTotal()), entity.EntityStatusManager.IsBlinded());
         projectile.OnAbilityEffectHit += BasicAttackHit;
 
         if (entity is Character)
@@ -177,7 +177,7 @@ public abstract class EntityBasicAttack : MonoBehaviour
     protected virtual void ApplyDamageToEntityHit(Entity entityHit, bool isACriticalStrike)
     {
         float damage = GetBasicAttackDamage(entityHit, isACriticalStrike);
-        entityHit.EntityStats.Health.Reduce(damage);
+        entityHit.EntityStatsManager.ReduceHealth(DamageType.PHYSICAL, damage);
         if (entity is Character)
         {
             ((Character)entity).CharacterOnHitEffectsManager.ApplyOnHitEffectsToEntityHit(entityHit, damage);
@@ -188,16 +188,16 @@ public abstract class EntityBasicAttack : MonoBehaviour
     protected float GetBasicAttackDamage(Entity entityHit, bool isACriticalAttack)
     {
         //TODO: Right now, it considers the basic attack will ALWAYS do physical damage. Will need to implement damage type check (ex. corki autos deal 80% magic, 20% physical)
-        return ApplyDamageModifiers(entityHit, entity.EntityStats.AttackDamage.GetTotal()) *
-            (isACriticalAttack ? entity.EntityStats.CriticalStrikeDamage.GetTotal() * (1f - entityHit.EntityStats.CriticalStrikeDamageReduction.GetTotal()) : 1f);
+        return ApplyDamageModifiers(entityHit, entity.EntityStatsManager.AttackDamage.GetTotal()) *
+            (isACriticalAttack ? entity.EntityStatsManager.CriticalStrikeDamage.GetTotal() * (1f - entityHit.EntityStatsManager.CriticalStrikeDamageReduction.GetTotal()) : 1f);
     }
 
     protected float ApplyDamageModifiers(Entity entityHit, float damage)
     {
-        float totalResistance = entityHit.EntityStats.Armor.GetTotal();
-        totalResistance *= (1 - entity.EntityStats.ArmorPenetrationPercent.GetTotal());
-        totalResistance -= entity.EntityStats.Lethality.GetCurrentValue();
-        return damage * GetResistanceDamageReceivedModifier(totalResistance) * entityHit.EntityStats.PhysicalDamageReceivedModifier.GetTotal() * entity.EntityStats.PhysicalDamageModifier.GetTotal();
+        float totalResistance = entityHit.EntityStatsManager.Armor.GetTotal();
+        totalResistance *= (1 - entity.EntityStatsManager.ArmorPenetrationPercent.GetTotal());
+        totalResistance -= entity.EntityStatsManager.Lethality.GetCurrentValue();
+        return damage * GetResistanceDamageReceivedModifier(totalResistance) * entityHit.EntityStatsManager.PhysicalDamageReceivedModifier.GetTotal() * entity.EntityStatsManager.PhysicalDamageModifier.GetTotal();
     }
 
     protected float GetResistanceDamageReceivedModifier(float totalResistance)

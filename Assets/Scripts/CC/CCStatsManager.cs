@@ -1,10 +1,10 @@
-﻿public class LucianStats : CharacterStats
+﻿public class CCStatsManager : CharacterStatsManager
 {
     //extra stats the character has that other characters don't
 
     protected override EntityBaseStats GetEntityBaseStats()
     {
-        return new LucianBaseStats();
+        return new CCBaseStats();
     }
 
     protected override void InitializeCharacterStats(CharacterBaseStats characterBaseStats)

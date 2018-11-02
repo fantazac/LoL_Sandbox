@@ -66,20 +66,26 @@ public class Shield
     {
         float remainingDamage = damage;
 
-        foreach (KeyValuePair<AbilityBuff, float> shieldSource in shieldSources)
+        for (int i = 0; i < shieldSourcesInOrderOfCreation.Count; i++)
         {
-            float shieldValue = shieldSource.Value - remainingDamage;
+            AbilityBuff abilityBuff = shieldSourcesInOrderOfCreation[i];
+            float shieldValue = shieldSources[abilityBuff] - remainingDamage;
             if (shieldValue > 0)
             {
-                shieldSources[shieldSource.Key] = shieldValue;
+                shieldSources[abilityBuff] = shieldValue;
                 remainingDamage = 0;
                 break;
             }
             else
             {
-                shieldSource.Key.ConsumeBuff(entity);
+                i--;
+                abilityBuff.ConsumeBuff(entity);
                 remainingDamage = -shieldValue;
             }
+        }
+        foreach (KeyValuePair<AbilityBuff, float> shieldSource in shieldSources)
+        {
+
         }
         UpdateTotal();
 

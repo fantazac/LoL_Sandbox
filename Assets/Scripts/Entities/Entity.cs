@@ -16,7 +16,7 @@ public class Entity : MonoBehaviour
     public GameObject EntityHitboxObject { get; private set; }
     public GameObject EntityModelObject { get; private set; }
     public EntityShieldManager EntityShieldManager { get; private set; }
-    public EntityStats EntityStats { get; protected set; }
+    public EntityStatsManager EntityStatsManager { get; protected set; }
     public EntityStatusManager EntityStatusManager { get; private set; }
 
     public PhotonView PhotonView { get; private set; }

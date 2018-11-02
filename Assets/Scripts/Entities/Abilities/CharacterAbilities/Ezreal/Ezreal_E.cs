@@ -113,7 +113,7 @@ public class Ezreal_E : GroundTargetedBlink
     private void OnProjectileHit(AbilityEffect projectile, Entity entityHit, bool isACriticalStrike, bool willMiss)
     {
         float damage = GetAbilityDamage(entityHit);
-        entityHit.EntityStats.Health.Reduce(damage);
+        entityHit.EntityStatsManager.ReduceHealth(damageType, damage);
         AbilityHit(entityHit, damage);
         Destroy(projectile.gameObject);
     }

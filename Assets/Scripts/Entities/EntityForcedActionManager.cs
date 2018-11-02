@@ -92,7 +92,7 @@ public class EntityForcedActionManager : MonoBehaviour
         {
             if (!entity.EntityDisplacementManager.IsBeingDisplaced)
             {
-                transform.position = Vector3.MoveTowards(transform.position, casterTransform.position, Time.deltaTime * entity.EntityStats.MovementSpeed.GetTotal());
+                transform.position = Vector3.MoveTowards(transform.position, casterTransform.position, Time.deltaTime * entity.EntityStatsManager.MovementSpeed.GetTotal());
 
                 if (entity.CharacterMovementManager)
                 {
@@ -115,14 +115,14 @@ public class EntityForcedActionManager : MonoBehaviour
             while (transform.position != lastCasterPosition)
             {
                 if (entity.CharacterMovementManager.IsMoving() || !entity.CharacterAbilityManager.CanUseMovement() || !entity.EntityStatusManager.CanUseMovement() ||
-                    Vector3.Distance(casterTransform.position, transform.position) <= entity.EntityStats.AttackRange.GetTotal())
+                    Vector3.Distance(casterTransform.position, transform.position) <= entity.EntityStatsManager.AttackRange.GetTotal())
                 {
-                    entity.CharacterMovementManager.SetMoveTowardsTarget(caster, entity.EntityStats.AttackRange.GetTotal(), true);
+                    entity.CharacterMovementManager.SetMoveTowardsTarget(caster, entity.EntityStatsManager.AttackRange.GetTotal(), true);
                     break;
                 }
                 else
                 {
-                    transform.position = Vector3.MoveTowards(transform.position, lastCasterPosition, Time.deltaTime * entity.EntityStats.MovementSpeed.GetTotal());
+                    transform.position = Vector3.MoveTowards(transform.position, lastCasterPosition, Time.deltaTime * entity.EntityStatsManager.MovementSpeed.GetTotal());
 
                     entity.CharacterMovementManager.NotifyCharacterMoved();
                 }
@@ -170,7 +170,7 @@ public class EntityForcedActionManager : MonoBehaviour
         {
             if (!entity.EntityDisplacementManager.IsBeingDisplaced)
             {
-                transform.position = Vector3.MoveTowards(transform.position, casterTransform.position, -Time.deltaTime * entity.EntityStats.MovementSpeed.GetTotal());
+                transform.position = Vector3.MoveTowards(transform.position, casterTransform.position, -Time.deltaTime * entity.EntityStatsManager.MovementSpeed.GetTotal());
 
                 if (entity.CharacterMovementManager)
                 {
@@ -199,9 +199,9 @@ public class EntityForcedActionManager : MonoBehaviour
         {
             if (!entity.EntityDisplacementManager.IsBeingDisplaced && entity.EntityBasicAttack && !entity.EntityBasicAttack.AttackIsInQueue)
             {
-                if (Vector3.Distance(casterTransform.position, transform.position) > entity.EntityStats.AttackRange.GetTotal())
+                if (Vector3.Distance(casterTransform.position, transform.position) > entity.EntityStatsManager.AttackRange.GetTotal())
                 {
-                    transform.position = Vector3.MoveTowards(transform.position, casterTransform.position, Time.deltaTime * entity.EntityStats.MovementSpeed.GetTotal());
+                    transform.position = Vector3.MoveTowards(transform.position, casterTransform.position, Time.deltaTime * entity.EntityStatsManager.MovementSpeed.GetTotal());
 
                     if (entity.CharacterMovementManager)
                     {
@@ -227,7 +227,7 @@ public class EntityForcedActionManager : MonoBehaviour
     {
         if (entity.CharacterMovementManager && !entity.CharacterMovementManager.IsMoving())
         {
-            entity.CharacterMovementManager.SetMoveTowardsTarget(caster, entity.EntityStats.AttackRange.GetTotal(), true);
+            entity.CharacterMovementManager.SetMoveTowardsTarget(caster, entity.EntityStatsManager.AttackRange.GetTotal(), true);
         }
     }
 }

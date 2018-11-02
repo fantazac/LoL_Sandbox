@@ -70,7 +70,7 @@ public class EntityShieldManager : MonoBehaviour
     {
         float remainingDamage = damage;
 
-        if (shieldType == ShieldType.MAGIC)
+        if (shieldType == ShieldType.MAGIC && magicShield.GetTotal() > 0)
         {
             remainingDamage = magicShield.DamageShield(remainingDamage);
             if (OnShieldChanged != null)
@@ -78,7 +78,7 @@ public class EntityShieldManager : MonoBehaviour
                 OnShieldChanged(shieldType, magicShield.GetTotal());
             }
         }
-        else if (shieldType == ShieldType.PHYSICAL)
+        else if (shieldType == ShieldType.PHYSICAL && physicalShield.GetTotal() > 0)
         {
             remainingDamage = physicalShield.DamageShield(remainingDamage);
             if (OnShieldChanged != null)
@@ -87,7 +87,7 @@ public class EntityShieldManager : MonoBehaviour
             }
         }
 
-        if (remainingDamage > 0)
+        if (remainingDamage > 0 && shield.GetTotal() > 0)
         {
             remainingDamage = shield.DamageShield(remainingDamage);
             if (OnShieldChanged != null)

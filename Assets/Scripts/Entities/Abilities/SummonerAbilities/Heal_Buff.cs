@@ -30,18 +30,18 @@
 
     protected override void ApplyBuffEffect(Entity affectedEntity, float buffValue, int currentStacks)
     {
-        float healAmount = buffFlatValue * character.EntityStats.HealAndShieldPower.GetTotal();
+        float healAmount = buffFlatValue * character.EntityStatsManager.HealAndShieldPower.GetTotal();
         if (affectedEntity.EntityBuffManager.GetDebuffOfSameType(healDebuff) != null)
         {
             healAmount *= ratioIfAffectedByHealDebuff;
         }
-        affectedEntity.EntityStats.Health.Restore(healAmount);
-        affectedEntity.EntityStats.MovementSpeed.AddPercentBonus(buffPercentValue);
+        affectedEntity.EntityStatsManager.Health.Restore(healAmount);
+        affectedEntity.EntityStatsManager.MovementSpeed.AddPercentBonus(buffPercentValue);
     }
 
     protected override void RemoveBuffEffect(Entity affectedEntity, float buffValue, int currentStacks)
     {
-        affectedEntity.EntityStats.MovementSpeed.RemovePercentBonus(buffPercentValue);
+        affectedEntity.EntityStatsManager.MovementSpeed.RemovePercentBonus(buffPercentValue);
     }
 
     protected override Buff CreateNewBuff(Entity affectedEntity)

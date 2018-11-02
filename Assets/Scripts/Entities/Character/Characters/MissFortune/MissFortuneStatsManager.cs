@@ -1,4 +1,4 @@
-﻿public class MissFortuneStats : CharacterStats
+﻿public class MissFortuneStatsManager : CharacterStatsManager
 {
     //extra stats the character has that other characters don't
 

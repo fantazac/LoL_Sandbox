@@ -82,7 +82,7 @@ public class MissFortune_E : GroundTargetedAoE
         AbilityDebuffs[0].AddNewBuffToAffectedEntities(previousEntitiesHit, entitiesHit);
         foreach (Entity entityHit in entitiesHit)
         {
-            entityHit.EntityStats.Health.Reduce(GetAbilityDamage(entityHit) / totalTicks);
+            entityHit.EntityStatsManager.ReduceHealth(damageType, GetAbilityDamage(entityHit) / totalTicks);
         }
     }
 }

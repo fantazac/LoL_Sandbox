@@ -29,18 +29,14 @@ public class CC_W_Debuff : AbilityBuff
         affectedEntity.EntityStatusManager.AddCrowdControlEffect(buffCrowdControlEffect);
         affectedEntity.EntityForcedActionManager.SetupForcedAction(buffCrowdControlEffect, this, character);
         //affectedEntity.EntityDisplacementManager.SetupDisplacement(knockupDestination, knockupSpeed, this, true);
-        /*affectedEntity.EntityShieldManager.AddNewShield(ShieldType.MAGIC, this, 234);
-        affectedEntity.EntityShieldManager.AddNewShield(ShieldType.NORMAL, this, 102);
-        affectedEntity.EntityShieldManager.AddNewShield(ShieldType.PHYSICAL, this, 500);*/
+        //affectedEntity.EntityShieldManager.AddNewShield(ShieldType.PHYSICAL, this, 100);
     }
 
     protected override void RemoveBuffEffect(Entity affectedEntity, float buffValue, int currentStacks)
     {
         affectedEntity.EntityStatusManager.RemoveCrowdControlEffect(buffCrowdControlEffect);
         affectedEntity.EntityForcedActionManager.StopCurrentForcedAction(this);
-        /*affectedEntity.EntityShieldManager.RemoveShield(ShieldType.MAGIC, this);
-        affectedEntity.EntityShieldManager.RemoveShield(ShieldType.PHYSICAL, this);
-        affectedEntity.EntityShieldManager.RemoveShield(ShieldType.NORMAL, this);*/
+        //affectedEntity.EntityShieldManager.RemoveShield(ShieldType.PHYSICAL, this);
     }
 
     protected override Buff CreateNewBuff(Entity affectedEntity)

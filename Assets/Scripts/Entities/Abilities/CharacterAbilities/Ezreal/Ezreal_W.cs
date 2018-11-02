@@ -113,8 +113,8 @@ public class Ezreal_W : DirectionTargetedProjectile
     private void DealDamageToMarkedEntity(Entity entityHit, Ability sourceAbility = null)
     {
         AbilityDebuffs[0].ConsumeBuff(entityHit);
-        character.EntityStats.Resource.Restore(manaRefundedOnDamageDealt + (sourceAbility != null ? sourceAbility.GetResourceCost() : 0));
-        entityHit.EntityStats.Health.Reduce(GetAbilityDamage(entityHit));
+        character.EntityStatsManager.Resource.Restore(manaRefundedOnDamageDealt + (sourceAbility != null ? sourceAbility.GetResourceCost() : 0));
+        entityHit.EntityStatsManager.ReduceHealth(damageType, GetAbilityDamage(entityHit));
         AbilityHit(entityHit, damage, false);
     }
 }

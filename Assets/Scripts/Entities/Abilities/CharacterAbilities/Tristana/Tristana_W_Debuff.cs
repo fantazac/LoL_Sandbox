@@ -18,12 +18,12 @@
 
     protected override void ApplyBuffEffect(Entity affectedEntity, float buffValue, int currentStacks)
     {
-        affectedEntity.EntityStats.MovementSpeed.AddPercentMalus(buffPercentValue);
+        affectedEntity.EntityStatsManager.MovementSpeed.AddPercentMalus(buffPercentValue);
     }
 
     protected override void RemoveBuffEffect(Entity affectedEntity, float buffValue, int currentStacks)
     {
-        affectedEntity.EntityStats.MovementSpeed.RemovePercentMalus(buffPercentValue);
+        affectedEntity.EntityStatsManager.MovementSpeed.RemovePercentMalus(buffPercentValue);
     }
 
     protected override Buff CreateNewBuff(Entity affectedEntity)

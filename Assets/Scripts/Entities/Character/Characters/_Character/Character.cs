@@ -17,7 +17,6 @@ public abstract class Character : Entity
     public CharacterOnAttackEffectsManager CharacterOnAttackEffectsManager { get; private set; }
     public CharacterOnHitEffectsManager CharacterOnHitEffectsManager { get; private set; }
     public CharacterOrientationManager CharacterOrientationManager { get; private set; }
-    public CharacterStatsManager CharacterStatsManager { get; private set; }
 
     public AbilityLevelUpUIManager AbilityLevelUpUIManager { get; private set; }
     public AbilityTimeBarUIManager AbilityTimeBarUIManager { get; private set; }
@@ -72,7 +71,6 @@ public abstract class Character : Entity
             CharacterOnAttackEffectsManager = gameObject.AddComponent<CharacterOnAttackEffectsManager>();
             CharacterOnHitEffectsManager = gameObject.AddComponent<CharacterOnHitEffectsManager>();
             CharacterOrientationManager = gameObject.AddComponent<CharacterOrientationManager>();
-            CharacterStatsManager = gameObject.AddComponent<CharacterStatsManager>();
         }
         if (IsLocalCharacter())
         {

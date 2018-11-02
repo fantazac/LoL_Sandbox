@@ -2,7 +2,7 @@
 {
     protected override void SetCharacterSpecificScripts()
     {
-        EntityStats = gameObject.AddComponent<DummyStats>();
+        EntityStatsManager = gameObject.AddComponent<DummyStatsManager>();
     }
 
     public void SetDummyTeamAndID(EntityTeam team, int dummyId)

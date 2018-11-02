@@ -90,23 +90,23 @@ public class HealthBar : MonoBehaviour
     {
         this.character = character;
 
-        character.EntityStats.Health.OnCurrentResourceChanged += OnCurrentHealthChanged;
+        character.EntityStatsManager.Health.OnCurrentResourceChanged += OnCurrentHealthChanged;
 
         character.EntityShieldManager.OnShieldChanged += OnShieldChanged;
 
-        maxHealth = character.EntityStats.Health.GetTotal();
+        maxHealth = character.EntityStatsManager.Health.GetTotal();
 
-        if (character.EntityStats.ResourceType != ResourceType.NONE)
+        if (character.EntityStatsManager.ResourceType != ResourceType.NONE)
         {
-            if (character.EntityStats.ResourceType == ResourceType.MANA)
+            if (character.EntityStatsManager.ResourceType == ResourceType.MANA)
             {
                 resourceImage.color = new Color(57f / 255f, 170f / 255f, 222f / 255f);
             }
-            else if (character.EntityStats.ResourceType == ResourceType.ENERGY)
+            else if (character.EntityStatsManager.ResourceType == ResourceType.ENERGY)
             {
                 resourceImage.color = new Color(234f / 255f, 221f / 255f, 90f / 255f);
             }
-            else if (character.EntityStats.ResourceType == ResourceType.FURY)
+            else if (character.EntityStatsManager.ResourceType == ResourceType.FURY)
             {
                 resourceImage.color = new Color(244f / 255f, 4f / 255f, 13f / 255f);
             }
@@ -115,8 +115,8 @@ public class HealthBar : MonoBehaviour
                 Destroy(resourceImage.gameObject);
             }
 
-            character.EntityStats.Resource.OnCurrentResourceChanged += OnCurrentResourceChanged;
-            maxResource = character.EntityStats.Resource.GetTotal();
+            character.EntityStatsManager.Resource.OnCurrentResourceChanged += OnCurrentResourceChanged;
+            maxResource = character.EntityStatsManager.Resource.GetTotal();
         }
         else
         {
@@ -196,10 +196,10 @@ public class HealthBar : MonoBehaviour
 
     private void OnDestroy()
     {
-        character.EntityStats.Health.OnCurrentResourceChanged -= OnCurrentHealthChanged;
-        if (character.EntityStats.Resource != null)
+        character.EntityStatsManager.Health.OnCurrentResourceChanged -= OnCurrentHealthChanged;
+        if (character.EntityStatsManager.Resource != null)
         {
-            character.EntityStats.Resource.OnCurrentResourceChanged -= OnCurrentResourceChanged;
+            character.EntityStatsManager.Resource.OnCurrentResourceChanged -= OnCurrentResourceChanged;
         }
         character.EntityShieldManager.OnShieldChanged -= OnShieldChanged;
     }
@@ -257,7 +257,7 @@ public class HealthBar : MonoBehaviour
 
     private void OnCurrentResourceChanged(float currentResourceValue)
     {
-        maxResource = character.EntityStats.Resource.GetTotal();
+        maxResource = character.EntityStatsManager.Resource.GetTotal();
         resourceImage.fillAmount = currentResourceValue / maxResource;
     }
 
@@ -281,7 +281,7 @@ public class HealthBar : MonoBehaviour
     {
         shields[shieldValueId] = shieldValue;
 
-        UpdateHealthTransform(character.EntityStats.Health.GetCurrentValue());
+        UpdateHealthTransform(character.EntityStatsManager.Health.GetCurrentValue());
         UpdateShieldTransforms();
         SetHealthBarSeparators();
     }
@@ -293,7 +293,7 @@ public class HealthBar : MonoBehaviour
 
     private void SetMaxHealth()
     {
-        maxHealth = character.EntityStats.Health.GetTotal();
+        maxHealth = character.EntityStatsManager.Health.GetTotal();
     }
 
     private void UpdateShieldTransforms()
@@ -376,7 +376,7 @@ public class HealthBar : MonoBehaviour
 
     private float GetTotalHealthValue()
     {
-        float GetCurrentHealthValue = GetTotalShieldValue() + character.EntityStats.Health.GetCurrentValue();
+        float GetCurrentHealthValue = GetTotalShieldValue() + character.EntityStatsManager.Health.GetCurrentValue();
         if (maxHealth >= GetCurrentHealthValue)
         {
             return maxHealth;

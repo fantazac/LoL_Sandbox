@@ -1,4 +1,4 @@
-﻿public abstract class MonsterStats : EntityStats
+﻿public abstract class MonsterStatsManager : EntityStatsManager
 {
     //extra stats monsters have that other entities don't
 

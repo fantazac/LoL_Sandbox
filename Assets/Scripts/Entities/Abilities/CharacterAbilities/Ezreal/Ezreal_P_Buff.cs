@@ -32,12 +32,12 @@
 
     protected override void ApplyBuffEffect(Entity affectedEntity, float buffValue, int currentStacks)
     {
-        affectedEntity.EntityStats.AttackSpeed.AddPercentBonus(buffValue * currentStacks);
+        affectedEntity.EntityStatsManager.AttackSpeed.AddPercentBonus(buffValue * currentStacks);
     }
 
     protected override void RemoveBuffEffect(Entity affectedEntity, float buffValue, int currentStacks)
     {
-        affectedEntity.EntityStats.AttackSpeed.RemovePercentBonus(buffValue * currentStacks);
+        affectedEntity.EntityStatsManager.AttackSpeed.RemovePercentBonus(buffValue * currentStacks);
     }
 
     protected override Buff CreateNewBuff(Entity affectedEntity)

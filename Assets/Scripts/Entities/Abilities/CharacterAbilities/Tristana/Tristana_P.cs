@@ -43,13 +43,13 @@ public class Tristana_P : PassiveTargeted
 
     public override void OnCharacterLevelUp(int level)
     {
-        character.EntityStats.AttackRange.RemoveFlatBonus(currentRangeBonus);
+        character.EntityStatsManager.AttackRange.RemoveFlatBonus(currentRangeBonus);
         currentRangeBonus = rangePerLevel * (level - 1);
-        character.EntityStats.AttackRange.AddFlatBonus(currentRangeBonus);
+        character.EntityStatsManager.AttackRange.AddFlatBonus(currentRangeBonus);
 
         foreach (Ability ability in abilitiesToIncreaseCastRange)
         {
-            ability.SetRange(currentRangeBonus * StaticObjects.MultiplyingFactor + character.EntityStats.AttackRange.GetCurrentBaseValue());
+            ability.SetRange(currentRangeBonus * StaticObjects.MultiplyingFactor + character.EntityStatsManager.AttackRange.GetCurrentBaseValue());
         }
     }
 }

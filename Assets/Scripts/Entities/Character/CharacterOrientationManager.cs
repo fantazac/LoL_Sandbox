@@ -172,7 +172,7 @@ public class CharacterOrientationManager : MonoBehaviour
 
     private bool CanRotateBasicAttack(Transform targetTransform, bool isBasicAttack)
     {
-        return isBasicAttack && character.EntityStatusManager.CanUseBasicAttacks() && (character.EntityStatusManager.CanUseMovement() || Vector3.Distance(targetTransform.position, transform.position) <= character.EntityStats.AttackRange.GetTotal());
+        return isBasicAttack && character.EntityStatusManager.CanUseBasicAttacks() && (character.EntityStatusManager.CanUseMovement() || Vector3.Distance(targetTransform.position, transform.position) <= character.EntityStatsManager.AttackRange.GetTotal());
     }
 
     private bool CanRotateNotBasicAttack(Transform targetTransform, bool isBasicAttack)

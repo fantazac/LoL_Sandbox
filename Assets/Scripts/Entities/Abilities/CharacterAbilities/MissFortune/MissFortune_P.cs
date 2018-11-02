@@ -64,9 +64,9 @@
             //}
             //else
             //{
-            entityHit.EntityStats.Health.Reduce(passiveDamage);
+            entityHit.EntityStatsManager.ReduceHealth(damageType, passiveDamage);
             //} 
-            character.EntityStats.Health.Restore(passiveDamage * character.EntityStats.LifeSteal.GetTotal());
+            character.EntityStatsManager.Health.Restore(passiveDamage * character.EntityStatsManager.LifeSteal.GetTotal());
 
             if (OnPassiveHit != null)
             {

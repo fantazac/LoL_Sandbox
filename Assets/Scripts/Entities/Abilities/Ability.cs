@@ -137,7 +137,7 @@ public abstract class Ability : MonoBehaviour
         }
         if (affectedByCooldownReduction)
         {
-            character.EntityStats.CooldownReduction.OnCooldownReductionChanged += SetCooldownForAbilityAffectedByCooldownReduction;
+            character.EntityStatsManager.CooldownReduction.OnCooldownReductionChanged += SetCooldownForAbilityAffectedByCooldownReduction;
             SetCooldownForAbilityAffectedByCooldownReduction();
         }
         else
@@ -222,7 +222,7 @@ public abstract class Ability : MonoBehaviour
     {
         if (UsesResource)
         {
-            character.EntityStats.Resource.Reduce(resourceCost);
+            character.EntityStatsManager.Resource.Reduce(resourceCost);
         }
     }
 
@@ -273,7 +273,7 @@ public abstract class Ability : MonoBehaviour
                 }
                 else
                 {
-                    character.AbilityUIManager.EnableAbility(AbilityCategory, ID, resourceCost <= character.EntityStats.Resource.GetCurrentValue());
+                    character.AbilityUIManager.EnableAbility(AbilityCategory, ID, resourceCost <= character.EntityStatsManager.Resource.GetCurrentValue());
                 }
             }
         }
@@ -301,7 +301,7 @@ public abstract class Ability : MonoBehaviour
                 IsBlocked = false;
                 if (!IsOnCooldown && IsEnabled && character.AbilityUIManager)
                 {
-                    character.AbilityUIManager.UnblockAbility(AbilityCategory, ID, resourceCost <= character.EntityStats.Resource.GetCurrentValue());
+                    character.AbilityUIManager.UnblockAbility(AbilityCategory, ID, resourceCost <= character.EntityStatsManager.Resource.GetCurrentValue());
                 }
             }
         }
@@ -383,7 +383,7 @@ public abstract class Ability : MonoBehaviour
         character.AbilityUIManager.SetAbilityOffCooldown(AbilityCategory, ID, UsesResource, IsEnabled, IsBlocked);
         if (UsesResource && IsEnabled && !IsBlocked)
         {
-            character.AbilityUIManager.UpdateAbilityHasEnoughResource(ID, resourceCost <= character.EntityStats.Resource.GetCurrentValue());
+            character.AbilityUIManager.UpdateAbilityHasEnoughResource(ID, resourceCost <= character.EntityStatsManager.Resource.GetCurrentValue());
         }
         cooldownForRecastCoroutine = null;
         IsOnCooldown = false;
@@ -457,7 +457,7 @@ public abstract class Ability : MonoBehaviour
             if (UsesResource && abilityUIManager)
             {
                 abilityUIManager.SetAbilityCost(ID, resourceCost);
-                abilityUIManager.UpdateAbilityHasEnoughResource(ID, !IsEnabled || IsBlocked || IsOnCooldown || resourceCost <= character.EntityStats.Resource.GetCurrentValue());
+                abilityUIManager.UpdateAbilityHasEnoughResource(ID, !IsEnabled || IsBlocked || IsOnCooldown || resourceCost <= character.EntityStatsManager.Resource.GetCurrentValue());
             }
         }
         else if (AbilityLevel == 0)
@@ -480,7 +480,7 @@ public abstract class Ability : MonoBehaviour
 
     private void SetCooldownForAbilityAffectedByCooldownReduction()
     {
-        SetCooldownForAbilityAffectedByCooldownReduction(character.EntityStats.CooldownReduction.GetTotal());
+        SetCooldownForAbilityAffectedByCooldownReduction(character.EntityStatsManager.CooldownReduction.GetTotal());
     }
 
     protected virtual void SetCooldownForAbilityAffectedByCooldownReduction(float cooldownReduction)
@@ -498,9 +498,9 @@ public abstract class Ability : MonoBehaviour
     protected virtual float GetAbilityDamage(Entity entityHit, bool isACriticalStrike = false, float criticalStrikeDamage = 0)
     {
         float abilityDamage = damage +
-            (bonusADScaling * character.EntityStats.AttackDamage.GetBonus()) +
-            (totalADScaling * character.EntityStats.AttackDamage.GetTotal()) +
-            (totalAPScaling * character.EntityStats.AbilityPower.GetTotal());
+            (bonusADScaling * character.EntityStatsManager.AttackDamage.GetBonus()) +
+            (totalADScaling * character.EntityStatsManager.AttackDamage.GetTotal()) +
+            (totalAPScaling * character.EntityStatsManager.AbilityPower.GetTotal());
 
         return ApplyDamageModifiers(entityHit, abilityDamage, damageType) *
             (isACriticalStrike ? criticalStrikeDamage : 1f);
@@ -516,17 +516,17 @@ public abstract class Ability : MonoBehaviour
         damage *= ApplyAbilityDamageModifier(entityHit);
         if (damageType == DamageType.MAGIC)
         {
-            float totalResistance = entityHit.EntityStats.MagicResistance.GetTotal();
-            totalResistance *= (1 - character.EntityStats.MagicPenetrationPercent.GetTotal());
-            totalResistance -= character.EntityStats.MagicPenetrationFlat.GetTotal();
-            return damage * GetResistanceDamageReceivedModifier(totalResistance) * entityHit.EntityStats.MagicDamageReceivedModifier.GetTotal() * character.EntityStats.MagicDamageModifier.GetTotal();
+            float totalResistance = entityHit.EntityStatsManager.MagicResistance.GetTotal();
+            totalResistance *= (1 - character.EntityStatsManager.MagicPenetrationPercent.GetTotal());
+            totalResistance -= character.EntityStatsManager.MagicPenetrationFlat.GetTotal();
+            return damage * GetResistanceDamageReceivedModifier(totalResistance) * entityHit.EntityStatsManager.MagicDamageReceivedModifier.GetTotal() * character.EntityStatsManager.MagicDamageModifier.GetTotal();
         }
         else if (damageType == DamageType.PHYSICAL)
         {
-            float totalResistance = entityHit.EntityStats.Armor.GetTotal();
-            totalResistance *= (1 - character.EntityStats.ArmorPenetrationPercent.GetTotal());
-            totalResistance -= character.EntityStats.Lethality.GetCurrentValue();
-            return damage * GetResistanceDamageReceivedModifier(totalResistance) * entityHit.EntityStats.PhysicalDamageReceivedModifier.GetTotal() * character.EntityStats.PhysicalDamageModifier.GetTotal();
+            float totalResistance = entityHit.EntityStatsManager.Armor.GetTotal();
+            totalResistance *= (1 - character.EntityStatsManager.ArmorPenetrationPercent.GetTotal());
+            totalResistance -= character.EntityStatsManager.Lethality.GetCurrentValue();
+            return damage * GetResistanceDamageReceivedModifier(totalResistance) * entityHit.EntityStatsManager.PhysicalDamageReceivedModifier.GetTotal() * character.EntityStatsManager.PhysicalDamageModifier.GetTotal();
         }
 
         return damage;

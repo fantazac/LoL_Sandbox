@@ -29,8 +29,8 @@
             {
                 if (buff.BuffValue != baseBuffFlatBonus)
                 {
-                    affectedEntity.EntityStats.MovementSpeed.RemoveFlatBonus(oldFlatValue);
-                    affectedEntity.EntityStats.MovementSpeed.AddFlatBonus(newFlatValue);
+                    affectedEntity.EntityStatsManager.MovementSpeed.RemoveFlatBonus(oldFlatValue);
+                    affectedEntity.EntityStatsManager.MovementSpeed.AddFlatBonus(newFlatValue);
                     buff.SetBuffValueOnUI(newFlatValue);
                 }
                 else
@@ -43,12 +43,12 @@
 
     protected override void ApplyBuffEffect(Entity affectedEntity, float buffValue, int currentStacks)
     {
-        affectedEntity.EntityStats.MovementSpeed.AddFlatBonus(buffValue);
+        affectedEntity.EntityStatsManager.MovementSpeed.AddFlatBonus(buffValue);
     }
 
     protected override void RemoveBuffEffect(Entity affectedEntity, float buffValue, int currentStacks)
     {
-        affectedEntity.EntityStats.MovementSpeed.RemoveFlatBonus(buffValue);
+        affectedEntity.EntityStatsManager.MovementSpeed.RemoveFlatBonus(buffValue);
     }
 
     protected override Buff CreateNewBuff(Entity affectedEntity)

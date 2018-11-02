@@ -11,7 +11,7 @@ public class CharacterAbilityEffectsManager : MonoBehaviour
     private void Start()
     {
         character = GetComponent<Character>();
-        spellVamp = character.EntityStats.SpellVamp;
+        spellVamp = character.EntityStatsManager.SpellVamp;
     }
 
     public void ApplyAbilityEffectsToEntityHit(Entity entityHit, float damage)
@@ -20,6 +20,6 @@ public class CharacterAbilityEffectsManager : MonoBehaviour
         {
             OnApplyAbilityEffects(entityHit, damage);
         }
-        character.EntityStats.Health.Restore(damage * spellVamp.GetTotal());
+        character.EntityStatsManager.Health.Restore(damage * spellVamp.GetTotal());
     }
 }

@@ -8,7 +8,7 @@
     protected override void SetCharacterSpecificScripts()
     {
         EntityBasicAttack = gameObject.AddComponent<TristanaBasicAttack>();
-        EntityStats = gameObject.AddComponent<TristanaStats>();
+        EntityStatsManager = gameObject.AddComponent<TristanaStatsManager>();
 
         CharacterAbilityManager = gameObject.AddComponent<TristanaAbilityManager>();
     }

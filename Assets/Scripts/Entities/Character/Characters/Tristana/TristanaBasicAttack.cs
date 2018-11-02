@@ -13,11 +13,11 @@
 
     protected override void ApplyDamageToEntityHit(Entity entityHit, bool isACriticalStrike)
     {
-        bool entityHitWasDeadBeforeTheBasicAttackHit = entityHit.EntityStats.Health.IsDead();
+        bool entityHitWasDeadBeforeTheBasicAttackHit = entityHit.EntityStatsManager.Health.IsDead();
 
         base.ApplyDamageToEntityHit(entityHit, isACriticalStrike);
 
-        if (entityHit.EntityStats.Health.IsDead() && !entityHitWasDeadBeforeTheBasicAttackHit && OnBasicAttackKilledEntity != null)
+        if (entityHit.EntityStatsManager.Health.IsDead() && !entityHitWasDeadBeforeTheBasicAttackHit && OnBasicAttackKilledEntity != null)
         {
             OnBasicAttackKilledEntity(entityHit);
         }

@@ -1,7 +1,9 @@
 ﻿using UnityEngine;
 
-public abstract class EntityStats : MonoBehaviour
+public abstract class EntityStatsManager : MonoBehaviour
 {
+    protected Entity entity;
+
     public Health Health { get; protected set; }
     public Resource Resource { get; protected set; }//mana, energy, fury, ...
 
@@ -38,6 +40,8 @@ public abstract class EntityStats : MonoBehaviour
 
     protected virtual void Awake()
     {
+        entity = GetComponent<Entity>();
+
         InitializeEntityStats(GetEntityBaseStats());
     }
 
@@ -82,5 +86,34 @@ public abstract class EntityStats : MonoBehaviour
     {
         AttackSpeed.SetEntityBasicAttack(GetComponent<EntityBasicAttack>());
         MovementSpeed.SubscribeToSlowResistanceChangedEvent(SlowResistance);
+    }
+
+    public void ReduceHealth(DamageType damageType, float damage)
+    {
+        if (damage < 0)
+        {
+            Health.Restore(damage);
+        }
+        else if (damage > 0)
+        {
+            float remainingDamage = damage;
+            if (damageType == DamageType.MAGIC)
+            {
+                remainingDamage = entity.EntityShieldManager.DamageShield(ShieldType.MAGIC, remainingDamage);
+            }
+            else if (damageType == DamageType.PHYSICAL)
+            {
+                remainingDamage = entity.EntityShieldManager.DamageShield(ShieldType.PHYSICAL, remainingDamage);
+            }
+
+            if (remainingDamage > 0)
+            {
+                remainingDamage = entity.EntityShieldManager.DamageShield(ShieldType.NORMAL, remainingDamage);
+                if (remainingDamage > 0)
+                {
+                    Health.Reduce(remainingDamage);
+                }
+            }
+        }
     }
 }
