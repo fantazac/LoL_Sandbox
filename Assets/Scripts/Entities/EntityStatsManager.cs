@@ -105,14 +105,14 @@ public abstract class EntityStatsManager : MonoBehaviour
             {
                 remainingDamage = entity.EntityShieldManager.DamageShield(ShieldType.PHYSICAL, remainingDamage);
             }
+            else
+            {
+                remainingDamage = entity.EntityShieldManager.DamageShield(ShieldType.NORMAL, remainingDamage);
+            }
 
             if (remainingDamage > 0)
             {
-                remainingDamage = entity.EntityShieldManager.DamageShield(ShieldType.NORMAL, remainingDamage);
-                if (remainingDamage > 0)
-                {
-                    Health.Reduce(remainingDamage);
-                }
+                Health.Reduce(remainingDamage);
             }
         }
     }

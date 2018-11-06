@@ -40,7 +40,7 @@ public class HealthBar : MonoBehaviour
 
     private float maxHealth;
     private float maxResource;
-    private float[] shields;//0 = Physical, 1 = Magic, 2 = Normal
+    private float[] shields;
 
     [SerializeField]
     private GameObject mark100Prefab;
@@ -263,23 +263,7 @@ public class HealthBar : MonoBehaviour
 
     private void OnShieldChanged(ShieldType shieldType, float shieldValue)
     {
-        if (shieldType == ShieldType.PHYSICAL)
-        {
-            UpdateHealthBarWithShields(0, shieldValue);
-        }
-        else if (shieldType == ShieldType.MAGIC)
-        {
-            UpdateHealthBarWithShields(1, shieldValue);
-        }
-        else
-        {
-            UpdateHealthBarWithShields(2, shieldValue);
-        }
-    }
-
-    private void UpdateHealthBarWithShields(int shieldValueId, float shieldValue)
-    {
-        shields[shieldValueId] = shieldValue;
+        shields[(int)shieldType] = shieldValue;
 
         UpdateHealthTransform(character.EntityStatsManager.Health.GetCurrentValue());
         UpdateShieldTransforms();
@@ -299,7 +283,8 @@ public class HealthBar : MonoBehaviour
     private void UpdateShieldTransforms()
     {
         float totalHealthValue = GetTotalHealthValue();
-        if (shields[0] == 0)
+
+        if (!PhysicalShieldExists())
         {
             physicalShieldImage.gameObject.SetActive(false);
         }
@@ -310,11 +295,11 @@ public class HealthBar : MonoBehaviour
                 physicalShieldImage.gameObject.SetActive(true);
             }
 
-            physicalShieldImageTransform.localScale = new Vector3(shields[0] / totalHealthValue, 1, 1);
-            physicalShieldImageTransform.localPosition = new Vector3(healthImageTransform.localPosition.x + healthImageTransform.localScale.x * healthWidth, 3, 0);
+            SetShieldSize(physicalShieldImageTransform, GetPhysicalShieldValue(), totalHealthValue);
+            SetShieldPositionOnHealthBar(physicalShieldImageTransform, healthImageTransform);
         }
 
-        if (shields[1] == 0)
+        if (!MagicShieldExists())
         {
             magicShieldImage.gameObject.SetActive(false);
         }
@@ -325,19 +310,18 @@ public class HealthBar : MonoBehaviour
                 magicShieldImage.gameObject.SetActive(true);
             }
 
-            if (shields[0] == 0)
+            SetShieldSize(magicShieldImageTransform, GetMagicShieldValue(), totalHealthValue);
+            if (!PhysicalShieldExists())
             {
-                magicShieldImageTransform.localScale = new Vector3(shields[1] / totalHealthValue, 1, 1);
-                magicShieldImageTransform.localPosition = new Vector3(healthImageTransform.localPosition.x + healthImageTransform.localScale.x * healthWidth, 3, 0);
+                SetShieldPositionOnHealthBar(magicShieldImageTransform, healthImageTransform);
             }
             else
             {
-                magicShieldImageTransform.localScale = new Vector3(shields[1] / totalHealthValue, 1, 1);
-                magicShieldImageTransform.localPosition = new Vector3(physicalShieldImageTransform.localPosition.x + physicalShieldImageTransform.localScale.x * healthWidth, 3, 0);
+                SetShieldPositionOnHealthBar(magicShieldImageTransform, physicalShieldImageTransform);
             }
         }
 
-        if (shields[2] == 0)
+        if (!NormalShieldExists())
         {
             shieldImage.gameObject.SetActive(false);
         }
@@ -348,30 +332,63 @@ public class HealthBar : MonoBehaviour
                 shieldImage.gameObject.SetActive(true);
             }
 
-            if (shields[1] == 0)
+            SetShieldSize(shieldImageTransform, GetNormalShieldValue(), totalHealthValue);
+            if (!MagicShieldExists())
             {
-                if (shields[0] == 0)
+                if (!PhysicalShieldExists())
                 {
-                    shieldImageTransform.localScale = new Vector3(shields[2] / totalHealthValue, 1, 1);
-                    shieldImageTransform.localPosition = new Vector3(healthImageTransform.localPosition.x + healthImageTransform.localScale.x * healthWidth, 3, 0);
+                    SetShieldPositionOnHealthBar(shieldImageTransform, healthImageTransform);
                 }
                 else
                 {
-                    shieldImageTransform.localScale = new Vector3(shields[2] / totalHealthValue, 1, 1);
-                    shieldImageTransform.localPosition = new Vector3(physicalShieldImageTransform.localPosition.x + physicalShieldImageTransform.localScale.x * healthWidth, 3, 0);
+                    SetShieldPositionOnHealthBar(shieldImageTransform, physicalShieldImageTransform);
                 }
-            }
-            else if (shields[0] == 0)
-            {
-                shieldImageTransform.localScale = new Vector3(shields[2] / totalHealthValue, 1, 1);
-                shieldImageTransform.localPosition = new Vector3(healthImageTransform.localPosition.x + healthImageTransform.localScale.x * healthWidth, 3, 0);
             }
             else
             {
-                shieldImageTransform.localScale = new Vector3(shields[2] / totalHealthValue, 1, 1);
-                shieldImageTransform.localPosition = new Vector3(magicShieldImageTransform.localPosition.x + magicShieldImageTransform.localScale.x * healthWidth, 3, 0);
+                SetShieldPositionOnHealthBar(shieldImageTransform, magicShieldImageTransform);
             }
         }
+    }
+
+    private void SetShieldSize(RectTransform shieldTransform, float shieldValue, float totalHealthValue)
+    {
+        shieldTransform.localScale = new Vector3(shieldValue / totalHealthValue, 1, 1);
+    }
+
+    private void SetShieldPositionOnHealthBar(RectTransform shieldTransform, RectTransform transformToTouch)
+    {
+        shieldTransform.localPosition = new Vector3(transformToTouch.localPosition.x + transformToTouch.localScale.x * healthWidth, 3, 0);
+    }
+
+    private bool PhysicalShieldExists()
+    {
+        return GetPhysicalShieldValue() > 0;
+    }
+
+    private bool MagicShieldExists()
+    {
+        return GetMagicShieldValue() > 0;
+    }
+
+    private bool NormalShieldExists()
+    {
+        return GetNormalShieldValue() > 0;
+    }
+
+    private float GetPhysicalShieldValue()
+    {
+        return shields[1];
+    }
+
+    private float GetMagicShieldValue()
+    {
+        return shields[2];
+    }
+
+    private float GetNormalShieldValue()
+    {
+        return shields[0];
     }
 
     private float GetTotalHealthValue()

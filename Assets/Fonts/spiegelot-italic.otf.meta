@@ -1,0 +1,27 @@
+fileFormatVersion: 2
+guid: be21cf45f2ee82449b43309b1f4bc900
+timeCreated: 1541468209
+licenseType: Free
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: SpiegelOT
+  fontNames:
+  - SpiegelOT
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: 927778f0ab4fa834a83c272dad09cd5a, type: 3}
+  - {fileID: 12800000, guid: 09043dd4e3b8c45489b2101beb4a0686, type: 3}
+  - {fileID: 12800000, guid: 3b3bdbe58535a554894e00eff2c4c0e3, type: 3}
+  - {fileID: 12800000, guid: 43f042684e440eb41b5a004ec10ab17c, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

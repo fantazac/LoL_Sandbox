@@ -1,0 +1,27 @@
+fileFormatVersion: 2
+guid: 2911ec3091218434aa6d4d92f27f367b
+timeCreated: 1541468209
+licenseType: Free
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: SpiegelCdOT
+  fontNames:
+  - SpiegelCdOT
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: 2168fdbbd6b5a384995a313fbe4aacba, type: 3}
+  - {fileID: 12800000, guid: 222d2cbc238935944946037c8e8e9e67, type: 3}
+  - {fileID: 12800000, guid: 13a1df2d10f2c294a82faa23d8cc2b4d, type: 3}
+  - {fileID: 12800000, guid: 253a136dc1db50448af6c4eb59b7eca5, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

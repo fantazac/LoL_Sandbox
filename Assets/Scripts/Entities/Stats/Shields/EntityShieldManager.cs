@@ -69,7 +69,6 @@ public class EntityShieldManager : MonoBehaviour
     public float DamageShield(ShieldType shieldType, float damage)
     {
         float remainingDamage = damage;
-
         if (shieldType == ShieldType.MAGIC && magicShield.GetTotal() > 0)
         {
             remainingDamage = magicShield.DamageShield(remainingDamage);
@@ -92,7 +91,7 @@ public class EntityShieldManager : MonoBehaviour
             remainingDamage = shield.DamageShield(remainingDamage);
             if (OnShieldChanged != null)
             {
-                OnShieldChanged(shieldType, shield.GetTotal());
+                OnShieldChanged(ShieldType.NORMAL, shield.GetTotal());
             }
         }
 

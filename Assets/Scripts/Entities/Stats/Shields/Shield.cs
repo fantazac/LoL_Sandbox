@@ -35,7 +35,7 @@ public class Shield
     {
         if (shieldSources.ContainsKey(sourceAbilityBuff))
         {
-            RemoveShield(sourceAbilityBuff);
+            RemoveShieldFromContainers(sourceAbilityBuff);
         }
         shieldSourcesInOrderOfCreation.Add(sourceAbilityBuff);
         shieldSources.Add(sourceAbilityBuff, shieldValue);
@@ -44,9 +44,14 @@ public class Shield
 
     public void RemoveShield(AbilityBuff sourceAbilityBuff)
     {
+        RemoveShieldFromContainers(sourceAbilityBuff);
+        UpdateTotal();
+    }
+
+    private void RemoveShieldFromContainers(AbilityBuff sourceAbilityBuff)
+    {
         shieldSourcesInOrderOfCreation.Remove(sourceAbilityBuff);
         shieldSources.Remove(sourceAbilityBuff);
-        UpdateTotal();
     }
 
     public void UpdateShield(AbilityBuff sourceAbilityBuff, float shieldChangeValue)
@@ -58,7 +63,10 @@ public class Shield
             {
                 sourceAbilityBuff.ConsumeBuff(entity);
             }
-            UpdateTotal();
+            else
+            {
+                UpdateTotal();
+            }
         }
     }
 
@@ -82,10 +90,6 @@ public class Shield
                 abilityBuff.ConsumeBuff(entity);
                 remainingDamage = -shieldValue;
             }
-        }
-        foreach (KeyValuePair<AbilityBuff, float> shieldSource in shieldSources)
-        {
-
         }
         UpdateTotal();
 
