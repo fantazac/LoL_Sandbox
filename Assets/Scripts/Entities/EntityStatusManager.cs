@@ -69,6 +69,7 @@ public class EntityStatusManager : MonoBehaviour
                 SetCannotUseBasicAttacks(count);
                 if (character.CharacterAbilityManager)
                 {
+                    character.CharacterAbilityManager.CancelAllChannelingAbilities();//TODO: verify, wiki says yes though
                     character.CharacterAbilityManager.CancelAllActiveAbilitiesThatAreNotBeingCastedOrChanneled();
                 }
                 break;
