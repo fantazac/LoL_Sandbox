@@ -1,32 +1,34 @@
 ﻿public class CCBaseStats : CharacterBaseStats
 {
-    //extra stats for each character
-
     protected override void SetBaseStats()
     {
         BaseHealth = 500;
-        BaseResource = 300;
-
-        BaseAttackDamage = 60;
-        BaseArmor = 30;
-        BaseMagicResistance = 30;
-        BaseAttackSpeed = 0.625f;
-        AttackDelay = 0;
-        BaseMovementSpeed = 325;
+        HealthPerLevel = 80;
 
         BaseHealthRegeneration = 8;
-        BaseResourceRegeneration = 8;
-        BaseAttackRange = 550;
+        HealthRegenerationPerLevel = 0.5f;
 
-        HealthPerLevel = 80;
+        BaseResource = 300;
         ResourcePerLevel = 40;
 
+        BaseResourceRegeneration = 8;
+        ResourceRegenerationPerLevel = 0.5f;
+
+        BaseAttackRange = 550;
+
+        BaseAttackDamage = 60;
         AttackDamagePerLevel = 2;
+
+        BaseAttackSpeed = 0.625f;
+        AttackDelay = 0;
         AttackSpeedPerLevel = 2;
 
-        HealthRegenerationPerLevel = 0.5f;
-        ResourceRegenerationPerLevel = 0.5f;
+        BaseArmor = 30;
         ArmorPerLevel = 3;
+
+        BaseMagicResistance = 30;
         MagicResistancePerLevel = 0.5f;
+
+        BaseMovementSpeed = 325;
     }
 }

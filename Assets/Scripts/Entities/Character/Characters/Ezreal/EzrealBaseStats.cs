@@ -1,32 +1,34 @@
 ﻿public class EzrealBaseStats : CharacterBaseStats
 {
-    //extra stats for each character
-
     protected override void SetBaseStats()
     {
         BaseHealth = 491;
-        BaseResource = 360.6f;
-
-        BaseAttackDamage = 60;
-        BaseArmor = 22;
-        BaseMagicResistance = 30;
-        BaseAttackSpeed = 0.625f;
-        AttackDelay = 0;
-        BaseMovementSpeed = 325;
+        HealthPerLevel = 86;
 
         BaseHealthRegeneration = 4;
-        BaseResourceRegeneration = 8.092f;
-        BaseAttackRange = 550;
+        HealthRegenerationPerLevel = 0.55f;
 
-        HealthPerLevel = 86;
+        BaseResource = 360.6f;
         ResourcePerLevel = 42;
 
+        BaseResourceRegeneration = 8.092f;
+        ResourceRegenerationPerLevel = 0.65f;
+
+        BaseAttackRange = 550;
+
+        BaseAttackDamage = 60;
         AttackDamagePerLevel = 2.5f;
+
+        BaseAttackSpeed = 0.625f;
+        AttackDelay = 0;
         AttackSpeedPerLevel = 1.5f;
 
-        HealthRegenerationPerLevel = 0.55f;
-        ResourceRegenerationPerLevel = 0.65f;
+        BaseArmor = 22;
         ArmorPerLevel = 3.5f;
+
+        BaseMagicResistance = 30;
         MagicResistancePerLevel = 0.5f;
+
+        BaseMovementSpeed = 325;
     }
 }

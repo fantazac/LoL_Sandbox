@@ -1,16 +1,15 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿public class Varus : Character
+{
+    protected Varus()
+    {
+        characterPortraitPath = "Sprites/Characters/CharacterPortraits/Varus";
+    }
 
-public class Varus : MonoBehaviour {
+    protected override void SetCharacterSpecificScripts()
+    {
+        EntityBasicAttack = gameObject.AddComponent<VarusBasicAttack>();
+        EntityStatsManager = gameObject.AddComponent<VarusStatsManager>();
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+        CharacterAbilityManager = gameObject.AddComponent<VarusAbilityManager>();
+    }
 }

@@ -1,32 +1,34 @@
 ﻿public class LucianBaseStats : CharacterBaseStats
 {
-    //extra stats for each character
-
     protected override void SetBaseStats()
     {
         BaseHealth = 571;
-        BaseResource = 348.9f;
-
-        BaseAttackDamage = 61;
-        BaseArmor = 28;
-        BaseMagicResistance = 30;
-        BaseAttackSpeed = 0.625f;
-        AttackDelay = -0.02f;
-        BaseMovementSpeed = 335;
+        HealthPerLevel = 86;
 
         BaseHealthRegeneration = 3.75f;
-        BaseResourceRegeneration = 8.2f;
-        BaseAttackRange = 500;
+        HealthRegenerationPerLevel = 0.65f;
 
-        HealthPerLevel = 86;
+        BaseResource = 348.9f;
         ResourcePerLevel = 38;
 
+        BaseResourceRegeneration = 8.2f;
+        ResourceRegenerationPerLevel = 0.7f;
+
+        BaseAttackRange = 500;
+
+        BaseAttackDamage = 61;
         AttackDamagePerLevel = 2.75f;
+
+        BaseAttackSpeed = 0.625f;
+        AttackDelay = -0.02f;
         AttackSpeedPerLevel = 3.3f;
 
-        HealthRegenerationPerLevel = 0.65f;
-        ResourceRegenerationPerLevel = 0.7f;
+        BaseArmor = 28;
         ArmorPerLevel = 3;
+
+        BaseMagicResistance = 30;
         MagicResistancePerLevel = 0.5f;
+
+        BaseMovementSpeed = 335;
     }
 }

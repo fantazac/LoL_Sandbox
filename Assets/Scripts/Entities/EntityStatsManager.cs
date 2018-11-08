@@ -5,7 +5,7 @@ public abstract class EntityStatsManager : MonoBehaviour
     protected Entity entity;
 
     public Health Health { get; protected set; }
-    public Resource Resource { get; protected set; }//mana, energy, fury, ...
+    public Resource Resource { get; protected set; }//mana, energy, ...
 
     public AttackDamage AttackDamage { get; protected set; }
     public AbilityPower AbilityPower { get; protected set; }

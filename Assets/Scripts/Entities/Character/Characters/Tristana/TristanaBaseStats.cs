@@ -1,8 +1,6 @@
 ﻿public class TristanaBaseStats : CharacterBaseStats
 {
-    //extra stats for each character
-
-    protected override void SetBaseStats()//TODO: change base stats setup to this isntead of previous one (matches league wiki, easier to read)
+    protected override void SetBaseStats()
     {
         BaseHealth = 559;
         HealthPerLevel = 88;

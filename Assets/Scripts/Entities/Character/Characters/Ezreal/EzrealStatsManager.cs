@@ -1,20 +1,7 @@
-﻿public class EzrealStatsManager : CharacterStatsManager
+﻿public class EzrealStatsManager : ManaUserStatsManager
 {
-    //extra stats the character has that other characters don't
-
     protected override EntityBaseStats GetEntityBaseStats()
     {
         return new EzrealBaseStats();
-    }
-
-    protected override void InitializeCharacterStats(CharacterBaseStats characterBaseStats)
-    {
-        base.InitializeCharacterStats(characterBaseStats);
-
-        ResourceType = ResourceType.MANA;
-        Resource = new Resource(characterBaseStats.BaseResource, characterBaseStats.ResourcePerLevel);
-        ResourceRegeneration = new ResourceRegeneration(characterBaseStats.BaseResourceRegeneration, characterBaseStats.ResourceRegenerationPerLevel);
-
-        //set extra character stats
     }
 }

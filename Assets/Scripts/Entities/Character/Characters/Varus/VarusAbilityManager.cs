@@ -1,16 +1,11 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿public class VarusAbilityManager : CharacterAbilityManager
+{
+    protected override void InitAbilities()
+    {
+        CharacterAbilities = new Ability[] { gameObject.AddComponent<Tristana_Q>(), gameObject.AddComponent<Tristana_W>(), gameObject.AddComponent<Tristana_E>(), gameObject.AddComponent<Tristana_R>() };
+        PassiveCharacterAbilities = new Ability[] { gameObject.AddComponent<Tristana_P>() };
+        SummonerAbilities = new Ability[] { gameObject.AddComponent<Heal>(), gameObject.AddComponent<Flash>() };
 
-public class VarusAbilityManager : MonoBehaviour {
-
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+        base.InitAbilities();
+    }
 }

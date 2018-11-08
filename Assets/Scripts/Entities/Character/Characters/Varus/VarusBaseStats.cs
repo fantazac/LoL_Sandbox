@@ -1,16 +1,34 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿public class VarusBaseStats : CharacterBaseStats
+{
+    protected override void SetBaseStats()
+    {
+        BaseHealth = 499;
+        HealthPerLevel = 89;
 
-public class VarusBaseStats : MonoBehaviour {
+        BaseHealthRegeneration = 3.5f;
+        HealthRegenerationPerLevel = 0.55f;
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+        BaseResource = 360.48f;
+        ResourcePerLevel = 33;
+
+        BaseResourceRegeneration = 7.34f;
+        ResourceRegenerationPerLevel = 0.8f;
+
+        BaseAttackRange = 575;
+
+        BaseAttackDamage = 59;
+        AttackDamagePerLevel = 3.11f;
+
+        BaseAttackSpeed = 0.625f;
+        AttackDelay = -0.05f;
+        AttackSpeedPerLevel = 3;
+
+        BaseArmor = 27;
+        ArmorPerLevel = 3.4f;
+
+        BaseMagicResistance = 30;
+        MagicResistancePerLevel = 0.5f;
+
+        BaseMovementSpeed = 330;
+    }
 }

@@ -1,16 +1,11 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿public class VarusBasicAttack : CharacterBasicAttack
+{
+    protected VarusBasicAttack()
+    {
+        delayPercentBeforeAttack = 0.1666f;
+        speed = 1800;
 
-public class VarusBasicAttack : MonoBehaviour {
-
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+        basicAttackPrefabPath = "BasicAttacksPrefabs/Characters/Varus/VarusBA";
+    }
 }
+

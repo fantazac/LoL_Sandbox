@@ -7,8 +7,6 @@ public abstract class CharacterStatsManager : EntityStatsManager
     private float regenerationInterval;
     private WaitForSeconds delayRegeneration;
 
-    //extra stats characters have that other entities don't
-
     protected CharacterStatsManager()
     {
         regenerationInterval = 0.5f;
@@ -52,8 +50,6 @@ public abstract class CharacterStatsManager : EntityStatsManager
         MagicDamageReceivedModifier = new DamageModifier();
         HealAndShieldPower = new PercentBonusOnlyStat();
         SlowResistance = new SlowResistance();
-
-        //set extra character stats
 
         ExtraAdjustments();
     }
