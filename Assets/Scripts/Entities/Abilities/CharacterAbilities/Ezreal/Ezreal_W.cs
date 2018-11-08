@@ -20,8 +20,8 @@ public class Ezreal_W : DirectionTargetedProjectile
 
         range = 1150;
         speed = 1550;
-        damage = 75;// 75/120/165/210/255
-        damagePerLevel = 45;
+        damage = 75;// 75/125/175/225/275
+        damagePerLevel = 50;
         bonusADScaling = 0.6f;// 60%
         totalAPScaling = 0.7f;// 70%
         resourceCost = 50;
