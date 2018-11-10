@@ -1,4 +1,6 @@
-﻿public class Heal_Debuff : AbilityBuff
+﻿using UnityEngine;
+
+public class Heal_Debuff : AbilityBuff
 {
     protected Heal_Debuff()
     {

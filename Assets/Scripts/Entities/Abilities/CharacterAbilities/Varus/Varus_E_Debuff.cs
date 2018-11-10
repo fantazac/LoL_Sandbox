@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class VarusR_SpreadDebuff : MonoBehaviour {
+public class Varus_E_Debuff : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {

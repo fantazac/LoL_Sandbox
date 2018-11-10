@@ -36,6 +36,8 @@ public class MissFortune_E : GroundTargetedAoE
         tickDelay = new WaitForSeconds(timeBetweenTicks);
 
         radius = 200;
+
+        affectedByCooldownReduction = true;
     }
 
     protected override void SetResourcePaths()

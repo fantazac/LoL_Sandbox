@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class VarusR_Debuff : MonoBehaviour {
+public class Varus_E : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {

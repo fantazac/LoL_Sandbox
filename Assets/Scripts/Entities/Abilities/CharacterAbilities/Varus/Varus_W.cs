@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class VarusQ_Buff : MonoBehaviour {
+public class Varus_W : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
