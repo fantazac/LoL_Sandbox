@@ -73,8 +73,8 @@ public class MissFortune_E : GroundTargetedAoE
 
         AreaOfEffectGround areaOfEffect = (Instantiate(areaOfEffectPrefab, Vector3.right * destinationOnCast.x + Vector3.forward * destinationOnCast.z, Quaternion.identity)).GetComponent<AreaOfEffectGround>();
         areaOfEffect.CreateAreaOfEffect(character.Team, affectedUnitType, tickDelay, totalTicks, radius);
-        areaOfEffect.ActivateAreaOfEffect();
         areaOfEffect.OnAbilityEffectGroundHit += OnAbilityEffectGroundHit;
+        areaOfEffect.ActivateAreaOfEffect();
 
         FinishAbilityCast();
     }

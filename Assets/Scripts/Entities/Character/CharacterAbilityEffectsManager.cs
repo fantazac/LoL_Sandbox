@@ -20,6 +20,6 @@ public class CharacterAbilityEffectsManager : MonoBehaviour
         {
             OnApplyAbilityEffects(entityHit, damage);
         }
-        character.EntityStatsManager.Health.Restore(damage * spellVamp.GetTotal());
+        character.EntityStatsManager.RestoreHealth(damage * spellVamp.GetTotal());
     }
 }

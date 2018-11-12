@@ -1,16 +1,37 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿public class Varus_E_Debuff : AbilityBuff
+{
+    protected Varus_E_Debuff()
+    {
+        buffName = "Hail of Arrows";
 
-public class Varus_E_Debuff : MonoBehaviour {
+        isADebuff = true;
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+        buffPercentValue = 25; // 25/30/35/40/45
+        buffPercentValuePerLevel = 5;
+        buffCrowdControlEffect = CrowdControlEffect.SLOW;
+    }
+
+    protected override void SetSpritePaths()
+    {
+        buffSpritePath = "Sprites/Characters/CharacterAbilities/Varus/VarusE_Debuff";
+    }
+
+    protected override void ApplyBuffEffect(Entity affectedEntity, float buffValue, int currentStacks)
+    {
+        affectedEntity.EntityStatusManager.AddCrowdControlEffect(buffCrowdControlEffect);
+        affectedEntity.EntityStatsManager.MovementSpeed.AddPercentMalus(buffValue);
+        affectedEntity.EntityStatsManager.GrievousWounds.AddGrievousWoundsSource();
+    }
+
+    protected override void RemoveBuffEffect(Entity affectedEntity, float buffValue, int currentStacks)
+    {
+        affectedEntity.EntityStatusManager.RemoveCrowdControlEffect(buffCrowdControlEffect);
+        affectedEntity.EntityStatsManager.MovementSpeed.RemovePercentMalus(buffValue);
+        affectedEntity.EntityStatsManager.GrievousWounds.RemoveGrievousWoundsSource();
+    }
+
+    protected override Buff CreateNewBuff(Entity affectedEntity)
+    {
+        return new Buff(this, affectedEntity, buffPercentValue);
+    }
 }

@@ -7,17 +7,23 @@ public class AreaOfEffectGround : AbilityEffect
     protected int numberOfTicks;
     protected WaitForSeconds delayPerTick;
     protected float radius;
+    protected bool callEventOnSpawn;
+    protected WaitForSeconds delayActivation;
+
+    public delegate void OnAbilityEffectGroundHitOnSpawnHandler(AbilityEffect abilityEffect, List<Entity> entitiesHit);
+    public event OnAbilityEffectGroundHitOnSpawnHandler OnAbilityEffectGroundHitOnSpawn;
 
     public delegate void OnAbilityEffectGroundHitHandler(AbilityEffect abilityEffect, List<Entity> previousEntitiesHit, List<Entity> entitiesHit);
     public event OnAbilityEffectGroundHitHandler OnAbilityEffectGroundHit;
 
-    public void CreateAreaOfEffect(EntityTeam teamOfShooter, AbilityAffectedUnitType affectedUnitType, WaitForSeconds delayPerTick, int numberOfTicks, float radius)
+    public void CreateAreaOfEffect(EntityTeam teamOfCallingEntity, AbilityAffectedUnitType affectedUnitType, WaitForSeconds delayPerTick, int numberOfTicks, float radius, WaitForSeconds delayActivation = null)
     {
-        this.teamOfCallingEntity = teamOfShooter;
+        this.teamOfCallingEntity = teamOfCallingEntity;
         this.affectedUnitType = affectedUnitType;
         this.delayPerTick = delayPerTick;
         this.numberOfTicks = numberOfTicks;
         this.radius = radius;
+        this.delayActivation = delayActivation;
     }
 
     public void ActivateAreaOfEffect()
@@ -27,7 +33,20 @@ public class AreaOfEffectGround : AbilityEffect
 
     protected override IEnumerator ActivateAbilityEffect()
     {
+        if (delayActivation != null)
+        {
+            MeshRenderer meshRenderer = GetComponent<MeshRenderer>();
+            meshRenderer.enabled = false;
+            yield return delayActivation;
+            meshRenderer.enabled = true;
+        }
+
         List<Entity> previousAffectedEntities = new List<Entity>();
+
+        if (OnAbilityEffectGroundHitOnSpawn != null)
+        {
+            OnAbilityEffectGroundHitOnSpawn(this, GetAffectedEntities());
+        }
 
         for (int i = 0; i < numberOfTicks; i++)
         {

@@ -35,7 +35,7 @@
         {
             healAmount *= ratioIfAffectedByHealDebuff;
         }
-        affectedEntity.EntityStatsManager.Health.Restore(healAmount);
+        affectedEntity.EntityStatsManager.RestoreHealth(healAmount);
         affectedEntity.EntityStatsManager.MovementSpeed.AddPercentBonus(buffPercentValue);
     }
 

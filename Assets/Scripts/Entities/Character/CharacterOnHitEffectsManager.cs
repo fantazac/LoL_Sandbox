@@ -20,6 +20,6 @@ public class CharacterOnHitEffectsManager : MonoBehaviour
         {
             OnApplyOnHitEffects(entityHit, damage);
         }
-        character.EntityStatsManager.Health.Restore(damage * lifeSteal.GetTotal());
+        character.EntityStatsManager.RestoreHealth(damage * lifeSteal.GetTotal());
     }
 }

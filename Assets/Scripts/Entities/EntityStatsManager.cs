@@ -38,6 +38,8 @@ public abstract class EntityStatsManager : MonoBehaviour
     public PercentBonusOnlyStat HealAndShieldPower { get; protected set; }
     public SlowResistance SlowResistance { get; protected set; }
 
+    public GrievousWounds GrievousWounds { get; protected set; }
+
     protected virtual void Awake()
     {
         entity = GetComponent<Entity>();
@@ -77,6 +79,8 @@ public abstract class EntityStatsManager : MonoBehaviour
         HealAndShieldPower = new PercentBonusOnlyStat();
         SlowResistance = new SlowResistance();
 
+        GrievousWounds = new GrievousWounds();
+
         ExtraAdjustments();
     }
 
@@ -92,7 +96,7 @@ public abstract class EntityStatsManager : MonoBehaviour
     {
         if (damage < 0)
         {
-            Health.Restore(damage);
+            RestoreHealth(damage);
         }
         else if (damage > 0)
         {
@@ -115,5 +119,10 @@ public abstract class EntityStatsManager : MonoBehaviour
                 Health.Reduce(remainingDamage);
             }
         }
+    }
+
+    public void RestoreHealth(float heal)
+    {
+        Health.Restore(heal * GrievousWounds.GetTotal());
     }
 }

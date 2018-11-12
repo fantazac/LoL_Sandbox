@@ -51,6 +51,8 @@ public abstract class CharacterStatsManager : EntityStatsManager
         HealAndShieldPower = new PercentBonusOnlyStat();
         SlowResistance = new SlowResistance();
 
+        GrievousWounds = new GrievousWounds();
+
         ExtraAdjustments();
     }
 
@@ -109,7 +111,7 @@ public abstract class CharacterStatsManager : EntityStatsManager
     {
         if (Health.GetTotal() > Health.GetCurrentValue())
         {
-            Health.Restore(HealthRegeneration.GetTotal() * regenerationPercentPerTick);
+            RestoreHealth(HealthRegeneration.GetTotal() * regenerationPercentPerTick);
         }
     }
 
