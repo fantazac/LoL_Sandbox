@@ -96,7 +96,7 @@ public class Ezreal_W : DirectionTargetedProjectile
 
     private void OnMarkedEntityHitByAbility(Entity entityHit, Ability sourceAbility)
     {
-        if (entityHit.EntityBuffManager.GetDebuff(AbilityDebuffs[0]) != null && abilitiesToTriggerMark.Contains(sourceAbility))
+        if (entityHit.EntityBuffManager.IsAffectedByDebuff(AbilityDebuffs[0]) && abilitiesToTriggerMark.Contains(sourceAbility))
         {
             DealDamageToMarkedEntity(entityHit, sourceAbility);
         }
@@ -104,7 +104,7 @@ public class Ezreal_W : DirectionTargetedProjectile
 
     private void OnMarkedEntityHitByBasicAttack(Entity entityHit, Entity sourceEntity)
     {
-        if (entityHit.EntityBuffManager.GetDebuff(AbilityDebuffs[0]) != null && sourceEntity == character)
+        if (entityHit.EntityBuffManager.IsAffectedByDebuff(AbilityDebuffs[0]) && sourceEntity == character)
         {
             DealDamageToMarkedEntity(entityHit);
         }

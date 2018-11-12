@@ -36,7 +36,7 @@ public abstract class EmpoweredCharacterBasicAttack : CharacterBasicAttack
     protected void SetupBeforeAttackDelay(Entity target)
     {
         ((Character)entity).CharacterOrientationManager.RotateCharacterUntilReachedTarget(target.transform, true, true);
-        empoweringAbilityWasActiveOnBasicAttackCast = entity.EntityBuffManager.GetBuff(basicAttackEmpoweringAbility.AbilityBuffs[0]) != null;
+        empoweringAbilityWasActiveOnBasicAttackCast = entity.EntityBuffManager.IsAffectedByBuff(basicAttackEmpoweringAbility.AbilityBuffs[0]);
     }
 
     protected void SetupAfterAttackDelay(Entity target, GameObject basicAttackPrefab)

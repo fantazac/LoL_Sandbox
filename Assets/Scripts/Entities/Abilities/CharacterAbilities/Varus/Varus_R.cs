@@ -98,7 +98,18 @@ public class Varus_R : DirectionTargetedProjectile
         return entitiesInRange;
     }
 
-    public void DamageEntity(Entity entityHit)
+    public void ApplyDamageAndCrowdControlToEntityHit(Entity entityHit)
+    {
+        DamageEntity(entityHit);
+        AbilityDebuffs[0].AddNewBuffToAffectedEntity(entityHit);
+    }
+
+    public void ApplyTetherToEntityInRange(Entity entityInRange)
+    {
+        AbilityDebuffs[1].AddNewBuffToAffectedEntity(entityInRange);
+    }
+
+    private void DamageEntity(Entity entityHit)
     {
         float damage = GetAbilityDamage(entityHit);
         entityHit.EntityStatsManager.ReduceHealth(damageType, damage);

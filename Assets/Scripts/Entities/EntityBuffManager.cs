@@ -97,6 +97,28 @@ public class EntityBuffManager : MonoBehaviour
         buffsList.RemoveAt(position);
     }
 
+    public void ApplyBuff(Buff buff, Sprite buffSprite, bool isADebuff)
+    {
+        if (isADebuff)
+        {
+            ApplyBuffOrDebuff(buff, buffSprite, debuffs, debuffUIManager);
+        }
+        else
+        {
+            ApplyBuffOrDebuff(buff, buffSprite, buffs, buffUIManager);
+        }
+    }
+
+    private void ApplyBuffOrDebuff(Buff buff, Sprite buffSprite, List<Buff> buffsList, BuffUIManager correctBuffUIManager)
+    {
+        buffsList.Add(buff);
+        buff.ApplyBuff();
+        if (correctBuffUIManager != null)
+        {
+            correctBuffUIManager.SetNewBuff(buff, buffSprite);
+        }
+    }
+
     public Buff GetBuff(AbilityBuff sourceAbilityBuff)
     {
         Buff buff = null;
@@ -161,26 +183,23 @@ public class EntityBuffManager : MonoBehaviour
         return debuff;
     }
 
-    public void ApplyBuff(Buff buff, Sprite buffSprite, bool isADebuff)
+    public bool IsAffectedByBuff(AbilityBuff sourceAbilityBuff)
     {
-        if (isADebuff)
-        {
-            debuffs.Add(buff);
-            buff.ApplyBuff();
-            if (debuffUIManager != null)
-            {
-                debuffUIManager.SetNewBuff(buff, buffSprite);
-            }
-        }
-        else
-        {
-            buffs.Add(buff);
-            buff.ApplyBuff();
-            if (buffUIManager != null)
-            {
-                buffUIManager.SetNewBuff(buff, buffSprite);
-            }
-        }
+        return GetBuff(sourceAbilityBuff) != null;
+    }
 
+    public bool IsAffectedByDebuff(AbilityBuff sourceAbilityBuff)
+    {
+        return GetDebuff(sourceAbilityBuff) != null;
+    }
+
+    public bool IsAffectedByBuffOfSameType(AbilityBuff sourceAbilityBuff)
+    {
+        return GetBuffOfSameType(sourceAbilityBuff) != null;
+    }
+
+    public bool IsAffectedByDebuffOfSameType(AbilityBuff sourceAbilityBuff)
+    {
+        return GetDebuffOfSameType(sourceAbilityBuff) != null;
     }
 }

@@ -31,7 +31,7 @@
     protected override void ApplyBuffEffect(Entity affectedEntity, float buffValue, int currentStacks)
     {
         float healAmount = buffFlatValue * character.EntityStatsManager.HealAndShieldPower.GetTotal();
-        if (affectedEntity.EntityBuffManager.GetDebuffOfSameType(healDebuff) != null)
+        if (affectedEntity.EntityBuffManager.IsAffectedByDebuffOfSameType(healDebuff))
         {
             healAmount *= ratioIfAffectedByHealDebuff;
         }

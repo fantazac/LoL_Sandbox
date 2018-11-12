@@ -12,11 +12,11 @@ public class Varus_R_Entity : MonoBehaviour//Will code this as if the tether deb
     private float timeBetweenTetherRangeChecks;
     private WaitForSeconds delayTetherRangeChecks;
 
-    private float timeToLive;
-    private WaitForSeconds delayLife;
+    private float spreadTime;
+    private WaitForSeconds delaySpread;
 
     private List<Entity> entitiesAffectedByTethers;
-    private List<Varus_R_Entity> varusREntities;
+    private List<Varus_R_Entity> varusREntitiesCurrentlySpreading;
 
     private Varus_R_Entity()
     {
@@ -24,8 +24,8 @@ public class Varus_R_Entity : MonoBehaviour//Will code this as if the tether deb
         timeBetweenTetherRangeChecks = 0.2f;
         delayTetherRangeChecks = new WaitForSeconds(timeBetweenTetherRangeChecks);
 
-        timeToLive = 2;
-        delayLife = new WaitForSeconds(timeToLive);
+        spreadTime = 2;
+        delaySpread = new WaitForSeconds(spreadTime);
 
         entitiesAffectedByTethers = new List<Entity>();
     }
@@ -40,19 +40,18 @@ public class Varus_R_Entity : MonoBehaviour//Will code this as if the tether deb
         tetherRange *= StaticObjects.MultiplyingFactor;
     }
 
-    public void SetupEntity(Varus_R ability, Entity entityHit, List<Entity> alreadyAffectedEntities, List<Varus_R_Entity> varusREntities)
+    public void SetupEntity(Varus_R ability, Entity entityHit, List<Entity> alreadyAffectedEntities, List<Varus_R_Entity> varusREntitiesCurrentlySpreading)
     {
         this.ability = ability;
         this.alreadyAffectedEntities = alreadyAffectedEntities;
-        this.varusREntities = varusREntities;
+        this.varusREntitiesCurrentlySpreading = varusREntitiesCurrentlySpreading;
         ApplyAbilityEffectToEntityHit(entityHit);
-        varusREntities.Add(this);
+        varusREntitiesCurrentlySpreading.Add(this);
     }
 
     private void ApplyAbilityEffectToEntityHit(Entity entityHit)
     {
-        ability.DamageEntity(entityHit);
-        ability.AbilityDebuffs[0].AddNewBuffToAffectedEntity(entityHit);
+        ability.ApplyDamageAndCrowdControlToEntityHit(entityHit);
         foreach (Entity entityInRange in ability.GetEntitiesInRange(entityHit, alreadyAffectedEntities))
         {
             SetupTether(entityInRange);
@@ -61,14 +60,14 @@ public class Varus_R_Entity : MonoBehaviour//Will code this as if the tether deb
 
     private void SetupTether(Entity entityInRange)
     {
-        if (entityInRange.EntityBuffManager.GetDebuff(ability.AbilityDebuffs[1]) == null)
+        if (!entityInRange.EntityBuffManager.IsAffectedByDebuff(ability.AbilityDebuffs[1]))
         {
             AddTetherToEntityInRange(entityInRange);
         }
         else
         {
             bool entityIsAffectedByAnotherTether = false;
-            foreach (Varus_R_Entity varusREntity in varusREntities)
+            foreach (Varus_R_Entity varusREntity in varusREntitiesCurrentlySpreading)
             {
                 float tetherLength = varusREntity.GetTetherLength(entityInRange);
                 if (tetherLength == float.MaxValue)
@@ -76,7 +75,7 @@ public class Varus_R_Entity : MonoBehaviour//Will code this as if the tether deb
                     continue;
                 }
                 entityIsAffectedByAnotherTether = true;
-                if (tetherLength > Vector3.Distance(transform.position, entityInRange.transform.position))
+                if (TetherIsShorter(tetherLength, entityInRange))
                 {
                     varusREntity.RemoveTether(entityInRange);
                     AddTetherToEntityInRange(entityInRange);
@@ -92,8 +91,13 @@ public class Varus_R_Entity : MonoBehaviour//Will code this as if the tether deb
 
     private void AddTetherToEntityInRange(Entity entityInRange)
     {
-        ability.AbilityDebuffs[1].AddNewBuffToAffectedEntity(entityInRange);
+        ability.ApplyTetherToEntityInRange(entityInRange);
         entitiesAffectedByTethers.Add(entityInRange);
+    }
+
+    private bool TetherIsShorter(float otherTetherLength, Entity entityInRange)
+    {
+        return Vector3.Distance(transform.position, entityInRange.transform.position) < otherTetherLength;
     }
 
     public float GetTetherLength(Entity entityAffectedByTether)
@@ -122,9 +126,9 @@ public class Varus_R_Entity : MonoBehaviour//Will code this as if the tether deb
 
     private IEnumerator EntityLife()
     {
-        yield return delayLife;
+        yield return delaySpread;
 
-        varusREntities.Remove(this);
+        varusREntitiesCurrentlySpreading.Remove(this);
 
         List<Varus_R_Entity> varusREntitiesToSpawn = new List<Varus_R_Entity>();
         foreach (Entity entityAffectedByTether in entitiesAffectedByTethers)
@@ -135,7 +139,7 @@ public class Varus_R_Entity : MonoBehaviour//Will code this as if the tether deb
         }
         for (int i = 0; i < varusREntitiesToSpawn.Count; i++)
         {
-            varusREntitiesToSpawn[i].SetupEntity(ability, entitiesAffectedByTethers[i], alreadyAffectedEntities, varusREntities);
+            varusREntitiesToSpawn[i].SetupEntity(ability, entitiesAffectedByTethers[i], alreadyAffectedEntities, varusREntitiesCurrentlySpreading);
         }
         foreach (Varus_R_Entity varusREntity in varusREntitiesToSpawn)
         {
@@ -158,6 +162,8 @@ public class Varus_R_Entity : MonoBehaviour//Will code this as if the tether deb
         }
 
         RemoveTether(affectedEntity);
-        ability.AbilityDebuffs[1].ConsumeBuff(affectedEntity);//This might be how it works, requires 5 to test on live... (Varus -> target -> 2 waiting behind -> 1 waiting behind the 2 who leaves ONE circle and checks if the debuff is still there)
+        //This might be how it works, requires 5 to test on live... If it's not that, I have no idea how to code it without breaking all I did
+        //(Varus -> target -> 2 waiting behind -> 1 waiting behind the 2 who leaves ONE circle and checks if the debuff is still there)
+        ability.AbilityDebuffs[1].ConsumeBuff(affectedEntity);
     }
 }

@@ -133,14 +133,20 @@ public class Tristana_E : UnitTargetedProjectile
         entityHit.EntityEffectSourceManager.OnEntityHitByAbility -= OnMarkedEntityHitByAbility;
         entityHit.EntityEffectSourceManager.OnEntityHitByBasicAttack -= OnMarkedEntityHitByBasicAttack;
 
-        Buff stackDebuff = entityHit.EntityBuffManager.GetDebuff(AbilityDebuffs[1]);
-        DamageAllEnemiesInActiveExplosionRadius(entityHit, stackDebuff != null ? stackDebuff.CurrentStacks : 0);
+        if (entityHit.EntityBuffManager.IsAffectedByDebuff(AbilityDebuffs[1]))
+        {
+            DamageAllEnemiesInActiveExplosionRadius(entityHit, entityHit.EntityBuffManager.GetDebuff(AbilityDebuffs[1]).CurrentStacks);
+        }
+        else
+        {
+            DamageAllEnemiesInActiveExplosionRadius(entityHit);
+        }
         AbilityDebuffs[1].ConsumeBuff(entityHit);
     }
 
     private void OnMarkedEntityHitByAbility(Entity entityHit, Ability sourceAbility)
     {
-        if (entityHit.EntityBuffManager.GetDebuff(AbilityDebuffs[0]) != null && abilitiesToIncreaseStacks.Contains(sourceAbility))
+        if (entityHit.EntityBuffManager.IsAffectedByDebuff(AbilityDebuffs[0]) && abilitiesToIncreaseStacks.Contains(sourceAbility))
         {
             IncreaseStacksOnEntityHit(entityHit, sourceAbility);
         }
@@ -148,7 +154,7 @@ public class Tristana_E : UnitTargetedProjectile
 
     private void OnMarkedEntityHitByBasicAttack(Entity entityHit, Entity sourceEntity)
     {
-        if (entityHit.EntityBuffManager.GetDebuff(AbilityDebuffs[0]) != null && sourceEntity == character)
+        if (entityHit.EntityBuffManager.IsAffectedByDebuff(AbilityDebuffs[0]) && sourceEntity == character)
         {
             IncreaseStacksOnEntityHit(entityHit);
         }
@@ -163,7 +169,7 @@ public class Tristana_E : UnitTargetedProjectile
         }
     }
 
-    private void DamageAllEnemiesInActiveExplosionRadius(Entity entityHit, int stacksOnExplosion)
+    private void DamageAllEnemiesInActiveExplosionRadius(Entity entityHit, int stacksOnExplosion = 0)
     {
         float damageModifier = stacksOnExplosion * damagePercentIncreasePerStack + 1;
 

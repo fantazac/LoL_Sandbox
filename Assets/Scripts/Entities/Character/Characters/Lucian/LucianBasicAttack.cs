@@ -66,7 +66,7 @@ public class LucianBasicAttack : EmpoweredCharacterBasicAttack
 
         if (!empoweringAbilityWasActiveOnBasicAttackCast)
         {
-            empoweringAbilityWasActiveOnBasicAttackCast = entity.EntityBuffManager.GetBuff(basicAttackEmpoweringAbility.AbilityBuffs[0]) != null;
+            empoweringAbilityWasActiveOnBasicAttackCast = entity.EntityBuffManager.IsAffectedByBuff(basicAttackEmpoweringAbility.AbilityBuffs[0]);
         }
 
         SetupAfterAttackDelay(target, basicAttackPrefab);
