@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Varus_R_Entity : MonoBehaviour
+public class Varus_R_Entity : MonoBehaviour//Will code this as if the tether debuff is not removed even if going out of range, and see from there
 {
     private Varus_R ability;
 
@@ -51,8 +51,6 @@ public class Varus_R_Entity : MonoBehaviour
 
     private void ApplyAbilityEffectToEntityHit(Entity entityHit)
     {
-        StartCoroutine(EntityLife());
-
         ability.DamageEntity(entityHit);
         ability.AbilityDebuffs[0].AddNewBuffToAffectedEntity(entityHit);
         foreach (Entity entityInRange in ability.GetEntitiesInRange(entityHit, alreadyAffectedEntities))
@@ -69,6 +67,7 @@ public class Varus_R_Entity : MonoBehaviour
         }
         else
         {
+            bool entityIsAffectedByAnotherTether = false;
             foreach (Varus_R_Entity varusREntity in varusREntities)
             {
                 float tetherLength = varusREntity.GetTetherLength(entityInRange);
@@ -76,6 +75,7 @@ public class Varus_R_Entity : MonoBehaviour
                 {
                     continue;
                 }
+                entityIsAffectedByAnotherTether = true;
                 if (tetherLength > Vector3.Distance(transform.position, entityInRange.transform.position))
                 {
                     varusREntity.RemoveTether(entityInRange);
@@ -83,15 +83,17 @@ public class Varus_R_Entity : MonoBehaviour
                     break;
                 }
             }
+            if (!entityIsAffectedByAnotherTether)
+            {
+                AddTetherToEntityInRange(entityInRange);
+            }
         }
     }
 
     private void AddTetherToEntityInRange(Entity entityInRange)
     {
         ability.AbilityDebuffs[1].AddNewBuffToAffectedEntity(entityInRange);
-
         entitiesAffectedByTethers.Add(entityInRange);
-        StartCoroutine(Tether(entityInRange));
     }
 
     public float GetTetherLength(Entity entityAffectedByTether)
@@ -106,7 +108,16 @@ public class Varus_R_Entity : MonoBehaviour
     public void RemoveTether(Entity entityAffectedByTether)
     {
         entitiesAffectedByTethers.Remove(entityAffectedByTether);
-        ability.AbilityDebuffs[1].ConsumeBuff(entityAffectedByTether);
+    }
+
+    public void StartEntityLife()
+    {
+        StartCoroutine(EntityLife());
+
+        foreach (Entity entityAffectedByTether in entitiesAffectedByTethers)
+        {
+            StartCoroutine(Tether(entityAffectedByTether));
+        }
     }
 
     private IEnumerator EntityLife()
@@ -118,14 +129,17 @@ public class Varus_R_Entity : MonoBehaviour
         List<Varus_R_Entity> varusREntitiesToSpawn = new List<Varus_R_Entity>();
         foreach (Entity entityAffectedByTether in entitiesAffectedByTethers)
         {
-            ability.AbilityDebuffs[1].ConsumeBuff(entityAffectedByTether);
-            varusREntitiesToSpawn.Add(SetupNextEntity(entityAffectedByTether));
+            Varus_R_Entity varusREntity = SetupNextEntity(entityAffectedByTether);
+            varusREntitiesToSpawn.Add(varusREntity);
             alreadyAffectedEntities.Add(entityAffectedByTether);
+        }
+        for (int i = 0; i < varusREntitiesToSpawn.Count; i++)
+        {
+            varusREntitiesToSpawn[i].SetupEntity(ability, entitiesAffectedByTethers[i], alreadyAffectedEntities, varusREntities);
         }
         foreach (Varus_R_Entity varusREntity in varusREntitiesToSpawn)
         {
-            varusREntity.SetupEntity(ability, entitiesAffectedByTethers[0], alreadyAffectedEntities, varusREntities);
-            entitiesAffectedByTethers.RemoveAt(0);
+            varusREntity.StartEntityLife();
         }
 
         Destroy(gameObject);
@@ -143,9 +157,7 @@ public class Varus_R_Entity : MonoBehaviour
             yield return delayTetherRangeChecks;
         }
 
-        if (entitiesAffectedByTethers.Contains(affectedEntity))
-        {
-            RemoveTether(affectedEntity);
-        }
+        RemoveTether(affectedEntity);
+        ability.AbilityDebuffs[1].ConsumeBuff(affectedEntity);//This might be how it works, requires 5 to test on live... (Varus -> target -> 2 waiting behind -> 1 waiting behind the 2 who leaves ONE circle and checks if the debuff is still there)
     }
 }

@@ -75,8 +75,9 @@ public class Varus_R : DirectionTargetedProjectile
             Destroy(projectile.gameObject);
         }
 
-        GameObject varusREntityObject = Instantiate(entityPrefab, Vector3.right * entityHit.transform.position.x + Vector3.forward * entityHit.transform.position.z, Quaternion.identity);
-        varusREntityObject.GetComponent<Varus_R_Entity>().SetupEntity(this, entityHit, new List<Entity>() { entityHit }, new List<Varus_R_Entity>());
+        Varus_R_Entity varusREntity = Instantiate(entityPrefab, Vector3.right * entityHit.transform.position.x + Vector3.forward * entityHit.transform.position.z, Quaternion.identity).GetComponent<Varus_R_Entity>();
+        varusREntity.SetupEntity(this, entityHit, new List<Entity>() { entityHit }, new List<Varus_R_Entity>());
+        varusREntity.StartEntityLife();
     }
 
     public List<Entity> GetEntitiesInRange(Entity affectedEntity, List<Entity> alreadyAffectedEntities)
