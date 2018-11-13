@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Varus_R_Entity : MonoBehaviour//Will code this as if the tether debuff is not removed even if going out of range, and see from there
+public class Varus_R_Entity : MonoBehaviour
 {
     private Varus_R ability;
+
+    private Entity affectedEntity;
 
     private List<Entity> alreadyAffectedEntities;
 
@@ -18,6 +20,10 @@ public class Varus_R_Entity : MonoBehaviour//Will code this as if the tether deb
     private List<Entity> entitiesAffectedByTethers;
     private List<Varus_R_Entity> varusREntitiesCurrentlySpreading;
 
+    private int stacksToApply;
+    private float timeBetweenStacks;
+    private WaitForSeconds delayForStacks;
+
     private Varus_R_Entity()
     {
         tetherRange = 600;
@@ -28,6 +34,10 @@ public class Varus_R_Entity : MonoBehaviour//Will code this as if the tether deb
         delaySpread = new WaitForSeconds(spreadTime);
 
         entitiesAffectedByTethers = new List<Entity>();
+
+        stacksToApply = 3;
+        timeBetweenStacks = 0.5f;
+        delayForStacks = new WaitForSeconds(timeBetweenStacks);
     }
 
     private void Start()
@@ -40,12 +50,13 @@ public class Varus_R_Entity : MonoBehaviour//Will code this as if the tether deb
         tetherRange *= StaticObjects.MultiplyingFactor;
     }
 
-    public void SetupEntity(Varus_R ability, Entity entityHit, List<Entity> alreadyAffectedEntities, List<Varus_R_Entity> varusREntitiesCurrentlySpreading)
+    public void SetupEntity(Varus_R ability, Entity affectedEntity, List<Entity> alreadyAffectedEntities, List<Varus_R_Entity> varusREntitiesCurrentlySpreading)
     {
         this.ability = ability;
+        this.affectedEntity = affectedEntity;
         this.alreadyAffectedEntities = alreadyAffectedEntities;
         this.varusREntitiesCurrentlySpreading = varusREntitiesCurrentlySpreading;
-        ApplyAbilityEffectToEntityHit(entityHit);
+        ApplyAbilityEffectToEntityHit(affectedEntity);
         varusREntitiesCurrentlySpreading.Add(this);
     }
 
@@ -165,5 +176,15 @@ public class Varus_R_Entity : MonoBehaviour//Will code this as if the tether deb
         //This might be how it works, requires 5 to test on live... If it's not that, I have no idea how to code it without breaking all I did
         //(Varus -> target -> 2 waiting behind -> 1 waiting behind the 2 who leaves ONE circle and checks if the debuff is still there)
         ability.AbilityDebuffs[1].ConsumeBuff(affectedEntity);
+    }
+
+    private IEnumerator ApplyVarusWPassiveStacks()//TODO: If you cleanse the root, does it still apply the stacks? Currently, yes.
+    {
+        for (int i = 0; i < stacksToApply; i++)
+        {
+            yield return delayForStacks;
+
+            //apply 1 stack
+        }
     }
 }
