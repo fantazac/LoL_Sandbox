@@ -1,16 +1,22 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿public class Varus_W_Debuff : AbilityBuff
+{
+    protected Varus_W_Debuff()
+    {
+        buffName = "Blight";
 
-public class Varus_W_Debuff : MonoBehaviour {
+        isADebuff = true;
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+        buffDuration = 6;
+        buffMaximumStacks = 3;
+    }
+
+    protected override void SetSpritePaths()
+    {
+        buffSpritePath = "Sprites/Characters/CharacterAbilities/Varus/VarusW_Debuff";
+    }
+
+    protected override Buff CreateNewBuff(Entity affectedEntity)
+    {
+        return new Buff(this, affectedEntity, 0, buffDuration, buffMaximumStacks);
+    }
 }

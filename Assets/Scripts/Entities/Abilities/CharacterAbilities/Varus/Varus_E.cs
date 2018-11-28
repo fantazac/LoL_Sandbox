@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Varus_E : GroundTargetedAoE
+public class Varus_E : GroundTargetedAoE //TODO: Shoot invisible projectile and then spawn area on destination reached
 {
+    private Varus_W varusW;
+
     private int totalTicks;
     private float timeBetweenTicks;
     private WaitForSeconds tickDelay;
@@ -64,6 +66,8 @@ public class Varus_E : GroundTargetedAoE
     {
         base.Start();
 
+        varusW = GetComponent<Varus_W>();
+
         AbilityDebuffs = new AbilityBuff[] { gameObject.AddComponent<Varus_E_Debuff>() };
     }
 
@@ -90,8 +94,13 @@ public class Varus_E : GroundTargetedAoE
     {
         foreach (Entity entityHit in entitiesHit)
         {
+            float damage = GetAbilityDamage(entityHit);
             entityHit.EntityStatsManager.ReduceHealth(damageType, GetAbilityDamage(entityHit));
-            //TODO: proc w stacks
+            if (varusW)
+            {
+                varusW.ProcStacks(entityHit, this);
+            }
+            AbilityHit(entityHit, damage);
         }
     }
 

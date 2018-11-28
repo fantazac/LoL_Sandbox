@@ -9,6 +9,8 @@ public class Varus_R : DirectionTargetedProjectile
 
     private float radius;
 
+    private Varus_W varusW;
+
     protected Varus_R()
     {
         abilityName = "Chain of Corruption";
@@ -58,6 +60,8 @@ public class Varus_R : DirectionTargetedProjectile
     {
         base.Start();
 
+        varusW = GetComponent<Varus_W>();
+
         AbilityDebuffs = new AbilityBuff[] { gameObject.AddComponent<Varus_R_Debuff>(), gameObject.AddComponent<Varus_R_TetherDebuff>() };
     }
 
@@ -76,7 +80,7 @@ public class Varus_R : DirectionTargetedProjectile
         }
 
         Varus_R_Entity varusREntity = Instantiate(entityPrefab, Vector3.right * entityHit.transform.position.x + Vector3.forward * entityHit.transform.position.z, Quaternion.identity).GetComponent<Varus_R_Entity>();
-        varusREntity.SetupEntity(this, entityHit, new List<Entity>() { entityHit }, new List<Varus_R_Entity>());
+        varusREntity.SetupEntity(this, entityHit, varusW, new List<Entity>() { entityHit }, new List<Varus_R_Entity>());
         varusREntity.StartEntityLife();
     }
 
@@ -113,6 +117,10 @@ public class Varus_R : DirectionTargetedProjectile
     {
         float damage = GetAbilityDamage(entityHit);
         entityHit.EntityStatsManager.ReduceHealth(damageType, damage);
+        if (varusW)
+        {
+            varusW.ProcStacks(entityHit, this);
+        }
         AbilityHit(entityHit, damage);
     }
 }

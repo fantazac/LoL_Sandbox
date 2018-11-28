@@ -5,10 +5,10 @@ using UnityEngine;
 public class Varus_R_Entity : MonoBehaviour
 {
     private Varus_R ability;
-
-    private Entity affectedEntity;
+    private Varus_W varusW;
 
     private List<Entity> alreadyAffectedEntities;
+    private Entity affectedEntity;
 
     private float tetherRange;
     private float timeBetweenTetherRangeChecks;
@@ -50,10 +50,11 @@ public class Varus_R_Entity : MonoBehaviour
         tetherRange *= StaticObjects.MultiplyingFactor;
     }
 
-    public void SetupEntity(Varus_R ability, Entity affectedEntity, List<Entity> alreadyAffectedEntities, List<Varus_R_Entity> varusREntitiesCurrentlySpreading)
+    public void SetupEntity(Varus_R ability, Entity affectedEntity, Varus_W varusW, List<Entity> alreadyAffectedEntities, List<Varus_R_Entity> varusREntitiesCurrentlySpreading)
     {
         this.ability = ability;
         this.affectedEntity = affectedEntity;
+        this.varusW = varusW;
         this.alreadyAffectedEntities = alreadyAffectedEntities;
         this.varusREntitiesCurrentlySpreading = varusREntitiesCurrentlySpreading;
         ApplyAbilityEffectToEntityHit(affectedEntity);
@@ -128,6 +129,10 @@ public class Varus_R_Entity : MonoBehaviour
     public void StartEntityLife()
     {
         StartCoroutine(EntityLife());
+        if (varusW)
+        {
+            StartCoroutine(ApplyVarusWPassiveStacks());
+        }
 
         foreach (Entity entityAffectedByTether in entitiesAffectedByTethers)
         {
@@ -150,7 +155,7 @@ public class Varus_R_Entity : MonoBehaviour
         }
         for (int i = 0; i < varusREntitiesToSpawn.Count; i++)
         {
-            varusREntitiesToSpawn[i].SetupEntity(ability, entitiesAffectedByTethers[i], alreadyAffectedEntities, varusREntitiesCurrentlySpreading);
+            varusREntitiesToSpawn[i].SetupEntity(ability, entitiesAffectedByTethers[i], varusW, alreadyAffectedEntities, varusREntitiesCurrentlySpreading);
         }
         foreach (Varus_R_Entity varusREntity in varusREntitiesToSpawn)
         {
@@ -184,7 +189,7 @@ public class Varus_R_Entity : MonoBehaviour
         {
             yield return delayForStacks;
 
-            //apply 1 stack
+            varusW.AddNewDebuffToEntityHit(affectedEntity);
         }
     }
 }

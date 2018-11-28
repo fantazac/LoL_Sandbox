@@ -32,7 +32,7 @@
     {
         base.Start();
 
-        AbilityBuffs = new AbilityBuff[] { gameObject.AddComponent<MissFortune_P_Debuff>() };
+        AbilityDebuffs = new AbilityBuff[] { gameObject.AddComponent<MissFortune_P_Debuff>() };
 
         character.CharacterLevelManager.OnLevelUp += OnCharacterLevelUp;
         character.CharacterOnHitEffectsManager.OnApplyOnHitEffects += SetPassiveEffectOnEntityHit;
@@ -52,8 +52,8 @@
     {
         if (entityHit != lastEntityHit)
         {
-            AbilityBuffs[0].ConsumeBuff(lastEntityHit);
-            AbilityBuffs[0].AddNewBuffToAffectedEntity(entityHit);
+            AbilityDebuffs[0].ConsumeBuff(lastEntityHit);
+            AbilityDebuffs[0].AddNewBuffToAffectedEntity(entityHit);
 
             lastEntityHit = entityHit;
 
@@ -79,7 +79,7 @@
     {
         if (lastEntityHit != null)
         {
-            AbilityBuffs[0].ConsumeBuff(lastEntityHit);
+            AbilityDebuffs[0].ConsumeBuff(lastEntityHit);
         }
     }
 }

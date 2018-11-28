@@ -9,7 +9,7 @@
 
     protected override void SetSpritePaths()
     {
-        buffSpritePath = "Sprites/Characters/CharacterAbilities/MissFortune/MissFortuneP_Buff";
+        buffSpritePath = "Sprites/Characters/CharacterAbilities/MissFortune/MissFortuneP_Debuff";
     }
 
     protected override Buff CreateNewBuff(Entity affectedEntity)

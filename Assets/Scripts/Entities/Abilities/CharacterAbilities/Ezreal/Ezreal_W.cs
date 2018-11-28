@@ -114,7 +114,8 @@ public class Ezreal_W : DirectionTargetedProjectile
     {
         AbilityDebuffs[0].ConsumeBuff(entityHit);
         character.EntityStatsManager.Resource.Restore(manaRefundedOnDamageDealt + (sourceAbility != null ? sourceAbility.GetResourceCost() : 0));
-        entityHit.EntityStatsManager.ReduceHealth(damageType, GetAbilityDamage(entityHit));
+        float damage = GetAbilityDamage(entityHit);
+        entityHit.EntityStatsManager.ReduceHealth(damageType, damage);
         AbilityHit(entityHit, damage, false);
     }
 }
