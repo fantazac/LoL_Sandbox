@@ -203,7 +203,7 @@ public class CharacterAbilityManager : MonoBehaviour
     protected void ReceiveFromServer_Ability_Recast(AbilityCategory abilityCategory, int abilityId)
     {
         Ability ability = GetAbility(abilityCategory, abilityId);
-        if (ability.CanBeRecasted && currentlyUsedAbilities.Contains(ability))
+        if (ability.IsReadyToBeRecasted)
         {
             ability.RecastAbility();
         }
@@ -306,7 +306,7 @@ public class CharacterAbilityManager : MonoBehaviour
                     }
                 }
             }
-            else if (AbilityIsRecastable(ability))
+            else if (ability.IsReadyToBeRecasted)
             {
                 if (StaticObjects.OnlineMode)
                 {
@@ -381,11 +381,6 @@ public class CharacterAbilityManager : MonoBehaviour
         }
 
         return true;
-    }
-
-    protected bool AbilityIsRecastable(Ability abilityToCast)
-    {
-        return abilityToCast.CanBeRecasted && !abilityToCast.IsOnCooldownForRecast && currentlyUsedAbilities.Contains(abilityToCast);
     }
 
     protected bool AbilityCanBeCastDuringActiveAbilitiesCastTimes(Ability abilityToCast)

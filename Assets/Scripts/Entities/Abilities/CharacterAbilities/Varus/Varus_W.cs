@@ -1,17 +1,23 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 
 public class Varus_W : PassiveTargeted
 {
     private List<Ability> abilitiesToTriggerStacks;
 
+    private IEnumerator cancelAbilityAfterDelayCoroutine;
+    private float timeBeforeCancellingAbility;
+    private WaitForSeconds delayCancelAbility;
+
     private float percentHealthDamage;
     private float percentHealthDamagePerLevel;
     private float percentAPScaling;
 
-    private float maxDamageAgainstMonsters;
+    //private float maxDamageAgainstMonsters;
 
-    private float missingHealthDamage;
-    private float missingHealthDamagePerLevel;
+    //private float missingHealthDamage;
+    //private float missingHealthDamagePerLevel;
 
     protected Varus_W()
     {
@@ -35,10 +41,13 @@ public class Varus_W : PassiveTargeted
         percentHealthDamagePerLevel = 0.005f;
         percentAPScaling = 0.0002f;
 
-        maxDamageAgainstMonsters = 360;
+        //maxDamageAgainstMonsters = 360;
 
-        missingHealthDamage = 6;// 6/7/8/9/10
-        missingHealthDamagePerLevel = 1;
+        //missingHealthDamage = 6;// 6/7/8/9/10
+        //missingHealthDamagePerLevel = 1;
+
+        timeBeforeCancellingAbility = 5;
+        delayCancelAbility = new WaitForSeconds(timeBeforeCancellingAbility);
 
         CanBeRecasted = true;
 
@@ -48,6 +57,7 @@ public class Varus_W : PassiveTargeted
     protected override void SetResourcePaths()
     {
         abilitySpritePath = "Sprites/Characters/CharacterAbilities/Varus/VarusW";
+        abilityRecastSpritePath = "Sprites/Characters/CharacterAbilities/Varus/VarusW_Active";
     }
 
     protected override void Start()
@@ -76,6 +86,29 @@ public class Varus_W : PassiveTargeted
     public override void LevelUpExtraStats()
     {
         percentHealthDamage += percentHealthDamagePerLevel;
+    }
+
+    public override void UseAbility(Vector3 destination)
+    {
+        StartAbilityCast();
+
+        //if q buff is active
+        //AbilityBuffs[1].AddNewBuffToAffectedEntity(character);
+        //else
+        if (cancelAbilityAfterDelayCoroutine != null)
+        {
+            StopCoroutine(cancelAbilityAfterDelayCoroutine);
+        }
+        cancelAbilityAfterDelayCoroutine = CancelAbilityAfterDelay();
+        StartCoroutine(cancelAbilityAfterDelayCoroutine);
+    }
+
+    protected override void ExtraActionsOnCancel()
+    {
+        if (cancelAbilityAfterDelayCoroutine != null)
+        {
+            StopCoroutine(cancelAbilityAfterDelayCoroutine);
+        }
     }
 
     private void SetPassiveEffectOnEntityHit(Entity entityHit, float damage)
@@ -115,7 +148,15 @@ public class Varus_W : PassiveTargeted
     private float GetStacksTriggeredDamage(Entity entityHit, int stacks)
     {
         float stacksTriggeredDamage = ((percentAPScaling * character.EntityStatsManager.AbilityPower.GetTotal()) + percentHealthDamage) * entityHit.EntityStatsManager.Health.GetTotal() * stacks;
+        float damageAfterModifiers = ApplyDamageModifiers(entityHit, stacksTriggeredDamage, damageType);
+        //when Monster exists, return entityHit is Monster ? Math.Min(damageAfterModifiers, maxDamageAgainstMonsters) : damageAfterModifiers;
+        return damageAfterModifiers;
+    }
 
-        return ApplyDamageModifiers(entityHit, stacksTriggeredDamage, damageType);
+    private IEnumerator CancelAbilityAfterDelay()
+    {
+        yield return delayCancelAbility;
+
+        CancelAbility();
     }
 }

@@ -84,6 +84,7 @@ public abstract class Ability : MonoBehaviour
     public bool IsEnabled { get; protected set; }
     public bool IsOnCooldown { get; protected set; }
     public bool IsOnCooldownForRecast { get; protected set; }
+    public bool IsReadyToBeRecasted { get; private set; }
     public bool OfflineOnly { get; protected set; }
     public bool ResetBasicAttackCycleOnAbilityCast { get; protected set; }
     public bool ResetBasicAttackCycleOnAbilityFinished { get; protected set; }
@@ -229,6 +230,7 @@ public abstract class Ability : MonoBehaviour
     protected void FinishAbilityCast(bool abilityWasCancelled = false)
     {
         abilityEffectCoroutine = null;
+        IsReadyToBeRecasted = false;
         if (AbilitiesToDisableWhileActive != null)
         {
             foreach (Ability ability in AbilitiesToDisableWhileActive)
@@ -410,6 +412,7 @@ public abstract class Ability : MonoBehaviour
         character.AbilityUIManager.SetAbilityOffCooldownForRecast(AbilityCategory, ID);
         cooldownForRecastCoroutine = null;
         IsOnCooldownForRecast = false;
+        IsReadyToBeRecasted = true;
     }
 
     public void ResetCooldown()
@@ -576,13 +579,13 @@ public abstract class Ability : MonoBehaviour
         if (abilityEffectCoroutine != null)
         {
             StopCoroutine(abilityEffectCoroutine);
-            ExtraActionsOnCancel();
-            if (character.AbilityTimeBarUIManager && (HasCastTime || HasChannelTime))
-            {
-                character.AbilityTimeBarUIManager.CancelCastTimeAndChannelTime(ID);
-            }
-            FinishAbilityCast(HasReducedCooldownOnAbilityCancel);
         }
+        ExtraActionsOnCancel();
+        if (character.AbilityTimeBarUIManager && (HasCastTime || HasChannelTime))
+        {
+            character.AbilityTimeBarUIManager.CancelCastTimeAndChannelTime(ID);
+        }
+        FinishAbilityCast(HasReducedCooldownOnAbilityCancel);
     }
 
     protected virtual void ExtraActionsOnCancel() { }

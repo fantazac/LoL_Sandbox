@@ -14,19 +14,11 @@ public abstract class PassiveTargeted : Ability
 
     public override Vector3 GetDestination()
     {
-        Debug.Log("This should not happen - GetDestination - " + this);
         return Vector3.down;
     }
 
-    public override void UseAbility(Vector3 destination)
-    {
-        Debug.Log("This should not happen - UseAbility(destination) - " + this);
-    }
-
-    public override void UseAbility(Entity target)
-    {
-        Debug.Log("This should not happen - UseAbility(target) - " + this);
-    }
+    public override void UseAbility(Vector3 destination) { }
+    public override void UseAbility(Entity target) { }
 
     protected void PassiveEffect(Ability ability, Entity entityHit)
     {
