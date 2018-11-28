@@ -57,6 +57,7 @@ public class Tristana_W : DirectionTargetedDash//TODO: GroundTargetedDash
         yield return delayCastTime;
 
         IsBeingCasted = false;
+        RotationOnAbilityCast(destination);
         FinalAdjustments(destination);
         UseResource();
 
