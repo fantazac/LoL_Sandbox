@@ -1,25 +1,19 @@
-﻿public class Varus_P_Buff : AbilityBuff
+﻿public class Varus_P_BuffChampionTakedown : AbilityBuff
 {
-    private Varus_P varusP;
-
     private float bonusAttackSpeedScaling;
 
-    protected Varus_P_Buff()
+    protected Varus_P_BuffChampionTakedown()
     {
         buffName = "Living Vengeance";
 
-        buffPercentValue = 20;
-        bonusAttackSpeedScaling = 15;
-    }
-
-    protected override void Start()
-    {
-        varusP = GetComponent<Varus_P>();
+        buffDuration = 5;
+        buffPercentValue = 40;
+        bonusAttackSpeedScaling = 30;
     }
 
     protected override void SetSpritePaths()
     {
-        buffSpritePath = "Sprites/Characters/CharacterAbilities/Varus/VarusP_Buff";
+        buffSpritePath = "Sprites/Characters/CharacterAbilities/Varus/VarusP_BuffChampionTakedown";
     }
 
     protected override void ApplyBuffEffect(Entity affectedEntity, float buffValue, int currentStacks)
@@ -34,6 +28,6 @@
 
     protected override Buff CreateNewBuff(Entity affectedEntity)
     {
-        return new Buff(this, affectedEntity, buffPercentValue, varusP.GetDurationForNextBuff());
+        return new Buff(this, affectedEntity, buffPercentValue, buffDuration);
     }
 }
