@@ -92,6 +92,16 @@ public abstract class EntityStatsManager : MonoBehaviour
         MovementSpeed.SubscribeToSlowResistanceChangedEvent(SlowResistance);
     }
 
+    public void ReduceHealth(DamageSourceOnEntityKill damageSourceOnEntityKill, DamageType damageType, float damage)
+    {
+        bool wasAliveBeforeTakingDamage = !Health.IsDead();
+        ReduceHealth(damageType, damage);
+        if (Health.IsDead() && wasAliveBeforeTakingDamage)
+        {
+            damageSourceOnEntityKill.KilledEntity(entity);
+        }
+    }
+
     public void ReduceHealth(DamageType damageType, float damage)
     {
         if (damage < 0)

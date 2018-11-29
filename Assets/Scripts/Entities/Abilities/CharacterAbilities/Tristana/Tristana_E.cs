@@ -85,11 +85,6 @@ public class Tristana_E : UnitTargetedProjectile
         }
     }
 
-    public override void EnableAbilityPassive()
-    {
-        GetComponent<TristanaBasicAttack>().OnBasicAttackKilledEntity += DamageAllEnemiesInPassiveExplosionRadius;
-    }
-
     public override void LevelUpExtraStats()
     {
         passiveDamage += passiveDamagePerLevel;
@@ -189,7 +184,7 @@ public class Tristana_E : UnitTargetedProjectile
         }
     }
 
-    private void DamageAllEnemiesInPassiveExplosionRadius(Entity killedEntity)
+    public void DamageAllEnemiesInPassiveExplosionRadius(Entity killedEntity)
     {
         Entity tempEntity;
 

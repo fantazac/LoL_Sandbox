@@ -1,7 +1,6 @@
-﻿public class TristanaBasicAttack : CharacterBasicAttack
+﻿public class TristanaBasicAttack : CharacterBasicAttack, DamageSourceOnEntityKill
 {
-    public delegate void OnBasicAttackKilledEntityHandler(Entity killedEntity);
-    public event OnBasicAttackKilledEntityHandler OnBasicAttackKilledEntity;
+    private Tristana_E tristanaE;
 
     protected TristanaBasicAttack()
     {
@@ -11,15 +10,18 @@
         basicAttackPrefabPath = "BasicAttacksPrefabs/Characters/Tristana/TristanaBA";
     }
 
-    protected override void ApplyDamageToEntityHit(Entity entityHit, bool isACriticalStrike)
+    protected override void Start()
     {
-        bool entityHitWasDeadBeforeTheBasicAttackHit = entityHit.EntityStatsManager.Health.IsDead();
+        base.Start();
 
-        base.ApplyDamageToEntityHit(entityHit, isACriticalStrike);
+        tristanaE = GetComponent<Tristana_E>();
+    }
 
-        if (entityHit.EntityStatsManager.Health.IsDead() && !entityHitWasDeadBeforeTheBasicAttackHit && OnBasicAttackKilledEntity != null)
+    public void KilledEntity(Entity killedEntity)
+    {
+        if (tristanaE && tristanaE.AbilityLevel > 0)
         {
-            OnBasicAttackKilledEntity(entityHit);
+            tristanaE.DamageAllEnemiesInPassiveExplosionRadius(killedEntity);
         }
     }
 }

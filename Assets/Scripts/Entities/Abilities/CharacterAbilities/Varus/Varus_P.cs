@@ -1,4 +1,4 @@
-﻿public class Varus_P : PassiveTargeted
+﻿public class Varus_P : PassiveTargeted, DamageSourceOnEntityKill
 {
     private float buffDuration;
     private float durationForNextBuff;
@@ -28,11 +28,9 @@
         AbilityBuffs = new AbilityBuff[] { gameObject.AddComponent<Varus_P_Buff>(), gameObject.AddComponent<Varus_P_BuffChampionTakedown>() };
 
         AbilityBuffs[1].OnAbilityBuffRemoved += RemoveBuffFromEntity;
-
-        //on entity kill, call OnEntityKill
     }
 
-    private void OnEntityKill(Entity killedEntity)
+    public void KilledEntity(Entity killedEntity)
     {
         if (killedEntity is Character)
         {
