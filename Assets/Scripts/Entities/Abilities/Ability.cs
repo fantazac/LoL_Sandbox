@@ -137,7 +137,7 @@ public abstract class Ability : EntityDamageSource
         }
         if (affectedByCooldownReduction)
         {
-            character.EntityStatsManager.CooldownReduction.OnCooldownReductionChanged += SetCooldownForAbilityAffectedByCooldownReduction;
+            character.StatsManager.CooldownReduction.OnCooldownReductionChanged += SetCooldownForAbilityAffectedByCooldownReduction;
             SetCooldownForAbilityAffectedByCooldownReduction();
         }
         else
@@ -213,7 +213,7 @@ public abstract class Ability : EntityDamageSource
         }
         if (ResetBasicAttackCycleOnAbilityCast)
         {
-            character.EntityBasicAttack.ResetBasicAttack();
+            character.BasicAttackManager.ResetBasicAttack();
         }
         StartCooldown(true);
     }
@@ -222,7 +222,7 @@ public abstract class Ability : EntityDamageSource
     {
         if (UsesResource)
         {
-            character.EntityStatsManager.Resource.Reduce(resourceCost);
+            character.StatsManager.Resource.Reduce(resourceCost);
         }
     }
 
@@ -247,7 +247,7 @@ public abstract class Ability : EntityDamageSource
         IsActive = false;
         if (ResetBasicAttackCycleOnAbilityFinished)
         {
-            character.EntityBasicAttack.ResetBasicAttack();
+            character.BasicAttackManager.ResetBasicAttack();
         }
         StartCooldown(false, abilityWasCancelled);
     }
@@ -274,7 +274,7 @@ public abstract class Ability : EntityDamageSource
                 }
                 else
                 {
-                    character.AbilityUIManager.EnableAbility(AbilityCategory, ID, resourceCost <= character.EntityStatsManager.Resource.GetCurrentValue());
+                    character.AbilityUIManager.EnableAbility(AbilityCategory, ID, resourceCost <= character.StatsManager.Resource.GetCurrentValue());
                 }
             }
         }
@@ -302,7 +302,7 @@ public abstract class Ability : EntityDamageSource
                 IsBlocked = false;
                 if (!IsOnCooldown && IsEnabled && character.AbilityUIManager)
                 {
-                    character.AbilityUIManager.UnblockAbility(AbilityCategory, ID, resourceCost <= character.EntityStatsManager.Resource.GetCurrentValue());
+                    character.AbilityUIManager.UnblockAbility(AbilityCategory, ID, resourceCost <= character.StatsManager.Resource.GetCurrentValue());
                 }
             }
         }
@@ -323,7 +323,7 @@ public abstract class Ability : EntityDamageSource
                 character.CharacterOnHitEffectsManager.ApplyOnHitEffectsToEntityHit(entityHit, damage);
             }
         }
-        entityHit.EntityEffectSourceManager.EntityHitByAbility(this);
+        entityHit.EffectSourceManager.EntityHitByAbility(this);
         if (OnAbilityHit != null && callOnAbilityHit)
         {
             OnAbilityHit(this, entityHit);
@@ -384,7 +384,7 @@ public abstract class Ability : EntityDamageSource
         character.AbilityUIManager.SetAbilityOffCooldown(AbilityCategory, ID, UsesResource, IsEnabled, IsBlocked);
         if (UsesResource && IsEnabled && !IsBlocked)
         {
-            character.AbilityUIManager.UpdateAbilityHasEnoughResource(ID, resourceCost <= character.EntityStatsManager.Resource.GetCurrentValue());
+            character.AbilityUIManager.UpdateAbilityHasEnoughResource(ID, resourceCost <= character.StatsManager.Resource.GetCurrentValue());
         }
         cooldownForRecastCoroutine = null;
         IsOnCooldown = false;
@@ -459,7 +459,7 @@ public abstract class Ability : EntityDamageSource
             if (UsesResource && abilityUIManager)
             {
                 abilityUIManager.SetAbilityCost(ID, resourceCost);
-                abilityUIManager.UpdateAbilityHasEnoughResource(ID, !IsEnabled || IsBlocked || IsOnCooldown || resourceCost <= character.EntityStatsManager.Resource.GetCurrentValue());
+                abilityUIManager.UpdateAbilityHasEnoughResource(ID, !IsEnabled || IsBlocked || IsOnCooldown || resourceCost <= character.StatsManager.Resource.GetCurrentValue());
             }
         }
         else if (AbilityLevel == 0)
@@ -482,7 +482,7 @@ public abstract class Ability : EntityDamageSource
 
     private void SetCooldownForAbilityAffectedByCooldownReduction()
     {
-        SetCooldownForAbilityAffectedByCooldownReduction(character.EntityStatsManager.CooldownReduction.GetTotal());
+        SetCooldownForAbilityAffectedByCooldownReduction(character.StatsManager.CooldownReduction.GetTotal());
     }
 
     protected virtual void SetCooldownForAbilityAffectedByCooldownReduction(float cooldownReduction)
@@ -500,9 +500,9 @@ public abstract class Ability : EntityDamageSource
     protected virtual float GetAbilityDamage(Entity entityHit, bool isACriticalStrike = false, float criticalStrikeDamage = 0)
     {
         float abilityDamage = damage +
-            (bonusADScaling * character.EntityStatsManager.AttackDamage.GetBonus()) +
-            (totalADScaling * character.EntityStatsManager.AttackDamage.GetTotal()) +
-            (totalAPScaling * character.EntityStatsManager.AbilityPower.GetTotal());
+            (bonusADScaling * character.StatsManager.AttackDamage.GetBonus()) +
+            (totalADScaling * character.StatsManager.AttackDamage.GetTotal()) +
+            (totalAPScaling * character.StatsManager.AbilityPower.GetTotal());
 
         return ApplyDamageModifiers(entityHit, abilityDamage, damageType) *
             (isACriticalStrike ? criticalStrikeDamage : 1f);
@@ -518,17 +518,17 @@ public abstract class Ability : EntityDamageSource
         damage *= ApplyAbilityDamageModifier(entityHit);
         if (damageType == DamageType.MAGIC)
         {
-            float totalResistance = entityHit.EntityStatsManager.MagicResistance.GetTotal();
-            totalResistance *= (1 - character.EntityStatsManager.MagicPenetrationPercent.GetTotal());
-            totalResistance -= character.EntityStatsManager.MagicPenetrationFlat.GetTotal();
-            return damage * GetResistanceDamageReceivedModifier(totalResistance) * entityHit.EntityStatsManager.MagicDamageReceivedModifier.GetTotal() * character.EntityStatsManager.MagicDamageModifier.GetTotal();
+            float totalResistance = entityHit.StatsManager.MagicResistance.GetTotal();
+            totalResistance *= (1 - character.StatsManager.MagicPenetrationPercent.GetTotal());
+            totalResistance -= character.StatsManager.MagicPenetrationFlat.GetTotal();
+            return damage * GetResistanceDamageReceivedModifier(totalResistance) * entityHit.StatsManager.MagicDamageReceivedModifier.GetTotal() * character.StatsManager.MagicDamageModifier.GetTotal();
         }
         else if (damageType == DamageType.PHYSICAL)
         {
-            float totalResistance = entityHit.EntityStatsManager.Armor.GetTotal();
-            totalResistance *= (1 - character.EntityStatsManager.ArmorPenetrationPercent.GetTotal());
-            totalResistance -= character.EntityStatsManager.Lethality.GetCurrentValue();
-            return damage * GetResistanceDamageReceivedModifier(totalResistance) * entityHit.EntityStatsManager.PhysicalDamageReceivedModifier.GetTotal() * character.EntityStatsManager.PhysicalDamageModifier.GetTotal();
+            float totalResistance = entityHit.StatsManager.Armor.GetTotal();
+            totalResistance *= (1 - character.StatsManager.ArmorPenetrationPercent.GetTotal());
+            totalResistance -= character.StatsManager.Lethality.GetCurrentValue();
+            return damage * GetResistanceDamageReceivedModifier(totalResistance) * entityHit.StatsManager.PhysicalDamageReceivedModifier.GetTotal() * character.StatsManager.PhysicalDamageModifier.GetTotal();
         }
 
         return damage;

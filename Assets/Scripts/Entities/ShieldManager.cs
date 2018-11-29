@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class EntityShieldManager : MonoBehaviour
+public class ShieldManager : MonoBehaviour
 {
     private Entity entity;
 

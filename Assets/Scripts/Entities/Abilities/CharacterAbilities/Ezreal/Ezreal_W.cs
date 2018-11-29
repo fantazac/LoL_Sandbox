@@ -83,20 +83,20 @@ public class Ezreal_W : DirectionTargetedProjectile
 
     private void AddNewDebuffToEntityHit(Entity entityHit)
     {
-        entityHit.EntityEffectSourceManager.OnEntityHitByAbility += OnMarkedEntityHitByAbility;
-        entityHit.EntityEffectSourceManager.OnEntityHitByBasicAttack += OnMarkedEntityHitByBasicAttack;
+        entityHit.EffectSourceManager.OnEntityHitByAbility += OnMarkedEntityHitByAbility;
+        entityHit.EffectSourceManager.OnEntityHitByBasicAttack += OnMarkedEntityHitByBasicAttack;
         AbilityDebuffs[0].AddNewBuffToAffectedEntity(entityHit);
     }
 
     private void RemoveDebuffFromEntityHit(Entity entityHit)
     {
-        entityHit.EntityEffectSourceManager.OnEntityHitByAbility -= OnMarkedEntityHitByAbility;
-        entityHit.EntityEffectSourceManager.OnEntityHitByBasicAttack -= OnMarkedEntityHitByBasicAttack;
+        entityHit.EffectSourceManager.OnEntityHitByAbility -= OnMarkedEntityHitByAbility;
+        entityHit.EffectSourceManager.OnEntityHitByBasicAttack -= OnMarkedEntityHitByBasicAttack;
     }
 
     private void OnMarkedEntityHitByAbility(Entity entityHit, Ability sourceAbility)
     {
-        if (entityHit.EntityBuffManager.IsAffectedByDebuff(AbilityDebuffs[0]) && abilitiesToTriggerMark.Contains(sourceAbility))
+        if (entityHit.BuffManager.IsAffectedByDebuff(AbilityDebuffs[0]) && abilitiesToTriggerMark.Contains(sourceAbility))
         {
             DealDamageToMarkedEntity(entityHit, sourceAbility);
         }
@@ -104,7 +104,7 @@ public class Ezreal_W : DirectionTargetedProjectile
 
     private void OnMarkedEntityHitByBasicAttack(Entity entityHit, Entity sourceEntity)
     {
-        if (entityHit.EntityBuffManager.IsAffectedByDebuff(AbilityDebuffs[0]) && sourceEntity == character)
+        if (entityHit.BuffManager.IsAffectedByDebuff(AbilityDebuffs[0]) && sourceEntity == character)
         {
             DealDamageToMarkedEntity(entityHit);
         }
@@ -113,7 +113,7 @@ public class Ezreal_W : DirectionTargetedProjectile
     private void DealDamageToMarkedEntity(Entity entityHit, Ability sourceAbility = null)
     {
         AbilityDebuffs[0].ConsumeBuff(entityHit);
-        character.EntityStatsManager.Resource.Restore(manaRefundedOnDamageDealt + (sourceAbility != null ? sourceAbility.GetResourceCost() : 0));
+        character.StatsManager.Resource.Restore(manaRefundedOnDamageDealt + (sourceAbility != null ? sourceAbility.GetResourceCost() : 0));
         float damage = GetAbilityDamage(entityHit);
         DamageEntity(entityHit, damage);
         AbilityHit(entityHit, damage, false);

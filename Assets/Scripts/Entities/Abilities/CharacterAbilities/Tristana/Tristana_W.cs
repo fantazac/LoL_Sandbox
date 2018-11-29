@@ -62,7 +62,7 @@ public class Tristana_W : DirectionTargetedDash//TODO: GroundTargetedDash
         UseResource();
 
         SetupDash();
-        character.EntityDisplacementManager.OnDisplacementFinished += ApplyDamageAndSlowToAllEnemiesInRadius;
+        character.DisplacementManager.OnDisplacementFinished += ApplyDamageAndSlowToAllEnemiesInRadius;
 
         FinishAbilityCast();
     }

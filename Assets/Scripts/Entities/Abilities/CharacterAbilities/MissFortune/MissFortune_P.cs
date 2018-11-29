@@ -66,7 +66,7 @@
             //{
             DamageEntity(entityHit, passiveDamage);
             //} 
-            character.EntityStatsManager.RestoreHealth(passiveDamage * character.EntityStatsManager.LifeSteal.GetTotal());
+            character.StatsManager.RestoreHealth(passiveDamage * character.StatsManager.LifeSteal.GetTotal());
 
             if (OnPassiveHit != null)
             {

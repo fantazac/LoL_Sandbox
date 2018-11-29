@@ -7,8 +7,8 @@
 
     protected override void SetCharacterSpecificScripts()
     {
-        EntityBasicAttack = gameObject.AddComponent<LucianBasicAttack>();
-        EntityStatsManager = gameObject.AddComponent<LucianStatsManager>();
+        BasicAttackManager = gameObject.AddComponent<LucianBasicAttack>();
+        StatsManager = gameObject.AddComponent<LucianStatsManager>();
 
         CharacterAbilityManager = gameObject.AddComponent<LucianAbilityManager>();
     }

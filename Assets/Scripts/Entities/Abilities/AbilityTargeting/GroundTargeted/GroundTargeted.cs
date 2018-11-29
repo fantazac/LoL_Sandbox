@@ -16,7 +16,7 @@ public abstract class GroundTargeted : Ability // Curently same as DirectionTarg
     {
         StartAbilityCast();
 
-        character.EntityBasicAttack.CancelCurrentBasicAttackToCastAbility();
+        character.BasicAttackManager.CancelCurrentBasicAttackToCastAbility();
 
         destinationOnCast = destination;
         RotationOnAbilityCast(destination);

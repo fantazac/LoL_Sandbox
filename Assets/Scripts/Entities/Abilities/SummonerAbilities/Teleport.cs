@@ -33,7 +33,7 @@ public class Teleport : GroundTargetedBlink//TODO: UnitTargeted
     {
         StartAbilityCast();
 
-        character.EntityBasicAttack.CancelCurrentBasicAttackToCastAbility();
+        character.BasicAttackManager.CancelCurrentBasicAttackToCastAbility();
 
         FinalAdjustments(destination);
 

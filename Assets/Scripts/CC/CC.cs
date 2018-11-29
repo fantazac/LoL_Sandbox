@@ -7,8 +7,8 @@
 
     protected override void SetCharacterSpecificScripts()
     {
-        EntityBasicAttack = gameObject.AddComponent<CCBasicAttack>();
-        EntityStatsManager = gameObject.AddComponent<CCStatsManager>();
+        BasicAttackManager = gameObject.AddComponent<CCBasicAttack>();
+        StatsManager = gameObject.AddComponent<CCStatsManager>();
 
         CharacterAbilityManager = gameObject.AddComponent<CCAbilityManager>();
     }

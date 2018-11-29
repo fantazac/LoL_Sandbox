@@ -80,13 +80,13 @@ public class MissFortune_Q : UnitTargetedProjectile
         if (nextEntity)
         {
             bool secondHitIsACriticalStrike;
-            if (entityHit.EntityStatsManager.Health.IsDead())
+            if (entityHit.StatsManager.Health.IsDead())
             {
                 secondHitIsACriticalStrike = true;
             }
             else
             {
-                secondHitIsACriticalStrike = AttackIsCritical.CheckIfAttackIsCritical(character.EntityStatsManager.CriticalStrikeChance.GetTotal());
+                secondHitIsACriticalStrike = AttackIsCritical.CheckIfAttackIsCritical(character.StatsManager.CriticalStrikeChance.GetTotal());
             }
 
             ProjectileUnitTargeted projectile2 = (Instantiate(projectilePrefab, entityHit.transform.position, transform.rotation)).GetComponent<ProjectileUnitTargeted>();

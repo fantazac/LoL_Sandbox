@@ -52,7 +52,7 @@ public class MissFortune_W : SelfTargeted
     {
         GetComponent<MissFortune_P>().OnPassiveHit += OnPassiveHit;
 
-        character.EntityStatsManager.Health.OnResourceReduced += OnDamageTaken;
+        character.StatsManager.Health.OnResourceReduced += OnDamageTaken;
         //TODO: something.OnRevive += OnRevive;
         AddNewDebuffToEntityHit(character);
     }

@@ -25,13 +25,13 @@ public class Tristana_R_Debuff : AbilityBuff
 
     protected override void ApplyBuffEffect(Entity affectedEntity, Buff buff)
     {
-        affectedEntity.EntityStatusManager.AddCrowdControlEffect(buffCrowdControlEffect);
-        affectedEntity.EntityDisplacementManager.SetupDisplacement(normalizedVector * buff.BuffValue, knockbackSpeed, this);
+        affectedEntity.StatusManager.AddCrowdControlEffect(buffCrowdControlEffect);
+        affectedEntity.DisplacementManager.SetupDisplacement(normalizedVector * buff.BuffValue, knockbackSpeed, this);
     }
 
     protected override void RemoveBuffEffect(Entity affectedEntity, Buff buff)
     {
-        affectedEntity.EntityStatusManager.RemoveCrowdControlEffect(buffCrowdControlEffect);
+        affectedEntity.StatusManager.RemoveCrowdControlEffect(buffCrowdControlEffect);
     }
 
     protected override Buff CreateNewBuff(Entity affectedEntity)

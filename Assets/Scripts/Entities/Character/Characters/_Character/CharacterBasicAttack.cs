@@ -1,4 +1,4 @@
-﻿public abstract class CharacterBasicAttack : EntityBasicAttack
+﻿public abstract class CharacterBasicAttack : BasicAttackManager
 {
     //things that differ for Characters from other entities
 }

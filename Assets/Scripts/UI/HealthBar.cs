@@ -90,23 +90,23 @@ public class HealthBar : MonoBehaviour
     {
         this.character = character;
 
-        character.EntityStatsManager.Health.OnCurrentResourceChanged += OnCurrentHealthChanged;
+        character.StatsManager.Health.OnCurrentResourceChanged += OnCurrentHealthChanged;
 
-        character.EntityShieldManager.OnShieldChanged += OnShieldChanged;
+        character.ShieldManager.OnShieldChanged += OnShieldChanged;
 
-        maxHealth = character.EntityStatsManager.Health.GetTotal();
+        maxHealth = character.StatsManager.Health.GetTotal();
 
-        if (character.EntityStatsManager.ResourceType != ResourceType.NONE)
+        if (character.StatsManager.ResourceType != ResourceType.NONE)
         {
-            if (character.EntityStatsManager.ResourceType == ResourceType.MANA)
+            if (character.StatsManager.ResourceType == ResourceType.MANA)
             {
                 resourceImage.color = new Color(57f / 255f, 170f / 255f, 222f / 255f);
             }
-            else if (character.EntityStatsManager.ResourceType == ResourceType.ENERGY)
+            else if (character.StatsManager.ResourceType == ResourceType.ENERGY)
             {
                 resourceImage.color = new Color(234f / 255f, 221f / 255f, 90f / 255f);
             }
-            else if (character.EntityStatsManager.ResourceType == ResourceType.FURY)
+            else if (character.StatsManager.ResourceType == ResourceType.FURY)
             {
                 resourceImage.color = new Color(244f / 255f, 4f / 255f, 13f / 255f);
             }
@@ -115,8 +115,8 @@ public class HealthBar : MonoBehaviour
                 Destroy(resourceImage.gameObject);
             }
 
-            character.EntityStatsManager.Resource.OnCurrentResourceChanged += OnCurrentResourceChanged;
-            maxResource = character.EntityStatsManager.Resource.GetTotal();
+            character.StatsManager.Resource.OnCurrentResourceChanged += OnCurrentResourceChanged;
+            maxResource = character.StatsManager.Resource.GetTotal();
         }
         else
         {
@@ -196,12 +196,12 @@ public class HealthBar : MonoBehaviour
 
     private void OnDestroy()
     {
-        character.EntityStatsManager.Health.OnCurrentResourceChanged -= OnCurrentHealthChanged;
-        if (character.EntityStatsManager.Resource != null)
+        character.StatsManager.Health.OnCurrentResourceChanged -= OnCurrentHealthChanged;
+        if (character.StatsManager.Resource != null)
         {
-            character.EntityStatsManager.Resource.OnCurrentResourceChanged -= OnCurrentResourceChanged;
+            character.StatsManager.Resource.OnCurrentResourceChanged -= OnCurrentResourceChanged;
         }
-        character.EntityShieldManager.OnShieldChanged -= OnShieldChanged;
+        character.ShieldManager.OnShieldChanged -= OnShieldChanged;
     }
 
     private float GetHealthSeperatorFactor(float totalHealthValue)
@@ -257,7 +257,7 @@ public class HealthBar : MonoBehaviour
 
     private void OnCurrentResourceChanged(float currentResourceValue)
     {
-        maxResource = character.EntityStatsManager.Resource.GetTotal();
+        maxResource = character.StatsManager.Resource.GetTotal();
         resourceImage.fillAmount = currentResourceValue / maxResource;
     }
 
@@ -265,7 +265,7 @@ public class HealthBar : MonoBehaviour
     {
         shields[(int)shieldType] = shieldValue;
 
-        UpdateHealthTransform(character.EntityStatsManager.Health.GetCurrentValue());
+        UpdateHealthTransform(character.StatsManager.Health.GetCurrentValue());
         UpdateShieldTransforms();
         SetHealthBarSeparators();
     }
@@ -277,7 +277,7 @@ public class HealthBar : MonoBehaviour
 
     private void SetMaxHealth()
     {
-        maxHealth = character.EntityStatsManager.Health.GetTotal();
+        maxHealth = character.StatsManager.Health.GetTotal();
     }
 
     private void UpdateShieldTransforms()
@@ -393,7 +393,7 @@ public class HealthBar : MonoBehaviour
 
     private float GetTotalHealthValue()
     {
-        float GetCurrentHealthValue = GetTotalShieldValue() + character.EntityStatsManager.Health.GetCurrentValue();
+        float GetCurrentHealthValue = GetTotalShieldValue() + character.StatsManager.Health.GetCurrentValue();
         if (maxHealth >= GetCurrentHealthValue)
         {
             return maxHealth;

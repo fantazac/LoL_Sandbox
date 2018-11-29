@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-public class EntityDisplacementManager : MonoBehaviour
+public class DisplacementManager : MonoBehaviour
 {
     private Character entity;//TODO: Entity
 
@@ -40,7 +40,7 @@ public class EntityDisplacementManager : MonoBehaviour
                 sourceAbilityBuffForCurrentDisplacement.ConsumeBuff(entity);
                 sourceAbilityBuffForCurrentDisplacement = null;
             }
-            entity.EntityModelObject.transform.position = transform.position;
+            entity.ModelObject.transform.position = transform.position;
         }
     }
 
@@ -68,7 +68,7 @@ public class EntityDisplacementManager : MonoBehaviour
     private IEnumerator Knockup(Vector3 destination, float displacementSpeed, AbilityBuff sourceAbilityBuff)
     {
         Vector3 initialPosition = transform.position;
-        Transform modelTransform = entity.EntityModelObject.transform;
+        Transform modelTransform = entity.ModelObject.transform;
 
         while (modelTransform.position != destination)//up
         {

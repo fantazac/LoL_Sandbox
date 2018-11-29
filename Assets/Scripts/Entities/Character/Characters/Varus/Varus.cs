@@ -7,8 +7,8 @@
 
     protected override void SetCharacterSpecificScripts()
     {
-        EntityBasicAttack = gameObject.AddComponent<VarusBasicAttack>();
-        EntityStatsManager = gameObject.AddComponent<VarusStatsManager>();
+        BasicAttackManager = gameObject.AddComponent<VarusBasicAttack>();
+        StatsManager = gameObject.AddComponent<VarusStatsManager>();
 
         CharacterAbilityManager = gameObject.AddComponent<VarusAbilityManager>();
     }

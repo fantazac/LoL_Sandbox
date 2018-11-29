@@ -82,7 +82,7 @@ public abstract class AbilityBuff : MonoBehaviour
 
     public virtual void AddNewBuffToAffectedEntity(Entity affectedEntity)
     {
-        SetupBuff(isADebuff ? affectedEntity.EntityBuffManager.GetDebuff(this) : affectedEntity.EntityBuffManager.GetBuff(this), affectedEntity);
+        SetupBuff(isADebuff ? affectedEntity.BuffManager.GetDebuff(this) : affectedEntity.BuffManager.GetBuff(this), affectedEntity);
     }
 
     public virtual void AddNewBuffToAffectedEntities(List<Entity> previousEntitiesHit, List<Entity> entitiesHit)
@@ -96,7 +96,7 @@ public abstract class AbilityBuff : MonoBehaviour
         }
         foreach (Entity entityHit in entitiesHit)
         {
-            SetupBuff(isADebuff ? entityHit.EntityBuffManager.GetDebuff(this) : entityHit.EntityBuffManager.GetBuff(this), entityHit);
+            SetupBuff(isADebuff ? entityHit.BuffManager.GetDebuff(this) : entityHit.BuffManager.GetBuff(this), entityHit);
         }
     }
 
@@ -105,7 +105,7 @@ public abstract class AbilityBuff : MonoBehaviour
         if (buff == null)
         {
             buff = CreateNewBuff(affectedEntity);
-            affectedEntity.EntityBuffManager.ApplyBuff(buff, buffSprite, isADebuff);
+            affectedEntity.BuffManager.ApplyBuff(buff, buffSprite, isADebuff);
             if (showBuffValueOnUI)
             {
                 buff.SetBuffValueOnUI();
@@ -123,14 +123,14 @@ public abstract class AbilityBuff : MonoBehaviour
 
     public virtual void ConsumeBuff(Entity affectedEntity)
     {
-        Consume(affectedEntity, isADebuff ? affectedEntity.EntityBuffManager.GetDebuff(this) : affectedEntity.EntityBuffManager.GetBuff(this));
+        Consume(affectedEntity, isADebuff ? affectedEntity.BuffManager.GetDebuff(this) : affectedEntity.BuffManager.GetBuff(this));
     }
 
     protected void Consume(Entity affectedEntity, Buff buff)
     {
         if (buff != null)
         {
-            affectedEntity.EntityBuffManager.ConsumeBuff(buff, isADebuff);
+            affectedEntity.BuffManager.ConsumeBuff(buff, isADebuff);
         }
     }
 
@@ -141,13 +141,13 @@ public abstract class AbilityBuff : MonoBehaviour
 
     protected float GetBuffDuration(Entity affectedEntity)
     {
-        if (affectedEntity.EntityStatusManager.IsAnAirborneEffect(buffCrowdControlEffect))
+        if (affectedEntity.StatusManager.IsAnAirborneEffect(buffCrowdControlEffect))
         {
-            return buffDuration * (1 + affectedEntity.EntityStatsManager.Tenacity.GetPercentMalus());
+            return buffDuration * (1 + affectedEntity.StatsManager.Tenacity.GetPercentMalus());
         }
-        else if (affectedEntity.EntityStatusManager.CanReduceCrowdControlDuration(buffCrowdControlEffect))
+        else if (affectedEntity.StatusManager.CanReduceCrowdControlDuration(buffCrowdControlEffect))
         {
-            return buffDuration * (1 - affectedEntity.EntityStatsManager.Tenacity.GetTotal());
+            return buffDuration * (1 - affectedEntity.StatsManager.Tenacity.GetTotal());
         }
         return buffDuration;
     }

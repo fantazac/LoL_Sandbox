@@ -14,7 +14,7 @@ public class EntityDamageSource : MonoBehaviour
 
     protected void DamageEntity(Entity entityToDamage, DamageType damageType, float damage)
     {
-        entityToDamage.EntityStatsManager.ReduceHealth(this, damageType, damage);
+        entityToDamage.StatsManager.ReduceHealth(this, damageType, damage);
     }
 
     public void KilledEntity(Entity killedEntity)

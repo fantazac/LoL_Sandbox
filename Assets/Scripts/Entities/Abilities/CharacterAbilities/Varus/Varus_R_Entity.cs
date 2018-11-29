@@ -72,7 +72,7 @@ public class Varus_R_Entity : MonoBehaviour
 
     private void SetupTether(Entity entityInRange)
     {
-        if (!entityInRange.EntityBuffManager.IsAffectedByDebuff(ability.AbilityDebuffs[1]))
+        if (!entityInRange.BuffManager.IsAffectedByDebuff(ability.AbilityDebuffs[1]))
         {
             AddTetherToEntityInRange(entityInRange);
         }

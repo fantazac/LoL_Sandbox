@@ -39,7 +39,7 @@ public class Varus_P : PassiveTargeted
         {
             damageSource.OnKilledEntity += OnEntityKilled;
         }
-        character.EntityBasicAttack.OnKilledEntity += OnEntityKilled;
+        character.BasicAttackManager.OnKilledEntity += OnEntityKilled;
     }
 
     private void OnEntityKilled(EntityDamageSource damageSource, Entity killedEntity)
@@ -52,7 +52,7 @@ public class Varus_P : PassiveTargeted
         }
         else
         {
-            Buff buff = character.EntityBuffManager.GetBuff(AbilityBuffs[1]);
+            Buff buff = character.BuffManager.GetBuff(AbilityBuffs[1]);
             if (buff != null)
             {
                 durationForNextBuff = buffDuration - buff.DurationRemaining;

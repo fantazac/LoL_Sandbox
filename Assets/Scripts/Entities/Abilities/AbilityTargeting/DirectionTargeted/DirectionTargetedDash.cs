@@ -18,7 +18,7 @@ public abstract class DirectionTargetedDash : DirectionTargeted
 
         this.destination = destination;
 
-        character.EntityBasicAttack.CancelCurrentBasicAttackToCastAbility();
+        character.BasicAttackManager.CancelCurrentBasicAttackToCastAbility();
         RotationOnAbilityCast(destination);
 
         if (castTime > 0)
@@ -38,8 +38,8 @@ public abstract class DirectionTargetedDash : DirectionTargeted
 
     protected void SetupDash()
     {
-        character.EntityDisplacementManager.SetupDisplacement(this.destination, dashSpeed);
-        character.EntityDisplacementManager.OnDisplacementFinished += SetupAutoAttackPostDash;
+        character.DisplacementManager.SetupDisplacement(this.destination, dashSpeed);
+        character.DisplacementManager.OnDisplacementFinished += SetupAutoAttackPostDash;
     }
 
     protected void SetupAutoAttackPostDash()

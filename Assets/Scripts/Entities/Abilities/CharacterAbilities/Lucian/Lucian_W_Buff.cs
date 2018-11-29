@@ -16,12 +16,12 @@
 
     protected override void ApplyBuffEffect(Entity affectedEntity, Buff buff)
     {
-        affectedEntity.EntityStatsManager.MovementSpeed.AddFlatBonus(buff.BuffValue);
+        affectedEntity.StatsManager.MovementSpeed.AddFlatBonus(buff.BuffValue);
     }
 
     protected override void RemoveBuffEffect(Entity affectedEntity, Buff buff)
     {
-        affectedEntity.EntityStatsManager.MovementSpeed.RemoveFlatBonus(buff.BuffValue);
+        affectedEntity.StatsManager.MovementSpeed.RemoveFlatBonus(buff.BuffValue);
     }
 
     protected override Buff CreateNewBuff(Entity affectedEntity)

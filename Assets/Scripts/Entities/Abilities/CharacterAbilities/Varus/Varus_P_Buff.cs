@@ -25,13 +25,13 @@
 
     protected override void ApplyBuffEffect(Entity affectedEntity, Buff buff)
     {
-        buff.SetBuffValue(buff.BuffValue + (affectedEntity.EntityStatsManager.AttackSpeed.GetAttackSpeedBonus() * bonusAttackSpeedScaling));
-        affectedEntity.EntityStatsManager.AttackSpeed.AddPercentBonus(buff.BuffValue);
+        buff.SetBuffValue(buff.BuffValue + (affectedEntity.StatsManager.AttackSpeed.GetAttackSpeedBonus() * bonusAttackSpeedScaling));
+        affectedEntity.StatsManager.AttackSpeed.AddPercentBonus(buff.BuffValue);
     }
 
     protected override void RemoveBuffEffect(Entity affectedEntity, Buff buff)
     {
-        affectedEntity.EntityStatsManager.AttackSpeed.RemovePercentBonus(buff.BuffValue);
+        affectedEntity.StatsManager.AttackSpeed.RemovePercentBonus(buff.BuffValue);
     }
 
     protected override Buff CreateNewBuff(Entity affectedEntity)

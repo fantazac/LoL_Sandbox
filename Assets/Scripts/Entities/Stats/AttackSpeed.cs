@@ -4,12 +4,12 @@ public class AttackSpeed : MultiplicativeBonusStat
 {
     private static float ATTACK_SPEED_CAP = 2.5f;
 
-    private EntityBasicAttack entityBasicAttack;
+    private BasicAttackManager entityBasicAttack;
 
     public AttackSpeed(float initialBaseValue) : base(initialBaseValue) { }
     public AttackSpeed(float initialBaseValue, float perLevelValue) : base(initialBaseValue, perLevelValue) { }
 
-    public void SetEntityBasicAttack(EntityBasicAttack entityBasicAttack)
+    public void SetEntityBasicAttack(BasicAttackManager entityBasicAttack)
     {
         if (entityBasicAttack)
         {

@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public abstract class EntityStatsManager : MonoBehaviour
+public abstract class StatsManager : MonoBehaviour
 {
     protected Entity entity;
 
@@ -88,7 +88,7 @@ public abstract class EntityStatsManager : MonoBehaviour
 
     protected void ExtraAdjustments()
     {
-        AttackSpeed.SetEntityBasicAttack(GetComponent<EntityBasicAttack>());
+        AttackSpeed.SetEntityBasicAttack(GetComponent<BasicAttackManager>());
         MovementSpeed.SubscribeToSlowResistanceChangedEvent(SlowResistance);
     }
 
@@ -103,15 +103,15 @@ public abstract class EntityStatsManager : MonoBehaviour
             float remainingDamage = damage;
             if (damageType == DamageType.MAGIC)
             {
-                remainingDamage = entity.EntityShieldManager.DamageShield(ShieldType.MAGIC, remainingDamage);
+                remainingDamage = entity.ShieldManager.DamageShield(ShieldType.MAGIC, remainingDamage);
             }
             else if (damageType == DamageType.PHYSICAL)
             {
-                remainingDamage = entity.EntityShieldManager.DamageShield(ShieldType.PHYSICAL, remainingDamage);
+                remainingDamage = entity.ShieldManager.DamageShield(ShieldType.PHYSICAL, remainingDamage);
             }
             else
             {
-                remainingDamage = entity.EntityShieldManager.DamageShield(ShieldType.NORMAL, remainingDamage);
+                remainingDamage = entity.ShieldManager.DamageShield(ShieldType.NORMAL, remainingDamage);
             }
 
             if (remainingDamage > 0)

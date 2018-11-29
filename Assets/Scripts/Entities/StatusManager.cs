@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-public class EntityStatusManager : MonoBehaviour
+public class StatusManager : MonoBehaviour
 {
     private Entity entity;
     private Character character;//TODO: to remove
@@ -15,7 +15,7 @@ public class EntityStatusManager : MonoBehaviour
     private int blockSummonerAbilitiesCount;
     private int isBlindedCount;
 
-    private EntityStatusManager()
+    private StatusManager()
     {
         CrowdControlEffectsOnCharacter = new List<CrowdControlEffect>();
     }
@@ -130,9 +130,9 @@ public class EntityStatusManager : MonoBehaviour
                 }
                 break;
             case CrowdControlEffect.KNOCKDOWN:
-                if (character.EntityDisplacementManager)
+                if (character.DisplacementManager)
                 {
-                    character.EntityDisplacementManager.StopCurrentDisplacement();
+                    character.DisplacementManager.StopCurrentDisplacement();
                 }
                 break;
             case CrowdControlEffect.NEARSIGHT://TODO
@@ -270,9 +270,9 @@ public class EntityStatusManager : MonoBehaviour
     private void SetCannotUseBasicAttacks(int count)
     {
         blockBasicAttacksCount += count;
-        if (CanBlockAbilitiesOrBasicAttacks(count, blockBasicAttacksCount) && entity.EntityBasicAttack)
+        if (CanBlockAbilitiesOrBasicAttacks(count, blockBasicAttacksCount) && entity.BasicAttackManager)
         {
-            entity.EntityBasicAttack.StopBasicAttack(true);
+            entity.BasicAttackManager.StopBasicAttack(true);
         }
     }
 

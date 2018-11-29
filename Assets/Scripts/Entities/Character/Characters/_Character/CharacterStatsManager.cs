@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-public abstract class CharacterStatsManager : EntityStatsManager
+public abstract class CharacterStatsManager : StatsManager
 {
     private float regenerationPercentPerTick;
     private float regenerationInterval;

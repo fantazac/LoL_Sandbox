@@ -24,13 +24,13 @@
     {
         foreach (Entity affectedEntity in EntitiesAffectedByBuff)
         {
-            BuffUpdatingWithDelay buff = (BuffUpdatingWithDelay)affectedEntity.EntityBuffManager.GetBuff(this);
+            BuffUpdatingWithDelay buff = (BuffUpdatingWithDelay)affectedEntity.BuffManager.GetBuff(this);
             if (buff != null)
             {
                 if (buff.BuffValue != baseBuffFlatBonus)
                 {
-                    affectedEntity.EntityStatsManager.MovementSpeed.RemoveFlatBonus(oldFlatValue);
-                    affectedEntity.EntityStatsManager.MovementSpeed.AddFlatBonus(newFlatValue);
+                    affectedEntity.StatsManager.MovementSpeed.RemoveFlatBonus(oldFlatValue);
+                    affectedEntity.StatsManager.MovementSpeed.AddFlatBonus(newFlatValue);
                     buff.SetBuffValueOnUI(newFlatValue);
                 }
                 else
@@ -43,12 +43,12 @@
 
     protected override void ApplyBuffEffect(Entity affectedEntity, Buff buff)
     {
-        affectedEntity.EntityStatsManager.MovementSpeed.AddFlatBonus(buff.BuffValue);
+        affectedEntity.StatsManager.MovementSpeed.AddFlatBonus(buff.BuffValue);
     }
 
     protected override void RemoveBuffEffect(Entity affectedEntity, Buff buff)
     {
-        affectedEntity.EntityStatsManager.MovementSpeed.RemoveFlatBonus(buff.BuffValue);
+        affectedEntity.StatsManager.MovementSpeed.RemoveFlatBonus(buff.BuffValue);
     }
 
     protected override Buff CreateNewBuff(Entity affectedEntity)

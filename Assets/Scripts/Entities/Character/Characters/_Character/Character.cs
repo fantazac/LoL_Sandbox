@@ -37,7 +37,7 @@ public abstract class Character : Entity
             BuffUIManager[] buffUIManagers = transform.parent.GetComponentsInChildren<BuffUIManager>();
             BuffUIManager = buffUIManagers[0];
             DebuffUIManager = buffUIManagers[1];
-            EntityBuffManager.SetUIManagers(BuffUIManager, DebuffUIManager);
+            BuffManager.SetUIManagers(BuffUIManager, DebuffUIManager);
             HealthBarManager = transform.parent.GetComponentInChildren<HealthBarManager>();
             LevelUIManager = transform.parent.GetComponentInChildren<LevelUIManager>();
             LevelUIManager.SetPortraitSprite(Resources.Load<Sprite>(characterPortraitPath));
