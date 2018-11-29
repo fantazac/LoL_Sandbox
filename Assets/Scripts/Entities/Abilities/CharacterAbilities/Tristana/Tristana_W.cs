@@ -78,7 +78,7 @@ public class Tristana_W : DirectionTargetedDash//TODO: GroundTargetedDash
             if (tempEntity != null && TargetIsValid.CheckIfTargetIsValid(tempEntity, affectedUnitType, character.Team))
             {
                 float damage = GetAbilityDamage(tempEntity);
-                tempEntity.EntityStatsManager.ReduceHealth(damageType, damage);
+                DamageEntity(tempEntity, damage);
                 AbilityHit(tempEntity, damage);
                 AbilityDebuffs[0].AddNewBuffToAffectedEntity(tempEntity);
             }

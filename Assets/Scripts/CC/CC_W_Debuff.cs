@@ -24,7 +24,7 @@ public class CC_W_Debuff : AbilityBuff
         buffSpritePath = "Sprites/Characters/CharacterAbilities/CC/CCW_Debuff";
     }
 
-    protected override void ApplyBuffEffect(Entity affectedEntity, float buffValue, int currentStacks)
+    protected override void ApplyBuffEffect(Entity affectedEntity, Buff buff)
     {
         affectedEntity.EntityStatusManager.AddCrowdControlEffect(buffCrowdControlEffect);
         affectedEntity.EntityForcedActionManager.SetupForcedAction(buffCrowdControlEffect, this, character);
@@ -34,7 +34,7 @@ public class CC_W_Debuff : AbilityBuff
         //affectedEntity.EntityShieldManager.AddNewShield(ShieldType.PHYSICAL, this, 1000);
     }
 
-    protected override void RemoveBuffEffect(Entity affectedEntity, float buffValue, int currentStacks)
+    protected override void RemoveBuffEffect(Entity affectedEntity, Buff buff)
     {
         affectedEntity.EntityStatusManager.RemoveCrowdControlEffect(buffCrowdControlEffect);
         affectedEntity.EntityForcedActionManager.StopCurrentForcedAction(this);

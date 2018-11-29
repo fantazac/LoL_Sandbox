@@ -23,19 +23,19 @@ public class Tristana_R_Debuff : AbilityBuff
         buffSpritePath = "Sprites/Characters/CharacterAbilities/Tristana/TristanaR_Debuff";
     }
 
-    protected override void ApplyBuffEffect(Entity affectedEntity, float buffValue, int currentStacks)
+    protected override void ApplyBuffEffect(Entity affectedEntity, Buff buff)
     {
         affectedEntity.EntityStatusManager.AddCrowdControlEffect(buffCrowdControlEffect);
-        affectedEntity.EntityDisplacementManager.SetupDisplacement(normalizedVector * buffFlatValue, knockbackSpeed, this);
+        affectedEntity.EntityDisplacementManager.SetupDisplacement(normalizedVector * buff.BuffValue, knockbackSpeed, this);
     }
 
-    protected override void RemoveBuffEffect(Entity affectedEntity, float buffValue, int currentStacks)
+    protected override void RemoveBuffEffect(Entity affectedEntity, Buff buff)
     {
         affectedEntity.EntityStatusManager.RemoveCrowdControlEffect(buffCrowdControlEffect);
     }
 
     protected override Buff CreateNewBuff(Entity affectedEntity)
     {
-        return new Buff(this, affectedEntity);
+        return new Buff(this, affectedEntity, buffFlatValue);
     }
 }

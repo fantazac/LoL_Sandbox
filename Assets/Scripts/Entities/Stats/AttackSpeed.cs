@@ -30,11 +30,11 @@ public class AttackSpeed : MultiplicativeBonusStat
 
     public float GetAttackSpeedBonus()
     {
-        if (total - currentBaseValue <= 0)
+        if (total - initialBaseValue <= 0)
         {
             return 0;
         }
-        return (total / currentBaseValue) - 1;
+        return (total / initialBaseValue) - 1;
     }
 
     public override void OnLevelUp(int level)

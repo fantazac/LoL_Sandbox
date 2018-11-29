@@ -16,14 +16,15 @@
         buffSpritePath = "Sprites/Characters/CharacterAbilities/Varus/VarusP_BuffChampionTakedown";
     }
 
-    protected override void ApplyBuffEffect(Entity affectedEntity, float buffValue, int currentStacks)
+    protected override void ApplyBuffEffect(Entity affectedEntity, Buff buff)
     {
-        affectedEntity.EntityStatsManager.AttackSpeed.AddPercentBonus(buffValue + (affectedEntity.EntityStatsManager.AttackSpeed.GetAttackSpeedBonus() * bonusAttackSpeedScaling));
+        buff.SetBuffValue(buff.BuffValue + (affectedEntity.EntityStatsManager.AttackSpeed.GetAttackSpeedBonus() * bonusAttackSpeedScaling));
+        affectedEntity.EntityStatsManager.AttackSpeed.AddPercentBonus(buff.BuffValue);
     }
 
-    protected override void RemoveBuffEffect(Entity affectedEntity, float buffValue, int currentStacks)
+    protected override void RemoveBuffEffect(Entity affectedEntity, Buff buff)
     {
-        affectedEntity.EntityStatsManager.AttackSpeed.RemovePercentBonus(buffValue);
+        affectedEntity.EntityStatsManager.AttackSpeed.RemovePercentBonus(buff.BuffValue);
     }
 
     protected override Buff CreateNewBuff(Entity affectedEntity)

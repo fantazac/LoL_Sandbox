@@ -55,7 +55,7 @@
 
     private void UpdateBuffOnAffectedEntity(float oldValue, float newValue)
     {
-        SourceAbilityBuff.RemoveBuffFromAffectedEntity(affectedEntity, oldValue, CurrentStacks);
-        SourceAbilityBuff.ApplyBuffToAffectedEntity(affectedEntity, newValue, CurrentStacks);
+        SourceAbilityBuff.RemoveBuffFromAffectedEntity(affectedEntity, this);
+        SourceAbilityBuff.ApplyBuffToAffectedEntity(affectedEntity, this);
     }
 }

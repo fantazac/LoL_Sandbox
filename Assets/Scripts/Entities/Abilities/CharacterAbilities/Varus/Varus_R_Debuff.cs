@@ -16,12 +16,12 @@
         buffSpritePath = "Sprites/Characters/CharacterAbilities/Varus/VarusR_Debuff";
     }
 
-    protected override void ApplyBuffEffect(Entity affectedEntity, float buffValue, int currentStacks)
+    protected override void ApplyBuffEffect(Entity affectedEntity, Buff buff)
     {
         affectedEntity.EntityStatusManager.AddCrowdControlEffect(buffCrowdControlEffect);
     }
 
-    protected override void RemoveBuffEffect(Entity affectedEntity, float buffValue, int currentStacks)
+    protected override void RemoveBuffEffect(Entity affectedEntity, Buff buff)
     {
         affectedEntity.EntityStatusManager.RemoveCrowdControlEffect(buffCrowdControlEffect);
     }

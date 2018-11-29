@@ -14,14 +14,14 @@
         buffSpritePath = "Sprites/Characters/CharacterAbilities/MissFortune/MissFortuneW_Buff";
     }
 
-    protected override void ApplyBuffEffect(Entity affectedEntity, float buffValue, int currentStacks)
+    protected override void ApplyBuffEffect(Entity affectedEntity, Buff buff)
     {
-        affectedEntity.EntityStatsManager.AttackSpeed.AddPercentBonus(buffPercentValue);
+        affectedEntity.EntityStatsManager.AttackSpeed.AddPercentBonus(buff.BuffValue);
     }
 
-    protected override void RemoveBuffEffect(Entity affectedEntity, float buffValue, int currentStacks)
+    protected override void RemoveBuffEffect(Entity affectedEntity, Buff buff)
     {
-        affectedEntity.EntityStatsManager.AttackSpeed.RemovePercentBonus(buffPercentValue);
+        affectedEntity.EntityStatsManager.AttackSpeed.RemovePercentBonus(buff.BuffValue);
     }
 
     protected override Buff CreateNewBuff(Entity affectedEntity)

@@ -1,4 +1,6 @@
-﻿public class Varus_P : PassiveTargeted
+﻿using UnityEngine;
+
+public class Varus_P : PassiveTargeted
 {
     private float buffDuration;
     private float durationForNextBuff;
@@ -28,11 +30,21 @@
         AbilityBuffs = new AbilityBuff[] { gameObject.AddComponent<Varus_P_Buff>(), gameObject.AddComponent<Varus_P_BuffChampionTakedown>() };
 
         AbilityBuffs[1].OnAbilityBuffRemoved += RemoveBuffFromEntity;
+
+        foreach (EntityDamageSource damageSource in character.CharacterAbilityManager.CharacterAbilities)
+        {
+            damageSource.OnKilledEntity += OnEntityKilled;
+        }
+        foreach (EntityDamageSource damageSource in character.CharacterAbilityManager.SummonerAbilities)
+        {
+            damageSource.OnKilledEntity += OnEntityKilled;
+        }
+        character.EntityBasicAttack.OnKilledEntity += OnEntityKilled;
     }
 
-    public void KilledEntity(Entity killedEntity)
+    private void OnEntityKilled(EntityDamageSource damageSource, Entity killedEntity)
     {
-        if (killedEntity is Character)
+        if (!(killedEntity is Character))
         {
             durationForNextBuff = 0;
             AbilityBuffs[0].ConsumeBuff(character);
@@ -48,6 +60,7 @@
             else
             {
                 durationForNextBuff = buffDuration;
+                AbilityBuffs[0].ConsumeBuff(character);
                 AbilityBuffs[0].AddNewBuffToAffectedEntity(character);
             }
         }

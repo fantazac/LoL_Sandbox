@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public abstract class EntityBasicAttack : MonoBehaviour
+public abstract class EntityBasicAttack : EntityDamageSource
 {
     protected string basicAttackPrefabPath;
     protected GameObject basicAttackPrefab;
@@ -18,6 +18,11 @@ public abstract class EntityBasicAttack : MonoBehaviour
     public bool AttackIsInQueue { get; protected set; }
 
     protected float speed;
+
+    protected EntityBasicAttack()
+    {
+        damageType = DamageType.PHYSICAL;
+    }
 
     protected virtual void OnEnable()
     {
@@ -210,10 +215,5 @@ public abstract class EntityBasicAttack : MonoBehaviour
         {
             return 2 - (100 / (100 - totalResistance));
         }
-    }
-
-    protected virtual void DamageEntity(Entity entityToDamage, float damage)
-    {
-        entityToDamage.EntityStatsManager.ReduceHealth(DamageType.PHYSICAL, damage);
     }
 }

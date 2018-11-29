@@ -30,14 +30,14 @@
         }
     }*/
 
-    protected override void ApplyBuffEffect(Entity affectedEntity, float buffValue, int currentStacks)
+    protected override void ApplyBuffEffect(Entity affectedEntity, Buff buff)
     {
-        affectedEntity.EntityStatsManager.AttackSpeed.AddPercentBonus(buffValue * currentStacks);
+        affectedEntity.EntityStatsManager.AttackSpeed.AddPercentBonus(buff.BuffValue * buff.CurrentStacks);
     }
 
-    protected override void RemoveBuffEffect(Entity affectedEntity, float buffValue, int currentStacks)
+    protected override void RemoveBuffEffect(Entity affectedEntity, Buff buff)
     {
-        affectedEntity.EntityStatsManager.AttackSpeed.RemovePercentBonus(buffValue * currentStacks);
+        affectedEntity.EntityStatsManager.AttackSpeed.RemovePercentBonus(buff.BuffValue * buff.CurrentStacks);
     }
 
     protected override Buff CreateNewBuff(Entity affectedEntity)

@@ -2,14 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class Ability : MonoBehaviour
+public abstract class Ability : EntityDamageSource
 {
     protected Character character;
 
     protected AbilityAffectedUnitType affectedUnitType;//TODO: make this an array/list to support multiple types (ex. Tristana_E targetting enemies and turrets)
     protected AbilityEffectType effectType;
     protected AbilityType abilityType;
-    protected DamageType damageType;
 
     protected IEnumerator abilityEffectCoroutine;
     protected IEnumerator cooldownForRecastCoroutine;
@@ -496,11 +495,6 @@ public abstract class Ability : MonoBehaviour
     {
         cooldown = baseCooldown;
         cooldownOnCancel = baseCooldownOnCancel;
-    }
-
-    protected virtual void DamageEntity(Entity entityToDamage, float damage)
-    {
-        entityToDamage.EntityStatsManager.ReduceHealth(damageType, damage);
     }
 
     protected virtual float GetAbilityDamage(Entity entityHit, bool isACriticalStrike = false, float criticalStrikeDamage = 0)

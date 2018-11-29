@@ -14,14 +14,14 @@
         buffSpritePath = "Sprites/Characters/CharacterAbilities/Lucian/LucianW_Buff";
     }
 
-    protected override void ApplyBuffEffect(Entity affectedEntity, float buffValue, int currentStacks)
+    protected override void ApplyBuffEffect(Entity affectedEntity, Buff buff)
     {
-        affectedEntity.EntityStatsManager.MovementSpeed.AddFlatBonus(buffFlatValue);
+        affectedEntity.EntityStatsManager.MovementSpeed.AddFlatBonus(buff.BuffValue);
     }
 
-    protected override void RemoveBuffEffect(Entity affectedEntity, float buffValue, int currentStacks)
+    protected override void RemoveBuffEffect(Entity affectedEntity, Buff buff)
     {
-        affectedEntity.EntityStatsManager.MovementSpeed.RemoveFlatBonus(buffFlatValue);
+        affectedEntity.EntityStatsManager.MovementSpeed.RemoveFlatBonus(buff.BuffValue);
     }
 
     protected override Buff CreateNewBuff(Entity affectedEntity)

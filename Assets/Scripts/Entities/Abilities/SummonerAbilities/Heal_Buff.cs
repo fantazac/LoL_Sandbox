@@ -28,7 +28,7 @@
         healDebuff = GetComponent<Heal_Debuff>();
     }
 
-    protected override void ApplyBuffEffect(Entity affectedEntity, float buffValue, int currentStacks)
+    protected override void ApplyBuffEffect(Entity affectedEntity, Buff buff)
     {
         float healAmount = buffFlatValue * character.EntityStatsManager.HealAndShieldPower.GetTotal();
         if (affectedEntity.EntityBuffManager.IsAffectedByDebuffOfSameType(healDebuff))
@@ -36,16 +36,16 @@
             healAmount *= ratioIfAffectedByHealDebuff;
         }
         affectedEntity.EntityStatsManager.RestoreHealth(healAmount);
-        affectedEntity.EntityStatsManager.MovementSpeed.AddPercentBonus(buffPercentValue);
+        affectedEntity.EntityStatsManager.MovementSpeed.AddPercentBonus(buff.BuffValue);
     }
 
-    protected override void RemoveBuffEffect(Entity affectedEntity, float buffValue, int currentStacks)
+    protected override void RemoveBuffEffect(Entity affectedEntity, Buff buff)
     {
-        affectedEntity.EntityStatsManager.MovementSpeed.RemovePercentBonus(buffPercentValue);
+        affectedEntity.EntityStatsManager.MovementSpeed.RemovePercentBonus(buff.BuffValue);
     }
 
     protected override Buff CreateNewBuff(Entity affectedEntity)
     {
-        return new Buff(this, affectedEntity, buffFlatValue, buffDuration);
+        return new Buff(this, affectedEntity, buffPercentValue, buffDuration);
     }
 }

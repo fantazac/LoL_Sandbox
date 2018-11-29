@@ -76,12 +76,12 @@
 
     public void ApplyBuff()
     {
-        SourceAbilityBuff.ApplyBuffToAffectedEntity(affectedEntity, BuffValue, CurrentStacks);
+        SourceAbilityBuff.ApplyBuffToAffectedEntity(affectedEntity, this);
     }
 
     public void RemoveBuff()
     {
-        SourceAbilityBuff.RemoveBuffFromAffectedEntity(affectedEntity, BuffValue, CurrentStacks);
+        SourceAbilityBuff.RemoveBuffFromAffectedEntity(affectedEntity, this);
     }
 
     public virtual void ConsumeBuff()
@@ -129,8 +129,8 @@
     {
         if (CurrentStacks < MaximumStacks)
         {
-            SourceAbilityBuff.RemoveBuffFromAffectedEntity(affectedEntity, BuffValue, CurrentStacks);
-            SourceAbilityBuff.ApplyBuffToAffectedEntity(affectedEntity, BuffValue, ++CurrentStacks);
+            SourceAbilityBuff.RemoveBuffFromAffectedEntity(affectedEntity, this);
+            SourceAbilityBuff.ApplyBuffToAffectedEntity(affectedEntity, this);
             HasStacksToUpdate = true;
         }
     }

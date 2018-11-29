@@ -83,6 +83,8 @@ public class Tristana_E : UnitTargetedProjectile
                 abilitiesToIncreaseStacks.Add(ability);
             }
         }
+
+        character.EntityBasicAttack.OnKilledEntity += DamageAllEnemiesInPassiveExplosionRadius;
     }
 
     public override void LevelUpExtraStats()
@@ -178,13 +180,13 @@ public class Tristana_E : UnitTargetedProjectile
             if (tempEntity != null && TargetIsValid.CheckIfTargetIsValid(tempEntity, affectedUnitType, character.Team))
             {
                 float damage = GetAbilityDamage(tempEntity) * damageModifier;
-                tempEntity.EntityStatsManager.ReduceHealth(damageType, damage);
+                DamageEntity(tempEntity, damage);
                 AbilityHit(tempEntity, damage);
             }
         }
     }
 
-    public void DamageAllEnemiesInPassiveExplosionRadius(Entity killedEntity)
+    private void DamageAllEnemiesInPassiveExplosionRadius(EntityDamageSource damageSource, Entity killedEntity)
     {
         Entity tempEntity;
 
@@ -195,7 +197,7 @@ public class Tristana_E : UnitTargetedProjectile
             if (tempEntity != null && tempEntity != killedEntity && TargetIsValid.CheckIfTargetIsValid(tempEntity, affectedUnitType, character.Team))
             {
                 float damage = GetPassiveAbilityDamage(tempEntity);
-                tempEntity.EntityStatsManager.ReduceHealth(passiveDamageType, damage);
+                DamageEntity(tempEntity, passiveDamageType, damage);
                 AbilityHit(tempEntity, damage);
             }
         }

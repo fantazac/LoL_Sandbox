@@ -24,14 +24,14 @@ public class CC_Q_Debuff : AbilityBuff
         buffSpritePath = "Sprites/Characters/CharacterAbilities/CC/CCQ_Debuff";
     }
 
-    protected override void ApplyBuffEffect(Entity affectedEntity, float buffValue, int currentStacks)
+    protected override void ApplyBuffEffect(Entity affectedEntity, Buff buff)
     {
         affectedEntity.EntityStatusManager.AddCrowdControlEffect(buffCrowdControlEffect);
         affectedEntity.EntityForcedActionManager.SetupForcedAction(buffCrowdControlEffect, this, character);
         //affectedEntity.EntityDisplacementManager.SetupDisplacement(knockupDestination, knockupSpeed, this, true);
     }
 
-    protected override void RemoveBuffEffect(Entity affectedEntity, float buffValue, int currentStacks)
+    protected override void RemoveBuffEffect(Entity affectedEntity, Buff buff)
     {
         affectedEntity.EntityStatusManager.RemoveCrowdControlEffect(buffCrowdControlEffect);
         affectedEntity.EntityForcedActionManager.StopCurrentForcedAction(this);

@@ -16,17 +16,17 @@
         buffSpritePath = "Sprites/Characters/CharacterAbilities/Varus/VarusE_Debuff";
     }
 
-    protected override void ApplyBuffEffect(Entity affectedEntity, float buffValue, int currentStacks)
+    protected override void ApplyBuffEffect(Entity affectedEntity, Buff buff)
     {
         affectedEntity.EntityStatusManager.AddCrowdControlEffect(buffCrowdControlEffect);
-        affectedEntity.EntityStatsManager.MovementSpeed.AddPercentMalus(buffValue);
+        affectedEntity.EntityStatsManager.MovementSpeed.AddPercentMalus(buff.BuffValue);
         affectedEntity.EntityStatsManager.GrievousWounds.AddGrievousWoundsSource();
     }
 
-    protected override void RemoveBuffEffect(Entity affectedEntity, float buffValue, int currentStacks)
+    protected override void RemoveBuffEffect(Entity affectedEntity, Buff buff)
     {
         affectedEntity.EntityStatusManager.RemoveCrowdControlEffect(buffCrowdControlEffect);
-        affectedEntity.EntityStatsManager.MovementSpeed.RemovePercentMalus(buffValue);
+        affectedEntity.EntityStatsManager.MovementSpeed.RemovePercentMalus(buff.BuffValue);
         affectedEntity.EntityStatsManager.GrievousWounds.RemoveGrievousWoundsSource();
     }
 

@@ -1,14 +1,13 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-public class Varus_R : DirectionTargetedProjectile, DamageSourceOnEntityKill
+public class Varus_R : DirectionTargetedProjectile
 {
     protected string entityPrefabPath;
     protected GameObject entityPrefab;
 
     private float radius;
 
-    private Varus_P varusP;
     private Varus_W varusW;
 
     protected Varus_R()
@@ -60,7 +59,6 @@ public class Varus_R : DirectionTargetedProjectile, DamageSourceOnEntityKill
     {
         base.Start();
 
-        varusP = GetComponent<Varus_P>();
         varusW = GetComponent<Varus_W>();
 
         AbilityDebuffs = new AbilityBuff[] { gameObject.AddComponent<Varus_R_Debuff>(), gameObject.AddComponent<Varus_R_TetherDebuff>() };
@@ -123,18 +121,5 @@ public class Varus_R : DirectionTargetedProjectile, DamageSourceOnEntityKill
             varusW.ProcStacks(entityHit, this);
         }
         AbilityHit(entityHit, damage);
-    }
-
-    protected override void DamageEntity(Entity entityToDamage, float damage)
-    {
-        entityToDamage.EntityStatsManager.ReduceHealth(this, damageType, damage);
-    }
-
-    public void KilledEntity(Entity killedEntity)
-    {
-        if (varusP)
-        {
-            varusP.KilledEntity(killedEntity);
-        }
     }
 }
