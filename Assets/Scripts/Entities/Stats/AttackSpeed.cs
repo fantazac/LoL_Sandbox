@@ -7,7 +7,7 @@ public class AttackSpeed : MultiplicativeBonusStat
     private EntityBasicAttack entityBasicAttack;
 
     public AttackSpeed(float initialBaseValue) : base(initialBaseValue) { }
-    public AttackSpeed(float initialBaseValue, float perLevelValue, float attackDelay) : base(initialBaseValue / (1 + attackDelay), perLevelValue) { }
+    public AttackSpeed(float initialBaseValue, float perLevelValue) : base(initialBaseValue, perLevelValue) { }
 
     public void SetEntityBasicAttack(EntityBasicAttack entityBasicAttack)
     {

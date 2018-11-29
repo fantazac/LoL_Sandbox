@@ -19,8 +19,7 @@
         BaseAttackDamage = 61;
         AttackDamagePerLevel = 3.11f;
 
-        BaseAttackSpeed = 0.625f;
-        AttackDelay = -0.0473f;
+        BaseAttackSpeed = 0.656f;
         AttackSpeedPerLevel = 1.5f;
 
         BaseArmor = 26;

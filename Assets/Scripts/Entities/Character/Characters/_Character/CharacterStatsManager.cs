@@ -27,7 +27,7 @@ public abstract class CharacterStatsManager : EntityStatsManager
         AbilityPower = new AbilityPower();
         Armor = new Resistance(characterBaseStats.BaseArmor, characterBaseStats.ArmorPerLevel);
         MagicResistance = new Resistance(characterBaseStats.BaseMagicResistance, characterBaseStats.MagicResistancePerLevel);
-        AttackSpeed = new AttackSpeed(characterBaseStats.BaseAttackSpeed, characterBaseStats.AttackSpeedPerLevel, characterBaseStats.AttackDelay);
+        AttackSpeed = new AttackSpeed(characterBaseStats.BaseAttackSpeed, characterBaseStats.AttackSpeedPerLevel);
         CooldownReduction = new CooldownReduction();
         CriticalStrikeChance = new CriticalStrikeChance();
         MovementSpeed = new MovementSpeed(characterBaseStats.BaseMovementSpeed);

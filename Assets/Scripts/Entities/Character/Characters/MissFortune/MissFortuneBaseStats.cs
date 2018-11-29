@@ -11,7 +11,7 @@
         BaseResource = 325.84f;
         ResourcePerLevel = 35;
 
-        BaseResourceRegeneration = 8;
+        BaseResourceRegeneration = 8.042f;
         ResourceRegenerationPerLevel = 0.65f;
 
         BaseAttackRange = 550;
@@ -19,8 +19,7 @@
         BaseAttackDamage = 50;
         AttackDamagePerLevel = 2.7f;
 
-        BaseAttackSpeed = 0.625f;
-        AttackDelay = -0.0473f;
+        BaseAttackSpeed = 0.656f;
         AttackSpeedPerLevel = 3;
 
         BaseArmor = 28;
