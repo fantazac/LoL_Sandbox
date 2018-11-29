@@ -24,4 +24,9 @@
             tristanaE.DamageAllEnemiesInPassiveExplosionRadius(killedEntity);
         }
     }
+
+    protected override void DamageEntity(Entity entityToDamage, float damage)
+    {
+        entityToDamage.EntityStatsManager.ReduceHealth(this, DamageType.PHYSICAL, damage);
+    }
 }

@@ -177,7 +177,7 @@ public abstract class EntityBasicAttack : MonoBehaviour
     protected virtual void ApplyDamageToEntityHit(Entity entityHit, bool isACriticalStrike)
     {
         float damage = GetBasicAttackDamage(entityHit, isACriticalStrike);
-        entityHit.EntityStatsManager.ReduceHealth(DamageType.PHYSICAL, damage);
+        DamageEntity(entityHit, damage);
         if (entity is Character)
         {
             ((Character)entity).CharacterOnHitEffectsManager.ApplyOnHitEffectsToEntityHit(entityHit, damage);
@@ -210,5 +210,10 @@ public abstract class EntityBasicAttack : MonoBehaviour
         {
             return 2 - (100 / (100 - totalResistance));
         }
+    }
+
+    protected virtual void DamageEntity(Entity entityToDamage, float damage)
+    {
+        entityToDamage.EntityStatsManager.ReduceHealth(DamageType.PHYSICAL, damage);
     }
 }
