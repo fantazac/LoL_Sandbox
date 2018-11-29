@@ -44,7 +44,7 @@ public class LucianBasicAttack : EmpoweredCharacterBasicAttack
     protected override void UseBasicAttack(Entity target)
     {
         currentTarget = target;
-        if (entity.EntityBasicAttackCycle.AttackSpeedCycleIsReady)
+        if (EntityBasicAttackCycle.AttackSpeedCycleIsReady)
         {
             AttackIsInQueue = true;
             if (!isShootingPassiveShot && shootBasicAttackCoroutine != null)

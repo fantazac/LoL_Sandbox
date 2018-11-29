@@ -16,12 +16,18 @@ public abstract class EntityBasicAttack : EntityDamageSource
     protected Entity currentTarget;
 
     public bool AttackIsInQueue { get; protected set; }
+    public EntityBasicAttackCycle EntityBasicAttackCycle { get; private set; }
 
     protected float speed;
 
     protected EntityBasicAttack()
     {
         damageType = DamageType.PHYSICAL;
+    }
+
+    protected void Awake()
+    {
+        EntityBasicAttackCycle = gameObject.AddComponent<EntityBasicAttackCycle>();
     }
 
     protected virtual void OnEnable()
@@ -49,9 +55,9 @@ public abstract class EntityBasicAttack : EntityDamageSource
     public virtual void ChangeAttackSpeedCycleDuration(float totalAttackSpeed, bool attackSpeedIncreased)
     {
         float attackSpeedCycleDuration = 1f / totalAttackSpeed;
-        entity.EntityBasicAttackCycle.SetAttackSpeedCycleDuration(attackSpeedCycleDuration * (1 - delayPercentBeforeAttack));
+        EntityBasicAttackCycle.SetAttackSpeedCycleDuration(attackSpeedCycleDuration * (1 - delayPercentBeforeAttack));
         delayAttack = new WaitForSeconds(attackSpeedCycleDuration * delayPercentBeforeAttack);
-        if (attackSpeedIncreased && shootBasicAttackCoroutine != null && entity.EntityBasicAttackCycle.AttackSpeedCycleIsReady)
+        if (attackSpeedIncreased && shootBasicAttackCoroutine != null && EntityBasicAttackCycle.AttackSpeedCycleIsReady)
         {
             ResetBasicAttack();
         }
@@ -108,13 +114,13 @@ public abstract class EntityBasicAttack : EntityDamageSource
     public void ResetBasicAttack()
     {
         AttackIsInQueue = false;
-        entity.EntityBasicAttackCycle.ResetBasicAttack();
+        EntityBasicAttackCycle.ResetBasicAttack();
     }
 
     protected void Update()
     {
         if (currentTarget != null && ((Character)entity).CharacterMovementManager.GetBasicAttackTarget() != currentTarget && !AttackIsInQueue &&
-            entity.EntityBasicAttackCycle.AttackSpeedCycleIsReady && entity.EntityStatusManager.CanUseBasicAttacks() &&
+            EntityBasicAttackCycle.AttackSpeedCycleIsReady && entity.EntityStatusManager.CanUseBasicAttacks() &&
             ((Character)entity).CharacterAbilityManager.CanUseBasicAttacks() && !entity.EntityDisplacementManager.IsBeingDisplaced)
         {
             StartBasicAttack();
@@ -136,7 +142,7 @@ public abstract class EntityBasicAttack : EntityDamageSource
     protected virtual void UseBasicAttack(Entity target)
     {
         currentTarget = target;
-        if (entity.EntityBasicAttackCycle.AttackSpeedCycleIsReady)
+        if (EntityBasicAttackCycle.AttackSpeedCycleIsReady)
         {
             AttackIsInQueue = true;
             if (shootBasicAttackCoroutine != null)
@@ -154,7 +160,7 @@ public abstract class EntityBasicAttack : EntityDamageSource
 
         yield return delayAttack;
 
-        entity.EntityBasicAttackCycle.LockBasicAttack();
+        EntityBasicAttackCycle.LockBasicAttack();
         AttackIsInQueue = false;
         ((Character)entity).CharacterOrientationManager.StopTargetRotation();
 

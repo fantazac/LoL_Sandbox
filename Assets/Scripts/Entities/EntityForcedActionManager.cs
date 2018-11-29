@@ -213,7 +213,7 @@ public class EntityForcedActionManager : MonoBehaviour
                     entity.EntityBasicAttack.UseBasicAttackFromAutoAttackOrTaunt(caster);
                 }
 
-                if (entity.EntityBasicAttackCycle.AttackSpeedCycleIsReady)
+                if (entity.EntityBasicAttack.EntityBasicAttackCycle.AttackSpeedCycleIsReady)
                 {
                     transform.rotation = Quaternion.LookRotation(Vector3.RotateTowards(transform.forward, casterTransform.position - transform.position, Time.deltaTime * rotationSpeed, 0));
                 }

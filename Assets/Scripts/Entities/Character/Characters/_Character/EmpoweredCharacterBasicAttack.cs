@@ -41,7 +41,7 @@ public abstract class EmpoweredCharacterBasicAttack : CharacterBasicAttack
 
     protected void SetupAfterAttackDelay(Entity target, GameObject basicAttackPrefab)
     {
-        entity.EntityBasicAttackCycle.LockBasicAttack();
+        EntityBasicAttackCycle.LockBasicAttack();
         AttackIsInQueue = false;
         ((Character)entity).CharacterOrientationManager.StopTargetRotation();
 

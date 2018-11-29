@@ -8,7 +8,6 @@ public class Entity : MonoBehaviour
     public int EntityId { get; protected set; }
 
     public EntityBasicAttack EntityBasicAttack { get; protected set; }
-    public EntityBasicAttackCycle EntityBasicAttackCycle { get; private set; }
     public EntityBuffManager EntityBuffManager { get; private set; }
     public EntityDisplacementManager EntityDisplacementManager { get; private set; }
     public EntityEffectSourceManager EntityEffectSourceManager { get; private set; }
@@ -30,10 +29,6 @@ public class Entity : MonoBehaviour
 
     protected virtual void InitEntityProperties()
     {
-        if (!(this is Dummy))
-        {
-            EntityBasicAttackCycle = gameObject.AddComponent<EntityBasicAttackCycle>();
-        }
         EntityBuffManager = gameObject.AddComponent<EntityBuffManager>();
         EntityDisplacementManager = gameObject.AddComponent<EntityDisplacementManager>();
         EntityEffectSourceManager = gameObject.AddComponent<EntityEffectSourceManager>();

@@ -145,6 +145,6 @@ public class CharacterAutoAttackManager : MonoBehaviour
     {
         return character.EntityStatusManager && character.CharacterAbilityManager.CanUseBasicAttacks() && !character.EntityDisplacementManager.IsBeingDisplaced &&
                 character.EntityStatusManager.CanUseBasicAttacks() && (!character.CharacterMovementManager.IsMoving() || !character.EntityStatusManager.CanUseMovement()) &&
-                !character.EntityBasicAttack.AttackIsInQueue && character.EntityBasicAttackCycle.AttackSpeedCycleIsReady;
+                !character.EntityBasicAttack.AttackIsInQueue && character.EntityBasicAttack.EntityBasicAttackCycle.AttackSpeedCycleIsReady;
     }
 }
