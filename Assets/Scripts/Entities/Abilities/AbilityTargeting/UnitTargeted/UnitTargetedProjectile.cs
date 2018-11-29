@@ -13,7 +13,7 @@ public abstract class UnitTargetedProjectile : UnitTargeted
     protected override void OnAbilityEffectHit(AbilityEffect projectile, Entity entityHit, bool isACriticalStrike, bool willMiss)
     {
         float damage = GetAbilityDamage(entityHit, isACriticalStrike);
-        entityHit.EntityStatsManager.ReduceHealth(damageType, damage);
+        DamageEntity(entityHit, damage);
         if (effectType == AbilityEffectType.SINGLE_TARGET)
         {
             Destroy(projectile.gameObject);

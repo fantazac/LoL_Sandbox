@@ -37,7 +37,7 @@ public abstract class DirectionTargetedProjectile : DirectionTargeted
     protected virtual void OnProjectileHit(AbilityEffect projectile, Entity entityHit, bool isACriticalStrike, bool willMiss)
     {
         float damage = GetAbilityDamage(entityHit, isACriticalStrike);
-        entityHit.EntityStatsManager.ReduceHealth(damageType, damage);
+        DamageEntity(entityHit, damage);
         if (effectType == AbilityEffectType.SINGLE_TARGET)
         {
             Destroy(projectile.gameObject);

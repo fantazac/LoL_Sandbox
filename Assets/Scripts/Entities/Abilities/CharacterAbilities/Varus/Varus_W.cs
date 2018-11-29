@@ -114,7 +114,7 @@ public class Varus_W : PassiveTargeted
     private void SetPassiveEffectOnEntityHit(Entity entityHit, float damage)
     {
         AddNewDebuffToEntityHit(entityHit);
-        entityHit.EntityStatsManager.ReduceHealth(damageType, GetOnHitDamage(entityHit));
+        DamageEntity(entityHit, GetOnHitDamage(entityHit));
     }
 
     public void AddNewDebuffToEntityHit(Entity entityHit)
@@ -134,7 +134,7 @@ public class Varus_W : PassiveTargeted
     {
         float damage = GetStacksTriggeredDamage(entityHit, entityHit.EntityBuffManager.GetDebuff(AbilityDebuffs[0]).CurrentStacks);
         AbilityDebuffs[0].ConsumeBuff(entityHit);
-        entityHit.EntityStatsManager.ReduceHealth(damageType, damage);
+        DamageEntity(entityHit, damage);
         AbilityHit(entityHit, damage);
     }
 

@@ -1,4 +1,4 @@
-﻿public class Varus_P : PassiveTargeted, DamageSourceOnEntityKill
+﻿public class Varus_P : PassiveTargeted
 {
     private float buffDuration;
     private float durationForNextBuff;

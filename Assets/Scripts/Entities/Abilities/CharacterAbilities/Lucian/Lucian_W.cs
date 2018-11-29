@@ -77,7 +77,7 @@ public class Lucian_W : DirectionTargetedProjectile
     private void OnAreaOfEffectHit(AbilityEffect projectile, Entity entityHit, bool isACriticalStrike, bool willMiss)
     {
         float damage = GetAbilityDamage(entityHit);
-        entityHit.EntityStatsManager.ReduceHealth(damageType, damage);
+        DamageEntity(entityHit, damage);
         AddNewDebuffToEntityHit(entityHit);
         AbilityHit(entityHit, damage);
     }

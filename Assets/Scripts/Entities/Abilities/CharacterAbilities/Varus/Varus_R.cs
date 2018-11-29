@@ -1,14 +1,14 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
-public class Varus_R : DirectionTargetedProjectile
+public class Varus_R : DirectionTargetedProjectile, DamageSourceOnEntityKill
 {
     protected string entityPrefabPath;
     protected GameObject entityPrefab;
 
     private float radius;
 
+    private Varus_P varusP;
     private Varus_W varusW;
 
     protected Varus_R()
@@ -60,6 +60,7 @@ public class Varus_R : DirectionTargetedProjectile
     {
         base.Start();
 
+        varusP = GetComponent<Varus_P>();
         varusW = GetComponent<Varus_W>();
 
         AbilityDebuffs = new AbilityBuff[] { gameObject.AddComponent<Varus_R_Debuff>(), gameObject.AddComponent<Varus_R_TetherDebuff>() };
@@ -104,7 +105,7 @@ public class Varus_R : DirectionTargetedProjectile
 
     public void ApplyDamageAndCrowdControlToEntityHit(Entity entityHit)
     {
-        DamageEntity(entityHit);
+        DamageEntityHit(entityHit);
         AbilityDebuffs[0].AddNewBuffToAffectedEntity(entityHit);
     }
 
@@ -113,14 +114,27 @@ public class Varus_R : DirectionTargetedProjectile
         AbilityDebuffs[1].AddNewBuffToAffectedEntity(entityInRange);
     }
 
-    private void DamageEntity(Entity entityHit)
+    private void DamageEntityHit(Entity entityHit)
     {
         float damage = GetAbilityDamage(entityHit);
-        entityHit.EntityStatsManager.ReduceHealth(damageType, damage);
+        DamageEntity(entityHit, damage);
         if (varusW)
         {
             varusW.ProcStacks(entityHit, this);
         }
         AbilityHit(entityHit, damage);
+    }
+
+    protected override void DamageEntity(Entity entityToDamage, float damage)
+    {
+        entityToDamage.EntityStatsManager.ReduceHealth(this, damageType, damage);
+    }
+
+    public void KilledEntity(Entity killedEntity)
+    {
+        if (varusP)
+        {
+            varusP.KilledEntity(killedEntity);
+        }
     }
 }

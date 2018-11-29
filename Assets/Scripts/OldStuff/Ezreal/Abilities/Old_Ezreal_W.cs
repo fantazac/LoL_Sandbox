@@ -67,7 +67,7 @@ public class Old_Ezreal_W : DirectionTargetedProjectile
         else
         {
             damage = GetAbilityDamage(entityHit);
-            entityHit.EntityStatsManager.ReduceHealth(damageType, damage);
+            DamageEntity(entityHit, damage);
         }
         AbilityHit(entityHit, damage);
     }

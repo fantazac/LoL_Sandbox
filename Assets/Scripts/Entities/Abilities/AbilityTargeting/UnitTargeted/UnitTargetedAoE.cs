@@ -13,7 +13,7 @@ public abstract class UnitTargetedAoE : UnitTargeted
     protected override void OnAbilityEffectHit(AbilityEffect areaOfEffect, Entity entityHit, bool isACriticalStrike, bool willMiss)
     {
         float damage = GetAbilityDamage(entityHit);
-        entityHit.EntityStatsManager.ReduceHealth(damageType, damage);
+        DamageEntity(entityHit, damage);
         AbilityHit(entityHit, damage);
     }
 }

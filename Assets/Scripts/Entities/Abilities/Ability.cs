@@ -498,6 +498,11 @@ public abstract class Ability : MonoBehaviour
         cooldownOnCancel = baseCooldownOnCancel;
     }
 
+    protected virtual void DamageEntity(Entity entityToDamage, float damage)
+    {
+        entityToDamage.EntityStatsManager.ReduceHealth(damageType, damage);
+    }
+
     protected virtual float GetAbilityDamage(Entity entityHit, bool isACriticalStrike = false, float criticalStrikeDamage = 0)
     {
         float abilityDamage = damage +

@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Varus_E : GroundTargetedAoE //TODO: Shoot invisible projectile and then spawn area on destination reached
+public class Varus_E : GroundTargetedAoE, DamageSourceOnEntityKill //TODO: Shoot invisible projectile and then spawn area on destination reached
 {
+    private Varus_P varusP;
     private Varus_W varusW;
 
     private int totalTicks;
@@ -66,6 +67,7 @@ public class Varus_E : GroundTargetedAoE //TODO: Shoot invisible projectile and 
     {
         base.Start();
 
+        varusP = GetComponent<Varus_P>();
         varusW = GetComponent<Varus_W>();
 
         AbilityDebuffs = new AbilityBuff[] { gameObject.AddComponent<Varus_E_Debuff>() };
@@ -95,7 +97,7 @@ public class Varus_E : GroundTargetedAoE //TODO: Shoot invisible projectile and 
         foreach (Entity entityHit in entitiesHit)
         {
             float damage = GetAbilityDamage(entityHit);
-            entityHit.EntityStatsManager.ReduceHealth(damageType, GetAbilityDamage(entityHit));
+            DamageEntity(entityHit, damage);
             if (varusW)
             {
                 varusW.ProcStacks(entityHit, this);
@@ -107,5 +109,18 @@ public class Varus_E : GroundTargetedAoE //TODO: Shoot invisible projectile and 
     protected void OnAbilityEffectGroundHit(AbilityEffect abilityEffect, List<Entity> previousEntitiesHit, List<Entity> entitiesHit)
     {
         AbilityDebuffs[0].AddNewBuffToAffectedEntities(previousEntitiesHit, entitiesHit);
+    }
+
+    protected override void DamageEntity(Entity entityToDamage, float damage)
+    {
+        entityToDamage.EntityStatsManager.ReduceHealth(this, damageType, damage);
+    }
+
+    public void KilledEntity(Entity killedEntity)
+    {
+        if (varusP)
+        {
+            varusP.KilledEntity(killedEntity);
+        }
     }
 }
