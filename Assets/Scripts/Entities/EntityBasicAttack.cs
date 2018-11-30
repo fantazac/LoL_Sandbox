@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public abstract class BasicAttackManager : EntityDamageSource
+public abstract class EntityBasicAttack : EntityDamageSource
 {
     protected string basicAttackPrefabPath;
     protected GameObject basicAttackPrefab;
@@ -20,7 +20,7 @@ public abstract class BasicAttackManager : EntityDamageSource
 
     protected float speed;
 
-    protected BasicAttackManager()
+    protected EntityBasicAttack()
     {
         damageType = DamageType.PHYSICAL;
     }
@@ -101,7 +101,7 @@ public abstract class BasicAttackManager : EntityDamageSource
             StopBasicAttack();//This is so CharacterAutoAttack doesn't shoot while an ability is active
             if (currentTarget != null)
             {
-                ((Character)entity).CharacterMovementManager.SetMoveTowardsTarget(currentTarget, entity.StatsManager.AttackRange.GetTotal(), true);
+                ((Character)entity).CharacterMovementManager.SetMoveTowardsTarget(currentTarget, entity.EntityStatsManager.AttackRange.GetTotal(), true);
             }
         }
     }
@@ -120,8 +120,8 @@ public abstract class BasicAttackManager : EntityDamageSource
     protected void Update()
     {
         if (currentTarget != null && ((Character)entity).CharacterMovementManager.GetBasicAttackTarget() != currentTarget && !AttackIsInQueue &&
-            EntityBasicAttackCycle.AttackSpeedCycleIsReady && entity.StatusManager.CanUseBasicAttacks() &&
-            ((Character)entity).CharacterAbilityManager.CanUseBasicAttacks() && !entity.DisplacementManager.IsBeingDisplaced)
+            EntityBasicAttackCycle.AttackSpeedCycleIsReady && entity.EntityStatusManager.CanUseBasicAttacks() &&
+            ((Character)entity).CharacterAbilityManager.CanUseBasicAttacks() && !entity.EntityDisplacementManager.IsBeingDisplaced)
         {
             StartBasicAttack();
         }
@@ -130,7 +130,7 @@ public abstract class BasicAttackManager : EntityDamageSource
     protected void StartBasicAttack()
     {
         AttackIsInQueue = true;
-        ((Character)entity).CharacterMovementManager.SetMoveTowardsTarget(currentTarget, entity.StatsManager.AttackRange.GetTotal(), true);
+        ((Character)entity).CharacterMovementManager.SetMoveTowardsTarget(currentTarget, entity.EntityStatsManager.AttackRange.GetTotal(), true);
     }
 
     public void UseBasicAttackFromAutoAttackOrTaunt(Entity target)
@@ -165,7 +165,7 @@ public abstract class BasicAttackManager : EntityDamageSource
         ((Character)entity).CharacterOrientationManager.StopTargetRotation();
 
         ProjectileUnitTargeted projectile = (Instantiate(basicAttackPrefab, transform.position, transform.rotation)).GetComponent<ProjectileUnitTargeted>();
-        projectile.ShootProjectile(entity.Team, target, speed, AttackIsCritical.CheckIfAttackIsCritical(entity.StatsManager.CriticalStrikeChance.GetTotal()), entity.StatusManager.IsBlinded());
+        projectile.ShootProjectile(entity.Team, target, speed, AttackIsCritical.CheckIfAttackIsCritical(entity.EntityStatsManager.CriticalStrikeChance.GetTotal()), entity.EntityStatusManager.IsBlinded());
         projectile.OnAbilityEffectHit += BasicAttackHit;
 
         if (entity is Character)
@@ -178,7 +178,7 @@ public abstract class BasicAttackManager : EntityDamageSource
 
     protected virtual void BasicAttackHit(AbilityEffect basicAttackProjectile, Entity entityHit, bool isACriticalStrike, bool willMiss)
     {
-        if (!(entity.StatusManager.IsBlinded() || willMiss))
+        if (!(entity.EntityStatusManager.IsBlinded() || willMiss))
         {
             ApplyDamageToEntityHit(entityHit, isACriticalStrike);
         }
@@ -193,22 +193,22 @@ public abstract class BasicAttackManager : EntityDamageSource
         {
             ((Character)entity).CharacterOnHitEffectsManager.ApplyOnHitEffectsToEntityHit(entityHit, damage);
         }
-        entityHit.EffectSourceManager.EntityHitByBasicAttack(entity);
+        entityHit.EntityEffectSourceManager.EntityHitByBasicAttack(entity);
     }
 
     protected float GetBasicAttackDamage(Entity entityHit, bool isACriticalAttack)
     {
         //TODO: Right now, it considers the basic attack will ALWAYS do physical damage. Will need to implement damage type check (ex. corki autos deal 80% magic, 20% physical)
-        return ApplyDamageModifiers(entityHit, entity.StatsManager.AttackDamage.GetTotal()) *
-            (isACriticalAttack ? entity.StatsManager.CriticalStrikeDamage.GetTotal() * (1f - entityHit.StatsManager.CriticalStrikeDamageReduction.GetTotal()) : 1f);
+        return ApplyDamageModifiers(entityHit, entity.EntityStatsManager.AttackDamage.GetTotal()) *
+            (isACriticalAttack ? entity.EntityStatsManager.CriticalStrikeDamage.GetTotal() * (1f - entityHit.EntityStatsManager.CriticalStrikeDamageReduction.GetTotal()) : 1f);
     }
 
     protected float ApplyDamageModifiers(Entity entityHit, float damage)
     {
-        float totalResistance = entityHit.StatsManager.Armor.GetTotal();
-        totalResistance *= (1 - entity.StatsManager.ArmorPenetrationPercent.GetTotal());
-        totalResistance -= entity.StatsManager.Lethality.GetCurrentValue();
-        return damage * GetResistanceDamageReceivedModifier(totalResistance) * entityHit.StatsManager.PhysicalDamageReceivedModifier.GetTotal() * entity.StatsManager.PhysicalDamageModifier.GetTotal();
+        float totalResistance = entityHit.EntityStatsManager.Armor.GetTotal();
+        totalResistance *= (1 - entity.EntityStatsManager.ArmorPenetrationPercent.GetTotal());
+        totalResistance -= entity.EntityStatsManager.Lethality.GetCurrentValue();
+        return damage * GetResistanceDamageReceivedModifier(totalResistance) * entityHit.EntityStatsManager.PhysicalDamageReceivedModifier.GetTotal() * entity.EntityStatsManager.PhysicalDamageModifier.GetTotal();
     }
 
     protected float GetResistanceDamageReceivedModifier(float totalResistance)

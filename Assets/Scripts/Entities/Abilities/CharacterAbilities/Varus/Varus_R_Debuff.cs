@@ -18,12 +18,12 @@
 
     protected override void ApplyBuffEffect(Entity affectedEntity, Buff buff)
     {
-        affectedEntity.StatusManager.AddCrowdControlEffect(buffCrowdControlEffect);
+        affectedEntity.EntityStatusManager.AddCrowdControlEffect(buffCrowdControlEffect);
     }
 
     protected override void RemoveBuffEffect(Entity affectedEntity, Buff buff)
     {
-        affectedEntity.StatusManager.RemoveCrowdControlEffect(buffCrowdControlEffect);
+        affectedEntity.EntityStatusManager.RemoveCrowdControlEffect(buffCrowdControlEffect);
     }
 
     protected override Buff CreateNewBuff(Entity affectedEntity)

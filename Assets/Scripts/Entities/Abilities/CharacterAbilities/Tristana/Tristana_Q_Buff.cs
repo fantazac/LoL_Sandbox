@@ -16,12 +16,12 @@
 
     protected override void ApplyBuffEffect(Entity affectedEntity, Buff buff)
     {
-        affectedEntity.StatsManager.AttackSpeed.AddPercentBonus(buff.BuffValue);
+        affectedEntity.EntityStatsManager.AttackSpeed.AddPercentBonus(buff.BuffValue);
     }
 
     protected override void RemoveBuffEffect(Entity affectedEntity, Buff buff)
     {
-        affectedEntity.StatsManager.AttackSpeed.RemovePercentBonus(buff.BuffValue);
+        affectedEntity.EntityStatsManager.AttackSpeed.RemovePercentBonus(buff.BuffValue);
     }
 
     protected override Buff CreateNewBuff(Entity affectedEntity)

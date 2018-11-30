@@ -75,7 +75,7 @@
 
     public override void OnEmpoweredBasicAttackHit(Entity entityHit, bool isACriticalStrike)
     {
-        float damage = GetAbilityDamage(entityHit, isACriticalStrike, character.StatsManager.CriticalStrikeDamage.GetTotal());
+        float damage = GetAbilityDamage(entityHit, isACriticalStrike, character.EntityStatsManager.CriticalStrikeDamage.GetTotal());
         DamageEntity(entityHit, damage);
         UseAbility(entityHit);
         AbilityHit(entityHit, damage);
@@ -90,12 +90,12 @@
         //}
         //else
         //{
-        abilityDamage = damage + (totalADScaling * character.StatsManager.AttackDamage.GetTotal());
+        abilityDamage = damage + (totalADScaling * character.EntityStatsManager.AttackDamage.GetTotal());
         //Here, 0.5f is for "/2" because the base criticalStrikeDamage is 2f, which increases the criticalStrikeMultiplierAgainstNonMinions if criticalStrikeDamage is not 2f.
         criticalStrikeDamage *= criticalStrikeMultiplierAgainstNonMinions * 0.5f;
         //}
         return ApplyDamageModifiers(entityHit, abilityDamage, damageType) *
             ApplyAbilityDamageModifier(entityHit) *
-            (isACriticalStrike ? criticalStrikeDamage * (1f - entityHit.StatsManager.CriticalStrikeDamageReduction.GetTotal()) : 1f);
+            (isACriticalStrike ? criticalStrikeDamage * (1f - entityHit.EntityStatsManager.CriticalStrikeDamageReduction.GetTotal()) : 1f);
     }
 }

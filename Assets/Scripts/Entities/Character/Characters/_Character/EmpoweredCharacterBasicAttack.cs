@@ -36,7 +36,7 @@ public abstract class EmpoweredCharacterBasicAttack : CharacterBasicAttack
     protected void SetupBeforeAttackDelay(Entity target)
     {
         ((Character)entity).CharacterOrientationManager.RotateCharacterUntilReachedTarget(target.transform, true, true);
-        empoweringAbilityWasActiveOnBasicAttackCast = entity.BuffManager.IsAffectedByBuff(basicAttackEmpoweringAbility.AbilityBuffs[0]);
+        empoweringAbilityWasActiveOnBasicAttackCast = entity.EntityBuffManager.IsAffectedByBuff(basicAttackEmpoweringAbility.AbilityBuffs[0]);
     }
 
     protected void SetupAfterAttackDelay(Entity target, GameObject basicAttackPrefab)
@@ -46,7 +46,7 @@ public abstract class EmpoweredCharacterBasicAttack : CharacterBasicAttack
         ((Character)entity).CharacterOrientationManager.StopTargetRotation();
 
         ProjectileUnitTargeted projectile = (Instantiate(basicAttackPrefab, transform.position, transform.rotation)).GetComponent<ProjectileUnitTargeted>();
-        projectile.ShootProjectile(entity.Team, target, speed, AttackIsCritical.CheckIfAttackIsCritical(entity.StatsManager.CriticalStrikeChance.GetTotal()));
+        projectile.ShootProjectile(entity.Team, target, speed, AttackIsCritical.CheckIfAttackIsCritical(entity.EntityStatsManager.CriticalStrikeChance.GetTotal()));
         if (empoweringAbilityWasActiveOnBasicAttackCast)
         {
             projectile.OnAbilityEffectHit += BasicAttackHit;
@@ -59,7 +59,7 @@ public abstract class EmpoweredCharacterBasicAttack : CharacterBasicAttack
 
     protected override void BasicAttackHit(AbilityEffect basicAttackProjectile, Entity entityHit, bool isACriticalStrike, bool willMiss)
     {
-        if (!(entity.StatusManager.IsBlinded() || willMiss))
+        if (!(entity.EntityStatusManager.IsBlinded() || willMiss))
         {
             OnEmpoweredBasicAttackHit(entityHit, isACriticalStrike);
         }

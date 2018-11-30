@@ -124,7 +124,7 @@ public class Varus_W : PassiveTargeted
 
     public void ProcStacks(Entity entityHit, Ability sourceAbility)
     {
-        if (entityHit.BuffManager.IsAffectedByDebuff(AbilityDebuffs[0]) && abilitiesToTriggerStacks.Contains(sourceAbility))
+        if (entityHit.EntityBuffManager.IsAffectedByDebuff(AbilityDebuffs[0]) && abilitiesToTriggerStacks.Contains(sourceAbility))
         {
             DealDamageToEntityWithStacks(entityHit, sourceAbility);
         }
@@ -132,7 +132,7 @@ public class Varus_W : PassiveTargeted
 
     private void DealDamageToEntityWithStacks(Entity entityHit, Ability sourceAbility)
     {
-        float damage = GetStacksTriggeredDamage(entityHit, entityHit.BuffManager.GetDebuff(AbilityDebuffs[0]).CurrentStacks);
+        float damage = GetStacksTriggeredDamage(entityHit, entityHit.EntityBuffManager.GetDebuff(AbilityDebuffs[0]).CurrentStacks);
         AbilityDebuffs[0].ConsumeBuff(entityHit);
         DamageEntity(entityHit, damage);
         AbilityHit(entityHit, damage);
@@ -140,14 +140,14 @@ public class Varus_W : PassiveTargeted
 
     private float GetOnHitDamage(Entity entityHit)
     {
-        float onHitDamage = damage + (totalAPScaling * character.StatsManager.AbilityPower.GetTotal());
+        float onHitDamage = damage + (totalAPScaling * character.EntityStatsManager.AbilityPower.GetTotal());
 
         return ApplyDamageModifiers(entityHit, onHitDamage, damageType);
     }
 
     private float GetStacksTriggeredDamage(Entity entityHit, int stacks)
     {
-        float stacksTriggeredDamage = ((percentAPScaling * character.StatsManager.AbilityPower.GetTotal()) + percentHealthDamage) * entityHit.StatsManager.Health.GetTotal() * stacks;
+        float stacksTriggeredDamage = ((percentAPScaling * character.EntityStatsManager.AbilityPower.GetTotal()) + percentHealthDamage) * entityHit.EntityStatsManager.Health.GetTotal() * stacks;
         float damageAfterModifiers = ApplyDamageModifiers(entityHit, stacksTriggeredDamage, damageType);
         //when Monster exists, return entityHit is Monster ? Math.Min(damageAfterModifiers, maxDamageAgainstMonsters) : damageAfterModifiers;
         return damageAfterModifiers;

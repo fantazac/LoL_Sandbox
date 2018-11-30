@@ -18,16 +18,16 @@
 
     protected override void ApplyBuffEffect(Entity affectedEntity, Buff buff)
     {
-        affectedEntity.StatusManager.AddCrowdControlEffect(buffCrowdControlEffect);
-        affectedEntity.StatsManager.MovementSpeed.AddPercentMalus(buff.BuffValue);
-        affectedEntity.StatsManager.GrievousWounds.AddGrievousWoundsSource();
+        affectedEntity.EntityStatusManager.AddCrowdControlEffect(buffCrowdControlEffect);
+        affectedEntity.EntityStatsManager.MovementSpeed.AddPercentMalus(buff.BuffValue);
+        affectedEntity.EntityStatsManager.GrievousWounds.AddGrievousWoundsSource();
     }
 
     protected override void RemoveBuffEffect(Entity affectedEntity, Buff buff)
     {
-        affectedEntity.StatusManager.RemoveCrowdControlEffect(buffCrowdControlEffect);
-        affectedEntity.StatsManager.MovementSpeed.RemovePercentMalus(buff.BuffValue);
-        affectedEntity.StatsManager.GrievousWounds.RemoveGrievousWoundsSource();
+        affectedEntity.EntityStatusManager.RemoveCrowdControlEffect(buffCrowdControlEffect);
+        affectedEntity.EntityStatsManager.MovementSpeed.RemovePercentMalus(buff.BuffValue);
+        affectedEntity.EntityStatsManager.GrievousWounds.RemoveGrievousWoundsSource();
     }
 
     protected override Buff CreateNewBuff(Entity affectedEntity)

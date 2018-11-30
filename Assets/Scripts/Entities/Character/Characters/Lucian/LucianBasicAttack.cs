@@ -66,7 +66,7 @@ public class LucianBasicAttack : EmpoweredCharacterBasicAttack
 
         if (!empoweringAbilityWasActiveOnBasicAttackCast)
         {
-            empoweringAbilityWasActiveOnBasicAttackCast = entity.BuffManager.IsAffectedByBuff(basicAttackEmpoweringAbility.AbilityBuffs[0]);
+            empoweringAbilityWasActiveOnBasicAttackCast = entity.EntityBuffManager.IsAffectedByBuff(basicAttackEmpoweringAbility.AbilityBuffs[0]);
         }
 
         SetupAfterAttackDelay(target, basicAttackPrefab);
@@ -80,7 +80,7 @@ public class LucianBasicAttack : EmpoweredCharacterBasicAttack
 
             ProjectileUnitTargeted projectile2 = (Instantiate(empoweredBasicAttackPrefab, transform.position, transform.rotation)).GetComponent<ProjectileUnitTargeted>();
             projectile2.transform.LookAt(target.transform);
-            projectile2.ShootProjectile(entity.Team, target, speed, AttackIsCritical.CheckIfAttackIsCritical(entity.StatsManager.CriticalStrikeChance.GetTotal()));
+            projectile2.ShootProjectile(entity.Team, target, speed, AttackIsCritical.CheckIfAttackIsCritical(entity.EntityStatsManager.CriticalStrikeChance.GetTotal()));
             projectile2.OnAbilityEffectHit += PassiveBasicAttackHit;
         }
 
@@ -95,7 +95,7 @@ public class LucianBasicAttack : EmpoweredCharacterBasicAttack
 
     private void PassiveBasicAttackHit(AbilityEffect basicAttackProjectile, Entity entityHit, bool isACriticalStrike, bool willMiss)
     {
-        if (!(entity.StatusManager.IsBlinded() || willMiss))
+        if (!(entity.EntityStatusManager.IsBlinded() || willMiss))
         {
             basicAttackEmpoweringAbility.OnEmpoweredBasicAttackHit(entityHit, isACriticalStrike);
         }

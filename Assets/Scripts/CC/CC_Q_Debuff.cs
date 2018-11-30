@@ -26,15 +26,15 @@ public class CC_Q_Debuff : AbilityBuff
 
     protected override void ApplyBuffEffect(Entity affectedEntity, Buff buff)
     {
-        affectedEntity.StatusManager.AddCrowdControlEffect(buffCrowdControlEffect);
-        affectedEntity.ForcedActionManager.SetupForcedAction(buffCrowdControlEffect, this, character);
+        affectedEntity.EntityStatusManager.AddCrowdControlEffect(buffCrowdControlEffect);
+        affectedEntity.EntityForcedActionManager.SetupForcedAction(buffCrowdControlEffect, this, character);
         //affectedEntity.EntityDisplacementManager.SetupDisplacement(knockupDestination, knockupSpeed, this, true);
     }
 
     protected override void RemoveBuffEffect(Entity affectedEntity, Buff buff)
     {
-        affectedEntity.StatusManager.RemoveCrowdControlEffect(buffCrowdControlEffect);
-        affectedEntity.ForcedActionManager.StopCurrentForcedAction(this);
+        affectedEntity.EntityStatusManager.RemoveCrowdControlEffect(buffCrowdControlEffect);
+        affectedEntity.EntityForcedActionManager.StopCurrentForcedAction(this);
     }
 
     protected override Buff CreateNewBuff(Entity affectedEntity)

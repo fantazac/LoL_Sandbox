@@ -11,7 +11,7 @@ public class CharacterOnHitEffectsManager : MonoBehaviour
     private void Start()
     {
         character = GetComponent<Character>();
-        lifeSteal = character.StatsManager.LifeSteal;
+        lifeSteal = character.EntityStatsManager.LifeSteal;
     }
 
     public void ApplyOnHitEffectsToEntityHit(Entity entityHit, float damage)
@@ -20,6 +20,6 @@ public class CharacterOnHitEffectsManager : MonoBehaviour
         {
             OnApplyOnHitEffects(entityHit, damage);
         }
-        character.StatsManager.RestoreHealth(damage * lifeSteal.GetTotal());
+        character.EntityStatsManager.RestoreHealth(damage * lifeSteal.GetTotal());
     }
 }

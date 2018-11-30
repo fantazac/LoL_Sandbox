@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-public class ForcedActionManager : MonoBehaviour
+public class EntityForcedActionManager : MonoBehaviour
 {
     private Character entity;//TODO: Entity
 
@@ -90,9 +90,9 @@ public class ForcedActionManager : MonoBehaviour
         Transform casterTransform = caster.transform;
         while (true)
         {
-            if (!entity.DisplacementManager.IsBeingDisplaced)
+            if (!entity.EntityDisplacementManager.IsBeingDisplaced)
             {
-                transform.position = Vector3.MoveTowards(transform.position, casterTransform.position, Time.deltaTime * entity.StatsManager.MovementSpeed.GetTotal());
+                transform.position = Vector3.MoveTowards(transform.position, casterTransform.position, Time.deltaTime * entity.EntityStatsManager.MovementSpeed.GetTotal());
 
                 if (entity.CharacterMovementManager)
                 {
@@ -114,15 +114,15 @@ public class ForcedActionManager : MonoBehaviour
             Vector3 lastCasterPosition = casterTransform.position;
             while (transform.position != lastCasterPosition)
             {
-                if (entity.CharacterMovementManager.IsMoving() || !entity.CharacterAbilityManager.CanUseMovement() || !entity.StatusManager.CanUseMovement() ||
-                    Vector3.Distance(casterTransform.position, transform.position) <= entity.StatsManager.AttackRange.GetTotal())
+                if (entity.CharacterMovementManager.IsMoving() || !entity.CharacterAbilityManager.CanUseMovement() || !entity.EntityStatusManager.CanUseMovement() ||
+                    Vector3.Distance(casterTransform.position, transform.position) <= entity.EntityStatsManager.AttackRange.GetTotal())
                 {
-                    entity.CharacterMovementManager.SetMoveTowardsTarget(caster, entity.StatsManager.AttackRange.GetTotal(), true);
+                    entity.CharacterMovementManager.SetMoveTowardsTarget(caster, entity.EntityStatsManager.AttackRange.GetTotal(), true);
                     break;
                 }
                 else
                 {
-                    transform.position = Vector3.MoveTowards(transform.position, lastCasterPosition, Time.deltaTime * entity.StatsManager.MovementSpeed.GetTotal());
+                    transform.position = Vector3.MoveTowards(transform.position, lastCasterPosition, Time.deltaTime * entity.EntityStatsManager.MovementSpeed.GetTotal());
 
                     entity.CharacterMovementManager.NotifyCharacterMoved();
                 }
@@ -168,9 +168,9 @@ public class ForcedActionManager : MonoBehaviour
         Transform casterTransform = caster.transform;
         while (true)
         {
-            if (!entity.DisplacementManager.IsBeingDisplaced)
+            if (!entity.EntityDisplacementManager.IsBeingDisplaced)
             {
-                transform.position = Vector3.MoveTowards(transform.position, casterTransform.position, -Time.deltaTime * entity.StatsManager.MovementSpeed.GetTotal());
+                transform.position = Vector3.MoveTowards(transform.position, casterTransform.position, -Time.deltaTime * entity.EntityStatsManager.MovementSpeed.GetTotal());
 
                 if (entity.CharacterMovementManager)
                 {
@@ -197,11 +197,11 @@ public class ForcedActionManager : MonoBehaviour
         Transform casterTransform = caster.transform;
         while (true)
         {
-            if (!entity.DisplacementManager.IsBeingDisplaced && entity.BasicAttackManager && !entity.BasicAttackManager.AttackIsInQueue)
+            if (!entity.EntityDisplacementManager.IsBeingDisplaced && entity.EntityBasicAttack && !entity.EntityBasicAttack.AttackIsInQueue)
             {
-                if (Vector3.Distance(casterTransform.position, transform.position) > entity.StatsManager.AttackRange.GetTotal())
+                if (Vector3.Distance(casterTransform.position, transform.position) > entity.EntityStatsManager.AttackRange.GetTotal())
                 {
-                    transform.position = Vector3.MoveTowards(transform.position, casterTransform.position, Time.deltaTime * entity.StatsManager.MovementSpeed.GetTotal());
+                    transform.position = Vector3.MoveTowards(transform.position, casterTransform.position, Time.deltaTime * entity.EntityStatsManager.MovementSpeed.GetTotal());
 
                     if (entity.CharacterMovementManager)
                     {
@@ -210,10 +210,10 @@ public class ForcedActionManager : MonoBehaviour
                 }
                 else
                 {
-                    entity.BasicAttackManager.UseBasicAttackFromAutoAttackOrTaunt(caster);
+                    entity.EntityBasicAttack.UseBasicAttackFromAutoAttackOrTaunt(caster);
                 }
 
-                if (entity.BasicAttackManager.EntityBasicAttackCycle.AttackSpeedCycleIsReady)
+                if (entity.EntityBasicAttack.EntityBasicAttackCycle.AttackSpeedCycleIsReady)
                 {
                     transform.rotation = Quaternion.LookRotation(Vector3.RotateTowards(transform.forward, casterTransform.position - transform.position, Time.deltaTime * rotationSpeed, 0));
                 }
@@ -227,7 +227,7 @@ public class ForcedActionManager : MonoBehaviour
     {
         if (entity.CharacterMovementManager && !entity.CharacterMovementManager.IsMoving())
         {
-            entity.CharacterMovementManager.SetMoveTowardsTarget(caster, entity.StatsManager.AttackRange.GetTotal(), true);
+            entity.CharacterMovementManager.SetMoveTowardsTarget(caster, entity.EntityStatsManager.AttackRange.GetTotal(), true);
         }
     }
 }

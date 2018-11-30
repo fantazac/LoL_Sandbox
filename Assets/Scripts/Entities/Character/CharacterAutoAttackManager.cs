@@ -23,7 +23,7 @@ public class CharacterAutoAttackManager : MonoBehaviour
     private void Start()
     {
         character = GetComponent<Character>();
-        attackRange = character.StatsManager.AttackRange;
+        attackRange = character.EntityStatsManager.AttackRange;
         EnableAutoAttack();
     }
 
@@ -92,7 +92,7 @@ public class CharacterAutoAttackManager : MonoBehaviour
 
                 if (autoAttackTarget != null)
                 {
-                    character.BasicAttackManager.UseBasicAttackFromAutoAttackOrTaunt(autoAttackTarget);
+                    character.EntityBasicAttack.UseBasicAttackFromAutoAttackOrTaunt(autoAttackTarget);
                 }
             }
 
@@ -130,7 +130,7 @@ public class CharacterAutoAttackManager : MonoBehaviour
 
                 if (autoAttackTarget != null)
                 {
-                    character.BasicAttackManager.SetupBasicAttack(autoAttackTarget, false);
+                    character.EntityBasicAttack.SetupBasicAttack(autoAttackTarget, false);
                     break;
                 }
             }
@@ -143,8 +143,8 @@ public class CharacterAutoAttackManager : MonoBehaviour
 
     protected bool CanUseAutoAttack()
     {
-        return character.StatusManager && character.CharacterAbilityManager.CanUseBasicAttacks() && !character.DisplacementManager.IsBeingDisplaced &&
-                character.StatusManager.CanUseBasicAttacks() && (!character.CharacterMovementManager.IsMoving() || !character.StatusManager.CanUseMovement()) &&
-                !character.BasicAttackManager.AttackIsInQueue && character.BasicAttackManager.EntityBasicAttackCycle.AttackSpeedCycleIsReady;
+        return character.EntityStatusManager && character.CharacterAbilityManager.CanUseBasicAttacks() && !character.EntityDisplacementManager.IsBeingDisplaced &&
+                character.EntityStatusManager.CanUseBasicAttacks() && (!character.CharacterMovementManager.IsMoving() || !character.EntityStatusManager.CanUseMovement()) &&
+                !character.EntityBasicAttack.AttackIsInQueue && character.EntityBasicAttack.EntityBasicAttackCycle.AttackSpeedCycleIsReady;
     }
 }

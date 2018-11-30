@@ -32,7 +32,7 @@ public class Flash : GroundTargetedBlink
         Quaternion newRotation = Quaternion.LookRotation((destination - transform.position).normalized);
 
         transform.position = newDestination;
-        character.DisplacementManager.StopCurrentDisplacement();
+        character.EntityDisplacementManager.StopCurrentDisplacement();
 
         if (character.CharacterAbilityManager.CanRotate())
         {

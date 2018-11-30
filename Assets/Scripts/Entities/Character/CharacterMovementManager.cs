@@ -79,11 +79,11 @@ public class CharacterMovementManager : MonoBehaviour
     {
         if (StaticObjects.OnlineMode)
         {
-            SendToServer_Movement_Target(target, character.StatsManager.AttackRange.GetTotal(), true);
+            SendToServer_Movement_Target(target, character.EntityStatsManager.AttackRange.GetTotal(), true);
         }
         else
         {
-            SetMoveTowardsTarget(target, character.StatsManager.AttackRange.GetTotal(), true);
+            SetMoveTowardsTarget(target, character.EntityStatsManager.AttackRange.GetTotal(), true);
         }
     }
 
@@ -138,9 +138,9 @@ public class CharacterMovementManager : MonoBehaviour
 
         while (transform.position != currentlySelectedDestination)
         {
-            if (character.CharacterAbilityManager.CanUseMovement() && character.StatusManager.CanUseMovement() && !character.DisplacementManager.IsBeingDisplaced)
+            if (character.CharacterAbilityManager.CanUseMovement() && character.EntityStatusManager.CanUseMovement() && !character.EntityDisplacementManager.IsBeingDisplaced)
             {
-                transform.position = Vector3.MoveTowards(transform.position, currentlySelectedDestination, Time.deltaTime * character.StatsManager.MovementSpeed.GetTotal());
+                transform.position = Vector3.MoveTowards(transform.position, currentlySelectedDestination, Time.deltaTime * character.EntityStatsManager.MovementSpeed.GetTotal());
 
                 NotifyCharacterMoved();
             }
@@ -157,11 +157,11 @@ public class CharacterMovementManager : MonoBehaviour
         character.CharacterAutoAttackManager.StopAutoAttack();
 
         float distance = Vector3.Distance(currentlySelectedDestination, transform.position);
-        while (distance > destinationRange || (distance <= destinationRange && character.DisplacementManager.IsBeingDisplaced))
+        while (distance > destinationRange || (distance <= destinationRange && character.EntityDisplacementManager.IsBeingDisplaced))
         {
-            if (character.CharacterAbilityManager.CanUseMovement() && character.StatusManager.CanUseMovement() && !character.DisplacementManager.IsBeingDisplaced)
+            if (character.CharacterAbilityManager.CanUseMovement() && character.EntityStatusManager.CanUseMovement() && !character.EntityDisplacementManager.IsBeingDisplaced)
             {
-                transform.position = Vector3.MoveTowards(transform.position, currentlySelectedDestination, Time.deltaTime * character.StatsManager.MovementSpeed.GetTotal());
+                transform.position = Vector3.MoveTowards(transform.position, currentlySelectedDestination, Time.deltaTime * character.EntityStatsManager.MovementSpeed.GetTotal());
 
                 NotifyCharacterMoved();
             }
@@ -197,7 +197,7 @@ public class CharacterMovementManager : MonoBehaviour
         {
             CharacterIsInDestinationRange = null;
             CharacterIsInTargetRange = null;
-            character.BasicAttackManager.SetupBasicAttack(currentlySelectedTarget, false);
+            character.EntityBasicAttack.SetupBasicAttack(currentlySelectedTarget, false);
         }
     }
 
@@ -207,7 +207,7 @@ public class CharacterMovementManager : MonoBehaviour
         {
             StopAllMovement();
             SetupCorrectTarget(target, isBasicAttack);
-            targetRange = isBasicAttack ? character.StatsManager.AttackRange.GetTotal() : range;
+            targetRange = isBasicAttack ? character.EntityStatsManager.AttackRange.GetTotal() : range;
             currentMovementCoroutine = MoveTowardsTarget(isBasicAttack);
             StartCoroutine(currentMovementCoroutine);
         }
@@ -228,7 +228,7 @@ public class CharacterMovementManager : MonoBehaviour
         currentlySelectedBasicAttackTarget = isBasicAttack ? target : null;
         if (isBasicAttack)
         {
-            character.BasicAttackManager.SetupBasicAttack(target, true);
+            character.EntityBasicAttack.SetupBasicAttack(target, true);
         }
     }
 
@@ -245,11 +245,11 @@ public class CharacterMovementManager : MonoBehaviour
             character.CharacterOrientationManager.RotateCharacterUntilReachedTarget(targetTransform, currentlySelectedBasicAttackTarget != null);
 
             float distance = Vector3.Distance(targetTransform.position, transform.position);
-            while (distance > targetRange || (distance <= targetRange && character.DisplacementManager.IsBeingDisplaced))
+            while (distance > targetRange || (distance <= targetRange && character.EntityDisplacementManager.IsBeingDisplaced))
             {
-                if (character.CharacterAbilityManager.CanUseMovement() && character.StatusManager.CanUseMovement() && !character.DisplacementManager.IsBeingDisplaced)
+                if (character.CharacterAbilityManager.CanUseMovement() && character.EntityStatusManager.CanUseMovement() && !character.EntityDisplacementManager.IsBeingDisplaced)
                 {
-                    transform.position = Vector3.MoveTowards(transform.position, targetTransform.position, Time.deltaTime * character.StatsManager.MovementSpeed.GetTotal());
+                    transform.position = Vector3.MoveTowards(transform.position, targetTransform.position, Time.deltaTime * character.EntityStatsManager.MovementSpeed.GetTotal());
 
                     NotifyCharacterMoved();
                 }
@@ -267,7 +267,7 @@ public class CharacterMovementManager : MonoBehaviour
 
                 if (isBasicAttack)
                 {
-                    targetRange = character.StatsManager.AttackRange.GetTotal();
+                    targetRange = character.EntityStatsManager.AttackRange.GetTotal();
                 }
             }
 
@@ -277,9 +277,9 @@ public class CharacterMovementManager : MonoBehaviour
 
         if (target != null)
         {
-            if (target == currentlySelectedBasicAttackTarget && (!character.CharacterAbilityManager.CanUseBasicAttacks() || !character.StatusManager.CanUseBasicAttacks() || character.DisplacementManager.IsBeingDisplaced))//Checks if disarmed
+            if (target == currentlySelectedBasicAttackTarget && (!character.CharacterAbilityManager.CanUseBasicAttacks() || !character.EntityStatusManager.CanUseBasicAttacks() || character.EntityDisplacementManager.IsBeingDisplaced))//Checks if disarmed
             {
-                while (!character.CharacterAbilityManager.CanUseBasicAttacks() || !character.StatusManager.CanUseBasicAttacks() || character.DisplacementManager.IsBeingDisplaced)
+                while (!character.CharacterAbilityManager.CanUseBasicAttacks() || !character.EntityStatusManager.CanUseBasicAttacks() || character.EntityDisplacementManager.IsBeingDisplaced)
                 {
                     yield return null;
                 }
@@ -347,7 +347,7 @@ public class CharacterMovementManager : MonoBehaviour
 
     public void StopAllMovement(bool resetBufferedAbility = true)
     {
-        character.BasicAttackManager.StopBasicAttack();
+        character.EntityBasicAttack.StopBasicAttack();
         if (resetBufferedAbility)
         {
             character.CharacterBufferedAbilityManager.ResetBufferedAbility();

@@ -95,7 +95,7 @@ public class Heal : SelfTargeted
                 tempCharacter = collider.GetComponent<Character>();
                 if (tempCharacter != null && tempCharacter != character && TargetIsValid.CheckIfTargetIsValid(tempCharacter, affectedUnitType, character.Team))
                 {
-                    tempLowestHealth = tempCharacter.StatsManager.Health.GetCurrentValue();
+                    tempLowestHealth = tempCharacter.EntityStatsManager.Health.GetCurrentValue();
                     if (tempLowestHealth < lowestHealth)
                     {
                         lowestHealth = tempLowestHealth;

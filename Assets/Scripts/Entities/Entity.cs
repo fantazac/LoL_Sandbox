@@ -7,16 +7,16 @@ public class Entity : MonoBehaviour
 
     public int EntityId { get; protected set; }
 
-    public BasicAttackManager BasicAttackManager { get; protected set; }
-    public BuffManager BuffManager { get; private set; }
-    public DisplacementManager DisplacementManager { get; private set; }
-    public EffectSourceManager EffectSourceManager { get; private set; }
-    public ForcedActionManager ForcedActionManager { get; private set; }
-    public GameObject HitboxObject { get; private set; }
-    public GameObject ModelObject { get; private set; }
-    public ShieldManager ShieldManager { get; private set; }
-    public StatsManager StatsManager { get; protected set; }
-    public StatusManager StatusManager { get; private set; }
+    public EntityBasicAttack EntityBasicAttack { get; protected set; }
+    public EntityBuffManager EntityBuffManager { get; private set; }
+    public EntityDisplacementManager EntityDisplacementManager { get; private set; }
+    public EntityEffectSourceManager EntityEffectSourceManager { get; private set; }
+    public EntityForcedActionManager EntityForcedActionManager { get; private set; }
+    public GameObject EntityHitboxObject { get; private set; }
+    public GameObject EntityModelObject { get; private set; }
+    public EntityShieldManager EntityShieldManager { get; private set; }
+    public EntityStatsManager EntityStatsManager { get; protected set; }
+    public EntityStatusManager EntityStatusManager { get; private set; }
 
     public PhotonView PhotonView { get; private set; }
 
@@ -29,16 +29,16 @@ public class Entity : MonoBehaviour
 
     protected virtual void InitEntityProperties()
     {
-        BuffManager = gameObject.AddComponent<BuffManager>();
-        DisplacementManager = gameObject.AddComponent<DisplacementManager>();
-        EffectSourceManager = gameObject.AddComponent<EffectSourceManager>();
-        ForcedActionManager = gameObject.AddComponent<ForcedActionManager>();
-        HitboxObject = gameObject.GetComponentInChildren<Collider>().gameObject;
-        ModelObject = gameObject.GetComponentInChildren<MeshRenderer>().gameObject;
-        ShieldManager = gameObject.AddComponent<ShieldManager>();
-        StatusManager = gameObject.AddComponent<StatusManager>();
+        EntityBuffManager = gameObject.AddComponent<EntityBuffManager>();
+        EntityDisplacementManager = gameObject.AddComponent<EntityDisplacementManager>();
+        EntityEffectSourceManager = gameObject.AddComponent<EntityEffectSourceManager>();
+        EntityForcedActionManager = gameObject.AddComponent<EntityForcedActionManager>();
+        EntityHitboxObject = gameObject.GetComponentInChildren<Collider>().gameObject;
+        EntityModelObject = gameObject.GetComponentInChildren<MeshRenderer>().gameObject;
+        EntityShieldManager = gameObject.AddComponent<EntityShieldManager>();
+        EntityStatusManager = gameObject.AddComponent<EntityStatusManager>();
 
         PhotonView = GetComponent<PhotonView>();
-        HitboxObject.AddComponent<MouseEvent>();
+        EntityHitboxObject.AddComponent<MouseEvent>();
     }
 }

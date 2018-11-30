@@ -26,19 +26,19 @@ public class CC_W_Debuff : AbilityBuff
 
     protected override void ApplyBuffEffect(Entity affectedEntity, Buff buff)
     {
-        affectedEntity.StatusManager.AddCrowdControlEffect(buffCrowdControlEffect);
-        affectedEntity.ForcedActionManager.SetupForcedAction(buffCrowdControlEffect, this, character);
+        affectedEntity.EntityStatusManager.AddCrowdControlEffect(buffCrowdControlEffect);
+        affectedEntity.EntityForcedActionManager.SetupForcedAction(buffCrowdControlEffect, this, character);
         //affectedEntity.EntityDisplacementManager.SetupDisplacement(knockupDestination, knockupSpeed, this, true);
-        affectedEntity.ShieldManager.AddNewShield(ShieldType.NORMAL, this, 200);
+        affectedEntity.EntityShieldManager.AddNewShield(ShieldType.NORMAL, this, 200);
         //affectedEntity.EntityShieldManager.AddNewShield(ShieldType.MAGIC, this, 700);
         //affectedEntity.EntityShieldManager.AddNewShield(ShieldType.PHYSICAL, this, 1000);
     }
 
     protected override void RemoveBuffEffect(Entity affectedEntity, Buff buff)
     {
-        affectedEntity.StatusManager.RemoveCrowdControlEffect(buffCrowdControlEffect);
-        affectedEntity.ForcedActionManager.StopCurrentForcedAction(this);
-        affectedEntity.ShieldManager.RemoveShield(ShieldType.NORMAL, this);
+        affectedEntity.EntityStatusManager.RemoveCrowdControlEffect(buffCrowdControlEffect);
+        affectedEntity.EntityForcedActionManager.StopCurrentForcedAction(this);
+        affectedEntity.EntityShieldManager.RemoveShield(ShieldType.NORMAL, this);
         //affectedEntity.EntityShieldManager.RemoveShield(ShieldType.MAGIC, this);
         //affectedEntity.EntityShieldManager.RemoveShield(ShieldType.PHYSICAL, this);
     }

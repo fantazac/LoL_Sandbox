@@ -18,7 +18,7 @@ public class Heal_Debuff : AbilityBuff
 
     public override void AddNewBuffToAffectedEntity(Entity affectedEntity)
     {
-        SetupBuff(affectedEntity.BuffManager.GetDebuffOfSameType(this), affectedEntity);
+        SetupBuff(affectedEntity.EntityBuffManager.GetDebuffOfSameType(this), affectedEntity);
     }
 
     protected override void SetupBuff(Buff buff, Entity affectedEntity)
@@ -27,7 +27,7 @@ public class Heal_Debuff : AbilityBuff
         {
             Consume(affectedEntity, buff);
         }
-        affectedEntity.BuffManager.ApplyBuff(CreateNewBuff(affectedEntity), buffSprite, isADebuff);
+        affectedEntity.EntityBuffManager.ApplyBuff(CreateNewBuff(affectedEntity), buffSprite, isADebuff);
     }
 
     protected override Buff CreateNewBuff(Entity affectedEntity)

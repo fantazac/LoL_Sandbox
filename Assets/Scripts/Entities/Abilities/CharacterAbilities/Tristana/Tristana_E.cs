@@ -84,7 +84,7 @@ public class Tristana_E : UnitTargetedProjectile
             }
         }
 
-        character.BasicAttackManager.OnKilledEntity += DamageAllEnemiesInPassiveExplosionRadius;
+        character.EntityBasicAttack.OnKilledEntity += DamageAllEnemiesInPassiveExplosionRadius;
     }
 
     public override void LevelUpExtraStats()
@@ -120,19 +120,19 @@ public class Tristana_E : UnitTargetedProjectile
 
     private void AddNewDebuffToEntityHit(Entity entityHit)
     {
-        entityHit.EffectSourceManager.OnEntityHitByAbility += OnMarkedEntityHitByAbility;
-        entityHit.EffectSourceManager.OnEntityHitByBasicAttack += OnMarkedEntityHitByBasicAttack;
+        entityHit.EntityEffectSourceManager.OnEntityHitByAbility += OnMarkedEntityHitByAbility;
+        entityHit.EntityEffectSourceManager.OnEntityHitByBasicAttack += OnMarkedEntityHitByBasicAttack;
         AbilityDebuffs[0].AddNewBuffToAffectedEntity(entityHit);
     }
 
     private void RemoveDebuffFromEntityHit(Entity entityHit)
     {
-        entityHit.EffectSourceManager.OnEntityHitByAbility -= OnMarkedEntityHitByAbility;
-        entityHit.EffectSourceManager.OnEntityHitByBasicAttack -= OnMarkedEntityHitByBasicAttack;
+        entityHit.EntityEffectSourceManager.OnEntityHitByAbility -= OnMarkedEntityHitByAbility;
+        entityHit.EntityEffectSourceManager.OnEntityHitByBasicAttack -= OnMarkedEntityHitByBasicAttack;
 
-        if (entityHit.BuffManager.IsAffectedByDebuff(AbilityDebuffs[1]))
+        if (entityHit.EntityBuffManager.IsAffectedByDebuff(AbilityDebuffs[1]))
         {
-            DamageAllEnemiesInActiveExplosionRadius(entityHit, entityHit.BuffManager.GetDebuff(AbilityDebuffs[1]).CurrentStacks);
+            DamageAllEnemiesInActiveExplosionRadius(entityHit, entityHit.EntityBuffManager.GetDebuff(AbilityDebuffs[1]).CurrentStacks);
         }
         else
         {
@@ -143,7 +143,7 @@ public class Tristana_E : UnitTargetedProjectile
 
     private void OnMarkedEntityHitByAbility(Entity entityHit, Ability sourceAbility)
     {
-        if (entityHit.BuffManager.IsAffectedByDebuff(AbilityDebuffs[0]) && abilitiesToIncreaseStacks.Contains(sourceAbility))
+        if (entityHit.EntityBuffManager.IsAffectedByDebuff(AbilityDebuffs[0]) && abilitiesToIncreaseStacks.Contains(sourceAbility))
         {
             IncreaseStacksOnEntityHit(entityHit, sourceAbility);
         }
@@ -151,7 +151,7 @@ public class Tristana_E : UnitTargetedProjectile
 
     private void OnMarkedEntityHitByBasicAttack(Entity entityHit, Entity sourceEntity)
     {
-        if (entityHit.BuffManager.IsAffectedByDebuff(AbilityDebuffs[0]) && sourceEntity == character)
+        if (entityHit.EntityBuffManager.IsAffectedByDebuff(AbilityDebuffs[0]) && sourceEntity == character)
         {
             IncreaseStacksOnEntityHit(entityHit);
         }
@@ -160,7 +160,7 @@ public class Tristana_E : UnitTargetedProjectile
     private void IncreaseStacksOnEntityHit(Entity entityHit, Ability sourceAbility = null)
     {
         AbilityDebuffs[1].AddNewBuffToAffectedEntity(entityHit);
-        if (entityHit.BuffManager.GetDebuff(AbilityDebuffs[1]).IsAtMaximumStacks())
+        if (entityHit.EntityBuffManager.GetDebuff(AbilityDebuffs[1]).IsAtMaximumStacks())
         {
             AbilityDebuffs[0].ConsumeBuff(entityHit);
         }
@@ -205,7 +205,7 @@ public class Tristana_E : UnitTargetedProjectile
 
     private float GetPassiveAbilityDamage(Entity entityHit)
     {
-        float abilityDamage = damage + (passiveTotalAPScaling * character.StatsManager.AbilityPower.GetTotal());
+        float abilityDamage = damage + (passiveTotalAPScaling * character.EntityStatsManager.AbilityPower.GetTotal());
 
         return ApplyDamageModifiers(entityHit, abilityDamage, passiveDamageType);
     }

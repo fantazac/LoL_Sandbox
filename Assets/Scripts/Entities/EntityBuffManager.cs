@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-public class BuffManager : MonoBehaviour
+public class EntityBuffManager : MonoBehaviour
 {
     private List<Buff> buffs;
     private List<Buff> debuffs;
@@ -9,7 +9,7 @@ public class BuffManager : MonoBehaviour
     private BuffUIManager buffUIManager;
     private BuffUIManager debuffUIManager;
 
-    protected BuffManager()
+    protected EntityBuffManager()
     {
         buffs = new List<Buff>();
         debuffs = new List<Buff>();

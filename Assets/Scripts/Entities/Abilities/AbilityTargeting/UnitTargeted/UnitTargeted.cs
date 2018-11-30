@@ -18,7 +18,7 @@ public abstract class UnitTargeted : Ability
         {
             UseAbilityInRange(target);
         }
-        else if (!character.StatusManager.CrowdControlEffectsOnCharacter.Contains(CrowdControlEffect.ROOT))
+        else if (!character.EntityStatusManager.CrowdControlEffectsOnCharacter.Contains(CrowdControlEffect.ROOT))
         {
             character.CharacterMovementManager.SetMoveTowardsTarget(target, range, false);
             character.CharacterMovementManager.CharacterIsInTargetRange += UseAbilityInRange;
@@ -29,9 +29,9 @@ public abstract class UnitTargeted : Ability
     {
         StartAbilityCast();
 
-        if (!character.CharacterMovementManager.IsMovingTowardsTarget() && !character.BasicAttackManager.CurrentTarget())
+        if (!character.CharacterMovementManager.IsMovingTowardsTarget() && !character.EntityBasicAttack.CurrentTarget())
         {
-            character.CharacterMovementManager.SetMoveTowardsTarget(target, character.StatsManager.AttackRange.GetTotal(), true, true);
+            character.CharacterMovementManager.SetMoveTowardsTarget(target, character.EntityStatsManager.AttackRange.GetTotal(), true, true);
         }
 
         targetedEntity = target;

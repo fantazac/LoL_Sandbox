@@ -7,8 +7,8 @@
 
     protected override void SetCharacterSpecificScripts()
     {
-        BasicAttackManager = gameObject.AddComponent<MissFortuneBasicAttack>();
-        StatsManager = gameObject.AddComponent<MissFortuneStatsManager>();
+        EntityBasicAttack = gameObject.AddComponent<MissFortuneBasicAttack>();
+        EntityStatsManager = gameObject.AddComponent<MissFortuneStatsManager>();
 
         CharacterAbilityManager = gameObject.AddComponent<MissFortuneAbilityManager>();
     }

@@ -88,7 +88,7 @@ public class Ezreal_E : GroundTargetedBlink
             tempEntity = collider.GetComponentInParent<Entity>();
             if (tempEntity != null && TargetIsValid.CheckIfTargetIsValid(tempEntity, affectedUnitType, character.Team))
             {
-                if (tempEntity.BuffManager.IsAffectedByDebuff(character.CharacterAbilityManager.CharacterAbilities[1].AbilityDebuffs[0]))
+                if (tempEntity.EntityBuffManager.IsAffectedByDebuff(character.CharacterAbilityManager.CharacterAbilities[1].AbilityDebuffs[0]))
                 {
                     closestEntity = tempEntity;
                     break;

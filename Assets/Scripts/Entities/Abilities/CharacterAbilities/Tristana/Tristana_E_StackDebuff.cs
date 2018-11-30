@@ -19,7 +19,7 @@
         if (buff == null)
         {
             buff = CreateNewBuff(affectedEntity);
-            affectedEntity.BuffManager.ApplyBuff(buff, buffSprite, isADebuff);
+            affectedEntity.EntityBuffManager.ApplyBuff(buff, buffSprite, isADebuff);
         }
         else
         {
