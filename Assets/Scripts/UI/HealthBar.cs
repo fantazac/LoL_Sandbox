@@ -284,19 +284,19 @@ public class HealthBar : MonoBehaviour
     {
         float totalHealthValue = GetTotalHealthValue();
 
-        if (!PhysicalShieldExists())
+        if (!NormalShieldExists())
         {
-            physicalShieldImage.gameObject.SetActive(false);
+            shieldImage.gameObject.SetActive(false);
         }
         else
         {
-            if (!physicalShieldImage.gameObject.activeSelf)
+            if (!shieldImage.gameObject.activeSelf)
             {
-                physicalShieldImage.gameObject.SetActive(true);
+                shieldImage.gameObject.SetActive(true);
             }
 
-            SetShieldSize(physicalShieldImageTransform, GetPhysicalShieldValue(), totalHealthValue);
-            SetShieldPositionOnHealthBar(physicalShieldImageTransform, healthImageTransform);
+            SetShieldSize(shieldImageTransform, GetNormalShieldValue(), totalHealthValue);
+            SetShieldPositionOnHealthBar(shieldImageTransform, healthImageTransform);
         }
 
         if (!MagicShieldExists())
@@ -311,42 +311,42 @@ public class HealthBar : MonoBehaviour
             }
 
             SetShieldSize(magicShieldImageTransform, GetMagicShieldValue(), totalHealthValue);
-            if (!PhysicalShieldExists())
+            if (!NormalShieldExists())
             {
                 SetShieldPositionOnHealthBar(magicShieldImageTransform, healthImageTransform);
             }
             else
             {
-                SetShieldPositionOnHealthBar(magicShieldImageTransform, physicalShieldImageTransform);
+                SetShieldPositionOnHealthBar(magicShieldImageTransform, shieldImageTransform);
             }
         }
 
-        if (!NormalShieldExists())
+        if (!PhysicalShieldExists())
         {
-            shieldImage.gameObject.SetActive(false);
+            physicalShieldImage.gameObject.SetActive(false);
         }
         else
         {
-            if (!shieldImage.gameObject.activeSelf)
+            if (!physicalShieldImage.gameObject.activeSelf)
             {
-                shieldImage.gameObject.SetActive(true);
+                physicalShieldImage.gameObject.SetActive(true);
             }
 
-            SetShieldSize(shieldImageTransform, GetNormalShieldValue(), totalHealthValue);
+            SetShieldSize(physicalShieldImageTransform, GetPhysicalShieldValue(), totalHealthValue);
             if (!MagicShieldExists())
             {
-                if (!PhysicalShieldExists())
+                if (!NormalShieldExists())
                 {
-                    SetShieldPositionOnHealthBar(shieldImageTransform, healthImageTransform);
+                    SetShieldPositionOnHealthBar(physicalShieldImageTransform, healthImageTransform);
                 }
                 else
                 {
-                    SetShieldPositionOnHealthBar(shieldImageTransform, physicalShieldImageTransform);
+                    SetShieldPositionOnHealthBar(physicalShieldImageTransform, shieldImageTransform);
                 }
             }
             else
             {
-                SetShieldPositionOnHealthBar(shieldImageTransform, magicShieldImageTransform);
+                SetShieldPositionOnHealthBar(physicalShieldImageTransform, magicShieldImageTransform);
             }
         }
     }
@@ -378,12 +378,12 @@ public class HealthBar : MonoBehaviour
 
     private float GetPhysicalShieldValue()
     {
-        return shields[1];
+        return shields[2];
     }
 
     private float GetMagicShieldValue()
     {
-        return shields[2];
+        return shields[1];
     }
 
     private float GetNormalShieldValue()
