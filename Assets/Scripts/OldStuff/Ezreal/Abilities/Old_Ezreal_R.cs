@@ -1,11 +1,14 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-public class Ezreal_R : DirectionTargetedProjectile
+public class Old_Ezreal_R : DirectionTargetedProjectile
 {
-    private float damageMultiplierAgainstMinionsAndNonEpicMonsters;
+    private const float DAMAGE_REDUCTION_PER_TARGET_HIT = 0.1f;
+    private const float DAMAGE_REDUCTION_CAP = 0.3f;
 
-    protected Ezreal_R()
+    private float currentDamageMultiplier;
+
+    protected Old_Ezreal_R()
     {
         abilityName = "Trueshot Barrage";
 
@@ -27,8 +30,6 @@ public class Ezreal_R : DirectionTargetedProjectile
         castTime = 1;
         delayCastTime = new WaitForSeconds(castTime);
 
-        damageMultiplierAgainstMinionsAndNonEpicMonsters = 0.5f;
-
         IsAnUltimateAbility = true;
 
         affectedByCooldownReduction = true;
@@ -39,6 +40,11 @@ public class Ezreal_R : DirectionTargetedProjectile
         abilitySpritePath = "Sprites/Characters/CharacterAbilities/Ezreal/EzrealR";
 
         projectilePrefabPath = "CharacterAbilitiesPrefabs/Ezreal/EzrealR";
+    }
+
+    protected override void FinalAdjustments(Vector3 destination)
+    {
+        currentDamageMultiplier = 1f;
     }
 
     protected override IEnumerator AbilityWithCastTime()
@@ -55,9 +61,18 @@ public class Ezreal_R : DirectionTargetedProjectile
         FinishAbilityCast();
     }
 
-    protected override float ApplyAbilityDamageModifier(Entity entityHit)
+    protected override void OnProjectileHit(AbilityEffect projectile, Entity entityHit, bool isACriticalStrike, bool willMiss)
     {
-        //TODO when Minion and Non-Epic Monsters exists, return damageMultiplierAgainstMinionsAndNonEpicMonsters
-        return 1f;
+        float damage = GetAbilityDamage(entityHit) * currentDamageMultiplier;
+        DamageEntity(entityHit, damage);
+        if (currentDamageMultiplier > DAMAGE_REDUCTION_CAP)
+        {
+            currentDamageMultiplier -= DAMAGE_REDUCTION_PER_TARGET_HIT;
+        }
+        if (effectType == AbilityEffectType.SINGLE_TARGET)
+        {
+            Destroy(projectile.gameObject);
+        }
+        AbilityHit(entityHit, damage);
     }
 }
