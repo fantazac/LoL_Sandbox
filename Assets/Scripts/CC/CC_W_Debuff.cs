@@ -30,7 +30,7 @@ public class CC_W_Debuff : AbilityBuff
         affectedEntity.EntityForcedActionManager.SetupForcedAction(buffCrowdControlEffect, this, character);
         //affectedEntity.EntityDisplacementManager.SetupDisplacement(knockupDestination, knockupSpeed, this, true);
         affectedEntity.EntityShieldManager.AddNewShield(ShieldType.NORMAL, this, 200);
-        //affectedEntity.EntityShieldManager.AddNewShield(ShieldType.MAGIC, this, 700);
+        affectedEntity.EntityShieldManager.AddNewShield(ShieldType.MAGIC, this, 700);
         //affectedEntity.EntityShieldManager.AddNewShield(ShieldType.PHYSICAL, this, 1000);
     }
 
@@ -39,7 +39,7 @@ public class CC_W_Debuff : AbilityBuff
         affectedEntity.EntityStatusManager.RemoveCrowdControlEffect(buffCrowdControlEffect);
         affectedEntity.EntityForcedActionManager.StopCurrentForcedAction(this);
         affectedEntity.EntityShieldManager.RemoveShield(ShieldType.NORMAL, this);
-        //affectedEntity.EntityShieldManager.RemoveShield(ShieldType.MAGIC, this);
+        affectedEntity.EntityShieldManager.RemoveShield(ShieldType.MAGIC, this);
         //affectedEntity.EntityShieldManager.RemoveShield(ShieldType.PHYSICAL, this);
     }
 
