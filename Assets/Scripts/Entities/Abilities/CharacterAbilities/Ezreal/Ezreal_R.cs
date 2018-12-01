@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class Ezreal_R : DirectionTargetedProjectile
 {
-    private float damageMultiplierAgainstMinionsAndNonEpicMonsters;
+    //private float damageMultiplierAgainstMinionsAndNonEpicMonsters;
 
     protected Ezreal_R()
     {
@@ -27,7 +27,7 @@ public class Ezreal_R : DirectionTargetedProjectile
         castTime = 1;
         delayCastTime = new WaitForSeconds(castTime);
 
-        damageMultiplierAgainstMinionsAndNonEpicMonsters = 0.5f;
+        //damageMultiplierAgainstMinionsAndNonEpicMonsters = 0.5f;
 
         IsAnUltimateAbility = true;
 
