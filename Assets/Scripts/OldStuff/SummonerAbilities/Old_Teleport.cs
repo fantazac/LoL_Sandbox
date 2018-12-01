@@ -1,18 +1,22 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-public class Teleport : GroundTargetedBlink//TODO: UnitTargeted
+public class Old_Teleport : GroundTargetedBlink//TODO: UnitTargeted
 {
-    protected Teleport()
+    protected Old_Teleport()
     {
         abilityName = "Teleport";
 
         abilityType = AbilityType.BLINK;
 
         baseCooldown = 360;
-        channelTime = 4f;
+        cooldownBeforeRecast = 0.75f;
+        channelTime = 4.5f;
         delayChannelTime = new WaitForSeconds(channelTime);
 
+        baseCooldownOnCancel = 240;
+
+        CanBeRecasted = true;
         CannotCastAnyAbilityWhileActive = true;
         IsAMovementAbility = true;
 
@@ -39,7 +43,7 @@ public class Teleport : GroundTargetedBlink//TODO: UnitTargeted
     protected override IEnumerator AbilityWithChannelTime()
     {
         UseResource();
-        character.CharacterAbilityManager.BlockAllMovementAbilities();
+        character.CharacterAbilityManager.BlockAllMovementAbilities(); //(this); -> so it does not block Teleport so you could cancel it, changed method since then
         IsBeingChanneled = true;
 
         yield return delayChannelTime;
@@ -51,5 +55,10 @@ public class Teleport : GroundTargetedBlink//TODO: UnitTargeted
         character.CharacterMovementManager.NotifyCharacterMoved();
 
         FinishAbilityCast();
+    }
+
+    protected override void ExtraActionsOnCancel()
+    {
+        character.CharacterAbilityManager.UnblockAllMovementAbilities();
     }
 }

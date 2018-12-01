@@ -465,10 +465,10 @@ public class CharacterAbilityManager : MonoBehaviour
         BlockAbilities(OtherCharacterAbilities);
     }
 
-    public void BlockAllMovementAbilities(Ability abilityToNotBlock = null)
+    public void BlockAllMovementAbilities()
     {
-        BlockMovementAbilities(CharacterAbilities, abilityToNotBlock);
-        BlockMovementAbilities(SummonerAbilities, abilityToNotBlock);
+        BlockMovementAbilities(CharacterAbilities);
+        BlockMovementAbilities(SummonerAbilities);
     }
 
     public void BlockAllSummonerAbilities()
@@ -520,11 +520,11 @@ public class CharacterAbilityManager : MonoBehaviour
         }
     }
 
-    protected void BlockMovementAbilities(Ability[] abilities, Ability abilityToNotBlock = null)
+    protected void BlockMovementAbilities(Ability[] abilities)
     {
         foreach (Ability ability in abilities)
         {
-            if (ability.IsAMovementAbility && ability != abilityToNotBlock)
+            if (ability.IsAMovementAbility)
             {
                 ability.BlockAbility();
             }
