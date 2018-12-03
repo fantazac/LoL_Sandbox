@@ -1,231 +1,223 @@
 ﻿public static class TargetIsValid
 {
-    private static EntityTeam localTeamOfCallingEntity;
+    private static Team castingUnitTeam;
 
-    public static bool CheckIfTargetIsValid(Entity entityHit, AbilityAffectedUnitType affectedUnitType, EntityTeam teamOfCallingEntity)
+    public static bool CheckIfTargetIsValid(Unit unitHit, AbilityAffectedUnitType affectedUnitType, Team castingUnitTeam)
     {
-        localTeamOfCallingEntity = teamOfCallingEntity;
+        TargetIsValid.castingUnitTeam = castingUnitTeam;
 
         switch (affectedUnitType)
         {
-            case AbilityAffectedUnitType.UNITS:
-                return EntityIsAUnit(entityHit.EntityType);
-
             case AbilityAffectedUnitType.ALLIES:
-                return EntityIsAnAlly(entityHit.Team) && EntityIsAUnit(entityHit.EntityType);
+                return UnitIsAnAlly(unitHit.Team);
             case AbilityAffectedUnitType.ENEMIES:
-                return !EntityIsAnAlly(entityHit.Team) && EntityIsAUnit(entityHit.EntityType);
+                return !UnitIsAnAlly(unitHit.Team);
 
             case AbilityAffectedUnitType.CHARACTERS:
-                return EntityIsACharacter(entityHit.EntityType);
+                return UnitIsACharacter(unitHit.UnitType);
             case AbilityAffectedUnitType.ALLY_CHARACTERS:
-                return EntityIsAnAllyCharacter(entityHit.Team, entityHit.EntityType);
+                return UnitIsAnAllyCharacter(unitHit.Team, unitHit.UnitType);
             case AbilityAffectedUnitType.ENEMY_CHARACTERS:
-                return EntityIsAnEnemyCharacter(entityHit.Team, entityHit.EntityType);
+                return UnitIsAnEnemyCharacter(unitHit.Team, unitHit.UnitType);
 
             case AbilityAffectedUnitType.MINIONS:
-                return EntityIsAMinion(entityHit.EntityType);
+                return UnitIsAMinion(unitHit.UnitType);
             case AbilityAffectedUnitType.ALLY_MINIONS:
-                return EntityIsAnAllyMinion(entityHit.Team, entityHit.EntityType);
+                return UnitIsAnAllyMinion(unitHit.Team, unitHit.UnitType);
             case AbilityAffectedUnitType.ENEMY_MINIONS:
-                return EntityIsAnEnemyMinion(entityHit.Team, entityHit.EntityType);
+                return UnitIsAnEnemyMinion(unitHit.Team, unitHit.UnitType);
 
             case AbilityAffectedUnitType.PETS:
-                return EntityIsAPet(entityHit.EntityType);
+                return UnitIsAPet(unitHit.UnitType);
             case AbilityAffectedUnitType.ALLY_PETS:
-                return EntityIsAnAllyPet(entityHit.Team, entityHit.EntityType);
+                return UnitIsAnAllyPet(unitHit.Team, unitHit.UnitType);
             case AbilityAffectedUnitType.ENEMY_PETS:
-                return EntityIsAnEnemyPet(entityHit.Team, entityHit.EntityType);
+                return UnitIsAnEnemyPet(unitHit.Team, unitHit.UnitType);
 
             case AbilityAffectedUnitType.MONSTERS:
-                return EntityIsAMonster(entityHit.EntityType);
+                return UnitIsAMonster(unitHit.UnitType);
             case AbilityAffectedUnitType.LARGE_MONSTERS:
-                return EntityIsALargeMonster(entityHit.EntityType);
+                return UnitIsALargeMonster(unitHit.UnitType);
             case AbilityAffectedUnitType.EPIC_MONSTERS:
-                return EntityIsAnEpicMonster(entityHit.EntityType);
+                return UnitIsAnEpicMonster(unitHit.UnitType);
 
             case AbilityAffectedUnitType.STRUCTURES:
-                return EntityIsAStructure(entityHit.EntityType);
+                return UnitIsAStructure(unitHit.UnitType);
             case AbilityAffectedUnitType.ALLY_STRUCTURES:
-                return EntityIsAnAllyStructure(entityHit.Team, entityHit.EntityType);
+                return UnitIsAnAllyStructure(unitHit.Team, unitHit.UnitType);
             case AbilityAffectedUnitType.ENEMY_STRUCTURES:
-                return EntityIsAnEnemyStructure(entityHit.Team, entityHit.EntityType);
+                return UnitIsAnEnemyStructure(unitHit.Team, unitHit.UnitType);
 
             case AbilityAffectedUnitType.TURRETS:
-                return EntityIsATurret(entityHit.EntityType);
+                return UnitIsATurret(unitHit.UnitType);
             case AbilityAffectedUnitType.ALLY_TURRETS:
-                return EntityIsAnAllyTurret(entityHit.Team, entityHit.EntityType);
+                return UnitIsAnAllyTurret(unitHit.Team, unitHit.UnitType);
             case AbilityAffectedUnitType.ENEMY_TURRETS:
-                return EntityIsAnEnemyTurret(entityHit.Team, entityHit.EntityType);
+                return UnitIsAnEnemyTurret(unitHit.Team, unitHit.UnitType);
 
             case AbilityAffectedUnitType.INHIBITORS:
-                return EntityIsAnInhibitor(entityHit.EntityType);
+                return UnitIsAnInhibitor(unitHit.UnitType);
             case AbilityAffectedUnitType.ALLY_INHIBITORS:
-                return EntityIsAnAllyInhibitor(entityHit.Team, entityHit.EntityType);
+                return UnitIsAnAllyInhibitor(unitHit.Team, unitHit.UnitType);
             case AbilityAffectedUnitType.ENEMY_INHIBITORS:
-                return EntityIsAnEnemyInhibitor(entityHit.Team, entityHit.EntityType);
+                return UnitIsAnEnemyInhibitor(unitHit.Team, unitHit.UnitType);
 
             case AbilityAffectedUnitType.NEXUS:
-                return EntityIsANexus(entityHit.EntityType);
+                return UnitIsANexus(unitHit.UnitType);
             case AbilityAffectedUnitType.ALLY_NEXUS:
-                return EntityIsAnAllyNexus(entityHit.Team, entityHit.EntityType);
+                return UnitIsAnAllyNexus(unitHit.Team, unitHit.UnitType);
             case AbilityAffectedUnitType.ENEMY_NEXUS:
-                return EntityIsAnEnemyNexus(entityHit.Team, entityHit.EntityType);
+                return UnitIsAnEnemyNexus(unitHit.Team, unitHit.UnitType);
 
             case AbilityAffectedUnitType.OBJECTIVES:
-                return EntityIsAnObjective(entityHit.Team, entityHit.EntityType);
+                return UnitIsAnObjective(unitHit.Team, unitHit.UnitType);
             case AbilityAffectedUnitType.OBJECTIVES_AND_ENEMY_CHARACTERS:
-                return EntityIsAnObjectiveOrAnEnemyCharacter(entityHit.Team, entityHit.EntityType);
+                return UnitIsAnObjectiveOrAnEnemyCharacter(unitHit.Team, unitHit.UnitType);
 
             case AbilityAffectedUnitType.TERRAIN:
-                return EntityIsTerrain(entityHit.EntityType);
+                return UnitIsTerrain(unitHit.UnitType);
         }
 
         return false;
     }
 
-    private static bool EntityIsACharacter(EntityType entityType)
+    private static bool UnitIsACharacter(UnitType unitType)
     {
-        return entityType == EntityType.CHARACTER;
+        return unitType == UnitType.CHARACTER;
     }
 
-    private static bool EntityIsALargeMonster(EntityType entityType)
+    private static bool UnitIsALargeMonster(UnitType unitType)
     {
-        return entityType == EntityType.MONSTER || EntityIsAnEpicMonster(entityType); // will change
+        return unitType == UnitType.MONSTER || UnitIsAnEpicMonster(unitType); // will change
     }
 
-    private static bool EntityIsAMinion(EntityType entityType)
+    private static bool UnitIsAMinion(UnitType unitType)
     {
-        return entityType == EntityType.MINION;
+        return unitType == UnitType.MINION;
     }
 
-    private static bool EntityIsAMonster(EntityType entityType)
+    private static bool UnitIsAMonster(UnitType unitType)
     {
-        return entityType == EntityType.MONSTER || EntityIsALargeMonster(entityType) || EntityIsAnEpicMonster(entityType);
+        return unitType == UnitType.MONSTER || UnitIsALargeMonster(unitType) || UnitIsAnEpicMonster(unitType);
     }
 
-    private static bool EntityIsAnAlly(EntityTeam entityTeam)
+    private static bool UnitIsAnAlly(Team unitTeam)
     {
-        return entityTeam == localTeamOfCallingEntity;
+        return unitTeam == castingUnitTeam;
     }
 
-    private static bool EntityIsAnAllyCharacter(EntityTeam entityTeam, EntityType entityType)
+    private static bool UnitIsAnAllyCharacter(Team unitTeam, UnitType unitType)
     {
-        return EntityIsACharacter(entityType) && EntityIsAnAlly(entityTeam);
+        return UnitIsACharacter(unitType) && UnitIsAnAlly(unitTeam);
     }
 
-    private static bool EntityIsAnEnemyCharacter(EntityTeam entityTeam, EntityType entityType)
+    private static bool UnitIsAnEnemyCharacter(Team unitTeam, UnitType unitType)
     {
-        return EntityIsACharacter(entityType) && !EntityIsAnAlly(entityTeam);
+        return UnitIsACharacter(unitType) && !UnitIsAnAlly(unitTeam);
     }
 
-    private static bool EntityIsAnAllyInhibitor(EntityTeam entityTeam, EntityType entityType)
+    private static bool UnitIsAnAllyInhibitor(Team unitTeam, UnitType unitType)
     {
-        return EntityIsAnInhibitor(entityType) && EntityIsAnAlly(entityTeam);
+        return UnitIsAnInhibitor(unitType) && UnitIsAnAlly(unitTeam);
     }
 
-    private static bool EntityIsAnEnemyInhibitor(EntityTeam entityTeam, EntityType entityType)
+    private static bool UnitIsAnEnemyInhibitor(Team unitTeam, UnitType unitType)
     {
-        return EntityIsAnInhibitor(entityType) && !EntityIsAnAlly(entityTeam);
+        return UnitIsAnInhibitor(unitType) && !UnitIsAnAlly(unitTeam);
     }
 
-    private static bool EntityIsAnAllyMinion(EntityTeam entityTeam, EntityType entityType)
+    private static bool UnitIsAnAllyMinion(Team unitTeam, UnitType unitType)
     {
-        return EntityIsAMinion(entityType) && EntityIsAnAlly(entityTeam);
+        return UnitIsAMinion(unitType) && UnitIsAnAlly(unitTeam);
     }
 
-    private static bool EntityIsAnEnemyMinion(EntityTeam entityTeam, EntityType entityType)
+    private static bool UnitIsAnEnemyMinion(Team unitTeam, UnitType unitType)
     {
-        return EntityIsAMinion(entityType) && !EntityIsAnAlly(entityTeam);
+        return UnitIsAMinion(unitType) && !UnitIsAnAlly(unitTeam);
     }
 
-    private static bool EntityIsAnAllyNexus(EntityTeam entityTeam, EntityType entityType)
+    private static bool UnitIsAnAllyNexus(Team unitTeam, UnitType unitType)
     {
-        return EntityIsANexus(entityType) && EntityIsAnAlly(entityTeam);
+        return UnitIsANexus(unitType) && UnitIsAnAlly(unitTeam);
     }
 
-    private static bool EntityIsAnEnemyNexus(EntityTeam entityTeam, EntityType entityType)
+    private static bool UnitIsAnEnemyNexus(Team unitTeam, UnitType unitType)
     {
-        return EntityIsANexus(entityType) && !EntityIsAnAlly(entityTeam);
+        return UnitIsANexus(unitType) && !UnitIsAnAlly(unitTeam);
     }
 
-    private static bool EntityIsAnAllyPet(EntityTeam entityTeam, EntityType entityType)
+    private static bool UnitIsAnAllyPet(Team unitTeam, UnitType unitType)
     {
-        return EntityIsAPet(entityType) && EntityIsAnAlly(entityTeam);
+        return UnitIsAPet(unitType) && UnitIsAnAlly(unitTeam);
     }
 
-    private static bool EntityIsAnEnemyPet(EntityTeam entityTeam, EntityType entityType)
+    private static bool UnitIsAnEnemyPet(Team unitTeam, UnitType unitType)
     {
-        return EntityIsAPet(entityType) && !EntityIsAnAlly(entityTeam);
+        return UnitIsAPet(unitType) && !UnitIsAnAlly(unitTeam);
     }
 
-    private static bool EntityIsAnAllyStructure(EntityTeam entityTeam, EntityType entityType)
+    private static bool UnitIsAnAllyStructure(Team unitTeam, UnitType unitType)
     {
-        return EntityIsAStructure(entityType) && EntityIsAnAlly(entityTeam);
+        return UnitIsAStructure(unitType) && UnitIsAnAlly(unitTeam);
     }
 
-    private static bool EntityIsAnEnemyStructure(EntityTeam entityTeam, EntityType entityType)
+    private static bool UnitIsAnEnemyStructure(Team unitTeam, UnitType unitType)
     {
-        return EntityIsAStructure(entityType) && !EntityIsAnAlly(entityTeam);
+        return UnitIsAStructure(unitType) && !UnitIsAnAlly(unitTeam);
     }
 
-    private static bool EntityIsAnAllyTurret(EntityTeam entityTeam, EntityType entityType)
+    private static bool UnitIsAnAllyTurret(Team unitTeam, UnitType unitType)
     {
-        return EntityIsATurret(entityType) && EntityIsAnAlly(entityTeam);
+        return UnitIsATurret(unitType) && UnitIsAnAlly(unitTeam);
     }
 
-    private static bool EntityIsAnEnemyTurret(EntityTeam entityTeam, EntityType entityType)
+    private static bool UnitIsAnEnemyTurret(Team unitTeam, UnitType unitType)
     {
-        return EntityIsATurret(entityType) && !EntityIsAnAlly(entityTeam);
+        return UnitIsATurret(unitType) && !UnitIsAnAlly(unitTeam);
     }
 
-    private static bool EntityIsAnEpicMonster(EntityType entityType)
+    private static bool UnitIsAnEpicMonster(UnitType unitType)
     {
-        return entityType == EntityType.MONSTER; // will change
+        return unitType == UnitType.MONSTER; // will change
     }
 
-    private static bool EntityIsANexus(EntityType entityType)
+    private static bool UnitIsANexus(UnitType unitType)
     {
-        return entityType == EntityType.NEXUS;
+        return unitType == UnitType.NEXUS;
     }
 
-    private static bool EntityIsAnInhibitor(EntityType entityType)
+    private static bool UnitIsAnInhibitor(UnitType unitType)
     {
-        return entityType == EntityType.INHIBITOR;
+        return unitType == UnitType.INHIBITOR;
     }
 
-    private static bool EntityIsAnObjective(EntityTeam entityTeam, EntityType entityType)
+    private static bool UnitIsAnObjective(Team unitTeam, UnitType unitType)
     {
-        return EntityIsAnEnemyStructure(entityTeam, entityType) || EntityIsAnEpicMonster(entityType);
+        return UnitIsAnEnemyStructure(unitTeam, unitType) || UnitIsAnEpicMonster(unitType);
     }
 
-    private static bool EntityIsAnObjectiveOrAnEnemyCharacter(EntityTeam entityTeam, EntityType entityType)
+    private static bool UnitIsAnObjectiveOrAnEnemyCharacter(Team unitTeam, UnitType unitType)
     {
-        return EntityIsAnObjective(entityTeam, entityType) || EntityIsAnEnemyCharacter(entityTeam, entityType);
+        return UnitIsAnObjective(unitTeam, unitType) || UnitIsAnEnemyCharacter(unitTeam, unitType);
     }
 
-    private static bool EntityIsAPet(EntityType entityType)
+    private static bool UnitIsAPet(UnitType unitType)
     {
-        return entityType == EntityType.PET;
+        return unitType == UnitType.PET;
     }
 
-    private static bool EntityIsAStructure(EntityType entityType)
+    private static bool UnitIsAStructure(UnitType unitType)
     {
-        return EntityIsAnInhibitor(entityType) || EntityIsANexus(entityType) || EntityIsATurret(entityType);
+        return UnitIsAnInhibitor(unitType) || UnitIsANexus(unitType) || UnitIsATurret(unitType);
     }
 
-    private static bool EntityIsATurret(EntityType entityType)
+    private static bool UnitIsATurret(UnitType unitType)
     {
-        return entityType == EntityType.TURRET;
+        return unitType == UnitType.TURRET;
     }
 
-    private static bool EntityIsAUnit(EntityType entityType)
+    private static bool UnitIsTerrain(UnitType unitType)
     {
-        return !(EntityIsAStructure(entityType) || EntityIsTerrain(entityType));
-    }
-
-    private static bool EntityIsTerrain(EntityType entityType)
-    {
-        return entityType == EntityType.TERRAIN;
+        return unitType == UnitType.TERRAIN;
     }
 }

@@ -57,18 +57,18 @@ public class Old_Ezreal_W : DirectionTargetedProjectile
         FinishAbilityCast();
     }
 
-    protected override void OnProjectileHit(AbilityEffect projectile, Entity entityHit, bool isACriticalStrike, bool willMiss)
+    protected override void OnProjectileHit(AbilityEffect projectile, Unit unitHit, bool isACriticalStrike, bool willMiss)
     {
         float damage = 0;
-        if (entityHit.Team == character.Team)
+        if (unitHit.Team == character.Team)
         {
-            AbilityBuffs[0].AddNewBuffToAffectedEntity(entityHit);
+            AbilityBuffs[0].AddNewBuffToAffectedUnit(unitHit);
         }
         else
         {
-            damage = GetAbilityDamage(entityHit);
-            DamageEntity(entityHit, damage);
+            damage = GetAbilityDamage(unitHit);
+            DamageUnit(unitHit, damage);
         }
-        AbilityHit(entityHit, damage);
+        AbilityHit(unitHit, damage);
     }
 }

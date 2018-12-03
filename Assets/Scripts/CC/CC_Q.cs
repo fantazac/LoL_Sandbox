@@ -43,7 +43,7 @@ public class CC_Q : SelfTargeted
         AbilityBuffs = new AbilityBuff[] { gameObject.AddComponent<CC_Q_Buff>() };
         AbilityDebuffs = new AbilityBuff[] { gameObject.AddComponent<CC_Q_Debuff>() };
 
-        AbilityBuffs[0].OnAbilityBuffRemoved += RemoveBuffFromEntityHit;
+        AbilityBuffs[0].OnAbilityBuffRemoved += RemoveBuffFromAffectedUnit;
     }
 
     public override void UseAbility(Vector3 destination)
@@ -51,24 +51,24 @@ public class CC_Q : SelfTargeted
         StartAbilityCast();
 
         UseResource();
-        AddNewBuffToEntityHit(character);
+        AddNewBuffToAffectedUnit(character);
     }
 
-    private void AddNewBuffToEntityHit(Entity entityHit)
+    private void AddNewBuffToAffectedUnit(Unit affectedUnit)
     {
-        AbilityBuffs[0].AddNewBuffToAffectedEntity(character);
+        AbilityBuffs[0].AddNewBuffToAffectedUnit(character);
     }
 
-    private void RemoveBuffFromEntityHit(Entity entityHit)
+    private void RemoveBuffFromAffectedUnit(Unit affectedUnit)
     {
         FinishAbilityCast();
     }
 
-    public override void OnEmpoweredBasicAttackHit(Entity entityHit, bool isACriticalStrike)
+    public override void OnEmpoweredBasicAttackHit(Unit unitHit, bool isACriticalStrike)
     {
         AbilityBuffs[0].ConsumeBuff(character);
 
-        DamageEntity(entityHit, GetAbilityDamage(entityHit));
-        AbilityDebuffs[0].AddNewBuffToAffectedEntity(entityHit);
+        DamageUnit(unitHit, GetAbilityDamage(unitHit));
+        AbilityDebuffs[0].AddNewBuffToAffectedUnit(unitHit);
     }
 }

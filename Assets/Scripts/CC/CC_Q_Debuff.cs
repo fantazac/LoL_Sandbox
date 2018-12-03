@@ -24,21 +24,21 @@ public class CC_Q_Debuff : AbilityBuff
         buffSpritePath = "Sprites/Characters/CharacterAbilities/CC/CCQ_Debuff";
     }
 
-    protected override void ApplyBuffEffect(Entity affectedEntity, Buff buff)
+    protected override void ApplyBuffEffect(Unit affectedUnit, Buff buff)
     {
-        affectedEntity.EntityStatusManager.AddCrowdControlEffect(buffCrowdControlEffect);
-        affectedEntity.EntityForcedActionManager.SetupForcedAction(buffCrowdControlEffect, this, character);
-        //affectedEntity.EntityDisplacementManager.SetupDisplacement(knockupDestination, knockupSpeed, this, true);
+        affectedUnit.StatusManager.AddCrowdControlEffect(buffCrowdControlEffect);
+        affectedUnit.ForcedActionManager.SetupForcedAction(buffCrowdControlEffect, this, character);
+        //affectedUnit.DisplacementManager.SetupDisplacement(knockupDestination, knockupSpeed, this, true);
     }
 
-    protected override void RemoveBuffEffect(Entity affectedEntity, Buff buff)
+    protected override void RemoveBuffEffect(Unit affectedUnit, Buff buff)
     {
-        affectedEntity.EntityStatusManager.RemoveCrowdControlEffect(buffCrowdControlEffect);
-        affectedEntity.EntityForcedActionManager.StopCurrentForcedAction(this);
+        affectedUnit.StatusManager.RemoveCrowdControlEffect(buffCrowdControlEffect);
+        affectedUnit.ForcedActionManager.StopCurrentForcedAction(this);
     }
 
-    protected override Buff CreateNewBuff(Entity affectedEntity)
+    protected override Buff CreateNewBuff(Unit affectedUnit)
     {
-        return new Buff(this, affectedEntity, 0, GetBuffDuration(affectedEntity));
+        return new Buff(this, affectedUnit, 0, GetBuffDuration(affectedUnit));
     }
 }

@@ -14,18 +14,18 @@
         buffSpritePath = "Sprites/Characters/CharacterAbilities/Ezreal/EzrealW_Buff";
     }
 
-    protected override void ApplyBuffEffect(Entity affectedEntity, Buff buff)
+    protected override void ApplyBuffEffect(Unit affectedUnit, Buff buff)
     {
-        affectedEntity.EntityStatsManager.AttackSpeed.AddPercentBonus(buff.BuffValue);
+        affectedUnit.StatsManager.AttackSpeed.AddPercentBonus(buff.BuffValue);
     }
 
-    protected override void RemoveBuffEffect(Entity affectedEntity, Buff buff)
+    protected override void RemoveBuffEffect(Unit affectedUnit, Buff buff)
     {
-        affectedEntity.EntityStatsManager.AttackSpeed.RemovePercentBonus(buff.BuffValue);
+        affectedUnit.StatsManager.AttackSpeed.RemovePercentBonus(buff.BuffValue);
     }
 
-    protected override Buff CreateNewBuff(Entity affectedEntity)
+    protected override Buff CreateNewBuff(Unit affectedUnit)
     {
-        return new Buff(this, affectedEntity, buffPercentValue, buffDuration, buffMaximumStacks);
+        return new Buff(this, affectedUnit, buffPercentValue, buffDuration, buffMaximumStacks);
     }
 }

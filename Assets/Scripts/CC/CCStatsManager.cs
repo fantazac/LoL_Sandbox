@@ -1,6 +1,6 @@
 ﻿public class CCStatsManager : ManaUserStatsManager
 {
-    protected override EntityBaseStats GetEntityBaseStats()
+    protected override BaseStats GetBaseStats()
     {
         return new CCBaseStats();
     }

@@ -12,8 +12,8 @@
         buffSpritePath = "Sprites/Characters/CharacterAbilities/CC/CCQ_Buff";
     }
 
-    protected override Buff CreateNewBuff(Entity affectedEntity)
+    protected override Buff CreateNewBuff(Unit affectedUnit)
     {
-        return new Buff(this, affectedEntity, 0, buffDuration);
+        return new Buff(this, affectedUnit, 0, buffDuration);
     }
 }

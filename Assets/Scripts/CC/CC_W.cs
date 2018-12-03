@@ -32,7 +32,7 @@ public class CC_W : SelfTargeted
     {
         StartAbilityCast();
 
-        AbilityDebuffs[0].AddNewBuffToAffectedEntity(character);
+        AbilityDebuffs[0].AddNewBuffToAffectedUnit(character);
 
         FinishAbilityCast();
     }

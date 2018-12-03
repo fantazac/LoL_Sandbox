@@ -61,10 +61,10 @@ public class Old_Ezreal_R : DirectionTargetedProjectile
         FinishAbilityCast();
     }
 
-    protected override void OnProjectileHit(AbilityEffect projectile, Entity entityHit, bool isACriticalStrike, bool willMiss)
+    protected override void OnProjectileHit(AbilityEffect projectile, Unit unitHit, bool isACriticalStrike, bool willMiss)
     {
-        float damage = GetAbilityDamage(entityHit) * currentDamageMultiplier;
-        DamageEntity(entityHit, damage);
+        float damage = GetAbilityDamage(unitHit) * currentDamageMultiplier;
+        DamageUnit(unitHit, damage);
         if (currentDamageMultiplier > DAMAGE_REDUCTION_CAP)
         {
             currentDamageMultiplier -= DAMAGE_REDUCTION_PER_TARGET_HIT;
@@ -73,6 +73,6 @@ public class Old_Ezreal_R : DirectionTargetedProjectile
         {
             Destroy(projectile.gameObject);
         }
-        AbilityHit(entityHit, damage);
+        AbilityHit(unitHit, damage);
     }
 }
