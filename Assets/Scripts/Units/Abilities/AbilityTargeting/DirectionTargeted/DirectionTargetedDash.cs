@@ -38,13 +38,13 @@ public abstract class DirectionTargetedDash : DirectionTargeted
 
     protected void SetupDash()
     {
-        champion.DisplacementManager.SetupDisplacement(this.destination, dashSpeed);
+        champion.DisplacementManager.SetupDisplacement(destination, dashSpeed);
         champion.DisplacementManager.OnDisplacementFinished += SetupAutoAttackPostDash;
     }
 
     protected void SetupAutoAttackPostDash()
     {
-        if (!champion.MovementManager.IsMovingTowardsPosition())
+        if (!champion.ChampionMovementManager.IsMovingTowardsPosition())
         {
             champion.AutoAttackManager.EnableAutoAttackWithBiggerRange();
         }

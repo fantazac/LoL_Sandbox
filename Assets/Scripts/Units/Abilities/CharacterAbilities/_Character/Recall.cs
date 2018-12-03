@@ -38,7 +38,7 @@ public class Recall : AutoTargetedBlink
 
     public override Vector3 GetDestination()
     {
-        return champion.MovementManager.CharacterHeightOffset;
+        return champion.CharacterHeightOffset;
     }
 
     protected override IEnumerator AbilityWithCastTimeAndChannelTime()
@@ -49,7 +49,7 @@ public class Recall : AutoTargetedBlink
 
         IsBeingCasted = false;
         UseResource();
-        champion.MovementManager.StopAllMovement();//This is to cancel any movement command made during the cast time
+        champion.MovementManager.StopMovement();//This is to cancel any movement command made during the cast time
         AddNewBuffToAffectedUnit(champion);
         IsBeingChanneled = true;
 
@@ -59,7 +59,7 @@ public class Recall : AutoTargetedBlink
         AbilityBuffs[0].ConsumeBuff(champion);
 
         transform.position = GetDestination();
-        champion.MovementManager.NotifyCharacterMoved();
+        champion.ChampionMovementManager.NotifyChampionMoved();
 
         FinishAbilityCast();
     }
@@ -68,7 +68,7 @@ public class Recall : AutoTargetedBlink
     {
         champion.StatsManager.Health.OnResourceReduced += CancelRecall;
         champion.AbilityManager.OnAnAbilityUsed += CancelRecall;
-        champion.MovementManager.CharacterMoved += CancelRecall;
+        champion.ChampionMovementManager.ChampionMoved += CancelRecall;
         AbilityBuffs[0].AddNewBuffToAffectedUnit(champion);
     }
 
@@ -76,7 +76,7 @@ public class Recall : AutoTargetedBlink
     {
         champion.StatsManager.Health.OnResourceReduced -= CancelRecall;
         champion.AbilityManager.OnAnAbilityUsed -= CancelRecall;
-        champion.MovementManager.CharacterMoved -= CancelRecall;
+        champion.ChampionMovementManager.ChampionMoved -= CancelRecall;
     }
 
     private void CancelRecall()

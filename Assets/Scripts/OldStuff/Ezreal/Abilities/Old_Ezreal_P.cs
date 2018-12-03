@@ -1,11 +1,12 @@
-﻿public class Ezreal_P : PassiveTargeted
+﻿public class Old_Ezreal_P : PassiveTargeted
 {
-    protected Ezreal_P()
+    protected Old_Ezreal_P()
     {
         abilityName = "Rising Spell Force";
 
         abilityType = AbilityType.PASSIVE;
 
+        MaxLevel = 3;
         AbilityLevel = 1;
 
         IsEnabled = true;
@@ -25,6 +26,16 @@
         foreach (Ability ability in champion.AbilityManager.CharacterAbilities)
         {
             ability.OnAbilityHit += PassiveEffect;
+        }
+
+        champion.LevelManager.OnLevelUp += OnCharacterLevelUp;
+    }
+
+    public override void OnCharacterLevelUp(int level)
+    {
+        if (level == 7 || level == 13)
+        {
+            LevelUp();
         }
     }
 }

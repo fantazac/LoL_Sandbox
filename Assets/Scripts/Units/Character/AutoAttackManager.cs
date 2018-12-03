@@ -144,7 +144,7 @@ public class AutoAttackManager : MonoBehaviour
     protected bool CanUseAutoAttack()
     {
         return champion.StatusManager && champion.AbilityManager.CanUseBasicAttacks() && !champion.DisplacementManager.IsBeingDisplaced &&
-                champion.StatusManager.CanUseBasicAttacks() && (!champion.MovementManager.IsMoving() || !champion.StatusManager.CanUseMovement()) &&
+                champion.StatusManager.CanUseBasicAttacks() && (!champion.ChampionMovementManager.IsMoving() || !champion.StatusManager.CanUseMovement()) &&
                 !champion.BasicAttack.AttackIsInQueue && champion.BasicAttack.BasicAttackCycle.AttackSpeedCycleIsReady;
     }
 }

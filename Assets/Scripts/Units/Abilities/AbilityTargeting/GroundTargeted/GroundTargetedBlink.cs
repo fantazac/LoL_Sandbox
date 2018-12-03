@@ -14,7 +14,7 @@ public abstract class GroundTargetedBlink : GroundTargeted
         destinationOnCast = FindPointToMoveTo(destinationOnCast, transform.position);
         champion.OrientationManager.RotateCharacterInstantly(destinationOnCast);
         transform.position = destinationOnCast;
-        champion.MovementManager.NotifyCharacterMoved();
+        champion.ChampionMovementManager.NotifyChampionMoved();
 
         FinishAbilityCast();
     }
@@ -29,7 +29,7 @@ public abstract class GroundTargetedBlink : GroundTargeted
         IsBeingChanneled = false;
         champion.OrientationManager.RotateCharacterInstantly(destinationOnCast);
         transform.position = destinationOnCast;
-        champion.MovementManager.NotifyCharacterMoved();
+        champion.ChampionMovementManager.NotifyChampionMoved();
 
         FinishAbilityCast();
     }

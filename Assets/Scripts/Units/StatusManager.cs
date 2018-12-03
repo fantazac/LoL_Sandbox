@@ -56,10 +56,7 @@ public class StatusManager : MonoBehaviour
                 SetCannotUseBasicAbilities(count);
                 SetCannotUseBasicAttacks(count);
                 SetCannotUseMovement(count);
-                if (champion && champion.MovementManager)
-                {
-                    champion.MovementManager.StopAllMovement();
-                }
+                unit.MovementManager.StopMovement();
                 if (champion && champion.AbilityManager)
                 {
                     champion.AbilityManager.CancelAllChannelingAbilities();
@@ -103,9 +100,9 @@ public class StatusManager : MonoBehaviour
                 SetCannotUseBasicAbilities(count);
                 SetCannotUseBasicAttacks(count);
                 SetCannotUseMovement(count);
-                if (champion && champion.MovementManager)
+                if (champion && champion.ChampionMovementManager)
                 {
-                    champion.MovementManager.StopMovementTowardsPointIfHasEvent();
+                    champion.ChampionMovementManager.StopMovementTowardsPointIfHasEvent();
                 }
                 if (champion && champion.AbilityManager)
                 {
@@ -118,10 +115,10 @@ public class StatusManager : MonoBehaviour
                 SetCannotUseBasicAbilities(count);
                 SetCannotUseBasicAttacks(count);
                 SetCannotUseMovement(count);
-                if (champion && champion.MovementManager)
+                if (champion && champion.ChampionMovementManager)
                 {
-                    champion.MovementManager.SetMoveTowardsHalfDistanceOfAbilityCastRange();
-                    champion.MovementManager.SetCharacterIsInTargetRangeEventForBasicAttack();
+                    champion.ChampionMovementManager.SetMoveTowardsHalfDistanceOfAbilityCastRange();
+                    champion.ChampionMovementManager.SetCharacterIsInTargetRangeEventForBasicAttack();
                 }
                 if (champion && champion.AbilityManager)
                 {
@@ -150,9 +147,9 @@ public class StatusManager : MonoBehaviour
             case CrowdControlEffect.ROOT:
                 SetCannotUseMovement(count);
                 SetCannotUseMovementAbilities(count);
-                if (champion && champion.MovementManager)
+                if (champion && champion.ChampionMovementManager)
                 {
-                    champion.MovementManager.StopMovementTowardsPointIfHasEvent();
+                    champion.ChampionMovementManager.StopMovementTowardsPointIfHasEvent();
                 }
                 if (champion && champion.AbilityManager)
                 {
@@ -172,9 +169,9 @@ public class StatusManager : MonoBehaviour
                 SetCannotUseBasicAttacks(count);
                 SetCannotUseMovement(count);
                 SetCannotUseSummonerAbilities(count);
-                if (champion && champion.MovementManager)
+                if (champion && champion.ChampionMovementManager)
                 {
-                    champion.MovementManager.StopMovementTowardsPointIfHasEvent();
+                    champion.ChampionMovementManager.StopMovementTowardsPointIfHasEvent();
                 }
                 if (champion && champion.AbilityManager)
                 {
@@ -188,12 +185,12 @@ public class StatusManager : MonoBehaviour
                 SetCannotUseMovement(count);
                 if (champion && champion.MovementManager)
                 {
-                    if (!champion.MovementManager.IsMovingTowardsPositionForAnEvent() && !champion.MovementManager.IsMovingTowardsTarget())
+                    if (!champion.ChampionMovementManager.IsMovingTowardsPositionForAnEvent() && !champion.ChampionMovementManager.IsMovingTowardsTarget())
                     {
                         champion.AutoAttackManager.EnableAutoAttackWithBiggerRange();
                     }
-                    champion.MovementManager.StopAllMovement();
                 }
+                unit.MovementManager.StopMovement();
                 if (champion && champion.AbilityManager)
                 {
                     champion.AbilityManager.CancelAllChannelingAbilities();

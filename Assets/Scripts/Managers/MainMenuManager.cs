@@ -69,7 +69,7 @@ public class MainMenuManager : MonoBehaviour
             else if (state == MainMenuState.ON_HOLD)
             {
                 mainMenuCamera.SetActive(true);
-                StaticObjects.Champion.MovementManager.UnsubscribeCameraEvent();
+                StaticObjects.Champion.ChampionMovementManager.UnsubscribeCameraEvent();
                 if (StaticObjects.OnlineMode)
                 {
                     PhotonNetwork.Destroy(StaticObjects.Champion.transform.parent.gameObject);

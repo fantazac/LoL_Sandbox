@@ -68,7 +68,7 @@ public class Ezreal_E : GroundTargetedBlink
         destinationOnCast = FindPointToMoveTo(destinationOnCast, transform.position);
         champion.OrientationManager.RotateCharacterInstantly(destinationOnCast);
         transform.position = destinationOnCast;
-        champion.MovementManager.NotifyCharacterMoved();
+        champion.ChampionMovementManager.NotifyChampionMoved();
 
         FinishAbilityCast();
 

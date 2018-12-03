@@ -20,8 +20,8 @@ public abstract class UnitTargeted : Ability
         }
         else if (!champion.StatusManager.CrowdControlEffectsOnCharacter.Contains(CrowdControlEffect.ROOT))
         {
-            champion.MovementManager.SetMoveTowardsTarget(target, range, false);
-            champion.MovementManager.CharacterIsInTargetRange += UseAbilityInRange;
+            champion.ChampionMovementManager.SetMoveTowardsTarget(target, range, false);
+            champion.ChampionMovementManager.ChampionIsInTargetRange += UseAbilityInRange;
         }
     }
 
@@ -29,9 +29,9 @@ public abstract class UnitTargeted : Ability
     {
         StartAbilityCast();
 
-        if (!champion.MovementManager.IsMovingTowardsTarget() && !champion.BasicAttack.CurrentTarget())
+        if (!champion.ChampionMovementManager.IsMovingTowardsTarget() && !champion.BasicAttack.CurrentTarget())
         {
-            champion.MovementManager.SetMoveTowardsTarget(target, champion.StatsManager.AttackRange.GetTotal(), true, true);
+            champion.ChampionMovementManager.SetMoveTowardsTarget(target, champion.StatsManager.AttackRange.GetTotal(), true, true);
         }
 
         targetedUnit = target;

@@ -83,14 +83,14 @@ public class AbilityManager : MonoBehaviour
         {
             currentlyUsedAbilities.Remove(ability);
 
-            champion.MovementManager.RotateCharacterIfMoving();
+            champion.ChampionMovementManager.RotateCharacterIfMoving();
 
             Ability bufferedAbility = champion.BufferedAbilityManager.GetBufferedAbility();
             if (bufferedAbility != null)
             {
                 if (HasEnoughResourceToCastAbility(bufferedAbility))
                 {
-                    champion.MovementManager.StopAllMovement(false);
+                    champion.MovementManager.StopMovement(false);
                     champion.BufferedAbilityManager.UseBufferedAbility();
                 }
                 else
@@ -328,7 +328,7 @@ public class AbilityManager : MonoBehaviour
             ability.UseAbility(destination);
             if (ability.HasCastTime || ability.HasChannelTime)
             {
-                champion.MovementManager.SetCharacterIsInTargetRangeEventForBasicAttack();
+                champion.ChampionMovementManager.SetCharacterIsInTargetRangeEventForBasicAttack();
             }
         }
         else

@@ -11,10 +11,10 @@ public class CameraManager : MonoBehaviour
     private int screenWidth;
     private int screenHeight;
 
-    private InputManager characterInputManager;
+    private InputManager inputManager;
 
-    private bool cameraLockedOnCharacter = true;
-    private bool cameraFollowsCharacter = false;
+    private bool cameraLockedOnChampion = true;
+    private bool cameraFollowsChampion = false;
 
     private Vector3 initialPosition;
 
@@ -22,24 +22,24 @@ public class CameraManager : MonoBehaviour
 
     private void Start()
     {
-        characterInputManager = StaticObjects.Champion.InputManager;
-        characterInputManager.OnPressedY += SetCameraLock;
-        characterInputManager.OnPressedSpace += SetCameraOnCharacter;
-        characterInputManager.OnReleasedSpace += SetCameraFree;
+        inputManager = StaticObjects.Champion.InputManager;
+        inputManager.OnPressedY += SetCameraLock;
+        inputManager.OnPressedSpace += SetCameraOnChampion;
+        inputManager.OnReleasedSpace += SetCameraFree;
 
         screenWidth = Screen.width;
         screenHeight = Screen.height;
 
         initialPosition = transform.position;
         transform.position += StaticObjects.Champion.transform.position;
-        StaticObjects.Champion.MovementManager.CharacterMoved += CharacterMoved;
+        StaticObjects.Champion.ChampionMovementManager.ChampionMoved += ChampionMoved;
 
-        CharacterMoved();
+        ChampionMoved();
     }
 
     private void Update()
     {
-        if (!CameraShouldFollowCharacter())
+        if (!CameraShouldFollowChampion())
         {
             mousePositionOnFrame = Input.mousePosition;
 
@@ -63,33 +63,33 @@ public class CameraManager : MonoBehaviour
         }
     }
 
-    private void SetCameraOnCharacter()
+    private void SetCameraOnChampion()
     {
-        cameraFollowsCharacter = true;
-        CharacterMoved();
+        cameraFollowsChampion = true;
+        ChampionMoved();
     }
 
     private void SetCameraFree()
     {
-        cameraFollowsCharacter = false;
+        cameraFollowsChampion = false;
     }
 
     private void SetCameraLock()
     {
-        cameraLockedOnCharacter = !cameraLockedOnCharacter;
-        CharacterMoved();
+        cameraLockedOnChampion = !cameraLockedOnChampion;
+        ChampionMoved();
     }
 
-    private void CharacterMoved()
+    private void ChampionMoved()
     {
-        if (CameraShouldFollowCharacter())
+        if (CameraShouldFollowChampion())
         {
             transform.position = StaticObjects.Champion.transform.position + initialPosition;
         }
     }
 
-    private bool CameraShouldFollowCharacter()
+    private bool CameraShouldFollowChampion()
     {
-        return cameraLockedOnCharacter || cameraFollowsCharacter;
+        return cameraLockedOnChampion || cameraFollowsChampion;
     }
 }

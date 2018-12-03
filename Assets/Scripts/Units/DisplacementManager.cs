@@ -52,7 +52,7 @@ public class DisplacementManager : MonoBehaviour
 
             if (unit is Champion)//TODO
             {
-                ((Champion)unit).MovementManager.NotifyCharacterMoved();
+                ((Champion)unit).ChampionMovementManager.NotifyChampionMoved();
             }
 
             yield return null;

@@ -52,7 +52,7 @@ public class Old_Teleport : GroundTargetedBlink//TODO: UnitTargeted
         champion.AbilityManager.UnblockAllMovementAbilities();
         champion.OrientationManager.RotateCharacterInstantly(destinationOnCast);
         transform.position = destinationOnCast;
-        champion.MovementManager.NotifyCharacterMoved();
+        champion.ChampionMovementManager.NotifyChampionMoved();
 
         FinishAbilityCast();
     }

@@ -127,9 +127,10 @@
 
     public void IncreaseCurrentStacks()
     {
-        if (CurrentStacks < MaximumStacks)
+        if (!IsAtMaximumStacks())
         {
             SourceAbilityBuff.RemoveBuffFromAffectedUnit(affectedUnit, this);
+            CurrentStacks++;
             SourceAbilityBuff.ApplyBuffToAffectedUnit(affectedUnit, this);
             HasStacksToUpdate = true;
         }

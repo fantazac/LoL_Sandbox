@@ -1,5 +1,9 @@
-﻿public abstract class Character : Unit
+﻿using UnityEngine;
+
+public abstract class Character : Unit
 {
+    public Vector3 CharacterHeightOffset { get; private set; }
+
     protected override void InitUnitProperties()
     {
         base.InitUnitProperties();
@@ -11,6 +15,8 @@
 
     protected override void Start()
     {
+        CharacterHeightOffset = Vector3.up * transform.position.y;
+
         if (StaticObjects.Champion && StaticObjects.Champion.HealthBarManager)
         {
             StaticObjects.Champion.HealthBarManager.SetupHealthBarForCharacter(this);

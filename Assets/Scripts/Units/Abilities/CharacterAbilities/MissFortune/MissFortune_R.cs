@@ -71,7 +71,7 @@ public class MissFortune_R : DirectionTargetedProjectile
     protected override IEnumerator AbilityWithChannelTime()
     {
         UseResource();
-        champion.MovementManager.StopAllMovement();
+        champion.MovementManager.StopMovement();
         AddNewBuffToAffectedUnit(champion);
         IsBeingChanneled = true;
 
@@ -89,7 +89,7 @@ public class MissFortune_R : DirectionTargetedProjectile
     private void AddNewBuffToAffectedUnit(Unit affectedunit)
     {
         champion.AbilityManager.OnAnAbilityUsed += CancelMissFortuneR;
-        champion.MovementManager.CharacterMoved += CancelMissFortuneR;
+        champion.ChampionMovementManager.ChampionMoved += CancelMissFortuneR;
         //TODO: if hard cc'd, cancel aswell
         AbilityBuffs[0].AddNewBuffToAffectedUnit(champion);
     }
@@ -97,7 +97,7 @@ public class MissFortune_R : DirectionTargetedProjectile
     private void RemoveBuffFromAffectedUnit(Unit unitHit)
     {
         champion.AbilityManager.OnAnAbilityUsed -= CancelMissFortuneR;
-        champion.MovementManager.CharacterMoved -= CancelMissFortuneR;
+        champion.ChampionMovementManager.ChampionMoved -= CancelMissFortuneR;
         //TODO: remove cc cancel
     }
 

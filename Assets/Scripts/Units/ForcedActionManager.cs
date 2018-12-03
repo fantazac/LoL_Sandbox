@@ -96,9 +96,9 @@ public class ForcedActionManager : MonoBehaviour
             {
                 transform.position = Vector3.MoveTowards(transform.position, casterTransform.position, Time.deltaTime * unit.StatsManager.MovementSpeed.GetTotal());
 
-                if (champion.MovementManager)
+                if (unit is Champion)
                 {
-                    champion.MovementManager.NotifyCharacterMoved();
+                    champion.ChampionMovementManager.NotifyChampionMoved();
                 }
 
                 transform.rotation = Quaternion.LookRotation(Vector3.RotateTowards(transform.forward, casterTransform.position - transform.position, Time.deltaTime * rotationSpeed, 0));
@@ -110,29 +110,29 @@ public class ForcedActionManager : MonoBehaviour
 
     private IEnumerator FinishCharm()
     {
-        if (champion.MovementManager && !champion.MovementManager.IsMoving())
+        if (champion.MovementManager && !champion.ChampionMovementManager.IsMoving())
         {
             Transform casterTransform = caster.transform;
             Vector3 lastCasterPosition = casterTransform.position;
             while (transform.position != lastCasterPosition)
             {
-                if (champion.MovementManager.IsMoving() || !champion.AbilityManager.CanUseMovement() || !unit.StatusManager.CanUseMovement() ||
+                if (champion.ChampionMovementManager.IsMoving() || !champion.AbilityManager.CanUseMovement() || !unit.StatusManager.CanUseMovement() ||
                     Vector3.Distance(casterTransform.position, transform.position) <= unit.StatsManager.AttackRange.GetTotal())
                 {
-                    champion.MovementManager.SetMoveTowardsTarget(caster, unit.StatsManager.AttackRange.GetTotal(), true);
+                    champion.ChampionMovementManager.SetMoveTowardsTarget(caster, unit.StatsManager.AttackRange.GetTotal(), true);
                     break;
                 }
                 else
                 {
                     transform.position = Vector3.MoveTowards(transform.position, lastCasterPosition, Time.deltaTime * unit.StatsManager.MovementSpeed.GetTotal());
 
-                    champion.MovementManager.NotifyCharacterMoved();
+                    champion.ChampionMovementManager.NotifyChampionMoved();
                 }
 
                 yield return null;
             }
 
-            if (!champion.MovementManager.IsMoving() && champion.AutoAttackManager)
+            if (!champion.ChampionMovementManager.IsMoving() && champion.AutoAttackManager)
             {
                 champion.AutoAttackManager.EnableAutoAttack(true);
             }
@@ -176,7 +176,7 @@ public class ForcedActionManager : MonoBehaviour
 
                 if (champion.MovementManager)
                 {
-                    champion.MovementManager.NotifyCharacterMoved();
+                    champion.ChampionMovementManager.NotifyChampionMoved();
                 }
 
                 transform.rotation = Quaternion.LookRotation(Vector3.RotateTowards(transform.forward, -(casterTransform.position - transform.position), Time.deltaTime * rotationSpeed, 0));
@@ -188,7 +188,7 @@ public class ForcedActionManager : MonoBehaviour
 
     private void FinishFearAndFlee()
     {
-        if (champion.MovementManager && !champion.MovementManager.IsMoving() && champion.AutoAttackManager)
+        if (champion.MovementManager && !champion.ChampionMovementManager.IsMoving() && champion.AutoAttackManager)
         {
             champion.AutoAttackManager.EnableAutoAttack();
         }
@@ -207,7 +207,7 @@ public class ForcedActionManager : MonoBehaviour
 
                     if (champion.MovementManager)
                     {
-                        champion.MovementManager.NotifyCharacterMoved();
+                        champion.ChampionMovementManager.NotifyChampionMoved();
                     }
                 }
                 else
@@ -227,9 +227,9 @@ public class ForcedActionManager : MonoBehaviour
 
     private void FinishTaunt()
     {
-        if (champion && champion.MovementManager && !champion.MovementManager.IsMoving())
+        if (champion && champion.MovementManager && !champion.ChampionMovementManager.IsMoving())
         {
-            champion.MovementManager.SetMoveTowardsTarget(caster, unit.StatsManager.AttackRange.GetTotal(), true);
+            champion.ChampionMovementManager.SetMoveTowardsTarget(caster, unit.StatsManager.AttackRange.GetTotal(), true);
         }
     }
 }

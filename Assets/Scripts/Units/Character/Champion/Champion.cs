@@ -10,10 +10,10 @@ public abstract class Champion : Character
     public AbilityManager AbilityManager { get; protected set; }
     public AutoAttackManager AutoAttackManager { get; private set; }
     public BufferedAbilityManager BufferedAbilityManager { get; private set; }
+    public ChampionMovementManager ChampionMovementManager { get; private set; }
     public InputManager InputManager { get; private set; }
     public LevelManager LevelManager { get; private set; }
     public MouseManager MouseManager { get; private set; }
-    public MovementManager MovementManager { get; private set; }
     public OnAttackEffectsManager OnAttackEffectsManager { get; private set; }
     public OnHitEffectsManager OnHitEffectsManager { get; private set; }
     public OrientationManager OrientationManager { get; private set; }
@@ -34,8 +34,8 @@ public abstract class Champion : Character
         AbilityEffectsManager = gameObject.AddComponent<AbilityEffectsManager>();
         AutoAttackManager = gameObject.AddComponent<AutoAttackManager>();
         BufferedAbilityManager = gameObject.AddComponent<BufferedAbilityManager>();
+        ChampionMovementManager = gameObject.AddComponent<ChampionMovementManager>();
         LevelManager = gameObject.AddComponent<LevelManager>();
-        MovementManager = gameObject.AddComponent<MovementManager>();
         OnAttackEffectsManager = gameObject.AddComponent<OnAttackEffectsManager>();
         OnHitEffectsManager = gameObject.AddComponent<OnHitEffectsManager>();
         OrientationManager = gameObject.AddComponent<OrientationManager>();
@@ -127,5 +127,10 @@ public abstract class Champion : Character
     {
         Team = team;
         ID = characterId;
+    }
+
+    protected override MovementManager GetMovementManager()
+    {
+        return ChampionMovementManager;
     }
 }

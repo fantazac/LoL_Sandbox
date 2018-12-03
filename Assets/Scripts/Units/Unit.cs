@@ -1,13 +1,12 @@
 ﻿using UnityEngine;
 
-public class Unit : MonoBehaviour
+public abstract class Unit : MonoBehaviour
 {
     public UnitType UnitType { get; protected set; }
     public Team Team { get; protected set; }//monsters do not have teams, maybe minions/characters/pets inherit from a class and monsters from another?
 
     public int ID { get; protected set; }
 
-    public BasicAttack BasicAttack { get; protected set; }
     public BuffManager BuffManager { get; private set; }
     public DisplacementManager DisplacementManager { get; private set; }
     public EffectSourceManager EffectSourceManager { get; private set; }
@@ -15,8 +14,11 @@ public class Unit : MonoBehaviour
     public GameObject HitboxObject { get; private set; }
     public GameObject ModelObject { get; private set; }
     public ShieldManager ShieldManager { get; private set; }
-    public StatsManager StatsManager { get; protected set; }
     public StatusManager StatusManager { get; private set; }
+
+    public BasicAttack BasicAttack { get; protected set; }
+    public MovementManager MovementManager { get { return GetMovementManager(); } }
+    public StatsManager StatsManager { get; protected set; }
 
     public PhotonView PhotonView { get; private set; }
 
@@ -41,4 +43,6 @@ public class Unit : MonoBehaviour
         PhotonView = GetComponent<PhotonView>();
         HitboxObject.AddComponent<MouseEvent>();
     }
+
+    protected abstract MovementManager GetMovementManager();
 }

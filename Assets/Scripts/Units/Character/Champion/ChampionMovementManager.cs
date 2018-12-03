@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class MovementManager : MonoBehaviour
+public class ChampionMovementManager : MovementManager
 {
     private string movementCapsulePrefabPath;
     private GameObject movementCapsulePrefab;
@@ -17,39 +17,39 @@ public class MovementManager : MonoBehaviour
 
     private Champion champion;
 
-    public Vector3 CharacterHeightOffset { get; private set; }
+    public delegate void ChampionIsInDestinationRangeHandler(Vector3 destination);
+    public event ChampionIsInDestinationRangeHandler ChampionIsInDestinationRange;
 
-    public delegate void PlayerMovedHandler();
-    public event PlayerMovedHandler CharacterMoved;
+    public delegate void ChampionIsInTargetRangeHandler(Unit target);
+    public event ChampionIsInTargetRangeHandler ChampionIsInTargetRange;
 
-    public delegate void CharacterIsInDestinationRangeHandler(Vector3 destination);
-    public event CharacterIsInDestinationRangeHandler CharacterIsInDestinationRange;
+    public delegate void ChampionMovedHandler();
+    public event ChampionMovedHandler ChampionMoved;
 
-    public delegate void CharacterIsInTargetRangeHandler(Unit target);
-    public event CharacterIsInTargetRangeHandler CharacterIsInTargetRange;
-
-    private MovementManager()
+    private ChampionMovementManager()
     {
         currentlySelectedDestination = Vector3.down;
 
         movementCapsulePrefabPath = "MovementCapsulePrefab/MovementCapsule";
     }
 
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
+
         champion = GetComponent<Champion>();
     }
 
-    private void Start()
+    protected override void Start()
     {
+        base.Start();
+
         if (champion.IsLocalChampion())
         {
-            champion.InputManager.OnPressedS += StopMovement;
+            champion.InputManager.OnPressedS += StopMovementOnInput;
 
             LoadPrefabs();
         }
-
-        CharacterHeightOffset = Vector3.up * transform.position.y;
     }
 
     private void LoadPrefabs()
@@ -59,18 +59,18 @@ public class MovementManager : MonoBehaviour
 
     public void UnsubscribeCameraEvent()
     {
-        CharacterMoved = null;
+        ChampionMoved = null;
     }
 
     public void PrepareMovementTowardsPoint(Vector3 pointOnMap)
     {
         if (StaticObjects.OnlineMode)
         {
-            SendToServer_Movement_Point(pointOnMap + CharacterHeightOffset);
+            SendToServer_Movement_Point(pointOnMap + champion.CharacterHeightOffset);
         }
         else
         {
-            SetMoveTowardsPoint(pointOnMap + CharacterHeightOffset);
+            SetMoveTowardsPoint(pointOnMap + champion.CharacterHeightOffset);
         }
         Instantiate(movementCapsulePrefab, pointOnMap, Quaternion.identity);
     }
@@ -115,14 +115,14 @@ public class MovementManager : MonoBehaviour
     {
         if (currentlySelectedDestination != destination)
         {
-            if (currentlySelectedDestination != Vector3.down && (CharacterIsInDestinationRange == null || range > 0) && (CharacterIsInDestinationRange != null || range == 0))
+            if (currentlySelectedDestination != Vector3.down && (ChampionIsInDestinationRange == null || range > 0) && (ChampionIsInDestinationRange != null || range == 0))
             {
                 currentlySelectedDestination = destination;
                 champion.OrientationManager.RotateCharacter(destination);
             }
             else
             {
-                StopAllMovement();
+                StopMovement();
                 currentlySelectedDestination = destination;
                 destinationRange = range;
                 currentMovementCoroutine = range > 0 ? MoveTowardsPointWithRange() : MoveTowardsPoint();
@@ -142,7 +142,7 @@ public class MovementManager : MonoBehaviour
             {
                 transform.position = Vector3.MoveTowards(transform.position, currentlySelectedDestination, Time.deltaTime * champion.StatsManager.MovementSpeed.GetTotal());
 
-                NotifyCharacterMoved();
+                NotifyChampionMoved();
             }
 
             yield return null;
@@ -163,7 +163,7 @@ public class MovementManager : MonoBehaviour
             {
                 transform.position = Vector3.MoveTowards(transform.position, currentlySelectedDestination, Time.deltaTime * champion.StatsManager.MovementSpeed.GetTotal());
 
-                NotifyCharacterMoved();
+                NotifyChampionMoved();
             }
 
             yield return null;
@@ -171,10 +171,10 @@ public class MovementManager : MonoBehaviour
             distance = Vector3.Distance(currentlySelectedDestination, transform.position);
         }
 
-        if (CharacterIsInDestinationRange != null)
+        if (ChampionIsInDestinationRange != null)
         {
-            CharacterIsInDestinationRange(currentlySelectedDestination);
-            CharacterIsInDestinationRange = null;
+            ChampionIsInDestinationRange(currentlySelectedDestination);
+            ChampionIsInDestinationRange = null;
         }
 
         champion.AutoAttackManager.EnableAutoAttack();
@@ -186,7 +186,7 @@ public class MovementManager : MonoBehaviour
     {
         if (IsMovingTowardsPositionForAnEvent())
         {
-            CharacterIsInDestinationRange = null;
+            ChampionIsInDestinationRange = null;
             destinationRange *= 0.5f;
         }
     }
@@ -195,17 +195,17 @@ public class MovementManager : MonoBehaviour
     {
         if (currentlySelectedTarget != null)
         {
-            CharacterIsInDestinationRange = null;
-            CharacterIsInTargetRange = null;
+            ChampionIsInDestinationRange = null;
+            ChampionIsInTargetRange = null;
             champion.BasicAttack.SetupBasicAttack(currentlySelectedTarget, false);
         }
     }
 
     public void SetMoveTowardsTarget(Unit target, float range, bool isBasicAttack, bool forceNewCoroutine = false)
     {
-        if (CharacterIsInTargetRange == null || forceNewCoroutine)
+        if (ChampionIsInTargetRange == null || forceNewCoroutine)
         {
-            StopAllMovement();
+            StopMovement();
             SetupCorrectTarget(target, isBasicAttack);
             targetRange = isBasicAttack ? champion.StatsManager.AttackRange.GetTotal() : range;
             currentMovementCoroutine = MoveTowardsTarget(isBasicAttack);
@@ -213,7 +213,7 @@ public class MovementManager : MonoBehaviour
         }
         else
         {
-            CharacterIsInTargetRange = null;
+            ChampionIsInTargetRange = null;
             SetupCorrectTarget(target, isBasicAttack);
             if (Vector3.Distance(target.transform.position, transform.position) > range)
             {
@@ -251,7 +251,7 @@ public class MovementManager : MonoBehaviour
                 {
                     transform.position = Vector3.MoveTowards(transform.position, targetTransform.position, Time.deltaTime * champion.StatsManager.MovementSpeed.GetTotal());
 
-                    NotifyCharacterMoved();
+                    NotifyChampionMoved();
                 }
 
                 yield return null;
@@ -289,15 +289,15 @@ public class MovementManager : MonoBehaviour
             currentlySelectedTarget = null;
             currentlySelectedBasicAttackTarget = null;
 
-            if (CharacterIsInTargetRange != null)
+            if (ChampionIsInTargetRange != null)
             {
-                CharacterIsInTargetRange(target);
-                CharacterIsInTargetRange = null;
+                ChampionIsInTargetRange(target);
+                ChampionIsInTargetRange = null;
             }
         }
         else if (!IsMoving())
         {
-            StopAllMovement();
+            StopMovement();
             champion.AutoAttackManager.EnableAutoAttack();
         }
 
@@ -320,7 +320,7 @@ public class MovementManager : MonoBehaviour
         }
     }
 
-    private void StopMovement()
+    private void StopMovementOnInput()
     {
         if (StaticObjects.OnlineMode)
         {
@@ -329,7 +329,7 @@ public class MovementManager : MonoBehaviour
         else
         {
             champion.AutoAttackManager.StopAutoAttack();
-            StopAllMovement();
+            StopMovement();
         }
     }
 
@@ -342,10 +342,10 @@ public class MovementManager : MonoBehaviour
     private void ReceiveFromServer_StopMovement()
     {
         champion.AutoAttackManager.StopAutoAttack();
-        StopAllMovement();
+        StopMovement();
     }
 
-    public void StopAllMovement(bool resetBufferedAbility = true)
+    public override void StopMovement(bool resetBufferedAbility = true)
     {
         champion.BasicAttack.StopBasicAttack();
         if (resetBufferedAbility)
@@ -363,8 +363,8 @@ public class MovementManager : MonoBehaviour
         currentMovementCoroutine = null;
 
         champion.OrientationManager.StopRotation();
-        CharacterIsInTargetRange = null;
-        CharacterIsInDestinationRange = null;
+        ChampionIsInTargetRange = null;
+        ChampionIsInDestinationRange = null;
         currentlySelectedDestination = Vector3.down;
         destinationRange = 0;
         currentlySelectedTarget = null;
@@ -376,7 +376,7 @@ public class MovementManager : MonoBehaviour
     {
         if (currentlySelectedDestination != Vector3.down)
         {
-            StopAllMovement();
+            StopMovement();
         }
     }
 
@@ -384,7 +384,7 @@ public class MovementManager : MonoBehaviour
     {
         if (IsMovingTowardsTarget())
         {
-            StopAllMovement();
+            StopMovement();
         }
     }
 
@@ -392,15 +392,15 @@ public class MovementManager : MonoBehaviour
     {
         if (IsMovingTowardsPositionForAnEvent())
         {
-            StopAllMovement();
+            StopMovement();
         }
     }
 
     public void StopMovementTowardsTargetIfHasEvent(bool stopBasicAttack = false)
     {
-        if ((currentlySelectedTarget != null || (stopBasicAttack && currentlySelectedBasicAttackTarget != null)) && CharacterIsInTargetRange != null)
+        if ((currentlySelectedTarget != null || (stopBasicAttack && currentlySelectedBasicAttackTarget != null)) && ChampionIsInTargetRange != null)
         {
-            StopAllMovement();
+            StopMovement();
         }
     }
 
@@ -416,7 +416,7 @@ public class MovementManager : MonoBehaviour
 
     public bool IsMovingTowardsPositionForAnEvent()
     {
-        return IsMovingTowardsPosition() && CharacterIsInDestinationRange != null;
+        return IsMovingTowardsPosition() && ChampionIsInDestinationRange != null;
     }
 
     public bool IsMovingTowardsTarget()
@@ -429,11 +429,11 @@ public class MovementManager : MonoBehaviour
         return currentlySelectedBasicAttackTarget;
     }
 
-    public void NotifyCharacterMoved()
+    public void NotifyChampionMoved()
     {
-        if (CharacterMoved != null)// && (character.IsLocalCharacter()))
+        if (ChampionMoved != null)
         {
-            CharacterMoved();
+            ChampionMoved();
         }
     }
 }

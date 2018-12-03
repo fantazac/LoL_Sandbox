@@ -69,7 +69,7 @@ public abstract class BasicAttack : DamageSource
         if (setupEvent)
         {
             //TODO: all units will have a movement manager
-            ((Champion)unit).MovementManager.CharacterIsInTargetRange += UseBasicAttack;
+            ((Champion)unit).ChampionMovementManager.ChampionIsInTargetRange += UseBasicAttack;
         }
     }
 
@@ -101,7 +101,7 @@ public abstract class BasicAttack : DamageSource
             StopBasicAttack();//This is so CharacterAutoAttack doesn't shoot while an ability is active
             if (currentTarget != null)
             {
-                ((Champion)unit).MovementManager.SetMoveTowardsTarget(currentTarget, unit.StatsManager.AttackRange.GetTotal(), true);
+                ((Champion)unit).ChampionMovementManager.SetMoveTowardsTarget(currentTarget, unit.StatsManager.AttackRange.GetTotal(), true);
             }
         }
     }
@@ -119,7 +119,7 @@ public abstract class BasicAttack : DamageSource
 
     protected void Update()
     {
-        if (currentTarget != null && ((Champion)unit).MovementManager.GetBasicAttackTarget() != currentTarget && !AttackIsInQueue &&
+        if (currentTarget != null && ((Champion)unit).ChampionMovementManager.GetBasicAttackTarget() != currentTarget && !AttackIsInQueue &&
             BasicAttackCycle.AttackSpeedCycleIsReady && unit.StatusManager.CanUseBasicAttacks() &&
             ((Champion)unit).AbilityManager.CanUseBasicAttacks() && !unit.DisplacementManager.IsBeingDisplaced)
         {
@@ -130,7 +130,7 @@ public abstract class BasicAttack : DamageSource
     protected void StartBasicAttack()
     {
         AttackIsInQueue = true;
-        ((Champion)unit).MovementManager.SetMoveTowardsTarget(currentTarget, unit.StatsManager.AttackRange.GetTotal(), true);
+        ((Champion)unit).ChampionMovementManager.SetMoveTowardsTarget(currentTarget, unit.StatsManager.AttackRange.GetTotal(), true);
     }
 
     public void UseBasicAttackFromAutoAttackOrTaunt(Unit target)
