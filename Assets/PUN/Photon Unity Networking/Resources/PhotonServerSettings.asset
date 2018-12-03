@@ -69,4 +69,5 @@ MonoBehaviour:
   - ReceiveFromServer_Ability_Recast
   - ReceiveFromServer_AbilityLevelUp
   - ReceiveFromServer_LevelUp
+  - ReceiveFromServer_Ability_Unit
   DisableAutoOpenWizard: 1
