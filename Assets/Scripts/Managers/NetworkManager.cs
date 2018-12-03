@@ -57,9 +57,9 @@ public class NetworkManager : MonoBehaviour
     {
         yield return null;
 
-        foreach (Character character in FindObjectsOfType<Character>())
+        foreach (Champion champion in FindObjectsOfType<Champion>())
         {
-            character.SendToServer_ConnectionInfoRequest();
+            champion.SendToServer_ConnectionInfoRequest();
         }
 
         yield return delayLoadingPlayers;

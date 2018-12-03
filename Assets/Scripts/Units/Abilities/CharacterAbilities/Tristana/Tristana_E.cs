@@ -76,7 +76,7 @@ public class Tristana_E : UnitTargetedProjectile
         AbilityDebuffs[0].OnAbilityBuffRemoved += RemoveDebuffFromAffectedUnit;
 
         abilitiesToIncreaseStacks = new List<Ability>();
-        foreach (Ability ability in character.AbilityManager.CharacterAbilities)
+        foreach (Ability ability in champion.AbilityManager.CharacterAbilities)
         {
             if (ability != this && !(ability is PassiveTargeted || ability is SelfTargeted))
             {
@@ -84,7 +84,7 @@ public class Tristana_E : UnitTargetedProjectile
             }
         }
 
-        character.BasicAttack.OnKilledUnit += DamageAllEnemiesInPassiveExplosionRadius;
+        champion.BasicAttack.OnKilledUnit += DamageAllEnemiesInPassiveExplosionRadius;
     }
 
     public override void LevelUpExtraStats()
@@ -100,10 +100,10 @@ public class Tristana_E : UnitTargetedProjectile
 
         IsBeingCasted = false;
         UseResource();
-        character.OrientationManager.RotateCharacterInstantly(destinationOnCast);
+        champion.OrientationManager.RotateCharacterInstantly(destinationOnCast);
 
         ProjectileUnitTargeted projectile = (Instantiate(projectilePrefab, transform.position, transform.rotation)).GetComponent<ProjectileUnitTargeted>();
-        projectile.ShootProjectile(character.Team, targetedUnit, speed);
+        projectile.ShootProjectile(champion.Team, targetedUnit, speed);
         projectile.OnAbilityEffectHit += OnAbilityEffectHit;
 
         FinishAbilityCast();
@@ -151,7 +151,7 @@ public class Tristana_E : UnitTargetedProjectile
 
     private void OnMarkedUnitHitByBasicAttack(Unit unitHit, Unit sourceUnit)
     {
-        if (unitHit.BuffManager.IsAffectedByDebuff(AbilityDebuffs[0]) && sourceUnit == character)
+        if (unitHit.BuffManager.IsAffectedByDebuff(AbilityDebuffs[0]) && sourceUnit == champion)
         {
             IncreaseStacksOnUnitHit(unitHit);
         }
@@ -177,7 +177,7 @@ public class Tristana_E : UnitTargetedProjectile
         foreach (Collider collider in Physics.OverlapCapsule(groundPosition, groundPosition + Vector3.up * 5, selectedRadius))
         {
             tempUnit = collider.GetComponentInParent<Unit>();
-            if (tempUnit != null && TargetIsValid.CheckIfTargetIsValid(tempUnit, affectedUnitType, character.Team))
+            if (tempUnit != null && TargetIsValid.CheckIfTargetIsValid(tempUnit, affectedUnitType, champion.Team))
             {
                 float damage = GetAbilityDamage(tempUnit) * damageModifier;
                 DamageUnit(tempUnit, damage);
@@ -194,7 +194,7 @@ public class Tristana_E : UnitTargetedProjectile
         foreach (Collider collider in Physics.OverlapCapsule(groundPosition, groundPosition + Vector3.up * 5, effectRadius))
         {
             tempUnit = collider.GetComponentInParent<Unit>();
-            if (tempUnit != null && tempUnit != killedUnit && TargetIsValid.CheckIfTargetIsValid(tempUnit, affectedUnitType, character.Team))
+            if (tempUnit != null && tempUnit != killedUnit && TargetIsValid.CheckIfTargetIsValid(tempUnit, affectedUnitType, champion.Team))
             {
                 float damage = GetPassiveAbilityDamage(tempUnit);
                 DamageUnit(tempUnit, passiveDamageType, damage);
@@ -205,7 +205,7 @@ public class Tristana_E : UnitTargetedProjectile
 
     private float GetPassiveAbilityDamage(Unit unitHit)
     {
-        float abilityDamage = damage + (passiveTotalAPScaling * character.StatsManager.AbilityPower.GetTotal());
+        float abilityDamage = damage + (passiveTotalAPScaling * champion.StatsManager.AbilityPower.GetTotal());
 
         return ApplyDamageModifiers(unitHit, abilityDamage, passiveDamageType);
     }

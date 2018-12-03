@@ -69,17 +69,17 @@ public class MainMenuManager : MonoBehaviour
             else if (state == MainMenuState.ON_HOLD)
             {
                 mainMenuCamera.SetActive(true);
-                StaticObjects.Character.MovementManager.UnsubscribeCameraEvent();
+                StaticObjects.Champion.MovementManager.UnsubscribeCameraEvent();
                 if (StaticObjects.OnlineMode)
                 {
-                    PhotonNetwork.Destroy(StaticObjects.Character.transform.parent.gameObject);
+                    PhotonNetwork.Destroy(StaticObjects.Champion.transform.parent.gameObject);
                 }
                 else
                 {
-                    Destroy(StaticObjects.Character.transform.parent.gameObject);
+                    Destroy(StaticObjects.Champion.transform.parent.gameObject);
                 }
-                StaticObjects.Character = null;
-                StaticObjects.CharacterCamera = null;
+                StaticObjects.Champion = null;
+                StaticObjects.ChampionCamera = null;
                 state = MainMenuState.CHARACTER_SELECT;
             }
         }
@@ -173,21 +173,21 @@ public class MainMenuManager : MonoBehaviour
         state = MainMenuState.ON_HOLD;
 
         GameObject characterTemplate = Instantiate(characterParentPrefab);
-        GameObject character;
+        GameObject champion;
         if (StaticObjects.OnlineMode)
         {
-            character = PhotonNetwork.Instantiate(characterName, selectedSpawn, new Quaternion(), 0);
+            champion = PhotonNetwork.Instantiate(characterName, selectedSpawn, new Quaternion(), 0);
         }
         else
         {
-            character = (GameObject)Instantiate(Resources.Load(characterName), selectedSpawn, new Quaternion());
+            champion = (GameObject)Instantiate(Resources.Load(characterName), selectedSpawn, new Quaternion());
         }
-        character.transform.parent = characterTemplate.transform;
-        StaticObjects.Character = character.GetComponent<Character>();
-        StaticObjects.CharacterCamera = characterTemplate.GetComponentInChildren<Camera>();
+        champion.transform.parent = characterTemplate.transform;
+        StaticObjects.Champion = champion.GetComponent<Champion>();
+        StaticObjects.ChampionCamera = characterTemplate.GetComponentInChildren<Camera>();
 
-        character.GetComponent<InputManager>().enabled = true;
-        character.GetComponent<MouseManager>().enabled = true;
+        champion.GetComponent<InputManager>().enabled = true;
+        champion.GetComponent<MouseManager>().enabled = true;
 
         mainMenuCamera.SetActive(false);
     }

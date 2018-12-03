@@ -9,7 +9,7 @@ public abstract class UnitTargeted : Ability
 
     protected bool IsAValidTarget(Unit target)
     {
-        return TargetIsValid.CheckIfTargetIsValid(target, affectedUnitType, character.Team);
+        return TargetIsValid.CheckIfTargetIsValid(target, affectedUnitType, champion.Team);
     }
 
     public override void UseAbility(Unit target)
@@ -18,10 +18,10 @@ public abstract class UnitTargeted : Ability
         {
             UseAbilityInRange(target);
         }
-        else if (!character.StatusManager.CrowdControlEffectsOnCharacter.Contains(CrowdControlEffect.ROOT))
+        else if (!champion.StatusManager.CrowdControlEffectsOnCharacter.Contains(CrowdControlEffect.ROOT))
         {
-            character.MovementManager.SetMoveTowardsTarget(target, range, false);
-            character.MovementManager.CharacterIsInTargetRange += UseAbilityInRange;
+            champion.MovementManager.SetMoveTowardsTarget(target, range, false);
+            champion.MovementManager.CharacterIsInTargetRange += UseAbilityInRange;
         }
     }
 
@@ -29,9 +29,9 @@ public abstract class UnitTargeted : Ability
     {
         StartAbilityCast();
 
-        if (!character.MovementManager.IsMovingTowardsTarget() && !character.BasicAttack.CurrentTarget())
+        if (!champion.MovementManager.IsMovingTowardsTarget() && !champion.BasicAttack.CurrentTarget())
         {
-            character.MovementManager.SetMoveTowardsTarget(target, character.StatsManager.AttackRange.GetTotal(), true, true);
+            champion.MovementManager.SetMoveTowardsTarget(target, champion.StatsManager.AttackRange.GetTotal(), true, true);
         }
 
         targetedUnit = target;

@@ -2,8 +2,8 @@
 
 public class StaticObjects : MonoBehaviour
 {
-    public static Character Character { get; set; }
-    public static Camera CharacterCamera { get; set; }
+    public static Champion Champion { get; set; }
+    public static Camera ChampionCamera { get; set; }
     public static bool OnlineMode { get; set; }
     public static TerrainCollider Terrain { get; set; }
     public static float MultiplyingFactor { get; private set; }

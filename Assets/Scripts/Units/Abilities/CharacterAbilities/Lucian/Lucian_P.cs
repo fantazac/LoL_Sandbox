@@ -47,14 +47,14 @@
 
         AbilityBuffs = new AbilityBuff[] { gameObject.AddComponent<Lucian_P_Buff>() };
 
-        foreach (Ability ability in character.AbilityManager.CharacterAbilities)
+        foreach (Ability ability in champion.AbilityManager.CharacterAbilities)
         {
             ability.OnAbilityFinished += PassiveEffect;
         }
 
         lucianE = GetComponent<Lucian_E>();
 
-        character.LevelManager.OnLevelUp += OnCharacterLevelUp;
+        champion.LevelManager.OnLevelUp += OnCharacterLevelUp;
     }
 
     public override void OnCharacterLevelUp(int level)
@@ -75,7 +75,7 @@
 
     public override void OnEmpoweredBasicAttackHit(Unit unitHit, bool isACriticalStrike)
     {
-        float damage = GetAbilityDamage(unitHit, isACriticalStrike, character.StatsManager.CriticalStrikeDamage.GetTotal());
+        float damage = GetAbilityDamage(unitHit, isACriticalStrike, champion.StatsManager.CriticalStrikeDamage.GetTotal());
         DamageUnit(unitHit, damage);
         UseAbility(unitHit);
         AbilityHit(unitHit, damage);
@@ -90,7 +90,7 @@
         //}
         //else
         //{
-        abilityDamage = damage + (totalADScaling * character.StatsManager.AttackDamage.GetTotal());
+        abilityDamage = damage + (totalADScaling * champion.StatsManager.AttackDamage.GetTotal());
         //Here, 0.5f is for "/2" because the base criticalStrikeDamage is 2f, which increases the criticalStrikeMultiplierAgainstNonMinions if criticalStrikeDamage is not 2f.
         criticalStrikeDamage *= criticalStrikeMultiplierAgainstNonMinions * 0.5f;
         //}

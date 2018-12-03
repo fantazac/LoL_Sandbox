@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class AbilityManager : MonoBehaviour
 {
-    protected Character character;
+    protected Champion champion;
 
     public Ability[] CharacterAbilities { get; protected set; }
     public Ability[] PassiveCharacterAbilities { get; protected set; }
@@ -25,28 +25,28 @@ public class AbilityManager : MonoBehaviour
 
     protected void Awake()
     {
-        character = GetComponent<Character>();
+        champion = GetComponent<Champion>();
         InitAbilities();
         InitCharacterAbilitiesWithResourceCosts();
     }
 
     protected virtual void InitAbilities()
     {
-        bool isLocalCharacter = character.IsLocalCharacter();
+        bool isLocalChampion = champion.IsLocalChampion();
 
-        SetupAbilitiesFromAbilityCategory(CharacterAbilities, AbilityCategory.CharacterAbility, isLocalCharacter);
+        SetupAbilitiesFromAbilityCategory(CharacterAbilities, AbilityCategory.CharacterAbility, isLocalChampion);
 
-        SetupAbilitiesFromAbilityCategory(PassiveCharacterAbilities, AbilityCategory.PassiveCharacterAbility, isLocalCharacter);
+        SetupAbilitiesFromAbilityCategory(PassiveCharacterAbilities, AbilityCategory.PassiveCharacterAbility, isLocalChampion);
 
         OtherCharacterAbilities = new Ability[] { gameObject.AddComponent<Recall>() };
-        SetupAbilitiesFromAbilityCategory(OtherCharacterAbilities, AbilityCategory.OtherCharacterAbility, isLocalCharacter);
+        SetupAbilitiesFromAbilityCategory(OtherCharacterAbilities, AbilityCategory.OtherCharacterAbility, isLocalChampion);
 
-        SetupAbilitiesFromAbilityCategory(SummonerAbilities, AbilityCategory.SummonerAbility, isLocalCharacter);
+        SetupAbilitiesFromAbilityCategory(SummonerAbilities, AbilityCategory.SummonerAbility, isLocalChampion);
 
         if (!StaticObjects.OnlineMode)
         {
             OfflineAbilities = new Ability[] { gameObject.AddComponent<DestroyAllDummies>(), gameObject.AddComponent<SpawnAllyDummy>(), gameObject.AddComponent<SpawnEnemyDummy>() };
-            SetupAbilitiesFromAbilityCategory(OfflineAbilities, AbilityCategory.OfflineAbility, isLocalCharacter);
+            SetupAbilitiesFromAbilityCategory(OfflineAbilities, AbilityCategory.OfflineAbility, isLocalChampion);
         }
     }
 
@@ -83,19 +83,19 @@ public class AbilityManager : MonoBehaviour
         {
             currentlyUsedAbilities.Remove(ability);
 
-            character.MovementManager.RotateCharacterIfMoving();
+            champion.MovementManager.RotateCharacterIfMoving();
 
-            Ability bufferedAbility = character.BufferedAbilityManager.GetBufferedAbility();
+            Ability bufferedAbility = champion.BufferedAbilityManager.GetBufferedAbility();
             if (bufferedAbility != null)
             {
                 if (HasEnoughResourceToCastAbility(bufferedAbility))
                 {
-                    character.MovementManager.StopAllMovement(false);
-                    character.BufferedAbilityManager.UseBufferedAbility();
+                    champion.MovementManager.StopAllMovement(false);
+                    champion.BufferedAbilityManager.UseBufferedAbility();
                 }
                 else
                 {
-                    character.BufferedAbilityManager.ResetBufferedAbility();
+                    champion.BufferedAbilityManager.ResetBufferedAbility();
                 }
             }
         }
@@ -114,12 +114,12 @@ public class AbilityManager : MonoBehaviour
 
     protected void Start()
     {
-        if (character.IsLocalCharacter())
+        if (champion.IsLocalChampion())
         {
             InitAbilityUIManager();
-            if (character.StatsManager.Resource != null)
+            if (champion.StatsManager.Resource != null)
             {
-                character.StatsManager.Resource.OnCurrentResourceChanged += OnCurrentResourceChanged;
+                champion.StatsManager.Resource.OnCurrentResourceChanged += OnCurrentResourceChanged;
             }
         }
     }
@@ -133,8 +133,8 @@ public class AbilityManager : MonoBehaviour
 
         foreach (Ability characterAbility in CharacterAbilities)
         {
-            character.AbilityUIManager.DisableAbility(AbilityCategory.CharacterAbility, characterAbility.ID, false);
-            character.AbilityUIManager.SetMaxAbilityLevel(characterAbility.ID, characterAbility.MaxLevel);
+            champion.AbilityUIManager.DisableAbility(AbilityCategory.CharacterAbility, characterAbility.ID, false);
+            champion.AbilityUIManager.SetMaxAbilityLevel(characterAbility.ID, characterAbility.MaxLevel);
         }
     }
 
@@ -142,7 +142,7 @@ public class AbilityManager : MonoBehaviour
     {
         foreach (Ability ability in abilities)
         {
-            character.AbilityUIManager.SetAbilitySprite(abilityCategory, ability.ID, ability.AbilitySprite);
+            champion.AbilityUIManager.SetAbilitySprite(abilityCategory, ability.ID, ability.AbilitySprite);
         }
     }
 
@@ -157,7 +157,7 @@ public class AbilityManager : MonoBehaviour
     protected void UpdateAbilityHasEnoughResource(Ability ability, float currentValue)
     {
         bool hasEnoughResourceToCastAbility = !AbilityIsAvailable(ability) || !AbilityCanBePressed(ability) || HasEnoughResourceToCastAbility(ability);
-        character.AbilityUIManager.UpdateAbilityHasEnoughResource(ability.ID, hasEnoughResourceToCastAbility);
+        champion.AbilityUIManager.UpdateAbilityHasEnoughResource(ability.ID, hasEnoughResourceToCastAbility);
         if (!ability.UsesResource)
         {
             characterAbilitiesWithResourceCosts.Remove(ability);
@@ -166,7 +166,7 @@ public class AbilityManager : MonoBehaviour
 
     protected void SendToServer_Ability_Destination(AbilityCategory abilityCategory, int abilityId, Vector3 destination)
     {
-        character.PhotonView.RPC("ReceiveFromServer_Ability_Destination", PhotonTargets.AllViaServer, abilityCategory, abilityId, destination);
+        champion.PhotonView.RPC("ReceiveFromServer_Ability_Destination", PhotonTargets.AllViaServer, abilityCategory, abilityId, destination);
     }
 
     [PunRPC]
@@ -181,7 +181,7 @@ public class AbilityManager : MonoBehaviour
 
     protected void SendToServer_Ability_Unit(AbilityCategory abilityCategory, int abilityId, Unit target)
     {
-        character.PhotonView.RPC("ReceiveFromServer_Ability_Unit", PhotonTargets.AllViaServer, abilityCategory, abilityId, target.ID, target.UnitType);
+        champion.PhotonView.RPC("ReceiveFromServer_Ability_Unit", PhotonTargets.AllViaServer, abilityCategory, abilityId, target.ID, target.UnitType);
     }
 
     [PunRPC]
@@ -196,7 +196,7 @@ public class AbilityManager : MonoBehaviour
 
     protected void SendToServer_Ability_Recast(AbilityCategory abilityCategory, int abilityId)
     {
-        character.PhotonView.RPC("ReceiveFromServer_Ability_Recast", PhotonTargets.AllViaServer, abilityCategory, abilityId);
+        champion.PhotonView.RPC("ReceiveFromServer_Ability_Recast", PhotonTargets.AllViaServer, abilityCategory, abilityId);
     }
 
     [PunRPC]
@@ -266,9 +266,9 @@ public class AbilityManager : MonoBehaviour
     {
         Ability ability = GetAbility(abilityCategory, abilityId);
         ability.LevelUp();
-        if (character.AbilityUIManager)
+        if (champion.AbilityUIManager)
         {
-            character.AbilityUIManager.LevelUpAbility(ability.ID, ability.AbilityLevel);
+            champion.AbilityUIManager.LevelUpAbility(ability.ID, ability.AbilityLevel);
         }
     }
 
@@ -281,8 +281,8 @@ public class AbilityManager : MonoBehaviour
             {
                 if (ability is UnitTargeted)
                 {
-                    Unit hoveredUnit = character.MouseManager.HoveredUnit;
-                    if (hoveredUnit != null && ability.CanBeCast(character.MouseManager.HoveredUnit))
+                    Unit hoveredUnit = champion.MouseManager.HoveredUnit;
+                    if (hoveredUnit != null && ability.CanBeCast(champion.MouseManager.HoveredUnit))
                     {
                         if (StaticObjects.OnlineMode)
                         {
@@ -324,16 +324,16 @@ public class AbilityManager : MonoBehaviour
     {
         if (AbilityCanBeCastDuringActiveAbilitiesCastTimes(ability))
         {
-            character.BufferedAbilityManager.ResetBufferedAbility();
+            champion.BufferedAbilityManager.ResetBufferedAbility();
             ability.UseAbility(destination);
             if (ability.HasCastTime || ability.HasChannelTime)
             {
-                character.MovementManager.SetCharacterIsInTargetRangeEventForBasicAttack();
+                champion.MovementManager.SetCharacterIsInTargetRangeEventForBasicAttack();
             }
         }
         else
         {
-            character.BufferedAbilityManager.BufferPositionTargetedAbility(ability, destination);
+            champion.BufferedAbilityManager.BufferPositionTargetedAbility(ability, destination);
         }
     }
 
@@ -341,12 +341,12 @@ public class AbilityManager : MonoBehaviour
     {
         if (AbilityCanBeCastDuringActiveAbilitiesCastTimes(ability))
         {
-            character.BufferedAbilityManager.ResetBufferedAbility();
+            champion.BufferedAbilityManager.ResetBufferedAbility();
             ability.UseAbility(target);
         }
         else
         {
-            character.BufferedAbilityManager.BufferUnitTargetedAbility(ability, target);
+            champion.BufferedAbilityManager.BufferUnitTargetedAbility(ability, target);
         }
     }
 
@@ -367,7 +367,7 @@ public class AbilityManager : MonoBehaviour
 
     protected bool HasEnoughResourceToCastAbility(Ability abilityToCast)
     {
-        return !abilityToCast.UsesResource || abilityToCast.GetResourceCost() <= character.StatsManager.Resource.GetCurrentValue();
+        return !abilityToCast.UsesResource || abilityToCast.GetResourceCost() <= champion.StatsManager.Resource.GetCurrentValue();
     }
 
     protected bool AbilityIsAllowedToBeCastWhileOtherAbilitiesAreActive(Ability abilityToCast)

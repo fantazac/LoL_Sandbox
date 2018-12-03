@@ -51,12 +51,12 @@ public class CC_Q : SelfTargeted
         StartAbilityCast();
 
         UseResource();
-        AddNewBuffToAffectedUnit(character);
+        AddNewBuffToAffectedUnit(champion);
     }
 
     private void AddNewBuffToAffectedUnit(Unit affectedUnit)
     {
-        AbilityBuffs[0].AddNewBuffToAffectedUnit(character);
+        AbilityBuffs[0].AddNewBuffToAffectedUnit(champion);
     }
 
     private void RemoveBuffFromAffectedUnit(Unit affectedUnit)
@@ -66,7 +66,7 @@ public class CC_Q : SelfTargeted
 
     public override void OnEmpoweredBasicAttackHit(Unit unitHit, bool isACriticalStrike)
     {
-        AbilityBuffs[0].ConsumeBuff(character);
+        AbilityBuffs[0].ConsumeBuff(champion);
 
         DamageUnit(unitHit, GetAbilityDamage(unitHit));
         AbilityDebuffs[0].AddNewBuffToAffectedUnit(unitHit);

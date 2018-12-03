@@ -9,7 +9,7 @@ public abstract class SelfTargeted : Ability
 
     public override Vector3 GetDestination()
     {
-        return character.transform.position;
+        return champion.transform.position;
     }
 
     public override bool CanBeCast(Unit target) { return false; }

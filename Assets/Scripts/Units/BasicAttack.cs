@@ -68,8 +68,8 @@ public abstract class BasicAttack : DamageSource
         currentTarget = currentlySelectedTarget;
         if (setupEvent)
         {
-            //TODO: UnitMovement will become the parent of CharacterMovement
-            ((Character)unit).MovementManager.CharacterIsInTargetRange += UseBasicAttack;
+            //TODO: all units will have a movement manager
+            ((Champion)unit).MovementManager.CharacterIsInTargetRange += UseBasicAttack;
         }
     }
 
@@ -101,7 +101,7 @@ public abstract class BasicAttack : DamageSource
             StopBasicAttack();//This is so CharacterAutoAttack doesn't shoot while an ability is active
             if (currentTarget != null)
             {
-                ((Character)unit).MovementManager.SetMoveTowardsTarget(currentTarget, unit.StatsManager.AttackRange.GetTotal(), true);
+                ((Champion)unit).MovementManager.SetMoveTowardsTarget(currentTarget, unit.StatsManager.AttackRange.GetTotal(), true);
             }
         }
     }
@@ -119,9 +119,9 @@ public abstract class BasicAttack : DamageSource
 
     protected void Update()
     {
-        if (currentTarget != null && ((Character)unit).MovementManager.GetBasicAttackTarget() != currentTarget && !AttackIsInQueue &&
+        if (currentTarget != null && ((Champion)unit).MovementManager.GetBasicAttackTarget() != currentTarget && !AttackIsInQueue &&
             BasicAttackCycle.AttackSpeedCycleIsReady && unit.StatusManager.CanUseBasicAttacks() &&
-            ((Character)unit).AbilityManager.CanUseBasicAttacks() && !unit.DisplacementManager.IsBeingDisplaced)
+            ((Champion)unit).AbilityManager.CanUseBasicAttacks() && !unit.DisplacementManager.IsBeingDisplaced)
         {
             StartBasicAttack();
         }
@@ -130,7 +130,7 @@ public abstract class BasicAttack : DamageSource
     protected void StartBasicAttack()
     {
         AttackIsInQueue = true;
-        ((Character)unit).MovementManager.SetMoveTowardsTarget(currentTarget, unit.StatsManager.AttackRange.GetTotal(), true);
+        ((Champion)unit).MovementManager.SetMoveTowardsTarget(currentTarget, unit.StatsManager.AttackRange.GetTotal(), true);
     }
 
     public void UseBasicAttackFromAutoAttackOrTaunt(Unit target)
@@ -156,13 +156,13 @@ public abstract class BasicAttack : DamageSource
 
     protected virtual IEnumerator ShootBasicAttack(Unit target)
     {
-        ((Character)unit).OrientationManager.RotateCharacterUntilReachedTarget(target.transform, true, true);
+        ((Champion)unit).OrientationManager.RotateCharacterUntilReachedTarget(target.transform, true, true);
 
         yield return delayAttack;
 
         BasicAttackCycle.LockBasicAttack();
         AttackIsInQueue = false;
-        ((Character)unit).OrientationManager.StopTargetRotation();
+        ((Champion)unit).OrientationManager.StopTargetRotation();
 
         ProjectileUnitTargeted projectile = (Instantiate(basicAttackPrefab, transform.position, transform.rotation)).GetComponent<ProjectileUnitTargeted>();
         projectile.ShootProjectile(unit.Team, target, speed, AttackIsCritical.CheckIfAttackIsCritical(unit.StatsManager.CriticalStrikeChance.GetTotal()), unit.StatusManager.IsBlinded());
@@ -170,7 +170,7 @@ public abstract class BasicAttack : DamageSource
 
         if (unit is Character)
         {
-            ((Character)unit).OnAttackEffectsManager.ApplyOnAttackEffectsToUnitHit(target);
+            ((Champion)unit).OnAttackEffectsManager.ApplyOnAttackEffectsToUnitHit(target);
         }
 
         shootBasicAttackCoroutine = null;
@@ -189,9 +189,9 @@ public abstract class BasicAttack : DamageSource
     {
         float damage = GetBasicAttackDamage(unitHit, isACriticalStrike);
         DamageUnit(unitHit, damage);
-        if (unit is Character)
+        if (unit is Champion)
         {
-            ((Character)unit).OnHitEffectsManager.ApplyOnHitEffectsToUnitHit(unitHit, damage);
+            ((Champion)unit).OnHitEffectsManager.ApplyOnHitEffectsToUnitHit(unitHit, damage);
         }
         unitHit.EffectSourceManager.UnitHitByBasicAttack(unit);
     }

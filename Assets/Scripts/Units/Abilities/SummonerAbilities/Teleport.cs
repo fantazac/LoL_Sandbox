@@ -29,7 +29,7 @@ public class Teleport : GroundTargetedBlink//TODO: UnitTargeted
     {
         StartAbilityCast();
 
-        character.BasicAttack.CancelCurrentBasicAttackToCastAbility();
+        champion.BasicAttack.CancelCurrentBasicAttackToCastAbility();
 
         FinalAdjustments(destination);
 
@@ -39,16 +39,16 @@ public class Teleport : GroundTargetedBlink//TODO: UnitTargeted
     protected override IEnumerator AbilityWithChannelTime()
     {
         UseResource();
-        character.AbilityManager.BlockAllMovementAbilities();
+        champion.AbilityManager.BlockAllMovementAbilities();
         IsBeingChanneled = true;
 
         yield return delayChannelTime;
 
         IsBeingChanneled = false;
-        character.AbilityManager.UnblockAllMovementAbilities();
-        character.OrientationManager.RotateCharacterInstantly(destinationOnCast);
+        champion.AbilityManager.UnblockAllMovementAbilities();
+        champion.OrientationManager.RotateCharacterInstantly(destinationOnCast);
         transform.position = destinationOnCast;
-        character.MovementManager.NotifyCharacterMoved();
+        champion.MovementManager.NotifyCharacterMoved();
 
         FinishAbilityCast();
     }

@@ -38,7 +38,7 @@ public class Recall : AutoTargetedBlink
 
     public override Vector3 GetDestination()
     {
-        return character.MovementManager.CharacterHeightOffset;
+        return champion.MovementManager.CharacterHeightOffset;
     }
 
     protected override IEnumerator AbilityWithCastTimeAndChannelTime()
@@ -49,40 +49,40 @@ public class Recall : AutoTargetedBlink
 
         IsBeingCasted = false;
         UseResource();
-        character.MovementManager.StopAllMovement();//This is to cancel any movement command made during the cast time
-        AddNewBuffToAffectedUnit(character);
+        champion.MovementManager.StopAllMovement();//This is to cancel any movement command made during the cast time
+        AddNewBuffToAffectedUnit(champion);
         IsBeingChanneled = true;
 
         yield return delayChannelTime;
 
         IsBeingChanneled = false;
-        AbilityBuffs[0].ConsumeBuff(character);
+        AbilityBuffs[0].ConsumeBuff(champion);
 
         transform.position = GetDestination();
-        character.MovementManager.NotifyCharacterMoved();
+        champion.MovementManager.NotifyCharacterMoved();
 
         FinishAbilityCast();
     }
 
     private void AddNewBuffToAffectedUnit(Unit affectedUnit)
     {
-        affectedUnit.StatsManager.Health.OnResourceReduced += CancelRecall;
-        ((Character)affectedUnit).AbilityManager.OnAnAbilityUsed += CancelRecall;
-        ((Character)affectedUnit).MovementManager.CharacterMoved += CancelRecall;
-        AbilityBuffs[0].AddNewBuffToAffectedUnit(affectedUnit);
+        champion.StatsManager.Health.OnResourceReduced += CancelRecall;
+        champion.AbilityManager.OnAnAbilityUsed += CancelRecall;
+        champion.MovementManager.CharacterMoved += CancelRecall;
+        AbilityBuffs[0].AddNewBuffToAffectedUnit(champion);
     }
 
     private void RemoveBuffFromAffectedUnit(Unit affectedUnit)
     {
-        affectedUnit.StatsManager.Health.OnResourceReduced -= CancelRecall;
-        ((Character)affectedUnit).AbilityManager.OnAnAbilityUsed -= CancelRecall;
-        ((Character)affectedUnit).MovementManager.CharacterMoved -= CancelRecall;
+        champion.StatsManager.Health.OnResourceReduced -= CancelRecall;
+        champion.AbilityManager.OnAnAbilityUsed -= CancelRecall;
+        champion.MovementManager.CharacterMoved -= CancelRecall;
     }
 
     private void CancelRecall()
     {
         IsBeingChanneled = false;
         CancelAbility();
-        AbilityBuffs[0].ConsumeBuff(character);
+        AbilityBuffs[0].ConsumeBuff(champion);
     }
 }

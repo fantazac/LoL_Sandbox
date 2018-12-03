@@ -31,15 +31,15 @@ public class Varus_P : PassiveTargeted
 
         AbilityBuffs[1].OnAbilityBuffRemoved += RemoveBuffFromAffectedUnit;
 
-        foreach (DamageSource damageSource in character.AbilityManager.CharacterAbilities)
+        foreach (DamageSource damageSource in champion.AbilityManager.CharacterAbilities)
         {
             damageSource.OnKilledUnit += OnUnitKilled;
         }
-        foreach (DamageSource damageSource in character.AbilityManager.SummonerAbilities)
+        foreach (DamageSource damageSource in champion.AbilityManager.SummonerAbilities)
         {
             damageSource.OnKilledUnit += OnUnitKilled;
         }
-        character.BasicAttack.OnKilledUnit += OnUnitKilled;
+        champion.BasicAttack.OnKilledUnit += OnUnitKilled;
     }
 
     private void OnUnitKilled(DamageSource damageSource, Unit killedUnit)
@@ -47,12 +47,12 @@ public class Varus_P : PassiveTargeted
         if (!(killedUnit is Character))
         {
             durationForNextBuff = 0;
-            AbilityBuffs[0].ConsumeBuff(character);
-            AbilityBuffs[1].AddNewBuffToAffectedUnit(character);
+            AbilityBuffs[0].ConsumeBuff(champion);
+            AbilityBuffs[1].AddNewBuffToAffectedUnit(champion);
         }
         else
         {
-            Buff buff = character.BuffManager.GetBuff(AbilityBuffs[1]);
+            Buff buff = champion.BuffManager.GetBuff(AbilityBuffs[1]);
             if (buff != null)
             {
                 durationForNextBuff = buffDuration - buff.DurationRemaining;
@@ -60,8 +60,8 @@ public class Varus_P : PassiveTargeted
             else
             {
                 durationForNextBuff = buffDuration;
-                AbilityBuffs[0].ConsumeBuff(character);
-                AbilityBuffs[0].AddNewBuffToAffectedUnit(character);
+                AbilityBuffs[0].ConsumeBuff(champion);
+                AbilityBuffs[0].AddNewBuffToAffectedUnit(champion);
             }
         }
     }
@@ -70,7 +70,7 @@ public class Varus_P : PassiveTargeted
     {
         if (durationForNextBuff > 0)
         {
-            AbilityBuffs[0].AddNewBuffToAffectedUnit(character);
+            AbilityBuffs[0].AddNewBuffToAffectedUnit(champion);
         }
     }
 

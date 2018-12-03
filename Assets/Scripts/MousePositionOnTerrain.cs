@@ -9,6 +9,6 @@ public static class MousePositionOnTerrain
 
     private static Ray GetRay(Vector3 mousePosition)
     {
-        return StaticObjects.CharacterCamera.ScreenPointToRay(mousePosition);
+        return StaticObjects.ChampionCamera.ScreenPointToRay(mousePosition);
     }
 }

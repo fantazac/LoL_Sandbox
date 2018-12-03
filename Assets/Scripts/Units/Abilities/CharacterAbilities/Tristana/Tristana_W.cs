@@ -62,7 +62,7 @@ public class Tristana_W : DirectionTargetedDash//TODO: GroundTargetedDash
         UseResource();
 
         SetupDash();
-        character.DisplacementManager.OnDisplacementFinished += ApplyDamageAndSlowToAllEnemiesInRadius;
+        champion.DisplacementManager.OnDisplacementFinished += ApplyDamageAndSlowToAllEnemiesInRadius;
 
         FinishAbilityCast();
     }
@@ -75,7 +75,7 @@ public class Tristana_W : DirectionTargetedDash//TODO: GroundTargetedDash
         foreach (Collider collider in Physics.OverlapCapsule(groundPosition, groundPosition + Vector3.up * 5, effectRadius))
         {
             tempUnit = collider.GetComponentInParent<Unit>();
-            if (tempUnit != null && TargetIsValid.CheckIfTargetIsValid(tempUnit, affectedUnitType, character.Team))
+            if (tempUnit != null && TargetIsValid.CheckIfTargetIsValid(tempUnit, affectedUnitType, champion.Team))
             {
                 float damage = GetAbilityDamage(tempUnit);
                 DamageUnit(tempUnit, damage);

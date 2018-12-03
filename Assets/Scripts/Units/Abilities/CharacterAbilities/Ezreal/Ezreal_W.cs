@@ -51,7 +51,7 @@ public class Ezreal_W : DirectionTargetedProjectile
         AbilityDebuffs[0].OnAbilityBuffRemoved += RemoveDebuffFromAffectedUnit;
 
         abilitiesToTriggerMark = new List<Ability>();
-        foreach (Ability ability in character.AbilityManager.CharacterAbilities)
+        foreach (Ability ability in champion.AbilityManager.CharacterAbilities)
         {
             if (ability != this)
             {
@@ -68,7 +68,7 @@ public class Ezreal_W : DirectionTargetedProjectile
 
         IsBeingCasted = false;
         UseResource();
-        character.OrientationManager.RotateCharacterInstantly(destinationOnCast);
+        champion.OrientationManager.RotateCharacterInstantly(destinationOnCast);
 
         SpawnProjectile(transform.position + (transform.forward * projectilePrefab.transform.localScale.z * 0.65f), transform.rotation);
 
@@ -105,7 +105,7 @@ public class Ezreal_W : DirectionTargetedProjectile
 
     private void OnMarkedUnitHitByBasicAttack(Unit unitHit, Unit sourceUnit)
     {
-        if (unitHit.BuffManager.IsAffectedByDebuff(AbilityDebuffs[0]) && sourceUnit == character)
+        if (unitHit.BuffManager.IsAffectedByDebuff(AbilityDebuffs[0]) && sourceUnit == champion)
         {
             DealDamageToMarkedUnit(unitHit);
         }
@@ -114,7 +114,7 @@ public class Ezreal_W : DirectionTargetedProjectile
     private void DealDamageToMarkedUnit(Unit unitHit, Ability sourceAbility = null)
     {
         AbilityDebuffs[0].ConsumeBuff(unitHit);
-        character.StatsManager.Resource.Restore(manaRefundedOnDamageDealt + (sourceAbility != null ? sourceAbility.GetResourceCost() : 0));
+        champion.StatsManager.Resource.Restore(manaRefundedOnDamageDealt + (sourceAbility != null ? sourceAbility.GetResourceCost() : 0));
         float damage = GetAbilityDamage(unitHit);
         DamageUnit(unitHit, damage);
         AbilityHit(unitHit, damage, false);

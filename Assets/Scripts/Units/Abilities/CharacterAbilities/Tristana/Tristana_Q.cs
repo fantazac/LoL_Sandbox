@@ -32,7 +32,7 @@ public class Tristana_Q : SelfTargeted
     {
         StartAbilityCast();
 
-        AbilityBuffs[0].AddNewBuffToAffectedUnit(character);
+        AbilityBuffs[0].AddNewBuffToAffectedUnit(champion);
 
         FinishAbilityCast();
     }

@@ -65,14 +65,14 @@ public class MissFortune_R : DirectionTargetedProjectile
 
     protected override void RotationOnAbilityCast(Vector3 destination)
     {
-        character.OrientationManager.RotateCharacterInstantly(destination);
+        champion.OrientationManager.RotateCharacterInstantly(destination);
     }
 
     protected override IEnumerator AbilityWithChannelTime()
     {
         UseResource();
-        character.MovementManager.StopAllMovement();
-        AddNewBuffToAffectedUnit(character);
+        champion.MovementManager.StopAllMovement();
+        AddNewBuffToAffectedUnit(champion);
         IsBeingChanneled = true;
 
         for (int i = 0; i < amountOfWavesToShoot; i++)
@@ -88,16 +88,16 @@ public class MissFortune_R : DirectionTargetedProjectile
 
     private void AddNewBuffToAffectedUnit(Unit affectedunit)
     {
-        ((Character)affectedunit).AbilityManager.OnAnAbilityUsed += CancelMissFortuneR;
-        ((Character)affectedunit).MovementManager.CharacterMoved += CancelMissFortuneR;
+        champion.AbilityManager.OnAnAbilityUsed += CancelMissFortuneR;
+        champion.MovementManager.CharacterMoved += CancelMissFortuneR;
         //TODO: if hard cc'd, cancel aswell
-        AbilityBuffs[0].AddNewBuffToAffectedUnit(affectedunit);
+        AbilityBuffs[0].AddNewBuffToAffectedUnit(champion);
     }
 
     private void RemoveBuffFromAffectedUnit(Unit unitHit)
     {
-        ((Character)unitHit).AbilityManager.OnAnAbilityUsed -= CancelMissFortuneR;
-        ((Character)unitHit).MovementManager.CharacterMoved -= CancelMissFortuneR;
+        champion.AbilityManager.OnAnAbilityUsed -= CancelMissFortuneR;
+        champion.MovementManager.CharacterMoved -= CancelMissFortuneR;
         //TODO: remove cc cancel
     }
 
@@ -105,7 +105,7 @@ public class MissFortune_R : DirectionTargetedProjectile
     {
         IsBeingChanneled = false;
         CancelAbility();
-        AbilityBuffs[0].ConsumeBuff(character);
+        AbilityBuffs[0].ConsumeBuff(champion);
     }
 
     private void ShootWave()

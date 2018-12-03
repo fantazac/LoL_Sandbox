@@ -79,10 +79,10 @@ public class Varus_E : GroundTargetedAoE //TODO: Shoot invisible projectile and 
 
         IsBeingCasted = false;
         UseResource();
-        character.OrientationManager.RotateCharacterInstantly(destinationOnCast);
+        champion.OrientationManager.RotateCharacterInstantly(destinationOnCast);
 
         AreaOfEffectGround areaOfEffect = (Instantiate(areaOfEffectPrefab, Vector3.right * destinationOnCast.x + Vector3.forward * destinationOnCast.z, Quaternion.identity)).GetComponent<AreaOfEffectGround>();
-        areaOfEffect.CreateAreaOfEffect(character.Team, affectedUnitType, tickDelay, totalTicks, radius, delayActivation);
+        areaOfEffect.CreateAreaOfEffect(champion.Team, affectedUnitType, tickDelay, totalTicks, radius, delayActivation);
         areaOfEffect.OnAbilityEffectGroundHitOnSpawn += OnAbilityEffectGroundHitOnSpawn;
         areaOfEffect.OnAbilityEffectGroundHit += OnAbilityEffectGroundHit;
         areaOfEffect.ActivateAreaOfEffect();

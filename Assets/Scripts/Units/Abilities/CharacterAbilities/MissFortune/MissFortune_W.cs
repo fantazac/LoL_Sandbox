@@ -52,9 +52,9 @@ public class MissFortune_W : SelfTargeted
     {
         GetComponent<MissFortune_P>().OnPassiveHit += OnPassiveHit;
 
-        character.StatsManager.Health.OnResourceReduced += OnDamageTaken;
+        champion.StatsManager.Health.OnResourceReduced += OnDamageTaken;
         //TODO: something.OnRevive += OnRevive;
-        AddNewDebuffToAffectedUnit(character);
+        AddNewDebuffToAffectedUnit(champion);
     }
 
     private void OnPassiveHit()
@@ -67,7 +67,7 @@ public class MissFortune_W : SelfTargeted
 
     private void OnDamageTaken()
     {
-        AbilityBuffs[0].ConsumeBuff(character);
+        AbilityBuffs[0].ConsumeBuff(champion);
 
         if (passiveBuffCooldownAfterTakingDamage != null)
         {
@@ -84,14 +84,14 @@ public class MissFortune_W : SelfTargeted
             StopCoroutine(passiveBuffCooldownAfterTakingDamage);
             passiveBuffCooldownAfterTakingDamage = null;
         }
-        AddNewDebuffToAffectedUnit(character);
+        AddNewDebuffToAffectedUnit(champion);
     }
 
     public override void UseAbility(Vector3 destination)
     {
         StartAbilityCast();
 
-        AbilityBuffs[1].AddNewBuffToAffectedUnit(character);
+        AbilityBuffs[1].AddNewBuffToAffectedUnit(champion);
 
         FinishAbilityCast();
     }
@@ -101,7 +101,7 @@ public class MissFortune_W : SelfTargeted
         yield return delayPassiveBuff;
 
         passiveBuffCooldownAfterTakingDamage = null;
-        AddNewDebuffToAffectedUnit(character);
+        AddNewDebuffToAffectedUnit(champion);
     }
 
     private void AddNewDebuffToAffectedUnit(Unit affectedUnit)

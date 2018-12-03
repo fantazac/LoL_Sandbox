@@ -48,7 +48,7 @@ public class Lucian_Q : UnitTargetedAoE
 
         base.Start();
 
-        character.LevelManager.OnLevelUp += OnCharacterLevelUp;
+        champion.LevelManager.OnLevelUp += OnCharacterLevelUp;
     }
 
     public override void OnCharacterLevelUp(int level)
@@ -69,10 +69,10 @@ public class Lucian_Q : UnitTargetedAoE
 
         IsBeingCasted = false;
         UseResource();
-        character.OrientationManager.RotateCharacterInstantly(destinationOnCast);
+        champion.OrientationManager.RotateCharacterInstantly(destinationOnCast);
 
         AreaOfEffect aoe = (Instantiate(areaOfEffectPrefab, positionOnCast, rotationOnCast)).GetComponent<AreaOfEffect>();
-        aoe.CreateAreaOfEffect(new List<Unit>(), character.Team, affectedUnitType, durationAoE);
+        aoe.CreateAreaOfEffect(new List<Unit>(), champion.Team, affectedUnitType, durationAoE);
         aoe.ActivateAreaOfEffect();
         aoe.OnAbilityEffectHit += OnAbilityEffectHit;
 

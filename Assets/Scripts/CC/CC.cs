@@ -1,11 +1,11 @@
-﻿public class CC : Character
+﻿public class CC : Champion
 {
     protected CC()
     {
-        characterPortraitPath = "Sprites/Characters/CharacterPortraits/CC";
+        championPortraitPath = "Sprites/Characters/CharacterPortraits/CC";
     }
 
-    protected override void SetCharacterSpecificScripts()
+    protected override void InitCharacterProperties()
     {
         BasicAttack = gameObject.AddComponent<CCBasicAttack>();
         StatsManager = gameObject.AddComponent<CCStatsManager>();

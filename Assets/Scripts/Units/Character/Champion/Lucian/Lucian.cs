@@ -1,11 +1,11 @@
-﻿public class Lucian : Character
+﻿public class Lucian : Champion
 {
     protected Lucian()
     {
-        characterPortraitPath = "Sprites/Characters/CharacterPortraits/Lucian";
+        championPortraitPath = "Sprites/Characters/CharacterPortraits/Lucian";
     }
 
-    protected override void SetCharacterSpecificScripts()
+    protected override void InitCharacterProperties()
     {
         BasicAttack = gameObject.AddComponent<LucianBasicAttack>();
         StatsManager = gameObject.AddComponent<LucianStatsManager>();

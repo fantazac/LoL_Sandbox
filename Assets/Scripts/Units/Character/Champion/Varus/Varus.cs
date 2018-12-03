@@ -1,11 +1,11 @@
-﻿public class Varus : Character
+﻿public class Varus : Champion
 {
     protected Varus()
     {
-        characterPortraitPath = "Sprites/Characters/CharacterPortraits/Varus";
+        championPortraitPath = "Sprites/Characters/CharacterPortraits/Varus";
     }
 
-    protected override void SetCharacterSpecificScripts()
+    protected override void InitCharacterProperties()
     {
         BasicAttack = gameObject.AddComponent<VarusBasicAttack>();
         StatsManager = gameObject.AddComponent<VarusStatsManager>();

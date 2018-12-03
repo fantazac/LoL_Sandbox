@@ -64,14 +64,14 @@ public class Lucian_R : DirectionTargetedProjectile
 
     protected override void Start()
     {
-        foreach (Ability ability in character.AbilityManager.CharacterAbilities)
+        foreach (Ability ability in champion.AbilityManager.CharacterAbilities)
         {
             if (!(ability is DirectionTargetedDash || ability == this))
             {
                 AbilitiesToDisableWhileActive.Add(ability);
             }
         }
-        AbilitiesToDisableWhileActive.Add(character.AbilityManager.OtherCharacterAbilities[0]);
+        AbilitiesToDisableWhileActive.Add(champion.AbilityManager.OtherCharacterAbilities[0]);
 
         CastableAbilitiesWhileActive.Add(GetComponent<Lucian_E>());
 
@@ -87,7 +87,7 @@ public class Lucian_R : DirectionTargetedProjectile
 
     protected override void RotationOnAbilityCast(Vector3 destination)
     {
-        character.OrientationManager.RotateCharacterInstantly(destination);
+        champion.OrientationManager.RotateCharacterInstantly(destination);
     }
 
     protected override IEnumerator AbilityWithCastTime()

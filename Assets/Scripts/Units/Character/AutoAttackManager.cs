@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class AutoAttackManager : MonoBehaviour
 {
-    private Character character;
+    private Champion champion;
     private AttackRange attackRange;
     private float biggerAttackRange;
 
@@ -22,8 +22,8 @@ public class AutoAttackManager : MonoBehaviour
 
     private void Start()
     {
-        character = GetComponent<Character>();
-        attackRange = character.StatsManager.AttackRange;
+        champion = GetComponent<Champion>();
+        attackRange = champion.StatsManager.AttackRange;
         EnableAutoAttack();
     }
 
@@ -58,7 +58,7 @@ public class AutoAttackManager : MonoBehaviour
 
     private IEnumerator AutoAttack()
     {
-        if (!character)
+        if (!champion)
         {
             yield return null;
         }
@@ -78,7 +78,7 @@ public class AutoAttackManager : MonoBehaviour
                     foreach (Collider collider in Physics.OverlapCapsule(groundPosition, groundPosition + Vector3.up * 5, attackRange.GetTotal()))
                     {
                         Unit tempUnit = collider.GetComponentInParent<Unit>();
-                        if (tempUnit != null && TargetIsValid.CheckIfTargetIsValid(tempUnit, affectedUnitType, character.Team))
+                        if (tempUnit != null && TargetIsValid.CheckIfTargetIsValid(tempUnit, affectedUnitType, champion.Team))
                         {
                             float tempDistance = Vector3.Distance(tempUnit.transform.position, transform.position);
                             if (tempDistance < distance)
@@ -92,7 +92,7 @@ public class AutoAttackManager : MonoBehaviour
 
                 if (autoAttackTarget != null)
                 {
-                    character.BasicAttack.UseBasicAttackFromAutoAttackOrTaunt(autoAttackTarget);
+                    champion.BasicAttack.UseBasicAttackFromAutoAttackOrTaunt(autoAttackTarget);
                 }
             }
 
@@ -102,7 +102,7 @@ public class AutoAttackManager : MonoBehaviour
 
     private IEnumerator AutoAttackWithBiggerRange()
     {
-        if (!character)
+        if (!champion)
         {
             yield return null;
         }
@@ -117,7 +117,7 @@ public class AutoAttackManager : MonoBehaviour
                 foreach (Collider collider in Physics.OverlapCapsule(groundPosition, groundPosition + Vector3.up * 5, biggerAttackRange))
                 {
                     Unit tempUnit = collider.GetComponentInParent<Unit>();
-                    if (tempUnit != null && TargetIsValid.CheckIfTargetIsValid(tempUnit, affectedUnitType, character.Team))
+                    if (tempUnit != null && TargetIsValid.CheckIfTargetIsValid(tempUnit, affectedUnitType, champion.Team))
                     {
                         float tempDistance = Vector3.Distance(tempUnit.transform.position, transform.position);
                         if (tempDistance < distance)
@@ -130,7 +130,7 @@ public class AutoAttackManager : MonoBehaviour
 
                 if (autoAttackTarget != null)
                 {
-                    character.BasicAttack.SetupBasicAttack(autoAttackTarget, false);
+                    champion.BasicAttack.SetupBasicAttack(autoAttackTarget, false);
                     break;
                 }
             }
@@ -143,8 +143,8 @@ public class AutoAttackManager : MonoBehaviour
 
     protected bool CanUseAutoAttack()
     {
-        return character.StatusManager && character.AbilityManager.CanUseBasicAttacks() && !character.DisplacementManager.IsBeingDisplaced &&
-                character.StatusManager.CanUseBasicAttacks() && (!character.MovementManager.IsMoving() || !character.StatusManager.CanUseMovement()) &&
-                !character.BasicAttack.AttackIsInQueue && character.BasicAttack.BasicAttackCycle.AttackSpeedCycleIsReady;
+        return champion.StatusManager && champion.AbilityManager.CanUseBasicAttacks() && !champion.DisplacementManager.IsBeingDisplaced &&
+                champion.StatusManager.CanUseBasicAttacks() && (!champion.MovementManager.IsMoving() || !champion.StatusManager.CanUseMovement()) &&
+                !champion.BasicAttack.AttackIsInQueue && champion.BasicAttack.BasicAttackCycle.AttackSpeedCycleIsReady;
     }
 }

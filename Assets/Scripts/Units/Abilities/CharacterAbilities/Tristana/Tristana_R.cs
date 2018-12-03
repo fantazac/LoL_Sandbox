@@ -63,13 +63,13 @@ public class Tristana_R : UnitTargetedProjectile
 
         IsBeingCasted = false;
         UseResource();
-        character.OrientationManager.RotateCharacterInstantly(destinationOnCast);
+        champion.OrientationManager.RotateCharacterInstantly(destinationOnCast);
 
         ProjectileUnitTargeted projectile = (Instantiate(projectilePrefab, transform.position, transform.rotation)).GetComponent<ProjectileUnitTargeted>();
-        projectile.ShootProjectile(character.Team, targetedUnit, speed);
+        projectile.ShootProjectile(champion.Team, targetedUnit, speed);
         projectile.OnAbilityEffectHit += OnAbilityEffectHit;
 
-        AbilityDebuffs[0].SetNormalizedVector(character.transform.position, targetedUnit.transform.position);
+        AbilityDebuffs[0].SetNormalizedVector(champion.transform.position, targetedUnit.transform.position);
 
         FinishAbilityCast();
     }
@@ -89,7 +89,7 @@ public class Tristana_R : UnitTargetedProjectile
         foreach (Collider collider in Physics.OverlapCapsule(groundPosition, groundPosition + Vector3.up * 5, effectRadius))
         {
             tempUnit = collider.GetComponentInParent<Unit>();
-            if (tempUnit != null && TargetIsValid.CheckIfTargetIsValid(tempUnit, affectedUnitType, character.Team))
+            if (tempUnit != null && TargetIsValid.CheckIfTargetIsValid(tempUnit, affectedUnitType, champion.Team))
             {
                 AbilityDebuffs[0].AddNewBuffToAffectedUnit(tempUnit);
             }

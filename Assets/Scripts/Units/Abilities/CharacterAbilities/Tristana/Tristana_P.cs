@@ -30,7 +30,7 @@ public class Tristana_P : PassiveTargeted
         base.Start();
 
         abilitiesToIncreaseCastRange = new List<Ability>();
-        foreach (Ability ability in character.AbilityManager.CharacterAbilities)
+        foreach (Ability ability in champion.AbilityManager.CharacterAbilities)
         {
             if (ability is UnitTargeted)
             {
@@ -38,18 +38,18 @@ public class Tristana_P : PassiveTargeted
             }
         }
 
-        character.LevelManager.OnLevelUp += OnCharacterLevelUp;
+        champion.LevelManager.OnLevelUp += OnCharacterLevelUp;
     }
 
     public override void OnCharacterLevelUp(int level)
     {
-        character.StatsManager.AttackRange.RemoveFlatBonus(currentRangeBonus);
+        champion.StatsManager.AttackRange.RemoveFlatBonus(currentRangeBonus);
         currentRangeBonus = rangePerLevel * (level - 1);
-        character.StatsManager.AttackRange.AddFlatBonus(currentRangeBonus);
+        champion.StatsManager.AttackRange.AddFlatBonus(currentRangeBonus);
 
         foreach (Ability ability in abilitiesToIncreaseCastRange)
         {
-            ability.SetRange(currentRangeBonus * StaticObjects.MultiplyingFactor + character.StatsManager.AttackRange.GetCurrentBaseValue());
+            ability.SetRange(currentRangeBonus * StaticObjects.MultiplyingFactor + champion.StatsManager.AttackRange.GetCurrentBaseValue());
         }
     }
 }

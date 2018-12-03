@@ -22,7 +22,7 @@ public class CameraManager : MonoBehaviour
 
     private void Start()
     {
-        characterInputManager = StaticObjects.Character.InputManager;
+        characterInputManager = StaticObjects.Champion.InputManager;
         characterInputManager.OnPressedY += SetCameraLock;
         characterInputManager.OnPressedSpace += SetCameraOnCharacter;
         characterInputManager.OnReleasedSpace += SetCameraFree;
@@ -31,8 +31,8 @@ public class CameraManager : MonoBehaviour
         screenHeight = Screen.height;
 
         initialPosition = transform.position;
-        transform.position += StaticObjects.Character.transform.position;
-        StaticObjects.Character.MovementManager.CharacterMoved += CharacterMoved;
+        transform.position += StaticObjects.Champion.transform.position;
+        StaticObjects.Champion.MovementManager.CharacterMoved += CharacterMoved;
 
         CharacterMoved();
     }
@@ -84,7 +84,7 @@ public class CameraManager : MonoBehaviour
     {
         if (CameraShouldFollowCharacter())
         {
-            transform.position = StaticObjects.Character.transform.position + initialPosition;
+            transform.position = StaticObjects.Champion.transform.position + initialPosition;
         }
     }
 

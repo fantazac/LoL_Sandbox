@@ -50,9 +50,9 @@ public class DisplacementManager : MonoBehaviour
         {
             transform.position = Vector3.MoveTowards(transform.position, destination, Time.deltaTime * displacementSpeed);
 
-            if (unit.MovementManager)
+            if (unit is Champion)//TODO
             {
-                unit.MovementManager.NotifyCharacterMoved();
+                ((Champion)unit).MovementManager.NotifyCharacterMoved();
             }
 
             yield return null;

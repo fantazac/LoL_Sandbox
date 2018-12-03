@@ -34,10 +34,10 @@
 
         AbilityDebuffs = new AbilityBuff[] { gameObject.AddComponent<MissFortune_P_Debuff>() };
 
-        character.LevelManager.OnLevelUp += OnCharacterLevelUp;
-        character.OnHitEffectsManager.OnApplyOnHitEffects += SetPassiveEffectOnUnitHit;
+        champion.LevelManager.OnLevelUp += OnCharacterLevelUp;
+        champion.OnHitEffectsManager.OnApplyOnHitEffects += SetPassiveEffectOnUnitHit;
 
-        lastUnitHit = character;
+        lastUnitHit = champion;
     }
 
     public override void OnCharacterLevelUp(int level)
@@ -66,7 +66,7 @@
             //{
             DamageUnit(unitHit, passiveDamage);
             //} 
-            character.StatsManager.RestoreHealth(passiveDamage * character.StatsManager.LifeSteal.GetTotal());
+            champion.StatsManager.RestoreHealth(passiveDamage * champion.StatsManager.LifeSteal.GetTotal());
 
             if (OnPassiveHit != null)
             {

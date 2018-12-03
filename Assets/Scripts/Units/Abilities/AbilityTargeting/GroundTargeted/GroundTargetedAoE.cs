@@ -16,10 +16,10 @@ public abstract class GroundTargetedAoE : GroundTargeted
         {
             base.UseAbility(destination);
         }
-        else if (!character.StatusManager.CrowdControlEffectsOnCharacter.Contains(CrowdControlEffect.ROOT))
+        else if (!champion.StatusManager.CrowdControlEffectsOnCharacter.Contains(CrowdControlEffect.ROOT))
         {
-            character.MovementManager.SetMoveTowardsPoint(destination, range);
-            character.MovementManager.CharacterIsInDestinationRange += base.UseAbility;
+            champion.MovementManager.SetMoveTowardsPoint(destination, range);
+            champion.MovementManager.CharacterIsInDestinationRange += base.UseAbility;
         }
     }
 }

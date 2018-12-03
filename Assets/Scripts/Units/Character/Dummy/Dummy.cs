@@ -1,6 +1,6 @@
 ﻿public class Dummy : Character
 {
-    protected override void SetCharacterSpecificScripts()
+    protected override void InitCharacterProperties()
     {
         StatsManager = gameObject.AddComponent<DummyStatsManager>();
     }

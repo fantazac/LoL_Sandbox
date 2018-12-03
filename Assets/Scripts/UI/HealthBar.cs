@@ -81,7 +81,7 @@ public class HealthBar : MonoBehaviour
         decimal aspectRatio = decimal.Round((decimal)Screen.width / Screen.height, 2, System.MidpointRounding.AwayFromZero);
         xRatioOffset = (float)(aspectRatio / 1.77m);
 
-        characterCamera = StaticObjects.CharacterCamera;
+        characterCamera = StaticObjects.ChampionCamera;
         healthBarOffset = Vector2.right * Screen.width * -0.5f + Vector2.up * Screen.height * -0.5f;
         characterYOffset = Vector2.up * 120;
     }
@@ -123,19 +123,19 @@ public class HealthBar : MonoBehaviour
             Destroy(resourceImage.gameObject);
         }
 
-        if (character.LevelManager)
+        if (character is Champion)//TODO: units will all have levels
         {
-            character.LevelManager.OnLevelUp += OnLevelUp;
-            OnLevelUp(character.LevelManager.Level == 0 ? 1 : character.LevelManager.Level);
+            ((Champion)character).LevelManager.OnLevelUp += OnLevelUp;
+            OnLevelUp(((Champion)character).LevelManager.Level == 0 ? 1 : ((Champion)character).LevelManager.Level);
         }
         else
         {
             OnLevelUp(1);
         }
 
-        if (StaticObjects.Character.Team == character.Team)
+        if (StaticObjects.Champion.Team == character.Team)
         {
-            if (StaticObjects.Character == character)
+            if (StaticObjects.Champion == character)
             {
                 healthImage.sprite = Resources.Load<Sprite>(healthSelfPath);
             }

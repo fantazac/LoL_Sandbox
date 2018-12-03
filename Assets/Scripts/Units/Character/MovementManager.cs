@@ -15,7 +15,7 @@ public class MovementManager : MonoBehaviour
 
     private IEnumerator currentMovementCoroutine;
 
-    private Character character;
+    private Champion champion;
 
     public Vector3 CharacterHeightOffset { get; private set; }
 
@@ -37,14 +37,14 @@ public class MovementManager : MonoBehaviour
 
     private void Awake()
     {
-        character = GetComponent<Character>();
+        champion = GetComponent<Champion>();
     }
 
     private void Start()
     {
-        if (character.IsLocalCharacter())
+        if (champion.IsLocalChampion())
         {
-            character.InputManager.OnPressedS += StopMovement;
+            champion.InputManager.OnPressedS += StopMovement;
 
             LoadPrefabs();
         }
@@ -79,18 +79,18 @@ public class MovementManager : MonoBehaviour
     {
         if (StaticObjects.OnlineMode)
         {
-            SendToServer_Movement_Target(target, character.StatsManager.AttackRange.GetTotal(), true);
+            SendToServer_Movement_Target(target, champion.StatsManager.AttackRange.GetTotal(), true);
         }
         else
         {
-            SetMoveTowardsTarget(target, character.StatsManager.AttackRange.GetTotal(), true);
+            SetMoveTowardsTarget(target, champion.StatsManager.AttackRange.GetTotal(), true);
         }
     }
 
     private void SendToServer_Movement_Point(Vector3 destination)
     {
-        PhotonNetwork.RemoveRPCs(character.PhotonView);//if using AllBufferedViaServer somewhere else, this needs to change
-        character.PhotonView.RPC("ReceiveFromServer_Movement_Point", PhotonTargets.AllBufferedViaServer, destination);
+        PhotonNetwork.RemoveRPCs(champion.PhotonView);//if using AllBufferedViaServer somewhere else, this needs to change
+        champion.PhotonView.RPC("ReceiveFromServer_Movement_Point", PhotonTargets.AllBufferedViaServer, destination);
     }
 
     [PunRPC]
@@ -101,14 +101,14 @@ public class MovementManager : MonoBehaviour
 
     private void SendToServer_Movement_Target(Unit target, float range, bool isBasicAttack)
     {
-        PhotonNetwork.RemoveRPCs(character.PhotonView);//if using AllBufferedViaServer somewhere else, this needs to change
-        character.PhotonView.RPC("ReceiveFromServer_Movement_Target", PhotonTargets.AllBufferedViaServer, target.ID, target.UnitType, range, isBasicAttack);
+        PhotonNetwork.RemoveRPCs(champion.PhotonView);//if using AllBufferedViaServer somewhere else, this needs to change
+        champion.PhotonView.RPC("ReceiveFromServer_Movement_Target", PhotonTargets.AllBufferedViaServer, target.ID, target.UnitType, range, isBasicAttack);
     }
 
     [PunRPC]
     private void ReceiveFromServer_Movement_Target(int unitId, UnitType unitType, float range, bool isBasicAttack)
     {
-        SetMoveTowardsTarget(character.AbilityManager.FindTarget(unitId, unitType), range, isBasicAttack);
+        SetMoveTowardsTarget(champion.AbilityManager.FindTarget(unitId, unitType), range, isBasicAttack);
     }
 
     public void SetMoveTowardsPoint(Vector3 destination, float range = 0)
@@ -118,7 +118,7 @@ public class MovementManager : MonoBehaviour
             if (currentlySelectedDestination != Vector3.down && (CharacterIsInDestinationRange == null || range > 0) && (CharacterIsInDestinationRange != null || range == 0))
             {
                 currentlySelectedDestination = destination;
-                character.OrientationManager.RotateCharacter(destination);
+                champion.OrientationManager.RotateCharacter(destination);
             }
             else
             {
@@ -127,20 +127,20 @@ public class MovementManager : MonoBehaviour
                 destinationRange = range;
                 currentMovementCoroutine = range > 0 ? MoveTowardsPointWithRange() : MoveTowardsPoint();
                 StartCoroutine(currentMovementCoroutine);
-                character.OrientationManager.RotateCharacter(destination);
+                champion.OrientationManager.RotateCharacter(destination);
             }
         }
     }
 
     private IEnumerator MoveTowardsPoint()
     {
-        character.AutoAttackManager.EnableAutoAttack();
+        champion.AutoAttackManager.EnableAutoAttack();
 
         while (transform.position != currentlySelectedDestination)
         {
-            if (character.AbilityManager.CanUseMovement() && character.StatusManager.CanUseMovement() && !character.DisplacementManager.IsBeingDisplaced)
+            if (champion.AbilityManager.CanUseMovement() && champion.StatusManager.CanUseMovement() && !champion.DisplacementManager.IsBeingDisplaced)
             {
-                transform.position = Vector3.MoveTowards(transform.position, currentlySelectedDestination, Time.deltaTime * character.StatsManager.MovementSpeed.GetTotal());
+                transform.position = Vector3.MoveTowards(transform.position, currentlySelectedDestination, Time.deltaTime * champion.StatsManager.MovementSpeed.GetTotal());
 
                 NotifyCharacterMoved();
             }
@@ -154,14 +154,14 @@ public class MovementManager : MonoBehaviour
 
     private IEnumerator MoveTowardsPointWithRange()
     {
-        character.AutoAttackManager.StopAutoAttack();
+        champion.AutoAttackManager.StopAutoAttack();
 
         float distance = Vector3.Distance(currentlySelectedDestination, transform.position);
-        while (distance > destinationRange || (distance <= destinationRange && character.DisplacementManager.IsBeingDisplaced))
+        while (distance > destinationRange || (distance <= destinationRange && champion.DisplacementManager.IsBeingDisplaced))
         {
-            if (character.AbilityManager.CanUseMovement() && character.StatusManager.CanUseMovement() && !character.DisplacementManager.IsBeingDisplaced)
+            if (champion.AbilityManager.CanUseMovement() && champion.StatusManager.CanUseMovement() && !champion.DisplacementManager.IsBeingDisplaced)
             {
-                transform.position = Vector3.MoveTowards(transform.position, currentlySelectedDestination, Time.deltaTime * character.StatsManager.MovementSpeed.GetTotal());
+                transform.position = Vector3.MoveTowards(transform.position, currentlySelectedDestination, Time.deltaTime * champion.StatsManager.MovementSpeed.GetTotal());
 
                 NotifyCharacterMoved();
             }
@@ -177,7 +177,7 @@ public class MovementManager : MonoBehaviour
             CharacterIsInDestinationRange = null;
         }
 
-        character.AutoAttackManager.EnableAutoAttack();
+        champion.AutoAttackManager.EnableAutoAttack();
         currentlySelectedDestination = Vector3.down;
         currentMovementCoroutine = null;
     }
@@ -197,7 +197,7 @@ public class MovementManager : MonoBehaviour
         {
             CharacterIsInDestinationRange = null;
             CharacterIsInTargetRange = null;
-            character.BasicAttack.SetupBasicAttack(currentlySelectedTarget, false);
+            champion.BasicAttack.SetupBasicAttack(currentlySelectedTarget, false);
         }
     }
 
@@ -207,7 +207,7 @@ public class MovementManager : MonoBehaviour
         {
             StopAllMovement();
             SetupCorrectTarget(target, isBasicAttack);
-            targetRange = isBasicAttack ? character.StatsManager.AttackRange.GetTotal() : range;
+            targetRange = isBasicAttack ? champion.StatsManager.AttackRange.GetTotal() : range;
             currentMovementCoroutine = MoveTowardsTarget(isBasicAttack);
             StartCoroutine(currentMovementCoroutine);
         }
@@ -217,7 +217,7 @@ public class MovementManager : MonoBehaviour
             SetupCorrectTarget(target, isBasicAttack);
             if (Vector3.Distance(target.transform.position, transform.position) > range)
             {
-                character.OrientationManager.RotateCharacterUntilReachedTarget(target.transform, isBasicAttack);
+                champion.OrientationManager.RotateCharacterUntilReachedTarget(target.transform, isBasicAttack);
             }
         }
     }
@@ -228,7 +228,7 @@ public class MovementManager : MonoBehaviour
         currentlySelectedBasicAttackTarget = isBasicAttack ? target : null;
         if (isBasicAttack)
         {
-            character.BasicAttack.SetupBasicAttack(target, true);
+            champion.BasicAttack.SetupBasicAttack(target, true);
         }
     }
 
@@ -238,18 +238,18 @@ public class MovementManager : MonoBehaviour
 
         if (target != null && Vector3.Distance(target.transform.position, transform.position) > targetRange)
         {
-            character.AutoAttackManager.StopAutoAttack();
+            champion.AutoAttackManager.StopAutoAttack();
 
             Transform targetTransform = target.transform;
 
-            character.OrientationManager.RotateCharacterUntilReachedTarget(targetTransform, currentlySelectedBasicAttackTarget != null);
+            champion.OrientationManager.RotateCharacterUntilReachedTarget(targetTransform, currentlySelectedBasicAttackTarget != null);
 
             float distance = Vector3.Distance(targetTransform.position, transform.position);
-            while (distance > targetRange || (distance <= targetRange && character.DisplacementManager.IsBeingDisplaced))
+            while (distance > targetRange || (distance <= targetRange && champion.DisplacementManager.IsBeingDisplaced))
             {
-                if (character.AbilityManager.CanUseMovement() && character.StatusManager.CanUseMovement() && !character.DisplacementManager.IsBeingDisplaced)
+                if (champion.AbilityManager.CanUseMovement() && champion.StatusManager.CanUseMovement() && !champion.DisplacementManager.IsBeingDisplaced)
                 {
-                    transform.position = Vector3.MoveTowards(transform.position, targetTransform.position, Time.deltaTime * character.StatsManager.MovementSpeed.GetTotal());
+                    transform.position = Vector3.MoveTowards(transform.position, targetTransform.position, Time.deltaTime * champion.StatsManager.MovementSpeed.GetTotal());
 
                     NotifyCharacterMoved();
                 }
@@ -267,19 +267,19 @@ public class MovementManager : MonoBehaviour
 
                 if (isBasicAttack)
                 {
-                    targetRange = character.StatsManager.AttackRange.GetTotal();
+                    targetRange = champion.StatsManager.AttackRange.GetTotal();
                 }
             }
 
-            character.AutoAttackManager.EnableAutoAttack();
-            character.OrientationManager.StopRotation();
+            champion.AutoAttackManager.EnableAutoAttack();
+            champion.OrientationManager.StopRotation();
         }
 
         if (target != null)
         {
-            if (target == currentlySelectedBasicAttackTarget && (!character.AbilityManager.CanUseBasicAttacks() || !character.StatusManager.CanUseBasicAttacks() || character.DisplacementManager.IsBeingDisplaced))//Checks if disarmed
+            if (target == currentlySelectedBasicAttackTarget && (!champion.AbilityManager.CanUseBasicAttacks() || !champion.StatusManager.CanUseBasicAttacks() || champion.DisplacementManager.IsBeingDisplaced))//Checks if disarmed
             {
-                while (!character.AbilityManager.CanUseBasicAttacks() || !character.StatusManager.CanUseBasicAttacks() || character.DisplacementManager.IsBeingDisplaced)
+                while (!champion.AbilityManager.CanUseBasicAttacks() || !champion.StatusManager.CanUseBasicAttacks() || champion.DisplacementManager.IsBeingDisplaced)
                 {
                     yield return null;
                 }
@@ -298,7 +298,7 @@ public class MovementManager : MonoBehaviour
         else if (!IsMoving())
         {
             StopAllMovement();
-            character.AutoAttackManager.EnableAutoAttack();
+            champion.AutoAttackManager.EnableAutoAttack();
         }
 
         currentMovementCoroutine = null;
@@ -308,15 +308,15 @@ public class MovementManager : MonoBehaviour
     {
         if (currentlySelectedDestination != Vector3.down)
         {
-            character.OrientationManager.RotateCharacter(currentlySelectedDestination);
+            champion.OrientationManager.RotateCharacter(currentlySelectedDestination);
         }
         else if (currentlySelectedTarget != null)
         {
-            character.OrientationManager.RotateCharacterUntilReachedTarget(currentlySelectedTarget.transform, true);
+            champion.OrientationManager.RotateCharacterUntilReachedTarget(currentlySelectedTarget.transform, true);
         }
         else if (currentlySelectedBasicAttackTarget != null)
         {
-            character.OrientationManager.RotateCharacterUntilReachedTarget(currentlySelectedBasicAttackTarget.transform, true);
+            champion.OrientationManager.RotateCharacterUntilReachedTarget(currentlySelectedBasicAttackTarget.transform, true);
         }
     }
 
@@ -328,29 +328,29 @@ public class MovementManager : MonoBehaviour
         }
         else
         {
-            character.AutoAttackManager.StopAutoAttack();
+            champion.AutoAttackManager.StopAutoAttack();
             StopAllMovement();
         }
     }
 
     private void SendToServer_StopMovement()
     {
-        character.PhotonView.RPC("ReceiveFromServer_StopMovement", PhotonTargets.AllViaServer);
+        champion.PhotonView.RPC("ReceiveFromServer_StopMovement", PhotonTargets.AllViaServer);
     }
 
     [PunRPC]
     private void ReceiveFromServer_StopMovement()
     {
-        character.AutoAttackManager.StopAutoAttack();
+        champion.AutoAttackManager.StopAutoAttack();
         StopAllMovement();
     }
 
     public void StopAllMovement(bool resetBufferedAbility = true)
     {
-        character.BasicAttack.StopBasicAttack();
+        champion.BasicAttack.StopBasicAttack();
         if (resetBufferedAbility)
         {
-            character.BufferedAbilityManager.ResetBufferedAbility();
+            champion.BufferedAbilityManager.ResetBufferedAbility();
         }
 
         //TODO: Sometimes, it does not enter the if even when there is a coroutine running, so 2+ are alive at once. Try to find why and remove StopAllCoroutines() if possible!
@@ -362,7 +362,7 @@ public class MovementManager : MonoBehaviour
         StopAllCoroutines();
         currentMovementCoroutine = null;
 
-        character.OrientationManager.StopRotation();
+        champion.OrientationManager.StopRotation();
         CharacterIsInTargetRange = null;
         CharacterIsInDestinationRange = null;
         currentlySelectedDestination = Vector3.down;

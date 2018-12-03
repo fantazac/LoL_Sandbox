@@ -50,7 +50,7 @@ public class Old_Ezreal_W : DirectionTargetedProjectile
 
         IsBeingCasted = false;
         UseResource();
-        character.OrientationManager.RotateCharacterInstantly(destinationOnCast);
+        champion.OrientationManager.RotateCharacterInstantly(destinationOnCast);
 
         SpawnProjectile(transform.position + (transform.forward * projectilePrefab.transform.localScale.z * 0.65f), transform.rotation);
 
@@ -60,7 +60,7 @@ public class Old_Ezreal_W : DirectionTargetedProjectile
     protected override void OnProjectileHit(AbilityEffect projectile, Unit unitHit, bool isACriticalStrike, bool willMiss)
     {
         float damage = 0;
-        if (unitHit.Team == character.Team)
+        if (unitHit.Team == champion.Team)
         {
             AbilityBuffs[0].AddNewBuffToAffectedUnit(unitHit);
         }

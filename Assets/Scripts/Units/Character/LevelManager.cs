@@ -2,7 +2,7 @@
 
 public class LevelManager : MonoBehaviour
 {
-    private Character character;
+    private Champion champion;
 
     public int AbilityPoints { get; private set; }
     public int Level { get; private set; }
@@ -19,15 +19,15 @@ public class LevelManager : MonoBehaviour
 
     private void Awake()
     {
-        character = GetComponent<Character>();
+        champion = GetComponent<Champion>();
     }
 
     private void Start()
     {
-        if (character.AbilityLevelUpUIManager)
+        if (champion.AbilityLevelUpUIManager)
         {
-            character.AbilityLevelUpUIManager.OnAbilityLevelUp += OnAbilityLevelUp;
-            character.InputManager.OnAbilityLevelUp += OnAbilityLevelUp;
+            champion.AbilityLevelUpUIManager.OnAbilityLevelUp += OnAbilityLevelUp;
+            champion.InputManager.OnAbilityLevelUp += OnAbilityLevelUp;
             PrepareLevelUp();
         }
     }
@@ -57,7 +57,7 @@ public class LevelManager : MonoBehaviour
 
     private void SendToServer_LevelUp()
     {
-        character.PhotonView.RPC("ReceiveFromServer_LevelUp", PhotonTargets.AllViaServer);
+        champion.PhotonView.RPC("ReceiveFromServer_LevelUp", PhotonTargets.AllViaServer);
     }
 
     [PunRPC]
@@ -73,14 +73,14 @@ public class LevelManager : MonoBehaviour
         {
             ++AbilityPoints;
         }
-        if (character.AbilityLevelUpUIManager && AbilityPoints > 0)
+        if (champion.AbilityLevelUpUIManager && AbilityPoints > 0)
         {
-            character.AbilityLevelUpUIManager.gameObject.SetActive(true);
-            character.AbilityLevelUpUIManager.SetAbilityPoints(AbilityPoints, pointsAvailableForQ, pointsAvailableForW, pointsAvailableForE, pointsAvailableForR);
+            champion.AbilityLevelUpUIManager.gameObject.SetActive(true);
+            champion.AbilityLevelUpUIManager.SetAbilityPoints(AbilityPoints, pointsAvailableForQ, pointsAvailableForW, pointsAvailableForE, pointsAvailableForR);
         }
-        if (character.LevelUIManager)
+        if (champion.LevelUIManager)
         {
-            character.LevelUIManager.SetLevel(Level);
+            champion.LevelUIManager.SetLevel(Level);
         }
         if (Level > 1 && OnLevelUp != null)
         {
@@ -90,7 +90,7 @@ public class LevelManager : MonoBehaviour
 
     private int SetPointsAvaiableForAbilities()
     {
-        Ability[] characterAbilities = character.AbilityManager.CharacterAbilities;
+        Ability[] characterAbilities = champion.AbilityManager.CharacterAbilities;
         float currentMaxLevel;
         if (Level == 1 || Level == 3 || Level == 5 || Level == 7 || Level == 9)//Level == 11 is for champions that have abilities with a MaxLevel of 6 (ex. RyzeQ), have to check that
         {
@@ -133,7 +133,7 @@ public class LevelManager : MonoBehaviour
 
     private void SendToServer_AbilityLevelUp(int abilityId)
     {
-        character.PhotonView.RPC("ReceiveFromServer_AbilityLevelUp", PhotonTargets.AllViaServer, abilityId);
+        champion.PhotonView.RPC("ReceiveFromServer_AbilityLevelUp", PhotonTargets.AllViaServer, abilityId);
     }
 
     [PunRPC]
@@ -167,9 +167,9 @@ public class LevelManager : MonoBehaviour
                 AbilityLevelUpActions(abilityId);
             }
 
-            if (character.AbilityLevelUpUIManager)
+            if (champion.AbilityLevelUpUIManager)
             {
-                character.AbilityLevelUpUIManager.SetAbilityPoints(AbilityPoints, pointsAvailableForQ, pointsAvailableForW, pointsAvailableForE, pointsAvailableForR);
+                champion.AbilityLevelUpUIManager.SetAbilityPoints(AbilityPoints, pointsAvailableForQ, pointsAvailableForW, pointsAvailableForE, pointsAvailableForR);
             }
         }
     }
@@ -182,7 +182,7 @@ public class LevelManager : MonoBehaviour
     private void AbilityLevelUpActions(int abilityId)
     {
         AbilityPoints--;
-        character.AbilityManager.LevelUpAbility(AbilityCategory.CharacterAbility, abilityId);
+        champion.AbilityManager.LevelUpAbility(AbilityCategory.CharacterAbility, abilityId);
     }
 
     public void ReachMaxLevel()
@@ -193,7 +193,7 @@ public class LevelManager : MonoBehaviour
             {
                 PrepareLevelUp();
             }
-            Ability[] characterAbilities = character.AbilityManager.CharacterAbilities;
+            Ability[] characterAbilities = champion.AbilityManager.CharacterAbilities;
             for (int i = 0; i < characterAbilities.Length; i++)
             {
                 for (int j = 0; j < characterAbilities[i].MaxLevel; j++)

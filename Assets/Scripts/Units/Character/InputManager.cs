@@ -28,8 +28,8 @@ public class InputManager : MonoBehaviour
 
     private void Start()
     {
-        characterAbilityManager = StaticObjects.Character.AbilityManager;
-        characterLevelManager = StaticObjects.Character.LevelManager;
+        characterAbilityManager = StaticObjects.Champion.AbilityManager;
+        characterLevelManager = StaticObjects.Champion.LevelManager;
     }
 
     private void Update()

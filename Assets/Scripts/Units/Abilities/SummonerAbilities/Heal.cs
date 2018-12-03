@@ -32,7 +32,7 @@ public class Heal : SelfTargeted
         AbilityBuffs = new AbilityBuff[] { gameObject.AddComponent<Heal_Buff>() };
         AbilityDebuffs = new AbilityBuff[] { gameObject.AddComponent<Heal_Debuff>() };
 
-        character.LevelManager.OnLevelUp += OnCharacterLevelUp;
+        champion.LevelManager.OnLevelUp += OnCharacterLevelUp;
     }
 
     public override bool CanBeCast(Vector3 mousePosition)
@@ -46,7 +46,7 @@ public class Heal : SelfTargeted
 
     public override Vector3 GetDestination()
     {
-        return hit.point + character.MovementManager.CharacterHeightOffset;
+        return hit.point + champion.MovementManager.CharacterHeightOffset;
     }
 
     public override void OnCharacterLevelUp(int level)
@@ -72,7 +72,7 @@ public class Heal : SelfTargeted
             foreach (Collider collider in Physics.OverlapCapsule(mouseGroundPosition, mouseGroundPosition + Vector3.up * 5, MOUSE_RADIUS))
             {
                 tempCharacter = collider.GetComponent<Character>();
-                if (tempCharacter != null && tempCharacter != character && TargetIsValid.CheckIfTargetIsValid(tempCharacter, affectedUnitType, character.Team))
+                if (tempCharacter != null && tempCharacter != champion && TargetIsValid.CheckIfTargetIsValid(tempCharacter, affectedUnitType, champion.Team))
                 {
                     tempDistance = Vector3.Distance(transform.position, tempCharacter.transform.position);
                     if (tempDistance < distance && tempDistance < range)
@@ -93,7 +93,7 @@ public class Heal : SelfTargeted
             foreach (Collider collider in Physics.OverlapCapsule(groundPosition, groundPosition + Vector3.up * 5, range))
             {
                 tempCharacter = collider.GetComponent<Character>();
-                if (tempCharacter != null && tempCharacter != character && TargetIsValid.CheckIfTargetIsValid(tempCharacter, affectedUnitType, character.Team))
+                if (tempCharacter != null && tempCharacter != champion && TargetIsValid.CheckIfTargetIsValid(tempCharacter, affectedUnitType, champion.Team))
                 {
                     tempLowestHealth = tempCharacter.StatsManager.Health.GetCurrentValue();
                     if (tempLowestHealth < lowestHealth)
@@ -111,8 +111,8 @@ public class Heal : SelfTargeted
             AbilityDebuffs[0].AddNewBuffToAffectedUnit(targetedCharacter);
         }
 
-        AbilityBuffs[0].AddNewBuffToAffectedUnit(character);
-        AbilityDebuffs[0].AddNewBuffToAffectedUnit(character);
+        AbilityBuffs[0].AddNewBuffToAffectedUnit(champion);
+        AbilityDebuffs[0].AddNewBuffToAffectedUnit(champion);
 
         FinishAbilityCast();
     }

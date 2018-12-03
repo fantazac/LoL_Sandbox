@@ -1,11 +1,11 @@
-﻿public class Ezreal : Character
+﻿public class Ezreal : Champion
 {
     protected Ezreal()
     {
-        characterPortraitPath = "Sprites/Characters/CharacterPortraits/Ezreal";
+        championPortraitPath = "Sprites/Characters/CharacterPortraits/Ezreal";
     }
 
-    protected override void SetCharacterSpecificScripts()
+    protected override void InitCharacterProperties()
     {
         BasicAttack = gameObject.AddComponent<EzrealBasicAttack>();
         StatsManager = gameObject.AddComponent<EzrealStatsManager>();

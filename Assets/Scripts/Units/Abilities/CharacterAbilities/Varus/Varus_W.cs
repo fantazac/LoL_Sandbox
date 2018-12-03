@@ -67,7 +67,7 @@ public class Varus_W : PassiveTargeted
         AbilityDebuffs = new AbilityBuff[] { gameObject.AddComponent<Varus_W_Debuff>() };
 
         abilitiesToTriggerStacks = new List<Ability>();
-        foreach (Ability ability in character.AbilityManager.CharacterAbilities)
+        foreach (Ability ability in champion.AbilityManager.CharacterAbilities)
         {
             if (ability != this)
             {
@@ -80,7 +80,7 @@ public class Varus_W : PassiveTargeted
     {
         LevelUpExtraStats();
 
-        character.OnHitEffectsManager.OnApplyOnHitEffects += SetPassiveEffectOnUnitHit;
+        champion.OnHitEffectsManager.OnApplyOnHitEffects += SetPassiveEffectOnUnitHit;
     }
 
     public override void LevelUpExtraStats()
@@ -140,14 +140,14 @@ public class Varus_W : PassiveTargeted
 
     private float GetOnHitDamage(Unit unitHit)
     {
-        float onHitDamage = damage + (totalAPScaling * character.StatsManager.AbilityPower.GetTotal());
+        float onHitDamage = damage + (totalAPScaling * champion.StatsManager.AbilityPower.GetTotal());
 
         return ApplyDamageModifiers(unitHit, onHitDamage, damageType);
     }
 
     private float GetStacksTriggeredDamage(Unit unitHit, int stacks)
     {
-        float stacksTriggeredDamage = ((percentAPScaling * character.StatsManager.AbilityPower.GetTotal()) + percentHealthDamage) * unitHit.StatsManager.Health.GetTotal() * stacks;
+        float stacksTriggeredDamage = ((percentAPScaling * champion.StatsManager.AbilityPower.GetTotal()) + percentHealthDamage) * unitHit.StatsManager.Health.GetTotal() * stacks;
         float damageAfterModifiers = ApplyDamageModifiers(unitHit, stacksTriggeredDamage, damageType);
         //when Monster exists, return unitHit is Monster ? Math.Min(damageAfterModifiers, maxDamageAgainstMonsters) : damageAfterModifiers;
         return damageAfterModifiers;

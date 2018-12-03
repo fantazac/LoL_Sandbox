@@ -9,14 +9,14 @@ public abstract class DirectionTargeted : Ability // Curently same as GroundTarg
 
     public override Vector3 GetDestination()
     {
-        return hit.point + character.MovementManager.CharacterHeightOffset;
+        return hit.point + champion.MovementManager.CharacterHeightOffset;
     }
 
     public override void UseAbility(Vector3 destination)
     {
         StartAbilityCast();
 
-        character.BasicAttack.CancelCurrentBasicAttackToCastAbility();
+        champion.BasicAttack.CancelCurrentBasicAttackToCastAbility();
 
         destinationOnCast = destination;
         RotationOnAbilityCast(destination);

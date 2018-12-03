@@ -4,7 +4,7 @@ using UnityEngine;
 
 public abstract class Ability : DamageSource
 {
-    protected Character character;
+    protected Champion champion;
 
     protected AbilityAffectedUnitType affectedUnitType;//TODO: make this an array/list to support multiple types (ex. Tristana_E targetting enemies and turrets)
     protected AbilityEffectType effectType;
@@ -116,8 +116,8 @@ public abstract class Ability : DamageSource
 
     protected virtual void Awake()
     {
-        character = GetComponent<Character>();
-        if (character.IsLocalCharacter())
+        champion = GetComponent<Champion>();
+        if (champion.IsLocalChampion())
         {
             LoadSprites();
         }
@@ -131,13 +131,13 @@ public abstract class Ability : DamageSource
         HasReducedCooldownOnAbilityCancel = baseCooldownOnCancel > 0;
         UsesResource = resourceCost > 0;
 
-        if (character.AbilityUIManager && UsesResource)
+        if (champion.AbilityUIManager && UsesResource)
         {
-            character.AbilityUIManager.SetAbilityCost(ID, resourceCost);
+            champion.AbilityUIManager.SetAbilityCost(ID, resourceCost);
         }
         if (affectedByCooldownReduction)
         {
-            character.StatsManager.CooldownReduction.OnCooldownReductionChanged += SetCooldownForAbilityAffectedByCooldownReduction;
+            champion.StatsManager.CooldownReduction.OnCooldownReductionChanged += SetCooldownForAbilityAffectedByCooldownReduction;
             SetCooldownForAbilityAffectedByCooldownReduction();
         }
         else
@@ -158,7 +158,7 @@ public abstract class Ability : DamageSource
 
     protected virtual void RotationOnAbilityCast(Vector3 destination)
     {
-        character.OrientationManager.RotateCharacterTowardsCastPoint(destination);
+        champion.OrientationManager.RotateCharacterTowardsCastPoint(destination);
     }
 
     protected virtual void ModifyValues()
@@ -196,24 +196,24 @@ public abstract class Ability : DamageSource
             OnAbilityUsed(this);
         }
         IsActive = true;
-        if (character.AbilityTimeBarUIManager)
+        if (champion.AbilityTimeBarUIManager)
         {
             if (HasCastTime && HasChannelTime)
             {
-                character.AbilityTimeBarUIManager.SetCastTimeAndChannelTime(castTime, channelTime, abilityName, ID);
+                champion.AbilityTimeBarUIManager.SetCastTimeAndChannelTime(castTime, channelTime, abilityName, ID);
             }
             else if (HasCastTime)
             {
-                character.AbilityTimeBarUIManager.SetCastTime(castTime, abilityName, ID);
+                champion.AbilityTimeBarUIManager.SetCastTime(castTime, abilityName, ID);
             }
             else if (HasChannelTime)
             {
-                character.AbilityTimeBarUIManager.SetChannelTime(channelTime, abilityName, ID);
+                champion.AbilityTimeBarUIManager.SetChannelTime(channelTime, abilityName, ID);
             }
         }
         if (ResetBasicAttackCycleOnAbilityCast)
         {
-            character.BasicAttack.ResetBasicAttack();
+            champion.BasicAttack.ResetBasicAttack();
         }
         StartCooldown(true);
     }
@@ -222,7 +222,7 @@ public abstract class Ability : DamageSource
     {
         if (UsesResource)
         {
-            character.StatsManager.Resource.Reduce(resourceCost);
+            champion.StatsManager.Resource.Reduce(resourceCost);
         }
     }
 
@@ -247,7 +247,7 @@ public abstract class Ability : DamageSource
         IsActive = false;
         if (ResetBasicAttackCycleOnAbilityFinished)
         {
-            character.BasicAttack.ResetBasicAttack();
+            champion.BasicAttack.ResetBasicAttack();
         }
         StartCooldown(false, abilityWasCancelled);
     }
@@ -255,9 +255,9 @@ public abstract class Ability : DamageSource
     public void DisableAbility()
     {
         IsEnabled = false;
-        if (!IsOnCooldown && character.AbilityUIManager)
+        if (!IsOnCooldown && champion.AbilityUIManager)
         {
-            character.AbilityUIManager.DisableAbility(AbilityCategory, ID, UsesResource);
+            champion.AbilityUIManager.DisableAbility(AbilityCategory, ID, UsesResource);
         }
     }
 
@@ -266,7 +266,7 @@ public abstract class Ability : DamageSource
         if (AbilityLevel > 0)
         {
             IsEnabled = true;
-            if (!IsOnCooldown && !IsActive && character.AbilityUIManager)
+            if (!IsOnCooldown && !IsActive && champion.AbilityUIManager)
             {
                 if (IsBlocked)
                 {
@@ -274,7 +274,7 @@ public abstract class Ability : DamageSource
                 }
                 else
                 {
-                    character.AbilityUIManager.EnableAbility(AbilityCategory, ID, resourceCost <= character.StatsManager.Resource.GetCurrentValue());
+                    champion.AbilityUIManager.EnableAbility(AbilityCategory, ID, resourceCost <= champion.StatsManager.Resource.GetCurrentValue());
                 }
             }
         }
@@ -286,9 +286,9 @@ public abstract class Ability : DamageSource
         if (!IsBlocked)
         {
             IsBlocked = true;
-            if (!IsOnCooldown && IsEnabled && character.AbilityUIManager)
+            if (!IsOnCooldown && IsEnabled && champion.AbilityUIManager)
             {
-                character.AbilityUIManager.BlockAbility(AbilityCategory, ID, UsesResource);
+                champion.AbilityUIManager.BlockAbility(AbilityCategory, ID, UsesResource);
             }
         }
     }
@@ -300,9 +300,9 @@ public abstract class Ability : DamageSource
             if (--abilityIsBlockedCount == 0)
             {
                 IsBlocked = false;
-                if (!IsOnCooldown && IsEnabled && character.AbilityUIManager)
+                if (!IsOnCooldown && IsEnabled && champion.AbilityUIManager)
                 {
-                    character.AbilityUIManager.UnblockAbility(AbilityCategory, ID, resourceCost <= character.StatsManager.Resource.GetCurrentValue());
+                    champion.AbilityUIManager.UnblockAbility(AbilityCategory, ID, resourceCost <= champion.StatsManager.Resource.GetCurrentValue());
                 }
             }
         }
@@ -316,11 +316,11 @@ public abstract class Ability : DamageSource
         {
             if (AppliesAbilityEffects)
             {
-                character.AbilityEffectsManager.ApplyAbilityEffectsToUnitHit(unitHit, damage);
+                champion.AbilityEffectsManager.ApplyAbilityEffectsToUnitHit(unitHit, damage);
             }
             if (AppliesOnHitEffects)
             {
-                character.OnHitEffectsManager.ApplyOnHitEffectsToUnitHit(unitHit, damage);
+                champion.OnHitEffectsManager.ApplyOnHitEffectsToUnitHit(unitHit, damage);
             }
         }
         unitHit.EffectSourceManager.UnitHitByAbility(this);
@@ -332,7 +332,7 @@ public abstract class Ability : DamageSource
 
     private void StartCooldown(bool calledInStartAbilityCast, bool abilityWasCancelled = false)
     {
-        if (character.AbilityUIManager)
+        if (champion.AbilityUIManager)
         {
             float abilityCooldown = abilityWasCancelled ? cooldownOnCancel : cooldown;
             if (calledInStartAbilityCast == startCooldownOnAbilityCast && abilityCooldown > 0)
@@ -348,7 +348,7 @@ public abstract class Ability : DamageSource
 
     protected void StartCooldownForRecast()
     {
-        if (character.AbilityUIManager)
+        if (champion.AbilityUIManager)
         {
             cooldownForRecastCoroutine = PutAbilityOffCooldownForRecast();
             StartCoroutine(cooldownForRecastCoroutine);
@@ -370,21 +370,21 @@ public abstract class Ability : DamageSource
 
         yield return null;
 
-        character.AbilityUIManager.SetAbilityOnCooldown(AbilityCategory, ID, IsBlocked);
+        champion.AbilityUIManager.SetAbilityOnCooldown(AbilityCategory, ID, IsBlocked);
 
         while (cooldownRemaining > 0)
         {
             cooldownRemaining -= Time.deltaTime;
 
-            character.AbilityUIManager.UpdateAbilityCooldown(AbilityCategory, ID, cooldownOnStart, cooldownRemaining);
+            champion.AbilityUIManager.UpdateAbilityCooldown(AbilityCategory, ID, cooldownOnStart, cooldownRemaining);
 
             yield return null;
         }
 
-        character.AbilityUIManager.SetAbilityOffCooldown(AbilityCategory, ID, UsesResource, IsEnabled, IsBlocked);
+        champion.AbilityUIManager.SetAbilityOffCooldown(AbilityCategory, ID, UsesResource, IsEnabled, IsBlocked);
         if (UsesResource && IsEnabled && !IsBlocked)
         {
-            character.AbilityUIManager.UpdateAbilityHasEnoughResource(ID, resourceCost <= character.StatsManager.Resource.GetCurrentValue());
+            champion.AbilityUIManager.UpdateAbilityHasEnoughResource(ID, resourceCost <= champion.StatsManager.Resource.GetCurrentValue());
         }
         cooldownForRecastCoroutine = null;
         IsOnCooldown = false;
@@ -397,18 +397,18 @@ public abstract class Ability : DamageSource
 
         yield return null;
 
-        character.AbilityUIManager.SetAbilityOnCooldownForRecast(AbilityCategory, ID);
+        champion.AbilityUIManager.SetAbilityOnCooldownForRecast(AbilityCategory, ID);
 
         while (cooldownRemaining > 0)
         {
             cooldownRemaining -= Time.deltaTime;
 
-            character.AbilityUIManager.UpdateAbilityCooldownForRecast(AbilityCategory, ID, cooldownBeforeRecast, cooldownRemaining);
+            champion.AbilityUIManager.UpdateAbilityCooldownForRecast(AbilityCategory, ID, cooldownBeforeRecast, cooldownRemaining);
 
             yield return null;
         }
 
-        character.AbilityUIManager.SetAbilityOffCooldownForRecast(AbilityCategory, ID);
+        champion.AbilityUIManager.SetAbilityOffCooldownForRecast(AbilityCategory, ID);
         cooldownForRecastCoroutine = null;
         IsOnCooldownForRecast = false;
         IsReadyToBeRecasted = true;
@@ -434,7 +434,7 @@ public abstract class Ability : DamageSource
             LevelUpAbilityStats();
             LevelUpBuffsAndDebuffs();
 
-            AbilityUIManager abilityUIManager = character.AbilityUIManager;
+            AbilityUIManager abilityUIManager = champion.AbilityUIManager;
 
             if (UsesResource && resourceCost == 0)
             {
@@ -459,7 +459,7 @@ public abstract class Ability : DamageSource
             if (UsesResource && abilityUIManager)
             {
                 abilityUIManager.SetAbilityCost(ID, resourceCost);
-                abilityUIManager.UpdateAbilityHasEnoughResource(ID, !IsEnabled || IsBlocked || IsOnCooldown || resourceCost <= character.StatsManager.Resource.GetCurrentValue());
+                abilityUIManager.UpdateAbilityHasEnoughResource(ID, !IsEnabled || IsBlocked || IsOnCooldown || resourceCost <= champion.StatsManager.Resource.GetCurrentValue());
             }
         }
         else if (AbilityLevel == 0)
@@ -482,7 +482,7 @@ public abstract class Ability : DamageSource
 
     private void SetCooldownForAbilityAffectedByCooldownReduction()
     {
-        SetCooldownForAbilityAffectedByCooldownReduction(character.StatsManager.CooldownReduction.GetTotal());
+        SetCooldownForAbilityAffectedByCooldownReduction(champion.StatsManager.CooldownReduction.GetTotal());
     }
 
     protected virtual void SetCooldownForAbilityAffectedByCooldownReduction(float cooldownReduction)
@@ -500,9 +500,9 @@ public abstract class Ability : DamageSource
     protected virtual float GetAbilityDamage(Unit unitHit, bool isACriticalStrike = false, float criticalStrikeDamage = 0)
     {
         float abilityDamage = damage +
-            (bonusADScaling * character.StatsManager.AttackDamage.GetBonus()) +
-            (totalADScaling * character.StatsManager.AttackDamage.GetTotal()) +
-            (totalAPScaling * character.StatsManager.AbilityPower.GetTotal());
+            (bonusADScaling * champion.StatsManager.AttackDamage.GetBonus()) +
+            (totalADScaling * champion.StatsManager.AttackDamage.GetTotal()) +
+            (totalAPScaling * champion.StatsManager.AbilityPower.GetTotal());
 
         return ApplyDamageModifiers(unitHit, abilityDamage, damageType) *
             (isACriticalStrike ? criticalStrikeDamage : 1f);
@@ -519,16 +519,16 @@ public abstract class Ability : DamageSource
         if (damageType == DamageType.MAGIC)
         {
             float totalResistance = unitHit.StatsManager.MagicResistance.GetTotal();
-            totalResistance *= (1 - character.StatsManager.MagicPenetrationPercent.GetTotal());
-            totalResistance -= character.StatsManager.MagicPenetrationFlat.GetTotal();
-            return damage * GetResistanceDamageReceivedModifier(totalResistance) * unitHit.StatsManager.MagicDamageReceivedModifier.GetTotal() * character.StatsManager.MagicDamageModifier.GetTotal();
+            totalResistance *= (1 - champion.StatsManager.MagicPenetrationPercent.GetTotal());
+            totalResistance -= champion.StatsManager.MagicPenetrationFlat.GetTotal();
+            return damage * GetResistanceDamageReceivedModifier(totalResistance) * unitHit.StatsManager.MagicDamageReceivedModifier.GetTotal() * champion.StatsManager.MagicDamageModifier.GetTotal();
         }
         else if (damageType == DamageType.PHYSICAL)
         {
             float totalResistance = unitHit.StatsManager.Armor.GetTotal();
-            totalResistance *= (1 - character.StatsManager.ArmorPenetrationPercent.GetTotal());
-            totalResistance -= character.StatsManager.Lethality.GetCurrentValue();
-            return damage * GetResistanceDamageReceivedModifier(totalResistance) * unitHit.StatsManager.PhysicalDamageReceivedModifier.GetTotal() * character.StatsManager.PhysicalDamageModifier.GetTotal();
+            totalResistance *= (1 - champion.StatsManager.ArmorPenetrationPercent.GetTotal());
+            totalResistance -= champion.StatsManager.Lethality.GetCurrentValue();
+            return damage * GetResistanceDamageReceivedModifier(totalResistance) * unitHit.StatsManager.PhysicalDamageReceivedModifier.GetTotal() * champion.StatsManager.PhysicalDamageModifier.GetTotal();
         }
 
         return damage;
@@ -580,9 +580,9 @@ public abstract class Ability : DamageSource
             StopCoroutine(abilityEffectCoroutine);
         }
         ExtraActionsOnCancel();
-        if (character.AbilityTimeBarUIManager && (HasCastTime || HasChannelTime))
+        if (champion.AbilityTimeBarUIManager && (HasCastTime || HasChannelTime))
         {
-            character.AbilityTimeBarUIManager.CancelCastTimeAndChannelTime(ID);
+            champion.AbilityTimeBarUIManager.CancelCastTimeAndChannelTime(ID);
         }
         FinishAbilityCast(HasReducedCooldownOnAbilityCancel);
     }

@@ -33,7 +33,7 @@ public class Old_Teleport : GroundTargetedBlink//TODO: UnitTargeted
     {
         StartAbilityCast();
 
-        character.BasicAttack.CancelCurrentBasicAttackToCastAbility();
+        champion.BasicAttack.CancelCurrentBasicAttackToCastAbility();
 
         FinalAdjustments(destination);
 
@@ -43,22 +43,22 @@ public class Old_Teleport : GroundTargetedBlink//TODO: UnitTargeted
     protected override IEnumerator AbilityWithChannelTime()
     {
         UseResource();
-        character.AbilityManager.BlockAllMovementAbilities(); //(this); -> so it does not block Teleport so you could cancel it, changed method since then
+        champion.AbilityManager.BlockAllMovementAbilities(); //(this); -> so it does not block Teleport so you could cancel it, changed method since then
         IsBeingChanneled = true;
 
         yield return delayChannelTime;
 
         IsBeingChanneled = false;
-        character.AbilityManager.UnblockAllMovementAbilities();
-        character.OrientationManager.RotateCharacterInstantly(destinationOnCast);
+        champion.AbilityManager.UnblockAllMovementAbilities();
+        champion.OrientationManager.RotateCharacterInstantly(destinationOnCast);
         transform.position = destinationOnCast;
-        character.MovementManager.NotifyCharacterMoved();
+        champion.MovementManager.NotifyCharacterMoved();
 
         FinishAbilityCast();
     }
 
     protected override void ExtraActionsOnCancel()
     {
-        character.AbilityManager.UnblockAllMovementAbilities();
+        champion.AbilityManager.UnblockAllMovementAbilities();
     }
 }

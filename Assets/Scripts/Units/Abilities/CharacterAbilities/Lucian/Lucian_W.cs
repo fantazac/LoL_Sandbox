@@ -68,7 +68,7 @@ public class Lucian_W : DirectionTargetedProjectile
     protected override void OnProjectileReachedEnd(Projectile projectile)
     {
         AreaOfEffect aoe = Instantiate(explosionAreaOfEffectPrefab, projectile.transform.position, projectile.transform.rotation).GetComponent<AreaOfEffect>();
-        aoe.CreateAreaOfEffect(projectile.UnitsAlreadyHit, character.Team, affectedUnitType, durationAoE, true);
+        aoe.CreateAreaOfEffect(projectile.UnitsAlreadyHit, champion.Team, affectedUnitType, durationAoE, true);
         aoe.ActivateAreaOfEffect();
         aoe.OnAbilityEffectHit += OnAreaOfEffectHit;
         Destroy(projectile.gameObject);
@@ -84,7 +84,7 @@ public class Lucian_W : DirectionTargetedProjectile
 
     private void OnUnitDamaged()
     {
-        AbilityBuffs[0].AddNewBuffToAffectedUnit(character);
+        AbilityBuffs[0].AddNewBuffToAffectedUnit(champion);
     }
 
     private void AddNewDebuffToAffectedUnit(Unit affectedUnit)

@@ -4,7 +4,7 @@ using UnityEngine;
 public class StatusManager : MonoBehaviour
 {
     private Unit unit;
-    private Character character;//TODO: to remove
+    private Champion champion;//TODO: to remove
 
     public List<CrowdControlEffect> CrowdControlEffectsOnCharacter { get; private set; }
 
@@ -23,9 +23,9 @@ public class StatusManager : MonoBehaviour
     private void Start()
     {
         unit = GetComponent<Unit>();
-        if (unit is Character)
+        if (unit is Champion)
         {
-            character = (Character)unit;
+            champion = (Champion)unit;
         }
     }
 
@@ -56,14 +56,14 @@ public class StatusManager : MonoBehaviour
                 SetCannotUseBasicAbilities(count);
                 SetCannotUseBasicAttacks(count);
                 SetCannotUseMovement(count);
-                if (character.MovementManager)
+                if (champion && champion.MovementManager)
                 {
-                    character.MovementManager.StopAllMovement();
+                    champion.MovementManager.StopAllMovement();
                 }
-                if (character.AbilityManager)
+                if (champion && champion.AbilityManager)
                 {
-                    character.AbilityManager.CancelAllChannelingAbilities();
-                    character.AbilityManager.CancelAllActiveAbilitiesThatAreNotBeingCastedOrChanneled();
+                    champion.AbilityManager.CancelAllChannelingAbilities();
+                    champion.AbilityManager.CancelAllActiveAbilitiesThatAreNotBeingCastedOrChanneled();
                 }
                 break;
             case CrowdControlEffect.CRIPPLE:
@@ -72,25 +72,25 @@ public class StatusManager : MonoBehaviour
                 break;
             case CrowdControlEffect.DISARM:
                 SetCannotUseBasicAttacks(count);
-                if (character.AbilityManager)
+                if (champion && champion.AbilityManager)
                 {
-                    character.AbilityManager.CancelAllChannelingAbilities();//TODO: verify, wiki says yes though
-                    character.AbilityManager.CancelAllActiveAbilitiesThatAreNotBeingCastedOrChanneled();
+                    champion.AbilityManager.CancelAllChannelingAbilities();//TODO: verify, wiki says yes though
+                    champion.AbilityManager.CancelAllActiveAbilitiesThatAreNotBeingCastedOrChanneled();
                 }
                 break;
             case CrowdControlEffect.DISRUPT:
-                if (character.AbilityManager)
+                if (champion && champion.AbilityManager)
                 {
-                    character.AbilityManager.CancelAllChannelingAbilities();
+                    champion.AbilityManager.CancelAllChannelingAbilities();
                 }
                 break;
             case CrowdControlEffect.ENTANGLE:
                 SetCannotUseBasicAttacks(count);
                 SetCannotUseMovement(count);
                 SetCannotUseMovementAbilities(count);
-                if (character.AbilityManager)
+                if (champion && champion.AbilityManager)
                 {
-                    character.AbilityManager.CancelAllActiveAbilitiesThatAreNotBeingCastedOrChanneled();
+                    champion.AbilityManager.CancelAllActiveAbilitiesThatAreNotBeingCastedOrChanneled();
                 }
                 break;
             case CrowdControlEffect.GROUND:
@@ -103,14 +103,14 @@ public class StatusManager : MonoBehaviour
                 SetCannotUseBasicAbilities(count);
                 SetCannotUseBasicAttacks(count);
                 SetCannotUseMovement(count);
-                if (character.MovementManager)
+                if (champion && champion.MovementManager)
                 {
-                    character.MovementManager.StopMovementTowardsPointIfHasEvent();
+                    champion.MovementManager.StopMovementTowardsPointIfHasEvent();
                 }
-                if (character.AbilityManager)
+                if (champion && champion.AbilityManager)
                 {
-                    character.AbilityManager.CancelAllChannelingAbilities();
-                    character.AbilityManager.CancelAllActiveAbilitiesThatAreNotBeingCastedOrChanneled();
+                    champion.AbilityManager.CancelAllChannelingAbilities();
+                    champion.AbilityManager.CancelAllActiveAbilitiesThatAreNotBeingCastedOrChanneled();
                 }
                 break;
             case CrowdControlEffect.KNOCKBACK:
@@ -118,21 +118,21 @@ public class StatusManager : MonoBehaviour
                 SetCannotUseBasicAbilities(count);
                 SetCannotUseBasicAttacks(count);
                 SetCannotUseMovement(count);
-                if (character.MovementManager)
+                if (champion && champion.MovementManager)
                 {
-                    character.MovementManager.SetMoveTowardsHalfDistanceOfAbilityCastRange();
-                    character.MovementManager.SetCharacterIsInTargetRangeEventForBasicAttack();
+                    champion.MovementManager.SetMoveTowardsHalfDistanceOfAbilityCastRange();
+                    champion.MovementManager.SetCharacterIsInTargetRangeEventForBasicAttack();
                 }
-                if (character.AbilityManager)
+                if (champion && champion.AbilityManager)
                 {
-                    character.AbilityManager.CancelAllChannelingAbilities();
-                    character.AbilityManager.CancelAllActiveAbilitiesThatAreNotBeingCastedOrChanneled();
+                    champion.AbilityManager.CancelAllChannelingAbilities();
+                    champion.AbilityManager.CancelAllActiveAbilitiesThatAreNotBeingCastedOrChanneled();
                 }
                 break;
             case CrowdControlEffect.KNOCKDOWN:
-                if (character.DisplacementManager)
+                if (unit.DisplacementManager)
                 {
-                    character.DisplacementManager.StopCurrentDisplacement();
+                    unit.DisplacementManager.StopCurrentDisplacement();
                 }
                 break;
             case CrowdControlEffect.NEARSIGHT://TODO
@@ -141,29 +141,29 @@ public class StatusManager : MonoBehaviour
             case CrowdControlEffect.POLYMORPH:
                 SetCannotUseBasicAbilities(count);
                 SetCannotUseBasicAttacks(count);
-                if (character.AbilityManager)
+                if (champion && champion.AbilityManager)
                 {
-                    character.AbilityManager.CancelAllChannelingAbilities();
-                    character.AbilityManager.CancelAllActiveAbilitiesThatAreNotBeingCastedOrChanneled();
+                    champion.AbilityManager.CancelAllChannelingAbilities();
+                    champion.AbilityManager.CancelAllActiveAbilitiesThatAreNotBeingCastedOrChanneled();
                 }
                 break;
             case CrowdControlEffect.ROOT:
                 SetCannotUseMovement(count);
                 SetCannotUseMovementAbilities(count);
-                if (character.MovementManager)
+                if (champion && champion.MovementManager)
                 {
-                    character.MovementManager.StopMovementTowardsPointIfHasEvent();
+                    champion.MovementManager.StopMovementTowardsPointIfHasEvent();
                 }
-                if (character.AbilityManager)
+                if (champion && champion.AbilityManager)
                 {
-                    character.AbilityManager.CancelAllChannelingAbilities();
+                    champion.AbilityManager.CancelAllChannelingAbilities();
                 }
                 break;
             case CrowdControlEffect.SILENCE://TODO: You continue to walk towards the target position if you casted a spell, ground or unit, and you do nothing while you're silenced if you stop moving
                 SetCannotUseBasicAbilities(count);
-                if (character.AbilityManager)
+                if (champion && champion.AbilityManager)
                 {
-                    character.AbilityManager.CancelAllChannelingAbilities();
+                    champion.AbilityManager.CancelAllChannelingAbilities();
                 }
                 break;
             case CrowdControlEffect.STASIS:
@@ -172,32 +172,32 @@ public class StatusManager : MonoBehaviour
                 SetCannotUseBasicAttacks(count);
                 SetCannotUseMovement(count);
                 SetCannotUseSummonerAbilities(count);
-                if (character.MovementManager)
+                if (champion && champion.MovementManager)
                 {
-                    character.MovementManager.StopMovementTowardsPointIfHasEvent();
+                    champion.MovementManager.StopMovementTowardsPointIfHasEvent();
                 }
-                if (character.AbilityManager)
+                if (champion && champion.AbilityManager)
                 {
-                    character.AbilityManager.CancelAllChannelingAbilities();
-                    character.AbilityManager.CancelAllActiveAbilitiesThatAreNotBeingCastedOrChanneled();
+                    champion.AbilityManager.CancelAllChannelingAbilities();
+                    champion.AbilityManager.CancelAllActiveAbilitiesThatAreNotBeingCastedOrChanneled();
                 }
                 break;
             case CrowdControlEffect.SUSPENSION:
                 SetCannotUseBasicAbilities(count);
                 SetCannotUseBasicAttacks(count);
                 SetCannotUseMovement(count);
-                if (character.MovementManager)
+                if (champion && champion.MovementManager)
                 {
-                    if (!character.MovementManager.IsMovingTowardsPositionForAnEvent() && !character.MovementManager.IsMovingTowardsTarget())
+                    if (!champion.MovementManager.IsMovingTowardsPositionForAnEvent() && !champion.MovementManager.IsMovingTowardsTarget())
                     {
-                        character.AutoAttackManager.EnableAutoAttackWithBiggerRange();
+                        champion.AutoAttackManager.EnableAutoAttackWithBiggerRange();
                     }
-                    character.MovementManager.StopAllMovement();
+                    champion.MovementManager.StopAllMovement();
                 }
-                if (character.AbilityManager)
+                if (champion && champion.AbilityManager)
                 {
-                    character.AbilityManager.CancelAllChannelingAbilities();
-                    character.AbilityManager.CancelAllActiveAbilitiesThatAreNotBeingCastedOrChanneled();
+                    champion.AbilityManager.CancelAllChannelingAbilities();
+                    champion.AbilityManager.CancelAllActiveAbilitiesThatAreNotBeingCastedOrChanneled();
                 }
                 break;
         }
@@ -289,15 +289,15 @@ public class StatusManager : MonoBehaviour
     private void SetCannotUseBasicAbilities(int count)
     {
         blockBasicAbilitiesCount += count;
-        if (character.AbilityManager)
+        if (champion && champion.AbilityManager)
         {
             if (CanBlockAbilitiesOrBasicAttacks(count, blockBasicAbilitiesCount))
             {
-                character.AbilityManager.BlockAllBasicAbilities();
+                champion.AbilityManager.BlockAllBasicAbilities();
             }
             else if (CanUnblockAbilitiesOrBasicAttacks(count, blockBasicAbilitiesCount))
             {
-                character.AbilityManager.UnblockAllBasicAbilities(blockMovementAbilitiesCount == 0, blockSummonerAbilitiesCount == 0);
+                champion.AbilityManager.UnblockAllBasicAbilities(blockMovementAbilitiesCount == 0, blockSummonerAbilitiesCount == 0);
             }
         }
     }
@@ -305,15 +305,15 @@ public class StatusManager : MonoBehaviour
     private void SetCannotUseMovementAbilities(int count)
     {
         blockMovementAbilitiesCount += count;
-        if (blockBasicAbilitiesCount == 0 && character.AbilityManager)
+        if (blockBasicAbilitiesCount == 0 && champion && champion.AbilityManager)
         {
             if (CanBlockAbilitiesOrBasicAttacks(count, blockMovementAbilitiesCount))
             {
-                character.AbilityManager.BlockAllMovementAbilities();
+                champion.AbilityManager.BlockAllMovementAbilities();
             }
             else if (CanUnblockAbilitiesOrBasicAttacks(count, blockMovementAbilitiesCount))
             {
-                character.AbilityManager.UnblockAllMovementAbilities();
+                champion.AbilityManager.UnblockAllMovementAbilities();
             }
         }
     }
@@ -321,15 +321,15 @@ public class StatusManager : MonoBehaviour
     private void SetCannotUseSummonerAbilities(int count)
     {
         blockSummonerAbilitiesCount += count;
-        if (character.AbilityManager)
+        if (champion && champion.AbilityManager)
         {
             if (CanBlockAbilitiesOrBasicAttacks(count, blockSummonerAbilitiesCount))
             {
-                character.AbilityManager.BlockAllSummonerAbilities();
+                champion.AbilityManager.BlockAllSummonerAbilities();
             }
             else if (CanUnblockAbilitiesOrBasicAttacks(count, blockSummonerAbilitiesCount))
             {
-                character.AbilityManager.UnblockAllSummonerAbilities(blockMovementAbilitiesCount == 0);
+                champion.AbilityManager.UnblockAllSummonerAbilities(blockMovementAbilitiesCount == 0);
             }
         }
     }

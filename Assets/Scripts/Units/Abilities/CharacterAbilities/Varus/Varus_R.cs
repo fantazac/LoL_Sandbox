@@ -92,7 +92,7 @@ public class Varus_R : DirectionTargetedProjectile
         foreach (Collider collider in Physics.OverlapCapsule(groundPosition, groundPosition + Vector3.up * 5, radius))
         {
             tempCharacter = collider.GetComponentInParent<Character>();
-            if (tempCharacter != null && !alreadyAffectedUnits.Contains(tempCharacter) && TargetIsValid.CheckIfTargetIsValid(tempCharacter, affectedUnitType, character.Team))
+            if (tempCharacter != null && !alreadyAffectedUnits.Contains(tempCharacter) && TargetIsValid.CheckIfTargetIsValid(tempCharacter, affectedUnitType, champion.Team))
             {
                 unitsInRange.Add(tempCharacter);
             }

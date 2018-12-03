@@ -66,9 +66,9 @@ public class Ezreal_E : GroundTargetedBlink
         IsBeingCasted = false;
         UseResource();
         destinationOnCast = FindPointToMoveTo(destinationOnCast, transform.position);
-        character.OrientationManager.RotateCharacterInstantly(destinationOnCast);
+        champion.OrientationManager.RotateCharacterInstantly(destinationOnCast);
         transform.position = destinationOnCast;
-        character.MovementManager.NotifyCharacterMoved();
+        champion.MovementManager.NotifyCharacterMoved();
 
         FinishAbilityCast();
 
@@ -86,9 +86,9 @@ public class Ezreal_E : GroundTargetedBlink
         foreach (Collider collider in Physics.OverlapCapsule(groundPosition, groundPosition + Vector3.up * 5, effectRadius))
         {
             tempUnit = collider.GetComponentInParent<Unit>();
-            if (tempUnit != null && TargetIsValid.CheckIfTargetIsValid(tempUnit, affectedUnitType, character.Team))
+            if (tempUnit != null && TargetIsValid.CheckIfTargetIsValid(tempUnit, affectedUnitType, champion.Team))
             {
-                if (tempUnit.BuffManager.IsAffectedByDebuff(character.AbilityManager.CharacterAbilities[1].AbilityDebuffs[0]))
+                if (tempUnit.BuffManager.IsAffectedByDebuff(champion.AbilityManager.CharacterAbilities[1].AbilityDebuffs[0]))
                 {
                     closestUnit = tempUnit;
                     break;
@@ -105,7 +105,7 @@ public class Ezreal_E : GroundTargetedBlink
         if (closestUnit != null)
         {
             ProjectileUnitTargeted projectile = Instantiate(projectilePrefab, transform.position, transform.rotation).GetComponent<ProjectileUnitTargeted>();
-            projectile.ShootProjectile(character.Team, closestUnit, speed);
+            projectile.ShootProjectile(champion.Team, closestUnit, speed);
             projectile.OnAbilityEffectHit += OnProjectileHit;
         }
     }

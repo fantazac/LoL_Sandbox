@@ -1,11 +1,11 @@
-﻿public class Tristana : Character
+﻿public class Tristana : Champion
 {
     protected Tristana()
     {
-        characterPortraitPath = "Sprites/Characters/CharacterPortraits/Tristana";
+        championPortraitPath = "Sprites/Characters/CharacterPortraits/Tristana";
     }
 
-    protected override void SetCharacterSpecificScripts()
+    protected override void InitCharacterProperties()
     {
         BasicAttack = gameObject.AddComponent<TristanaBasicAttack>();
         StatsManager = gameObject.AddComponent<TristanaStatsManager>();

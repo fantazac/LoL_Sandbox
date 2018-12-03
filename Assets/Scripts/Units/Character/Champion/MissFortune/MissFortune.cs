@@ -1,11 +1,11 @@
-﻿public class MissFortune : Character
+﻿public class MissFortune : Champion
 {
     protected MissFortune()
     {
-        characterPortraitPath = "Sprites/Characters/CharacterPortraits/MissFortune";
+        championPortraitPath = "Sprites/Characters/CharacterPortraits/MissFortune";
     }
 
-    protected override void SetCharacterSpecificScripts()
+    protected override void InitCharacterProperties()
     {
         BasicAttack = gameObject.AddComponent<MissFortuneBasicAttack>();
         StatsManager = gameObject.AddComponent<MissFortuneStatsManager>();

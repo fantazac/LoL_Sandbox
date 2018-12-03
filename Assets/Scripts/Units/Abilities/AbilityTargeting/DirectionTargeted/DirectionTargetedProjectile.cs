@@ -19,7 +19,7 @@ public abstract class DirectionTargetedProjectile : DirectionTargeted
 
         IsBeingCasted = false;
         UseResource();
-        character.OrientationManager.RotateCharacterInstantly(destinationOnCast);
+        champion.OrientationManager.RotateCharacterInstantly(destinationOnCast);
 
         SpawnProjectile(transform.position + (transform.forward * projectilePrefab.transform.localScale.z * 0.5f), transform.rotation);
 
@@ -29,7 +29,7 @@ public abstract class DirectionTargetedProjectile : DirectionTargeted
     protected void SpawnProjectile(Vector3 position, Quaternion rotation)
     {
         Projectile projectile = (Instantiate(projectilePrefab, position, rotation)).GetComponent<Projectile>();
-        projectile.ShootProjectile(character.Team, affectedUnitType, speed, range);
+        projectile.ShootProjectile(champion.Team, affectedUnitType, speed, range);
         projectile.OnAbilityEffectHit += OnProjectileHit;
         projectile.OnProjectileReachedEnd += OnProjectileReachedEnd;
     }

@@ -18,7 +18,7 @@ public abstract class DirectionTargetedDash : DirectionTargeted
 
         this.destination = destination;
 
-        character.BasicAttack.CancelCurrentBasicAttackToCastAbility();
+        champion.BasicAttack.CancelCurrentBasicAttackToCastAbility();
         RotationOnAbilityCast(destination);
 
         if (castTime > 0)
@@ -38,23 +38,23 @@ public abstract class DirectionTargetedDash : DirectionTargeted
 
     protected void SetupDash()
     {
-        character.DisplacementManager.SetupDisplacement(this.destination, dashSpeed);
-        character.DisplacementManager.OnDisplacementFinished += SetupAutoAttackPostDash;
+        champion.DisplacementManager.SetupDisplacement(this.destination, dashSpeed);
+        champion.DisplacementManager.OnDisplacementFinished += SetupAutoAttackPostDash;
     }
 
     protected void SetupAutoAttackPostDash()
     {
-        if (!character.MovementManager.IsMovingTowardsPosition())
+        if (!champion.MovementManager.IsMovingTowardsPosition())
         {
-            character.AutoAttackManager.EnableAutoAttackWithBiggerRange();
+            champion.AutoAttackManager.EnableAutoAttackWithBiggerRange();
         }
     }
 
     protected override void RotationOnAbilityCast(Vector3 destination)
     {
-        if (character.AbilityManager.CanRotate())
+        if (champion.AbilityManager.CanRotate())
         {
-            character.OrientationManager.RotateCharacterInstantly(destination);
+            champion.OrientationManager.RotateCharacterInstantly(destination);
         }
     }
 

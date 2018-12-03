@@ -5,7 +5,7 @@ public class MouseManager : MonoBehaviour
     public Unit HoveredUnit { get; private set; }
     public Unit ClickedUnit { get; private set; }
 
-    private Character character;
+    private Champion champion;
 
     private RaycastHit hit;
 
@@ -13,10 +13,10 @@ public class MouseManager : MonoBehaviour
 
     private void Start()
     {
-        character = StaticObjects.Character;
-        if (character.IsLocalCharacter())
+        champion = StaticObjects.Champion;
+        if (champion.IsLocalChampion())
         {
-            character.InputManager.OnRightClick += PressedRightClick;
+            champion.InputManager.OnRightClick += PressedRightClick;
         }
     }
 
@@ -52,17 +52,17 @@ public class MouseManager : MonoBehaviour
         bool hitTerrain = MousePositionOnTerrain.GetRaycastHit(mousePosition, out hit);
         Unit closestEnemyUnit = FindClosestEnemyUnit();
 
-        if (HoveredUnitIsAnEnemy(character.Team))
+        if (HoveredUnitIsAnEnemy(champion.Team))
         {
-            character.MovementManager.PrepareMovementTowardsTarget(HoveredUnit);
+            champion.MovementManager.PrepareMovementTowardsTarget(HoveredUnit);
         }
         else if (closestEnemyUnit != null)
         {
-            character.MovementManager.PrepareMovementTowardsTarget(closestEnemyUnit);
+            champion.MovementManager.PrepareMovementTowardsTarget(closestEnemyUnit);
         }
         else if (hitTerrain)
         {
-            character.MovementManager.PrepareMovementTowardsPoint(hit.point);
+            champion.MovementManager.PrepareMovementTowardsPoint(hit.point);
         }
     }
 
@@ -72,7 +72,7 @@ public class MouseManager : MonoBehaviour
         foreach (Collider collider in Physics.OverlapSphere(hit.point, RADIUS_RUBBER_BANDING))
         {
             closestEnemyUnit = collider.GetComponentInParent<Unit>();
-            if (closestEnemyUnit != null && closestEnemyUnit.Team != character.Team)
+            if (closestEnemyUnit != null && closestEnemyUnit.Team != champion.Team)
             {
                 break;
             }
