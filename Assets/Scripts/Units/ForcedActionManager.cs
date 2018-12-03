@@ -17,9 +17,9 @@ public class ForcedActionManager : MonoBehaviour
     private void Start()
     {
         unit = GetComponent<Character>();
-        if (unit.CharacterOrientationManager)//TODO: Unit
+        if (unit.OrientationManager)//TODO: Unit
         {
-            rotationSpeed = unit.CharacterOrientationManager.RotationSpeed;
+            rotationSpeed = unit.OrientationManager.RotationSpeed;
         }
         else
         {
@@ -94,9 +94,9 @@ public class ForcedActionManager : MonoBehaviour
             {
                 transform.position = Vector3.MoveTowards(transform.position, casterTransform.position, Time.deltaTime * unit.StatsManager.MovementSpeed.GetTotal());
 
-                if (unit.CharacterMovementManager)
+                if (unit.MovementManager)
                 {
-                    unit.CharacterMovementManager.NotifyCharacterMoved();
+                    unit.MovementManager.NotifyCharacterMoved();
                 }
 
                 transform.rotation = Quaternion.LookRotation(Vector3.RotateTowards(transform.forward, casterTransform.position - transform.position, Time.deltaTime * rotationSpeed, 0));
@@ -108,36 +108,36 @@ public class ForcedActionManager : MonoBehaviour
 
     private IEnumerator FinishCharm()
     {
-        if (unit.CharacterMovementManager && !unit.CharacterMovementManager.IsMoving())
+        if (unit.MovementManager && !unit.MovementManager.IsMoving())
         {
             Transform casterTransform = caster.transform;
             Vector3 lastCasterPosition = casterTransform.position;
             while (transform.position != lastCasterPosition)
             {
-                if (unit.CharacterMovementManager.IsMoving() || !unit.CharacterAbilityManager.CanUseMovement() || !unit.StatusManager.CanUseMovement() ||
+                if (unit.MovementManager.IsMoving() || !unit.AbilityManager.CanUseMovement() || !unit.StatusManager.CanUseMovement() ||
                     Vector3.Distance(casterTransform.position, transform.position) <= unit.StatsManager.AttackRange.GetTotal())
                 {
-                    unit.CharacterMovementManager.SetMoveTowardsTarget(caster, unit.StatsManager.AttackRange.GetTotal(), true);
+                    unit.MovementManager.SetMoveTowardsTarget(caster, unit.StatsManager.AttackRange.GetTotal(), true);
                     break;
                 }
                 else
                 {
                     transform.position = Vector3.MoveTowards(transform.position, lastCasterPosition, Time.deltaTime * unit.StatsManager.MovementSpeed.GetTotal());
 
-                    unit.CharacterMovementManager.NotifyCharacterMoved();
+                    unit.MovementManager.NotifyCharacterMoved();
                 }
 
                 yield return null;
             }
 
-            if (!unit.CharacterMovementManager.IsMoving() && unit.CharacterAutoAttackManager)
+            if (!unit.MovementManager.IsMoving() && unit.AutoAttackManager)
             {
-                unit.CharacterAutoAttackManager.EnableAutoAttack(true);
+                unit.AutoAttackManager.EnableAutoAttack(true);
             }
         }
-        else if (unit.CharacterAutoAttackManager)
+        else if (unit.AutoAttackManager)
         {
-            unit.CharacterAutoAttackManager.EnableAutoAttack(true);
+            unit.AutoAttackManager.EnableAutoAttack(true);
         }
     }
 
@@ -172,9 +172,9 @@ public class ForcedActionManager : MonoBehaviour
             {
                 transform.position = Vector3.MoveTowards(transform.position, casterTransform.position, -Time.deltaTime * unit.StatsManager.MovementSpeed.GetTotal());
 
-                if (unit.CharacterMovementManager)
+                if (unit.MovementManager)
                 {
-                    unit.CharacterMovementManager.NotifyCharacterMoved();
+                    unit.MovementManager.NotifyCharacterMoved();
                 }
 
                 transform.rotation = Quaternion.LookRotation(Vector3.RotateTowards(transform.forward, -(casterTransform.position - transform.position), Time.deltaTime * rotationSpeed, 0));
@@ -186,9 +186,9 @@ public class ForcedActionManager : MonoBehaviour
 
     private void FinishFearAndFlee()
     {
-        if (unit.CharacterMovementManager && !unit.CharacterMovementManager.IsMoving() && unit.CharacterAutoAttackManager)
+        if (unit.MovementManager && !unit.MovementManager.IsMoving() && unit.AutoAttackManager)
         {
-            unit.CharacterAutoAttackManager.EnableAutoAttack();
+            unit.AutoAttackManager.EnableAutoAttack();
         }
     }
 
@@ -203,9 +203,9 @@ public class ForcedActionManager : MonoBehaviour
                 {
                     transform.position = Vector3.MoveTowards(transform.position, casterTransform.position, Time.deltaTime * unit.StatsManager.MovementSpeed.GetTotal());
 
-                    if (unit.CharacterMovementManager)
+                    if (unit.MovementManager)
                     {
-                        unit.CharacterMovementManager.NotifyCharacterMoved();
+                        unit.MovementManager.NotifyCharacterMoved();
                     }
                 }
                 else
@@ -225,9 +225,9 @@ public class ForcedActionManager : MonoBehaviour
 
     private void FinishTaunt()
     {
-        if (unit.CharacterMovementManager && !unit.CharacterMovementManager.IsMoving())
+        if (unit.MovementManager && !unit.MovementManager.IsMoving())
         {
-            unit.CharacterMovementManager.SetMoveTowardsTarget(caster, unit.StatsManager.AttackRange.GetTotal(), true);
+            unit.MovementManager.SetMoveTowardsTarget(caster, unit.StatsManager.AttackRange.GetTotal(), true);
         }
     }
 }

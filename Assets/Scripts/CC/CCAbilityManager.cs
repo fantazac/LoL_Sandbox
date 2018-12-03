@@ -1,4 +1,4 @@
-﻿public class CCAbilityManager : CharacterAbilityManager
+﻿public class CCAbilityManager : AbilityManager
 {
     protected override void InitAbilities()
     {

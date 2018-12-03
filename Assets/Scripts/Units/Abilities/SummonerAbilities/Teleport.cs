@@ -39,16 +39,16 @@ public class Teleport : GroundTargetedBlink//TODO: UnitTargeted
     protected override IEnumerator AbilityWithChannelTime()
     {
         UseResource();
-        character.CharacterAbilityManager.BlockAllMovementAbilities();
+        character.AbilityManager.BlockAllMovementAbilities();
         IsBeingChanneled = true;
 
         yield return delayChannelTime;
 
         IsBeingChanneled = false;
-        character.CharacterAbilityManager.UnblockAllMovementAbilities();
-        character.CharacterOrientationManager.RotateCharacterInstantly(destinationOnCast);
+        character.AbilityManager.UnblockAllMovementAbilities();
+        character.OrientationManager.RotateCharacterInstantly(destinationOnCast);
         transform.position = destinationOnCast;
-        character.CharacterMovementManager.NotifyCharacterMoved();
+        character.MovementManager.NotifyCharacterMoved();
 
         FinishAbilityCast();
     }

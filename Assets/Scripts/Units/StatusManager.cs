@@ -56,14 +56,14 @@ public class StatusManager : MonoBehaviour
                 SetCannotUseBasicAbilities(count);
                 SetCannotUseBasicAttacks(count);
                 SetCannotUseMovement(count);
-                if (character.CharacterMovementManager)
+                if (character.MovementManager)
                 {
-                    character.CharacterMovementManager.StopAllMovement();
+                    character.MovementManager.StopAllMovement();
                 }
-                if (character.CharacterAbilityManager)
+                if (character.AbilityManager)
                 {
-                    character.CharacterAbilityManager.CancelAllChannelingAbilities();
-                    character.CharacterAbilityManager.CancelAllActiveAbilitiesThatAreNotBeingCastedOrChanneled();
+                    character.AbilityManager.CancelAllChannelingAbilities();
+                    character.AbilityManager.CancelAllActiveAbilitiesThatAreNotBeingCastedOrChanneled();
                 }
                 break;
             case CrowdControlEffect.CRIPPLE:
@@ -72,25 +72,25 @@ public class StatusManager : MonoBehaviour
                 break;
             case CrowdControlEffect.DISARM:
                 SetCannotUseBasicAttacks(count);
-                if (character.CharacterAbilityManager)
+                if (character.AbilityManager)
                 {
-                    character.CharacterAbilityManager.CancelAllChannelingAbilities();//TODO: verify, wiki says yes though
-                    character.CharacterAbilityManager.CancelAllActiveAbilitiesThatAreNotBeingCastedOrChanneled();
+                    character.AbilityManager.CancelAllChannelingAbilities();//TODO: verify, wiki says yes though
+                    character.AbilityManager.CancelAllActiveAbilitiesThatAreNotBeingCastedOrChanneled();
                 }
                 break;
             case CrowdControlEffect.DISRUPT:
-                if (character.CharacterAbilityManager)
+                if (character.AbilityManager)
                 {
-                    character.CharacterAbilityManager.CancelAllChannelingAbilities();
+                    character.AbilityManager.CancelAllChannelingAbilities();
                 }
                 break;
             case CrowdControlEffect.ENTANGLE:
                 SetCannotUseBasicAttacks(count);
                 SetCannotUseMovement(count);
                 SetCannotUseMovementAbilities(count);
-                if (character.CharacterAbilityManager)
+                if (character.AbilityManager)
                 {
-                    character.CharacterAbilityManager.CancelAllActiveAbilitiesThatAreNotBeingCastedOrChanneled();
+                    character.AbilityManager.CancelAllActiveAbilitiesThatAreNotBeingCastedOrChanneled();
                 }
                 break;
             case CrowdControlEffect.GROUND:
@@ -103,14 +103,14 @@ public class StatusManager : MonoBehaviour
                 SetCannotUseBasicAbilities(count);
                 SetCannotUseBasicAttacks(count);
                 SetCannotUseMovement(count);
-                if (character.CharacterMovementManager)
+                if (character.MovementManager)
                 {
-                    character.CharacterMovementManager.StopMovementTowardsPointIfHasEvent();
+                    character.MovementManager.StopMovementTowardsPointIfHasEvent();
                 }
-                if (character.CharacterAbilityManager)
+                if (character.AbilityManager)
                 {
-                    character.CharacterAbilityManager.CancelAllChannelingAbilities();
-                    character.CharacterAbilityManager.CancelAllActiveAbilitiesThatAreNotBeingCastedOrChanneled();
+                    character.AbilityManager.CancelAllChannelingAbilities();
+                    character.AbilityManager.CancelAllActiveAbilitiesThatAreNotBeingCastedOrChanneled();
                 }
                 break;
             case CrowdControlEffect.KNOCKBACK:
@@ -118,15 +118,15 @@ public class StatusManager : MonoBehaviour
                 SetCannotUseBasicAbilities(count);
                 SetCannotUseBasicAttacks(count);
                 SetCannotUseMovement(count);
-                if (character.CharacterMovementManager)
+                if (character.MovementManager)
                 {
-                    character.CharacterMovementManager.SetMoveTowardsHalfDistanceOfAbilityCastRange();
-                    character.CharacterMovementManager.SetCharacterIsInTargetRangeEventForBasicAttack();
+                    character.MovementManager.SetMoveTowardsHalfDistanceOfAbilityCastRange();
+                    character.MovementManager.SetCharacterIsInTargetRangeEventForBasicAttack();
                 }
-                if (character.CharacterAbilityManager)
+                if (character.AbilityManager)
                 {
-                    character.CharacterAbilityManager.CancelAllChannelingAbilities();
-                    character.CharacterAbilityManager.CancelAllActiveAbilitiesThatAreNotBeingCastedOrChanneled();
+                    character.AbilityManager.CancelAllChannelingAbilities();
+                    character.AbilityManager.CancelAllActiveAbilitiesThatAreNotBeingCastedOrChanneled();
                 }
                 break;
             case CrowdControlEffect.KNOCKDOWN:
@@ -141,29 +141,29 @@ public class StatusManager : MonoBehaviour
             case CrowdControlEffect.POLYMORPH:
                 SetCannotUseBasicAbilities(count);
                 SetCannotUseBasicAttacks(count);
-                if (character.CharacterAbilityManager)
+                if (character.AbilityManager)
                 {
-                    character.CharacterAbilityManager.CancelAllChannelingAbilities();
-                    character.CharacterAbilityManager.CancelAllActiveAbilitiesThatAreNotBeingCastedOrChanneled();
+                    character.AbilityManager.CancelAllChannelingAbilities();
+                    character.AbilityManager.CancelAllActiveAbilitiesThatAreNotBeingCastedOrChanneled();
                 }
                 break;
             case CrowdControlEffect.ROOT:
                 SetCannotUseMovement(count);
                 SetCannotUseMovementAbilities(count);
-                if (character.CharacterMovementManager)
+                if (character.MovementManager)
                 {
-                    character.CharacterMovementManager.StopMovementTowardsPointIfHasEvent();
+                    character.MovementManager.StopMovementTowardsPointIfHasEvent();
                 }
-                if (character.CharacterAbilityManager)
+                if (character.AbilityManager)
                 {
-                    character.CharacterAbilityManager.CancelAllChannelingAbilities();
+                    character.AbilityManager.CancelAllChannelingAbilities();
                 }
                 break;
             case CrowdControlEffect.SILENCE://TODO: You continue to walk towards the target position if you casted a spell, ground or unit, and you do nothing while you're silenced if you stop moving
                 SetCannotUseBasicAbilities(count);
-                if (character.CharacterAbilityManager)
+                if (character.AbilityManager)
                 {
-                    character.CharacterAbilityManager.CancelAllChannelingAbilities();
+                    character.AbilityManager.CancelAllChannelingAbilities();
                 }
                 break;
             case CrowdControlEffect.STASIS:
@@ -172,32 +172,32 @@ public class StatusManager : MonoBehaviour
                 SetCannotUseBasicAttacks(count);
                 SetCannotUseMovement(count);
                 SetCannotUseSummonerAbilities(count);
-                if (character.CharacterMovementManager)
+                if (character.MovementManager)
                 {
-                    character.CharacterMovementManager.StopMovementTowardsPointIfHasEvent();
+                    character.MovementManager.StopMovementTowardsPointIfHasEvent();
                 }
-                if (character.CharacterAbilityManager)
+                if (character.AbilityManager)
                 {
-                    character.CharacterAbilityManager.CancelAllChannelingAbilities();
-                    character.CharacterAbilityManager.CancelAllActiveAbilitiesThatAreNotBeingCastedOrChanneled();
+                    character.AbilityManager.CancelAllChannelingAbilities();
+                    character.AbilityManager.CancelAllActiveAbilitiesThatAreNotBeingCastedOrChanneled();
                 }
                 break;
             case CrowdControlEffect.SUSPENSION:
                 SetCannotUseBasicAbilities(count);
                 SetCannotUseBasicAttacks(count);
                 SetCannotUseMovement(count);
-                if (character.CharacterMovementManager)
+                if (character.MovementManager)
                 {
-                    if (!character.CharacterMovementManager.IsMovingTowardsPositionForAnEvent() && !character.CharacterMovementManager.IsMovingTowardsTarget())
+                    if (!character.MovementManager.IsMovingTowardsPositionForAnEvent() && !character.MovementManager.IsMovingTowardsTarget())
                     {
-                        character.CharacterAutoAttackManager.EnableAutoAttackWithBiggerRange();
+                        character.AutoAttackManager.EnableAutoAttackWithBiggerRange();
                     }
-                    character.CharacterMovementManager.StopAllMovement();
+                    character.MovementManager.StopAllMovement();
                 }
-                if (character.CharacterAbilityManager)
+                if (character.AbilityManager)
                 {
-                    character.CharacterAbilityManager.CancelAllChannelingAbilities();
-                    character.CharacterAbilityManager.CancelAllActiveAbilitiesThatAreNotBeingCastedOrChanneled();
+                    character.AbilityManager.CancelAllChannelingAbilities();
+                    character.AbilityManager.CancelAllActiveAbilitiesThatAreNotBeingCastedOrChanneled();
                 }
                 break;
         }
@@ -289,15 +289,15 @@ public class StatusManager : MonoBehaviour
     private void SetCannotUseBasicAbilities(int count)
     {
         blockBasicAbilitiesCount += count;
-        if (character.CharacterAbilityManager)
+        if (character.AbilityManager)
         {
             if (CanBlockAbilitiesOrBasicAttacks(count, blockBasicAbilitiesCount))
             {
-                character.CharacterAbilityManager.BlockAllBasicAbilities();
+                character.AbilityManager.BlockAllBasicAbilities();
             }
             else if (CanUnblockAbilitiesOrBasicAttacks(count, blockBasicAbilitiesCount))
             {
-                character.CharacterAbilityManager.UnblockAllBasicAbilities(blockMovementAbilitiesCount == 0, blockSummonerAbilitiesCount == 0);
+                character.AbilityManager.UnblockAllBasicAbilities(blockMovementAbilitiesCount == 0, blockSummonerAbilitiesCount == 0);
             }
         }
     }
@@ -305,15 +305,15 @@ public class StatusManager : MonoBehaviour
     private void SetCannotUseMovementAbilities(int count)
     {
         blockMovementAbilitiesCount += count;
-        if (blockBasicAbilitiesCount == 0 && character.CharacterAbilityManager)
+        if (blockBasicAbilitiesCount == 0 && character.AbilityManager)
         {
             if (CanBlockAbilitiesOrBasicAttacks(count, blockMovementAbilitiesCount))
             {
-                character.CharacterAbilityManager.BlockAllMovementAbilities();
+                character.AbilityManager.BlockAllMovementAbilities();
             }
             else if (CanUnblockAbilitiesOrBasicAttacks(count, blockMovementAbilitiesCount))
             {
-                character.CharacterAbilityManager.UnblockAllMovementAbilities();
+                character.AbilityManager.UnblockAllMovementAbilities();
             }
         }
     }
@@ -321,15 +321,15 @@ public class StatusManager : MonoBehaviour
     private void SetCannotUseSummonerAbilities(int count)
     {
         blockSummonerAbilitiesCount += count;
-        if (character.CharacterAbilityManager)
+        if (character.AbilityManager)
         {
             if (CanBlockAbilitiesOrBasicAttacks(count, blockSummonerAbilitiesCount))
             {
-                character.CharacterAbilityManager.BlockAllSummonerAbilities();
+                character.AbilityManager.BlockAllSummonerAbilities();
             }
             else if (CanUnblockAbilitiesOrBasicAttacks(count, blockSummonerAbilitiesCount))
             {
-                character.CharacterAbilityManager.UnblockAllSummonerAbilities(blockMovementAbilitiesCount == 0);
+                character.AbilityManager.UnblockAllSummonerAbilities(blockMovementAbilitiesCount == 0);
             }
         }
     }

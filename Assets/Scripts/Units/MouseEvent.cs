@@ -4,11 +4,11 @@ public class MouseEvent : MonoBehaviour
 {
     private void OnMouseEnter()
     {
-        StaticObjects.Character.CharacterMouseManager.HoverUnit(GetComponentInParent<Unit>());
+        StaticObjects.Character.MouseManager.HoverUnit(GetComponentInParent<Unit>());
     }
 
     private void OnMouseExit()
     {
-        StaticObjects.Character.CharacterMouseManager.UnhoverUnit(GetComponentInParent<Unit>());
+        StaticObjects.Character.MouseManager.UnhoverUnit(GetComponentInParent<Unit>());
     }
 }

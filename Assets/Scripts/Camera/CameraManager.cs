@@ -11,7 +11,7 @@ public class CameraManager : MonoBehaviour
     private int screenWidth;
     private int screenHeight;
 
-    private CharacterInputManager characterInputManager;
+    private InputManager characterInputManager;
 
     private bool cameraLockedOnCharacter = true;
     private bool cameraFollowsCharacter = false;
@@ -22,7 +22,7 @@ public class CameraManager : MonoBehaviour
 
     private void Start()
     {
-        characterInputManager = StaticObjects.Character.CharacterInputManager;
+        characterInputManager = StaticObjects.Character.InputManager;
         characterInputManager.OnPressedY += SetCameraLock;
         characterInputManager.OnPressedSpace += SetCameraOnCharacter;
         characterInputManager.OnReleasedSpace += SetCameraFree;
@@ -32,7 +32,7 @@ public class CameraManager : MonoBehaviour
 
         initialPosition = transform.position;
         transform.position += StaticObjects.Character.transform.position;
-        StaticObjects.Character.CharacterMovementManager.CharacterMoved += CharacterMoved;
+        StaticObjects.Character.MovementManager.CharacterMoved += CharacterMoved;
 
         CharacterMoved();
     }

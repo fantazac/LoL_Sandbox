@@ -67,7 +67,7 @@ public class Varus_W : PassiveTargeted
         AbilityDebuffs = new AbilityBuff[] { gameObject.AddComponent<Varus_W_Debuff>() };
 
         abilitiesToTriggerStacks = new List<Ability>();
-        foreach (Ability ability in character.CharacterAbilityManager.CharacterAbilities)
+        foreach (Ability ability in character.AbilityManager.CharacterAbilities)
         {
             if (ability != this)
             {
@@ -80,7 +80,7 @@ public class Varus_W : PassiveTargeted
     {
         LevelUpExtraStats();
 
-        character.CharacterOnHitEffectsManager.OnApplyOnHitEffects += SetPassiveEffectOnUnitHit;
+        character.OnHitEffectsManager.OnApplyOnHitEffects += SetPassiveEffectOnUnitHit;
     }
 
     public override void LevelUpExtraStats()

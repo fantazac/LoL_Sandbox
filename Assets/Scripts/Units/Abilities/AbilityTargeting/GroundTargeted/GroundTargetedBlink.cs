@@ -12,9 +12,9 @@ public abstract class GroundTargetedBlink : GroundTargeted
         IsBeingCasted = false;
         UseResource();
         destinationOnCast = FindPointToMoveTo(destinationOnCast, transform.position);
-        character.CharacterOrientationManager.RotateCharacterInstantly(destinationOnCast);
+        character.OrientationManager.RotateCharacterInstantly(destinationOnCast);
         transform.position = destinationOnCast;
-        character.CharacterMovementManager.NotifyCharacterMoved();
+        character.MovementManager.NotifyCharacterMoved();
 
         FinishAbilityCast();
     }
@@ -27,9 +27,9 @@ public abstract class GroundTargetedBlink : GroundTargeted
         yield return delayChannelTime;
 
         IsBeingChanneled = false;
-        character.CharacterOrientationManager.RotateCharacterInstantly(destinationOnCast);
+        character.OrientationManager.RotateCharacterInstantly(destinationOnCast);
         transform.position = destinationOnCast;
-        character.CharacterMovementManager.NotifyCharacterMoved();
+        character.MovementManager.NotifyCharacterMoved();
 
         FinishAbilityCast();
     }

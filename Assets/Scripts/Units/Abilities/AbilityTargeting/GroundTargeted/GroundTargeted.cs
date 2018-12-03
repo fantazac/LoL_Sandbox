@@ -9,7 +9,7 @@ public abstract class GroundTargeted : Ability // Curently same as DirectionTarg
 
     public override Vector3 GetDestination()
     {
-        return hit.point + character.CharacterMovementManager.CharacterHeightOffset;
+        return hit.point + character.MovementManager.CharacterHeightOffset;
     }
 
     public override void UseAbility(Vector3 destination)

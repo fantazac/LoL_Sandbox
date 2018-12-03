@@ -69,7 +69,7 @@ public abstract class BasicAttack : DamageSource
         if (setupEvent)
         {
             //TODO: UnitMovement will become the parent of CharacterMovement
-            ((Character)unit).CharacterMovementManager.CharacterIsInTargetRange += UseBasicAttack;
+            ((Character)unit).MovementManager.CharacterIsInTargetRange += UseBasicAttack;
         }
     }
 
@@ -101,7 +101,7 @@ public abstract class BasicAttack : DamageSource
             StopBasicAttack();//This is so CharacterAutoAttack doesn't shoot while an ability is active
             if (currentTarget != null)
             {
-                ((Character)unit).CharacterMovementManager.SetMoveTowardsTarget(currentTarget, unit.StatsManager.AttackRange.GetTotal(), true);
+                ((Character)unit).MovementManager.SetMoveTowardsTarget(currentTarget, unit.StatsManager.AttackRange.GetTotal(), true);
             }
         }
     }
@@ -119,9 +119,9 @@ public abstract class BasicAttack : DamageSource
 
     protected void Update()
     {
-        if (currentTarget != null && ((Character)unit).CharacterMovementManager.GetBasicAttackTarget() != currentTarget && !AttackIsInQueue &&
+        if (currentTarget != null && ((Character)unit).MovementManager.GetBasicAttackTarget() != currentTarget && !AttackIsInQueue &&
             BasicAttackCycle.AttackSpeedCycleIsReady && unit.StatusManager.CanUseBasicAttacks() &&
-            ((Character)unit).CharacterAbilityManager.CanUseBasicAttacks() && !unit.DisplacementManager.IsBeingDisplaced)
+            ((Character)unit).AbilityManager.CanUseBasicAttacks() && !unit.DisplacementManager.IsBeingDisplaced)
         {
             StartBasicAttack();
         }
@@ -130,7 +130,7 @@ public abstract class BasicAttack : DamageSource
     protected void StartBasicAttack()
     {
         AttackIsInQueue = true;
-        ((Character)unit).CharacterMovementManager.SetMoveTowardsTarget(currentTarget, unit.StatsManager.AttackRange.GetTotal(), true);
+        ((Character)unit).MovementManager.SetMoveTowardsTarget(currentTarget, unit.StatsManager.AttackRange.GetTotal(), true);
     }
 
     public void UseBasicAttackFromAutoAttackOrTaunt(Unit target)
@@ -156,13 +156,13 @@ public abstract class BasicAttack : DamageSource
 
     protected virtual IEnumerator ShootBasicAttack(Unit target)
     {
-        ((Character)unit).CharacterOrientationManager.RotateCharacterUntilReachedTarget(target.transform, true, true);
+        ((Character)unit).OrientationManager.RotateCharacterUntilReachedTarget(target.transform, true, true);
 
         yield return delayAttack;
 
         BasicAttackCycle.LockBasicAttack();
         AttackIsInQueue = false;
-        ((Character)unit).CharacterOrientationManager.StopTargetRotation();
+        ((Character)unit).OrientationManager.StopTargetRotation();
 
         ProjectileUnitTargeted projectile = (Instantiate(basicAttackPrefab, transform.position, transform.rotation)).GetComponent<ProjectileUnitTargeted>();
         projectile.ShootProjectile(unit.Team, target, speed, AttackIsCritical.CheckIfAttackIsCritical(unit.StatsManager.CriticalStrikeChance.GetTotal()), unit.StatusManager.IsBlinded());
@@ -170,7 +170,7 @@ public abstract class BasicAttack : DamageSource
 
         if (unit is Character)
         {
-            ((Character)unit).CharacterOnAttackEffectsManager.ApplyOnAttackEffectsToUnitHit(target);
+            ((Character)unit).OnAttackEffectsManager.ApplyOnAttackEffectsToUnitHit(target);
         }
 
         shootBasicAttackCoroutine = null;
@@ -191,7 +191,7 @@ public abstract class BasicAttack : DamageSource
         DamageUnit(unitHit, damage);
         if (unit is Character)
         {
-            ((Character)unit).CharacterOnHitEffectsManager.ApplyOnHitEffectsToUnitHit(unitHit, damage);
+            ((Character)unit).OnHitEffectsManager.ApplyOnHitEffectsToUnitHit(unitHit, damage);
         }
         unitHit.EffectSourceManager.UnitHitByBasicAttack(unit);
     }

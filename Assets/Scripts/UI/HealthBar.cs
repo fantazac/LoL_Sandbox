@@ -123,10 +123,10 @@ public class HealthBar : MonoBehaviour
             Destroy(resourceImage.gameObject);
         }
 
-        if (character.CharacterLevelManager)
+        if (character.LevelManager)
         {
-            character.CharacterLevelManager.OnLevelUp += OnLevelUp;
-            OnLevelUp(character.CharacterLevelManager.Level == 0 ? 1 : character.CharacterLevelManager.Level);
+            character.LevelManager.OnLevelUp += OnLevelUp;
+            OnLevelUp(character.LevelManager.Level == 0 ? 1 : character.LevelManager.Level);
         }
         else
         {

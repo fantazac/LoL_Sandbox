@@ -6,7 +6,7 @@ public abstract class AutoTargetedBlink : AutoTargeted
     {
         StartAbilityCast();
 
-        character.CharacterMovementManager.StopAllMovement();
+        character.MovementManager.StopAllMovement();
 
         StartCorrectCoroutine();
     }

@@ -30,7 +30,7 @@ public class Tristana_P : PassiveTargeted
         base.Start();
 
         abilitiesToIncreaseCastRange = new List<Ability>();
-        foreach (Ability ability in character.CharacterAbilityManager.CharacterAbilities)
+        foreach (Ability ability in character.AbilityManager.CharacterAbilities)
         {
             if (ability is UnitTargeted)
             {
@@ -38,7 +38,7 @@ public class Tristana_P : PassiveTargeted
             }
         }
 
-        character.CharacterLevelManager.OnLevelUp += OnCharacterLevelUp;
+        character.LevelManager.OnLevelUp += OnCharacterLevelUp;
     }
 
     public override void OnCharacterLevelUp(int level)

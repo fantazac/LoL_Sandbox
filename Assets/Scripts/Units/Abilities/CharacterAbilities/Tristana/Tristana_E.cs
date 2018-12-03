@@ -76,7 +76,7 @@ public class Tristana_E : UnitTargetedProjectile
         AbilityDebuffs[0].OnAbilityBuffRemoved += RemoveDebuffFromAffectedUnit;
 
         abilitiesToIncreaseStacks = new List<Ability>();
-        foreach (Ability ability in character.CharacterAbilityManager.CharacterAbilities)
+        foreach (Ability ability in character.AbilityManager.CharacterAbilities)
         {
             if (ability != this && !(ability is PassiveTargeted || ability is SelfTargeted))
             {
@@ -100,7 +100,7 @@ public class Tristana_E : UnitTargetedProjectile
 
         IsBeingCasted = false;
         UseResource();
-        character.CharacterOrientationManager.RotateCharacterInstantly(destinationOnCast);
+        character.OrientationManager.RotateCharacterInstantly(destinationOnCast);
 
         ProjectileUnitTargeted projectile = (Instantiate(projectilePrefab, transform.position, transform.rotation)).GetComponent<ProjectileUnitTargeted>();
         projectile.ShootProjectile(character.Team, targetedUnit, speed);

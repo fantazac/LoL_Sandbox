@@ -34,8 +34,8 @@
 
         AbilityDebuffs = new AbilityBuff[] { gameObject.AddComponent<MissFortune_P_Debuff>() };
 
-        character.CharacterLevelManager.OnLevelUp += OnCharacterLevelUp;
-        character.CharacterOnHitEffectsManager.OnApplyOnHitEffects += SetPassiveEffectOnUnitHit;
+        character.LevelManager.OnLevelUp += OnCharacterLevelUp;
+        character.OnHitEffectsManager.OnApplyOnHitEffects += SetPassiveEffectOnUnitHit;
 
         lastUnitHit = character;
     }

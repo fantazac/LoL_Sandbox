@@ -63,7 +63,7 @@ public class Tristana_R : UnitTargetedProjectile
 
         IsBeingCasted = false;
         UseResource();
-        character.CharacterOrientationManager.RotateCharacterInstantly(destinationOnCast);
+        character.OrientationManager.RotateCharacterInstantly(destinationOnCast);
 
         ProjectileUnitTargeted projectile = (Instantiate(projectilePrefab, transform.position, transform.rotation)).GetComponent<ProjectileUnitTargeted>();
         projectile.ShootProjectile(character.Team, targetedUnit, speed);

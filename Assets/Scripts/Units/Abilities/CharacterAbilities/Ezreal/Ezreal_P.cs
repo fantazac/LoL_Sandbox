@@ -23,12 +23,12 @@
 
         AbilityBuffs = new AbilityBuff[] { gameObject.AddComponent<Ezreal_P_Buff>() };
 
-        foreach (Ability ability in character.CharacterAbilityManager.CharacterAbilities)
+        foreach (Ability ability in character.AbilityManager.CharacterAbilities)
         {
             ability.OnAbilityHit += PassiveEffect;
         }
 
-        character.CharacterLevelManager.OnLevelUp += OnCharacterLevelUp;
+        character.LevelManager.OnLevelUp += OnCharacterLevelUp;
     }
 
     /*public override void OnCharacterLevelUp(int level)

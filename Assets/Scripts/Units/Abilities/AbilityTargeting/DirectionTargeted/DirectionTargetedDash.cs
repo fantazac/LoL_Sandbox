@@ -44,17 +44,17 @@ public abstract class DirectionTargetedDash : DirectionTargeted
 
     protected void SetupAutoAttackPostDash()
     {
-        if (!character.CharacterMovementManager.IsMovingTowardsPosition())
+        if (!character.MovementManager.IsMovingTowardsPosition())
         {
-            character.CharacterAutoAttackManager.EnableAutoAttackWithBiggerRange();
+            character.AutoAttackManager.EnableAutoAttackWithBiggerRange();
         }
     }
 
     protected override void RotationOnAbilityCast(Vector3 destination)
     {
-        if (character.CharacterAbilityManager.CanRotate())
+        if (character.AbilityManager.CanRotate())
         {
-            character.CharacterOrientationManager.RotateCharacterInstantly(destination);
+            character.OrientationManager.RotateCharacterInstantly(destination);
         }
     }
 

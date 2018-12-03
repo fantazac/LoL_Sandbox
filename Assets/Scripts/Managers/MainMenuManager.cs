@@ -69,7 +69,7 @@ public class MainMenuManager : MonoBehaviour
             else if (state == MainMenuState.ON_HOLD)
             {
                 mainMenuCamera.SetActive(true);
-                StaticObjects.Character.CharacterMovementManager.UnsubscribeCameraEvent();
+                StaticObjects.Character.MovementManager.UnsubscribeCameraEvent();
                 if (StaticObjects.OnlineMode)
                 {
                     PhotonNetwork.Destroy(StaticObjects.Character.transform.parent.gameObject);
@@ -186,8 +186,8 @@ public class MainMenuManager : MonoBehaviour
         StaticObjects.Character = character.GetComponent<Character>();
         StaticObjects.CharacterCamera = characterTemplate.GetComponentInChildren<Camera>();
 
-        character.GetComponent<CharacterInputManager>().enabled = true;
-        character.GetComponent<CharacterMouseManager>().enabled = true;
+        character.GetComponent<InputManager>().enabled = true;
+        character.GetComponent<MouseManager>().enabled = true;
 
         mainMenuCamera.SetActive(false);
     }

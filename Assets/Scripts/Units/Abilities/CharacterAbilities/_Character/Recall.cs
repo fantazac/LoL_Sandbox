@@ -38,7 +38,7 @@ public class Recall : AutoTargetedBlink
 
     public override Vector3 GetDestination()
     {
-        return character.CharacterMovementManager.CharacterHeightOffset;
+        return character.MovementManager.CharacterHeightOffset;
     }
 
     protected override IEnumerator AbilityWithCastTimeAndChannelTime()
@@ -49,7 +49,7 @@ public class Recall : AutoTargetedBlink
 
         IsBeingCasted = false;
         UseResource();
-        character.CharacterMovementManager.StopAllMovement();//This is to cancel any movement command made during the cast time
+        character.MovementManager.StopAllMovement();//This is to cancel any movement command made during the cast time
         AddNewBuffToAffectedUnit(character);
         IsBeingChanneled = true;
 
@@ -59,7 +59,7 @@ public class Recall : AutoTargetedBlink
         AbilityBuffs[0].ConsumeBuff(character);
 
         transform.position = GetDestination();
-        character.CharacterMovementManager.NotifyCharacterMoved();
+        character.MovementManager.NotifyCharacterMoved();
 
         FinishAbilityCast();
     }
@@ -67,16 +67,16 @@ public class Recall : AutoTargetedBlink
     private void AddNewBuffToAffectedUnit(Unit affectedUnit)
     {
         affectedUnit.StatsManager.Health.OnResourceReduced += CancelRecall;
-        ((Character)affectedUnit).CharacterAbilityManager.OnAnAbilityUsed += CancelRecall;
-        ((Character)affectedUnit).CharacterMovementManager.CharacterMoved += CancelRecall;
+        ((Character)affectedUnit).AbilityManager.OnAnAbilityUsed += CancelRecall;
+        ((Character)affectedUnit).MovementManager.CharacterMoved += CancelRecall;
         AbilityBuffs[0].AddNewBuffToAffectedUnit(affectedUnit);
     }
 
     private void RemoveBuffFromAffectedUnit(Unit affectedUnit)
     {
         affectedUnit.StatsManager.Health.OnResourceReduced -= CancelRecall;
-        ((Character)affectedUnit).CharacterAbilityManager.OnAnAbilityUsed -= CancelRecall;
-        ((Character)affectedUnit).CharacterMovementManager.CharacterMoved -= CancelRecall;
+        ((Character)affectedUnit).AbilityManager.OnAnAbilityUsed -= CancelRecall;
+        ((Character)affectedUnit).MovementManager.CharacterMoved -= CancelRecall;
     }
 
     private void CancelRecall()

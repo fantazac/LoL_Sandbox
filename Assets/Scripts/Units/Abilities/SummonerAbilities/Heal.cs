@@ -32,7 +32,7 @@ public class Heal : SelfTargeted
         AbilityBuffs = new AbilityBuff[] { gameObject.AddComponent<Heal_Buff>() };
         AbilityDebuffs = new AbilityBuff[] { gameObject.AddComponent<Heal_Debuff>() };
 
-        character.CharacterLevelManager.OnLevelUp += OnCharacterLevelUp;
+        character.LevelManager.OnLevelUp += OnCharacterLevelUp;
     }
 
     public override bool CanBeCast(Vector3 mousePosition)
@@ -46,7 +46,7 @@ public class Heal : SelfTargeted
 
     public override Vector3 GetDestination()
     {
-        return hit.point + character.CharacterMovementManager.CharacterHeightOffset;
+        return hit.point + character.MovementManager.CharacterHeightOffset;
     }
 
     public override void OnCharacterLevelUp(int level)

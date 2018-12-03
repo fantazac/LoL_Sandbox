@@ -1,4 +1,4 @@
-﻿public class CCBasicAttack : EmpoweredCharacterBasicAttack
+﻿public class CCBasicAttack : EmpoweredBasicAttack
 {
     protected CCBasicAttack()
     {

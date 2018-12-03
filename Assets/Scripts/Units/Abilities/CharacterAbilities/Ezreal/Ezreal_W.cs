@@ -51,7 +51,7 @@ public class Ezreal_W : DirectionTargetedProjectile
         AbilityDebuffs[0].OnAbilityBuffRemoved += RemoveDebuffFromAffectedUnit;
 
         abilitiesToTriggerMark = new List<Ability>();
-        foreach (Ability ability in character.CharacterAbilityManager.CharacterAbilities)
+        foreach (Ability ability in character.AbilityManager.CharacterAbilities)
         {
             if (ability != this)
             {
@@ -68,7 +68,7 @@ public class Ezreal_W : DirectionTargetedProjectile
 
         IsBeingCasted = false;
         UseResource();
-        character.CharacterOrientationManager.RotateCharacterInstantly(destinationOnCast);
+        character.OrientationManager.RotateCharacterInstantly(destinationOnCast);
 
         SpawnProjectile(transform.position + (transform.forward * projectilePrefab.transform.localScale.z * 0.65f), transform.rotation);
 

@@ -158,7 +158,7 @@ public abstract class Ability : DamageSource
 
     protected virtual void RotationOnAbilityCast(Vector3 destination)
     {
-        character.CharacterOrientationManager.RotateCharacterTowardsCastPoint(destination);
+        character.OrientationManager.RotateCharacterTowardsCastPoint(destination);
     }
 
     protected virtual void ModifyValues()
@@ -316,11 +316,11 @@ public abstract class Ability : DamageSource
         {
             if (AppliesAbilityEffects)
             {
-                character.CharacterAbilityEffectsManager.ApplyAbilityEffectsToUnitHit(unitHit, damage);
+                character.AbilityEffectsManager.ApplyAbilityEffectsToUnitHit(unitHit, damage);
             }
             if (AppliesOnHitEffects)
             {
-                character.CharacterOnHitEffectsManager.ApplyOnHitEffectsToUnitHit(unitHit, damage);
+                character.OnHitEffectsManager.ApplyOnHitEffectsToUnitHit(unitHit, damage);
             }
         }
         unitHit.EffectSourceManager.UnitHitByAbility(this);

@@ -19,7 +19,7 @@ public abstract class DirectionTargetedProjectile : DirectionTargeted
 
         IsBeingCasted = false;
         UseResource();
-        character.CharacterOrientationManager.RotateCharacterInstantly(destinationOnCast);
+        character.OrientationManager.RotateCharacterInstantly(destinationOnCast);
 
         SpawnProjectile(transform.position + (transform.forward * projectilePrefab.transform.localScale.z * 0.5f), transform.rotation);
 

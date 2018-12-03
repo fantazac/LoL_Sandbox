@@ -44,7 +44,7 @@ public class Ezreal_Q : DirectionTargetedProjectile
 
     protected override void OnProjectileHit(AbilityEffect projectile, Unit unitHit, bool isACriticalStrike, bool willMiss)
     {
-        foreach (Ability ability in character.CharacterAbilityManager.CharacterAbilities)
+        foreach (Ability ability in character.AbilityManager.CharacterAbilities)
         {
             ability.ReduceCooldown(cooldownReductionOnProjectileHit);
         }

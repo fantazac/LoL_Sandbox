@@ -66,9 +66,9 @@ public class Ezreal_E : GroundTargetedBlink
         IsBeingCasted = false;
         UseResource();
         destinationOnCast = FindPointToMoveTo(destinationOnCast, transform.position);
-        character.CharacterOrientationManager.RotateCharacterInstantly(destinationOnCast);
+        character.OrientationManager.RotateCharacterInstantly(destinationOnCast);
         transform.position = destinationOnCast;
-        character.CharacterMovementManager.NotifyCharacterMoved();
+        character.MovementManager.NotifyCharacterMoved();
 
         FinishAbilityCast();
 
@@ -88,7 +88,7 @@ public class Ezreal_E : GroundTargetedBlink
             tempUnit = collider.GetComponentInParent<Unit>();
             if (tempUnit != null && TargetIsValid.CheckIfTargetIsValid(tempUnit, affectedUnitType, character.Team))
             {
-                if (tempUnit.BuffManager.IsAffectedByDebuff(character.CharacterAbilityManager.CharacterAbilities[1].AbilityDebuffs[0]))
+                if (tempUnit.BuffManager.IsAffectedByDebuff(character.AbilityManager.CharacterAbilities[1].AbilityDebuffs[0]))
                 {
                     closestUnit = tempUnit;
                     break;

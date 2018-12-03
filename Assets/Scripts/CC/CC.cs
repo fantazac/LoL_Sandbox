@@ -10,6 +10,6 @@
         BasicAttack = gameObject.AddComponent<CCBasicAttack>();
         StatsManager = gameObject.AddComponent<CCStatsManager>();
 
-        CharacterAbilityManager = gameObject.AddComponent<CCAbilityManager>();
+        AbilityManager = gameObject.AddComponent<CCAbilityManager>();
     }
 }

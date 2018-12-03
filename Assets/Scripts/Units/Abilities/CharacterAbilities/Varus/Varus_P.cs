@@ -31,11 +31,11 @@ public class Varus_P : PassiveTargeted
 
         AbilityBuffs[1].OnAbilityBuffRemoved += RemoveBuffFromAffectedUnit;
 
-        foreach (DamageSource damageSource in character.CharacterAbilityManager.CharacterAbilities)
+        foreach (DamageSource damageSource in character.AbilityManager.CharacterAbilities)
         {
             damageSource.OnKilledUnit += OnUnitKilled;
         }
-        foreach (DamageSource damageSource in character.CharacterAbilityManager.SummonerAbilities)
+        foreach (DamageSource damageSource in character.AbilityManager.SummonerAbilities)
         {
             damageSource.OnKilledUnit += OnUnitKilled;
         }

@@ -47,14 +47,14 @@
 
         AbilityBuffs = new AbilityBuff[] { gameObject.AddComponent<Lucian_P_Buff>() };
 
-        foreach (Ability ability in character.CharacterAbilityManager.CharacterAbilities)
+        foreach (Ability ability in character.AbilityManager.CharacterAbilities)
         {
             ability.OnAbilityFinished += PassiveEffect;
         }
 
         lucianE = GetComponent<Lucian_E>();
 
-        character.CharacterLevelManager.OnLevelUp += OnCharacterLevelUp;
+        character.LevelManager.OnLevelUp += OnCharacterLevelUp;
     }
 
     public override void OnCharacterLevelUp(int level)
