@@ -27,7 +27,7 @@
     //No stacks (EzrealW, LucianP)
     public Buff(AbilityBuff sourceAbilityBuff, Unit affectedUnit, float buffValue, float duration) : this(sourceAbilityBuff, affectedUnit, buffValue, duration, 0, 0) { }
 
-    //With stacks that disappear instantly if the buff expires (Old EzrealP)
+    //With stacks that disappear instantly if the buff expires (EzrealP)
     public Buff(AbilityBuff sourceAbilityBuff, Unit affectedUnit, float buffValue, float duration, int maximumStacks) : this(sourceAbilityBuff, affectedUnit, buffValue, duration, maximumStacks, 0) { }
 
     //With stacks that decay 1 by 1 at a certain delay
