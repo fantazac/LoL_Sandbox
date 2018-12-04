@@ -16,7 +16,7 @@ public abstract class GroundTargetedAoE : GroundTargeted
         {
             base.UseAbility(destination);
         }
-        else if (!champion.StatusManager.CrowdControlEffectsOnCharacter.Contains(CrowdControlEffect.ROOT))
+        else if (!champion.StatusManager.StatusEffectsOnCharacter.Contains(StatusEffect.ROOT))
         {
             champion.ChampionMovementManager.SetMoveTowardsPoint(destination, range);
             champion.ChampionMovementManager.ChampionIsInDestinationRange += base.UseAbility;

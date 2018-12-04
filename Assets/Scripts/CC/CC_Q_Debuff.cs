@@ -16,7 +16,7 @@ public class CC_Q_Debuff : AbilityBuff
         //knockupSpeed = 3;
         //knockupDestination = Vector3.up * knockupSpeed * buffDuration * 0.5f;
 
-        buffCrowdControlEffect = CrowdControlEffect.TAUNT;
+        buffStatusEffect = StatusEffect.TAUNT;
     }
 
     protected override void SetSpritePaths()
@@ -26,14 +26,14 @@ public class CC_Q_Debuff : AbilityBuff
 
     protected override void ApplyBuffEffect(Unit affectedUnit, Buff buff)
     {
-        affectedUnit.StatusManager.AddCrowdControlEffect(buffCrowdControlEffect);
-        affectedUnit.ForcedActionManager.SetupForcedAction(buffCrowdControlEffect, this, character);
+        affectedUnit.StatusManager.AddStatusEffect(buffStatusEffect);
+        affectedUnit.ForcedActionManager.SetupForcedAction(buffStatusEffect, this, character);
         //affectedUnit.DisplacementManager.SetupDisplacement(knockupDestination, knockupSpeed, this, true);
     }
 
     protected override void RemoveBuffEffect(Unit affectedUnit, Buff buff)
     {
-        affectedUnit.StatusManager.RemoveCrowdControlEffect(buffCrowdControlEffect);
+        affectedUnit.StatusManager.RemoveStatusEffect(buffStatusEffect);
         affectedUnit.ForcedActionManager.StopCurrentForcedAction(this);
     }
 

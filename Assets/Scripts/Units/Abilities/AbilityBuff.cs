@@ -17,7 +17,7 @@ public abstract class AbilityBuff : MonoBehaviour
     protected float buffFlatValuePerLevel;
     protected float buffPercentValue;
     protected float buffPercentValuePerLevel;
-    protected CrowdControlEffect buffCrowdControlEffect;
+    protected StatusEffect buffStatusEffect;
 
     protected Sprite buffSprite;
     protected string buffSpritePath;
@@ -141,11 +141,11 @@ public abstract class AbilityBuff : MonoBehaviour
 
     protected float GetBuffDuration(Unit affectedUnit)
     {
-        if (affectedUnit.StatusManager.IsAnAirborneEffect(buffCrowdControlEffect))
+        if (affectedUnit.StatusManager.IsAnAirborneEffect(buffStatusEffect))
         {
             return buffDuration * (1 + affectedUnit.StatsManager.Tenacity.GetPercentMalus());
         }
-        else if (affectedUnit.StatusManager.CanReduceCrowdControlDuration(buffCrowdControlEffect))
+        else if (affectedUnit.StatusManager.CanReduceCrowdControlDuration(buffStatusEffect))
         {
             return buffDuration * (1 - affectedUnit.StatsManager.Tenacity.GetTotal());
         }

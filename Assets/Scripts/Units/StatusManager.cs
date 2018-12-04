@@ -3,7 +3,7 @@ using UnityEngine;
 
 public abstract class StatusManager : MonoBehaviour
 {
-    public List<CrowdControlEffect> CrowdControlEffectsOnCharacter { get; private set; }
+    public List<StatusEffect> StatusEffectsOnCharacter { get; private set; }
 
     protected int blockBasicAttacksCount;
     protected int blockBasicAbilitiesCount;
@@ -12,119 +12,119 @@ public abstract class StatusManager : MonoBehaviour
     protected int blockSummonerAbilitiesCount;
     protected int isBlindedCount;
 
-    public delegate void OnCrowdControlEffectAddedHandler(CrowdControlEffect crowdControlEffect);
-    public event OnCrowdControlEffectAddedHandler OnCrowdControlEffectAdded;
+    public delegate void OnStatusEffectAddedHandler(StatusEffect statusEffect);
+    public event OnStatusEffectAddedHandler OnStatusEffectAdded;
 
-    public delegate void OnCrowdControlEffectRemovedHandler(CrowdControlEffect crowdControlEffect);
-    public event OnCrowdControlEffectRemovedHandler OnCrowdControlEffectRemoved;
+    public delegate void OnStatusEffectRemovedHandler(StatusEffect statusEffect);
+    public event OnStatusEffectRemovedHandler OnStatusEffectRemoved;
 
     protected StatusManager()
     {
-        CrowdControlEffectsOnCharacter = new List<CrowdControlEffect>();
+        StatusEffectsOnCharacter = new List<StatusEffect>();
     }
 
-    public void AddCrowdControlEffect(CrowdControlEffect crowdControlEffect)
+    public void AddStatusEffect(StatusEffect statusEffect)
     {
-        CrowdControlEffectsOnCharacter.Add(crowdControlEffect);
-        ApplyCrowdControlEffectToUnit(crowdControlEffect);
-        if (OnCrowdControlEffectAdded != null)
+        StatusEffectsOnCharacter.Add(statusEffect);
+        ApplyStatusEffectToUnit(statusEffect);
+        if (OnStatusEffectAdded != null)
         {
-            OnCrowdControlEffectAdded(crowdControlEffect);
+            OnStatusEffectAdded(statusEffect);
         }
     }
 
-    public void RemoveCrowdControlEffect(CrowdControlEffect crowdControlEffect)
+    public void RemoveStatusEffect(StatusEffect statusEffect)
     {
-        CrowdControlEffectsOnCharacter.Remove(crowdControlEffect);
-        RemoveCrowdControlEffectFromUnit(crowdControlEffect);
-        if (OnCrowdControlEffectRemoved != null)
+        StatusEffectsOnCharacter.Remove(statusEffect);
+        RemoveStatusEffectFromUnit(statusEffect);
+        if (OnStatusEffectRemoved != null)
         {
-            OnCrowdControlEffectRemoved(crowdControlEffect);
+            OnStatusEffectRemoved(statusEffect);
         }
     }
 
-    private void ApplyCrowdControlEffectToUnit(CrowdControlEffect crowdControlEffect)
+    private void ApplyStatusEffectToUnit(StatusEffect statusEffect)
     {
         int count = 1;
-        switch (crowdControlEffect)
+        switch (statusEffect)
         {
-            case CrowdControlEffect.BLIND:
+            case StatusEffect.BLIND:
                 SetIsBlinded(count);
                 break;
-            case CrowdControlEffect.CHARM:
-            case CrowdControlEffect.FEAR:
-            case CrowdControlEffect.FLEE:
-            case CrowdControlEffect.TAUNT:
+            case StatusEffect.CHARM:
+            case StatusEffect.FEAR:
+            case StatusEffect.FLEE:
+            case StatusEffect.TAUNT:
                 SetCannotUseBasicAbilities(count);
                 SetCannotUseBasicAttacks(count);
                 SetCannotUseMovement(count);
                 OnForcedAction();
                 break;
-            case CrowdControlEffect.CRIPPLE:
-            case CrowdControlEffect.DROWSY:
-            case CrowdControlEffect.SLOW:
+            case StatusEffect.CRIPPLE:
+            case StatusEffect.DROWSY:
+            case StatusEffect.SLOW:
                 break;
-            case CrowdControlEffect.DISARM:
+            case StatusEffect.DISARM:
                 SetCannotUseBasicAttacks(count);
                 OnDisarm();
                 break;
-            case CrowdControlEffect.DISRUPT:
+            case StatusEffect.DISRUPT:
                 OnDisrupt();
                 break;
-            case CrowdControlEffect.ENTANGLE:
+            case StatusEffect.ENTANGLE:
                 SetCannotUseBasicAttacks(count);
                 SetCannotUseMovement(count);
                 SetCannotUseMovementAbilities(count);
                 OnEntangle();
                 break;
-            case CrowdControlEffect.GROUND:
+            case StatusEffect.GROUND:
                 SetCannotUseMovementAbilities(count);
                 break;
-            case CrowdControlEffect.KNOCKASIDE:
-            case CrowdControlEffect.PULL:
-            case CrowdControlEffect.SLEEP:
-            case CrowdControlEffect.STUN:
+            case StatusEffect.KNOCKASIDE:
+            case StatusEffect.PULL:
+            case StatusEffect.SLEEP:
+            case StatusEffect.STUN:
                 SetCannotUseBasicAbilities(count);
                 SetCannotUseBasicAttacks(count);
                 SetCannotUseMovement(count);
                 OnStun();
                 break;
-            case CrowdControlEffect.KNOCKBACK:
-            case CrowdControlEffect.KNOCKUP:
+            case StatusEffect.KNOCKBACK:
+            case StatusEffect.KNOCKUP:
                 SetCannotUseBasicAbilities(count);
                 SetCannotUseBasicAttacks(count);
                 SetCannotUseMovement(count);
                 OnKnockUp();
                 break;
-            case CrowdControlEffect.KNOCKDOWN:
+            case StatusEffect.KNOCKDOWN:
                 OnKnockDown();
                 break;
-            case CrowdControlEffect.NEARSIGHT://TODO
+            case StatusEffect.NEARSIGHT://TODO
                 break;
-            case CrowdControlEffect.PACIFY:
-            case CrowdControlEffect.POLYMORPH:
+            case StatusEffect.PACIFY:
+            case StatusEffect.POLYMORPH:
                 SetCannotUseBasicAbilities(count);
                 SetCannotUseBasicAttacks(count);
                 OnDisarm();
                 break;
-            case CrowdControlEffect.ROOT:
+            case StatusEffect.ROOT:
                 SetCannotUseMovement(count);
                 SetCannotUseMovementAbilities(count);
                 OnRoot();
                 break;
-            case CrowdControlEffect.SILENCE://TODO: You continue to walk towards the target position if you casted a spell, ground or unit, and you do nothing while you're silenced if you stop moving
+            case StatusEffect.SILENCE://TODO: You continue to walk towards the target position if you casted a spell, ground or unit, and you do nothing while you're silenced if you stop moving
                 SetCannotUseBasicAbilities(count);
                 OnSilence();
                 break;
-            case CrowdControlEffect.STASIS:
-            case CrowdControlEffect.SUPPRESSION:
+            case StatusEffect.STASIS:
+            case StatusEffect.SUPPRESSION:
                 SetCannotUseBasicAbilities(count);
                 SetCannotUseBasicAttacks(count);
                 SetCannotUseMovement(count);
                 SetCannotUseSummonerAbilities(count);
                 OnStun();
                 break;
-            case CrowdControlEffect.SUSPENSION:
+            case StatusEffect.SUSPENSION:
                 SetCannotUseBasicAbilities(count);
                 SetCannotUseBasicAttacks(count);
                 SetCannotUseMovement(count);
@@ -133,65 +133,65 @@ public abstract class StatusManager : MonoBehaviour
         }
     }
 
-    private void RemoveCrowdControlEffectFromUnit(CrowdControlEffect crowdControlEffect)
+    private void RemoveStatusEffectFromUnit(StatusEffect statusEffect)
     {
         int count = -1;
-        switch (crowdControlEffect)
+        switch (statusEffect)
         {
-            case CrowdControlEffect.CHARM:
-            case CrowdControlEffect.FEAR:
-            case CrowdControlEffect.FLEE:
-            case CrowdControlEffect.KNOCKASIDE:
-            case CrowdControlEffect.KNOCKBACK:
-            case CrowdControlEffect.KNOCKUP:
-            case CrowdControlEffect.PULL:
-            case CrowdControlEffect.SLEEP:
-            case CrowdControlEffect.STUN:
-            case CrowdControlEffect.SUSPENSION:
-            case CrowdControlEffect.TAUNT:
+            case StatusEffect.CHARM:
+            case StatusEffect.FEAR:
+            case StatusEffect.FLEE:
+            case StatusEffect.KNOCKASIDE:
+            case StatusEffect.KNOCKBACK:
+            case StatusEffect.KNOCKUP:
+            case StatusEffect.PULL:
+            case StatusEffect.SLEEP:
+            case StatusEffect.STUN:
+            case StatusEffect.SUSPENSION:
+            case StatusEffect.TAUNT:
                 SetCannotUseBasicAbilities(count);
                 SetCannotUseBasicAttacks(count);
                 SetCannotUseMovement(count);
                 break;
-            case CrowdControlEffect.STASIS:
-            case CrowdControlEffect.SUPPRESSION:
+            case StatusEffect.STASIS:
+            case StatusEffect.SUPPRESSION:
                 SetCannotUseBasicAbilities(count);
                 SetCannotUseBasicAttacks(count);
                 SetCannotUseMovement(count);
                 SetCannotUseSummonerAbilities(count);
                 break;
-            case CrowdControlEffect.PACIFY:
-            case CrowdControlEffect.POLYMORPH:
+            case StatusEffect.PACIFY:
+            case StatusEffect.POLYMORPH:
                 SetCannotUseBasicAbilities(count);
                 SetCannotUseBasicAttacks(count);
                 break;
-            case CrowdControlEffect.CRIPPLE:
-            case CrowdControlEffect.DISRUPT:
-            case CrowdControlEffect.DROWSY:
-            case CrowdControlEffect.KNOCKDOWN:
-            case CrowdControlEffect.SLOW:
+            case StatusEffect.CRIPPLE:
+            case StatusEffect.DISRUPT:
+            case StatusEffect.DROWSY:
+            case StatusEffect.KNOCKDOWN:
+            case StatusEffect.SLOW:
                 break;
-            case CrowdControlEffect.BLIND:
+            case StatusEffect.BLIND:
                 SetIsBlinded(count);
                 break;
-            case CrowdControlEffect.DISARM:
+            case StatusEffect.DISARM:
                 SetCannotUseBasicAttacks(count);
                 break;
-            case CrowdControlEffect.ENTANGLE:
+            case StatusEffect.ENTANGLE:
                 SetCannotUseBasicAttacks(count);
                 SetCannotUseMovement(count);
                 SetCannotUseMovementAbilities(count);
                 break;
-            case CrowdControlEffect.GROUND:
+            case StatusEffect.GROUND:
                 SetCannotUseMovementAbilities(count);
                 break;
-            case CrowdControlEffect.NEARSIGHT://TODO
+            case StatusEffect.NEARSIGHT://TODO
                 break;
-            case CrowdControlEffect.ROOT:
+            case StatusEffect.ROOT:
                 SetCannotUseMovement(count);
                 SetCannotUseMovementAbilities(count);
                 break;
-            case CrowdControlEffect.SILENCE:
+            case StatusEffect.SILENCE:
                 SetCannotUseBasicAbilities(count);
                 break;
         }
@@ -268,20 +268,20 @@ public abstract class StatusManager : MonoBehaviour
         return isBlindedCount > 0;
     }
 
-    public bool CanReduceCrowdControlDuration(CrowdControlEffect buffCrowdControlEffect)
+    public bool CanReduceCrowdControlDuration(StatusEffect buffStatusEffect)
     {
-        return buffCrowdControlEffect != CrowdControlEffect.NONE &&
-            buffCrowdControlEffect != CrowdControlEffect.SUPPRESSION &&
-            buffCrowdControlEffect != CrowdControlEffect.STASIS &&
-            !IsAnAirborneEffect(buffCrowdControlEffect);
+        return buffStatusEffect != StatusEffect.NONE &&
+            buffStatusEffect != StatusEffect.SUPPRESSION &&
+            buffStatusEffect != StatusEffect.STASIS &&
+            !IsAnAirborneEffect(buffStatusEffect);
     }
 
-    public bool IsAnAirborneEffect(CrowdControlEffect buffCrowdControlEffect)
+    public bool IsAnAirborneEffect(StatusEffect buffStatusEffect)
     {
-        return buffCrowdControlEffect == CrowdControlEffect.KNOCKASIDE ||
-            buffCrowdControlEffect == CrowdControlEffect.KNOCKBACK ||
-            buffCrowdControlEffect == CrowdControlEffect.KNOCKUP ||
-            buffCrowdControlEffect == CrowdControlEffect.PULL ||
-            buffCrowdControlEffect == CrowdControlEffect.SUSPENSION;
+        return buffStatusEffect == StatusEffect.KNOCKASIDE ||
+            buffStatusEffect == StatusEffect.KNOCKBACK ||
+            buffStatusEffect == StatusEffect.KNOCKUP ||
+            buffStatusEffect == StatusEffect.PULL ||
+            buffStatusEffect == StatusEffect.SUSPENSION;
     }
 }

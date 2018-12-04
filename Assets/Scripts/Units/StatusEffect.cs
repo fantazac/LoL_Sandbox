@@ -1,4 +1,4 @@
-﻿public enum CrowdControlEffect//TODO: StatusEffect
+﻿public enum StatusEffect
 {
     NONE,
     BLIND,          // Blinded

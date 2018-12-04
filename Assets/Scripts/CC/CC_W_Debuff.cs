@@ -16,7 +16,7 @@ public class CC_W_Debuff : AbilityBuff
         //knockupSpeed = 3;
         //knockupDestination = Vector3.up * knockupSpeed * buffDuration * 0.5f;
 
-        buffCrowdControlEffect = CrowdControlEffect.CHARM;
+        buffStatusEffect = StatusEffect.FLEE;
     }
 
     protected override void SetSpritePaths()
@@ -26,8 +26,8 @@ public class CC_W_Debuff : AbilityBuff
 
     protected override void ApplyBuffEffect(Unit affectedUnit, Buff buff)
     {
-        affectedUnit.StatusManager.AddCrowdControlEffect(buffCrowdControlEffect);
-        //affectedUnit.ForcedActionManager.SetupForcedAction(buffCrowdControlEffect, this, character);
+        affectedUnit.StatusManager.AddStatusEffect(buffStatusEffect);
+        //affectedUnit.ForcedActionManager.SetupForcedAction(buffStatusEffect, this, character);
         //affectedUnit.DisplacementManager.SetupDisplacement(knockupDestination, knockupSpeed, this, true);
         //affectedUnit.ShieldManager.AddNewShield(ShieldType.NORMAL, this, 200);
         //affectedUnit.ShieldManager.AddNewShield(ShieldType.MAGIC, this, 700);
@@ -36,7 +36,7 @@ public class CC_W_Debuff : AbilityBuff
 
     protected override void RemoveBuffEffect(Unit affectedUnit, Buff buff)
     {
-        affectedUnit.StatusManager.RemoveCrowdControlEffect(buffCrowdControlEffect);
+        affectedUnit.StatusManager.RemoveStatusEffect(buffStatusEffect);
         //affectedUnit.ForcedActionManager.StopCurrentForcedAction(this);
         //affectedUnit.ShieldManager.RemoveShield(ShieldType.NORMAL, this);
         //affectedUnit.ShieldManager.RemoveShield(ShieldType.MAGIC, this);

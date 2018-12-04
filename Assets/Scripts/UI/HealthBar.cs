@@ -61,7 +61,7 @@ public class HealthBar : MonoBehaviour
     private string magicShieldPath;
 
     private Dictionary<string, Sprite> statusSprites;
-    private List<CrowdControlEffect> currentStatuses;
+    private List<StatusEffect> currentStatuses;
 
     private HealthBar()
     {
@@ -106,7 +106,7 @@ public class HealthBar : MonoBehaviour
         statusSprites.Add("Resurrection", Resources.Load<Sprite>("Sprites/UI/Status/Resurrection"));
         statusSprites.Add("Unstoppable", Resources.Load<Sprite>("Sprites/UI/Status/Unstoppable"));
 
-        currentStatuses = new List<CrowdControlEffect>();
+        currentStatuses = new List<StatusEffect>();
     }
 
     public void SetupHealthBar(Character character)
@@ -184,8 +184,8 @@ public class HealthBar : MonoBehaviour
 
         SetHealthBarSeparators();
 
-        character.StatusManager.OnCrowdControlEffectAdded += AddStatus;
-        character.StatusManager.OnCrowdControlEffectRemoved += RemoveStatus;
+        character.StatusManager.OnStatusEffectAdded += AddStatus;
+        character.StatusManager.OnStatusEffectRemoved += RemoveStatus;
     }
 
     private void SetHealthBarSeparators()
@@ -435,15 +435,15 @@ public class HealthBar : MonoBehaviour
         return shields[0] + shields[1] + shields[2];
     }
 
-    private void AddStatus(CrowdControlEffect crowdControlEffect)
+    private void AddStatus(StatusEffect statusEffect)
     {
-        currentStatuses.Add(crowdControlEffect);
+        currentStatuses.Add(statusEffect);
         UpdateStatus();
     }
 
-    private void RemoveStatus(CrowdControlEffect crowdControlEffect)
+    private void RemoveStatus(StatusEffect statusEffect)
     {
-        currentStatuses.Remove(crowdControlEffect);
+        currentStatuses.Remove(statusEffect);
         UpdateStatus();
     }
 
@@ -452,99 +452,99 @@ public class HealthBar : MonoBehaviour
         if (currentStatuses.Count > 0)
         {
             statusImage.enabled = true;
-            if (currentStatuses.Contains(CrowdControlEffect.RESURRECTION))
+            if (currentStatuses.Contains(StatusEffect.RESURRECTION))
             {
                 statusText.text = "RESURRECTING";
                 statusImage.sprite = statusSprites["Resurrection"];
             }
-            else if (currentStatuses.Contains(CrowdControlEffect.UNSTOPPABLE))
+            else if (currentStatuses.Contains(StatusEffect.UNSTOPPABLE))
             {
                 statusText.text = "UNSTOPPABLE";
                 statusImage.sprite = statusSprites["Unstoppable"];
             }
-            else if (currentStatuses.Contains(CrowdControlEffect.KNOCKASIDE) ||
-            currentStatuses.Contains(CrowdControlEffect.KNOCKBACK) ||
-            currentStatuses.Contains(CrowdControlEffect.KNOCKUP) ||
-            currentStatuses.Contains(CrowdControlEffect.PULL) ||
-            currentStatuses.Contains(CrowdControlEffect.SUSPENSION))
+            else if (currentStatuses.Contains(StatusEffect.KNOCKASIDE) ||
+            currentStatuses.Contains(StatusEffect.KNOCKBACK) ||
+            currentStatuses.Contains(StatusEffect.KNOCKUP) ||
+            currentStatuses.Contains(StatusEffect.PULL) ||
+            currentStatuses.Contains(StatusEffect.SUSPENSION))
             {
                 statusText.text = "AIRBORNE";
                 statusImage.sprite = statusSprites["Airborne"];
             }
-            else if (currentStatuses.Contains(CrowdControlEffect.SUPPRESSION))
+            else if (currentStatuses.Contains(StatusEffect.SUPPRESSION))
             {
                 statusText.text = "SUPPRESSED";
                 statusImage.sprite = statusSprites["Suppression"];
             }
-            else if (currentStatuses.Contains(CrowdControlEffect.FLEE))
+            else if (currentStatuses.Contains(StatusEffect.FLEE))
             {
                 statusText.text = "FLEEING";
                 statusImage.sprite = statusSprites["Fear"];
             }
-            else if (currentStatuses.Contains(CrowdControlEffect.FEAR))
+            else if (currentStatuses.Contains(StatusEffect.FEAR))
             {
                 statusText.text = "FEARED";
                 statusImage.sprite = statusSprites["Fear"];
             }
-            else if (currentStatuses.Contains(CrowdControlEffect.CHARM))
+            else if (currentStatuses.Contains(StatusEffect.CHARM))
             {
                 statusText.text = "CHARMED";
                 statusImage.sprite = statusSprites["Charm"];
             }
-            else if (currentStatuses.Contains(CrowdControlEffect.TAUNT))
+            else if (currentStatuses.Contains(StatusEffect.TAUNT))
             {
                 statusText.text = "TAUNTED";
                 statusImage.sprite = statusSprites["Taunt"];
             }
-            else if (currentStatuses.Contains(CrowdControlEffect.SLEEP))
+            else if (currentStatuses.Contains(StatusEffect.SLEEP))
             {
                 statusText.text = "ASLEEP";
                 statusImage.sprite = statusSprites["Sleep"];
             }
-            else if (currentStatuses.Contains(CrowdControlEffect.STUN))
+            else if (currentStatuses.Contains(StatusEffect.STUN))
             {
                 statusText.text = "STUNNED";
                 statusImage.sprite = statusSprites["Stun"];
             }
-            else if (currentStatuses.Contains(CrowdControlEffect.ROOT) ||
-                currentStatuses.Contains(CrowdControlEffect.ENTANGLE))
+            else if (currentStatuses.Contains(StatusEffect.ROOT) ||
+                currentStatuses.Contains(StatusEffect.ENTANGLE))
             {
                 statusText.text = "ROOTED";
                 statusImage.sprite = statusSprites["Root"];
             }
-            else if (currentStatuses.Contains(CrowdControlEffect.GROUND))
+            else if (currentStatuses.Contains(StatusEffect.GROUND))
             {
                 statusText.text = "GROUNDED";
                 statusImage.sprite = statusSprites["Root"];
             }
-            else if (currentStatuses.Contains(CrowdControlEffect.SILENCE) ||
-                currentStatuses.Contains(CrowdControlEffect.DISRUPT) ||
-                currentStatuses.Contains(CrowdControlEffect.PACIFY))
+            else if (currentStatuses.Contains(StatusEffect.SILENCE) ||
+                currentStatuses.Contains(StatusEffect.DISRUPT) ||
+                currentStatuses.Contains(StatusEffect.PACIFY))
             {
                 statusText.text = "SILENCED";
                 statusImage.sprite = statusSprites["Silence"];
             }
-            else if (currentStatuses.Contains(CrowdControlEffect.POLYMORPH))
+            else if (currentStatuses.Contains(StatusEffect.POLYMORPH))
             {
                 statusText.text = "POLYMORPHED";
                 statusImage.sprite = statusSprites["Silence"];
             }
-            else if (currentStatuses.Contains(CrowdControlEffect.BLIND))
+            else if (currentStatuses.Contains(StatusEffect.BLIND))
             {
                 statusText.text = "BLINDED";
                 statusImage.sprite = statusSprites["Blind"];
             }
-            else if (currentStatuses.Contains(CrowdControlEffect.NEARSIGHT))
+            else if (currentStatuses.Contains(StatusEffect.NEARSIGHT))
             {
                 statusText.text = "NEARSIGHTED";
                 statusImage.sprite = statusSprites["Blind"];
             }
-            else if (currentStatuses.Contains(CrowdControlEffect.DISARM))
+            else if (currentStatuses.Contains(StatusEffect.DISARM))
             {
                 statusText.text = "DISARMED";
                 statusImage.sprite = statusSprites["Disarm"];
             }
-            else if (currentStatuses.Contains(CrowdControlEffect.DROWSY))
+            else if (currentStatuses.Contains(StatusEffect.DROWSY))
             {
                 statusText.text = "DROWSY";
                 statusImage.sprite = statusSprites["Drowsy"];

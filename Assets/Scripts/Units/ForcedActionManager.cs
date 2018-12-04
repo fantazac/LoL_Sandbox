@@ -10,10 +10,10 @@ public class ForcedActionManager : MonoBehaviour
 
     private IEnumerator currentForcedActionCoroutine;
     private AbilityBuff sourceAbilityBuffForForcedAction;
-    private CrowdControlEffect currentCrowdControlEffect;
+    private StatusEffect currentStatusEffect;
     private Unit caster;
 
-    public bool IsBeingForced { get { return currentCrowdControlEffect != CrowdControlEffect.NONE; } }
+    public bool IsBeingForced { get { return currentStatusEffect != StatusEffect.NONE; } }
 
     private void Start()
     {
@@ -29,32 +29,32 @@ public class ForcedActionManager : MonoBehaviour
         }
     }
 
-    public void SetupForcedAction(CrowdControlEffect crowdControlEffect, AbilityBuff sourceAbilityBuff, Unit caster)
+    public void SetupForcedAction(StatusEffect statusEffect, AbilityBuff sourceAbilityBuff, Unit caster)
     {
-        switch (crowdControlEffect)
+        switch (statusEffect)
         {
-            case CrowdControlEffect.CHARM:
-                StartForcedAction(crowdControlEffect, sourceAbilityBuff, caster, Charm());
+            case StatusEffect.CHARM:
+                StartForcedAction(statusEffect, sourceAbilityBuff, caster, Charm());
                 break;
-            case CrowdControlEffect.FEAR:
-                StartForcedAction(crowdControlEffect, sourceAbilityBuff, caster, Fear());
+            case StatusEffect.FEAR:
+                StartForcedAction(statusEffect, sourceAbilityBuff, caster, Fear());
                 break;
-            case CrowdControlEffect.FLEE:
-                StartForcedAction(crowdControlEffect, sourceAbilityBuff, caster, Flee());
+            case StatusEffect.FLEE:
+                StartForcedAction(statusEffect, sourceAbilityBuff, caster, Flee());
                 break;
-            case CrowdControlEffect.TAUNT:
-                StartForcedAction(crowdControlEffect, sourceAbilityBuff, caster, Taunt());
+            case StatusEffect.TAUNT:
+                StartForcedAction(statusEffect, sourceAbilityBuff, caster, Taunt());
                 break;
         }
     }
 
-    private void StartForcedAction(CrowdControlEffect crowdControlEffect, AbilityBuff sourceAbilityBuff, Unit caster, IEnumerator coroutine)
+    private void StartForcedAction(StatusEffect statusEffect, AbilityBuff sourceAbilityBuff, Unit caster, IEnumerator coroutine)
     {
         StopCurrentForcedAction(sourceAbilityBuffForForcedAction);
 
         this.caster = caster;
         sourceAbilityBuffForForcedAction = sourceAbilityBuff;
-        currentCrowdControlEffect = crowdControlEffect;
+        currentStatusEffect = statusEffect;
         currentForcedActionCoroutine = coroutine;
         StartCoroutine(currentForcedActionCoroutine);
     }
@@ -68,18 +68,18 @@ public class ForcedActionManager : MonoBehaviour
                 StopCoroutine(currentForcedActionCoroutine);
                 currentForcedActionCoroutine = null;
             }
-            CrowdControlEffect tempCrowdControlEffect = currentCrowdControlEffect;
-            currentCrowdControlEffect = CrowdControlEffect.NONE;
-            if (tempCrowdControlEffect == CrowdControlEffect.CHARM)
+            StatusEffect tempStatusEffect = currentStatusEffect;
+            currentStatusEffect = StatusEffect.NONE;
+            if (tempStatusEffect == StatusEffect.CHARM)
             {
                 currentForcedActionCoroutine = FinishCharm();
                 StartCoroutine(currentForcedActionCoroutine);
             }
-            else if (tempCrowdControlEffect == CrowdControlEffect.FLEE || tempCrowdControlEffect == CrowdControlEffect.FEAR)
+            else if (tempStatusEffect == StatusEffect.FLEE || tempStatusEffect == StatusEffect.FEAR)
             {
                 FinishFearAndFlee();
             }
-            else if (tempCrowdControlEffect == CrowdControlEffect.TAUNT)
+            else if (tempStatusEffect == StatusEffect.TAUNT)
             {
                 FinishTaunt();
             }

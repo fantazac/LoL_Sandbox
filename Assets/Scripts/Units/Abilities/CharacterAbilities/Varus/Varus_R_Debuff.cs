@@ -8,7 +8,7 @@
 
         buffDuration = 2;
 
-        buffCrowdControlEffect = CrowdControlEffect.ROOT;
+        buffStatusEffect = StatusEffect.ROOT;
     }
 
     protected override void SetSpritePaths()
@@ -18,12 +18,12 @@
 
     protected override void ApplyBuffEffect(Unit affectedUnit, Buff buff)
     {
-        affectedUnit.StatusManager.AddCrowdControlEffect(buffCrowdControlEffect);
+        affectedUnit.StatusManager.AddStatusEffect(buffStatusEffect);
     }
 
     protected override void RemoveBuffEffect(Unit affectedUnit, Buff buff)
     {
-        affectedUnit.StatusManager.RemoveCrowdControlEffect(buffCrowdControlEffect);
+        affectedUnit.StatusManager.RemoveStatusEffect(buffStatusEffect);
     }
 
     protected override Buff CreateNewBuff(Unit affectedUnit)

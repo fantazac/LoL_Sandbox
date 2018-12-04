@@ -8,7 +8,7 @@
 
         buffPercentValue = 25; // 25/30/35/40/45
         buffPercentValuePerLevel = 5;
-        buffCrowdControlEffect = CrowdControlEffect.SLOW;
+        buffStatusEffect = StatusEffect.SLOW;
     }
 
     protected override void SetSpritePaths()
@@ -18,14 +18,14 @@
 
     protected override void ApplyBuffEffect(Unit affectedUnit, Buff buff)
     {
-        affectedUnit.StatusManager.AddCrowdControlEffect(buffCrowdControlEffect);
+        affectedUnit.StatusManager.AddStatusEffect(buffStatusEffect);
         affectedUnit.StatsManager.MovementSpeed.AddPercentMalus(buff.BuffValue);
         affectedUnit.StatsManager.GrievousWounds.AddGrievousWoundsSource();
     }
 
     protected override void RemoveBuffEffect(Unit affectedUnit, Buff buff)
     {
-        affectedUnit.StatusManager.RemoveCrowdControlEffect(buffCrowdControlEffect);
+        affectedUnit.StatusManager.RemoveStatusEffect(buffStatusEffect);
         affectedUnit.StatsManager.MovementSpeed.RemovePercentMalus(buff.BuffValue);
         affectedUnit.StatsManager.GrievousWounds.RemoveGrievousWoundsSource();
     }
