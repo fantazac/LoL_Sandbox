@@ -12,6 +12,12 @@ public abstract class StatusManager : MonoBehaviour
     protected int blockSummonerAbilitiesCount;
     protected int isBlindedCount;
 
+    public delegate void OnCrowdControlEffectAddedHandler(CrowdControlEffect crowdControlEffect);
+    public event OnCrowdControlEffectAddedHandler OnCrowdControlEffectAdded;
+
+    public delegate void OnCrowdControlEffectRemovedHandler(CrowdControlEffect crowdControlEffect);
+    public event OnCrowdControlEffectRemovedHandler OnCrowdControlEffectRemoved;
+
     protected StatusManager()
     {
         CrowdControlEffectsOnCharacter = new List<CrowdControlEffect>();
@@ -21,12 +27,20 @@ public abstract class StatusManager : MonoBehaviour
     {
         CrowdControlEffectsOnCharacter.Add(crowdControlEffect);
         ApplyCrowdControlEffectToUnit(crowdControlEffect);
+        if (OnCrowdControlEffectAdded != null)
+        {
+            OnCrowdControlEffectAdded(crowdControlEffect);
+        }
     }
 
     public void RemoveCrowdControlEffect(CrowdControlEffect crowdControlEffect)
     {
         CrowdControlEffectsOnCharacter.Remove(crowdControlEffect);
         RemoveCrowdControlEffectFromUnit(crowdControlEffect);
+        if (OnCrowdControlEffectRemoved != null)
+        {
+            OnCrowdControlEffectRemoved(crowdControlEffect);
+        }
     }
 
     private void ApplyCrowdControlEffectToUnit(CrowdControlEffect crowdControlEffect)
@@ -103,7 +117,7 @@ public abstract class StatusManager : MonoBehaviour
                 OnSilence();
                 break;
             case CrowdControlEffect.STASIS:
-            case CrowdControlEffect.SUPPRESION:
+            case CrowdControlEffect.SUPPRESSION:
                 SetCannotUseBasicAbilities(count);
                 SetCannotUseBasicAttacks(count);
                 SetCannotUseMovement(count);
@@ -140,7 +154,7 @@ public abstract class StatusManager : MonoBehaviour
                 SetCannotUseMovement(count);
                 break;
             case CrowdControlEffect.STASIS:
-            case CrowdControlEffect.SUPPRESION:
+            case CrowdControlEffect.SUPPRESSION:
                 SetCannotUseBasicAbilities(count);
                 SetCannotUseBasicAttacks(count);
                 SetCannotUseMovement(count);
@@ -257,7 +271,7 @@ public abstract class StatusManager : MonoBehaviour
     public bool CanReduceCrowdControlDuration(CrowdControlEffect buffCrowdControlEffect)
     {
         return buffCrowdControlEffect != CrowdControlEffect.NONE &&
-            buffCrowdControlEffect != CrowdControlEffect.SUPPRESION &&
+            buffCrowdControlEffect != CrowdControlEffect.SUPPRESSION &&
             buffCrowdControlEffect != CrowdControlEffect.STASIS &&
             !IsAnAirborneEffect(buffCrowdControlEffect);
     }

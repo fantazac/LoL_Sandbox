@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.UI;
 
 public class HealthBar : MonoBehaviour
@@ -59,6 +60,9 @@ public class HealthBar : MonoBehaviour
     private string physicalShieldPath;
     private string magicShieldPath;
 
+    private Dictionary<string, Sprite> statusSprites;
+    private List<CrowdControlEffect> currentStatuses;
+
     private HealthBar()
     {
         healthWidth = 105;
@@ -84,6 +88,22 @@ public class HealthBar : MonoBehaviour
         characterCamera = StaticObjects.ChampionCamera;
         healthBarOffset = Vector2.right * Screen.width * -0.5f + Vector2.up * Screen.height * -0.5f;
         characterYOffset = Vector2.up * 120;
+
+        statusSprites = new Dictionary<string, Sprite>();
+        statusSprites.Add("Airborne", Resources.Load<Sprite>("Sprites/UI/Status/Airborne"));
+        statusSprites.Add("Blind", Resources.Load<Sprite>("Sprites/UI/Status/Blind"));
+        statusSprites.Add("Charm", Resources.Load<Sprite>("Sprites/UI/Status/Charm"));
+        statusSprites.Add("Disarm", Resources.Load<Sprite>("Sprites/UI/Status/Disarm"));
+        statusSprites.Add("Drowsy", Resources.Load<Sprite>("Sprites/UI/Status/Drowsy"));
+        statusSprites.Add("Fear", Resources.Load<Sprite>("Sprites/UI/Status/Fear"));
+        statusSprites.Add("Root", Resources.Load<Sprite>("Sprites/UI/Status/Root"));
+        statusSprites.Add("Silence", Resources.Load<Sprite>("Sprites/UI/Status/Silence"));
+        statusSprites.Add("Sleep", Resources.Load<Sprite>("Sprites/UI/Status/Sleep"));
+        statusSprites.Add("Stun", Resources.Load<Sprite>("Sprites/UI/Status/Stun"));
+        statusSprites.Add("Suppression", Resources.Load<Sprite>("Sprites/UI/Status/Suppression"));
+        statusSprites.Add("Taunt", Resources.Load<Sprite>("Sprites/UI/Status/Taunt"));
+
+        currentStatuses = new List<CrowdControlEffect>();
     }
 
     public void SetupHealthBar(Character character)
@@ -160,6 +180,9 @@ public class HealthBar : MonoBehaviour
         magicShieldImageTransform = magicShieldImage.GetComponent<RectTransform>();
 
         SetHealthBarSeparators();
+
+        character.StatusManager.OnCrowdControlEffectAdded += AddStatus;
+        character.StatusManager.OnCrowdControlEffectRemoved += RemoveStatus;
     }
 
     private void SetHealthBarSeparators()
@@ -407,5 +430,122 @@ public class HealthBar : MonoBehaviour
     private float GetTotalShieldValue()
     {
         return shields[0] + shields[1] + shields[2];
+    }
+
+    private void AddStatus(CrowdControlEffect crowdControlEffect)
+    {
+        currentStatuses.Add(crowdControlEffect);
+        UpdateStatus();
+    }
+
+    private void RemoveStatus(CrowdControlEffect crowdControlEffect)
+    {
+        currentStatuses.Remove(crowdControlEffect);
+        UpdateStatus();
+    }
+
+    private void UpdateStatus()
+    {
+        if (currentStatuses.Count > 0)
+        {
+            statusImage.enabled = true;
+            if (currentStatuses.Contains(CrowdControlEffect.KNOCKASIDE) ||
+            currentStatuses.Contains(CrowdControlEffect.KNOCKBACK) ||
+            currentStatuses.Contains(CrowdControlEffect.KNOCKUP) ||
+            currentStatuses.Contains(CrowdControlEffect.PULL) ||
+            currentStatuses.Contains(CrowdControlEffect.SUSPENSION))
+            {
+                statusText.text = "AIRBORNE";
+                statusImage.sprite = statusSprites["Airborne"];
+            }
+            else if (currentStatuses.Contains(CrowdControlEffect.SUPPRESSION))
+            {
+                statusText.text = "SUPPRESSED";
+                statusImage.sprite = statusSprites["Airborne"];
+            }
+            else if (currentStatuses.Contains(CrowdControlEffect.FLEE))
+            {
+                statusText.text = "FLEEING";
+                statusImage.sprite = statusSprites["Fear"];
+            }
+            else if (currentStatuses.Contains(CrowdControlEffect.FEAR))
+            {
+                statusText.text = "FEARED";
+                statusImage.sprite = statusSprites["Fear"];
+            }
+            else if (currentStatuses.Contains(CrowdControlEffect.CHARM))
+            {
+                statusText.text = "CHARMED";
+                statusImage.sprite = statusSprites["Charm"];
+            }
+            else if (currentStatuses.Contains(CrowdControlEffect.TAUNT))
+            {
+                statusText.text = "TAUNTED";
+                statusImage.sprite = statusSprites["Taunt"];
+            }
+            else if (currentStatuses.Contains(CrowdControlEffect.SLEEP))
+            {
+                statusText.text = "ASLEEP";
+                statusImage.sprite = statusSprites["Sleep"];
+            }
+            else if (currentStatuses.Contains(CrowdControlEffect.STUN))
+            {
+                statusText.text = "STUNNED";
+                statusImage.sprite = statusSprites["Stun"];
+            }
+            else if (currentStatuses.Contains(CrowdControlEffect.ROOT) ||
+                currentStatuses.Contains(CrowdControlEffect.ENTANGLE))
+            {
+                statusText.text = "ROOTED";
+                statusImage.sprite = statusSprites["Root"];
+            }
+            else if (currentStatuses.Contains(CrowdControlEffect.GROUND))
+            {
+                statusText.text = "GROUNDED";
+                statusImage.sprite = statusSprites["Root"];
+            }
+            else if (currentStatuses.Contains(CrowdControlEffect.SILENCE) ||
+                currentStatuses.Contains(CrowdControlEffect.DISRUPT) ||
+                currentStatuses.Contains(CrowdControlEffect.PACIFY))
+            {
+                statusText.text = "SILENCED";
+                statusImage.sprite = statusSprites["Silence"];
+            }
+            else if (currentStatuses.Contains(CrowdControlEffect.POLYMORPH))
+            {
+                statusText.text = "POLYMORPHED";
+                statusImage.sprite = statusSprites["Silence"];
+            }
+            else if (currentStatuses.Contains(CrowdControlEffect.BLIND))
+            {
+                statusText.text = "BLINDED";
+                statusImage.sprite = statusSprites["Blind"];
+            }
+            else if (currentStatuses.Contains(CrowdControlEffect.NEARSIGHT))
+            {
+                statusText.text = "NEARSIGHTED";
+                statusImage.sprite = statusSprites["Blind"];
+            }
+            else if (currentStatuses.Contains(CrowdControlEffect.DISARM))
+            {
+                statusText.text = "DISARMED";
+                statusImage.sprite = statusSprites["Disarm"];
+            }
+            else if (currentStatuses.Contains(CrowdControlEffect.DROWSY))
+            {
+                statusText.text = "DROWSY";
+                statusImage.sprite = statusSprites["Drowsy"];
+            }
+            else
+            {
+                statusText.text = "";
+                statusImage.enabled = false;
+            }
+        }
+        else if (statusImage.enabled)
+        {
+            statusText.text = "";
+            statusImage.enabled = false;
+        }
     }
 }

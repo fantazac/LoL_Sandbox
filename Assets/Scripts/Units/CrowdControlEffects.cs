@@ -25,7 +25,7 @@
     SLEEP,          // Asleep
     STASIS,         // -
     STUN,           // Stunned
-    SUPPRESION,     // Suppressed
+    SUPPRESSION,     // Suppressed
     SUSPENSION,     // Stunned
     TAUNT,          // Taunted
 }
