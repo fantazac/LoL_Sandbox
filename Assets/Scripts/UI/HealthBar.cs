@@ -103,6 +103,9 @@ public class HealthBar : MonoBehaviour
         statusSprites.Add("Suppression", Resources.Load<Sprite>("Sprites/UI/Status/Suppression"));
         statusSprites.Add("Taunt", Resources.Load<Sprite>("Sprites/UI/Status/Taunt"));
 
+        statusSprites.Add("Resurrection", Resources.Load<Sprite>("Sprites/UI/Status/Resurrection"));
+        statusSprites.Add("Unstoppable", Resources.Load<Sprite>("Sprites/UI/Status/Unstoppable"));
+
         currentStatuses = new List<CrowdControlEffect>();
     }
 
@@ -449,7 +452,17 @@ public class HealthBar : MonoBehaviour
         if (currentStatuses.Count > 0)
         {
             statusImage.enabled = true;
-            if (currentStatuses.Contains(CrowdControlEffect.KNOCKASIDE) ||
+            if (currentStatuses.Contains(CrowdControlEffect.RESURRECTION))
+            {
+                statusText.text = "RESURRECTING";
+                statusImage.sprite = statusSprites["Resurrection"];
+            }
+            else if (currentStatuses.Contains(CrowdControlEffect.UNSTOPPABLE))
+            {
+                statusText.text = "UNSTOPPABLE";
+                statusImage.sprite = statusSprites["Unstoppable"];
+            }
+            else if (currentStatuses.Contains(CrowdControlEffect.KNOCKASIDE) ||
             currentStatuses.Contains(CrowdControlEffect.KNOCKBACK) ||
             currentStatuses.Contains(CrowdControlEffect.KNOCKUP) ||
             currentStatuses.Contains(CrowdControlEffect.PULL) ||
@@ -461,7 +474,7 @@ public class HealthBar : MonoBehaviour
             else if (currentStatuses.Contains(CrowdControlEffect.SUPPRESSION))
             {
                 statusText.text = "SUPPRESSED";
-                statusImage.sprite = statusSprites["Airborne"];
+                statusImage.sprite = statusSprites["Suppression"];
             }
             else if (currentStatuses.Contains(CrowdControlEffect.FLEE))
             {

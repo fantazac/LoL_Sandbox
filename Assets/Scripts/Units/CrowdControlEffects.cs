@@ -1,4 +1,4 @@
-﻿public enum CrowdControlEffect
+﻿public enum CrowdControlEffect//TODO: StatusEffect
 {
     NONE,
     BLIND,          // Blinded
@@ -19,15 +19,17 @@
     PACIFY,         // Silenced + Disarmed
     POLYMORPH,      // Polymorphed + Pacify
     PULL,           // Airborne + Stunned
+    RESURRECTION,   // Resurrecting
     ROOT,           // Rooted
     SLOW,           // Slowed
     SILENCE,        // Silenced
     SLEEP,          // Asleep
     STASIS,         // -
     STUN,           // Stunned
-    SUPPRESSION,     // Suppressed
+    SUPPRESSION,    // Suppressed
     SUSPENSION,     // Stunned
     TAUNT,          // Taunted
+    UNSTOPPABLE,    // Unstoppable
 }
 
 /*

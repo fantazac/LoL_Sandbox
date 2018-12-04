@@ -16,7 +16,7 @@ public class CC_W_Debuff : AbilityBuff
         //knockupSpeed = 3;
         //knockupDestination = Vector3.up * knockupSpeed * buffDuration * 0.5f;
 
-        buffCrowdControlEffect = CrowdControlEffect.STUN;
+        buffCrowdControlEffect = CrowdControlEffect.CHARM;
     }
 
     protected override void SetSpritePaths()
