@@ -39,6 +39,7 @@ public abstract class Champion : Character
         OnAttackEffectsManager = gameObject.AddComponent<OnAttackEffectsManager>();
         OnHitEffectsManager = gameObject.AddComponent<OnHitEffectsManager>();
         OrientationManager = gameObject.AddComponent<OrientationManager>();
+        StatusManager = gameObject.AddComponent<ChampionStatusManager>();
 
         if (IsLocalChampion())
         {

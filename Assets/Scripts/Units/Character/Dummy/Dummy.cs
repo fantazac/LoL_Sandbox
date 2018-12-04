@@ -7,6 +7,7 @@
         base.InitUnitProperties();
 
         DummyMovementManager = gameObject.AddComponent<DummyMovementManager>();
+        StatusManager = gameObject.AddComponent<DummyStatusManager>();
     }
 
     protected override void InitCharacterProperties()

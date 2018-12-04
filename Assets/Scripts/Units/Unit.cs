@@ -14,11 +14,11 @@ public abstract class Unit : MonoBehaviour
     public GameObject HitboxObject { get; private set; }
     public GameObject ModelObject { get; private set; }
     public ShieldManager ShieldManager { get; private set; }
-    public StatusManager StatusManager { get; private set; }
 
     public BasicAttack BasicAttack { get; protected set; }
     public MovementManager MovementManager { get { return GetMovementManager(); } }
     public StatsManager StatsManager { get; protected set; }
+    public StatusManager StatusManager { get; protected set; }
 
     public PhotonView PhotonView { get; private set; }
 
@@ -38,7 +38,6 @@ public abstract class Unit : MonoBehaviour
         HitboxObject = gameObject.GetComponentInChildren<Collider>().gameObject;
         ModelObject = gameObject.GetComponentInChildren<MeshRenderer>().gameObject;
         ShieldManager = gameObject.AddComponent<ShieldManager>();
-        StatusManager = gameObject.AddComponent<StatusManager>();
 
         PhotonView = GetComponent<PhotonView>();
         HitboxObject.AddComponent<MouseEvent>();
