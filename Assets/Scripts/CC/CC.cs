@@ -3,6 +3,8 @@
     protected CC()
     {
         championPortraitPath = "Sprites/Characters/CharacterPortraits/CC";
+
+        Name = "CC";
     }
 
     protected override void InitCharacterProperties()

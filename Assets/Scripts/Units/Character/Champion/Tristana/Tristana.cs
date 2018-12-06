@@ -3,6 +3,8 @@
     protected Tristana()
     {
         championPortraitPath = "Sprites/Characters/CharacterPortraits/Tristana";
+
+        Name = "Tristana";
     }
 
     protected override void InitCharacterProperties()

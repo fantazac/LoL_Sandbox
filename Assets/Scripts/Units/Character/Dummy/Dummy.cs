@@ -15,8 +15,9 @@
         StatsManager = gameObject.AddComponent<DummyStatsManager>();
     }
 
-    public void SetDummyTeamAndID(Team team, int dummyId)
+    public void SetDummyNameAndTeamAndID(string dummyName, Team team, int dummyId)
     {
+        Name = dummyName;
         Team = team;
         ID = dummyId;
     }

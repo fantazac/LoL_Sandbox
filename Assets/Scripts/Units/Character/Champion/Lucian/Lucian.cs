@@ -3,6 +3,8 @@
     protected Lucian()
     {
         championPortraitPath = "Sprites/Characters/CharacterPortraits/Lucian";
+
+        Name = "Lucian";
     }
 
     protected override void InitCharacterProperties()

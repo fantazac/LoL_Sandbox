@@ -2,6 +2,8 @@
 
 public abstract class Character : Unit
 {
+    public string Name { get; protected set; }
+
     public Vector3 CharacterHeightOffset { get; private set; }
 
     protected override void InitUnitProperties()

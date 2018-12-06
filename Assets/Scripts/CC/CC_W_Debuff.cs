@@ -14,7 +14,7 @@
         //knockupSpeed = 3;
         //knockupDestination = Vector3.up * knockupSpeed * buffDuration * 0.5f;
 
-        buffStatusEffect = StatusEffect.FLEE;
+        buffStatusEffect = StatusEffect.UNSTOPPABLE;
     }
 
     protected override void SetSpritePaths()

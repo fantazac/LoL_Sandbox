@@ -2,10 +2,14 @@
 {
     protected SpawnAllyDummy()
     {
+        maxDummyId = MAXIMUM_DUMMY_AMOUNT * 2;
+
         abilityName = "Spawn Ally Dummy";
+        dummyName = "Ally Dummy";
 
         dummyResourcePath = "DummyPrefabs/AllyDummy";
         team = Team.BLUE;
-        dummyId = 5;
+
+        dummyId = MAXIMUM_DUMMY_AMOUNT;
     }
 }

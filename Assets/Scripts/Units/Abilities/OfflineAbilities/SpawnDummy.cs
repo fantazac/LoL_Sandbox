@@ -5,8 +5,11 @@ public abstract class SpawnDummy : GroundTargeted//GroundTargetedAoE
 {
     protected const int MAXIMUM_DUMMY_AMOUNT = 4;
 
-    protected string dummyResourcePath;
+    protected int maxDummyId;
+
     protected int dummyId;
+    protected string dummyName;
+    protected string dummyResourcePath;
     protected Team team;
 
     protected List<Dummy> dummies;
@@ -54,13 +57,13 @@ public abstract class SpawnDummy : GroundTargeted//GroundTargetedAoE
             Destroy(dummies[0].gameObject);
             dummies.RemoveAt(0);
         }
-        if (dummyId == 4 || dummyId == 8)
+        if (dummyId == maxDummyId)
         {
-            dummyId -= 4;
+            dummyId -= MAXIMUM_DUMMY_AMOUNT;
         }
         Dummy dummy = ((GameObject)Instantiate(Resources.Load(dummyResourcePath), destination, Quaternion.identity)).GetComponent<Dummy>();
         dummy.transform.rotation = Quaternion.LookRotation((transform.position - dummy.transform.position).normalized);
-        dummy.SetDummyTeamAndID(team, ++dummyId);
+        dummy.SetDummyNameAndTeamAndID(dummyName, team, ++dummyId);
         dummies.Add(dummy);
 
         FinishAbilityCast();

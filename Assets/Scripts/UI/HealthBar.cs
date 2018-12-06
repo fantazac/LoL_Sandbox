@@ -26,8 +26,12 @@ public class HealthBar : MonoBehaviour
     private Text levelText;
     [SerializeField]
     private Image statusImage;
+    private RectTransform statusImageTransform;
     [SerializeField]
     private Text statusText;
+    private RectTransform statusTextTransform;
+    [SerializeField]
+    private Text nameText;
 
     private Character character;
 
@@ -105,6 +109,9 @@ public class HealthBar : MonoBehaviour
 
         statusSprites.Add("Resurrection", Resources.Load<Sprite>("Sprites/UI/Status/Resurrection"));
         statusSprites.Add("Unstoppable", Resources.Load<Sprite>("Sprites/UI/Status/Unstoppable"));
+
+        statusImageTransform = statusImage.GetComponent<RectTransform>();
+        statusTextTransform = statusText.GetComponent<RectTransform>();
 
         currentStatuses = new List<StatusEffect>();
     }
@@ -186,6 +193,8 @@ public class HealthBar : MonoBehaviour
 
         character.StatusManager.OnStatusEffectAdded += AddStatus;
         character.StatusManager.OnStatusEffectRemoved += RemoveStatus;
+
+        nameText.text = character.Name;
     }
 
     private void SetHealthBarSeparators()
@@ -451,6 +460,7 @@ public class HealthBar : MonoBehaviour
     {
         if (currentStatuses.Count > 0)
         {
+            nameText.enabled = false;
             statusImage.enabled = true;
             if (currentStatuses.Contains(StatusEffect.RESURRECTION))
             {
@@ -551,12 +561,22 @@ public class HealthBar : MonoBehaviour
             }
             else
             {
+                nameText.enabled = true;
                 statusText.text = "";
                 statusImage.enabled = false;
+            }
+
+            if (statusText.enabled)
+            {
+                statusImageTransform.anchoredPosition = new Vector3(statusTextTransform.anchoredPosition.x -
+                    (LayoutUtility.GetPreferredWidth(statusTextTransform) * statusTextTransform.localScale.x * 0.5f) -
+                    (statusImageTransform.sizeDelta.x * 0.5f) - 4,
+                    23);
             }
         }
         else if (statusImage.enabled)
         {
+            nameText.enabled = true;
             statusText.text = "";
             statusImage.enabled = false;
         }
