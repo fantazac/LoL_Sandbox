@@ -1,14 +1,11 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-public class Old_Ezreal_R : DirectionTargetedProjectile
+public class Ezreal_R : DirectionTargetedProjectile
 {
-    private const float DAMAGE_REDUCTION_PER_TARGET_HIT = 0.1f;
-    private const float DAMAGE_REDUCTION_CAP = 0.3f;
+    //private float damageMultiplierAgainstMinionsAndNonEpicMonsters;
 
-    private float currentDamageMultiplier;
-
-    protected Old_Ezreal_R()
+    protected Ezreal_R()
     {
         abilityName = "Trueshot Barrage";
 
@@ -30,6 +27,8 @@ public class Old_Ezreal_R : DirectionTargetedProjectile
         castTime = 1;
         delayCastTime = new WaitForSeconds(castTime);
 
+        //damageMultiplierAgainstMinionsAndNonEpicMonsters = 0.5f;
+
         IsAnUltimateAbility = true;
 
         affectedByCooldownReduction = true;
@@ -40,11 +39,6 @@ public class Old_Ezreal_R : DirectionTargetedProjectile
         abilitySpritePath = "Sprites/Characters/CharacterAbilities/Ezreal/EzrealR";
 
         projectilePrefabPath = "CharacterAbilitiesPrefabs/Ezreal/EzrealR";
-    }
-
-    protected override void FinalAdjustments(Vector3 destination)
-    {
-        currentDamageMultiplier = 1f;
     }
 
     protected override IEnumerator AbilityWithCastTime()
@@ -61,18 +55,9 @@ public class Old_Ezreal_R : DirectionTargetedProjectile
         FinishAbilityCast();
     }
 
-    protected override void OnProjectileHit(AbilityEffect projectile, Unit unitHit, bool isACriticalStrike, bool willMiss)
+    protected override float ApplyAbilityDamageModifier(Unit unitHit)
     {
-        float damage = GetAbilityDamage(unitHit) * currentDamageMultiplier;
-        DamageUnit(unitHit, damage);
-        if (currentDamageMultiplier > DAMAGE_REDUCTION_CAP)
-        {
-            currentDamageMultiplier -= DAMAGE_REDUCTION_PER_TARGET_HIT;
-        }
-        if (effectType == AbilityEffectType.SINGLE_TARGET)
-        {
-            Destroy(projectile.gameObject);
-        }
-        AbilityHit(unitHit, damage);
+        //TODO when Minion and Non-Epic Monsters exists, return damageMultiplierAgainstMinionsAndNonEpicMonsters
+        return 1f;
     }
 }
