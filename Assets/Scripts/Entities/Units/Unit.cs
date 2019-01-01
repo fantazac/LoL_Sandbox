@@ -1,9 +1,9 @@
 ﻿using UnityEngine;
 
-public abstract class Unit : MonoBehaviour
+public abstract class Unit : Entity
 {
     public UnitType UnitType { get; protected set; }
-    public Team Team { get; protected set; }//monsters do not have teams, maybe minions/characters/pets inherit from a class and monsters from another?
+    public Team Team { get; protected set; }
 
     public int ID { get; protected set; }
 
