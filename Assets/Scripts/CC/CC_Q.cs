@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class CC_Q : SelfTargeted
 {
@@ -9,8 +7,7 @@ public class CC_Q : SelfTargeted
         abilityName = "CC BTW";
 
         abilityType = AbilityType.PASSIVE;
-        affectedTeams = AffectedTeams.GetEnemyTeams(champion.Team);
-        affectedUnitTypes = new List<Type>() { typeof(Unit) };
+        affectedUnitType = AbilityAffectedUnitType.ENEMIES;
         damageType = DamageType.PHYSICAL;
         effectType = AbilityEffectType.SINGLE_TARGET;
 

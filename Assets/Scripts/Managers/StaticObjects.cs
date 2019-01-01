@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class StaticObjects : MonoBehaviour
 {
@@ -8,7 +7,6 @@ public class StaticObjects : MonoBehaviour
     public static bool OnlineMode { get; set; }
     public static TerrainCollider Terrain { get; set; }
     public static float MultiplyingFactor { get; private set; }
-    public static Dictionary<int, Unit> Units { get; set; } 
 
     private StaticObjects()
     {

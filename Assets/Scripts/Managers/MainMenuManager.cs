@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class MainMenuManager : MonoBehaviour
 {
@@ -93,14 +92,12 @@ public class MainMenuManager : MonoBehaviour
             case MainMenuState.MAIN:
                 if (GUILayout.Button("Online", GUILayout.Height(40)))
                 {
-                    StaticObjects.Units = new Dictionary<int, Unit>();
                     state = MainMenuState.CONNECTING;
                     StaticObjects.OnlineMode = true;
                     OnConnectingToServer();
                 }
                 if (GUILayout.Button("Offline", GUILayout.Height(40)))
                 {
-                    StaticObjects.Units = new Dictionary<int, Unit>();
                     selectedSpawn = offlineSpawn;
                     state = MainMenuState.CHARACTER_SELECT;
                     StaticObjects.OnlineMode = false;
