@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public abstract class Unit : Entity
 {
@@ -47,6 +48,21 @@ public abstract class Unit : Entity
 
     public bool IsTargetable(AbilityAffectedUnitType affectedUnitType, Team castingUnitTeam)
     {
+        Debug.Log(GetType());
+        /*foreach sur les teams
+         *  if contains la team
+         *      foreach sur les types
+         *          si contient ton type
+         *              return true
+         *              
+         *  return false
+        */
+
         return TargetIsValid.CheckIfTargetIsValid(this, affectedUnitType, castingUnitTeam);
+    }
+
+    private bool IsSameTypeOrSubtype(Type unitTypeToVerify, Type affectedUnitType)
+    {
+        return unitTypeToVerify.IsSubclassOf(affectedUnitType) || unitTypeToVerify == affectedUnitType;
     }
 }
