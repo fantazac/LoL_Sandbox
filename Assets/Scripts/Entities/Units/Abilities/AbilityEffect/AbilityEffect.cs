@@ -23,7 +23,7 @@ public abstract class AbilityEffect : MonoBehaviour
 
     protected virtual bool CanAffectTarget(Unit unitHit)
     {
-        if (TargetIsValid.CheckIfTargetIsValid(unitHit, affectedUnitType, castingUnitTeam))
+        if (unitHit.IsTargetable(affectedUnitType, castingUnitTeam))
         {
             foreach (Unit unit in UnitsAlreadyHit)
             {

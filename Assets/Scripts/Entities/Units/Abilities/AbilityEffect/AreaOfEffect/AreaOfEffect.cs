@@ -8,15 +8,15 @@ public class AreaOfEffect : AbilityEffect
 
     protected bool collidersInChildren;
 
-    public void CreateAreaOfEffect(List<Unit> unitsAlreadyHit, Team teamOfShooter, AbilityAffectedUnitType affectedUnitType, float duration)
+    public void CreateAreaOfEffect(List<Unit> unitsAlreadyHit, Team castingUnitTeam, AbilityAffectedUnitType affectedUnitType, float duration)
     {
         UnitsAlreadyHit = unitsAlreadyHit;
-        castingUnitTeam = teamOfShooter;
+        this.castingUnitTeam = castingUnitTeam;
         this.affectedUnitType = affectedUnitType;
         this.duration = duration;
     }
 
-    public void CreateAreaOfEffect(List<Unit> unitsAlreadyHit, Team teamOfShooter, AbilityAffectedUnitType affectedUnitType, float duration, bool collidersInChildren)
+    public void CreateAreaOfEffect(List<Unit> unitsAlreadyHit, Team castingUnitTeam, AbilityAffectedUnitType affectedUnitType, float duration, bool collidersInChildren)
     {
         if (collidersInChildren)
         {
@@ -26,7 +26,7 @@ public class AreaOfEffect : AbilityEffect
                 aoeCollider.OnTriggerEnterInChild += OnTriggerEnterInChild;
             }
         }
-        CreateAreaOfEffect(unitsAlreadyHit, teamOfShooter, affectedUnitType, duration);
+        CreateAreaOfEffect(unitsAlreadyHit, castingUnitTeam, affectedUnitType, duration);
     }
 
     public void ActivateAreaOfEffect()
@@ -65,8 +65,8 @@ public class AreaOfEffect : AbilityEffect
 
     protected override void OnTriggerEnter(Collider collider)
     {
-        Unit unitHit = collider.gameObject.GetComponent<Unit>();
-
+        Unit unitHit = collider.GetComponentInParent<Unit>();
+        
         if (unitHit != null && CanAffectTarget(unitHit))
         {
             UnitsAlreadyHit.Add(unitHit);

@@ -177,7 +177,7 @@ public class Tristana_E : UnitTargetedProjectile
         foreach (Collider collider in Physics.OverlapCapsule(groundPosition, groundPosition + Vector3.up * 5, selectedRadius))
         {
             tempUnit = collider.GetComponentInParent<Unit>();
-            if (tempUnit != null && TargetIsValid.CheckIfTargetIsValid(tempUnit, affectedUnitType, champion.Team))
+            if (tempUnit != null && tempUnit.IsTargetable(affectedUnitType, champion.Team))
             {
                 float damage = GetAbilityDamage(tempUnit) * damageModifier;
                 DamageUnit(tempUnit, damage);
@@ -194,7 +194,7 @@ public class Tristana_E : UnitTargetedProjectile
         foreach (Collider collider in Physics.OverlapCapsule(groundPosition, groundPosition + Vector3.up * 5, effectRadius))
         {
             tempUnit = collider.GetComponentInParent<Unit>();
-            if (tempUnit != null && tempUnit != killedUnit && TargetIsValid.CheckIfTargetIsValid(tempUnit, affectedUnitType, champion.Team))
+            if (tempUnit != null && tempUnit != killedUnit && tempUnit.IsTargetable(affectedUnitType, champion.Team))
             {
                 float damage = GetPassiveAbilityDamage(tempUnit);
                 DamageUnit(tempUnit, passiveDamageType, damage);

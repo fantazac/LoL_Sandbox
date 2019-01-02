@@ -86,7 +86,7 @@ public class Ezreal_E : GroundTargetedBlink
         foreach (Collider collider in Physics.OverlapCapsule(groundPosition, groundPosition + Vector3.up * 5, effectRadius))
         {
             tempUnit = collider.GetComponentInParent<Unit>();
-            if (tempUnit != null && TargetIsValid.CheckIfTargetIsValid(tempUnit, affectedUnitType, champion.Team))
+            if (tempUnit != null && tempUnit.IsTargetable(affectedUnitType, champion.Team))
             {
                 if (tempUnit.BuffManager.IsAffectedByDebuff(champion.AbilityManager.CharacterAbilities[1].AbilityDebuffs[0]))
                 {

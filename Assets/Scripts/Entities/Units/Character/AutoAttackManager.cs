@@ -78,7 +78,7 @@ public class AutoAttackManager : MonoBehaviour
                     foreach (Collider collider in Physics.OverlapCapsule(groundPosition, groundPosition + Vector3.up * 5, attackRange.GetTotal()))
                     {
                         Unit tempUnit = collider.GetComponentInParent<Unit>();
-                        if (tempUnit != null && TargetIsValid.CheckIfTargetIsValid(tempUnit, affectedUnitType, champion.Team))
+                        if (tempUnit != null && tempUnit.IsTargetable(affectedUnitType, champion.Team))
                         {
                             float tempDistance = Vector3.Distance(tempUnit.transform.position, transform.position);
                             if (tempDistance < distance)
@@ -117,7 +117,7 @@ public class AutoAttackManager : MonoBehaviour
                 foreach (Collider collider in Physics.OverlapCapsule(groundPosition, groundPosition + Vector3.up * 5, biggerAttackRange))
                 {
                     Unit tempUnit = collider.GetComponentInParent<Unit>();
-                    if (tempUnit != null && TargetIsValid.CheckIfTargetIsValid(tempUnit, affectedUnitType, champion.Team))
+                    if (tempUnit != null && tempUnit.IsTargetable(affectedUnitType, champion.Team))
                     {
                         float tempDistance = Vector3.Distance(tempUnit.transform.position, transform.position);
                         if (tempDistance < distance)

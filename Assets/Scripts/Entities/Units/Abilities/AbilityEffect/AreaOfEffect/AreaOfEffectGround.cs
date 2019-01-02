@@ -91,6 +91,6 @@ public class AreaOfEffectGround : AbilityEffect
 
     protected override bool CanAffectTarget(Unit unitHit)
     {
-        return TargetIsValid.CheckIfTargetIsValid(unitHit, affectedUnitType, castingUnitTeam);
+        return unitHit.IsTargetable(affectedUnitType, castingUnitTeam);
     }
 }

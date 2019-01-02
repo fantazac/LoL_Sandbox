@@ -9,7 +9,7 @@ public abstract class UnitTargeted : Ability
 
     protected bool IsAValidTarget(Unit target)
     {
-        return TargetIsValid.CheckIfTargetIsValid(target, affectedUnitType, champion.Team);
+        return target.IsTargetable(affectedUnitType, champion.Team);
     }
 
     public override void UseAbility(Unit target)

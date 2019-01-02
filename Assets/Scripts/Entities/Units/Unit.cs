@@ -44,4 +44,9 @@ public abstract class Unit : Entity
     }
 
     protected abstract MovementManager GetMovementManager();
+
+    public bool IsTargetable(AbilityAffectedUnitType affectedUnitType, Team castingUnitTeam)
+    {
+        return TargetIsValid.CheckIfTargetIsValid(this, affectedUnitType, castingUnitTeam);
+    }
 }

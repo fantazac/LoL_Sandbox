@@ -16,6 +16,8 @@ public class Tristana_W : DirectionTargetedDash//TODO: GroundTargetedDash
 
         MaxLevel = 5;
 
+        damage = 85;// 85/135/185/235/285
+        damagePerLevel = 50;
         range = 900;
         resourceCost = 60;
         baseCooldown = 22;// 22/20/18/16/14
@@ -75,9 +77,10 @@ public class Tristana_W : DirectionTargetedDash//TODO: GroundTargetedDash
         foreach (Collider collider in Physics.OverlapCapsule(groundPosition, groundPosition + Vector3.up * 5, effectRadius))
         {
             tempUnit = collider.GetComponentInParent<Unit>();
-            if (tempUnit != null && TargetIsValid.CheckIfTargetIsValid(tempUnit, affectedUnitType, champion.Team))
+            if (tempUnit != null && tempUnit.IsTargetable(affectedUnitType, champion.Team))
             {
                 float damage = GetAbilityDamage(tempUnit);
+                Debug.Log(damage);
                 DamageUnit(tempUnit, damage);
                 AbilityHit(tempUnit, damage);
                 AbilityDebuffs[0].AddNewBuffToAffectedUnit(tempUnit);

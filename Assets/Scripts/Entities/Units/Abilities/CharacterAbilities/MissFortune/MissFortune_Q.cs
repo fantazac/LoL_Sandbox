@@ -109,7 +109,7 @@ public class MissFortune_Q : UnitTargetedProjectile
         foreach (Collider collider in Physics.OverlapCapsule(groundPosition, groundPosition + Vector3.up * 5, effectRadius))
         {
             tempUnit = collider.GetComponentInParent<Unit>();
-            if (tempUnit != null && tempUnit != unitHit && TargetIsValid.CheckIfTargetIsValid(tempUnit, affectedUnitType, champion.Team))
+            if (tempUnit != null && tempUnit != unitHit && tempUnit.IsTargetable(affectedUnitType, champion.Team))
             {
                 tempAngle = Vector3.Angle(vectorOnCast, tempUnit.transform.position - unitHit.transform.position);
                 tempDistance = Vector3.Distance(unitHit.transform.position, tempUnit.transform.position);
