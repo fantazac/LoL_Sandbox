@@ -1,4 +1,6 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Old_Ezreal_W : DirectionTargetedProjectile
@@ -8,7 +10,7 @@ public class Old_Ezreal_W : DirectionTargetedProjectile
         abilityName = "Essence Flux";
 
         abilityType = AbilityType.SKILLSHOT;
-        affectedUnitType = AbilityAffectedUnitType.CHARACTERS;
+        affectedUnitTypes = new List<Type>() { typeof(Character) };
         effectType = AbilityEffectType.AREA_OF_EFFECT;
         damageType = DamageType.MAGIC;
 
@@ -33,6 +35,11 @@ public class Old_Ezreal_W : DirectionTargetedProjectile
         abilitySpritePath = "Sprites/Characters/CharacterAbilities/Ezreal/EzrealW";
 
         projectilePrefabPath = "CharacterAbilitiesPrefabs/Ezreal/EzrealW";
+    }
+
+    public override void SetAffectedTeams(Team allyTeam)
+    {
+        affectedTeams = TeamMethods.GetCharacterTeams();
     }
 
     protected override void Start()

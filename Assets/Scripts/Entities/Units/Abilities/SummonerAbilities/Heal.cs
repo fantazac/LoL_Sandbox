@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System;
+using System.Collections.Generic;
+using UnityEngine;
 
 public class Heal : SelfTargeted
 {
@@ -9,7 +11,7 @@ public class Heal : SelfTargeted
         abilityName = "Heal";
 
         abilityType = AbilityType.HEAL;
-        affectedUnitType = AbilityAffectedUnitType.ALLY_CHARACTERS;
+        affectedUnitTypes = new List<Type>() { typeof(Character) };
         effectType = AbilityEffectType.HEALING;
 
         range = 850;
@@ -23,6 +25,11 @@ public class Heal : SelfTargeted
     protected override void SetResourcePaths()
     {
         abilitySpritePath = "Sprites/Characters/SummonerAbilities/Heal";
+    }
+
+    public override void SetAffectedTeams(Team allyTeam)
+    {
+        affectedTeams = TeamMethods.GetAllyTeam(allyTeam);
     }
 
     protected override void Start()
@@ -72,7 +79,7 @@ public class Heal : SelfTargeted
             foreach (Collider collider in Physics.OverlapCapsule(mouseGroundPosition, mouseGroundPosition + Vector3.up * 5, MOUSE_RADIUS))
             {
                 tempCharacter = collider.GetComponent<Character>();
-                if (tempCharacter != null && tempCharacter != champion && tempCharacter.IsTargetable(affectedUnitType, champion.Team))
+                if (tempCharacter != null && tempCharacter != champion && tempCharacter.IsTargetable(affectedUnitTypes, affectedTeams))
                 {
                     tempDistance = Vector3.Distance(transform.position, tempCharacter.transform.position);
                     if (tempDistance < distance && tempDistance < range)
@@ -93,7 +100,7 @@ public class Heal : SelfTargeted
             foreach (Collider collider in Physics.OverlapCapsule(groundPosition, groundPosition + Vector3.up * 5, range))
             {
                 tempCharacter = collider.GetComponent<Character>();
-                if (tempCharacter != null && tempCharacter != champion && tempCharacter.IsTargetable(affectedUnitType, champion.Team))
+                if (tempCharacter != null && tempCharacter != champion && tempCharacter.IsTargetable(affectedUnitTypes, affectedTeams))
                 {
                     tempLowestHealth = tempCharacter.StatsManager.Health.GetCurrentValue();
                     if (tempLowestHealth < lowestHealth)

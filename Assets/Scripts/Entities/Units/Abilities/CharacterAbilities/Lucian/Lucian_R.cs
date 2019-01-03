@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System;
+using System.Collections.Generic;
 
 public class Lucian_R : DirectionTargetedProjectile
 {
@@ -19,7 +21,7 @@ public class Lucian_R : DirectionTargetedProjectile
         abilityName = "The Culling";
 
         abilityType = AbilityType.SKILLSHOT;
-        affectedUnitType = AbilityAffectedUnitType.ENEMIES;
+        affectedUnitTypes = new List<Type>() { typeof(Unit) };
         effectType = AbilityEffectType.SINGLE_TARGET;
         damageType = DamageType.PHYSICAL;
 
@@ -60,6 +62,11 @@ public class Lucian_R : DirectionTargetedProjectile
         abilityRecastSpritePath = "Sprites/Characters/CharacterAbilities/Lucian/LucianR_Active";
 
         projectilePrefabPath = "CharacterAbilitiesPrefabs/Lucian/LucianR";
+    }
+
+    public override void SetAffectedTeams(Team allyTeam)
+    {
+        affectedTeams = TeamMethods.GetHostileTeams(allyTeam);
     }
 
     protected override void Start()

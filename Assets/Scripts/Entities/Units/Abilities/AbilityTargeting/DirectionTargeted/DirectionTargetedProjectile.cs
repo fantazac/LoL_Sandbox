@@ -29,7 +29,7 @@ public abstract class DirectionTargetedProjectile : DirectionTargeted
     protected void SpawnProjectile(Vector3 position, Quaternion rotation)
     {
         Projectile projectile = (Instantiate(projectilePrefab, position, rotation)).GetComponent<Projectile>();
-        projectile.ShootProjectile(champion.Team, affectedUnitType, speed, range);
+        projectile.ShootProjectile(affectedTeams, affectedUnitTypes, speed, range);
         projectile.OnAbilityEffectHit += OnProjectileHit;
         projectile.OnProjectileReachedEnd += OnProjectileReachedEnd;
     }

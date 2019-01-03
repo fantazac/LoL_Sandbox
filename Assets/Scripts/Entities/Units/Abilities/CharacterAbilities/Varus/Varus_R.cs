@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Varus_R : DirectionTargetedProjectile
@@ -15,7 +16,7 @@ public class Varus_R : DirectionTargetedProjectile
         abilityName = "Chain of Corruption";
 
         abilityType = AbilityType.SKILLSHOT;
-        affectedUnitType = AbilityAffectedUnitType.ENEMY_CHARACTERS;
+        affectedUnitTypes = new List<Type>() { typeof(Character) };
         effectType = AbilityEffectType.SINGLE_TARGET;
         damageType = DamageType.MAGIC;
 
@@ -55,6 +56,11 @@ public class Varus_R : DirectionTargetedProjectile
         base.LoadPrefabs();
     }
 
+    public override void SetAffectedTeams(Team allyTeam)
+    {
+        affectedTeams = TeamMethods.GetEnemyTeams(allyTeam);
+    }
+
     protected override void Start()
     {
         base.Start();
@@ -92,7 +98,7 @@ public class Varus_R : DirectionTargetedProjectile
         foreach (Collider collider in Physics.OverlapCapsule(groundPosition, groundPosition + Vector3.up * 5, radius))
         {
             tempCharacter = collider.GetComponentInParent<Character>();
-            if (tempCharacter != null && !alreadyAffectedUnits.Contains(tempCharacter) && tempCharacter.IsTargetable(affectedUnitType, champion.Team))
+            if (tempCharacter != null && !alreadyAffectedUnits.Contains(tempCharacter) && tempCharacter.IsTargetable(affectedUnitTypes, affectedTeams))
             {
                 unitsInRange.Add(tempCharacter);
             }

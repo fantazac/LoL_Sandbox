@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -20,7 +21,7 @@ public class Tristana_E : UnitTargetedProjectile
         abilityName = "Explosive Charge";
 
         abilityType = AbilityType.SKILLSHOT;
-        affectedUnitType = AbilityAffectedUnitType.ENEMIES;//TODO: affect turrets too (see affectedUnitType for array/list)
+        affectedUnitTypes = new List<Type>() { typeof(Unit) };// typeof(Turret)
         effectType = AbilityEffectType.SINGLE_TARGET;
         damageType = DamageType.PHYSICAL;
         passiveDamageType = DamageType.MAGIC;
@@ -67,6 +68,11 @@ public class Tristana_E : UnitTargetedProjectile
         base.ModifyValues();
     }
 
+    public override void SetAffectedTeams(Team allyTeam)
+    {
+        affectedTeams = TeamMethods.GetHostileTeams(allyTeam);
+    }
+
     protected override void Start()
     {
         base.Start();
@@ -78,7 +84,7 @@ public class Tristana_E : UnitTargetedProjectile
         abilitiesToIncreaseStacks = new List<Ability>();
         foreach (Ability ability in champion.AbilityManager.CharacterAbilities)
         {
-            if (ability != this && !(ability is PassiveTargeted || ability is SelfTargeted))
+            if (ability != this && !(ability is PassiveTargeted || ability is AutoTargeted))
             {
                 abilitiesToIncreaseStacks.Add(ability);
             }
@@ -103,7 +109,7 @@ public class Tristana_E : UnitTargetedProjectile
         champion.OrientationManager.RotateCharacterInstantly(destinationOnCast);
 
         ProjectileUnitTargeted projectile = (Instantiate(projectilePrefab, transform.position, transform.rotation)).GetComponent<ProjectileUnitTargeted>();
-        projectile.ShootProjectile(champion.Team, targetedUnit, speed);
+        projectile.ShootProjectile(affectedTeams, targetedUnit, speed);
         projectile.OnAbilityEffectHit += OnAbilityEffectHit;
 
         FinishAbilityCast();
@@ -177,7 +183,7 @@ public class Tristana_E : UnitTargetedProjectile
         foreach (Collider collider in Physics.OverlapCapsule(groundPosition, groundPosition + Vector3.up * 5, selectedRadius))
         {
             tempUnit = collider.GetComponentInParent<Unit>();
-            if (tempUnit != null && tempUnit.IsTargetable(affectedUnitType, champion.Team))
+            if (tempUnit != null && tempUnit.IsTargetable(affectedUnitTypes, affectedTeams))
             {
                 float damage = GetAbilityDamage(tempUnit) * damageModifier;
                 DamageUnit(tempUnit, damage);
@@ -194,7 +200,7 @@ public class Tristana_E : UnitTargetedProjectile
         foreach (Collider collider in Physics.OverlapCapsule(groundPosition, groundPosition + Vector3.up * 5, effectRadius))
         {
             tempUnit = collider.GetComponentInParent<Unit>();
-            if (tempUnit != null && tempUnit != killedUnit && tempUnit.IsTargetable(affectedUnitType, champion.Team))
+            if (tempUnit != null && tempUnit != killedUnit && tempUnit.IsTargetable(affectedUnitTypes, affectedTeams))
             {
                 float damage = GetPassiveAbilityDamage(tempUnit);
                 DamageUnit(tempUnit, passiveDamageType, damage);

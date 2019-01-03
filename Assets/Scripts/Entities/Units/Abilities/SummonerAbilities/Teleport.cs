@@ -25,6 +25,11 @@ public class Teleport : GroundTargetedBlink//TODO: UnitTargeted
         abilityRecastSpritePath = "Sprites/Characters/SummonerAbilities/Teleport";
     }
 
+    public override void SetAffectedTeams(Team allyTeam)
+    {
+        affectedTeams = TeamMethods.GetAllyTeam(allyTeam);
+    }
+
     public override void UseAbility(Vector3 destination)
     {
         StartAbilityCast();

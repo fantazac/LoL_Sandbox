@@ -1,4 +1,6 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class MissFortune_Q : UnitTargetedProjectile
@@ -13,7 +15,7 @@ public class MissFortune_Q : UnitTargetedProjectile
         abilityName = "Double Up";
 
         abilityType = AbilityType.SKILLSHOT;
-        affectedUnitType = AbilityAffectedUnitType.ENEMIES;
+        affectedUnitTypes = new List<Type>() { typeof(Unit) };
         effectType = AbilityEffectType.SINGLE_TARGET;
         damageType = DamageType.PHYSICAL;
 
@@ -55,6 +57,11 @@ public class MissFortune_Q : UnitTargetedProjectile
         base.ModifyValues();
     }
 
+    public override void SetAffectedTeams(Team allyTeam)
+    {
+        affectedTeams = TeamMethods.GetHostileTeams(allyTeam);
+    }
+
     protected override IEnumerator AbilityWithCastTime()
     {
         vectorOnCast = targetedUnit.transform.position - transform.position;
@@ -67,7 +74,7 @@ public class MissFortune_Q : UnitTargetedProjectile
         champion.OrientationManager.RotateCharacterInstantly(destinationOnCast);
 
         ProjectileUnitTargeted projectile = (Instantiate(projectilePrefab, transform.position, transform.rotation)).GetComponent<ProjectileUnitTargeted>();
-        projectile.ShootProjectile(champion.Team, targetedUnit, speed);
+        projectile.ShootProjectile(affectedTeams, targetedUnit, speed);
         projectile.OnAbilityEffectHit += OnAbilityEffectHit;
 
         FinishAbilityCast();
@@ -91,7 +98,7 @@ public class MissFortune_Q : UnitTargetedProjectile
 
             ProjectileUnitTargeted projectile2 = (Instantiate(projectilePrefab, unitHit.transform.position, transform.rotation)).GetComponent<ProjectileUnitTargeted>();
             projectile2.transform.LookAt(nextUnit.transform.position);
-            projectile2.ShootProjectile(champion.Team, nextUnit, speed, secondHitIsACriticalStrike);
+            projectile2.ShootProjectile(affectedTeams, nextUnit, speed, secondHitIsACriticalStrike);
             projectile2.OnAbilityEffectHit += base.OnAbilityEffectHit;
         }
     }
@@ -109,7 +116,7 @@ public class MissFortune_Q : UnitTargetedProjectile
         foreach (Collider collider in Physics.OverlapCapsule(groundPosition, groundPosition + Vector3.up * 5, effectRadius))
         {
             tempUnit = collider.GetComponentInParent<Unit>();
-            if (tempUnit != null && tempUnit != unitHit && tempUnit.IsTargetable(affectedUnitType, champion.Team))
+            if (tempUnit != null && tempUnit != unitHit && tempUnit.IsTargetable(affectedUnitTypes, affectedTeams))
             {
                 tempAngle = Vector3.Angle(vectorOnCast, tempUnit.transform.position - unitHit.transform.position);
                 tempDistance = Vector3.Distance(unitHit.transform.position, tempUnit.transform.position);

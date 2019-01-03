@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
+using System;
 
 public abstract class BasicAttack : DamageSource
 {
@@ -20,6 +22,8 @@ public abstract class BasicAttack : DamageSource
 
     protected float speed;
 
+    protected List<Team> affectedTeams;
+
     protected BasicAttack()
     {
         damageType = DamageType.PHYSICAL;
@@ -35,6 +39,11 @@ public abstract class BasicAttack : DamageSource
         unit = GetComponent<Unit>();
 
         ModifyValues();
+    }
+
+    public override void SetAffectedTeams(Team allyTeam)
+    {
+        affectedTeams = TeamMethods.GetHostileTeams(allyTeam);
     }
 
     protected virtual void Start()
@@ -165,7 +174,7 @@ public abstract class BasicAttack : DamageSource
         ((Champion)unit).OrientationManager.StopTargetRotation();
 
         ProjectileUnitTargeted projectile = (Instantiate(basicAttackPrefab, transform.position, transform.rotation)).GetComponent<ProjectileUnitTargeted>();
-        projectile.ShootProjectile(unit.Team, target, speed, AttackIsCritical.CheckIfAttackIsCritical(unit.StatsManager.CriticalStrikeChance.GetTotal()), unit.StatusManager.IsBlinded());
+        projectile.ShootProjectile(affectedTeams, target, speed, AttackIsCritical.CheckIfAttackIsCritical(unit.StatsManager.CriticalStrikeChance.GetTotal()), unit.StatusManager.IsBlinded());
         projectile.OnAbilityEffectHit += BasicAttackHit;
 
         if (unit is Character)

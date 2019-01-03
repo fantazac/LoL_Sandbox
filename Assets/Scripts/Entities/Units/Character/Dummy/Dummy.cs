@@ -18,8 +18,7 @@
     public void SetDummyNameAndTeamAndID(string dummyName, Team team, int dummyId)
     {
         Name = dummyName;
-        Team = team;
-        ID = dummyId;
+        SetTeamAndID(team, dummyId);
     }
 
     protected override MovementManager GetMovementManager()

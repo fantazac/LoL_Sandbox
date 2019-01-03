@@ -1,4 +1,6 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Old_Ezreal_R : DirectionTargetedProjectile
@@ -13,7 +15,7 @@ public class Old_Ezreal_R : DirectionTargetedProjectile
         abilityName = "Trueshot Barrage";
 
         abilityType = AbilityType.SKILLSHOT;
-        affectedUnitType = AbilityAffectedUnitType.ENEMIES;
+        affectedUnitTypes = new List<Type>() { typeof(Unit) };
         effectType = AbilityEffectType.AREA_OF_EFFECT;
         damageType = DamageType.MAGIC;
 
@@ -45,6 +47,11 @@ public class Old_Ezreal_R : DirectionTargetedProjectile
     protected override void FinalAdjustments(Vector3 destination)
     {
         currentDamageMultiplier = 1f;
+    }
+
+    public override void SetAffectedTeams(Team allyTeam)
+    {
+        affectedTeams = TeamMethods.GetHostileTeams(allyTeam);
     }
 
     protected override IEnumerator AbilityWithCastTime()

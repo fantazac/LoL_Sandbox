@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
+using System;
 
 public class Ezreal_E : GroundTargetedBlink
 {
@@ -13,7 +15,7 @@ public class Ezreal_E : GroundTargetedBlink
         abilityName = "Arcane Shift";
 
         abilityType = AbilityType.BLINK;
-        affectedUnitType = AbilityAffectedUnitType.ENEMIES;
+        affectedUnitTypes = new List<Type>() { typeof(Unit) };
         effectType = AbilityEffectType.SINGLE_TARGET;
         damageType = DamageType.MAGIC;
 
@@ -57,6 +59,11 @@ public class Ezreal_E : GroundTargetedBlink
         projectilePrefab = Resources.Load<GameObject>(projectilePrefabPath);
     }
 
+    public override void SetAffectedTeams(Team allyTeam)
+    {
+        affectedTeams = TeamMethods.GetHostileTeams(allyTeam);
+    }
+
     protected override IEnumerator AbilityWithCastTime()
     {
         IsBeingCasted = true;
@@ -86,7 +93,7 @@ public class Ezreal_E : GroundTargetedBlink
         foreach (Collider collider in Physics.OverlapCapsule(groundPosition, groundPosition + Vector3.up * 5, effectRadius))
         {
             tempUnit = collider.GetComponentInParent<Unit>();
-            if (tempUnit != null && tempUnit.IsTargetable(affectedUnitType, champion.Team))
+            if (tempUnit != null && tempUnit.IsTargetable(affectedUnitTypes, affectedTeams))
             {
                 if (tempUnit.BuffManager.IsAffectedByDebuff(champion.AbilityManager.CharacterAbilities[1].AbilityDebuffs[0]))
                 {
@@ -105,7 +112,7 @@ public class Ezreal_E : GroundTargetedBlink
         if (closestUnit != null)
         {
             ProjectileUnitTargeted projectile = Instantiate(projectilePrefab, transform.position, transform.rotation).GetComponent<ProjectileUnitTargeted>();
-            projectile.ShootProjectile(champion.Team, closestUnit, speed);
+            projectile.ShootProjectile(affectedTeams, closestUnit, speed);
             projectile.OnAbilityEffectHit += OnProjectileHit;
         }
     }

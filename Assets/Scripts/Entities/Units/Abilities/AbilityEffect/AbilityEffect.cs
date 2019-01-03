@@ -1,11 +1,12 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public abstract class AbilityEffect : MonoBehaviour
 {
-    protected Team castingUnitTeam;
-    protected AbilityAffectedUnitType affectedUnitType;
+    protected List<Team> affectedTeams;
+    protected List<Type> affectedUnitTypes;
 
     public List<Unit> UnitsAlreadyHit { get; protected set; }
 
@@ -23,7 +24,7 @@ public abstract class AbilityEffect : MonoBehaviour
 
     protected virtual bool CanAffectTarget(Unit unitHit)
     {
-        if (unitHit.IsTargetable(affectedUnitType, castingUnitTeam))
+        if (unitHit.IsTargetable(affectedUnitTypes, affectedTeams))
         {
             foreach (Unit unit in UnitsAlreadyHit)
             {

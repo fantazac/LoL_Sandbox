@@ -102,13 +102,13 @@ public class ChampionMovementManager : MovementManager
     private void SendToServer_Movement_Target(Unit target, float range, bool isBasicAttack)
     {
         PhotonNetwork.RemoveRPCs(champion.PhotonView);//if using AllBufferedViaServer somewhere else, this needs to change
-        champion.PhotonView.RPC("ReceiveFromServer_Movement_Target", PhotonTargets.AllBufferedViaServer, target.ID, target.UnitType, range, isBasicAttack);
+        champion.PhotonView.RPC("ReceiveFromServer_Movement_Target", PhotonTargets.AllBufferedViaServer, target.ID, range, isBasicAttack);
     }
 
     [PunRPC]
-    private void ReceiveFromServer_Movement_Target(int unitId, UnitType unitType, float range, bool isBasicAttack)
+    private void ReceiveFromServer_Movement_Target(int unitId, float range, bool isBasicAttack)
     {
-        SetMoveTowardsTarget(champion.AbilityManager.FindTarget(unitId, unitType), range, isBasicAttack);
+        SetMoveTowardsTarget(champion.AbilityManager.FindTarget(unitId), range, isBasicAttack);
     }
 
     public void SetMoveTowardsPoint(Vector3 destination, float range = 0)

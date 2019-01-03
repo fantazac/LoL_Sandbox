@@ -1,12 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public abstract class Unit : Entity
 {
-    public UnitType UnitType { get; protected set; }
-    public Team Team { get; protected set; }
+    public Team Team { get; private set; }
 
-    public int ID { get; protected set; }
+    public int ID { get; private set; }
 
     public BuffManager BuffManager { get; private set; }
     public DisplacementManager DisplacementManager { get; private set; }
@@ -46,23 +46,39 @@ public abstract class Unit : Entity
 
     protected abstract MovementManager GetMovementManager();
 
-    public bool IsTargetable(AbilityAffectedUnitType affectedUnitType, Team castingUnitTeam)
+    public bool IsTargetable(List<Type> affectedUnitTypes, List<Team> affectedTeams)
     {
-        Debug.Log(GetType());
-        /*foreach sur les teams
-         *  if contains la team
-         *      foreach sur les types
-         *          si contient ton type
-         *              return true
-         *              
-         *  return false
-        */
+        foreach (Team affectedTeam in affectedTeams)
+        {
+            if (affectedTeam == Team)
+            {
+                foreach (Type affectedUnitType in affectedUnitTypes)
+                {
+                    if (IsSameTypeOrSubtype(GetType(), affectedUnitType))
+                    {
+                        return true;
+                    }
+                }
+            }
+        }
 
-        return TargetIsValid.CheckIfTargetIsValid(this, affectedUnitType, castingUnitTeam);
+        return false;
     }
 
     private bool IsSameTypeOrSubtype(Type unitTypeToVerify, Type affectedUnitType)
     {
         return unitTypeToVerify.IsSubclassOf(affectedUnitType) || unitTypeToVerify == affectedUnitType;
+    }
+
+    protected virtual void SetTeamAndID(Team team, int id)
+    {
+        Team = team;
+        ID = id;
+        StaticObjects.Units.Add(id, this);
+
+        if (BasicAttack)
+        {
+            BasicAttack.SetAffectedTeams(team);
+        }
     }
 }

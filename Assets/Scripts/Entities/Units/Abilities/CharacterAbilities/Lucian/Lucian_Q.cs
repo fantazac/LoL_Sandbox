@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -11,7 +12,7 @@ public class Lucian_Q : UnitTargetedAoE
         abilityName = "Piercing Light";
 
         abilityType = AbilityType.AREA_OF_EFFECT;
-        affectedUnitType = AbilityAffectedUnitType.ENEMIES;
+        affectedUnitTypes = new List<Type>() { typeof(Unit) };
         effectType = AbilityEffectType.AREA_OF_EFFECT;
         damageType = DamageType.PHYSICAL;
 
@@ -39,6 +40,11 @@ public class Lucian_Q : UnitTargetedAoE
         abilitySpritePath = "Sprites/Characters/CharacterAbilities/Lucian/LucianQ";
 
         areaOfEffectPrefabPath = "CharacterAbilitiesPrefabs/Lucian/LucianQ";
+    }
+
+    public override void SetAffectedTeams(Team allyTeam)
+    {
+        affectedTeams = TeamMethods.GetHostileTeams(allyTeam);
     }
 
     protected override void Start()
@@ -72,7 +78,7 @@ public class Lucian_Q : UnitTargetedAoE
         champion.OrientationManager.RotateCharacterInstantly(destinationOnCast);
 
         AreaOfEffect aoe = (Instantiate(areaOfEffectPrefab, positionOnCast, rotationOnCast)).GetComponent<AreaOfEffect>();
-        aoe.CreateAreaOfEffect(new List<Unit>(), champion.Team, affectedUnitType, durationAoE);
+        aoe.CreateAreaOfEffect(new List<Unit>(), affectedTeams, affectedUnitTypes, durationAoE);
         aoe.ActivateAreaOfEffect();
         aoe.OnAbilityEffectHit += OnAbilityEffectHit;
 

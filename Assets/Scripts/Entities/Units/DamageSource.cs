@@ -1,11 +1,13 @@
 ﻿using UnityEngine;
 
-public class DamageSource : MonoBehaviour
+public abstract class DamageSource : MonoBehaviour
 {
     protected DamageType damageType;
 
     public delegate void OnKilledUnitHandler(DamageSource damageSource, Unit killedUnit);
     public event OnKilledUnitHandler OnKilledUnit;
+
+    public abstract void SetAffectedTeams(Team allyTeam);
 
     protected void DamageUnit(Unit unitToDamage, float damage)
     {

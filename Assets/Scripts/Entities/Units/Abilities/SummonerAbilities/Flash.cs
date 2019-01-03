@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 public class Flash : GroundTargetedBlink
 {
@@ -20,6 +21,11 @@ public class Flash : GroundTargetedBlink
     protected override void SetResourcePaths()
     {
         abilitySpritePath = "Sprites/Characters/SummonerAbilities/Flash";
+    }
+
+    public override void SetAffectedTeams(Team allyTeam)
+    {
+        affectedTeams = new List<Team>();
     }
 
     public override void UseAbility(Vector3 destination)

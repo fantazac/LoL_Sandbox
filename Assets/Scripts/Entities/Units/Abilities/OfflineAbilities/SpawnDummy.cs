@@ -22,6 +22,11 @@ public abstract class SpawnDummy : GroundTargeted//GroundTargetedAoE
         IsEnabled = true;
     }
 
+    public override void SetAffectedTeams(Team allyTeam)
+    {
+        affectedTeams = new List<Team>();
+    }
+
     protected override void Start()
     {
         if (!StaticObjects.OnlineMode)

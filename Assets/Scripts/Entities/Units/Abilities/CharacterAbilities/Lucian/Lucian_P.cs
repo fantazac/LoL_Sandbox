@@ -1,4 +1,7 @@
-﻿public class Lucian_P : PassiveTargeted
+﻿using System;
+using System.Collections.Generic;
+
+public class Lucian_P : PassiveTargeted
 {
     private Ability lucianE;
     private float cooldownReducedOnPassiveHitOnCharacter;
@@ -10,7 +13,7 @@
         abilityName = "Lightslinger";
 
         abilityType = AbilityType.PASSIVE;
-        affectedUnitType = AbilityAffectedUnitType.ENEMIES;
+        affectedUnitTypes = new List<Type>() { typeof(Unit) };
         damageType = DamageType.PHYSICAL;
         effectType = AbilityEffectType.BASIC_ATTACK;
 
@@ -39,6 +42,11 @@
     protected override void SetResourcePaths()
     {
         abilitySpritePath = "Sprites/Characters/CharacterAbilities/Lucian/LucianP";
+    }
+
+    public override void SetAffectedTeams(Team allyTeam)
+    {
+        affectedTeams = TeamMethods.GetHostileTeams(allyTeam);
     }
 
     protected override void Start()

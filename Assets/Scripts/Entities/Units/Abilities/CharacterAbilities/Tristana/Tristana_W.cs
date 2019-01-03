@@ -1,4 +1,6 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Tristana_W : DirectionTargetedDash//TODO: GroundTargetedDash
@@ -10,7 +12,7 @@ public class Tristana_W : DirectionTargetedDash//TODO: GroundTargetedDash
         abilityName = "Rocket Jump";
 
         abilityType = AbilityType.DASH;
-        affectedUnitType = AbilityAffectedUnitType.ENEMIES;
+        affectedUnitTypes = new List<Type>() { typeof(Unit) };
         damageType = DamageType.MAGIC;
         effectType = AbilityEffectType.AREA_OF_EFFECT;
 
@@ -45,6 +47,11 @@ public class Tristana_W : DirectionTargetedDash//TODO: GroundTargetedDash
         base.ModifyValues();
     }
 
+    public override void SetAffectedTeams(Team allyTeam)
+    {
+        affectedTeams = TeamMethods.GetHostileTeams(allyTeam);
+    }
+
     protected override void Start()
     {
         base.Start();
@@ -77,10 +84,9 @@ public class Tristana_W : DirectionTargetedDash//TODO: GroundTargetedDash
         foreach (Collider collider in Physics.OverlapCapsule(groundPosition, groundPosition + Vector3.up * 5, effectRadius))
         {
             tempUnit = collider.GetComponentInParent<Unit>();
-            if (tempUnit != null && tempUnit.IsTargetable(affectedUnitType, champion.Team))
+            if (tempUnit != null && tempUnit.IsTargetable(affectedUnitTypes, affectedTeams))
             {
                 float damage = GetAbilityDamage(tempUnit);
-                Debug.Log(damage);
                 DamageUnit(tempUnit, damage);
                 AbilityHit(tempUnit, damage);
                 AbilityDebuffs[0].AddNewBuffToAffectedUnit(tempUnit);

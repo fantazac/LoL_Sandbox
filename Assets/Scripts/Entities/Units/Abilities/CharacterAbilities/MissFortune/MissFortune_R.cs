@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System;
+using System.Collections.Generic;
 
 public class MissFortune_R : DirectionTargetedProjectile
 {
@@ -13,7 +15,7 @@ public class MissFortune_R : DirectionTargetedProjectile
         abilityName = "Bullet Time";
 
         abilityType = AbilityType.SKILLSHOT;
-        affectedUnitType = AbilityAffectedUnitType.ENEMIES;
+        affectedUnitTypes = new List<Type>() { typeof(Unit) };
         effectType = AbilityEffectType.AREA_OF_EFFECT;
         damageType = DamageType.PHYSICAL;
 
@@ -46,6 +48,11 @@ public class MissFortune_R : DirectionTargetedProjectile
         abilitySpritePath = "Sprites/Characters/CharacterAbilities/MissFortune/MissFortuneR";
 
         projectilePrefabPath = "CharacterAbilitiesPrefabs/MissFortune/MissFortuneR";
+    }
+
+    public override void SetAffectedTeams(Team allyTeam)
+    {
+        affectedTeams = TeamMethods.GetHostileTeams(allyTeam);
     }
 
     protected override void Start()

@@ -1,4 +1,7 @@
-﻿public class MissFortune_P : PassiveTargeted
+﻿using System;
+using System.Collections.Generic;
+
+public class MissFortune_P : PassiveTargeted
 {
     private Unit lastUnitHit;
 
@@ -10,7 +13,7 @@
         abilityName = "Love Tap";
 
         abilityType = AbilityType.PASSIVE;
-        affectedUnitType = AbilityAffectedUnitType.ENEMIES;
+        affectedUnitTypes = new List<Type>() { typeof(Unit) };
         damageType = DamageType.PHYSICAL;
         effectType = AbilityEffectType.SINGLE_TARGET;
 
@@ -26,6 +29,11 @@
     protected override void SetResourcePaths()
     {
         abilitySpritePath = "Sprites/Characters/CharacterAbilities/MissFortune/MissFortuneP";
+    }
+
+    public override void SetAffectedTeams(Team allyTeam)
+    {
+        affectedTeams = TeamMethods.GetHostileTeams(allyTeam);
     }
 
     protected override void Start()

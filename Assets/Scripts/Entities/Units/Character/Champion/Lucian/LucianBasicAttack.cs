@@ -80,7 +80,7 @@ public class LucianBasicAttack : EmpoweredBasicAttack
 
             ProjectileUnitTargeted projectile2 = (Instantiate(empoweredBasicAttackPrefab, transform.position, transform.rotation)).GetComponent<ProjectileUnitTargeted>();
             projectile2.transform.LookAt(target.transform);
-            projectile2.ShootProjectile(unit.Team, target, speed, AttackIsCritical.CheckIfAttackIsCritical(unit.StatsManager.CriticalStrikeChance.GetTotal()));
+            projectile2.ShootProjectile(affectedTeams, target, speed, AttackIsCritical.CheckIfAttackIsCritical(unit.StatsManager.CriticalStrikeChance.GetTotal()));
             projectile2.OnAbilityEffectHit += PassiveBasicAttackHit;
         }
 

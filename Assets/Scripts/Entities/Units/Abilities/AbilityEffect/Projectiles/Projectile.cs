@@ -1,4 +1,6 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public abstract class Projectile : AbilityEffect
@@ -13,10 +15,10 @@ public abstract class Projectile : AbilityEffect
     public delegate void OnProjectileReachedEndHandler(Projectile projectile);
     public event OnProjectileReachedEndHandler OnProjectileReachedEnd;
 
-    public void ShootProjectile(Team castingUnitTeam, AbilityAffectedUnitType affectedUnitType, float speed, float range, bool isACriticalStrike = false, bool willMiss = false)
+    public void ShootProjectile(List<Team> affectedTeams, List<Type> affectedUnitTypes, float speed, float range, bool isACriticalStrike = false, bool willMiss = false)
     {
-        this.castingUnitTeam = castingUnitTeam;
-        this.affectedUnitType = affectedUnitType;
+        this.affectedTeams = affectedTeams;
+        this.affectedUnitTypes = affectedUnitTypes;
         this.speed = speed;
         this.range = range;
         this.isACriticalStrike = isACriticalStrike;

@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System;
+using System.Collections.Generic;
+using UnityEngine;
 
 public class CC_Q : SelfTargeted
 {
@@ -7,7 +9,7 @@ public class CC_Q : SelfTargeted
         abilityName = "CC BTW";
 
         abilityType = AbilityType.PASSIVE;
-        affectedUnitType = AbilityAffectedUnitType.ENEMIES;
+        affectedUnitTypes = new List<Type>() { typeof(Unit) };
         damageType = DamageType.PHYSICAL;
         effectType = AbilityEffectType.SINGLE_TARGET;
 
@@ -32,6 +34,11 @@ public class CC_Q : SelfTargeted
     protected override void SetResourcePaths()
     {
         abilitySpritePath = "Sprites/Characters/CharacterAbilities/CC/CCQ";
+    }
+
+    public override void SetAffectedTeams(Team allyTeam)
+    {
+        affectedTeams = TeamMethods.GetHostileTeams(allyTeam);
     }
 
     protected override void Start()

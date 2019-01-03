@@ -1,6 +1,7 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
-public class Tristana_Q : SelfTargeted
+public class Tristana_Q : AutoTargeted
 {
     protected Tristana_Q()
     {
@@ -21,11 +22,16 @@ public class Tristana_Q : SelfTargeted
         abilitySpritePath = "Sprites/Characters/CharacterAbilities/Tristana/TristanaQ";
     }
 
+    public override void SetAffectedTeams(Team allyTeam)
+    {
+        affectedTeams = new List<Team>();
+    }
+
     protected override void Start()
     {
         base.Start();
 
-        AbilityBuffs = new AbilityBuff[] { gameObject.AddComponent<Tristana_Q_Buff>()};
+        AbilityBuffs = new AbilityBuff[] { gameObject.AddComponent<Tristana_Q_Buff>() };
     }
 
     public override void UseAbility(Vector3 destination)

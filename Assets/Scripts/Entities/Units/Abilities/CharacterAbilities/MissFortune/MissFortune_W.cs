@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-public class MissFortune_W : SelfTargeted
+public class MissFortune_W : AutoTargeted
 {
     private float baseCooldownReductionOnPassiveHit;
     private float cooldownReductionOnPassiveHit;

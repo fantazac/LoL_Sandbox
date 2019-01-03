@@ -1,6 +1,7 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
-public class CC_W : SelfTargeted
+public class CC_W : AutoTargeted
 {
     protected CC_W()
     {
@@ -19,6 +20,11 @@ public class CC_W : SelfTargeted
     protected override void SetResourcePaths()
     {
         abilitySpritePath = "Sprites/Characters/CharacterAbilities/CC/CCW";
+    }
+
+    public override void SetAffectedTeams(Team allyTeam)
+    {
+        affectedTeams = new List<Team>();
     }
 
     protected override void Start()

@@ -164,6 +164,21 @@ public class AbilityManager : MonoBehaviour
         }
     }
 
+    public void SeAffectedTeamsForAbilities(Team team)
+    {
+        SetTeamsForAbilitiesFromAbilityCategory(CharacterAbilities, team);
+        SetTeamsForAbilitiesFromAbilityCategory(PassiveCharacterAbilities, team);
+        SetTeamsForAbilitiesFromAbilityCategory(SummonerAbilities, team);
+    }
+
+    private void SetTeamsForAbilitiesFromAbilityCategory(Ability[] abilities, Team team)
+    {
+        foreach (Ability ability in abilities)
+        {
+            ability.SetAffectedTeams(team);
+        }
+    }
+
     protected void SendToServer_Ability_Destination(AbilityCategory abilityCategory, int abilityId, Vector3 destination)
     {
         champion.PhotonView.RPC("ReceiveFromServer_Ability_Destination", PhotonTargets.AllViaServer, abilityCategory, abilityId, destination);
@@ -181,16 +196,16 @@ public class AbilityManager : MonoBehaviour
 
     protected void SendToServer_Ability_Unit(AbilityCategory abilityCategory, int abilityId, Unit target)
     {
-        champion.PhotonView.RPC("ReceiveFromServer_Ability_Unit", PhotonTargets.AllViaServer, abilityCategory, abilityId, target.ID, target.UnitType);
+        champion.PhotonView.RPC("ReceiveFromServer_Ability_Unit", PhotonTargets.AllViaServer, abilityCategory, abilityId, target.ID);
     }
 
     [PunRPC]
-    protected void ReceiveFromServer_Ability_Unit(AbilityCategory abilityCategory, int abilityId, int unitId, UnitType unitType)
+    protected void ReceiveFromServer_Ability_Unit(AbilityCategory abilityCategory, int abilityId, int unitId)
     {
         Ability ability = GetAbility(abilityCategory, abilityId);
         if (AbilityIsCastable(ability))
         {
-            UseUnitTargetedAbility(ability, FindTarget(unitId, unitType));
+            UseUnitTargetedAbility(ability, FindTarget(unitId));
         }
     }
 
@@ -233,33 +248,9 @@ public class AbilityManager : MonoBehaviour
         return ability;
     }
 
-    public Unit FindTarget(int unitId, UnitType unitType) // TODO: when adding an UnitTypes
+    public Unit FindTarget(int unitId)
     {
-        Unit unit = null;
-        switch (unitType)
-        {
-            case UnitType.CHARACTER:
-                foreach (Character character in FindObjectsOfType<Character>())
-                {
-                    if (character.ID == unitId)
-                    {
-                        unit = character;
-                        break;
-                    }
-                }
-                break;
-                /*case UnitType.MINION:
-                foreach (Minion minion in FindObjectsOfType<Minion>())
-                {
-                    if (minion.ID == unitId)
-                    {
-                        unit = minion;
-                        break;
-                    }
-                }
-                break;*/
-        }
-        return unit;
+        return StaticObjects.Units[unitId];
     }
 
     public void LevelUpAbility(AbilityCategory abilityCategory, int abilityId)

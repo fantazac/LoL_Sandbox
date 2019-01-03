@@ -49,16 +49,12 @@ public abstract class Champion : Character
 
         if (StaticObjects.OnlineMode && PhotonView.isMine)
         {
-            if (PhotonNetwork.player.GetTeam() == PunTeams.Team.blue)
-            {
-                Team = Team.BLUE;
-            }
-            else
-            {
-                Team = Team.RED;
-            }
-            ID = PhotonNetwork.player.ID;
+            SetTeamAndID(PhotonNetwork.player.GetTeam() == PunTeams.Team.blue ? Team.BLUE : Team.RED, PhotonNetwork.player.ID);
             SendToServer_TeamAndID();
+        }
+        else if (!StaticObjects.OnlineMode)
+        {
+            SetTeamAndID(Team.BLUE, 10);
         }
     }
 
@@ -111,8 +107,7 @@ public abstract class Champion : Character
             sentConnectionInfoRequest = false;
             transform.position = position;
             transform.rotation = rotation;
-            Team = team;
-            ID = characterId;
+            SetTeamAndID(team, characterId);
             LevelManager.SetLevelFromLoad(characterLevel);
             AbilityManager.SetAbilityLevelsFromLoad(characterAbilityLevels);
         }
@@ -126,12 +121,19 @@ public abstract class Champion : Character
     [PunRPC]
     protected void ReceiveFromServer_TeamAndID(Team team, int characterId)
     {
-        Team = team;
-        ID = characterId;
+        SetTeamAndID(team, characterId);
     }
 
     protected override MovementManager GetMovementManager()
     {
         return ChampionMovementManager;
+    }
+
+    protected override void SetTeamAndID(Team team, int id)
+    {
+        base.SetTeamAndID(team, id);
+
+        AbilityManager.SeAffectedTeamsForAbilities(team);
+        AutoAttackManager.SetAffectedTeams(team);
     }
 }

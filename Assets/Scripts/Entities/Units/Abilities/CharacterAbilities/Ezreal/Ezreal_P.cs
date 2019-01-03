@@ -1,4 +1,6 @@
-﻿public class Ezreal_P : PassiveTargeted
+﻿using System.Collections.Generic;
+
+public class Ezreal_P : PassiveTargeted
 {
     protected Ezreal_P()
     {
@@ -14,6 +16,11 @@
     protected override void SetResourcePaths()
     {
         abilitySpritePath = "Sprites/Characters/CharacterAbilities/Ezreal/EzrealP";
+    }
+
+    public override void SetAffectedTeams(Team allyTeam)
+    {
+        affectedTeams = new List<Team>();
     }
 
     protected override void Start()

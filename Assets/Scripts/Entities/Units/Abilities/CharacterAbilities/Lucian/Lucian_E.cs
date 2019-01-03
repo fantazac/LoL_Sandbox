@@ -1,4 +1,6 @@
-﻿public class Lucian_E : DirectionTargetedDash
+﻿using System.Collections.Generic;
+
+public class Lucian_E : DirectionTargetedDash
 {
     protected Lucian_E()
     {
@@ -25,5 +27,10 @@
     protected override void SetResourcePaths()
     {
         abilitySpritePath = "Sprites/Characters/CharacterAbilities/Lucian/LucianE";
+    }
+
+    public override void SetAffectedTeams(Team allyTeam)
+    {
+        affectedTeams = new List<Team>();
     }
 }

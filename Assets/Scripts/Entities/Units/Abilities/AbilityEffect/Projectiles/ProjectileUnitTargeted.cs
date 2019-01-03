@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class ProjectileUnitTargeted : Projectile
@@ -8,11 +9,11 @@ public class ProjectileUnitTargeted : Projectile
 
     protected bool alreadyHitATarget;//This is to prevent OnTriggerEnter to cast multiple times if multiple targets enter the collider at the same time
 
-    public void ShootProjectile(Team castingUnitTeam, Unit target, float speed, bool isACriticalStrike = false, bool willMiss = false)
+    public void ShootProjectile(List<Team> affectedTeams, Unit target, float speed, bool isACriticalStrike = false, bool willMiss = false)
     {
         if (target != null)
         {
-            this.castingUnitTeam = castingUnitTeam;
+            this.affectedTeams = affectedTeams;
             this.target = target;
             this.speed = speed;
             this.isACriticalStrike = isACriticalStrike;

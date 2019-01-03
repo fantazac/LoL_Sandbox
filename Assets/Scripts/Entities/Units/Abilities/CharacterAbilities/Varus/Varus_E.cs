@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -20,7 +21,7 @@ public class Varus_E : GroundTargetedAoE //TODO: Shoot invisible projectile and 
         abilityName = "Hail of Arrows";
 
         abilityType = AbilityType.AREA_OF_EFFECT;
-        affectedUnitType = AbilityAffectedUnitType.ENEMIES;
+        affectedUnitTypes = new List<Type>() { typeof(Unit) };
         damageType = DamageType.PHYSICAL;
         effectType = AbilityEffectType.AREA_OF_EFFECT;
 
@@ -62,6 +63,11 @@ public class Varus_E : GroundTargetedAoE //TODO: Shoot invisible projectile and 
         base.ModifyValues();
     }
 
+    public override void SetAffectedTeams(Team allyTeam)
+    {
+        affectedTeams = TeamMethods.GetHostileTeams(allyTeam);
+    }
+
     protected override void Start()
     {
         base.Start();
@@ -82,7 +88,7 @@ public class Varus_E : GroundTargetedAoE //TODO: Shoot invisible projectile and 
         champion.OrientationManager.RotateCharacterInstantly(destinationOnCast);
 
         AreaOfEffectGround areaOfEffect = (Instantiate(areaOfEffectPrefab, Vector3.right * destinationOnCast.x + Vector3.forward * destinationOnCast.z, Quaternion.identity)).GetComponent<AreaOfEffectGround>();
-        areaOfEffect.CreateAreaOfEffect(champion.Team, affectedUnitType, tickDelay, totalTicks, radius, delayActivation);
+        areaOfEffect.CreateAreaOfEffect(affectedTeams, affectedUnitTypes, tickDelay, totalTicks, radius, delayActivation);
         areaOfEffect.OnAbilityEffectGroundHitOnSpawn += OnAbilityEffectGroundHitOnSpawn;
         areaOfEffect.OnAbilityEffectGroundHit += OnAbilityEffectGroundHit;
         areaOfEffect.ActivateAreaOfEffect();

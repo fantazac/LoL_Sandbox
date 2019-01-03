@@ -1,4 +1,6 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class AutoAttackManager : MonoBehaviour
@@ -10,21 +12,26 @@ public class AutoAttackManager : MonoBehaviour
     private IEnumerator currentAutoAttackCoroutine;
 
     private bool autoAttackEnabled;
-    private AbilityAffectedUnitType affectedUnitType;
+    private List<Team> affectedTeams;
+    private List<Type> affectedUnitTypes;
 
     private AutoAttackManager()
     {
         autoAttackEnabled = true;
-        affectedUnitType = AbilityAffectedUnitType.ENEMIES;
+        affectedUnitTypes = new List<Type>() { typeof(Unit) };
 
         biggerAttackRange = 750 * StaticObjects.MultiplyingFactor;//TODO: try to figure out actual value
+    }
+
+    public void SetAffectedTeams(Team allyTeam)
+    {
+        affectedTeams = TeamMethods.GetEnemyTeams(allyTeam);
     }
 
     private void Start()
     {
         champion = GetComponent<Champion>();
         attackRange = champion.StatsManager.AttackRange;
-        EnableAutoAttack();
     }
 
     public void EnableAutoAttack(bool forceEnable = false)
@@ -78,7 +85,7 @@ public class AutoAttackManager : MonoBehaviour
                     foreach (Collider collider in Physics.OverlapCapsule(groundPosition, groundPosition + Vector3.up * 5, attackRange.GetTotal()))
                     {
                         Unit tempUnit = collider.GetComponentInParent<Unit>();
-                        if (tempUnit != null && tempUnit.IsTargetable(affectedUnitType, champion.Team))
+                        if (tempUnit != null && tempUnit.IsTargetable(affectedUnitTypes, affectedTeams))
                         {
                             float tempDistance = Vector3.Distance(tempUnit.transform.position, transform.position);
                             if (tempDistance < distance)
@@ -117,7 +124,7 @@ public class AutoAttackManager : MonoBehaviour
                 foreach (Collider collider in Physics.OverlapCapsule(groundPosition, groundPosition + Vector3.up * 5, biggerAttackRange))
                 {
                     Unit tempUnit = collider.GetComponentInParent<Unit>();
-                    if (tempUnit != null && tempUnit.IsTargetable(affectedUnitType, champion.Team))
+                    if (tempUnit != null && tempUnit.IsTargetable(affectedUnitTypes, affectedTeams))
                     {
                         float tempDistance = Vector3.Distance(tempUnit.transform.position, transform.position);
                         if (tempDistance < distance)

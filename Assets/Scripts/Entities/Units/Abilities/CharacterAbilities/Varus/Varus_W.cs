@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -24,7 +25,7 @@ public class Varus_W : PassiveTargeted
         abilityName = "Blighted Quiver";
 
         abilityType = AbilityType.PASSIVE;
-        affectedUnitType = AbilityAffectedUnitType.ENEMIES;
+        affectedUnitTypes = new List<Type>() { typeof(Unit) };
         damageType = DamageType.MAGIC;
         effectType = AbilityEffectType.SINGLE_TARGET;
 
@@ -58,6 +59,11 @@ public class Varus_W : PassiveTargeted
     {
         abilitySpritePath = "Sprites/Characters/CharacterAbilities/Varus/VarusW";
         abilityRecastSpritePath = "Sprites/Characters/CharacterAbilities/Varus/VarusW_Active";
+    }
+
+    public override void SetAffectedTeams(Team allyTeam)
+    {
+        affectedTeams = TeamMethods.GetHostileTeams(allyTeam);
     }
 
     protected override void Start()

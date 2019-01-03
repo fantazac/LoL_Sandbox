@@ -1,4 +1,4 @@
-﻿public enum AbilityAffectedUnitType
+﻿/*public enum AbilityAffectedUnitType
 {
     //Nothing for abilities that don't have affected units (ex. Lucian E), will need to see if it's a problem or not
 
@@ -41,4 +41,4 @@
     OBJECTIVES_AND_ENEMY_CHARACTERS,
 
     TERRAIN,
-}
+}*/

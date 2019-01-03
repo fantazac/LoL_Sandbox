@@ -24,6 +24,11 @@ public class Tristana_P : PassiveTargeted
         abilitySpritePath = "Sprites/Characters/CharacterAbilities/Tristana/TristanaP";
     }
 
+    public override void SetAffectedTeams(Team allyTeam)
+    {
+        affectedTeams = new List<Team>();
+    }
+
     protected override void Start()
     {
         base.Start();

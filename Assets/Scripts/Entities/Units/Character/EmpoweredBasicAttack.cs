@@ -46,7 +46,7 @@ public abstract class EmpoweredBasicAttack : BasicAttack
         ((Champion)unit).OrientationManager.StopTargetRotation();
 
         ProjectileUnitTargeted projectile = (Instantiate(basicAttackPrefab, transform.position, transform.rotation)).GetComponent<ProjectileUnitTargeted>();
-        projectile.ShootProjectile(unit.Team, target, speed, AttackIsCritical.CheckIfAttackIsCritical(unit.StatsManager.CriticalStrikeChance.GetTotal()));
+        projectile.ShootProjectile(affectedTeams, target, speed, AttackIsCritical.CheckIfAttackIsCritical(unit.StatsManager.CriticalStrikeChance.GetTotal()));
         if (empoweringAbilityWasActiveOnBasicAttackCast)
         {
             projectile.OnAbilityEffectHit += BasicAttackHit;

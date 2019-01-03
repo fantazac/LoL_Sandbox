@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -16,10 +17,10 @@ public class AreaOfEffectGround : AbilityEffect
     public delegate void OnAbilityEffectGroundHitHandler(AbilityEffect abilityEffect, List<Unit> previouslyAffectedUnits, List<Unit> affectedUnits);
     public event OnAbilityEffectGroundHitHandler OnAbilityEffectGroundHit;
 
-    public void CreateAreaOfEffect(Team castingUnitTeam, AbilityAffectedUnitType affectedUnitType, WaitForSeconds delayPerTick, int numberOfTicks, float radius, WaitForSeconds delayActivation = null)
+    public void CreateAreaOfEffect(List<Team> affectedTeams, List<Type> affectedUnitTypes, WaitForSeconds delayPerTick, int numberOfTicks, float radius, WaitForSeconds delayActivation = null)
     {
-        this.castingUnitTeam = castingUnitTeam;
-        this.affectedUnitType = affectedUnitType;
+        this.affectedTeams = affectedTeams;
+        this.affectedUnitTypes = affectedUnitTypes;
         this.delayPerTick = delayPerTick;
         this.numberOfTicks = numberOfTicks;
         this.radius = radius;
@@ -91,6 +92,6 @@ public class AreaOfEffectGround : AbilityEffect
 
     protected override bool CanAffectTarget(Unit unitHit)
     {
-        return unitHit.IsTargetable(affectedUnitType, castingUnitTeam);
+        return unitHit.IsTargetable(affectedUnitTypes, affectedTeams);
     }
 }

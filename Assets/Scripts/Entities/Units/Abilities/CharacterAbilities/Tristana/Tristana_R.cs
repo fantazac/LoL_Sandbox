@@ -1,4 +1,6 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Tristana_R : UnitTargetedProjectile
@@ -10,7 +12,7 @@ public class Tristana_R : UnitTargetedProjectile
         abilityName = "Buster Shot";
 
         abilityType = AbilityType.SKILLSHOT;
-        affectedUnitType = AbilityAffectedUnitType.ENEMIES;
+        affectedUnitTypes = new List<Type>() { typeof(Unit) };
         effectType = AbilityEffectType.SINGLE_TARGET;
         damageType = DamageType.MAGIC;
 
@@ -48,6 +50,11 @@ public class Tristana_R : UnitTargetedProjectile
         base.ModifyValues();
     }
 
+    public override void SetAffectedTeams(Team allyTeam)
+    {
+        affectedTeams = TeamMethods.GetHostileTeams(allyTeam);
+    }
+
     protected override void Start()
     {
         base.Start();
@@ -66,7 +73,7 @@ public class Tristana_R : UnitTargetedProjectile
         champion.OrientationManager.RotateCharacterInstantly(destinationOnCast);
 
         ProjectileUnitTargeted projectile = (Instantiate(projectilePrefab, transform.position, transform.rotation)).GetComponent<ProjectileUnitTargeted>();
-        projectile.ShootProjectile(champion.Team, targetedUnit, speed);
+        projectile.ShootProjectile(affectedTeams, targetedUnit, speed);
         projectile.OnAbilityEffectHit += OnAbilityEffectHit;
 
         AbilityDebuffs[0].SetNormalizedVector(champion.transform.position, targetedUnit.transform.position);
@@ -89,7 +96,7 @@ public class Tristana_R : UnitTargetedProjectile
         foreach (Collider collider in Physics.OverlapCapsule(groundPosition, groundPosition + Vector3.up * 5, effectRadius))
         {
             tempUnit = collider.GetComponentInParent<Unit>();
-            if (tempUnit != null && tempUnit.IsTargetable(affectedUnitType, champion.Team))
+            if (tempUnit != null && tempUnit.IsTargetable(affectedUnitTypes, affectedTeams))
             {
                 AbilityDebuffs[0].AddNewBuffToAffectedUnit(tempUnit);
             }

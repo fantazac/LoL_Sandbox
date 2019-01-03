@@ -1,4 +1,4 @@
-﻿public static class TargetIsValid
+﻿/*public static class TargetIsValid
 {
     private static Team castingUnitTeam;
 
@@ -220,4 +220,4 @@
     {
         return unitType == UnitType.TERRAIN;
     }
-}
+}*/

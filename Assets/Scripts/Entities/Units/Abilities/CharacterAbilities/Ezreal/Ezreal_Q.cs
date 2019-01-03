@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System;
+using System.Collections.Generic;
+using UnityEngine;
 
 public class Ezreal_Q : DirectionTargetedProjectile
 {
@@ -9,7 +11,7 @@ public class Ezreal_Q : DirectionTargetedProjectile
         abilityName = "Mystic Shot";
 
         abilityType = AbilityType.SKILLSHOT;
-        affectedUnitType = AbilityAffectedUnitType.ENEMIES;
+        affectedUnitTypes = new List<Type>() { typeof(Unit) };
         effectType = AbilityEffectType.SINGLE_TARGET;
         damageType = DamageType.PHYSICAL;
 
@@ -40,6 +42,11 @@ public class Ezreal_Q : DirectionTargetedProjectile
         abilitySpritePath = "Sprites/Characters/CharacterAbilities/Ezreal/EzrealQ";
 
         projectilePrefabPath = "CharacterAbilitiesPrefabs/Ezreal/EzrealQ";
+    }
+
+    public override void SetAffectedTeams(Team allyTeam)
+    {
+        affectedTeams = TeamMethods.GetHostileTeams(allyTeam);
     }
 
     protected override void OnProjectileHit(AbilityEffect projectile, Unit unitHit, bool isACriticalStrike, bool willMiss)

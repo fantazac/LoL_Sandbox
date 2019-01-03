@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -15,7 +16,7 @@ public class MissFortune_E : GroundTargetedAoE
         abilityName = "Make It Rain";
 
         abilityType = AbilityType.AREA_OF_EFFECT;
-        affectedUnitType = AbilityAffectedUnitType.ENEMIES;
+        affectedUnitTypes = new List<Type>() { typeof(Unit) };
         damageType = DamageType.MAGIC;
         effectType = AbilityEffectType.AREA_OF_EFFECT;
 
@@ -54,6 +55,11 @@ public class MissFortune_E : GroundTargetedAoE
         base.ModifyValues();
     }
 
+    public override void SetAffectedTeams(Team allyTeam)
+    {
+        affectedTeams = TeamMethods.GetHostileTeams(allyTeam);
+    }
+
     protected override void Start()
     {
         base.Start();
@@ -72,7 +78,7 @@ public class MissFortune_E : GroundTargetedAoE
         champion.OrientationManager.RotateCharacterInstantly(destinationOnCast);
 
         AreaOfEffectGround areaOfEffect = (Instantiate(areaOfEffectPrefab, Vector3.right * destinationOnCast.x + Vector3.forward * destinationOnCast.z, Quaternion.identity)).GetComponent<AreaOfEffectGround>();
-        areaOfEffect.CreateAreaOfEffect(champion.Team, affectedUnitType, tickDelay, totalTicks, radius);
+        areaOfEffect.CreateAreaOfEffect(affectedTeams, affectedUnitTypes, tickDelay, totalTicks, radius);
         areaOfEffect.OnAbilityEffectGroundHit += OnAbilityEffectGroundHit;
         areaOfEffect.ActivateAreaOfEffect();
 

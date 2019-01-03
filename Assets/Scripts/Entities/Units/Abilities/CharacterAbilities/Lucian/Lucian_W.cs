@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System;
+using System.Collections.Generic;
+using UnityEngine;
 
 public class Lucian_W : DirectionTargetedProjectile
 {
@@ -12,7 +14,7 @@ public class Lucian_W : DirectionTargetedProjectile
         abilityName = "Ardent Blaze";
 
         abilityType = AbilityType.SKILLSHOT;
-        affectedUnitType = AbilityAffectedUnitType.ENEMIES;
+        affectedUnitTypes = new List<Type>() { typeof(Unit) };
         effectType = AbilityEffectType.SINGLE_TARGET;
         damageType = DamageType.MAGIC;
 
@@ -49,6 +51,11 @@ public class Lucian_W : DirectionTargetedProjectile
         explosionAreaOfEffectPrefab = Resources.Load<GameObject>(explosionAreaOfEffectPrefabPath);
     }
 
+    public override void SetAffectedTeams(Team allyTeam)
+    {
+        affectedTeams = TeamMethods.GetHostileTeams(allyTeam);
+    }
+
     protected override void Start()
     {
         base.Start();
@@ -68,7 +75,7 @@ public class Lucian_W : DirectionTargetedProjectile
     protected override void OnProjectileReachedEnd(Projectile projectile)
     {
         AreaOfEffect aoe = Instantiate(explosionAreaOfEffectPrefab, projectile.transform.position, projectile.transform.rotation).GetComponent<AreaOfEffect>();
-        aoe.CreateAreaOfEffect(projectile.UnitsAlreadyHit, champion.Team, affectedUnitType, durationAoE, true);
+        aoe.CreateAreaOfEffect(projectile.UnitsAlreadyHit, affectedTeams, affectedUnitTypes, durationAoE, true);
         aoe.ActivateAreaOfEffect();
         aoe.OnAbilityEffectHit += OnAreaOfEffectHit;
         Destroy(projectile.gameObject);

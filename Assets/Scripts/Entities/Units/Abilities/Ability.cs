@@ -1,12 +1,15 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public abstract class Ability : DamageSource
 {
     protected Champion champion;
 
-    protected AbilityAffectedUnitType affectedUnitType;//TODO: make this an array/list to support multiple types (ex. Tristana_E targetting enemies and turrets)
+    protected List<Team> affectedTeams;
+    protected List<Type> affectedUnitTypes;
     protected AbilityEffectType effectType;
     protected AbilityType abilityType;
 

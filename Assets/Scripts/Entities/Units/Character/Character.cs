@@ -24,8 +24,6 @@ public abstract class Character : Unit
             StaticObjects.Champion.HealthBarManager.SetupHealthBarForCharacter(this);
         }
 
-        UnitType = UnitType.CHARACTER;
-
         base.Start();
     }
 
