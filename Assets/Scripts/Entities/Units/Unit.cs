@@ -81,4 +81,9 @@ public abstract class Unit : Entity
             BasicAttack.SetAffectedTeams(team);
         }
     }
+
+    protected void OnDisable()
+    {
+        StaticObjects.Units.Remove(ID);
+    }
 }
