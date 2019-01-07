@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using System;
 
 public abstract class BasicAttack : DamageSource
 {
@@ -177,7 +176,7 @@ public abstract class BasicAttack : DamageSource
         projectile.ShootProjectile(affectedTeams, target, speed, AttackIsCritical.CheckIfAttackIsCritical(unit.StatsManager.CriticalStrikeChance.GetTotal()), unit.StatusManager.IsBlinded());
         projectile.OnAbilityEffectHit += BasicAttackHit;
 
-        if (unit is Character)
+        if (unit is Champion)
         {
             ((Champion)unit).OnAttackEffectsManager.ApplyOnAttackEffectsToUnitHit(target);
         }
