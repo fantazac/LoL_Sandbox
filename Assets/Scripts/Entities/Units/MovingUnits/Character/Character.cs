@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public abstract class Character : Unit
+public abstract class Character : MovingUnit
 {
     public string Name { get; protected set; }
 
@@ -27,8 +27,10 @@ public abstract class Character : Unit
         base.Start();
     }
 
-    protected void OnDestroy()
+    protected override void OnDestroy()
     {
+        base.OnDestroy();
+
         RemoveHealthBar();
     }
 

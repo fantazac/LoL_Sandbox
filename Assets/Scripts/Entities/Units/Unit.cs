@@ -17,7 +17,6 @@ public abstract class Unit : Entity
     public ShieldManager ShieldManager { get; private set; }
 
     public BasicAttack BasicAttack { get; protected set; }
-    public MovementManager MovementManager { get { return GetMovementManager(); } }
     public StatsManager StatsManager { get; protected set; }
     public StatusManager StatusManager { get; protected set; }
 
@@ -43,8 +42,6 @@ public abstract class Unit : Entity
         PhotonView = GetComponent<PhotonView>();
         HitboxObject.AddComponent<MouseEvent>();
     }
-
-    protected abstract MovementManager GetMovementManager();
 
     public bool IsTargetable(List<Type> affectedUnitTypes, List<Team> affectedTeams)
     {
@@ -82,7 +79,7 @@ public abstract class Unit : Entity
         }
     }
 
-    protected void OnDisable()
+    protected virtual void OnDestroy()
     {
         StaticObjects.Units.Remove(ID);
     }
