@@ -59,10 +59,12 @@ public class MouseManager : MonoBehaviour
         if (HoveredUnitIsAnEnemy(champion.Team))
         {
             champion.ChampionMovementManager.PrepareMovementTowardsTarget(HoveredUnit);
+            champion.InfoUIManager.SetSelectedUnit(HoveredUnit, true);
         }
         else if (closestEnemyUnit != null)
         {
             champion.ChampionMovementManager.PrepareMovementTowardsTarget(closestEnemyUnit);
+            champion.InfoUIManager.SetSelectedUnit(closestEnemyUnit, true);
         }
         else if (hitTerrain)
         {
