@@ -21,9 +21,8 @@ public abstract class Champion : Character
     public AbilityLevelUpUIManager AbilityLevelUpUIManager { get; private set; }
     public AbilityTimeBarUIManager AbilityTimeBarUIManager { get; private set; }
     public AbilityUIManager AbilityUIManager { get; private set; }
-    public BuffUIManager BuffUIManager { get; private set; }
-    public BuffUIManager DebuffUIManager { get; private set; }
     public HealthBarManager HealthBarManager { get; private set; }
+    public InfoUIManager InfoUIManager { get; private set; }
     public LevelUIManager LevelUIManager { get; private set; }
     public StatsUIManager StatsUIManager { get; private set; }
 
@@ -66,10 +65,10 @@ public abstract class Champion : Character
             AbilityTimeBarUIManager = transform.parent.GetComponentInChildren<AbilityTimeBarUIManager>();
             AbilityUIManager = transform.parent.GetComponentInChildren<AbilityUIManager>();
             BuffUIManager[] buffUIManagers = transform.parent.GetComponentsInChildren<BuffUIManager>();
-            BuffUIManager = buffUIManagers[0];
-            DebuffUIManager = buffUIManagers[1];
-            BuffManager.SetUIManagers(BuffUIManager, DebuffUIManager);
+            BuffManager.SetUIManagers(buffUIManagers[0], buffUIManagers[1]);
             HealthBarManager = transform.parent.GetComponentInChildren<HealthBarManager>();
+            InfoUIManager = transform.parent.GetComponentInChildren<InfoUIManager>();
+            InfoUIManager.gameObject.SetActive(false);
             LevelUIManager = transform.parent.GetComponentInChildren<LevelUIManager>();
             LevelUIManager.SetPortraitSprite(Resources.Load<Sprite>(championPortraitPath));
             LevelUIManager.SetLevel(LevelManager.Level);

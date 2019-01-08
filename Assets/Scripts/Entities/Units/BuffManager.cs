@@ -19,6 +19,20 @@ public class BuffManager : MonoBehaviour
     {
         this.buffUIManager = buffUIManager;
         this.debuffUIManager = debuffUIManager;
+        if (buffUIManager)
+        {
+            foreach (Buff buff in buffs)
+            {
+                buffUIManager.SetNewBuff(buff, buff.SourceAbilityBuff.GetBuffSprite());
+            }
+        }
+        if (debuffUIManager)
+        {
+            foreach (Buff debuff in debuffs)
+            {
+                debuffUIManager.SetNewBuff(debuff, debuff.SourceAbilityBuff.GetBuffSprite());
+            }
+        }
     }
 
     private void Update()
@@ -91,7 +105,7 @@ public class BuffManager : MonoBehaviour
     {
         if (selectedUIManager)
         {
-            selectedUIManager.RemoveExpiredBuff(buff);
+            selectedUIManager.ConsumeBuff(buff);
         }
         buff.RemoveBuff();
         buffsList.RemoveAt(position);

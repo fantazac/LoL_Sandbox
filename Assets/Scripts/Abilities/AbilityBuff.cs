@@ -153,4 +153,9 @@ public abstract class AbilityBuff : MonoBehaviour
     }
 
     protected abstract Buff CreateNewBuff(Unit affectedUnit);
+
+    public Sprite GetBuffSprite()
+    {
+        return buffSprite;
+    }
 }

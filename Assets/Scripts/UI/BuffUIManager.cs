@@ -7,19 +7,31 @@ public class BuffUIManager : MonoBehaviour
     [SerializeField]
     private GameObject buffOutlinePrefab;
 
+    private List<Buff> buffs;
     private Dictionary<Buff, GameObject> buffOutlines;
     private Dictionary<Buff, Image> darkImages;
     private Dictionary<Buff, Text> buffStacksTexts;
 
     private BuffUIManager()
     {
+        buffs = new List<Buff>();
         buffOutlines = new Dictionary<Buff, GameObject>();
         darkImages = new Dictionary<Buff, Image>();
         buffStacksTexts = new Dictionary<Buff, Text>();
     }
 
+    public void ResetBuffs()
+    {
+        for (int i = buffs.Count - 1; i >= 0; i--)
+        {
+            ConsumeBuff(buffs[i]);
+        }
+    }
+
     public void SetNewBuff(Buff buff, Sprite buffSprite)
     {
+        buffs.Add(buff);
+
         GameObject buffOutline = Instantiate(buffOutlinePrefab, new Vector3(), new Quaternion());
         buffOutline.transform.SetParent(transform, false);
         buffOutlines.Add(buff, buffOutline);
@@ -57,7 +69,7 @@ public class BuffUIManager : MonoBehaviour
         }
     }
 
-    public void RemoveExpiredBuff(Buff buff)
+    public void ConsumeBuff(Buff buff)
     {
         darkImages.Remove(buff);
         buffStacksTexts.Remove(buff);
@@ -65,5 +77,7 @@ public class BuffUIManager : MonoBehaviour
         GameObject expiredBuffOutline = buffOutlines[buff];
         buffOutlines.Remove(buff);
         Destroy(expiredBuffOutline);
+
+        buffs.Remove(buff);
     }
 }

@@ -16,6 +16,7 @@ public class MouseManager : MonoBehaviour
         champion = StaticObjects.Champion;
         if (champion.IsLocalChampion())
         {
+            champion.InputManager.OnLeftClick += PressedLeftClick;
             champion.InputManager.OnRightClick += PressedRightClick;
         }
     }
@@ -44,7 +45,10 @@ public class MouseManager : MonoBehaviour
 
     private void PressedLeftClick(Vector3 mousePosition)
     {
-        //TODO
+        if (champion.InfoUIManager)
+        {
+            champion.InfoUIManager.SetSelectedUnit(HoveredUnit != champion ? HoveredUnit : null);
+        }
     }
 
     private void PressedRightClick(Vector3 mousePosition)

@@ -78,7 +78,7 @@ public class Heal : SelfTargeted
             Vector3 mouseGroundPosition = Vector3.right * hit.point.x + Vector3.forward * hit.point.z;
             foreach (Collider collider in Physics.OverlapCapsule(mouseGroundPosition, mouseGroundPosition + Vector3.up * 5, MOUSE_RADIUS))
             {
-                tempCharacter = collider.GetComponent<Character>();
+                tempCharacter = collider.GetComponentInParent<Character>();
                 if (tempCharacter != null && tempCharacter != champion && tempCharacter.IsTargetable(affectedUnitTypes, affectedTeams))
                 {
                     tempDistance = Vector3.Distance(transform.position, tempCharacter.transform.position);
@@ -99,7 +99,7 @@ public class Heal : SelfTargeted
             Vector3 groundPosition = Vector3.right * transform.position.x + Vector3.forward * transform.position.z;
             foreach (Collider collider in Physics.OverlapCapsule(groundPosition, groundPosition + Vector3.up * 5, range))
             {
-                tempCharacter = collider.GetComponent<Character>();
+                tempCharacter = collider.GetComponentInParent<Character>();
                 if (tempCharacter != null && tempCharacter != champion && tempCharacter.IsTargetable(affectedUnitTypes, affectedTeams))
                 {
                     tempLowestHealth = tempCharacter.StatsManager.Health.GetCurrentValue();
