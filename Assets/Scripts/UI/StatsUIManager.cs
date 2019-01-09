@@ -20,7 +20,7 @@ public class StatsUIManager : MonoBehaviour
         StringBuilder statsText = new StringBuilder();
         if (!Input.GetKey(KeyCode.C))
         {
-            statsText.AppendFormat("HEALTH: {0} / {1}", characterStatsManager.Health.GetCurrentValue(), characterStatsManager.Health.GetTotal()).AppendLine();
+            /*statsText.AppendFormat("HEALTH: {0} / {1}", characterStatsManager.Health.GetCurrentValue(), characterStatsManager.Health.GetTotal()).AppendLine();
             statsText.AppendFormat("{0}: {1} / {2}", characterStatsManager.ResourceType, characterStatsManager.Resource.GetCurrentValue(), characterStatsManager.Resource.GetTotal()).AppendLine();
 
             statsText.AppendFormat("ATTACK DAMAGE: {0}", characterStatsManager.AttackDamage.GetTotal()).AppendLine();
@@ -50,7 +50,7 @@ public class StatsUIManager : MonoBehaviour
             statsText.AppendFormat("PHYSICAL DAMAGE RECEIVED MODIFIER: {0}%", characterStatsManager.PhysicalDamageReceivedModifier.GetTotal() * 100).AppendLine();
             statsText.AppendFormat("MAGIC DAMAGE RECEIVED MODIFIER: {0}%", characterStatsManager.MagicDamageReceivedModifier.GetTotal() * 100).AppendLine();
             statsText.AppendFormat("HEAL AND SHIELD POWER: {0}%", characterStatsManager.HealAndShieldPower.GetTotal() * 100).AppendLine();
-            statsText.AppendFormat("SLOW RESISTANCE: {0}%", characterStatsManager.SlowResistance.GetTotal() * 100).AppendLine();
+            statsText.AppendFormat("SLOW RESISTANCE: {0}%", characterStatsManager.SlowResistance.GetTotal() * 100).AppendLine();*/
         }
         else
         {
@@ -121,9 +121,10 @@ public class StatsUIManager : MonoBehaviour
                characterStatsManager.MagicDamageReceivedModifier.GetPercentMalus()).AppendLine();
             statsText.AppendFormat("HEAL AND SHIELD POWER: {0}%", characterStatsManager.HealAndShieldPower.GetTotal() * 100).AppendLine();
             statsText.AppendFormat("SLOW RESISTANCE: {0}%", characterStatsManager.SlowResistance.GetTotal() * 100).AppendLine();
+
+            GUILayout.Label(statsText.ToString());
+            GUILayout.Label("POSITION: " + transform.position.x + ", " + transform.position.y + ", " + transform.position.z);
+            GUILayout.Label("ROTATION: " + transform.rotation.x + ", " + transform.rotation.y + ", " + transform.rotation.z + ", " + transform.rotation.w);
         }
-        GUILayout.Label(statsText.ToString());
-        GUILayout.Label("POSITION: " + transform.position.x + ", " + transform.position.y + ", " + transform.position.z);
-        GUILayout.Label("ROTATION: " + transform.rotation.x + ", " + transform.rotation.y + ", " + transform.rotation.z + ", " + transform.rotation.w);
     }
 }

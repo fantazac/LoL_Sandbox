@@ -6,6 +6,8 @@ public class InfoUIManager : MonoBehaviour
     [SerializeField]
     private Image portraitImage;
     [SerializeField]
+    private Text levelText;
+    [SerializeField]
     private BuffUIManager buffUIManager;
     [SerializeField]
     private BuffUIManager debuffUIManager;

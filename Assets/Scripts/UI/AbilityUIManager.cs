@@ -54,7 +54,14 @@ public class AbilityUIManager : MonoBehaviour
 
         maxHealth = Mathf.CeilToInt(character.StatsManager.Health.GetTotal());
 
-        healthImage.sprite = Resources.Load<Sprite>("Sprites/UI/health_self");
+        if (StaticObjects.Champion.Team == character.Team)
+        {
+            healthImage.sprite = Resources.Load<Sprite>("Sprites/UI/health_self");
+        }
+        else
+        {
+            healthImage.sprite = Resources.Load<Sprite>("Sprites/UI/health_enemy");
+        }
 
         OnCurrentHealthChanged(maxHealth);
 
