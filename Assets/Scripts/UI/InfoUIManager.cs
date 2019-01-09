@@ -11,6 +11,8 @@ public class InfoUIManager : MonoBehaviour
     private BuffUIManager buffUIManager;
     [SerializeField]
     private BuffUIManager debuffUIManager;
+    [SerializeField]
+    private HealthUIManager healthUIManager;
 
     private Unit selectedUnit;
 
@@ -21,6 +23,7 @@ public class InfoUIManager : MonoBehaviour
             if (selectedUnit)
             {
                 selectedUnit.BuffManager.SetUIManagers(null, null);
+                healthUIManager.ResetHealthAndResource();
                 buffUIManager.ResetBuffs();
                 debuffUIManager.ResetBuffs();
             }
@@ -36,6 +39,7 @@ public class InfoUIManager : MonoBehaviour
             if (selectedUnit)
             {
                 portraitImage.sprite = toSelectUnit.PortraitSprite;
+                healthUIManager.SetHealthAndResource(selectedUnit);
                 selectedUnit.BuffManager.SetUIManagers(buffUIManager, debuffUIManager);
             }
             else

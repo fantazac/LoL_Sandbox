@@ -20,6 +20,7 @@ public abstract class Champion : Character
     public AbilityTimeBarUIManager AbilityTimeBarUIManager { get; private set; }
     public AbilityUIManager AbilityUIManager { get; private set; }
     public HealthBarManager HealthBarManager { get; private set; }
+    public HealthUIManager HealthUIManager { get; private set; }
     public InfoUIManager InfoUIManager { get; private set; }
     public LevelUIManager LevelUIManager { get; private set; }
     public StatsUIManager StatsUIManager { get; private set; }
@@ -62,10 +63,11 @@ public abstract class Champion : Character
             AbilityLevelUpUIManager = transform.parent.GetComponentInChildren<AbilityLevelUpUIManager>();
             AbilityTimeBarUIManager = transform.parent.GetComponentInChildren<AbilityTimeBarUIManager>();
             AbilityUIManager = transform.parent.GetComponentInChildren<AbilityUIManager>();
-            AbilityUIManager.SetHealthAndResource(this);
             BuffUIManager[] buffUIManagers = transform.parent.GetComponentsInChildren<BuffUIManager>();
             BuffManager.SetUIManagers(buffUIManagers[0], buffUIManagers[1]);
             HealthBarManager = transform.parent.GetComponentInChildren<HealthBarManager>();
+            HealthUIManager = transform.parent.GetComponentInChildren<HealthUIManager>();
+            HealthUIManager.SetHealthAndResource(this);
             InfoUIManager = transform.parent.GetComponentInChildren<InfoUIManager>();
             InfoUIManager.gameObject.SetActive(false);
             LevelUIManager = transform.parent.GetComponentInChildren<LevelUIManager>();
