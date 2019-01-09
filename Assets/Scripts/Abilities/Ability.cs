@@ -125,15 +125,15 @@ public abstract class Ability : DamageSource
             LoadSprites();
         }
         LoadPrefabs();
-    }
 
-    protected virtual void Start()
-    {
         HasCastTime = castTime > 0;
         HasChannelTime = channelTime > 0;
         HasReducedCooldownOnAbilityCancel = baseCooldownOnCancel > 0;
         UsesResource = resourceCost > 0;
+    }
 
+    protected virtual void Start()
+    {
         if (champion.AbilityUIManager && UsesResource)
         {
             champion.AbilityUIManager.SetAbilityCost(ID, resourceCost);

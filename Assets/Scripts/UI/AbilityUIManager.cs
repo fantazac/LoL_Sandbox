@@ -261,6 +261,6 @@ public class AbilityUIManager : MonoBehaviour
     {
         maxResource = (int)character.StatsManager.Resource.GetTotal();
         resourceImage.fillAmount = currentValue / maxResource;
-        resourceText.text = Mathf.CeilToInt(currentValue) + " / " + maxResource;
+        resourceText.text = (int)currentValue + " / " + maxResource;
     }
 }
