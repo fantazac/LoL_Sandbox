@@ -242,7 +242,10 @@ public class AbilityManager : MonoBehaviour
                 ability = SummonerAbilities[abilityId];
                 break;
             case AbilityCategory.OfflineAbility:
-                ability = OfflineAbilities[abilityId];
+                if (!StaticObjects.OnlineMode)
+                {
+                    ability = OfflineAbilities[abilityId];
+                }
                 break;
         }
         return ability;
@@ -343,7 +346,7 @@ public class AbilityManager : MonoBehaviour
 
     protected bool AbilityIsAvailable(Ability abilityToCast)
     {
-        return abilityToCast.IsEnabled && !abilityToCast.IsBlocked;
+        return abilityToCast && abilityToCast.IsEnabled && !abilityToCast.IsBlocked;
     }
 
     protected bool AbilityIsCastable(Ability abilityToCast)

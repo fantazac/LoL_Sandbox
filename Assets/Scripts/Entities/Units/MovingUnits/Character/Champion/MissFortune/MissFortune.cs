@@ -2,9 +2,12 @@
 {
     protected MissFortune()
     {
-        championPortraitPath = "Sprites/Characters/CharacterPortraits/MissFortune";
-
         Name = "Miss Fortune";
+    }
+
+    protected override void SetPortraitSpritePath()
+    {
+        portraitSpritePath = "Sprites/Portraits/Character/Champion/MissFortune";
     }
 
     protected override void InitCharacterProperties()

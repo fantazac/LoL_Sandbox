@@ -2,9 +2,12 @@
 {
     protected Ezreal()
     {
-        championPortraitPath = "Sprites/Characters/CharacterPortraits/Ezreal";
-
         Name = "Ezreal";
+    }
+
+    protected override void SetPortraitSpritePath()
+    {
+        portraitSpritePath = "Sprites/Portraits/Character/Champion/Ezreal";
     }
 
     protected override void InitCharacterProperties()

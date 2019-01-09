@@ -1,7 +1,10 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 
 public class InfoUIManager : MonoBehaviour
 {
+    [SerializeField]
+    private Image portraitImage;
     [SerializeField]
     private BuffUIManager buffUIManager;
     [SerializeField]
@@ -30,6 +33,7 @@ public class InfoUIManager : MonoBehaviour
 
             if (selectedUnit)
             {
+                portraitImage.sprite = toSelectUnit.PortraitSprite;
                 selectedUnit.BuffManager.SetUIManagers(buffUIManager, debuffUIManager);
             }
             else

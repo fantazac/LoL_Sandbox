@@ -4,9 +4,13 @@ using UnityEngine;
 
 public abstract class Unit : Entity
 {
+    protected string portraitSpritePath;
+
     public Team Team { get; private set; }
 
     public int ID { get; private set; }
+
+    public Sprite PortraitSprite { get; private set; }
 
     public BuffManager BuffManager { get; private set; }
     public DisplacementManager DisplacementManager { get; private set; }
@@ -22,8 +26,12 @@ public abstract class Unit : Entity
 
     public PhotonView PhotonView { get; private set; }
 
+    protected abstract void SetPortraitSpritePath();
+
     protected virtual void Awake()
     {
+        SetPortraitSpritePath();
+
         InitUnitProperties();
     }
 
@@ -31,6 +39,8 @@ public abstract class Unit : Entity
 
     protected virtual void InitUnitProperties()
     {
+        PortraitSprite = Resources.Load<Sprite>(portraitSpritePath);
+
         BuffManager = gameObject.AddComponent<BuffManager>();
         DisplacementManager = gameObject.AddComponent<DisplacementManager>();
         EffectSourceManager = gameObject.AddComponent<EffectSourceManager>();

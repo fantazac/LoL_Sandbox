@@ -1,4 +1,4 @@
-﻿public class Dummy : Character
+﻿public abstract class Dummy : Character
 {
     public DummyMovementManager DummyMovementManager { get; private set; }
 

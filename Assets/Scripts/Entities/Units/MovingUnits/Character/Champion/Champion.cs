@@ -4,8 +4,6 @@ public abstract class Champion : Character
 {
     protected bool sentConnectionInfoRequest = false;
 
-    protected string championPortraitPath;
-
     public AbilityEffectsManager AbilityEffectsManager { get; private set; }
     public AbilityManager AbilityManager { get; protected set; }
     public AutoAttackManager AutoAttackManager { get; private set; }
@@ -71,7 +69,7 @@ public abstract class Champion : Character
             InfoUIManager = transform.parent.GetComponentInChildren<InfoUIManager>();
             InfoUIManager.gameObject.SetActive(false);
             LevelUIManager = transform.parent.GetComponentInChildren<LevelUIManager>();
-            LevelUIManager.SetPortraitSprite(Resources.Load<Sprite>(championPortraitPath));
+            LevelUIManager.SetPortraitSprite(PortraitSprite);
             LevelUIManager.SetLevel(LevelManager.Level);
             StatsUIManager = gameObject.AddComponent<StatsUIManager>();
         }

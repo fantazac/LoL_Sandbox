@@ -2,9 +2,12 @@
 {
     protected CC()
     {
-        championPortraitPath = "Sprites/Characters/CharacterPortraits/CC";
-
         Name = "CC";
+    }
+
+    protected override void SetPortraitSpritePath()
+    {
+        portraitSpritePath = "Sprites/Portraits/Character/Champion/CC";
     }
 
     protected override void InitCharacterProperties()

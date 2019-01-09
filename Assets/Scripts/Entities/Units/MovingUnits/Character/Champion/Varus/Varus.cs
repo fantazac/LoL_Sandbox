@@ -2,9 +2,12 @@
 {
     protected Varus()
     {
-        championPortraitPath = "Sprites/Characters/CharacterPortraits/Varus";
-
         Name = "Varus";
+    }
+
+    protected override void SetPortraitSpritePath()
+    {
+        portraitSpritePath = "Sprites/Portraits/Character/Champion/Varus";
     }
 
     protected override void InitCharacterProperties()

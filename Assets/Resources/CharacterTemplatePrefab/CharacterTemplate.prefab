@@ -6624,10 +6624,10 @@ RectTransform:
   m_Father: {fileID: 2859121991201579041}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 48.5, y: -42.5}
+  m_SizeDelta: {x: 87, y: 75}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &648881436194384983
 CanvasRenderer:
@@ -6778,7 +6778,6 @@ GameObject:
   - component: {fileID: 2859121991201579041}
   - component: {fileID: 5806926687951273559}
   - component: {fileID: 2510599376374959687}
-  - component: {fileID: 2349156229034574822}
   - component: {fileID: 9138363227905553344}
   m_Layer: 5
   m_Name: InfoUI
@@ -6845,30 +6844,6 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
---- !u!114 &2349156229034574822
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5407860881032741274}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -2095666955, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Padding:
-    m_Left: 5
-    m_Right: 5
-    m_Top: 5
-    m_Bottom: 5
-  m_ChildAlignment: 0
-  m_StartCorner: 0
-  m_StartAxis: 0
-  m_CellSize: {x: 87, y: 75}
-  m_Spacing: {x: 5, y: 0}
-  m_Constraint: 1
-  m_ConstraintCount: 7
 --- !u!114 &9138363227905553344
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6881,6 +6856,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b503ea125fdcc814ab1458601f36f20e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  portraitImage: {fileID: 8899260428649828396}
   buffUIManager: {fileID: 6401103520618592402}
   debuffUIManager: {fileID: 3155377724337712803}
 --- !u!1 &6117626858379297248
@@ -7074,7 +7050,7 @@ GameObject:
   - component: {fileID: 5176798819065020870}
   - component: {fileID: 8899260428649828396}
   m_Layer: 5
-  m_Name: Info_Image
+  m_Name: Portrait
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7089,15 +7065,15 @@ RectTransform:
   m_GameObject: {fileID: 8591135743648619079}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.625, y: 1, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 2859121991201579041}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 97, y: -80}
+  m_SizeDelta: {x: 75, y: 75}
   m_Pivot: {x: 0, y: 0}
 --- !u!222 &5176798819065020870
 CanvasRenderer:
