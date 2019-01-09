@@ -14,7 +14,7 @@
         //knockupSpeed = 3;
         //knockupDestination = Vector3.up * knockupSpeed * buffDuration * 0.5f;
 
-        buffStatusEffect = StatusEffect.UNSTOPPABLE;
+        buffStatusEffect = StatusEffect.TAUNT;
     }
 
     protected override void SetSpritePaths()
@@ -25,7 +25,7 @@
     protected override void ApplyBuffEffect(Unit affectedUnit, Buff buff)
     {
         affectedUnit.StatusManager.AddStatusEffect(buffStatusEffect);
-        //affectedUnit.ForcedActionManager.SetupForcedAction(buffStatusEffect, this, character);
+        affectedUnit.ForcedActionManager.SetupForcedAction(buffStatusEffect, this, character);
         //affectedUnit.DisplacementManager.SetupDisplacement(knockupDestination, knockupSpeed, this, true);
         //affectedUnit.ShieldManager.AddNewShield(ShieldType.NORMAL, this, 200);
         //affectedUnit.ShieldManager.AddNewShield(ShieldType.MAGIC, this, 700);
@@ -35,7 +35,7 @@
     protected override void RemoveBuffEffect(Unit affectedUnit, Buff buff)
     {
         affectedUnit.StatusManager.RemoveStatusEffect(buffStatusEffect);
-        //affectedUnit.ForcedActionManager.StopCurrentForcedAction(this);
+        affectedUnit.ForcedActionManager.StopCurrentForcedAction(this);
         //affectedUnit.ShieldManager.RemoveShield(ShieldType.NORMAL, this);
         //affectedUnit.ShieldManager.RemoveShield(ShieldType.MAGIC, this);
         //affectedUnit.ShieldManager.RemoveShield(ShieldType.PHYSICAL, this);

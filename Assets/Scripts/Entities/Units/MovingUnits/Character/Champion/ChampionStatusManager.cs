@@ -79,7 +79,6 @@ public class ChampionStatusManager : StatusManager
 
         if (CanBlockAbilitiesOrBasicAttacks(count, blockBasicAbilitiesCount))
         {
-            Debug.Log(gameObject);
             champion.AbilityManager.BlockAllBasicAbilities();
         }
         else if (CanUnblockAbilitiesOrBasicAttacks(count, blockBasicAbilitiesCount))

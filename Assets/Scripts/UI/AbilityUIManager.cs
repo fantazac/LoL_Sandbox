@@ -21,6 +21,19 @@ public class AbilityUIManager : MonoBehaviour
     private GameObject[] abilityLevelPoints;
     [SerializeField]
     private GameObject abilityLevelPoint;
+    [SerializeField]
+    private Image healthImage;
+    [SerializeField]
+    private Image resourceImage;
+    [SerializeField]
+    private Text healthText;
+    [SerializeField]
+    private Text resourceText;
+
+    private Character character;
+
+    private int maxHealth;
+    private int maxResource;
 
     private Color abilityColorOnCooldown;
     private Color abilityColorOnCooldownForRecast;
@@ -31,6 +44,45 @@ public class AbilityUIManager : MonoBehaviour
         abilityColorOnCooldown = Color.gray;
         abilityColorOnCooldownForRecast = new Color(0.7f, 0.7f, 0.7f);
         abilityLevelPointColor = new Color(0.85f, 0.8f, 0.3f);
+    }
+
+    public void SetHealthAndResource(Character character)
+    {
+        this.character = character;
+
+        character.StatsManager.Health.OnCurrentResourceChanged += OnCurrentHealthChanged;
+
+        maxHealth = Mathf.CeilToInt(character.StatsManager.Health.GetTotal());
+
+        healthImage.sprite = Resources.Load<Sprite>("Sprites/UI/health_self");
+
+        OnCurrentHealthChanged(maxHealth);
+
+        if (character.StatsManager.ResourceType != ResourceType.NONE)
+        {
+            character.StatsManager.Resource.OnCurrentResourceChanged += OnCurrentResourceChanged;
+
+            maxResource = (int)character.StatsManager.Resource.GetTotal();
+
+            if (character.StatsManager.ResourceType == ResourceType.MANA)
+            {
+                resourceImage.color = new Color(57f / 255f, 170f / 255f, 222f / 255f);
+            }
+            else if (character.StatsManager.ResourceType == ResourceType.ENERGY)
+            {
+                resourceImage.color = new Color(234f / 255f, 221f / 255f, 90f / 255f);
+            }
+            else if (character.StatsManager.ResourceType == ResourceType.FURY)
+            {
+                resourceImage.color = new Color(244f / 255f, 4f / 255f, 13f / 255f);
+            }
+
+            OnCurrentResourceChanged(maxResource);
+        }
+        else
+        {
+            resourceImage.gameObject.SetActive(false);
+        }
     }
 
     public void SetAbilitySprite(AbilityCategory abilityCategory, int abilityId, Sprite abilitySprite)
@@ -196,5 +248,19 @@ public class AbilityUIManager : MonoBehaviour
         {
             abilityNotEnoughResourceObject.SetActive(!characterHasEnoughResourceToCastAbility);
         }
+    }
+
+    private void OnCurrentHealthChanged(float currentValue)
+    {
+        maxHealth = Mathf.CeilToInt(character.StatsManager.Health.GetTotal());
+        healthImage.fillAmount = currentValue / maxHealth;
+        healthText.text = Mathf.CeilToInt(currentValue) + " / " + maxHealth;
+    }
+
+    private void OnCurrentResourceChanged(float currentValue)
+    {
+        maxResource = (int)character.StatsManager.Resource.GetTotal();
+        resourceImage.fillAmount = currentValue / maxResource;
+        resourceText.text = Mathf.CeilToInt(currentValue) + " / " + maxResource;
     }
 }

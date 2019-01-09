@@ -64,6 +64,7 @@ public abstract class Champion : Character
             AbilityLevelUpUIManager = transform.parent.GetComponentInChildren<AbilityLevelUpUIManager>();
             AbilityTimeBarUIManager = transform.parent.GetComponentInChildren<AbilityTimeBarUIManager>();
             AbilityUIManager = transform.parent.GetComponentInChildren<AbilityUIManager>();
+            AbilityUIManager.SetHealthAndResource(this);
             BuffUIManager[] buffUIManagers = transform.parent.GetComponentsInChildren<BuffUIManager>();
             BuffManager.SetUIManagers(buffUIManagers[0], buffUIManagers[1]);
             HealthBarManager = transform.parent.GetComponentInChildren<HealthBarManager>();
