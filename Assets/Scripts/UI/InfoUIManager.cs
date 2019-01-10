@@ -29,8 +29,6 @@ public class InfoUIManager : MonoBehaviour
             }
             else
             {
-                buffUIManager.gameObject.SetActive(true);
-                debuffUIManager.gameObject.SetActive(true);
                 gameObject.SetActive(true);
             }
 
@@ -44,8 +42,6 @@ public class InfoUIManager : MonoBehaviour
             }
             else
             {
-                buffUIManager.gameObject.SetActive(false);
-                debuffUIManager.gameObject.SetActive(false);
                 gameObject.SetActive(false);
             }
         }
