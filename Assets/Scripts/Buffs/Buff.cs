@@ -1,7 +1,7 @@
 ﻿public class Buff
 {
     public AbilityBuff SourceAbilityBuff { get; private set; }
-    protected Unit affectedUnit;
+    protected readonly Unit affectedUnit;
 
     public float Duration { get; protected set; }
     public float DurationForUI { get; protected set; }
