@@ -14,7 +14,7 @@ public abstract class CharacterStatsManager : StatsManager
         delayRegeneration = new WaitForSeconds(regenerationInterval);
     }
 
-    protected override void InitializUnitStats(BaseStats baseStats)
+    protected override void InitializeUnitStats(BaseStats baseStats)
     {
         InitializeCharacterStats((CharacterBaseStats)baseStats);
     }

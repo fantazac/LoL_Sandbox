@@ -1,6 +1,4 @@
-﻿using UnityEngine;
-
-public class CC_Q_Debuff : AbilityBuff
+﻿public class CC_Q_Debuff : AbilityBuff
 {
     //private float knockupSpeed;
     //private Vector3 knockupDestination;

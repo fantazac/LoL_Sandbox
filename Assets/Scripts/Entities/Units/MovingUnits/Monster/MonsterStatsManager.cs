@@ -7,9 +7,9 @@
         base.Awake();
     }
 
-    protected override void InitializUnitStats(BaseStats baseStats)
+    protected override void InitializeUnitStats(BaseStats baseStats)
     {
-        base.InitializUnitStats(baseStats);
+        base.InitializeUnitStats(baseStats);
 
         //set extra monster stats
     }

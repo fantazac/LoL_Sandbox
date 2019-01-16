@@ -88,7 +88,7 @@ public class LucianBasicAttack : EmpoweredBasicAttack
         shootBasicAttackCoroutine = null;
     }
 
-    protected override void OnEmpoweredBasicAttackHit(Unit unitHit, bool isACriticalStrike)
+    protected override void EmpoweredBasicAttackHit(Unit unitHit, bool isACriticalStrike)
     {
         basicAttackEmpoweringAbility.UseAbility(unitHit);
     }

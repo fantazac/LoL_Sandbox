@@ -45,7 +45,7 @@ public abstract class EmpoweredBasicAttack : BasicAttack
         AttackIsInQueue = false;
         ((Champion)unit).OrientationManager.StopTargetRotation();
 
-        ProjectileUnitTargeted projectile = (Instantiate(basicAttackPrefab, transform.position, transform.rotation)).GetComponent<ProjectileUnitTargeted>();
+        var projectile = (Instantiate(basicAttackPrefab, transform.position, transform.rotation)).GetComponent<ProjectileUnitTargeted>();
         projectile.ShootProjectile(affectedTeams, target, speed, AttackIsCritical.CheckIfAttackIsCritical(unit.StatsManager.CriticalStrikeChance.GetTotal()));
         if (empoweringAbilityWasActiveOnBasicAttackCast)
         {
@@ -61,12 +61,13 @@ public abstract class EmpoweredBasicAttack : BasicAttack
     {
         if (!(unit.StatusManager.IsBlinded() || willMiss))
         {
-            OnEmpoweredBasicAttackHit(unitHit, isACriticalStrike);
+            EmpoweredBasicAttackHit(unitHit, isACriticalStrike);
         }
+
         base.BasicAttackHit(basicAttackProjectile, unitHit, isACriticalStrike, willMiss);
     }
 
-    protected virtual void OnEmpoweredBasicAttackHit(Unit unitHit, bool isACriticalStrike)
+    protected virtual void EmpoweredBasicAttackHit(Unit unitHit, bool isACriticalStrike)
     {
         basicAttackEmpoweringAbility.OnEmpoweredBasicAttackHit(unitHit, isACriticalStrike);
     }

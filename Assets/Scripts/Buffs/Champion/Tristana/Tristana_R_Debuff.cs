@@ -1,6 +1,4 @@
-﻿using UnityEngine;
-
-public class Tristana_R_Debuff : AbilityBuff
+﻿public class Tristana_R_Debuff : AbilityBuff
 {
     private float knockbackSpeed;
 

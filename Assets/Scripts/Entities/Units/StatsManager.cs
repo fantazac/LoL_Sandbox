@@ -5,7 +5,7 @@ public abstract class StatsManager : MonoBehaviour
     protected Unit unit;
 
     public Health Health { get; protected set; }
-    public Resource Resource { get; protected set; }//mana, energy, ...
+    public Resource Resource { get; protected set; } //mana, energy, ...
 
     public AttackDamage AttackDamage { get; protected set; }
     public AbilityPower AbilityPower { get; protected set; }
@@ -44,10 +44,10 @@ public abstract class StatsManager : MonoBehaviour
     {
         unit = GetComponent<Unit>();
 
-        InitializUnitStats(GetBaseStats());
+        InitializeUnitStats(GetBaseStats());
     }
 
-    protected virtual void InitializUnitStats(BaseStats baseStats)
+    protected virtual void InitializeUnitStats(BaseStats baseStats)
     {
         Health = new Health(baseStats.BaseHealth);
 
