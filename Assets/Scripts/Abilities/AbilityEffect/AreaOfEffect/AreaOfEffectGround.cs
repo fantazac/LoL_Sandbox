@@ -1,15 +1,17 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class AreaOfEffectGround : AbilityEffect
 {
-    protected int numberOfTicks;
-    protected WaitForSeconds delayPerTick;
-    protected float radius;
-    protected bool callEventOnSpawn;
-    protected WaitForSeconds delayActivation;
+    private MeshRenderer meshRenderer;
+
+    private int numberOfTicks;
+    private WaitForSeconds delayPerTick;
+    private float radius;
+    private WaitForSeconds delayActivation;
 
     public delegate void OnAbilityEffectGroundHitOnSpawnHandler(AbilityEffect abilityEffect, List<Unit> affectedUnits);
     public event OnAbilityEffectGroundHitOnSpawnHandler OnAbilityEffectGroundHitOnSpawn;
@@ -17,7 +19,13 @@ public class AreaOfEffectGround : AbilityEffect
     public delegate void OnAbilityEffectGroundHitHandler(AbilityEffect abilityEffect, List<Unit> previouslyAffectedUnits, List<Unit> affectedUnits);
     public event OnAbilityEffectGroundHitHandler OnAbilityEffectGroundHit;
 
-    public void CreateAreaOfEffect(List<Team> affectedTeams, List<Type> affectedUnitTypes, WaitForSeconds delayPerTick, int numberOfTicks, float radius, WaitForSeconds delayActivation = null)
+    private void Awake()
+    {
+        meshRenderer = GetComponent<MeshRenderer>();
+    }
+
+    public void CreateAreaOfEffect(List<Team> affectedTeams, List<Type> affectedUnitTypes, WaitForSeconds delayPerTick, int numberOfTicks, float radius,
+        WaitForSeconds delayActivation = null)
     {
         this.affectedTeams = affectedTeams;
         this.affectedUnitTypes = affectedUnitTypes;
@@ -36,58 +44,43 @@ public class AreaOfEffectGround : AbilityEffect
     {
         if (delayActivation != null)
         {
-            MeshRenderer meshRenderer = GetComponent<MeshRenderer>();
             meshRenderer.enabled = false;
+
             yield return delayActivation;
+
             meshRenderer.enabled = true;
         }
 
-        List<Unit> previouslyAffectedUnits = new List<Unit>();
+        OnAbilityEffectGroundHitOnSpawn?.Invoke(this, GetAffectedUnits());
 
-        if (OnAbilityEffectGroundHitOnSpawn != null)
-        {
-            OnAbilityEffectGroundHitOnSpawn(this, GetAffectedUnits());
-        }
+        List<Unit> previouslyAffectedUnits = new List<Unit>();
 
         for (int i = 0; i < numberOfTicks; i++)
         {
             yield return delayPerTick;
 
             List<Unit> affectedUnits = GetAffectedUnits();
-            if (OnAbilityEffectGroundHit != null)
-            {
-                OnAbilityEffectGroundHit(this, previouslyAffectedUnits, affectedUnits);
-            }
+            OnAbilityEffectGroundHit?.Invoke(this, previouslyAffectedUnits, affectedUnits);
 
             previouslyAffectedUnits = affectedUnits;
         }
 
         yield return delayPerTick;
 
-        if (OnAbilityEffectGroundHit != null)
-        {
-            OnAbilityEffectGroundHit(this, previouslyAffectedUnits, new List<Unit>());
-        }
+        OnAbilityEffectGroundHit?.Invoke(this, previouslyAffectedUnits, new List<Unit>());
 
         Destroy(gameObject);
     }
 
-    protected List<Unit> GetAffectedUnits()
+    private List<Unit> GetAffectedUnits()
     {
-        List<Unit> affectedUnits = new List<Unit>();
-
-        Unit unitInArea;
         Vector3 groundPosition = Vector3.right * transform.position.x + Vector3.forward * transform.position.z;
-        foreach (Collider collider in Physics.OverlapCapsule(groundPosition, groundPosition + Vector3.up * 5, radius))
-        {
-            unitInArea = GetUnitHit(collider);
-            if (unitInArea != null && CanAffectTarget(unitInArea))
-            {
-                affectedUnits.Add(unitInArea);
-            }
-        }
+        Vector3 highestPosition = groundPosition + Vector3.up * 5;
 
-        return affectedUnits;
+        return Physics.OverlapCapsule(groundPosition, highestPosition, radius)
+            .Select(GetUnitHit)
+            .Where(unitInArea => !unitInArea && CanAffectTarget(unitInArea))
+            .ToList();
     }
 
     protected override bool CanAffectTarget(Unit unitHit)

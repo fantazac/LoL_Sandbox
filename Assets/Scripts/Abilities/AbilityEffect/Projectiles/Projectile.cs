@@ -29,13 +29,8 @@ public abstract class Projectile : AbilityEffect
 
     protected void OnProjectileReachedEndOfRange()
     {
-        if (OnProjectileReachedEnd != null)
-        {
-            OnProjectileReachedEnd(this);
-        }
+        OnProjectileReachedEnd?.Invoke(this);
     }
-
-    public virtual void ProjectileEffect() { }
 
     protected override IEnumerator ActivateAbilityEffect()
     {

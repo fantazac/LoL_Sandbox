@@ -584,7 +584,7 @@ PlayerSettings:
   facebookStatus: 1
   facebookXfbml: 0
   facebookFrictionlessRequests: 1
-  apiCompatibilityLevel: 2
+  apiCompatibilityLevel: 6
   cloudProjectId: a30e34fe-172a-42dc-989d-2b13435ddbbd
   framebufferDepthMemorylessMode: 0
   projectName: LoL_Sandbox

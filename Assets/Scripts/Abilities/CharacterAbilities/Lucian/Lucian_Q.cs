@@ -67,7 +67,7 @@ public class Lucian_Q : UnitTargetedAoE
     {
         Quaternion currentRotation = transform.rotation;
         transform.LookAt(destinationOnCast);
-        SetPositionAndRotationOnCast(transform.position + (transform.forward * areaOfEffectPrefab.transform.localScale.z * 0.5f));
+        SetPositionAndRotationOnCast(transform.position + (transform.forward * areaOfEffectPrefab.transform.GetChild(0).localScale.z * 0.5f));
         transform.rotation = currentRotation;
         IsBeingCasted = true;
 
@@ -78,9 +78,9 @@ public class Lucian_Q : UnitTargetedAoE
         champion.OrientationManager.RotateCharacterInstantly(destinationOnCast);
 
         AreaOfEffect aoe = (Instantiate(areaOfEffectPrefab, positionOnCast, rotationOnCast)).GetComponent<AreaOfEffect>();
-        aoe.CreateAreaOfEffect(new List<Unit>(), affectedTeams, affectedUnitTypes, durationAoE);
-        aoe.ActivateAreaOfEffect();
+        aoe.CreateAreaOfEffect(affectedTeams, affectedUnitTypes, durationAoE);
         aoe.OnAbilityEffectHit += OnAbilityEffectHit;
+        aoe.ActivateAreaOfEffect();
 
         FinishAbilityCast();
     }

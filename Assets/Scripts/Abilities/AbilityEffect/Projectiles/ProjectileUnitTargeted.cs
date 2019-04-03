@@ -50,7 +50,7 @@ public class ProjectileUnitTargeted : Projectile
         Destroy(gameObject);
     }
 
-    protected override void OnTriggerEnter(Collider collider)
+    protected void OnTriggerEnter(Collider collider)
     {
         if (!alreadyHitATarget && collider == targetCollider)
         {

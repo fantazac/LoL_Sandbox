@@ -5,29 +5,15 @@ using UnityEngine;
 
 public class AreaOfEffect : AbilityEffect
 {
-    protected float duration;
+    private float duration;
+    private WaitForSeconds delayBeforeDestroy;
 
-    protected bool collidersInChildren;
-
-    public void CreateAreaOfEffect(List<Unit> unitsAlreadyHit, List<Team> affectedTeams, List<Type> affectedUnitTypes, float duration)
+    public void CreateAreaOfEffect(List<Team> affectedTeams, List<Type> affectedUnitTypes, float duration)
     {
-        UnitsAlreadyHit = unitsAlreadyHit;
         this.affectedTeams = affectedTeams;
         this.affectedUnitTypes = affectedUnitTypes;
         this.duration = duration;
-    }
-
-    public void CreateAreaOfEffect(List<Unit> unitsAlreadyHit, List<Team> affectedTeams, List<Type> affectedUnitTypes, float duration, bool collidersInChildren)
-    {
-        if (collidersInChildren)
-        {
-            this.collidersInChildren = collidersInChildren;
-            foreach (AreaOfEffectCollider aoeCollider in GetComponentsInChildren<AreaOfEffectCollider>())
-            {
-                aoeCollider.OnTriggerEnterInChild += OnTriggerEnterInChild;
-            }
-        }
-        CreateAreaOfEffect(unitsAlreadyHit, affectedTeams, affectedUnitTypes, duration);
+        delayBeforeDestroy = new WaitForSeconds(duration);
     }
 
     public void ActivateAreaOfEffect()
@@ -37,46 +23,30 @@ public class AreaOfEffect : AbilityEffect
 
     protected override IEnumerator ActivateAbilityEffect()
     {
-        float timeBeforeFrame = Time.deltaTime;
+        HitAffectedUnits();
 
-        yield return null;//2 frames
-        yield return null;
-
-        DisableColliders();
-
-        yield return new WaitForSeconds(duration - (Time.deltaTime - timeBeforeFrame));
+        yield return delayBeforeDestroy;
 
         Destroy(gameObject);
     }
 
-    protected void DisableColliders()
+    private void HitAffectedUnits()
     {
-        if (collidersInChildren)
+        Vector3 center = transform.position;
+        Quaternion rotation = transform.rotation;
+
+        for (int i = 0; i < transform.childCount; i++)
         {
-            foreach (Collider collider in GetComponentsInChildren<Collider>())
+            Vector3 halfExtents = transform.GetChild(i).localScale * 0.5f;
+            foreach (Collider other in Physics.OverlapBox(center, halfExtents, rotation))
             {
-                collider.enabled = false;
+                Unit unitHit = GetUnitHit(other);
+
+                if (!unitHit || !CanAffectTarget(unitHit)) continue;
+
+                UnitsAlreadyHit.Add(unitHit);
+                OnAbilityEffectHitTarget(unitHit);
             }
         }
-        else
-        {
-            GetComponent<Collider>().enabled = false;
-        }
-    }
-
-    protected override void OnTriggerEnter(Collider collider)
-    {
-        Unit unitHit = collider.GetComponentInParent<Unit>();
-
-        if (unitHit != null && CanAffectTarget(unitHit))
-        {
-            UnitsAlreadyHit.Add(unitHit);
-            OnAbilityEffectHitTarget(unitHit);
-        }
-    }
-
-    protected void OnTriggerEnterInChild(Collider collider)
-    {
-        OnTriggerEnter(collider);
     }
 }

@@ -68,16 +68,16 @@ public class Lucian_W : DirectionTargetedProjectile
 
     protected override void OnProjectileHit(AbilityEffect projectile, Unit unitHit, bool isACriticalStrike, bool willMiss)
     {
-        OnAreaOfEffectHit(projectile, unitHit, isACriticalStrike, willMiss);
-        OnProjectileReachedEnd((Projectile)projectile);
+        OnProjectileReachedEnd(projectile);
     }
 
-    protected override void OnProjectileReachedEnd(Projectile projectile)
+    protected override void OnProjectileReachedEnd(AbilityEffect projectile)
     {
         AreaOfEffect aoe = Instantiate(explosionAreaOfEffectPrefab, projectile.transform.position, projectile.transform.rotation).GetComponent<AreaOfEffect>();
-        aoe.CreateAreaOfEffect(projectile.UnitsAlreadyHit, affectedTeams, affectedUnitTypes, durationAoE, true);
-        aoe.ActivateAreaOfEffect();
+        aoe.CreateAreaOfEffect(affectedTeams, affectedUnitTypes, durationAoE);
         aoe.OnAbilityEffectHit += OnAreaOfEffectHit;
+        aoe.ActivateAreaOfEffect();
+        
         Destroy(projectile.gameObject);
     }
 
