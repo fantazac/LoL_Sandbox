@@ -8,7 +8,7 @@ public class ProjectileMultipleTargets : ProjectileDirectionTargeted
 
         if (unitHit != null && CanAffectTarget(unitHit))
         {
-            UnitsAlreadyHit.Add(unitHit);
+            unitsAlreadyHit.Add(unitHit);
             OnAbilityEffectHitTarget(unitHit, isACriticalStrike, willMiss);
         }
     }

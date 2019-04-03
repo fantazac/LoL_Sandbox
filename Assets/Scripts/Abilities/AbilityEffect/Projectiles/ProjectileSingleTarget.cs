@@ -12,7 +12,7 @@ public class ProjectileSingleTarget : ProjectileDirectionTargeted
 
             if (unitHit != null && CanAffectTarget(unitHit))
             {
-                UnitsAlreadyHit.Add(unitHit);
+                unitsAlreadyHit.Add(unitHit);
                 OnAbilityEffectHitTarget(unitHit, isACriticalStrike, willMiss);
                 alreadyHitATarget = true;
                 GetComponent<Collider>().enabled = false;

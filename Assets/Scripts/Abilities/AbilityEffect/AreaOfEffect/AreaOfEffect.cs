@@ -5,8 +5,15 @@ using UnityEngine;
 
 public class AreaOfEffect : AbilityEffect
 {
+    private AreaOfEffectCollider[] aoeColliders;
+    
     private float duration;
     private WaitForSeconds delayBeforeDestroy;
+
+    private void Awake()
+    {
+        aoeColliders = GetComponentsInChildren<AreaOfEffectCollider>();
+    }
 
     public void CreateAreaOfEffect(List<Team> affectedTeams, List<Type> affectedUnitTypes, float duration)
     {
@@ -35,16 +42,15 @@ public class AreaOfEffect : AbilityEffect
         Vector3 center = transform.position;
         Quaternion rotation = transform.rotation;
 
-        for (int i = 0; i < transform.childCount; i++)
+        foreach (AreaOfEffectCollider aoeCollider in aoeColliders)
         {
-            Vector3 halfExtents = transform.GetChild(i).localScale * 0.5f;
-            foreach (Collider other in Physics.OverlapBox(center, halfExtents, rotation))
+            foreach(Collider other in aoeCollider.GetCollidersInAreaOfEffect())
             {
                 Unit unitHit = GetUnitHit(other);
 
                 if (!unitHit || !CanAffectTarget(unitHit)) continue;
 
-                UnitsAlreadyHit.Add(unitHit);
+                unitsAlreadyHit.Add(unitHit);
                 OnAbilityEffectHitTarget(unitHit);
             }
         }

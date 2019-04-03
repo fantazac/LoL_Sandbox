@@ -54,7 +54,7 @@ public class ProjectileUnitTargeted : Projectile
     {
         if (!alreadyHitATarget && collider == targetCollider)
         {
-            UnitsAlreadyHit.Add(target);
+            unitsAlreadyHit.Add(target);
             OnAbilityEffectHitTarget(target, isACriticalStrike, willMiss);
             alreadyHitATarget = true;
             GetComponent<Collider>().enabled = false;

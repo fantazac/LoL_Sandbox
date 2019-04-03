@@ -7,15 +7,15 @@ public abstract class AbilityEffect : MonoBehaviour
 {
     protected List<Team> affectedTeams;
     protected List<Type> affectedUnitTypes;
-
-    public List<Unit> UnitsAlreadyHit { get; }
+    
+    protected readonly List<Unit> unitsAlreadyHit;
 
     public delegate void OnAbilityEffectHitHandler(AbilityEffect abilityEffect, Unit unitHit, bool isACriticalStrike, bool willMiss);
     public event OnAbilityEffectHitHandler OnAbilityEffectHit;
 
     protected AbilityEffect()
     {
-        UnitsAlreadyHit = new List<Unit>();
+        unitsAlreadyHit = new List<Unit>();
     }
 
     protected abstract IEnumerator ActivateAbilityEffect();
@@ -24,7 +24,7 @@ public abstract class AbilityEffect : MonoBehaviour
     {
         if (!unitHit.IsTargetable(affectedUnitTypes, affectedTeams)) return false;
         
-        foreach (Unit unit in UnitsAlreadyHit)
+        foreach (Unit unit in unitsAlreadyHit)
         {
             if (unitHit == unit)
             {
@@ -41,8 +41,8 @@ public abstract class AbilityEffect : MonoBehaviour
         OnAbilityEffectHit?.Invoke(this, unitHit, isACriticalStrike, willMiss);
     }
 
-    protected Unit GetUnitHit(Collider collider)
+    protected Unit GetUnitHit(Collider other)
     {
-        return collider.GetComponentInParent<Unit>();
+        return other.GetComponentInParent<Unit>();
     }
 }
