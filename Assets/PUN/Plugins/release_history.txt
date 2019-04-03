@@ -1,5 +1,5 @@
 * release_history.txt
-* Release history for the DotNet Photon Client Library (DotNet / Unity / Windows Store 8.1 and 10)
+* Release history for the DotNet Photon Client Library (DotNet / Unity / Windows Store 10)
 (C) 2018 Exit Games GmbH, http://www.photonengine.com
 
 Questions? Visit:
@@ -8,26 +8,91 @@ https://doc.photonengine.com
 http://forum.photonengine.com
 
 
+*** Version 4.1.2.10 (11. March 2019 - rev5023)
+    Fixed: A timeout issue for WS / WSS transport protocols by sending a ping.
+LoadBalancing:
+    Changed: The cached "best region" is cleared whenever a region's pinging finishes. This fixes a potential issue when the BestRegion value is used before the pinging is done. Then, you end up with a wrong selection.
 
-*** Version 4.1.1.21 (26. October 2018 - rev4874)
-    Changed: SocketUdpAsync is now the same as in trunk. Send blocking, receiving via BeginReceive and EndReceive.
-    Adde: SocketTcpAsync.
-    Note: Both async Socket classes are a workaround for Unity with C# 4.x in Mono, which makes Socket.Receive() block.
+
+*** Version 4.1.2.9 (20. February 2019 - rev5003)
+    Note: Release .Net and Unity SDK from our page. 
+*** Version 4.1.2.9 (13. February 2019 - rev4985)
+    Removed: Setting of Thread.Name for internally used threads. This was used for debugging only (since a while) but caused issues on a console platform (due to an issue in Unity IL2CPP exports).
+
+*** Version 4.1.2.8 (31. January 2019 - rev4975)
+    Fixed: The cap for the lastRoundtripTime. When the current roundTripTime was very low this meant the rtt wasn't going up again. This was a problem with local servers.
+    Fixed: Setting the roundTripTime when the connect-command gets acknowledged. This sets a minimum of 15ms now. Before, a local server could get a 0ms roundTripTime (due to using Environment.TickCount).
+
+*** Version 4.1.2.7 (25. January 2019 - rev4954)
+    Removed: CommandBufferSize and LimitOfUnreliableCommands. Technically, those are "Obsolete" but no longer used anywhere. See comments.
+    Fixed: MessageBufferPoolTrim() was not using a lock(), so this wasn't thread safe.
+
+*** Version 4.1.2.6 (12. December 2018 - rev4935)
+    Changed: Unsequenced delivery is now available in all builds. Internally, this was wrapped in compile conditions.
+
+*** Version 4.1.2.5 (10. December 2018 - rev4911)
+    Added: PhotonPeer.SentReliableCommandsCount - reliable commands sent but not yet acknowledged. This can be used as indicator for the quality of service, aslong with ResentReliableCommands.
+    Note: This build include the "Best Region Ping" classes, to minimize changes when released with Quantum.
+
+*** Version 4.1.2.4 (23. October 2018 - rev4868)
+    Fixed: Fragment bug introduced in 4557 (12. March 2018). This kept one command per reassembled message in the incoming queue (without payload).
+    Added: An upper limit for the calculated lastRoundtripTime (per ack) to prevent uncontrolled rtt changes due to garbled incoming messages. Protecting the rtt timer improves resending commands if needed. INFO level logging starts with: "LastRoundtripTime is suspicious".
+    Added: SocketTcpAsync class, which is receiving with BeginReceive and EndReceive in callback. This should work for Unity's 4.x Runtime, which has a bug that blocks Socket.Receive() indefinitely.
     Changed: TPeer.ReceiveIncomingCommands() will now use dataLength as indicator how much was received.
-    Changed: TPeer.ReceiveIncomingCommands() currently copies dataLength-bytes of the in-buffer to a message "enqueued" buffer. To be replaced with pooled buffers.
-    Changed: EnetPeer.SendOutgoingCommands() will EnqueueStatusCallback(StatusCode.TimeoutDisconnect) for timeouts. This keeps the sequence of events correct.
-	Changed: CalculateCrc() now uses a cached lookup table, which gives it much better performance (mostly for longer datagrams).
-	Changed: EventData (in Protocol .cs) now has a Sender and a CustomData property. Same as in trunk.
-	Added: List<object> support for Protocol16. Same as in the trunk.
-	Added: Special case to deserialize byte[] and int[], which should be more effective than before. Same as in trunk.
-	Changed: Arranged this. for some cases in IPhotonSocket.
-	Changed: Enet execution of a read Disconnect command. As in trunk, the state change is enqueued and Disconnect gets called right away.
-	Changed: The TPeer resets the last receive time in more cases: InitPeerBase() and OnConnect(). Same as in trunk.
+    Internal: CalculateCrc() now uses a cached lookup table, which gives it much better performance (most obviously for longer datagrams).
 
+*** Version 4.1.2.3 (17. October 2018 - rev4847)
+    Fixed: Fragment handling. When a duplicate fragment arrived after the "original" was reassembled, this led to an exception and disconnect.
 
-*** Version 4.1.1.20 (19. September 2018 - rev4808)
-    Added: SendOperation() with SendOptions to v4.1.1.x library. This minimizes the gap between this library branch and the new trunk.
-    Added: Third parameter to PhotonPeer.InitDatagramEncryption() which is not used but only present to make this API compatible with released from another branch. This feature requires v4.1.2.0 and up.
+*** Version 4.1.2.2 (16. October 2018 - rev4843)
+    Changed: Enum StatusCode values. DisconnectByServer is obsolete and replaced with DisconnectByServerTimeout.
+    Added: StatusCode.DisconnectByServerReasonUnknown, as a generic case (unknown reason).
+    Added: You can now send List<object>, which gets de/serialized as object[].
+    Internal: PeerBase.MessageBufferPool is now a Queue<StreamBuffer>, which means the usage changed minimally. This is faster than before.
+    Internal: When a client detects a timeout disconnect, it will enqueue the status-change, to allow the Disconnect()-call to finish first. This provides a clearer order of actions happening internally for a timeout.
+    Internal: Simplified the ExecuteCommand for a received Disconnect command. The StatusCallback is now enqueued, as Disconnect() also enqueues changes.
+    Updated: SocketUdpAsync class is now sending in blocking mode but receiving with BeginReceive and EndReceive in callback. This should work for Unity's 4.x Runtime, which has issues with blocking socket receive.
+
+*** Version 4.1.2.1 (31. July 2018 - rev4787)
+    Fixed: OutOfMemory exception while building 'Master' version on UWP with .Net Native Toolchain. This is a workaround for an alleged bug in ilc.exe.
+    Added: EventData.Sender to simplify access to this info. If there is no sender or if the server sent the event, the actorNumber is 0.
+LoadBalancing:
+    Changed: OnStateChangeAction is now named StateChanged and provides a "previous state" value. State changes only trigger the event-call when the value actually changes.
+    Renamed: OnEventAction to EventReceived and OnOpResponseAction to OpResponseReceived.
+    Added: LoadBalancingClient now has AddCallbackTarget and RemoveCallbackTarget to simplify registering for various callbacks.
+Chat:
+    Changed: Namespace from "ExitGames.Client.Photon.Chat" to "Photon.Chat".
+    Added: ConnectAndSetStatus method.
+
+*** Version 4.1.2.0 (3. May 2018 - rev4660)
+    Added: Unsequenced delivery for messages (reliable and unreliable). This way, operations and resulting responses and events can be sent as unsequenced, which is good for use cases like streaming voice, input and such.
+    Internal: The Photon library now re-uses memory for messages and commands. This avoids garbage collection in Unity, which can be a performance problem.
+    Changed: There is a new method to send operations: PhotonPeer.SendOperation. It uses the SendOptions struct to define the delivery mode, encryption, etc. This replaces the obsolete OpCustom().
+    Added: Optionally, the Serialization Protocol v1.8 can now be used. Consider it a pre-release/test version for which we could use feedback. Set PhotonPeer.SerializationProtocolType.
+    Internal: Replaced foreach with while in SerializeParameterTable, SerializeHashTable and SerializeDictionaryElements in SerializationProtocol v1.6.
+    Internal: Changed EnetPeer to have a CommandQueue. Instead of queueing ExecuteCommand(cmd) delegates, we now queue the commands. This is leaner.
+    Internal: The SendOptions.DeliveryMode enum's order changed.
+    Added: PeerBase.MessageBufferPool, MessageBufferPoolGet() and MessageBufferPoolPut(StreamBuffer buff) as a simple memory pool implementation.
+    Added: PhotonPeer.MessageBufferPoolTrim() to give an option to limit the amount of memory buffered.
+    Added: PhotonPeer.MessageBufferPoolGet() as a (brute force) way to externally debug the memory buffer. This is temporary. Don't rely on this.
+    Added: For TCP, a client-side timeout. This is based on checking timestampOfLastReceive in the DispatchIncomingCommands method (timeouts only get called when you dispatch).
+    Fixed: The TCP implementation only checks for a TimeoutDisconnect, while in ConnectionStateValue.Connected. Otherwise, no timeout can happen.
+    Internal: Renamed various values for more fitting names.
+    Internal: Added special handling of Arrays of int and byte to DeserializeArray() in Protocol 1.6, using DeserializeByteArray and DeserializeIntArray respectively.
+LoadBalancing:
+    Changed: The namespace to the simpler "Photon.Realtime".
+    Added: Various callbacks to signal specific situations / events. To get those, a class must implement the interface and be added to a list of "Targets". See: ILoadBalancingCallbacks.
+    Added: RegionHandler, which provides methods to ping a list of regions and to find the one with best ping. This moves PUN's "Best Region" feature to the LoadBalancing API.
+    Moved: The PhotonPing was part of the dll but is now part of LoadBalancing.
+    Added: LoadBalancingClient.UseAlternativeUdpPorts. This way, UDP may use ports of the Steam Multiplayer port-range by simply replacing existing port strings in addresses.
+    Changed: RaiseEvent now has an overload, that uses RaiseEventOptions and SendOptions. The old variant is obsolete but will still work.
+    Changed: CheckUserOnJoin is now set by default. The RoomOptions.CheckUserOnJoin got removed.
+    Added: Client-side checks and limits for OpFindFriends.
+    Added: Optional parameter sendAuthCookie to OpLeaveRoom. The app can control what's passed from Photon to a server via WebHook.
+    Changes: The room list for lobbies is no longer part of the LoadBalancingClient. Instead, implement the callback for the changed room list.
+    Added: AppSettings, a base class to host AppId and some settings for a title. This will help make it available across products. Right now, the LoadBalancingClient is not using it yet.
+    Changed: Player.ID is now .ActorNumber, which mirrors the server's naming.
+    Fixed: Unity compile defines to support Unity 2018,
 
 *** Version 4.1.1.19 (9. April 2018 - rev4590)
     Fixed: WSS now sends an operation "ping" in SendAcksOnly() (and SendOutgoingCommands()) to avoid getting timed out. This happens right away, while other commands/operations stay in queue.
