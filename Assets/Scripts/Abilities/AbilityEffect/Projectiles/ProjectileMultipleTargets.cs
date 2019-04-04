@@ -6,10 +6,9 @@ public class ProjectileMultipleTargets : ProjectileDirectionTargeted
     {
         Unit unitHit = GetUnitHit(collider);
 
-        if (unitHit != null && CanAffectTarget(unitHit))
-        {
-            unitsAlreadyHit.Add(unitHit);
-            OnProjectileHitTarget(unitHit, isACriticalStrike, willMiss);
-        }
+        if (!unitHit || !CanAffectTarget(unitHit)) return;
+
+        unitsAlreadyHit.Add(unitHit);
+        OnProjectileHitTarget(unitHit, isACriticalStrike, willMiss);
     }
 }

@@ -1,6 +1,7 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 public interface AreaOfEffectCollider
 {
-    Collider[] GetCollidersInAreaOfEffect();
+    IEnumerable<Collider> GetCollidersInAreaOfEffect();
 }

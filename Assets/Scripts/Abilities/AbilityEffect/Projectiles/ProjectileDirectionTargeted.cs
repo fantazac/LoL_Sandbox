@@ -3,7 +3,7 @@ using UnityEngine;
 
 public abstract class ProjectileDirectionTargeted : Projectile
 {
-    protected override IEnumerator ActivateAbilityEffect()
+    protected override IEnumerator Shoot()
     {
         while (Vector3.Distance(transform.position, initialPosition) < range)
         {

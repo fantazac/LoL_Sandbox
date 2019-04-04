@@ -12,7 +12,7 @@ public class AreaOfEffect : AbilityEffect
     public delegate void OnAreaOfEffectHitHandler(AreaOfEffect areaOfEffect, Unit unitHit);
     public event OnAreaOfEffectHitHandler OnAreaOfEffectHit;
 
-    protected virtual void Awake()
+    protected void Awake()
     {
         aoeColliders = GetComponentsInChildren<AreaOfEffectCollider>();
     }
@@ -26,10 +26,10 @@ public class AreaOfEffect : AbilityEffect
 
     public void ActivateAreaOfEffect()
     {
-        StartCoroutine(ActivateAbilityEffect());
+        StartCoroutine(ActivateArea());
     }
 
-    protected override IEnumerator ActivateAbilityEffect()
+    protected virtual IEnumerator ActivateArea()
     {
         HitAffectedUnits();
 

@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-public class ProjectileMultipleTargetsExpanding : ProjectileMultipleTargets//TODO: Currently only used for MissFortune_R
+public class ProjectileMultipleTargetsExpanding : ProjectileMultipleTargets //TODO: Currently only used for MissFortune_R
 {
     private float initialXScale;
     private float finalXScale;
@@ -10,7 +10,7 @@ public class ProjectileMultipleTargetsExpanding : ProjectileMultipleTargets//TOD
     protected void Start()
     {
         initialXScale = transform.localScale.x;
-        finalXScale = (range * 0.5f);
+        finalXScale = range * 0.5f;
         toGrow = finalXScale - initialXScale;
 
         StartCoroutine(ExpandWidth());

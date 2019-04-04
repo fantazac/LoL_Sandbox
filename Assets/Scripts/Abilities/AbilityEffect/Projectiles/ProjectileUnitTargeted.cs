@@ -4,14 +4,21 @@ using UnityEngine;
 
 public class ProjectileUnitTargeted : Projectile
 {
-    protected Unit target;
-    protected Collider targetCollider;
+    private Collider projectileCollider;
+    
+    private Unit target;
+    private Collider targetCollider;
 
-    protected bool alreadyHitATarget;//This is to prevent OnTriggerEnter to cast multiple times if multiple targets enter the collider at the same time
+    private bool alreadyHitATarget; //This is to prevent OnTriggerEnter to cast multiple times if multiple targets enter the collider at the same time
 
+    protected void Awake()
+    {
+        projectileCollider = GetComponent<Collider>();
+    }
+    
     public void ShootProjectile(List<Team> affectedTeams, Unit target, float speed, bool isACriticalStrike = false, bool willMiss = false)
     {
-        if (target != null)
+        if (target)
         {
             this.affectedTeams = affectedTeams;
             this.target = target;
@@ -19,7 +26,7 @@ public class ProjectileUnitTargeted : Projectile
             this.isACriticalStrike = isACriticalStrike;
             this.willMiss = willMiss;
             targetCollider = target.GetComponentInChildren<Collider>();
-            StartCoroutine(ActivateAbilityEffect());
+            StartCoroutine(Shoot());
         }
         else
         {
@@ -27,10 +34,10 @@ public class ProjectileUnitTargeted : Projectile
         }
     }
 
-    protected override IEnumerator ActivateAbilityEffect()
+    protected override IEnumerator Shoot()
     {
         Vector3 lastTargetPosition = transform.position;
-        while (target != null)
+        while (target)
         {
             lastTargetPosition = target.transform.position;
 
@@ -52,12 +59,11 @@ public class ProjectileUnitTargeted : Projectile
 
     protected void OnTriggerEnter(Collider collider)
     {
-        if (!alreadyHitATarget && collider == targetCollider)
-        {
-            unitsAlreadyHit.Add(target);
-            OnProjectileHitTarget(target, isACriticalStrike, willMiss);
-            alreadyHitATarget = true;
-            GetComponent<Collider>().enabled = false;
-        }
+        if (alreadyHitATarget || collider != targetCollider) return;
+        
+        unitsAlreadyHit.Add(target);
+        OnProjectileHitTarget(target, isACriticalStrike, willMiss);
+        alreadyHitATarget = true;
+        projectileCollider.enabled = false;
     }
 }

@@ -19,7 +19,7 @@ public class AreaOfEffectWithEffectOverTime : AreaOfEffect
         this.numberOfTicks = numberOfTicks;
     }
 
-    protected override IEnumerator ActivateAbilityEffect()
+    protected override IEnumerator ActivateArea()
     {
         HitAffectedUnits();
 
