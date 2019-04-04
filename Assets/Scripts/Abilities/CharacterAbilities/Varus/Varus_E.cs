@@ -28,13 +28,13 @@ public class Varus_E : GroundTargetedAoE //TODO: Shoot invisible projectile and 
         MaxLevel = 5;
 
         range = 925;
-        damage = 70;// 70/105/140/175/210
+        damage = 70; // 70/105/140/175/210
         damagePerLevel = 35;
         bonusADScaling = 0.6f;
         resourceCost = 80;
-        baseCooldown = 18;// 18/16/14/12/10
+        baseCooldown = 18; // 18/16/14/12/10
         baseCooldownPerLevel = -2f;
-        castTime = 0.25f;//TODO: VERIFY ACTUAL VALUE
+        castTime = 0.25f; //TODO: VERIFY ACTUAL VALUE
         delayCastTime = new WaitForSeconds(castTime);
 
         totalTicks = 16;
@@ -53,7 +53,7 @@ public class Varus_E : GroundTargetedAoE //TODO: Shoot invisible projectile and 
     {
         abilitySpritePath = "Sprites/Characters/CharacterAbilities/Varus/VarusE";
 
-        areaOfEffectPrefabPath = "CharacterAbilitiesPrefabs/Varus/VarusE";
+        areaOfEffectPrefabPath = "CharacterAbilitiesPrefabs/Varus/VarusE2";
     }
 
     protected override void ModifyValues()
@@ -87,7 +87,9 @@ public class Varus_E : GroundTargetedAoE //TODO: Shoot invisible projectile and 
         UseResource();
         champion.OrientationManager.RotateCharacterInstantly(destinationOnCast);
 
-        AreaOfEffectWithEffectOverTime areaOfEffect = (Instantiate(areaOfEffectPrefab, Vector3.right * destinationOnCast.x + Vector3.forward * destinationOnCast.z, Quaternion.identity)).GetComponent<AreaOfEffectWithEffectOverTime>();
+        AreaOfEffectWithEffectOverTime areaOfEffect =
+            Instantiate(areaOfEffectPrefab, Vector3.right * destinationOnCast.x + Vector3.forward * destinationOnCast.z, Quaternion.identity)
+                .GetComponent<AreaOfEffectWithEffectOverTime>();
         areaOfEffect.CreateAreaOfEffect(affectedTeams, affectedUnitTypes, tickDelay, totalTicks);
         areaOfEffect.OnAreaOfEffectHit += OnAreaOfEffectHit;
         areaOfEffect.OnAreaOfEffectWithEffectOverTimeHit += OnAreaOfEffectWithEffectOverTimeHit;
@@ -104,6 +106,7 @@ public class Varus_E : GroundTargetedAoE //TODO: Shoot invisible projectile and 
         {
             varusW.ProcStacks(unitHit, this);
         }
+
         AbilityHit(unitHit, damage);
     }
 

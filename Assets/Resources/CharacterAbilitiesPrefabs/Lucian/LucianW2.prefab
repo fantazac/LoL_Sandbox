@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 23000010421927718}
   - component: {fileID: 2601927884992006465}
   m_Layer: 9
-  m_Name: LeftRight
+  m_Name: Area1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -148,7 +148,7 @@ GameObject:
   - component: {fileID: 23000012595379526}
   - component: {fileID: 8936929710313111716}
   m_Layer: 9
-  m_Name: ForwardBack
+  m_Name: Area2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
