@@ -12,8 +12,8 @@ public abstract class UnitTargetedAoE : UnitTargeted
 
     protected void OnAreaOfEffectHit(AreaOfEffect areaOfEffect, Unit unitHit)
     {
-        float damage = GetAbilityDamage(unitHit);
-        DamageUnit(unitHit, damage);
-        AbilityHit(unitHit, damage);
+        float abilityDamage = GetAbilityDamage(unitHit);
+        DamageUnit(unitHit, abilityDamage);
+        AbilityHit(unitHit, abilityDamage);
     }
 }

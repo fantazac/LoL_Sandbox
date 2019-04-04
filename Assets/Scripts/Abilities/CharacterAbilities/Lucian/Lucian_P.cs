@@ -4,9 +4,9 @@ using System.Collections.Generic;
 public class Lucian_P : PassiveTargeted
 {
     private Ability lucianE;
-    private float cooldownReducedOnPassiveHitOnCharacter;
-    private float cooldownReducedOnPassiveHit;
-    private float criticalStrikeMultiplierAgainstNonMinions;
+    private readonly float cooldownReducedOnPassiveHitOnCharacter;
+    private readonly float cooldownReducedOnPassiveHit;
+    private readonly float criticalStrikeMultiplierAgainstNonMinions;
 
     protected Lucian_P()
     {
@@ -20,7 +20,7 @@ public class Lucian_P : PassiveTargeted
         MaxLevel = 3;
         AbilityLevel = 1;
 
-        totalADScaling = 0.5f;// 50/55/60
+        totalADScaling = 0.5f; // 50/55/60
         totalADScalingPerLevel = 0.05f;
 
         cooldownReducedOnPassiveHitOnCharacter = 2;
@@ -75,7 +75,7 @@ public class Lucian_P : PassiveTargeted
 
     public override void UseAbility(Unit unitHit)
     {
-        if (lucianE)//This null check is only there if I decide to use Lucian_P without the character having Lucian_E
+        if (lucianE) //This null check is only there if I decide to use Lucian_P without the character having Lucian_E
         {
             lucianE.ReduceCooldown(unitHit is Character ? cooldownReducedOnPassiveHitOnCharacter : cooldownReducedOnPassiveHit);
         }
@@ -83,10 +83,10 @@ public class Lucian_P : PassiveTargeted
 
     public override void OnEmpoweredBasicAttackHit(Unit unitHit, bool isACriticalStrike = false)
     {
-        float damage = GetAbilityDamage(unitHit, isACriticalStrike, champion.StatsManager.CriticalStrikeDamage.GetTotal());
-        DamageUnit(unitHit, damage);
+        float abilityDamage = GetAbilityDamage(unitHit, isACriticalStrike, champion.StatsManager.CriticalStrikeDamage.GetTotal());
+        DamageUnit(unitHit, abilityDamage);
         UseAbility(unitHit);
-        AbilityHit(unitHit, damage);
+        AbilityHit(unitHit, abilityDamage);
     }
 
     protected override float GetAbilityDamage(Unit unitHit, bool isACriticalStrike = false, float criticalStrikeDamage = 0)
@@ -103,7 +103,7 @@ public class Lucian_P : PassiveTargeted
         criticalStrikeDamage *= criticalStrikeMultiplierAgainstNonMinions * 0.5f;
         //}
         return ApplyDamageModifiers(unitHit, abilityDamage, damageType) *
-            ApplyAbilityDamageModifier(unitHit) *
-            (isACriticalStrike ? criticalStrikeDamage * (1f - unitHit.StatsManager.CriticalStrikeDamageReduction.GetTotal()) : 1f);
+               ApplyAbilityDamageModifier(unitHit) *
+               (isACriticalStrike ? criticalStrikeDamage * (1 - unitHit.StatsManager.CriticalStrikeDamageReduction.GetTotal()) : 1);
     }
 }

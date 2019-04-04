@@ -16,17 +16,7 @@ public abstract class AbilityEffect : MonoBehaviour
 
     protected virtual bool CanAffectTarget(Unit unitHit)
     {
-        if (!unitHit.IsTargetable(affectedUnitTypes, affectedTeams)) return false;
-
-        foreach (Unit unit in unitsAlreadyHit)
-        {
-            if (unitHit == unit)
-            {
-                return false;
-            }
-        }
-
-        return true;
+        return !unitsAlreadyHit.Contains(unitHit) && unitHit.IsTargetable(affectedUnitTypes, affectedTeams);
     }
 
     protected Unit GetUnitHit(Collider other)

@@ -5,13 +5,13 @@ using System.Collections.Generic;
 
 public class Lucian_R : DirectionTargetedProjectile
 {
-    private float durationOfActive;
+    private readonly float durationOfActive;
     private int amountOfProjectilesToShoot;
 
-    private int amountOfProjectilesToShootPerLevel;
+    private readonly int amountOfProjectilesToShootPerLevel;
     //private float damageMultiplierAgainstMinions;
 
-    private float projectileOffset;
+    private readonly float projectileOffset;
 
     private WaitForSeconds delayBetweenBullets;
 
@@ -129,7 +129,7 @@ public class Lucian_R : DirectionTargetedProjectile
 
     protected override float ApplyAbilityDamageModifier(Unit unitHit)
     {
-        //TODO when Minion exists: return unitHit is Minion ? damageMultiplierAgainstMinions : 1f ;
-        return 1f;
+        //TODO when Minion exists: return unitHit is Minion ? damageMultiplierAgainstMinions : 1 ;
+        return 1;
     }
 }

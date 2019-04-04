@@ -2,7 +2,7 @@
 
 public class Varus_P : PassiveTargeted
 {
-    private float buffDuration;
+    private readonly float buffDuration;
     private float durationForNextBuff;
 
     protected Varus_P()
@@ -36,13 +36,13 @@ public class Varus_P : PassiveTargeted
 
         AbilityBuffs[1].OnAbilityBuffRemoved += RemoveBuffFromAffectedUnit;
 
-        foreach (DamageSource damageSource in champion.AbilityManager.CharacterAbilities)
+        foreach (Ability ability in champion.AbilityManager.CharacterAbilities)
         {
-            damageSource.OnKilledUnit += OnUnitKilled;
+            ability.OnKilledUnit += OnUnitKilled;
         }
-        foreach (DamageSource damageSource in champion.AbilityManager.SummonerAbilities)
+        foreach (Ability ability in champion.AbilityManager.SummonerAbilities)
         {
-            damageSource.OnKilledUnit += OnUnitKilled;
+            ability.OnKilledUnit += OnUnitKilled;
         }
         champion.BasicAttack.OnKilledUnit += OnUnitKilled;
     }

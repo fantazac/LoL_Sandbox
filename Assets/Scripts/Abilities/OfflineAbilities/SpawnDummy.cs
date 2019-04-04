@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class SpawnDummy : GroundTargeted//GroundTargetedAoE
+public abstract class SpawnDummy : GroundTargeted //GroundTargetedAoE
 {
     protected const int MAXIMUM_DUMMY_AMOUNT = 4;
 
@@ -12,7 +12,7 @@ public abstract class SpawnDummy : GroundTargeted//GroundTargetedAoE
     protected string dummyResourcePath;
     protected Team team;
 
-    protected List<Dummy> dummies;
+    private readonly List<Dummy> dummies;
 
     protected SpawnDummy()
     {
@@ -42,13 +42,14 @@ public abstract class SpawnDummy : GroundTargeted//GroundTargetedAoE
 
     public void RemoveAllDummies()
     {
-        while (dummies.Count > 0)//TODO: more efficient way to do this?
+        while (dummies.Count > 0) //TODO: more efficient way to do this?
         {
             if (dummies[0])
             {
                 dummies[0].RemoveHealthBar();
                 Destroy(dummies[0].gameObject);
             }
+
             dummies.RemoveAt(0);
         }
     }
@@ -62,10 +63,12 @@ public abstract class SpawnDummy : GroundTargeted//GroundTargetedAoE
             Destroy(dummies[0].gameObject);
             dummies.RemoveAt(0);
         }
+
         if (dummyId == maxDummyId)
         {
             dummyId -= MAXIMUM_DUMMY_AMOUNT;
         }
+
         Dummy dummy = ((GameObject)Instantiate(Resources.Load(dummyResourcePath), destination, Quaternion.identity)).GetComponent<Dummy>();
         dummy.transform.rotation = Quaternion.LookRotation((transform.position - dummy.transform.position).normalized);
         dummy.SetDummyNameAndTeamAndID(dummyName, team, ++dummyId);

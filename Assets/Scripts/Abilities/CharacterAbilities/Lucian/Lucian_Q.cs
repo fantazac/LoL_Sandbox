@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Lucian_Q : UnitTargetedAoE
 {
-    protected float durationAoE;
+    private readonly float durationAoE;
 
     protected Lucian_Q()
     {
@@ -19,13 +19,13 @@ public class Lucian_Q : UnitTargetedAoE
         MaxLevel = 5;
 
         range = 500;
-        damage = 85;// 85/120/155/190/225
+        damage = 85; // 85/120/155/190/225
         damagePerLevel = 35;
-        bonusADScaling = 0.6f;// 60/70/80/90/100 %
+        bonusADScaling = 0.6f; // 60/70/80/90/100 %
         bonusADScalingPerLevel = 0.1f;
-        resourceCost = 50;// 50/60/70/80/90
+        resourceCost = 50; // 50/60/70/80/90
         resourceCostPerLevel = 10;
-        baseCooldown = 9;// 9/8/7/6/5
+        baseCooldown = 9; // 9/8/7/6/5
         baseCooldownPerLevel = -1;
         castTime = 0.4f;
         delayCastTime = new WaitForSeconds(castTime);
@@ -59,7 +59,7 @@ public class Lucian_Q : UnitTargetedAoE
 
     public override void OnCharacterLevelUp(int level)
     {
-        castTime = (0.409f - (0.009f * level));
+        castTime = 0.409f - (0.009f * level);
         delayCastTime = new WaitForSeconds(castTime);
     }
 

@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-public class Teleport : GroundTargetedBlink//TODO: UnitTargeted
+public class Teleport : GroundTargetedBlink //TODO: UnitTargeted
 {
     protected Teleport()
     {

@@ -6,6 +6,7 @@ public class MissFortune_P : PassiveTargeted
     private Unit lastUnitHit;
 
     public delegate void OnPassiveHitHandler();
+
     public event OnPassiveHitHandler OnPassiveHit;
 
     protected MissFortune_P()
@@ -58,34 +59,30 @@ public class MissFortune_P : PassiveTargeted
 
     private void SetPassiveEffectOnUnitHit(Unit unitHit, float damage)
     {
-        if (unitHit != lastUnitHit)
-        {
-            AbilityDebuffs[0].ConsumeBuff(lastUnitHit);
-            AbilityDebuffs[0].AddNewBuffToAffectedUnit(unitHit);
+        if (unitHit == lastUnitHit) return;
 
-            lastUnitHit = unitHit;
+        AbilityDebuffs[0].ConsumeBuff(lastUnitHit);
+        AbilityDebuffs[0].AddNewBuffToAffectedUnit(unitHit);
 
-            float passiveDamage = GetAbilityDamage(unitHit);
-            //if (unitHit is Minion)
-            //{
-            //    unitHit.Stats.Health.Reduce(ApplyResistanceToDamage(unitHit, character.Stats.AttackDamage.GetTotal() * totalADScaling * 0.5f));
-            //}
-            //else
-            //{
-            DamageUnit(unitHit, passiveDamage);
-            //} 
-            champion.StatsManager.RestoreHealth(passiveDamage * champion.StatsManager.LifeSteal.GetTotal());
+        lastUnitHit = unitHit;
 
-            if (OnPassiveHit != null)
-            {
-                OnPassiveHit();
-            }
-        }
+        float passiveDamage = GetAbilityDamage(unitHit);
+        //if (unitHit is Minion)
+        //{
+        //    unitHit.Stats.Health.Reduce(ApplyResistanceToDamage(unitHit, character.Stats.AttackDamage.GetTotal() * totalADScaling * 0.5f));
+        //}
+        //else
+        //{
+        DamageUnit(unitHit, passiveDamage);
+        //} 
+        champion.StatsManager.RestoreHealth(passiveDamage * champion.StatsManager.LifeSteal.GetTotal());
+
+        OnPassiveHit?.Invoke();
     }
 
     private void OnDestroy()
     {
-        if (lastUnitHit != null)
+        if (lastUnitHit)
         {
             AbilityDebuffs[0].ConsumeBuff(lastUnitHit);
         }

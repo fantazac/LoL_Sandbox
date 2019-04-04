@@ -3,12 +3,11 @@ using UnityEngine;
 
 public class MissFortune_W : AutoTargeted
 {
-    private float baseCooldownReductionOnPassiveHit;
+    private readonly float baseCooldownReductionOnPassiveHit;
     private float cooldownReductionOnPassiveHit;
 
     private IEnumerator passiveBuffCooldownAfterTakingDamage;
-    private float timeBeforeEnablingPassive;
-    private WaitForSeconds delayPassiveBuff;
+    private readonly WaitForSeconds delayPassiveBuff;
 
     protected MissFortune_W()
     {
@@ -25,8 +24,7 @@ public class MissFortune_W : AutoTargeted
 
         baseCooldownReductionOnPassiveHit = 2;
 
-        timeBeforeEnablingPassive = 5;
-        delayPassiveBuff = new WaitForSeconds(timeBeforeEnablingPassive);
+        delayPassiveBuff = new WaitForSeconds(5);
     }
 
     protected override void SetResourcePaths()
@@ -73,6 +71,7 @@ public class MissFortune_W : AutoTargeted
         {
             StopCoroutine(passiveBuffCooldownAfterTakingDamage);
         }
+
         passiveBuffCooldownAfterTakingDamage = PassiveBuffCooldownAfterTakingDamage();
         StartCoroutine(passiveBuffCooldownAfterTakingDamage);
     }
@@ -84,6 +83,7 @@ public class MissFortune_W : AutoTargeted
             StopCoroutine(passiveBuffCooldownAfterTakingDamage);
             passiveBuffCooldownAfterTakingDamage = null;
         }
+
         AddNewDebuffToAffectedUnit(champion);
     }
 

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Ezreal_Q : DirectionTargetedProjectile
 {
-    private float cooldownReductionOnProjectileHit;
+    private readonly float cooldownReductionOnProjectileHit;
 
     protected Ezreal_Q()
     {
@@ -19,15 +19,15 @@ public class Ezreal_Q : DirectionTargetedProjectile
 
         range = 1150;
         speed = 2000;
-        damage = 15;// 15/40/65/90/115
+        damage = 15; // 15/40/65/90/115
         damagePerLevel = 25;
-        totalADScaling = 1.1f;// 110%
-        totalAPScaling = 0.3f;// 30%
-        resourceCost = 28;// 28/31/34/37/40
+        totalADScaling = 1.1f; // 110%
+        totalAPScaling = 0.3f; // 30%
+        resourceCost = 28; // 28/31/34/37/40
         resourceCostPerLevel = 3;
-        baseCooldown = 5.5f;// 5.5f/5.25f/5/4.75f/4.5f
+        baseCooldown = 5.5f; // 5.5f/5.25f/5/4.75f/4.5f
         baseCooldownPerLevel = -0.25f;
-        castTime = 0.25f;//TODO: VERIFY ACTUAL VALUE
+        castTime = 0.25f; //TODO: VERIFY ACTUAL VALUE
         delayCastTime = new WaitForSeconds(castTime);
 
         cooldownReductionOnProjectileHit = 1.5f;
@@ -55,6 +55,7 @@ public class Ezreal_Q : DirectionTargetedProjectile
         {
             ability.ReduceCooldown(cooldownReductionOnProjectileHit);
         }
+
         base.OnProjectileHit(projectile, unitHit, isACriticalStrike, willMiss);
     }
 }

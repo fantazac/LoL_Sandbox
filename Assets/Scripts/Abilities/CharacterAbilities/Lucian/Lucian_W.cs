@@ -7,7 +7,7 @@ public class Lucian_W : DirectionTargetedProjectile
     private string explosionAreaOfEffectPrefabPath;
     private GameObject explosionAreaOfEffectPrefab;
 
-    private float durationAoE;
+    private readonly float durationAoE;
 
     protected Lucian_W()
     {
@@ -22,11 +22,11 @@ public class Lucian_W : DirectionTargetedProjectile
 
         range = 900;
         speed = 1550;
-        damage = 85;// 85/125/165/205/245
+        damage = 85; // 85/125/165/205/245
         damagePerLevel = 40;
-        totalAPScaling = 0.9f;// 90%
-        resourceCost = 50;// 50
-        baseCooldown = 14;// 14/13/12/11/10
+        totalAPScaling = 0.9f; // 90%
+        resourceCost = 50; // 50
+        baseCooldown = 14; // 14/13/12/11/10
         baseCooldownPerLevel = -1;
         castTime = 0.25f;
         delayCastTime = new WaitForSeconds(castTime);
@@ -77,16 +77,16 @@ public class Lucian_W : DirectionTargetedProjectile
         aoe.CreateAreaOfEffect(affectedTeams, affectedUnitTypes, durationAoE);
         aoe.OnAreaOfEffectHit += OnAreaOfEffectHit;
         aoe.ActivateAreaOfEffect();
-        
+
         Destroy(projectile.gameObject);
     }
 
     private void OnAreaOfEffectHit(AreaOfEffect areaOfEffect, Unit unitHit)
     {
-        float damage = GetAbilityDamage(unitHit);
-        DamageUnit(unitHit, damage);
+        float abilityDamage = GetAbilityDamage(unitHit);
+        DamageUnit(unitHit, abilityDamage);
         AddNewDebuffToAffectedUnit(unitHit);
-        AbilityHit(unitHit, damage);
+        AbilityHit(unitHit, abilityDamage);
     }
 
     private void OnUnitDamaged()

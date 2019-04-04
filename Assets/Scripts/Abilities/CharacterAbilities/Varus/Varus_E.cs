@@ -7,14 +7,12 @@ public class Varus_E : GroundTargetedAoE //TODO: Shoot invisible projectile and 
 {
     private Varus_W varusW;
 
-    private int totalTicks;
-    private float timeBetweenTicks;
-    private WaitForSeconds tickDelay;
+    private readonly int totalTicks;
+    private readonly WaitForSeconds tickDelay;
 
-    private float timeBeforeActivation;
-    private WaitForSeconds delayActivation;
+    //private WaitForSeconds delayActivation;
 
-    private float radius;
+    //private float radius;
 
     public Varus_E()
     {
@@ -38,13 +36,11 @@ public class Varus_E : GroundTargetedAoE //TODO: Shoot invisible projectile and 
         delayCastTime = new WaitForSeconds(castTime);
 
         totalTicks = 16;
-        timeBetweenTicks = 0.25f;
-        tickDelay = new WaitForSeconds(timeBetweenTicks);
+        tickDelay = new WaitForSeconds(0.25f);
 
-        timeBeforeActivation = 0.5f;
-        delayActivation = new WaitForSeconds(timeBeforeActivation);
+        //delayActivation = new WaitForSeconds(0.5f);
 
-        radius = 200;
+        //radius = 200;
 
         affectedByCooldownReduction = true;
     }
@@ -56,12 +52,12 @@ public class Varus_E : GroundTargetedAoE //TODO: Shoot invisible projectile and 
         areaOfEffectPrefabPath = "CharacterAbilitiesPrefabs/Varus/VarusE2";
     }
 
-    protected override void ModifyValues()
+    /*protected override void ModifyValues()
     {
         radius *= StaticObjects.MultiplyingFactor;
 
         base.ModifyValues();
-    }
+    }*/
 
     public override void SetAffectedTeams(Team allyTeam)
     {
@@ -98,19 +94,19 @@ public class Varus_E : GroundTargetedAoE //TODO: Shoot invisible projectile and 
         FinishAbilityCast();
     }
 
-    protected void OnAreaOfEffectHit(AreaOfEffect areaOfEffect, Unit unitHit)
+    private void OnAreaOfEffectHit(AreaOfEffect areaOfEffect, Unit unitHit)
     {
-        float damage = GetAbilityDamage(unitHit);
-        DamageUnit(unitHit, damage);
+        float abilityDamage = GetAbilityDamage(unitHit);
+        DamageUnit(unitHit, abilityDamage);
         if (varusW)
         {
             varusW.ProcStacks(unitHit, this);
         }
 
-        AbilityHit(unitHit, damage);
+        AbilityHit(unitHit, abilityDamage);
     }
 
-    protected void OnAreaOfEffectWithEffectOverTimeHit(AreaOfEffect areaOfEffect, List<Unit> previouslyAffectedUnits, List<Unit> affectedUnits)
+    private void OnAreaOfEffectWithEffectOverTimeHit(AreaOfEffect areaOfEffect, List<Unit> previouslyAffectedUnits, List<Unit> affectedUnits)
     {
         AbilityDebuffs[0].AddNewBuffToAffectedUnits(previouslyAffectedUnits, affectedUnits);
     }

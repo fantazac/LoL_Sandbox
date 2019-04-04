@@ -21,17 +21,17 @@ public class MissFortune_Q : UnitTargetedProjectile
 
         MaxLevel = 5;
 
-        range = 650;//TODO: Check ingame, apparently becomes bigger when attackrange increases?
-        speed = 1700;//TODO: Check ingame
-        damage = 20;// 20/40/60/80/100
+        range = 650; //TODO: Check in game, apparently becomes bigger when attack range increases?
+        speed = 1700; //TODO: Check in game
+        damage = 20; // 20/40/60/80/100
         damagePerLevel = 20;
-        totalADScaling = 1;// 100%
-        totalAPScaling = 0.35f;// 35%
-        resourceCost = 43;// 43/46/49/52/55
+        totalADScaling = 1; // 100%
+        totalAPScaling = 0.35f; // 35%
+        resourceCost = 43; // 43/46/49/52/55
         resourceCostPerLevel = 3;
-        baseCooldown = 7;// 7/6/5/4/3
+        baseCooldown = 7; // 7/6/5/4/3
         baseCooldownPerLevel = -1;
-        castTime = 0.25f;//TODO: Check ingame
+        castTime = 0.25f; //TODO: Check in game
         delayCastTime = new WaitForSeconds(castTime);
 
         effectRadius = 500;
@@ -84,23 +84,16 @@ public class MissFortune_Q : UnitTargetedProjectile
     {
         base.OnProjectileHit(projectile, unitHit, isACriticalStrike, willMiss);
         Unit nextUnit = FindTargetBehindUnitHit(unitHit);
-        if (nextUnit)
-        {
-            bool secondHitIsACriticalStrike;
-            if (unitHit.StatsManager.Health.IsDead())
-            {
-                secondHitIsACriticalStrike = true;
-            }
-            else
-            {
-                secondHitIsACriticalStrike = AttackIsCritical.CheckIfAttackIsCritical(champion.StatsManager.CriticalStrikeChance.GetTotal());
-            }
 
-            ProjectileUnitTargeted projectile2 = (Instantiate(projectilePrefab, unitHit.transform.position, transform.rotation)).GetComponent<ProjectileUnitTargeted>();
-            projectile2.transform.LookAt(nextUnit.transform.position);
-            projectile2.ShootProjectile(affectedTeams, nextUnit, speed, secondHitIsACriticalStrike);
-            projectile2.OnProjectileHit += base.OnProjectileHit;
-        }
+        if (!nextUnit) return;
+
+        bool secondHitIsACriticalStrike =
+            unitHit.StatsManager.Health.IsDead() || AttackIsCritical.CheckIfAttackIsCritical(champion.StatsManager.CriticalStrikeChance.GetTotal());
+
+        ProjectileUnitTargeted projectile2 = (Instantiate(projectilePrefab, unitHit.transform.position, transform.rotation)).GetComponent<ProjectileUnitTargeted>();
+        projectile2.transform.LookAt(nextUnit.transform.position);
+        projectile2.ShootProjectile(affectedTeams, nextUnit, speed, secondHitIsACriticalStrike);
+        projectile2.OnProjectileHit += base.OnProjectileHit;
     }
 
     private Unit FindTargetBehindUnitHit(Unit unitHit)
@@ -108,27 +101,24 @@ public class MissFortune_Q : UnitTargetedProjectile
         Unit closestEnemy = null;
         float enemyAngle = float.MaxValue;
         float enemyDistance = float.MaxValue;
-        Unit tempUnit;
-        float tempAngle;
-        float tempDistance;
 
         Vector3 groundPosition = Vector3.right * unitHit.transform.position.x + Vector3.forward * unitHit.transform.position.z;
-        foreach (Collider collider in Physics.OverlapCapsule(groundPosition, groundPosition + Vector3.up * 5, effectRadius))
+        foreach (Collider other in Physics.OverlapCapsule(groundPosition, groundPosition + Vector3.up * 5, effectRadius))
         {
-            tempUnit = collider.GetComponentInParent<Unit>();
-            if (tempUnit != null && tempUnit != unitHit && tempUnit.IsTargetable(affectedUnitTypes, affectedTeams))
+            Unit tempUnit = other.GetComponentInParent<Unit>();
+
+            if (!tempUnit || tempUnit == unitHit || !tempUnit.IsTargetable(affectedUnitTypes, affectedTeams)) continue;
+
+            float tempAngle = Vector3.Angle(vectorOnCast, tempUnit.transform.position - unitHit.transform.position);
+            float tempDistance = Vector3.Distance(unitHit.transform.position, tempUnit.transform.position);
+            if ((tempAngle <= 10 && tempDistance < enemyDistance) ||
+                (enemyAngle > 10 && tempAngle <= 20 && tempDistance < enemyDistance) ||
+                (enemyAngle > 20 && tempAngle <= 55 && tempDistance < enemyDistance) ||
+                (enemyAngle > 55 && tempAngle <= 80 && tempDistance <= effectRadiusOnBigAngle && tempDistance < enemyDistance))
             {
-                tempAngle = Vector3.Angle(vectorOnCast, tempUnit.transform.position - unitHit.transform.position);
-                tempDistance = Vector3.Distance(unitHit.transform.position, tempUnit.transform.position);
-                if ((tempAngle <= 10 && tempDistance < enemyDistance) ||
-                    (enemyAngle > 10 && tempAngle <= 20 && tempDistance < enemyDistance) ||
-                    (enemyAngle > 20 && tempAngle <= 55 && tempDistance < enemyDistance) ||
-                    (enemyAngle > 55 && tempAngle <= 80 && tempDistance <= effectRadiusOnBigAngle && tempDistance < enemyDistance))
-                {
-                    closestEnemy = tempUnit;
-                    enemyAngle = tempAngle;
-                    enemyDistance = tempDistance;
-                }
+                closestEnemy = tempUnit;
+                enemyAngle = tempAngle;
+                enemyDistance = tempDistance;
             }
         }
 

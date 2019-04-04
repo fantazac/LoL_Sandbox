@@ -44,7 +44,6 @@ public abstract class GroundTargetedBlink : GroundTargeted
         float distanceBetweenBothVectors = Vector3.Distance(destination, currentPosition);
         Vector3 normalizedVector = Vector3.Normalize(destination - currentPosition);
 
-        return distanceBetweenBothVectors > range ?
-            (range * normalizedVector + currentPosition) : destination;
+        return distanceBetweenBothVectors > range ? range * normalizedVector + currentPosition : destination;
     }
 }

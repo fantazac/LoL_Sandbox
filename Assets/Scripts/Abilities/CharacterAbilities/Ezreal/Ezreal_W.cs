@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Ezreal_W : DirectionTargetedProjectile
 {
-    private float manaRefundedOnDamageDealt;
+    private readonly float manaRefundedOnDamageDealt;
     private List<Ability> abilitiesToTriggerMark;
 
     protected Ezreal_W()
@@ -13,7 +13,7 @@ public class Ezreal_W : DirectionTargetedProjectile
         abilityName = "Essence Flux";
 
         abilityType = AbilityType.SKILLSHOT;
-        affectedUnitTypes = new List<Type>() { typeof(Character) };// typeof(Building), typeof(EpicMonster)
+        affectedUnitTypes = new List<Type>() { typeof(Character) }; // typeof(Building), typeof(EpicMonster)
         effectType = AbilityEffectType.SINGLE_TARGET;
         damageType = DamageType.MAGIC;
 
@@ -21,14 +21,14 @@ public class Ezreal_W : DirectionTargetedProjectile
 
         range = 1150;
         speed = 1550;
-        damage = 80;// 80/135/190/245/300
+        damage = 80; // 80/135/190/245/300
         damagePerLevel = 55;
-        bonusADScaling = 0.6f;// 60%
-        totalAPScaling = 0.7f;// 70/75/80/85/90%
+        bonusADScaling = 0.6f; // 60%
+        totalAPScaling = 0.7f; // 70/75/80/85/90%
         totalAPScalingPerLevel = 0.05f;
         resourceCost = 50;
-        baseCooldown = 12;// 12
-        castTime = 0.2f;//TODO: VERIFY ACTUAL VALUE
+        baseCooldown = 12; // 12
+        castTime = 0.2f; //TODO: VERIFY ACTUAL VALUE
         delayCastTime = new WaitForSeconds(castTime);
 
         manaRefundedOnDamageDealt = 60;
@@ -120,9 +120,10 @@ public class Ezreal_W : DirectionTargetedProjectile
     private void DealDamageToMarkedUnit(Unit unitHit, Ability sourceAbility = null)
     {
         AbilityDebuffs[0].ConsumeBuff(unitHit);
-        champion.StatsManager.Resource.Restore(manaRefundedOnDamageDealt + (sourceAbility != null ? sourceAbility.GetResourceCost() : 0));
-        float damage = GetAbilityDamage(unitHit);
-        DamageUnit(unitHit, damage);
-        AbilityHit(unitHit, damage, false);
+        champion.StatsManager.Resource.Restore(manaRefundedOnDamageDealt + (sourceAbility ? sourceAbility.GetResourceCost() : 0));
+
+        float abilityDamage = GetAbilityDamage(unitHit);
+        DamageUnit(unitHit, abilityDamage);
+        AbilityHit(unitHit, abilityDamage, false);
     }
 }

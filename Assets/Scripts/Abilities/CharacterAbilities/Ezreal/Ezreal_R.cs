@@ -20,12 +20,12 @@ public class Ezreal_R : DirectionTargetedProjectile
 
         range = (float)Range.GLOBAL;
         speed = 2000;
-        damage = 350;// 350/500/650
+        damage = 350; // 350/500/650
         damagePerLevel = 150;
-        bonusADScaling = 1;// 100%
-        totalAPScaling = 0.9f;// 90%
-        resourceCost = 100;// 100
-        baseCooldown = 120;// 120
+        bonusADScaling = 1; // 100%
+        totalAPScaling = 0.9f; // 90%
+        resourceCost = 100; // 100
+        baseCooldown = 120; // 120
         castTime = 1;
         delayCastTime = new WaitForSeconds(castTime);
 

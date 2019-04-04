@@ -8,20 +8,20 @@ public class Tristana_E : UnitTargetedProjectile
     private float effectRadius;
     private float effectRadiusOnTurret;
 
-    private float damagePercentIncreasePerStack;
+    private readonly float damagePercentIncreasePerStack;
     private List<Ability> abilitiesToIncreaseStacks;
 
     private float passiveDamage;
-    private float passiveDamagePerLevel;
-    private float passiveTotalAPScaling;
-    private DamageType passiveDamageType;
+    private readonly float passiveDamagePerLevel;
+    private readonly float passiveTotalAPScaling;
+    private readonly DamageType passiveDamageType;
 
     protected Tristana_E()
     {
         abilityName = "Explosive Charge";
 
         abilityType = AbilityType.SKILLSHOT;
-        affectedUnitTypes = new List<Type>() { typeof(Unit) };// typeof(Turret)
+        affectedUnitTypes = new List<Type>() { typeof(Unit) }; // typeof(Turret)
         effectType = AbilityEffectType.SINGLE_TARGET;
         damageType = DamageType.PHYSICAL;
         passiveDamageType = DamageType.MAGIC;
@@ -30,23 +30,23 @@ public class Tristana_E : UnitTargetedProjectile
 
         range = 525;
         speed = 2000;
-        damage = 60;// 60/70/80/90/100
+        damage = 60; // 60/70/80/90/100
         damagePerLevel = 10;
-        bonusADScaling = 0.5f;// 50/65/80/95/110%
+        bonusADScaling = 0.5f; // 50/65/80/95/110%
         bonusADScalingPerLevel = 0.15f;
         totalAPScaling = 0.5f;
-        resourceCost = 50;// 50/55/60/65/70
+        resourceCost = 50; // 50/55/60/65/70
         resourceCostPerLevel = 5;
-        baseCooldown = 16;// 16/15.5/15/14.5/14
+        baseCooldown = 16; // 16/15.5/15/14.5/14
         baseCooldownPerLevel = -0.5f;
-        castTime = 0.15f;//TODO: Check ingame
+        castTime = 0.15f; //TODO: Check ingame
         delayCastTime = new WaitForSeconds(castTime);
 
         effectRadius = 300;
         effectRadiusOnTurret = 500;
         damagePercentIncreasePerStack = 0.3f;
 
-        passiveDamage = 55;// 55/80/105/130/155
+        passiveDamage = 55; // 55/80/105/130/155
         passiveDamagePerLevel = 25;
         passiveTotalAPScaling = 0.25f;
 
@@ -121,6 +121,7 @@ public class Tristana_E : UnitTargetedProjectile
         {
             Destroy(projectile.gameObject);
         }
+
         AddNewDebuffToAffectedUnit(unitHit);
     }
 
@@ -144,6 +145,7 @@ public class Tristana_E : UnitTargetedProjectile
         {
             DamageAllEnemiesInActiveExplosionRadius(affectedUnit);
         }
+
         AbilityDebuffs[1].ConsumeBuff(affectedUnit);
     }
 
@@ -176,42 +178,39 @@ public class Tristana_E : UnitTargetedProjectile
     {
         float damageModifier = stacksOnExplosion * damagePercentIncreasePerStack + 1;
 
-        Unit tempUnit;
-        float selectedRadius = effectRadius;//TODO: unitHit is Turret ? effectRadiusOnTurret : effectRadius;
+        float selectedRadius = effectRadius; //TODO: unitHit is Turret ? effectRadiusOnTurret : effectRadius;
 
         Vector3 groundPosition = Vector3.right * unitHit.transform.position.x + Vector3.forward * unitHit.transform.position.z;
-        foreach (Collider collider in Physics.OverlapCapsule(groundPosition, groundPosition + Vector3.up * 5, selectedRadius))
+        foreach (Collider other in Physics.OverlapCapsule(groundPosition, groundPosition + Vector3.up * 5, selectedRadius))
         {
-            tempUnit = collider.GetComponentInParent<Unit>();
-            if (tempUnit != null && tempUnit.IsTargetable(affectedUnitTypes, affectedTeams))
-            {
-                float damage = GetAbilityDamage(tempUnit) * damageModifier;
-                DamageUnit(tempUnit, damage);
-                AbilityHit(tempUnit, damage);
-            }
+            Unit tempUnit = other.GetComponentInParent<Unit>();
+
+            if (!tempUnit || !tempUnit.IsTargetable(affectedUnitTypes, affectedTeams)) continue;
+
+            float abilityDamage = GetAbilityDamage(tempUnit) * damageModifier;
+            DamageUnit(tempUnit, abilityDamage);
+            AbilityHit(tempUnit, abilityDamage);
         }
     }
 
     private void DamageAllEnemiesInPassiveExplosionRadius(DamageSource damageSource, Unit killedUnit)
     {
-        Unit tempUnit;
-
         Vector3 groundPosition = Vector3.right * killedUnit.transform.position.x + Vector3.forward * killedUnit.transform.position.z;
-        foreach (Collider collider in Physics.OverlapCapsule(groundPosition, groundPosition + Vector3.up * 5, effectRadius))
+        foreach (Collider other in Physics.OverlapCapsule(groundPosition, groundPosition + Vector3.up * 5, effectRadius))
         {
-            tempUnit = collider.GetComponentInParent<Unit>();
-            if (tempUnit != null && tempUnit != killedUnit && tempUnit.IsTargetable(affectedUnitTypes, affectedTeams))
-            {
-                float damage = GetPassiveAbilityDamage(tempUnit);
-                DamageUnit(tempUnit, passiveDamageType, damage);
-                AbilityHit(tempUnit, damage);
-            }
+            Unit tempUnit = other.GetComponentInParent<Unit>();
+
+            if (!tempUnit || tempUnit == killedUnit || !tempUnit.IsTargetable(affectedUnitTypes, affectedTeams)) continue;
+
+            float passiveAbilityDamage = GetPassiveAbilityDamage(tempUnit);
+            DamageUnit(tempUnit, passiveDamageType, passiveAbilityDamage);
+            AbilityHit(tempUnit, passiveAbilityDamage);
         }
     }
 
     private float GetPassiveAbilityDamage(Unit unitHit)
     {
-        float abilityDamage = damage + (passiveTotalAPScaling * champion.StatsManager.AbilityPower.GetTotal());
+        float abilityDamage = passiveDamage + passiveTotalAPScaling * champion.StatsManager.AbilityPower.GetTotal();
 
         return ApplyDamageModifiers(unitHit, abilityDamage, passiveDamageType);
     }

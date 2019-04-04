@@ -8,7 +8,7 @@ public class MissFortune_E : GroundTargetedAoE
     private readonly int totalTicks;
     private readonly WaitForSeconds tickDelay;
 
-    private float radius;
+    //private float radius;
 
     public MissFortune_E()
     {
@@ -34,7 +34,7 @@ public class MissFortune_E : GroundTargetedAoE
         totalTicks = 8;
         tickDelay = new WaitForSeconds(0.25f);
 
-        radius = 200;
+        //radius = 200;
 
         affectedByCooldownReduction = true;
     }
@@ -46,12 +46,12 @@ public class MissFortune_E : GroundTargetedAoE
         areaOfEffectPrefabPath = "CharacterAbilitiesPrefabs/MissFortune/MissFortuneE";
     }
 
-    protected override void ModifyValues()
+    /*protected override void ModifyValues()
     {
         radius *= StaticObjects.MultiplyingFactor;
 
         base.ModifyValues();
-    }
+    }*/
 
     public override void SetAffectedTeams(Team allyTeam)
     {

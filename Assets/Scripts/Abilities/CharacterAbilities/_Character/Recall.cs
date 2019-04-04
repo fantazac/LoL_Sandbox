@@ -49,7 +49,7 @@ public class Recall : AutoTargetedBlink
 
         IsBeingCasted = false;
         UseResource();
-        champion.MovementManager.StopMovement();//This is to cancel any movement command made during the cast time
+        champion.MovementManager.StopMovement(); //This is to cancel any movement command made during the cast time
         AddNewBuffToAffectedUnit(champion);
         IsBeingChanneled = true;
 

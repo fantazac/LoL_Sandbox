@@ -16,10 +16,7 @@ public abstract class PassiveTargeted : Ability
     {
         return Vector3.down;
     }
-
-    public override void UseAbility(Vector3 destination) { }
-    public override void UseAbility(Unit target) { }
-
+    
     protected void PassiveEffect(Ability ability, Unit unitHit)
     {
         PassiveEffect(ability);
@@ -29,4 +26,8 @@ public abstract class PassiveTargeted : Ability
     {
         AbilityBuffs[0].AddNewBuffToAffectedUnit(champion);
     }
+    
+    public override void UseAbility(Vector3 destination) { }
+    public override void UseAbility(Unit target) { }
+
 }

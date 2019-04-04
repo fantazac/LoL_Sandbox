@@ -8,12 +8,11 @@ public class Varus_W : PassiveTargeted
     private List<Ability> abilitiesToTriggerStacks;
 
     private IEnumerator cancelAbilityAfterDelayCoroutine;
-    private float timeBeforeCancellingAbility;
-    private WaitForSeconds delayCancelAbility;
+    private readonly WaitForSeconds delayCancelAbility;
 
     private float percentHealthDamage;
-    private float percentHealthDamagePerLevel;
-    private float percentAPScaling;
+    private readonly float percentHealthDamagePerLevel;
+    private readonly float percentAPScaling;
 
     //private float maxDamageAgainstMonsters;
 
@@ -31,7 +30,7 @@ public class Varus_W : PassiveTargeted
 
         MaxLevel = 5;
 
-        damage = 7;// 7/10.5/14/17.5/21
+        damage = 7; // 7/10.5/14/17.5/21
         damagePerLevel = 3.5f;
         baseCooldown = 40;
         baseCooldownOnCancel = 1;
@@ -47,8 +46,7 @@ public class Varus_W : PassiveTargeted
         //missingHealthDamage = 6;// 6/7/8/9/10
         //missingHealthDamagePerLevel = 1;
 
-        timeBeforeCancellingAbility = 5;
-        delayCancelAbility = new WaitForSeconds(timeBeforeCancellingAbility);
+        delayCancelAbility = new WaitForSeconds(5);
 
         CanBeRecasted = true;
 
@@ -75,7 +73,7 @@ public class Varus_W : PassiveTargeted
         abilitiesToTriggerStacks = new List<Ability>();
         foreach (Ability ability in champion.AbilityManager.CharacterAbilities)
         {
-            if (ability != this)
+            if (ability)
             {
                 abilitiesToTriggerStacks.Add(ability);
             }
@@ -105,6 +103,7 @@ public class Varus_W : PassiveTargeted
         {
             StopCoroutine(cancelAbilityAfterDelayCoroutine);
         }
+
         cancelAbilityAfterDelayCoroutine = CancelAbilityAfterDelay();
         StartCoroutine(cancelAbilityAfterDelayCoroutine);
     }
@@ -132,16 +131,16 @@ public class Varus_W : PassiveTargeted
     {
         if (unitHit.BuffManager.IsAffectedByDebuff(AbilityDebuffs[0]) && abilitiesToTriggerStacks.Contains(sourceAbility))
         {
-            DealDamageToUnitWithStacks(unitHit, sourceAbility);
+            DealDamageToUnitWithStacks(unitHit);
         }
     }
 
-    private void DealDamageToUnitWithStacks(Unit unitHit, Ability sourceAbility)
+    private void DealDamageToUnitWithStacks(Unit unitHit)
     {
-        float damage = GetStacksTriggeredDamage(unitHit, unitHit.BuffManager.GetDebuff(AbilityDebuffs[0]).CurrentStacks);
+        float stacksTriggeredDamage = GetStacksTriggeredDamage(unitHit, unitHit.BuffManager.GetDebuff(AbilityDebuffs[0]).CurrentStacks);
         AbilityDebuffs[0].ConsumeBuff(unitHit);
-        DamageUnit(unitHit, damage);
-        AbilityHit(unitHit, damage);
+        DamageUnit(unitHit, stacksTriggeredDamage);
+        AbilityHit(unitHit, stacksTriggeredDamage);
     }
 
     private float GetOnHitDamage(Unit unitHit)
@@ -153,7 +152,8 @@ public class Varus_W : PassiveTargeted
 
     private float GetStacksTriggeredDamage(Unit unitHit, int stacks)
     {
-        float stacksTriggeredDamage = ((percentAPScaling * champion.StatsManager.AbilityPower.GetTotal()) + percentHealthDamage) * unitHit.StatsManager.Health.GetTotal() * stacks;
+        float stacksTriggeredDamage = (percentAPScaling * champion.StatsManager.AbilityPower.GetTotal() + percentHealthDamage) *
+                                      unitHit.StatsManager.Health.GetTotal() * stacks;
         float damageAfterModifiers = ApplyDamageModifiers(unitHit, stacksTriggeredDamage, damageType);
         //when Monster exists, return unitHit is Monster ? Math.Min(damageAfterModifiers, maxDamageAgainstMonsters) : damageAfterModifiers;
         return damageAfterModifiers;

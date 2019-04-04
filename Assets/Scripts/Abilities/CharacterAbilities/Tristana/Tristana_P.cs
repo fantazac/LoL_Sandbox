@@ -2,7 +2,7 @@
 
 public class Tristana_P : PassiveTargeted
 {
-    private float rangePerLevel;
+    private readonly float rangePerLevel;
     private float currentRangeBonus;
     private List<Ability> abilitiesToIncreaseCastRange;
 

@@ -71,7 +71,7 @@ public class CC_Q : SelfTargeted
         FinishAbilityCast();
     }
 
-    public override void OnEmpoweredBasicAttackHit(Unit unitHit, bool isACriticalStrike)
+    public override void OnEmpoweredBasicAttackHit(Unit unitHit, bool isACriticalStrike = false)
     {
         AbilityBuffs[0].ConsumeBuff(champion);
 

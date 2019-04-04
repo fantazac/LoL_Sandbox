@@ -6,7 +6,7 @@ using System.Collections.Generic;
 public class MissFortune_R : DirectionTargetedProjectile
 {
     private int amountOfWavesToShoot;
-    private int amountOfWavesToShootPerLevel;
+    private readonly int amountOfWavesToShootPerLevel;
 
     private WaitForSeconds delayBetweenWaves;
 
@@ -23,17 +23,17 @@ public class MissFortune_R : DirectionTargetedProjectile
 
         range = 1400;
         speed = 2000;
-        totalADScaling = 0.75f;// 75%
-        totalAPScaling = 0.2f;// 20%
-        resourceCost = 100;// 100
-        baseCooldown = 120;// 120/110/100
+        totalADScaling = 0.75f; // 75%
+        totalAPScaling = 0.2f; // 20%
+        resourceCost = 100; // 100
+        baseCooldown = 120; // 120/110/100
         baseCooldownPerLevel = -10;
         channelTime = 3;
         delayChannelTime = new WaitForSeconds(channelTime);
 
-        amountOfWavesToShoot = 12;// 12/14/16
+        amountOfWavesToShoot = 12; // 12/14/16
         amountOfWavesToShootPerLevel = 2;
-        delayBetweenWaves = new WaitForSeconds((channelTime / amountOfWavesToShoot) - 0.015f);
+        delayBetweenWaves = new WaitForSeconds(channelTime / amountOfWavesToShoot - 0.015f);
 
         CanMoveWhileChanneling = true;
         CanUseAnyAbilityWhileChanneling = true;
@@ -67,7 +67,7 @@ public class MissFortune_R : DirectionTargetedProjectile
     public override void LevelUpExtraStats()
     {
         amountOfWavesToShoot += amountOfWavesToShootPerLevel;
-        delayBetweenWaves = new WaitForSeconds((channelTime / amountOfWavesToShoot) - 0.015f);
+        delayBetweenWaves = new WaitForSeconds(channelTime / amountOfWavesToShoot - 0.015f);
     }
 
     protected override void RotationOnAbilityCast(Vector3 destination)
@@ -93,11 +93,11 @@ public class MissFortune_R : DirectionTargetedProjectile
         FinishAbilityCast();
     }
 
-    private void AddNewBuffToAffectedUnit(Unit affectedunit)
+    private void AddNewBuffToAffectedUnit(Unit affectedUnit)
     {
         champion.AbilityManager.OnAnAbilityUsed += CancelMissFortuneR;
         champion.ChampionMovementManager.ChampionMoved += CancelMissFortuneR;
-        //TODO: if hard cc'd, cancel aswell
+        //TODO: if hard cc'd, cancel as well
         AbilityBuffs[0].AddNewBuffToAffectedUnit(champion);
     }
 

@@ -7,7 +7,7 @@ public abstract class UnitTargeted : Ability
         return IsAValidTarget(target);
     }
 
-    protected bool IsAValidTarget(Unit target)
+    private bool IsAValidTarget(Unit target)
     {
         return target.IsTargetable(affectedUnitTypes, affectedTeams);
     }

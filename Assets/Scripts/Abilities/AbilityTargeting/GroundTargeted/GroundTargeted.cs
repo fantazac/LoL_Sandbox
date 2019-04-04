@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public abstract class GroundTargeted : Ability // Curently same as DirectionTargeted, might change when other abilities are created
+public abstract class GroundTargeted : Ability // Currently same as DirectionTargeted, might change when other abilities are created
 {
     public override bool CanBeCast(Vector3 mousePosition)
     {

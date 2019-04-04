@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Tristana_W : DirectionTargetedDash//TODO: GroundTargetedDash
+public class Tristana_W : DirectionTargetedDash //TODO: GroundTargetedDash
 {
     private float effectRadius;
 
@@ -18,14 +18,14 @@ public class Tristana_W : DirectionTargetedDash//TODO: GroundTargetedDash
 
         MaxLevel = 5;
 
-        damage = 85;// 85/135/185/235/285
+        damage = 85; // 85/135/185/235/285
         damagePerLevel = 50;
         range = 900;
         resourceCost = 60;
-        baseCooldown = 22;// 22/20/18/16/14
+        baseCooldown = 22; // 22/20/18/16/14
         baseCooldownPerLevel = -2;
-        dashSpeed = 14;//TODO: VERIFY ACTUAL VALUE
-        castTime = 0.35f;//TODO: VERIFY ACTUAL VALUE
+        dashSpeed = 14; //TODO: VERIFY ACTUAL VALUE
+        castTime = 0.35f; //TODO: VERIFY ACTUAL VALUE
         delayCastTime = new WaitForSeconds(castTime);
 
         effectRadius = 350;
@@ -78,19 +78,17 @@ public class Tristana_W : DirectionTargetedDash//TODO: GroundTargetedDash
 
     private void ApplyDamageAndSlowToAllEnemiesInRadius()
     {
-        Unit tempUnit;
-
         Vector3 groundPosition = Vector3.right * transform.position.x + Vector3.forward * transform.position.z;
         foreach (Collider collider in Physics.OverlapCapsule(groundPosition, groundPosition + Vector3.up * 5, effectRadius))
         {
-            tempUnit = collider.GetComponentInParent<Unit>();
-            if (tempUnit != null && tempUnit.IsTargetable(affectedUnitTypes, affectedTeams))
-            {
-                float damage = GetAbilityDamage(tempUnit);
-                DamageUnit(tempUnit, damage);
-                AbilityHit(tempUnit, damage);
-                AbilityDebuffs[0].AddNewBuffToAffectedUnit(tempUnit);
-            }
+            Unit tempUnit = collider.GetComponentInParent<Unit>();
+
+            if (!tempUnit || !tempUnit.IsTargetable(affectedUnitTypes, affectedTeams)) continue;
+
+            float abilityDamage = GetAbilityDamage(tempUnit);
+            DamageUnit(tempUnit, abilityDamage);
+            AbilityHit(tempUnit, abilityDamage);
+            AbilityDebuffs[0].AddNewBuffToAffectedUnit(tempUnit);
         }
     }
 }

@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class Varus_R : DirectionTargetedProjectile
 {
-    protected string entityPrefabPath;
-    protected GameObject entityPrefab;
+    private string entityPrefabPath;
+    private GameObject entityPrefab;
 
     private float radius;
 
@@ -24,13 +24,13 @@ public class Varus_R : DirectionTargetedProjectile
 
         range = 1075;
         speed = 1850;
-        damage = 100;// 100/175/250
+        damage = 100; // 100/175/250
         damagePerLevel = 75;
-        totalAPScaling = 1;// 100%
+        totalAPScaling = 1; // 100%
         resourceCost = 100;
-        baseCooldown = 110;// 110/90/70
+        baseCooldown = 110; // 110/90/70
         baseCooldownPerLevel = -20;
-        castTime = 0.25f;//TODO: VERIFY ACTUAL VALUE
+        castTime = 0.25f; //TODO: VERIFY ACTUAL VALUE
         delayCastTime = new WaitForSeconds(castTime);
 
         radius = 550;
@@ -84,7 +84,9 @@ public class Varus_R : DirectionTargetedProjectile
             Destroy(projectile.gameObject);
         }
 
-        Varus_R_Entity varusREntity = Instantiate(entityPrefab, Vector3.right * unitHit.transform.position.x + Vector3.forward * unitHit.transform.position.z, Quaternion.identity).GetComponent<Varus_R_Entity>();
+        Varus_R_Entity varusREntity =
+            Instantiate(entityPrefab, Vector3.right * unitHit.transform.position.x + Vector3.forward * unitHit.transform.position.z, Quaternion.identity)
+                .GetComponent<Varus_R_Entity>();
         varusREntity.SetupEntity(this, unitHit, varusW, new List<Unit>() { unitHit }, new List<Varus_R_Entity>());
         varusREntity.StartEntityLife();
     }
@@ -93,12 +95,11 @@ public class Varus_R : DirectionTargetedProjectile
     {
         List<Unit> unitsInRange = new List<Unit>();
 
-        Character tempCharacter;
         Vector3 groundPosition = Vector3.right * affectedUnit.transform.position.x + Vector3.forward * affectedUnit.transform.position.z;
-        foreach (Collider collider in Physics.OverlapCapsule(groundPosition, groundPosition + Vector3.up * 5, radius))
+        foreach (Collider other in Physics.OverlapCapsule(groundPosition, groundPosition + Vector3.up * 5, radius))
         {
-            tempCharacter = collider.GetComponentInParent<Character>();
-            if (tempCharacter != null && !alreadyAffectedUnits.Contains(tempCharacter) && tempCharacter.IsTargetable(affectedUnitTypes, affectedTeams))
+            Character tempCharacter = other.GetComponentInParent<Character>();
+            if (tempCharacter && !alreadyAffectedUnits.Contains(tempCharacter) && tempCharacter.IsTargetable(affectedUnitTypes, affectedTeams))
             {
                 unitsInRange.Add(tempCharacter);
             }
@@ -120,12 +121,13 @@ public class Varus_R : DirectionTargetedProjectile
 
     private void DamageUnitHit(Unit unitHit)
     {
-        float damage = GetAbilityDamage(unitHit);
-        DamageUnit(unitHit, damage);
+        float abilityDamage = GetAbilityDamage(unitHit);
+        DamageUnit(unitHit, abilityDamage);
         if (varusW)
         {
             varusW.ProcStacks(unitHit, this);
         }
-        AbilityHit(unitHit, damage);
+
+        AbilityHit(unitHit, abilityDamage);
     }
 }

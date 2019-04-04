@@ -20,11 +20,11 @@ public class Tristana_R : UnitTargetedProjectile
 
         range = 525;
         speed = 2000;
-        damage = 300;// 300/400/500
+        damage = 300; // 300/400/500
         damagePerLevel = 100;
         totalAPScaling = 1;
         resourceCost = 100;
-        baseCooldown = 120;// 120/110/100
+        baseCooldown = 120; // 120/110/100
         baseCooldownPerLevel = -10;
         castTime = 0.25f;
         delayCastTime = new WaitForSeconds(castTime);
@@ -90,13 +90,11 @@ public class Tristana_R : UnitTargetedProjectile
 
     private void AddNewDebuffToAllEnemiesInEffectRadius(Unit unitHit)
     {
-        Unit tempUnit;
-
         Vector3 groundPosition = Vector3.right * unitHit.transform.position.x + Vector3.forward * unitHit.transform.position.z;
-        foreach (Collider collider in Physics.OverlapCapsule(groundPosition, groundPosition + Vector3.up * 5, effectRadius))
+        foreach (Collider other in Physics.OverlapCapsule(groundPosition, groundPosition + Vector3.up * 5, effectRadius))
         {
-            tempUnit = collider.GetComponentInParent<Unit>();
-            if (tempUnit != null && tempUnit.IsTargetable(affectedUnitTypes, affectedTeams))
+            Unit tempUnit = other.GetComponentInParent<Unit>();
+            if (tempUnit && tempUnit.IsTargetable(affectedUnitTypes, affectedTeams))
             {
                 AbilityDebuffs[0].AddNewBuffToAffectedUnit(tempUnit);
             }

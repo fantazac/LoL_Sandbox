@@ -48,6 +48,7 @@ public class Heal : SelfTargeted
         {
             hit.point = Vector3.down;
         }
+
         return true;
     }
 
@@ -73,46 +74,44 @@ public class Heal : SelfTargeted
         if (hit.point != Vector3.down)
         {
             float distance = float.MaxValue;
-            float tempDistance;
 
             Vector3 mouseGroundPosition = Vector3.right * hit.point.x + Vector3.forward * hit.point.z;
-            foreach (Collider collider in Physics.OverlapCapsule(mouseGroundPosition, mouseGroundPosition + Vector3.up * 5, MOUSE_RADIUS))
+            foreach (Collider other in Physics.OverlapCapsule(mouseGroundPosition, mouseGroundPosition + Vector3.up * 5, MOUSE_RADIUS))
             {
-                tempCharacter = collider.GetComponentInParent<Character>();
-                if (tempCharacter != null && tempCharacter != champion && tempCharacter.IsTargetable(affectedUnitTypes, affectedTeams))
-                {
-                    tempDistance = Vector3.Distance(transform.position, tempCharacter.transform.position);
-                    if (tempDistance < distance && tempDistance < range)
-                    {
-                        distance = tempDistance;
-                        targetedCharacter = tempCharacter;
-                    }
-                }
+                tempCharacter = other.GetComponentInParent<Character>();
+
+                if (!tempCharacter || tempCharacter == champion || !tempCharacter.IsTargetable(affectedUnitTypes, affectedTeams)) continue;
+
+                float tempDistance = Vector3.Distance(transform.position, tempCharacter.transform.position);
+
+                if (tempDistance >= distance || tempDistance >= range) continue;
+
+                distance = tempDistance;
+                targetedCharacter = tempCharacter;
             }
         }
 
-        if (targetedCharacter == null)
+        if (!targetedCharacter)
         {
             float lowestHealth = float.MaxValue;
-            float tempLowestHealth;
 
             Vector3 groundPosition = Vector3.right * transform.position.x + Vector3.forward * transform.position.z;
-            foreach (Collider collider in Physics.OverlapCapsule(groundPosition, groundPosition + Vector3.up * 5, range))
+            foreach (Collider other in Physics.OverlapCapsule(groundPosition, groundPosition + Vector3.up * 5, range))
             {
-                tempCharacter = collider.GetComponentInParent<Character>();
-                if (tempCharacter != null && tempCharacter != champion && tempCharacter.IsTargetable(affectedUnitTypes, affectedTeams))
-                {
-                    tempLowestHealth = tempCharacter.StatsManager.Health.GetCurrentValue();
-                    if (tempLowestHealth < lowestHealth)
-                    {
-                        lowestHealth = tempLowestHealth;
-                        targetedCharacter = tempCharacter;
-                    }
-                }
+                tempCharacter = other.GetComponentInParent<Character>();
+
+                if (!tempCharacter || tempCharacter == champion || !tempCharacter.IsTargetable(affectedUnitTypes, affectedTeams)) continue;
+
+                float tempLowestHealth = tempCharacter.StatsManager.Health.GetCurrentValue();
+
+                if (tempLowestHealth >= lowestHealth) continue;
+
+                lowestHealth = tempLowestHealth;
+                targetedCharacter = tempCharacter;
             }
         }
 
-        if (targetedCharacter != null)
+        if (targetedCharacter)
         {
             AbilityBuffs[0].AddNewBuffToAffectedUnit(targetedCharacter);
             AbilityDebuffs[0].AddNewBuffToAffectedUnit(targetedCharacter);

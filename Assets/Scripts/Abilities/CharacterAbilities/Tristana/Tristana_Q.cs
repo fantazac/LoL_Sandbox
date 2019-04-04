@@ -11,7 +11,7 @@ public class Tristana_Q : AutoTargeted
 
         MaxLevel = 5;
 
-        baseCooldown = 20;// 20/19/18/17/16
+        baseCooldown = 20; // 20/19/18/17/16
         baseCooldownPerLevel = -1;
 
         affectedByCooldownReduction = true;

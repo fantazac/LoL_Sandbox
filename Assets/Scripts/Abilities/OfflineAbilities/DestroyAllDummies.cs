@@ -15,12 +15,11 @@ public class DestroyAllDummies : AutoTargeted
 
     protected override void Start()
     {
-        if (!StaticObjects.OnlineMode)
-        {
-            base.Start();
+        if (StaticObjects.OnlineMode) return;
+        
+        base.Start();
 
-            spawnDummyAbilities = GetComponents<SpawnDummy>();
-        }
+        spawnDummyAbilities = GetComponents<SpawnDummy>();
     }
 
     protected void OnDestroy()
@@ -42,7 +41,7 @@ public class DestroyAllDummies : AutoTargeted
         FinishAbilityCast();
     }
 
-    protected void RemoveAllDummies()
+    private void RemoveAllDummies()
     {
         foreach (SpawnDummy spawnDummy in spawnDummyAbilities)
         {

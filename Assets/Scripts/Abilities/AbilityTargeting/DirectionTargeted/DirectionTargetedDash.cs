@@ -42,7 +42,7 @@ public abstract class DirectionTargetedDash : DirectionTargeted
         champion.DisplacementManager.OnDisplacementFinished += SetupAutoAttackPostDash;
     }
 
-    protected void SetupAutoAttackPostDash()
+    private void SetupAutoAttackPostDash()
     {
         if (!champion.ChampionMovementManager.IsMovingTowardsPosition())
         {
@@ -63,14 +63,12 @@ public abstract class DirectionTargetedDash : DirectionTargeted
         this.destination = FindPointToMoveTo(destination, transform.position);
     }
 
-    protected Vector3 FindPointToMoveTo(Vector3 destination, Vector3 currentPosition)
+    private Vector3 FindPointToMoveTo(Vector3 destination, Vector3 currentPosition)
     {
         float distanceBetweenBothVectors = Vector3.Distance(destination, currentPosition);
         Vector3 normalizedVector = Vector3.Normalize(destination - currentPosition);
 
-        return distanceBetweenBothVectors > range ?
-            (range * normalizedVector) :
-            distanceBetweenBothVectors < minimumDistanceTravelled ?
-            (minimumDistanceTravelled * normalizedVector) : distanceBetweenBothVectors * normalizedVector;
+        return distanceBetweenBothVectors > range ? (range * normalizedVector) :
+            distanceBetweenBothVectors < minimumDistanceTravelled ? (minimumDistanceTravelled * normalizedVector) : distanceBetweenBothVectors * normalizedVector;
     }
 }

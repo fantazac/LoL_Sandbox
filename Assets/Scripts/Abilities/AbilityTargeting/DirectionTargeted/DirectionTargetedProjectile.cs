@@ -36,13 +36,14 @@ public abstract class DirectionTargetedProjectile : DirectionTargeted
 
     protected virtual void OnProjectileHit(Projectile projectile, Unit unitHit, bool isACriticalStrike, bool willMiss)
     {
-        float damage = GetAbilityDamage(unitHit, isACriticalStrike);
-        DamageUnit(unitHit, damage);
+        float abilityDamage = GetAbilityDamage(unitHit, isACriticalStrike);
+        DamageUnit(unitHit, abilityDamage);
         if (effectType == AbilityEffectType.SINGLE_TARGET)
         {
             Destroy(projectile.gameObject);
         }
-        AbilityHit(unitHit, damage);
+
+        AbilityHit(unitHit, abilityDamage);
     }
 
     protected virtual void OnProjectileReachedEnd(Projectile projectile)
