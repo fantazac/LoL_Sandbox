@@ -12,8 +12,8 @@ public abstract class Ability : DamageSource
     protected AbilityEffectType effectType;
     protected AbilityType abilityType;
 
-    protected IEnumerator abilityEffectCoroutine;
-    protected IEnumerator cooldownForRecastCoroutine;
+    private IEnumerator abilityEffectCoroutine;
+    private IEnumerator cooldownForRecastCoroutine;
 
     public AbilityCategory AbilityCategory { get; set; }
     public int AbilityLevel { get; protected set; }
@@ -54,13 +54,13 @@ public abstract class Ability : DamageSource
     protected float totalAPScaling;
     protected float totalAPScalingPerLevel;
 
-    public Sprite AbilitySprite { get; protected set; }
-    protected Sprite abilityRecastSprite;//TODO: Not implemented
+    public Sprite AbilitySprite { get; private set; }
+    public Sprite AbilityRecastSprite { get; private set; }//TODO: Not implemented
 
     protected string abilitySpritePath;
     protected string abilityRecastSpritePath;
 
-    protected int abilityIsBlockedCount;
+    private int abilityIsBlockedCount;
 
     public bool AppliesAbilityEffects { get; protected set; }
     public bool AppliesOnHitEffects { get; protected set; }
@@ -91,8 +91,8 @@ public abstract class Ability : DamageSource
     public bool ResetBasicAttackCycleOnAbilityFinished { get; protected set; }
     public bool UsesResource { get; private set; }
 
-    public List<Ability> AbilitiesToDisableWhileActive { get; protected set; }
-    public List<Ability> CastableAbilitiesWhileActive { get; protected set; }
+    public List<Ability> AbilitiesToDisableWhileActive { get; private set; }
+    public List<Ability> CastableAbilitiesWhileActive { get; private set; }
 
     public AbilityBuff[] AbilityBuffs { get; protected set; }
     public AbilityBuff[] AbilityDebuffs { get; protected set; }
@@ -169,10 +169,10 @@ public abstract class Ability : DamageSource
         speed *= StaticObjects.MultiplyingFactor;
     }
 
-    protected void LoadSprites()
+    private void LoadSprites()
     {
         AbilitySprite = Resources.Load<Sprite>(abilitySpritePath);
-        abilityRecastSprite = Resources.Load<Sprite>(abilityRecastSpritePath);
+        AbilityRecastSprite = Resources.Load<Sprite>(abilityRecastSpritePath);
     }
 
     protected virtual void LoadPrefabs() { }
