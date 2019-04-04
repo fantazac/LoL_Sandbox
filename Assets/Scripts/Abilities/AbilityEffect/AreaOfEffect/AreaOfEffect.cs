@@ -5,12 +5,14 @@ using UnityEngine;
 
 public class AreaOfEffect : AbilityEffect
 {
-    private AreaOfEffectCollider[] aoeColliders;
-    
-    private float duration;
+    protected AreaOfEffectCollider[] aoeColliders;
+
     private WaitForSeconds delayBeforeDestroy;
 
-    private void Awake()
+    public delegate void OnAreaOfEffectHitHandler(AreaOfEffect areaOfEffect, Unit unitHit);
+    public event OnAreaOfEffectHitHandler OnAreaOfEffectHit;
+
+    protected virtual void Awake()
     {
         aoeColliders = GetComponentsInChildren<AreaOfEffectCollider>();
     }
@@ -19,7 +21,6 @@ public class AreaOfEffect : AbilityEffect
     {
         this.affectedTeams = affectedTeams;
         this.affectedUnitTypes = affectedUnitTypes;
-        this.duration = duration;
         delayBeforeDestroy = new WaitForSeconds(duration);
     }
 
@@ -37,22 +38,24 @@ public class AreaOfEffect : AbilityEffect
         Destroy(gameObject);
     }
 
-    private void HitAffectedUnits()
+    protected void HitAffectedUnits()
     {
-        Vector3 center = transform.position;
-        Quaternion rotation = transform.rotation;
-
         foreach (AreaOfEffectCollider aoeCollider in aoeColliders)
         {
-            foreach(Collider other in aoeCollider.GetCollidersInAreaOfEffect())
+            foreach (Collider other in aoeCollider.GetCollidersInAreaOfEffect())
             {
                 Unit unitHit = GetUnitHit(other);
 
                 if (!unitHit || !CanAffectTarget(unitHit)) continue;
 
                 unitsAlreadyHit.Add(unitHit);
-                OnAbilityEffectHitTarget(unitHit);
+                OnAreaOfEffectHitTarget(unitHit);
             }
         }
+    }
+
+    private void OnAreaOfEffectHitTarget(Unit unitHit)
+    {
+        OnAreaOfEffectHit?.Invoke(this, unitHit);
     }
 }

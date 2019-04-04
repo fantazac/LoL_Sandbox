@@ -174,7 +174,7 @@ public abstract class BasicAttack : DamageSource
 
         ProjectileUnitTargeted projectile = (Instantiate(basicAttackPrefab, transform.position, transform.rotation)).GetComponent<ProjectileUnitTargeted>();
         projectile.ShootProjectile(affectedTeams, target, speed, AttackIsCritical.CheckIfAttackIsCritical(unit.StatsManager.CriticalStrikeChance.GetTotal()), unit.StatusManager.IsBlinded());
-        projectile.OnAbilityEffectHit += BasicAttackHit;
+        projectile.OnProjectileHit += BasicAttackHit;
 
         if (unit is Champion)
         {
@@ -184,7 +184,7 @@ public abstract class BasicAttack : DamageSource
         shootBasicAttackCoroutine = null;
     }
 
-    protected virtual void BasicAttackHit(AbilityEffect basicAttackProjectile, Unit unitHit, bool isACriticalStrike, bool willMiss)
+    protected virtual void BasicAttackHit(Projectile basicAttackProjectile, Unit unitHit, bool isACriticalStrike, bool willMiss)
     {
         if (!(unit.StatusManager.IsBlinded() || willMiss))
         {

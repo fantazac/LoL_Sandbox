@@ -87,30 +87,27 @@ public class Varus_E : GroundTargetedAoE //TODO: Shoot invisible projectile and 
         UseResource();
         champion.OrientationManager.RotateCharacterInstantly(destinationOnCast);
 
-        AreaOfEffectGround areaOfEffect = (Instantiate(areaOfEffectPrefab, Vector3.right * destinationOnCast.x + Vector3.forward * destinationOnCast.z, Quaternion.identity)).GetComponent<AreaOfEffectGround>();
-        areaOfEffect.CreateAreaOfEffect(affectedTeams, affectedUnitTypes, tickDelay, totalTicks, radius, delayActivation);
-        areaOfEffect.OnAbilityEffectGroundHitOnSpawn += OnAbilityEffectGroundHitOnSpawn;
-        areaOfEffect.OnAbilityEffectGroundHit += OnAbilityEffectGroundHit;
+        AreaOfEffectWithEffectOverTime areaOfEffect = (Instantiate(areaOfEffectPrefab, Vector3.right * destinationOnCast.x + Vector3.forward * destinationOnCast.z, Quaternion.identity)).GetComponent<AreaOfEffectWithEffectOverTime>();
+        areaOfEffect.CreateAreaOfEffect(affectedTeams, affectedUnitTypes, tickDelay, totalTicks);
+        areaOfEffect.OnAreaOfEffectHit += OnAreaOfEffectHit;
+        areaOfEffect.OnAreaOfEffectWithEffectOverTimeHit += OnAreaOfEffectWithEffectOverTimeHit;
         areaOfEffect.ActivateAreaOfEffect();
 
         FinishAbilityCast();
     }
 
-    protected void OnAbilityEffectGroundHitOnSpawn(AbilityEffect abilityEffect, List<Unit> affectedUnits)
+    protected void OnAreaOfEffectHit(AreaOfEffect areaOfEffect, Unit unitHit)
     {
-        foreach (Unit affectedUnit in affectedUnits)
+        float damage = GetAbilityDamage(unitHit);
+        DamageUnit(unitHit, damage);
+        if (varusW)
         {
-            float damage = GetAbilityDamage(affectedUnit);
-            DamageUnit(affectedUnit, damage);
-            if (varusW)
-            {
-                varusW.ProcStacks(affectedUnit, this);
-            }
-            AbilityHit(affectedUnit, damage);
+            varusW.ProcStacks(unitHit, this);
         }
+        AbilityHit(unitHit, damage);
     }
 
-    protected void OnAbilityEffectGroundHit(AbilityEffect abilityEffect, List<Unit> previouslyAffectedUnits, List<Unit> affectedUnits)
+    protected void OnAreaOfEffectWithEffectOverTimeHit(AreaOfEffect areaOfEffect, List<Unit> previouslyAffectedUnits, List<Unit> affectedUnits)
     {
         AbilityDebuffs[0].AddNewBuffToAffectedUnits(previouslyAffectedUnits, affectedUnits);
     }

@@ -75,14 +75,14 @@ public class MissFortune_Q : UnitTargetedProjectile
 
         ProjectileUnitTargeted projectile = (Instantiate(projectilePrefab, transform.position, transform.rotation)).GetComponent<ProjectileUnitTargeted>();
         projectile.ShootProjectile(affectedTeams, targetedUnit, speed);
-        projectile.OnAbilityEffectHit += OnAbilityEffectHit;
+        projectile.OnProjectileHit += OnProjectileHit;
 
         FinishAbilityCast();
     }
 
-    protected override void OnAbilityEffectHit(AbilityEffect projectile, Unit unitHit, bool isACriticalStrike, bool willMiss)
+    protected override void OnProjectileHit(Projectile projectile, Unit unitHit, bool isACriticalStrike, bool willMiss)
     {
-        base.OnAbilityEffectHit(projectile, unitHit, isACriticalStrike, willMiss);
+        base.OnProjectileHit(projectile, unitHit, isACriticalStrike, willMiss);
         Unit nextUnit = FindTargetBehindUnitHit(unitHit);
         if (nextUnit)
         {
@@ -99,7 +99,7 @@ public class MissFortune_Q : UnitTargetedProjectile
             ProjectileUnitTargeted projectile2 = (Instantiate(projectilePrefab, unitHit.transform.position, transform.rotation)).GetComponent<ProjectileUnitTargeted>();
             projectile2.transform.LookAt(nextUnit.transform.position);
             projectile2.ShootProjectile(affectedTeams, nextUnit, speed, secondHitIsACriticalStrike);
-            projectile2.OnAbilityEffectHit += base.OnAbilityEffectHit;
+            projectile2.OnProjectileHit += base.OnProjectileHit;
         }
     }
 

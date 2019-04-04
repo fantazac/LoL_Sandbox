@@ -113,11 +113,11 @@ public class Ezreal_E : GroundTargetedBlink
         {
             ProjectileUnitTargeted projectile = Instantiate(projectilePrefab, transform.position, transform.rotation).GetComponent<ProjectileUnitTargeted>();
             projectile.ShootProjectile(affectedTeams, closestUnit, speed);
-            projectile.OnAbilityEffectHit += OnProjectileHit;
+            projectile.OnProjectileHit += OnProjectileHit;
         }
     }
 
-    private void OnProjectileHit(AbilityEffect projectile, Unit unitHit, bool isACriticalStrike, bool willMiss)
+    private void OnProjectileHit(Projectile projectile, Unit unitHit, bool isACriticalStrike, bool willMiss)
     {
         float damage = GetAbilityDamage(unitHit);
         DamageUnit(unitHit, damage);

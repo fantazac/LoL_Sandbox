@@ -10,7 +10,7 @@ public abstract class UnitTargetedAoE : UnitTargeted
         areaOfEffectPrefab = Resources.Load<GameObject>(areaOfEffectPrefabPath);
     }
 
-    protected override void OnAbilityEffectHit(AbilityEffect areaOfEffect, Unit unitHit, bool isACriticalStrike, bool willMiss)
+    protected void OnAreaOfEffectHit(AreaOfEffect areaOfEffect, Unit unitHit)
     {
         float damage = GetAbilityDamage(unitHit);
         DamageUnit(unitHit, damage);

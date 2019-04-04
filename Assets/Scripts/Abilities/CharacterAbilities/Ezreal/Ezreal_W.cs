@@ -81,7 +81,7 @@ public class Ezreal_W : DirectionTargetedProjectile
         FinishAbilityCast();
     }
 
-    protected override void OnProjectileHit(AbilityEffect projectile, Unit unitHit, bool isACriticalStrike, bool willMiss)
+    protected override void OnProjectileHit(Projectile projectile, Unit unitHit, bool isACriticalStrike, bool willMiss)
     {
         Destroy(projectile.gameObject);
         AddNewDebuffToAffectedUnit(unitHit);

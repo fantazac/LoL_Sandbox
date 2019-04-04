@@ -41,8 +41,6 @@ public abstract class UnitTargeted : Ability
         StartCorrectCoroutine();
     }
 
-    protected virtual void OnAbilityEffectHit(AbilityEffect abilityEffect, Unit unitHit, bool isACriticalStrike, bool willMiss) { }
-
     public override bool CanBeCast(Vector3 mousePosition) { return false; }
     public override Vector3 GetDestination() { return Vector3.down; }
     public override void UseAbility(Vector3 destination) { }

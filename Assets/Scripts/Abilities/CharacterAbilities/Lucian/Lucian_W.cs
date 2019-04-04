@@ -66,22 +66,22 @@ public class Lucian_W : DirectionTargetedProjectile
         AbilityDebuffs[0].OnAbilityBuffRemoved += RemoveDebuffFromAffectedUnit;
     }
 
-    protected override void OnProjectileHit(AbilityEffect projectile, Unit unitHit, bool isACriticalStrike, bool willMiss)
+    protected override void OnProjectileHit(Projectile projectile, Unit unitHit, bool isACriticalStrike, bool willMiss)
     {
         OnProjectileReachedEnd(projectile);
     }
 
-    protected override void OnProjectileReachedEnd(AbilityEffect projectile)
+    protected override void OnProjectileReachedEnd(Projectile projectile)
     {
         AreaOfEffect aoe = Instantiate(explosionAreaOfEffectPrefab, projectile.transform.position, projectile.transform.rotation).GetComponent<AreaOfEffect>();
         aoe.CreateAreaOfEffect(affectedTeams, affectedUnitTypes, durationAoE);
-        aoe.OnAbilityEffectHit += OnAreaOfEffectHit;
+        aoe.OnAreaOfEffectHit += OnAreaOfEffectHit;
         aoe.ActivateAreaOfEffect();
         
         Destroy(projectile.gameObject);
     }
 
-    private void OnAreaOfEffectHit(AbilityEffect projectile, Unit unitHit, bool isACriticalStrike, bool willMiss)
+    private void OnAreaOfEffectHit(AreaOfEffect areaOfEffect, Unit unitHit)
     {
         float damage = GetAbilityDamage(unitHit);
         DamageUnit(unitHit, damage);

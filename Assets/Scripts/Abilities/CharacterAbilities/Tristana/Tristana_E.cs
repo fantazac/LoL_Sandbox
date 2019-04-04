@@ -110,12 +110,12 @@ public class Tristana_E : UnitTargetedProjectile
 
         ProjectileUnitTargeted projectile = (Instantiate(projectilePrefab, transform.position, transform.rotation)).GetComponent<ProjectileUnitTargeted>();
         projectile.ShootProjectile(affectedTeams, targetedUnit, speed);
-        projectile.OnAbilityEffectHit += OnAbilityEffectHit;
+        projectile.OnProjectileHit += OnProjectileHit;
 
         FinishAbilityCast();
     }
 
-    protected override void OnAbilityEffectHit(AbilityEffect projectile, Unit unitHit, bool isACriticalStrike, bool willMiss)
+    protected override void OnProjectileHit(Projectile projectile, Unit unitHit, bool isACriticalStrike, bool willMiss)
     {
         if (effectType == AbilityEffectType.SINGLE_TARGET)
         {

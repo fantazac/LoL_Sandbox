@@ -49,7 +49,7 @@ public class Ezreal_Q : DirectionTargetedProjectile
         affectedTeams = TeamMethods.GetHostileTeams(allyTeam);
     }
 
-    protected override void OnProjectileHit(AbilityEffect projectile, Unit unitHit, bool isACriticalStrike, bool willMiss)
+    protected override void OnProjectileHit(Projectile projectile, Unit unitHit, bool isACriticalStrike, bool willMiss)
     {
         foreach (Ability ability in champion.AbilityManager.CharacterAbilities)
         {

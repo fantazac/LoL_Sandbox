@@ -64,7 +64,7 @@ public class Old_Ezreal_W : DirectionTargetedProjectile
         FinishAbilityCast();
     }
 
-    protected override void OnProjectileHit(AbilityEffect projectile, Unit unitHit, bool isACriticalStrike, bool willMiss)
+    protected override void OnProjectileHit(Projectile projectile, Unit unitHit, bool isACriticalStrike, bool willMiss)
     {
         float damage = 0;
         if (unitHit.Team == champion.Team)

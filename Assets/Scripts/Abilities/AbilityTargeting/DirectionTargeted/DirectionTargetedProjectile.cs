@@ -30,11 +30,11 @@ public abstract class DirectionTargetedProjectile : DirectionTargeted
     {
         Projectile projectile = (Instantiate(projectilePrefab, position, rotation)).GetComponent<Projectile>();
         projectile.ShootProjectile(affectedTeams, affectedUnitTypes, speed, range);
-        projectile.OnAbilityEffectHit += OnProjectileHit;
+        projectile.OnProjectileHit += OnProjectileHit;
         projectile.OnProjectileReachedEnd += OnProjectileReachedEnd;
     }
 
-    protected virtual void OnProjectileHit(AbilityEffect projectile, Unit unitHit, bool isACriticalStrike, bool willMiss)
+    protected virtual void OnProjectileHit(Projectile projectile, Unit unitHit, bool isACriticalStrike, bool willMiss)
     {
         float damage = GetAbilityDamage(unitHit, isACriticalStrike);
         DamageUnit(unitHit, damage);
@@ -45,7 +45,7 @@ public abstract class DirectionTargetedProjectile : DirectionTargeted
         AbilityHit(unitHit, damage);
     }
 
-    protected virtual void OnProjectileReachedEnd(AbilityEffect projectile)
+    protected virtual void OnProjectileReachedEnd(Projectile projectile)
     {
         Destroy(projectile.gameObject);
     }

@@ -10,9 +10,6 @@ public abstract class AbilityEffect : MonoBehaviour
     
     protected readonly List<Unit> unitsAlreadyHit;
 
-    public delegate void OnAbilityEffectHitHandler(AbilityEffect abilityEffect, Unit unitHit, bool isACriticalStrike, bool willMiss);
-    public event OnAbilityEffectHitHandler OnAbilityEffectHit;
-
     protected AbilityEffect()
     {
         unitsAlreadyHit = new List<Unit>();
@@ -34,11 +31,6 @@ public abstract class AbilityEffect : MonoBehaviour
 
         return true;
 
-    }
-
-    protected void OnAbilityEffectHitTarget(Unit unitHit, bool isACriticalStrike = false, bool willMiss = false)
-    {
-        OnAbilityEffectHit?.Invoke(this, unitHit, isACriticalStrike, willMiss);
     }
 
     protected Unit GetUnitHit(Collider other)

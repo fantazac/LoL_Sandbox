@@ -7,6 +7,7 @@ public class Lucian_R : DirectionTargetedProjectile
 {
     private float durationOfActive;
     private int amountOfProjectilesToShoot;
+
     private int amountOfProjectilesToShootPerLevel;
     //private float damageMultiplierAgainstMinions;
 
@@ -29,18 +30,18 @@ public class Lucian_R : DirectionTargetedProjectile
 
         range = 1200;
         speed = 2000;
-        damage = 20;// 20/35/50
+        damage = 20; // 20/35/50
         damagePerLevel = 15;
-        totalADScaling = 0.25f;// 25%
-        totalAPScaling = 0.1f;// 10%
-        resourceCost = 100;// 100
-        baseCooldown = 110;// 110/100/90
+        totalADScaling = 0.25f; // 25%
+        totalAPScaling = 0.1f; // 10%
+        resourceCost = 100; // 100
+        baseCooldown = 110; // 110/100/90
         baseCooldownPerLevel = -10;
         cooldownBeforeRecast = 0.75f;
         castTime = 0.01f;
         delayCastTime = new WaitForSeconds(castTime);
 
-        amountOfProjectilesToShoot = 20;// 20/25/30
+        amountOfProjectilesToShoot = 20; // 20/25/30
         amountOfProjectilesToShootPerLevel = 5;
         //damageMultiplierAgainstMinions = 2f;
         durationOfActive = 3;
@@ -78,6 +79,7 @@ public class Lucian_R : DirectionTargetedProjectile
                 AbilitiesToDisableWhileActive.Add(ability);
             }
         }
+
         AbilitiesToDisableWhileActive.Add(champion.AbilityManager.OtherCharacterAbilities[0]);
 
         CastableAbilitiesWhileActive.Add(GetComponent<Lucian_E>());
@@ -120,7 +122,9 @@ public class Lucian_R : DirectionTargetedProjectile
 
     private void ShootProjectile(int projectileId)
     {
-        SpawnProjectile(transform.position + (transform.forward * projectilePrefab.transform.localScale.z * 0.5f) + (transform.right * (projectileId % 2 == 0 ? projectileOffset : -projectileOffset)), transform.rotation);
+        SpawnProjectile(transform.position +
+                        transform.forward * projectilePrefab.transform.localScale.z * 0.5f +
+                        transform.right * (projectileId % 2 == 0 ? projectileOffset : -projectileOffset), transform.rotation);
     }
 
     protected override float ApplyAbilityDamageModifier(Unit unitHit)

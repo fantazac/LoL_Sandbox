@@ -12,6 +12,9 @@ public abstract class Projectile : AbilityEffect
 
     protected Vector3 initialPosition;
 
+    public delegate void OnProjectileHitHandler(Projectile projectile, Unit unitHit, bool isACriticalStrike, bool willMiss);
+    public event OnProjectileHitHandler OnProjectileHit;
+    
     public delegate void OnProjectileReachedEndHandler(Projectile projectile);
     public event OnProjectileReachedEndHandler OnProjectileReachedEnd;
 
@@ -27,6 +30,11 @@ public abstract class Projectile : AbilityEffect
         StartCoroutine(ActivateAbilityEffect());
     }
 
+    protected void OnProjectileHitTarget(Unit unitHit, bool isACriticalStrike = false, bool willMiss = false)
+    {
+        OnProjectileHit?.Invoke(this, unitHit, isACriticalStrike, willMiss);
+    }
+    
     protected void OnProjectileReachedEndOfRange()
     {
         OnProjectileReachedEnd?.Invoke(this);

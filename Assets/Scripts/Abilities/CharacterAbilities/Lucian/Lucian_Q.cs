@@ -79,7 +79,7 @@ public class Lucian_Q : UnitTargetedAoE
 
         AreaOfEffect aoe = (Instantiate(areaOfEffectPrefab, positionOnCast, rotationOnCast)).GetComponent<AreaOfEffect>();
         aoe.CreateAreaOfEffect(affectedTeams, affectedUnitTypes, durationAoE);
-        aoe.OnAbilityEffectHit += OnAbilityEffectHit;
+        aoe.OnAreaOfEffectHit += OnAreaOfEffectHit;
         aoe.ActivateAreaOfEffect();
 
         FinishAbilityCast();

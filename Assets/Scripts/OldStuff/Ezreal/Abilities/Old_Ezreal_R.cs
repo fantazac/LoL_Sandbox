@@ -68,7 +68,7 @@ public class Old_Ezreal_R : DirectionTargetedProjectile
         FinishAbilityCast();
     }
 
-    protected override void OnProjectileHit(AbilityEffect projectile, Unit unitHit, bool isACriticalStrike, bool willMiss)
+    protected override void OnProjectileHit(Projectile projectile, Unit unitHit, bool isACriticalStrike, bool willMiss)
     {
         float damage = GetAbilityDamage(unitHit) * currentDamageMultiplier;
         DamageUnit(unitHit, damage);

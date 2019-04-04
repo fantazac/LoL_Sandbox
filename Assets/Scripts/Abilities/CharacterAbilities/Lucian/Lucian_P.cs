@@ -81,7 +81,7 @@ public class Lucian_P : PassiveTargeted
         }
     }
 
-    public override void OnEmpoweredBasicAttackHit(Unit unitHit, bool isACriticalStrike)
+    public override void OnEmpoweredBasicAttackHit(Unit unitHit, bool isACriticalStrike = false)
     {
         float damage = GetAbilityDamage(unitHit, isACriticalStrike, champion.StatsManager.CriticalStrikeDamage.GetTotal());
         DamageUnit(unitHit, damage);

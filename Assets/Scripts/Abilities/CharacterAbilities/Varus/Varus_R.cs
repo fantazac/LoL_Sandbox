@@ -77,7 +77,7 @@ public class Varus_R : DirectionTargetedProjectile
         base.ModifyValues();
     }
 
-    protected override void OnProjectileHit(AbilityEffect projectile, Unit unitHit, bool isACriticalStrike, bool willMiss)
+    protected override void OnProjectileHit(Projectile projectile, Unit unitHit, bool isACriticalStrike, bool willMiss)
     {
         if (effectType == AbilityEffectType.SINGLE_TARGET)
         {

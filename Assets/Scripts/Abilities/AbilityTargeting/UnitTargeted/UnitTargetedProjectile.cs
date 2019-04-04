@@ -10,7 +10,7 @@ public abstract class UnitTargetedProjectile : UnitTargeted
         projectilePrefab = Resources.Load<GameObject>(projectilePrefabPath);
     }
 
-    protected override void OnAbilityEffectHit(AbilityEffect projectile, Unit unitHit, bool isACriticalStrike, bool willMiss)
+    protected virtual void OnProjectileHit(Projectile projectile, Unit unitHit, bool isACriticalStrike, bool willMiss)
     {
         float damage = GetAbilityDamage(unitHit, isACriticalStrike);
         DamageUnit(unitHit, damage);

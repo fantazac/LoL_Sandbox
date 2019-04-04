@@ -5,9 +5,8 @@ using UnityEngine;
 
 public class MissFortune_E : GroundTargetedAoE
 {
-    private int totalTicks;
-    private float timeBetweenTicks;
-    private WaitForSeconds tickDelay;
+    private readonly int totalTicks;
+    private readonly WaitForSeconds tickDelay;
 
     private float radius;
 
@@ -23,18 +22,17 @@ public class MissFortune_E : GroundTargetedAoE
         MaxLevel = 5;
 
         range = 1000;
-        damage = 80;// 80/115/150/185/220
+        damage = 80; // 80/115/150/185/220
         damagePerLevel = 35;
         totalAPScaling = 0.1f;
         resourceCost = 80;
-        baseCooldown = 18;// 18/16/14/12/10
+        baseCooldown = 18; // 18/16/14/12/10
         baseCooldownPerLevel = -2f;
-        castTime = 0.25f;//TODO: VERIFY ACTUAL VALUE
+        castTime = 0.25f; //TODO: VERIFY ACTUAL VALUE
         delayCastTime = new WaitForSeconds(castTime);
 
         totalTicks = 8;
-        timeBetweenTicks = 0.25f;
-        tickDelay = new WaitForSeconds(timeBetweenTicks);
+        tickDelay = new WaitForSeconds(0.25f);
 
         radius = 200;
 
@@ -77,15 +75,17 @@ public class MissFortune_E : GroundTargetedAoE
         UseResource();
         champion.OrientationManager.RotateCharacterInstantly(destinationOnCast);
 
-        AreaOfEffectGround areaOfEffect = (Instantiate(areaOfEffectPrefab, Vector3.right * destinationOnCast.x + Vector3.forward * destinationOnCast.z, Quaternion.identity)).GetComponent<AreaOfEffectGround>();
-        areaOfEffect.CreateAreaOfEffect(affectedTeams, affectedUnitTypes, tickDelay, totalTicks, radius);
-        areaOfEffect.OnAbilityEffectGroundHit += OnAbilityEffectGroundHit;
+        AreaOfEffectWithEffectOverTime areaOfEffect =
+            Instantiate(areaOfEffectPrefab, Vector3.right * destinationOnCast.x + Vector3.forward * destinationOnCast.z, Quaternion.identity)
+                .GetComponent<AreaOfEffectWithEffectOverTime>();
+        areaOfEffect.CreateAreaOfEffect(affectedTeams, affectedUnitTypes, tickDelay, totalTicks);
+        areaOfEffect.OnAreaOfEffectWithEffectOverTimeHit += AreaOfEffectWithEffectOverTimeHit;
         areaOfEffect.ActivateAreaOfEffect();
 
         FinishAbilityCast();
     }
 
-    protected void OnAbilityEffectGroundHit(AbilityEffect abilityEffect, List<Unit> previouslyAffectedUnits, List<Unit> affectedUnits)
+    private void AreaOfEffectWithEffectOverTimeHit(AbilityEffect abilityEffect, List<Unit> previouslyAffectedUnits, List<Unit> affectedUnits)
     {
         AbilityDebuffs[0].AddNewBuffToAffectedUnits(previouslyAffectedUnits, affectedUnits);
         foreach (Unit affectedUnit in affectedUnits)
