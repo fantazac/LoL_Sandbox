@@ -208,6 +208,21 @@ public class AbilityManager : MonoBehaviour
             UseUnitTargetedAbility(ability, FindTarget(unitId));
         }
     }
+    
+    protected void SendToServer_Ability_Auto(AbilityCategory abilityCategory, int abilityId)
+    {
+        champion.PhotonView.RPC("ReceiveFromServer_Ability_Auto", PhotonTargets.AllViaServer, abilityCategory, abilityId);
+    }
+
+    [PunRPC]
+    protected void ReceiveFromServer_Ability_Auto(AbilityCategory abilityCategory, int abilityId)
+    {
+        Ability ability = GetAbility(abilityCategory, abilityId);
+        if (AbilityIsCastable(ability))
+        {
+            UseAutoTargetedAbility(ability);
+        }
+    }
 
     protected void SendToServer_Ability_Recast(AbilityCategory abilityCategory, int abilityId)
     {
@@ -269,47 +284,58 @@ public class AbilityManager : MonoBehaviour
     public void OnPressedInputForAbility(AbilityCategory abilityCategory, int abilityId)
     {
         Ability ability = GetAbility(abilityCategory, abilityId);
-        if (AbilityIsAvailable(ability))
+        
+        if (!AbilityIsAvailable(ability)) return;
+        
+        if (AbilityIsCastable(ability))
         {
-            if (AbilityIsCastable(ability))
+            if (ability is IUnitTargeted unitTargetedAbility)
             {
-                if (ability is UnitTargeted)
-                {
-                    Unit hoveredUnit = champion.MouseManager.HoveredUnit;
-                    if (hoveredUnit != null && ability.CanBeCast(champion.MouseManager.HoveredUnit))
-                    {
-                        if (StaticObjects.OnlineMode)
-                        {
-                            SendToServer_Ability_Unit(abilityCategory, abilityId, hoveredUnit);
-                        }
-                        else
-                        {
-                            UseUnitTargetedAbility(ability, hoveredUnit);
-                        }
-                    }
-                }
-                else if (ability.CanBeCast(Input.mousePosition))
+                Unit hoveredUnit = champion.MouseManager.HoveredUnit;
+                if (hoveredUnit && unitTargetedAbility.CanBeCast(hoveredUnit))
                 {
                     if (StaticObjects.OnlineMode)
                     {
-                        SendToServer_Ability_Destination(abilityCategory, abilityId, ability.GetDestination());
+                        SendToServer_Ability_Unit(abilityCategory, abilityId, hoveredUnit);
                     }
                     else
                     {
-                        UsePositionTargetedAbility(ability, ability.GetDestination());
+                        UseUnitTargetedAbility(ability, hoveredUnit);
                     }
                 }
             }
-            else if (ability.IsReadyToBeRecasted)
+            else if (ability is IDestinationTargeted destinationTargetedAbility && destinationTargetedAbility.CanBeCast(Input.mousePosition))
             {
                 if (StaticObjects.OnlineMode)
                 {
-                    SendToServer_Ability_Recast(abilityCategory, abilityId);
+                    SendToServer_Ability_Destination(abilityCategory, abilityId, destinationTargetedAbility.GetDestination());
                 }
                 else
                 {
-                    ability.RecastAbility();
+                    UsePositionTargetedAbility(ability, destinationTargetedAbility.GetDestination());
                 }
+            }
+            else if (ability is IAutoTargeted autoTargetedAbility)
+            {
+                if (StaticObjects.OnlineMode)
+                {
+                    SendToServer_Ability_Auto(abilityCategory, abilityId);
+                }
+                else
+                {
+                    UseAutoTargetedAbility(ability);
+                }
+            }
+        }
+        else if (ability.IsReadyToBeRecasted)
+        {
+            if (StaticObjects.OnlineMode)
+            {
+                SendToServer_Ability_Recast(abilityCategory, abilityId);
+            }
+            else
+            {
+                ability.RecastAbility();
             }
         }
     }
@@ -319,7 +345,7 @@ public class AbilityManager : MonoBehaviour
         if (AbilityCanBeCastDuringActiveAbilitiesCastTimes(ability))
         {
             champion.BufferedAbilityManager.ResetBufferedAbility();
-            ability.UseAbility(destination);
+            ((IDestinationTargeted)ability).UseAbility(destination);
             if (ability.HasCastTime || ability.HasChannelTime)
             {
                 champion.ChampionMovementManager.SetCharacterIsInTargetRangeEventForBasicAttack();
@@ -336,11 +362,24 @@ public class AbilityManager : MonoBehaviour
         if (AbilityCanBeCastDuringActiveAbilitiesCastTimes(ability))
         {
             champion.BufferedAbilityManager.ResetBufferedAbility();
-            ability.UseAbility(target);
+            ((IUnitTargeted)ability).UseAbility(target);
         }
         else
         {
             champion.BufferedAbilityManager.BufferUnitTargetedAbility(ability, target);
+        }
+    }
+    
+    protected void UseAutoTargetedAbility(Ability ability)
+    {
+        if (AbilityCanBeCastDuringActiveAbilitiesCastTimes(ability))
+        {
+            champion.BufferedAbilityManager.ResetBufferedAbility();
+            ((IAutoTargeted)ability).UseAbility();
+        }
+        else
+        {
+            champion.BufferedAbilityManager.BufferAutoTargetedAbility(ability);
         }
     }
 

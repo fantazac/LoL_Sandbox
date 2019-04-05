@@ -2,7 +2,7 @@
 {
     protected SpawnEnemyDummy()
     {
-        maxDummyId = MAXIMUM_DUMMY_AMOUNT;
+        maxDummyId = MAXIMUM_DUMMY_ID;
 
         abilityName = "Spawn Enemy Dummy";
         dummyName = "Enemy Dummy";

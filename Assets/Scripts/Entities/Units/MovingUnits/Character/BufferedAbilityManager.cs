@@ -8,20 +8,30 @@ public class BufferedAbilityManager : MonoBehaviour
     private Ability bufferedUnitTargetedAbility;
     private Unit bufferedUnit;
 
+    private Ability bufferedAutoTargetedAbility;
+
     public Ability GetBufferedAbility()
     {
-        return bufferedPositionTargetedAbility != null ? bufferedPositionTargetedAbility : bufferedUnitTargetedAbility;
+        if (bufferedPositionTargetedAbility)
+        {
+            return bufferedPositionTargetedAbility;
+        }
+        return bufferedUnitTargetedAbility ? bufferedUnitTargetedAbility : bufferedAutoTargetedAbility;
     }
 
     public void ResetBufferedAbility()
     {
-        if (bufferedPositionTargetedAbility != null)
+        if (bufferedPositionTargetedAbility)
         {
             ResetBufferedPositionTargetedAbility();
         }
-        if (bufferedUnitTargetedAbility != null)
+        if (bufferedUnitTargetedAbility)
         {
             ResetBufferedUnitTargetedAbility();
+        }
+        if (bufferedAutoTargetedAbility)
+        {
+            ResetBufferedAutoTargetedAbility();
         }
     }
 
@@ -30,9 +40,13 @@ public class BufferedAbilityManager : MonoBehaviour
         bufferedPositionTargetedAbility = positionTargetedAbility;
         bufferedPosition = destination;
 
-        if (bufferedUnitTargetedAbility != null)
+        if (bufferedUnitTargetedAbility)
         {
             ResetBufferedUnitTargetedAbility();
+        }
+        if (bufferedAutoTargetedAbility)
+        {
+            ResetBufferedAutoTargetedAbility();
         }
     }
 
@@ -41,25 +55,49 @@ public class BufferedAbilityManager : MonoBehaviour
         bufferedUnitTargetedAbility = unitTargetedAbility;
         bufferedUnit = target;
 
-        if (bufferedPositionTargetedAbility != null)
+        if (bufferedPositionTargetedAbility)
         {
             ResetBufferedPositionTargetedAbility();
+        }
+        if (bufferedAutoTargetedAbility)
+        {
+            ResetBufferedAutoTargetedAbility();
+        }
+    }
+
+    public void BufferAutoTargetedAbility(Ability autoTargetedAbility)
+    {
+        bufferedAutoTargetedAbility = autoTargetedAbility;
+        
+        if (bufferedPositionTargetedAbility)
+        {
+            ResetBufferedPositionTargetedAbility();
+        }
+        if (bufferedUnitTargetedAbility)
+        {
+            ResetBufferedUnitTargetedAbility();
         }
     }
 
     public void UseBufferedAbility()
     {
-        if (bufferedPositionTargetedAbility != null)
+        if (bufferedPositionTargetedAbility)
         {
             Ability bufferedAbility = bufferedPositionTargetedAbility;
             ResetBufferedPositionTargetedAbility();
-            bufferedAbility.UseAbility(bufferedPosition);
+            ((IDestinationTargeted)bufferedAbility).UseAbility(bufferedPosition);
         }
-        else if (bufferedUnitTargetedAbility != null)
+        else if (bufferedUnitTargetedAbility)
         {
             Ability bufferedAbility = bufferedUnitTargetedAbility;
             ResetBufferedUnitTargetedAbility();
-            bufferedAbility.UseAbility(bufferedUnit);
+            ((IUnitTargeted)bufferedAbility).UseAbility(bufferedUnit);
+        }
+        else if(bufferedAutoTargetedAbility)
+        {
+            Ability bufferedAbility = bufferedAutoTargetedAbility;
+            ResetBufferedAutoTargetedAbility();
+            ((IAutoTargeted)bufferedAbility).UseAbility();
         }
     }
 
@@ -71,5 +109,10 @@ public class BufferedAbilityManager : MonoBehaviour
     private void ResetBufferedUnitTargetedAbility()
     {
         bufferedUnitTargetedAbility = null;
+    }
+
+    private void ResetBufferedAutoTargetedAbility()
+    {
+        bufferedAutoTargetedAbility = null;
     }
 }

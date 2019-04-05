@@ -36,11 +36,6 @@ public class Recall : AutoTargetedBlink
         AbilityBuffs[0].OnAbilityBuffRemoved += RemoveBuffFromAffectedUnit;
     }
 
-    public override Vector3 GetDestination()
-    {
-        return champion.CharacterHeightOffset;
-    }
-
     protected override IEnumerator AbilityWithCastTimeAndChannelTime()
     {
         IsBeingCasted = true;
@@ -58,7 +53,7 @@ public class Recall : AutoTargetedBlink
         IsBeingChanneled = false;
         AbilityBuffs[0].ConsumeBuff(champion);
 
-        transform.position = GetDestination();
+        transform.position = champion.CharacterHeightOffset;
         champion.ChampionMovementManager.NotifyChampionMoved();
 
         FinishAbilityCast();

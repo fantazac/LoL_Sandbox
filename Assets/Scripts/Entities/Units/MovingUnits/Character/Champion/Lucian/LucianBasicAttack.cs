@@ -8,6 +8,8 @@ public class LucianBasicAttack : EmpoweredBasicAttack
 
     private bool isShootingPassiveShot;
 
+    private IBasicAttackEmpoweringAbilityWithSelfEffect iBasicAttackEmpoweringAbilityWithSelfEffect;
+
     protected LucianBasicAttack()
     {
         delayPercentBeforeAttack = 0.1666f;
@@ -18,6 +20,13 @@ public class LucianBasicAttack : EmpoweredBasicAttack
 
         basicAttackPrefabPath = "BasicAttacksPrefabs/Characters/Lucian/LucianBA";
         empoweredBasicAttackPrefabPath = "BasicAttacksPrefabs/Characters/Lucian/LucianBAPassive";
+    }
+
+    public override void SetBasicAttackEmpoweringAbility(Ability basicAttackEmpoweringAbility)
+    {
+        base.SetBasicAttackEmpoweringAbility(basicAttackEmpoweringAbility);
+
+        iBasicAttackEmpoweringAbilityWithSelfEffect = (IBasicAttackEmpoweringAbilityWithSelfEffect)basicAttackEmpoweringAbility;
     }
 
     public override void StopBasicAttack(bool isCrowdControlled = false)
@@ -90,14 +99,15 @@ public class LucianBasicAttack : EmpoweredBasicAttack
 
     protected override void EmpoweredBasicAttackHit(Unit unitHit, bool isACriticalStrike)
     {
-        basicAttackEmpoweringAbility.UseAbility(unitHit);
+        iBasicAttackEmpoweringAbilityWithSelfEffect.ApplySelfEffect(unitHit);
     }
 
     private void PassiveBasicAttackHit(Projectile basicAttackProjectile, Unit unitHit, bool isACriticalStrike, bool willMiss)
     {
         if (!(unit.StatusManager.IsBlinded() || willMiss))
         {
-            basicAttackEmpoweringAbility.OnEmpoweredBasicAttackHit(unitHit, isACriticalStrike);
+            iBasicAttackEmpoweringAbilityWithSelfEffect.ApplySelfEffect(unitHit);
+            iBasicAttackEmpoweringAbility.OnEmpoweredBasicAttackHit(unitHit, isACriticalStrike);
         }
         Destroy(basicAttackProjectile.gameObject);
     }

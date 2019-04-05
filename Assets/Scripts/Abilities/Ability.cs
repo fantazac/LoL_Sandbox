@@ -150,12 +150,6 @@ public abstract class Ability : DamageSource
         ModifyValues();
     }
 
-    public abstract bool CanBeCast(Unit target);
-    public abstract bool CanBeCast(Vector3 mousePosition);
-    public abstract Vector3 GetDestination();
-    public abstract void UseAbility(Unit target);
-    public abstract void UseAbility(Vector3 destination);
-
     protected abstract void SetResourcePaths();
 
     protected virtual void RotationOnAbilityCast(Vector3 destination)
@@ -193,10 +187,9 @@ public abstract class Ability : DamageSource
         {
             StartCooldownForRecast();
         }
-        if (OnAbilityUsed != null)
-        {
-            OnAbilityUsed(this);
-        }
+
+        OnAbilityUsed?.Invoke(this);
+        
         IsActive = true;
         if (champion.AbilityTimeBarUIManager)
         {
@@ -242,10 +235,9 @@ public abstract class Ability : DamageSource
                 }
             }
         }
-        if (OnAbilityFinished != null)
-        {
-            OnAbilityFinished(this);
-        }
+
+        OnAbilityFinished?.Invoke(this);
+        
         IsActive = false;
         if (ResetBasicAttackCycleOnAbilityFinished)
         {
@@ -590,8 +582,6 @@ public abstract class Ability : DamageSource
     }
 
     protected virtual void ExtraActionsOnCancel() { }
-
-    public virtual void OnEmpoweredBasicAttackHit(Unit unitHit, bool isACriticalStrike = false) { }
 
     public void SetRange(float range)
     {

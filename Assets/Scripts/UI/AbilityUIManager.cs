@@ -121,7 +121,7 @@ public class AbilityUIManager : MonoBehaviour
         }
         else if (cooldownRemaining > 0)
         {
-            cooldownString = cooldownRemaining.ToString("f1");
+            cooldownString = cooldownRemaining.ToString("f1").Replace(",", ".");
         }
         abilityCooldownTexts[abilityId].text = cooldownString;
     }

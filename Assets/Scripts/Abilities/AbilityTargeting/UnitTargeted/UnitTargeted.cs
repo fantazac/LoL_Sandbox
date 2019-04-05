@@ -1,18 +1,13 @@
 ﻿using UnityEngine;
 
-public abstract class UnitTargeted : Ability
+public abstract class UnitTargeted : Ability, IUnitTargeted
 {
-    public override bool CanBeCast(Unit target)
-    {
-        return IsAValidTarget(target);
-    }
-
-    private bool IsAValidTarget(Unit target)
+    public virtual bool CanBeCast(Unit target)
     {
         return target.IsTargetable(affectedUnitTypes, affectedTeams);
     }
 
-    public override void UseAbility(Unit target)
+    public virtual void UseAbility(Unit target)
     {
         if (Vector3.Distance(target.transform.position, transform.position) <= range)
         {
@@ -25,7 +20,7 @@ public abstract class UnitTargeted : Ability
         }
     }
 
-    protected virtual void UseAbilityInRange(Unit target)
+    private void UseAbilityInRange(Unit target)
     {
         StartAbilityCast();
 
@@ -40,8 +35,4 @@ public abstract class UnitTargeted : Ability
 
         StartCorrectCoroutine();
     }
-
-    public override bool CanBeCast(Vector3 mousePosition) { return false; }
-    public override Vector3 GetDestination() { return Vector3.down; }
-    public override void UseAbility(Vector3 destination) { }
 }

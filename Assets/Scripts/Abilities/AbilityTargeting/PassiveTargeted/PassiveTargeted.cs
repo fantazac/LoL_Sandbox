@@ -1,22 +1,5 @@
-﻿using UnityEngine;
-
-public abstract class PassiveTargeted : Ability
+﻿public abstract class PassiveTargeted : Ability
 {
-    public override bool CanBeCast(Vector3 mousePosition)
-    {
-        return true;
-    }
-
-    public override bool CanBeCast(Unit target)
-    {
-        return true;
-    }
-
-    public override Vector3 GetDestination()
-    {
-        return Vector3.down;
-    }
-    
     protected void PassiveEffect(Ability ability, Unit unitHit)
     {
         PassiveEffect(ability);
@@ -26,8 +9,4 @@ public abstract class PassiveTargeted : Ability
     {
         AbilityBuffs[0].AddNewBuffToAffectedUnit(champion);
     }
-    
-    public override void UseAbility(Vector3 destination) { }
-    public override void UseAbility(Unit target) { }
-
 }

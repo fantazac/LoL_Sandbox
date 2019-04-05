@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
-using UnityEngine;
 
-public class Tristana_Q : AutoTargeted
+public class Tristana_Q : SelfTargeted
 {
     protected Tristana_Q()
     {
@@ -34,7 +33,7 @@ public class Tristana_Q : AutoTargeted
         AbilityBuffs = new AbilityBuff[] { gameObject.AddComponent<Tristana_Q_Buff>() };
     }
 
-    public override void UseAbility(Vector3 destination)
+    public override void UseAbility()
     {
         StartAbilityCast();
 

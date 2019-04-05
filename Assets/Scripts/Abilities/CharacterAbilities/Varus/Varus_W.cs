@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Varus_W : PassiveTargeted
+public class Varus_W : SelfTargeted
 {
     private List<Ability> abilitiesToTriggerStacks;
 
@@ -92,7 +92,7 @@ public class Varus_W : PassiveTargeted
         percentHealthDamage += percentHealthDamagePerLevel;
     }
 
-    public override void UseAbility(Vector3 destination)
+    public override void UseAbility()
     {
         StartAbilityCast();
 

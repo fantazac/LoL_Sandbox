@@ -52,7 +52,7 @@ public abstract class Champion : Character
         }
         else if (!StaticObjects.OnlineMode)
         {
-            SetTeamAndID(Team.BLUE, 10);
+            SetTeamAndID(Team.BLUE, 50);
         }
     }
 

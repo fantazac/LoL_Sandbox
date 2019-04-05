@@ -7,12 +7,14 @@ public abstract class EmpoweredBasicAttack : BasicAttack
     protected GameObject empoweredBasicAttackPrefab;
 
     protected Ability basicAttackEmpoweringAbility;
+    protected IBasicAttackEmpoweringAbility iBasicAttackEmpoweringAbility;
 
     protected bool empoweringAbilityWasActiveOnBasicAttackCast;
 
-    public void SetBasicAttackEmpoweringAbility(Ability basicAttackEmpoweringAbility)
+    public virtual void SetBasicAttackEmpoweringAbility(Ability basicAttackEmpoweringAbility)
     {
         this.basicAttackEmpoweringAbility = basicAttackEmpoweringAbility;
+        iBasicAttackEmpoweringAbility = (IBasicAttackEmpoweringAbility)basicAttackEmpoweringAbility;
     }
 
     protected override void LoadPrefabs()
@@ -49,11 +51,11 @@ public abstract class EmpoweredBasicAttack : BasicAttack
         projectile.ShootProjectile(affectedTeams, target, speed, AttackIsCritical.CheckIfAttackIsCritical(unit.StatsManager.CriticalStrikeChance.GetTotal()));
         if (empoweringAbilityWasActiveOnBasicAttackCast)
         {
-            projectile.OnProjectileHit += BasicAttackHit;
+            projectile.OnProjectileHit += BasicAttackHit; // The one in this class
         }
         else
         {
-            projectile.OnProjectileHit += base.BasicAttackHit;
+            projectile.OnProjectileHit += base.BasicAttackHit; // The one in the BasicAttack class
         }
     }
 
@@ -69,6 +71,6 @@ public abstract class EmpoweredBasicAttack : BasicAttack
 
     protected virtual void EmpoweredBasicAttackHit(Unit unitHit, bool isACriticalStrike)
     {
-        basicAttackEmpoweringAbility.OnEmpoweredBasicAttackHit(unitHit, isACriticalStrike);
+        iBasicAttackEmpoweringAbility.OnEmpoweredBasicAttackHit(unitHit, isACriticalStrike);
     }
 }

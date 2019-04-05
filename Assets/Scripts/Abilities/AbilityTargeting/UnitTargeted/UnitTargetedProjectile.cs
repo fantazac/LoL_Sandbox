@@ -12,13 +12,13 @@ public abstract class UnitTargetedProjectile : UnitTargeted
 
     protected virtual void OnProjectileHit(Projectile projectile, Unit unitHit, bool isACriticalStrike, bool willMiss)
     {
-        float abilityDamage = GetAbilityDamage(unitHit, isACriticalStrike);
-        DamageUnit(unitHit, abilityDamage);
         if (effectType == AbilityEffectType.SINGLE_TARGET)
         {
             Destroy(projectile.gameObject);
         }
-
+        
+        float abilityDamage = GetAbilityDamage(unitHit, isACriticalStrike);
+        DamageUnit(unitHit, abilityDamage);
         AbilityHit(unitHit, abilityDamage);
     }
 }

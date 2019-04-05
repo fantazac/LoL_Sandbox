@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Heal : SelfTargeted
+public class Heal : GroundTargeted
 {
     private const float MOUSE_RADIUS = 3;
 

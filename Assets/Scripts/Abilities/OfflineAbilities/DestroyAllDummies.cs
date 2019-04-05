@@ -15,8 +15,6 @@ public class DestroyAllDummies : AutoTargeted
 
     protected override void Start()
     {
-        if (StaticObjects.OnlineMode) return;
-        
         base.Start();
 
         spawnDummyAbilities = GetComponents<SpawnDummy>();
@@ -27,12 +25,7 @@ public class DestroyAllDummies : AutoTargeted
         RemoveAllDummies();
     }
 
-    public override bool CanBeCast(Vector3 mousePosition)
-    {
-        return !StaticObjects.OnlineMode || !OfflineOnly; // Is !(StaticObjects.OnlineMode || OfflineOnly) better?
-    }
-
-    public override void UseAbility(Vector3 destination)
+    public override void UseAbility()
     {
         StartAbilityCast();
 

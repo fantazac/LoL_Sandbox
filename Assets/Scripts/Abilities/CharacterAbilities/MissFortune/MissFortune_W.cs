@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-public class MissFortune_W : AutoTargeted
+public class MissFortune_W : SelfTargeted
 {
     private readonly float baseCooldownReductionOnPassiveHit;
     private float cooldownReductionOnPassiveHit;
@@ -87,7 +87,7 @@ public class MissFortune_W : AutoTargeted
         AddNewDebuffToAffectedUnit(champion);
     }
 
-    public override void UseAbility(Vector3 destination)
+    public override void UseAbility()
     {
         StartAbilityCast();
 

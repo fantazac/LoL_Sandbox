@@ -1,23 +1,16 @@
 ﻿using System.Collections.Generic;
-using UnityEngine;
 
-public abstract class AutoTargeted : Ability
+public abstract class AutoTargeted : Ability, IAutoTargeted
 {
-    public override bool CanBeCast(Vector3 mousePosition)
+    public virtual void UseAbility()
     {
-        return true;
-    }
+        StartAbilityCast();
 
-    public override Vector3 GetDestination()
-    {
-        return Vector3.down; // This will change
+        StartCorrectCoroutine();
     }
-
+    
     public override void SetAffectedTeams(Team allyTeam)
     {
         affectedTeams = new List<Team>();
     }
-
-    public override bool CanBeCast(Unit target) { return false; }
-    public override void UseAbility(Unit target) { }
 }

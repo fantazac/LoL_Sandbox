@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using UnityEngine;
 
-public class CC_Q : SelfTargeted
+public class CC_Q : SelfTargeted, IBasicAttackEmpoweringAbility
 {
     protected CC_Q()
     {
@@ -53,15 +52,15 @@ public class CC_Q : SelfTargeted
         AbilityBuffs[0].OnAbilityBuffRemoved += RemoveBuffFromAffectedUnit;
     }
 
-    public override void UseAbility(Vector3 destination)
+    public override void UseAbility()
     {
         StartAbilityCast();
 
         UseResource();
-        AddNewBuffToAffectedUnit(champion);
+        AddNewBuffToAffectedUnit();
     }
 
-    private void AddNewBuffToAffectedUnit(Unit affectedUnit)
+    private void AddNewBuffToAffectedUnit()
     {
         AbilityBuffs[0].AddNewBuffToAffectedUnit(champion);
     }
@@ -71,7 +70,7 @@ public class CC_Q : SelfTargeted
         FinishAbilityCast();
     }
 
-    public override void OnEmpoweredBasicAttackHit(Unit unitHit, bool isACriticalStrike = false)
+    public void OnEmpoweredBasicAttackHit(Unit unitHit, bool isACriticalStrike = false)
     {
         AbilityBuffs[0].ConsumeBuff(champion);
 

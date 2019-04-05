@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-public class Lucian_P : PassiveTargeted
+public class Lucian_P : PassiveTargeted, IBasicAttackEmpoweringAbility, IBasicAttackEmpoweringAbilityWithSelfEffect
 {
     private Ability lucianE;
     private readonly float cooldownReducedOnPassiveHitOnCharacter;
@@ -73,7 +73,7 @@ public class Lucian_P : PassiveTargeted
         }
     }
 
-    public override void UseAbility(Unit unitHit)
+    public void ApplySelfEffect(Unit unitHit)
     {
         if (lucianE) //This null check is only there if I decide to use Lucian_P without the character having Lucian_E
         {
@@ -81,11 +81,10 @@ public class Lucian_P : PassiveTargeted
         }
     }
 
-    public override void OnEmpoweredBasicAttackHit(Unit unitHit, bool isACriticalStrike = false)
+    public void OnEmpoweredBasicAttackHit(Unit unitHit, bool isACriticalStrike = false)
     {
         float abilityDamage = GetAbilityDamage(unitHit, isACriticalStrike, champion.StatsManager.CriticalStrikeDamage.GetTotal());
         DamageUnit(unitHit, abilityDamage);
-        UseAbility(unitHit);
         AbilityHit(unitHit, abilityDamage);
     }
 

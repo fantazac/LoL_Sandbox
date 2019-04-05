@@ -3,13 +3,16 @@ using UnityEngine;
 
 public abstract class SpawnDummy : GroundTargeted //GroundTargetedAoE
 {
-    protected const int MAXIMUM_DUMMY_AMOUNT = 4;
+    private const int MAXIMUM_DUMMY_AMOUNT = 4;
+    protected const int MAXIMUM_DUMMY_ID = MAXIMUM_DUMMY_AMOUNT + 1;
 
     protected int maxDummyId;
+    protected int minDummyId;
 
     protected int dummyId;
     protected string dummyName;
     protected string dummyResourcePath;
+    private GameObject dummyPrefab;
     protected Team team;
 
     private readonly List<Dummy> dummies;
@@ -22,22 +25,16 @@ public abstract class SpawnDummy : GroundTargeted //GroundTargetedAoE
         IsEnabled = true;
     }
 
+    protected override void LoadPrefabs()
+    {
+        base.LoadPrefabs();
+
+        dummyPrefab = Resources.Load<GameObject>(dummyResourcePath);
+    }
+
     public override void SetAffectedTeams(Team allyTeam)
     {
         affectedTeams = new List<Team>();
-    }
-
-    protected override void Start()
-    {
-        if (!StaticObjects.OnlineMode)
-        {
-            base.Start();
-        }
-    }
-
-    public override bool CanBeCast(Vector3 mousePosition)
-    {
-        return (!StaticObjects.OnlineMode || !OfflineOnly) && base.CanBeCast(mousePosition);
     }
 
     public void RemoveAllDummies()
@@ -66,10 +63,10 @@ public abstract class SpawnDummy : GroundTargeted //GroundTargetedAoE
 
         if (dummyId == maxDummyId)
         {
-            dummyId -= MAXIMUM_DUMMY_AMOUNT;
+            dummyId -= MAXIMUM_DUMMY_ID;
         }
 
-        Dummy dummy = ((GameObject)Instantiate(Resources.Load(dummyResourcePath), destination, Quaternion.identity)).GetComponent<Dummy>();
+        Dummy dummy = Instantiate(dummyPrefab, destination, Quaternion.identity).GetComponent<Dummy>();
         dummy.transform.rotation = Quaternion.LookRotation((transform.position - dummy.transform.position).normalized);
         dummy.SetDummyNameAndTeamAndID(dummyName, team, ++dummyId);
         dummies.Add(dummy);

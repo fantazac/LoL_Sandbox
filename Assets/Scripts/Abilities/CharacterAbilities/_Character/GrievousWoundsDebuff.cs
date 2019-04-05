@@ -5,8 +5,6 @@
         buffName = "Grievous Wounds";
 
         isADebuff = true;
-
-        buffPercentValue = 40;
     }
 
     protected override void SetSpritePaths()
@@ -26,6 +24,6 @@
 
     protected override Buff CreateNewBuff(Unit affectedUnit)
     {
-        return new Buff(this, affectedUnit, buffPercentValue);
+        return new Buff(this, affectedUnit);
     }
 }

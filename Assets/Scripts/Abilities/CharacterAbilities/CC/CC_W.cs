@@ -34,7 +34,7 @@ public class CC_W : AutoTargeted
         AbilityDebuffs = new AbilityBuff[] { gameObject.AddComponent<CC_W_Debuff>() };
     }
 
-    public override void UseAbility(Vector3 destination)
+    public override void UseAbility()
     {
         StartAbilityCast();
 
