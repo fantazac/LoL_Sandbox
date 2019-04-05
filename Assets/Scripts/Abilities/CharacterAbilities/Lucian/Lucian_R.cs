@@ -74,15 +74,13 @@ public class Lucian_R : DirectionTargetedProjectile
     {
         foreach (Ability ability in champion.AbilityManager.CharacterAbilities)
         {
-            if (!(ability is DirectionTargetedDash || ability == this))
+            if (!(ability is Lucian_E || ability == this))
             {
                 AbilitiesToDisableWhileActive.Add(ability);
             }
         }
 
         AbilitiesToDisableWhileActive.Add(champion.AbilityManager.OtherCharacterAbilities[0]);
-
-        CastableAbilitiesWhileActive.Add(GetComponent<Lucian_E>());
 
         base.Start();
     }
