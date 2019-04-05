@@ -20,7 +20,6 @@ public abstract class SpawnDummy : GroundTargeted //GroundTargetedAoE
     protected SpawnDummy()
     {
         dummies = new List<Dummy>();
-        OfflineOnly = true;
 
         IsEnabled = true;
     }

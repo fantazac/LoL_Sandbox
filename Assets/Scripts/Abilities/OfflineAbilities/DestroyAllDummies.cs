@@ -8,8 +8,6 @@ public class DestroyAllDummies : AutoTargeted
     {
         abilityName = "Destroy All Dummies";
 
-        OfflineOnly = true;
-
         IsEnabled = true;
     }
 

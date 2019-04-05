@@ -86,7 +86,6 @@ public abstract class Ability : DamageSource
     public bool IsOnCooldown { get; protected set; }
     public bool IsOnCooldownForRecast { get; protected set; }
     public bool IsReadyToBeRecasted { get; private set; }
-    public bool OfflineOnly { get; protected set; }
     public bool ResetBasicAttackCycleOnAbilityCast { get; protected set; }
     public bool ResetBasicAttackCycleOnAbilityFinished { get; protected set; }
     public bool UsesResource { get; private set; }
