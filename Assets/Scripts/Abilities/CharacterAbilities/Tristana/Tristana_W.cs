@@ -79,9 +79,9 @@ public class Tristana_W : DirectionTargetedDash //TODO: GroundTargetedDash
     private void ApplyDamageAndSlowToAllEnemiesInRadius()
     {
         Vector3 groundPosition = Vector3.right * transform.position.x + Vector3.forward * transform.position.z;
-        foreach (Collider collider in Physics.OverlapCapsule(groundPosition, groundPosition + Vector3.up * 5, effectRadius))
+        foreach (Collider other in Physics.OverlapCapsule(groundPosition, groundPosition + Vector3.up * 5, effectRadius))
         {
-            Unit tempUnit = collider.GetComponentInParent<Unit>();
+            Unit tempUnit = other.GetComponentInParent<Unit>();
 
             if (!tempUnit || !tempUnit.IsTargetable(affectedUnitTypes, affectedTeams)) continue;
 

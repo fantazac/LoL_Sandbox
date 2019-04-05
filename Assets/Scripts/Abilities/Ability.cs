@@ -558,9 +558,7 @@ public abstract class Ability : DamageSource
         }
     }
 
-    public virtual void LevelUpExtraStats() { }
-
-    public virtual void OnCharacterLevelUp(int level) { }
+    protected virtual void LevelUpExtraStats() { }
 
     public virtual void RecastAbility()
     {

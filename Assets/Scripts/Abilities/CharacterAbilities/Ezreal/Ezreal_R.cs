@@ -65,6 +65,6 @@ public class Ezreal_R : DirectionTargetedProjectile
     protected override float ApplyAbilityDamageModifier(Unit unitHit)
     {
         //TODO when Minion and Non-Epic Monsters exists, return damageMultiplierAgainstMinionsAndNonEpicMonsters
-        return 1f;
+        return 1;
     }
 }

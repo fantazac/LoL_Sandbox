@@ -57,7 +57,7 @@ public class Lucian_Q : UnitTargetedAoE
         champion.LevelManager.OnLevelUp += OnCharacterLevelUp;
     }
 
-    public override void OnCharacterLevelUp(int level)
+    private void OnCharacterLevelUp(int level)
     {
         castTime = 0.409f - (0.009f * level);
         delayCastTime = new WaitForSeconds(castTime);

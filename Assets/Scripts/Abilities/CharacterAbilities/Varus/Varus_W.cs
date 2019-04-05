@@ -87,7 +87,7 @@ public class Varus_W : SelfTargeted
         champion.OnHitEffectsManager.OnApplyOnHitEffects += SetPassiveEffectOnUnitHit;
     }
 
-    public override void LevelUpExtraStats()
+    protected override void LevelUpExtraStats()
     {
         percentHealthDamage += percentHealthDamagePerLevel;
     }

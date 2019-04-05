@@ -57,7 +57,7 @@ public class Heal : GroundTargeted
         return hit.point + champion.CharacterHeightOffset;
     }
 
-    public override void OnCharacterLevelUp(int level)
+    private void OnCharacterLevelUp(int level)
     {
         LevelUpBuffsAndDebuffs();
     }

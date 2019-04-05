@@ -45,7 +45,7 @@ public class Tristana_P : PassiveTargeted
         champion.LevelManager.OnLevelUp += OnCharacterLevelUp;
     }
 
-    public override void OnCharacterLevelUp(int level)
+    private void OnCharacterLevelUp(int level)
     {
         champion.StatsManager.AttackRange.RemoveFlatBonus(currentRangeBonus);
         currentRangeBonus = rangePerLevel * (level - 1);

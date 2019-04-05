@@ -87,7 +87,7 @@ public class Lucian_R : DirectionTargetedProjectile
         base.Start();
     }
 
-    public override void LevelUpExtraStats()
+    protected override void LevelUpExtraStats()
     {
         amountOfProjectilesToShoot += amountOfProjectilesToShootPerLevel;
 

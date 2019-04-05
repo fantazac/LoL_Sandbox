@@ -65,7 +65,7 @@ public class Lucian_P : PassiveTargeted, IBasicAttackEmpoweringAbility, IBasicAt
         champion.LevelManager.OnLevelUp += OnCharacterLevelUp;
     }
 
-    public override void OnCharacterLevelUp(int level)
+    private void OnCharacterLevelUp(int level)
     {
         if (level == 7 || level == 13)
         {

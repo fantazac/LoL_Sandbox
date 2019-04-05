@@ -49,7 +49,7 @@ public class MissFortune_P : PassiveTargeted
         lastUnitHit = champion;
     }
 
-    public override void OnCharacterLevelUp(int level)
+    private void OnCharacterLevelUp(int level)
     {
         if (level == 4 || level == 7 || level == 9 || level == 11 || level == 13)
         {

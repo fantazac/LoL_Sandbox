@@ -64,7 +64,7 @@ public class MissFortune_R : DirectionTargetedProjectile
         AbilityBuffs[0].OnAbilityBuffRemoved += RemoveBuffFromAffectedUnit;
     }
 
-    public override void LevelUpExtraStats()
+    protected override void LevelUpExtraStats()
     {
         amountOfWavesToShoot += amountOfWavesToShootPerLevel;
         delayBetweenWaves = new WaitForSeconds(channelTime / amountOfWavesToShoot - 0.015f);

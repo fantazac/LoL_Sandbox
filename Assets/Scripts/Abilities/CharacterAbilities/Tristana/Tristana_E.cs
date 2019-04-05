@@ -93,7 +93,7 @@ public class Tristana_E : UnitTargetedProjectile
         champion.BasicAttack.OnKilledUnit += DamageAllEnemiesInPassiveExplosionRadius;
     }
 
-    public override void LevelUpExtraStats()
+    protected override void LevelUpExtraStats()
     {
         passiveDamage += passiveDamagePerLevel;
     }
