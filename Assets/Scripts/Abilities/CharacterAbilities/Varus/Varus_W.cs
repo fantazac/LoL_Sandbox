@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Varus_W : SelfTargeted
+public class Varus_W : SelfTargeted, IAbilityWithPassive
 {
     private List<Ability> abilitiesToTriggerStacks;
 
@@ -80,7 +80,7 @@ public class Varus_W : SelfTargeted
         }
     }
 
-    public override void EnableAbilityPassive()
+    public void EnableAbilityPassive()
     {
         LevelUpExtraStats();
 

@@ -1,13 +1,15 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-public class MissFortune_W : SelfTargeted
+public class MissFortune_W : SelfTargeted, IAbilityWithPassive
 {
     private readonly float baseCooldownReductionOnPassiveHit;
     private float cooldownReductionOnPassiveHit;
 
     private IEnumerator passiveBuffCooldownAfterTakingDamage;
     private readonly WaitForSeconds delayPassiveBuff;
+
+    private MissFortune_P missFortuneP;
 
     protected MissFortune_W()
     {
@@ -36,6 +38,8 @@ public class MissFortune_W : SelfTargeted
     {
         base.Start();
 
+        missFortuneP = GetComponent<MissFortune_P>();
+
         AbilityBuffs = new AbilityBuff[] { gameObject.AddComponent<MissFortune_W_PassiveBuff>(), gameObject.AddComponent<MissFortune_W_Buff>() };
     }
 
@@ -46,9 +50,12 @@ public class MissFortune_W : SelfTargeted
         cooldownReductionOnPassiveHit = baseCooldownReductionOnPassiveHit * (1 - (cooldownReduction * 0.01f));
     }
 
-    public override void EnableAbilityPassive()
+    public void EnableAbilityPassive()
     {
-        GetComponent<MissFortune_P>().OnPassiveHit += OnPassiveHit;
+        if (missFortuneP)
+        {
+            missFortuneP.OnPassiveHit += OnPassiveHit;
+        }
 
         champion.StatsManager.Health.OnResourceReduced += OnDamageTaken;
         //TODO: something.OnRevive += OnRevive;
