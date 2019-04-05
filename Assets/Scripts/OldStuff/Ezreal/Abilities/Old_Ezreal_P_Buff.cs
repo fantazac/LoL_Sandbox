@@ -15,9 +15,9 @@
         buffSpritePath = "Sprites/Characters/CharacterAbilities/Ezreal/EzrealP_Buff";
     }
 
-    public override void UpdateBuffOnAffectedUnits(float oldFlatValue, float newFlatValue, float oldPercentValue, float newPercentValue)
+    protected override void UpdateBuffOnAffectedUnits(float oldFlatValue, float newFlatValue, float oldPercentValue, float newPercentValue)
     {
-        foreach (Unit affectedUnit in UnitsAffectedByBuff)
+        foreach (Unit affectedUnit in unitsAffectedByBuff)
         {
             Buff buff = affectedUnit.BuffManager.GetBuff(this);
             if (buff != null)

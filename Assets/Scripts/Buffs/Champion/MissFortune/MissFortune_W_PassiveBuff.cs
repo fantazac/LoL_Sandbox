@@ -20,9 +20,9 @@
         buffSpritePath = "Sprites/Characters/CharacterAbilities/MissFortune/MissFortuneW_PassiveBuff";
     }
 
-    public override void UpdateBuffOnAffectedUnits(float oldFlatValue, float newFlatValue, float oldPercentValue, float newPercentValue)
+    protected override void UpdateBuffOnAffectedUnits(float oldFlatValue, float newFlatValue, float oldPercentValue, float newPercentValue)
     {
-        foreach (Unit affectedUnit in UnitsAffectedByBuff)
+        foreach (Unit affectedUnit in unitsAffectedByBuff)
         {
             BuffUpdatingWithDelay buff = (BuffUpdatingWithDelay)affectedUnit.BuffManager.GetBuff(this);
             if (buff != null)

@@ -24,19 +24,20 @@ public abstract class AbilityBuff : MonoBehaviour
 
     protected Vector3 normalizedVector;
 
-    public List<Unit> UnitsAffectedByBuff { get; protected set; }
+    protected readonly List<Unit> unitsAffectedByBuff;
 
     public delegate void OnAbilityBuffRemovedHandler(Unit affectedUnit);
     public event OnAbilityBuffRemovedHandler OnAbilityBuffRemoved;
 
     protected AbilityBuff()
     {
-        UnitsAffectedByBuff = new List<Unit>();
-        SetSpritePaths();
+        unitsAffectedByBuff = new List<Unit>();
     }
 
-    protected virtual void Awake()
+    protected void Awake()
     {
+        SetSpritePaths();
+        
         character = GetComponent<Character>();
         buffSprite = Resources.Load<Sprite>(buffSpritePath);
     }
@@ -49,24 +50,22 @@ public abstract class AbilityBuff : MonoBehaviour
     {
         ApplyBuffEffect(affectedUnit, buff);
 
-        UnitsAffectedByBuff.Add(affectedUnit);
+        unitsAffectedByBuff.Add(affectedUnit);
     }
 
     public void RemoveBuffFromAffectedUnit(Unit affectedUnit, Buff buff)
     {
         RemoveBuffEffect(affectedUnit, buff);
 
-        UnitsAffectedByBuff.Remove(affectedUnit);
-        if (OnAbilityBuffRemoved != null)
-        {
-            OnAbilityBuffRemoved(affectedUnit);
-        }
+        unitsAffectedByBuff.Remove(affectedUnit);
+        
+        OnAbilityBuffRemoved?.Invoke(affectedUnit);
     }
 
     protected virtual void ApplyBuffEffect(Unit affectedUnit, Buff buff) { }
     protected virtual void RemoveBuffEffect(Unit affectedUnit, Buff buff) { }
 
-    public virtual void UpdateBuffOnAffectedUnits(float oldFlatValue, float newFlatValue, float oldPercentValue, float newPercentValue) { }
+    protected virtual void UpdateBuffOnAffectedUnits(float oldFlatValue, float newFlatValue, float oldPercentValue, float newPercentValue) { }
 
     public void LevelUp()
     {
@@ -85,7 +84,7 @@ public abstract class AbilityBuff : MonoBehaviour
         SetupBuff(isADebuff ? affectedUnit.BuffManager.GetDebuff(this) : affectedUnit.BuffManager.GetBuff(this), affectedUnit);
     }
 
-    public virtual void AddNewBuffToAffectedUnits(List<Unit> previouslyAffectedUnits, List<Unit> affectedUnits)
+    public void AddNewBuffToAffectedUnits(List<Unit> previouslyAffectedUnits, List<Unit> affectedUnits)
     {
         foreach (Unit previouslyAffectedUnit in previouslyAffectedUnits)
         {
@@ -121,7 +120,7 @@ public abstract class AbilityBuff : MonoBehaviour
         }
     }
 
-    public virtual void ConsumeBuff(Unit affectedUnit)
+    public void ConsumeBuff(Unit affectedUnit)
     {
         Consume(affectedUnit, isADebuff ? affectedUnit.BuffManager.GetDebuff(this) : affectedUnit.BuffManager.GetBuff(this));
     }
