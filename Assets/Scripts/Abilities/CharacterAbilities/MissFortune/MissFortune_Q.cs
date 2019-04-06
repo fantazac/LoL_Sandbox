@@ -37,7 +37,7 @@ public class MissFortune_Q : UnitTargetedProjectile
         effectRadius = 500;
         effectRadiusOnBigAngle = 150;
 
-        AppliesOnHitEffects = true;
+        appliesOnHitEffects = true;
 
         affectedByCooldownReduction = true;
     }

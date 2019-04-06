@@ -32,7 +32,7 @@ public class Ezreal_Q : DirectionTargetedProjectile
 
         cooldownReductionOnProjectileHit = 1.5f;
 
-        AppliesOnHitEffects = true;
+        appliesOnHitEffects = true;
 
         affectedByCooldownReduction = true;
     }

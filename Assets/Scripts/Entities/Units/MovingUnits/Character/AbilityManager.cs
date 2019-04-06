@@ -139,6 +139,10 @@ public class AbilityManager : MonoBehaviour
         foreach (Ability ability in abilities)
         {
             champion.AbilityUIManager.SetAbilitySprite(abilityCategory, ability.ID, ability.AbilitySprite);
+            if (ability.CanBeRecasted)
+            {
+                champion.AbilityUIManager.SetAbilityRecastSprite(abilityCategory, ability.ID, ability.AbilityRecastSprite);
+            }
         }
     }
 

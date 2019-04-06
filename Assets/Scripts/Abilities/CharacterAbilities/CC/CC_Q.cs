@@ -42,7 +42,7 @@ public class CC_Q : SelfTargeted, IBasicAttackEmpoweringAbility
 
     protected override void Start()
     {
-        AbilitiesToDisableWhileActive.Add(this);
+        abilitiesToDisableWhileActive.Add(this);
 
         base.Start();
 

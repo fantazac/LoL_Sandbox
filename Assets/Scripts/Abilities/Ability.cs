@@ -43,8 +43,6 @@ public abstract class Ability : DamageSource
     protected float baseCooldownPerLevel;
     protected float bonusADScaling;
     protected float bonusADScalingPerLevel;
-    private float cooldown;
-    private float cooldownOnCancel;
     protected float damage;
     protected float damagePerLevel;
     protected float resourceCost;
@@ -54,6 +52,9 @@ public abstract class Ability : DamageSource
     protected float totalAPScaling;
     protected float totalAPScalingPerLevel;
 
+    private float cooldown;
+    private float cooldownOnCancel;
+    
     public Sprite AbilitySprite { get; private set; }
     public Sprite AbilityRecastSprite { get; private set; } //TODO: Not implemented
 
@@ -62,10 +63,10 @@ public abstract class Ability : DamageSource
 
     private int abilityIsBlockedCount;
 
-    public bool AppliesAbilityEffects { get; protected set; }
-    public bool AppliesOnHitEffects { get; protected set; }
+    private readonly bool appliesAbilityEffects;
+    protected bool appliesOnHitEffects;
+    
     public bool CanBeCastDuringOtherAbilityCastTimes { get; protected set; }
-    public bool CanBeCastWhileStunned { get; protected set; }
     public bool CanBeRecasted { get; protected set; }
     public bool CanMoveWhileActive { get; protected set; }
     public bool CanMoveWhileChanneling { get; protected set; }
@@ -90,8 +91,7 @@ public abstract class Ability : DamageSource
     public bool ResetBasicAttackCycleOnAbilityFinished { get; protected set; }
     public bool UsesResource { get; private set; }
 
-    public List<Ability> AbilitiesToDisableWhileActive { get; private set; }
-    public List<Ability> CastableAbilitiesWhileActive { get; private set; }
+    protected readonly List<Ability> abilitiesToDisableWhileActive;
 
     public AbilityBuff[] AbilityBuffs { get; protected set; }
     public AbilityBuff[] AbilityDebuffs { get; protected set; }
@@ -107,10 +107,10 @@ public abstract class Ability : DamageSource
 
     protected Ability()
     {
-        AppliesAbilityEffects = true; //TODO: Certaines abilities appliquent pas ca (ex. darius w) mais pourquoi?
+        appliesAbilityEffects = true; //TODO: Certaines abilities appliquent pas ca (ex. darius w) mais pourquoi?
+        startCooldownOnAbilityCast = false; //Maybe a skill uses this?
 
-        AbilitiesToDisableWhileActive = new List<Ability>();
-        CastableAbilitiesWhileActive = new List<Ability>();
+        abilitiesToDisableWhileActive = new List<Ability>();
     }
 
     protected virtual void Awake()
@@ -174,9 +174,9 @@ public abstract class Ability : DamageSource
 
     protected void StartAbilityCast()
     {
-        if (AbilitiesToDisableWhileActive != null)
+        if (abilitiesToDisableWhileActive != null)
         {
-            foreach (Ability ability in AbilitiesToDisableWhileActive)
+            foreach (Ability ability in abilitiesToDisableWhileActive)
             {
                 if (ability && ability.AbilityLevel > 0)
                 {
@@ -229,9 +229,9 @@ public abstract class Ability : DamageSource
     {
         abilityEffectCoroutine = null;
         IsReadyToBeRecasted = false;
-        if (AbilitiesToDisableWhileActive != null)
+        if (abilitiesToDisableWhileActive != null)
         {
-            foreach (Ability ability in AbilitiesToDisableWhileActive)
+            foreach (Ability ability in abilitiesToDisableWhileActive)
             {
                 if (ability)
                 {
@@ -306,11 +306,11 @@ public abstract class Ability : DamageSource
     {
         if (damage > 0)
         {
-            if (AppliesAbilityEffects)
+            if (appliesAbilityEffects)
             {
                 champion.AbilityEffectsManager.ApplyAbilityEffectsToUnitHit(unitHit, damage);
             }
-            if (AppliesOnHitEffects)
+            if (appliesOnHitEffects)
             {
                 champion.OnHitEffectsManager.ApplyOnHitEffectsToUnitHit(unitHit, damage);
             }
@@ -355,14 +355,14 @@ public abstract class Ability : DamageSource
         rotationOnCast = Quaternion.LookRotation((destinationOnCast - transform.position).normalized);
     }
 
-    protected IEnumerator PutAbilityOffCooldown(float cooldownOnStart)
+    private IEnumerator PutAbilityOffCooldown(float cooldownOnStart)
     {
         IsOnCooldown = true;
         cooldownRemaining = cooldownOnStart;
 
         yield return null;
 
-        champion.AbilityUIManager.SetAbilityOnCooldown(AbilityCategory, ID, IsBlocked);
+        champion.AbilityUIManager.SetAbilityOnCooldown(AbilityCategory, ID, IsBlocked, CanBeRecasted);
 
         while (cooldownRemaining > 0)
         {
@@ -383,7 +383,7 @@ public abstract class Ability : DamageSource
         IsOnCooldown = false;
     }
 
-    protected IEnumerator PutAbilityOffCooldownForRecast()
+    private IEnumerator PutAbilityOffCooldownForRecast()
     {
         IsOnCooldownForRecast = true;
         cooldownRemaining = cooldownBeforeRecast;
@@ -438,7 +438,7 @@ public abstract class Ability : DamageSource
                 }
             }
 
-            if (baseCooldownPerLevel != 0)
+            if (baseCooldownPerLevel < 0)
             {
                 if (affectedByCooldownReduction)
                 {
@@ -503,7 +503,7 @@ public abstract class Ability : DamageSource
                               totalAPScaling * champion.StatsManager.AbilityPower.GetTotal();
 
         return ApplyDamageModifiers(unitHit, abilityDamage, damageType) *
-               (isACriticalStrike ? criticalStrikeDamage : 1f);
+               (isACriticalStrike ? criticalStrikeDamage : 1);
     }
 
     protected virtual float ApplyAbilityDamageModifier(Unit unitHit)
@@ -572,7 +572,7 @@ public abstract class Ability : DamageSource
 
     protected virtual void LevelUpExtraStats() { }
 
-    public virtual void RecastAbility()
+    public virtual void RecastAbility()// ex. ZoeQ will have a different use for this method
     {
         CancelAbility();
     }
@@ -603,11 +603,6 @@ public abstract class Ability : DamageSource
     public float GetResourceCost()
     {
         return resourceCost;
-    }
-
-    public AbilityType GetAbilityType()
-    {
-        return abilityType;
     }
 
     protected void StartCorrectCoroutine()

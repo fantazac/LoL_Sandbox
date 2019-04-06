@@ -6,6 +6,8 @@ public class AbilityUIManager : MonoBehaviour
     [SerializeField]
     private Image[] abilityImages;
     [SerializeField]
+    private Image[] abilityRecastImages;
+    [SerializeField]
     private Text[] abilityCostTexts;
     [SerializeField]
     private Image[] abilityOnCooldownImages;
@@ -22,9 +24,9 @@ public class AbilityUIManager : MonoBehaviour
     [SerializeField]
     private GameObject abilityLevelPoint;
 
-    private Color abilityColorOnCooldown;
-    private Color abilityColorOnCooldownForRecast;
-    private Color abilityLevelPointColor;
+    private readonly Color abilityColorOnCooldown;
+    private readonly Color abilityColorOnCooldownForRecast;
+    private readonly Color abilityLevelPointColor;
 
     private AbilityUIManager()
     {
@@ -37,28 +39,33 @@ public class AbilityUIManager : MonoBehaviour
     {
         abilityImages[GetAbilityId(abilityCategory, abilityId)].sprite = abilitySprite;
     }
+    
+    public void SetAbilityRecastSprite(AbilityCategory abilityCategory, int abilityId, Sprite abilityRecastSprite)
+    {
+        abilityRecastImages[GetAbilityId(abilityCategory, abilityId)].sprite = abilityRecastSprite;
+    }
 
     private int GetAbilityId(AbilityCategory abilityCategory, int abilityId)
     {
         int id = abilityId;
-        if (abilityCategory == AbilityCategory.CharacterAbility)
+        switch (abilityCategory)
         {
-            id += 1;
-        }
-        else if (abilityCategory == AbilityCategory.SummonerAbility)
-        {
-            id += 5;
-        }
-        else if (abilityCategory == AbilityCategory.OtherCharacterAbility)
-        {
-            id += 7;
+            case AbilityCategory.CharacterAbility:
+                id += 1;
+                break;
+            case AbilityCategory.SummonerAbility:
+                id += 5;
+                break;
+            case AbilityCategory.OtherCharacterAbility:
+                id += 7;
+                break;
         }
         return id;
     }
 
     public void SetAbilityCost(int abilityId, float resourceCost)
     {
-        abilityCostTexts[abilityId].text = resourceCost == 0 ? "" : ((int)resourceCost).ToString();
+        abilityCostTexts[abilityId].text = resourceCost <= 0 ? "" : ((int)resourceCost).ToString();
     }
 
     public void SetMaxAbilityLevel(int abilityId, int abilityMaxLevel)
@@ -76,9 +83,13 @@ public class AbilityUIManager : MonoBehaviour
         abilityLevelPoints[abilityId].transform.GetChild(abilityLevel - 1).GetComponent<Image>().color = abilityLevelPointColor;
     }
 
-    public void SetAbilityOnCooldown(AbilityCategory abilityCategory, int abilityId, bool abilityIsBlocked)
+    public void SetAbilityOnCooldown(AbilityCategory abilityCategory, int abilityId, bool abilityIsBlocked, bool canBeRecasted)
     {
         int id = GetAbilityId(abilityCategory, abilityId);
+        if (canBeRecasted)
+        {
+            abilityRecastImages[id].gameObject.SetActive(false);
+        }
         if (abilityIsBlocked)
         {
             abilityBlockedObjects[id - 1].SetActive(false);
@@ -90,8 +101,9 @@ public class AbilityUIManager : MonoBehaviour
     public void SetAbilityOnCooldownForRecast(AbilityCategory abilityCategory, int abilityId)
     {
         int id = GetAbilityId(abilityCategory, abilityId);
-        abilityImages[id].color = abilityColorOnCooldownForRecast;
-        abilityOnCooldownImages[id].fillAmount = 1;
+        abilityRecastImages[id].gameObject.SetActive(true);
+        abilityRecastImages[id].color = abilityColorOnCooldownForRecast;
+        abilityOnCooldownForRecastImages[id].fillAmount = 1;
     }
 
     public void UpdateAbilityCooldown(AbilityCategory abilityCategory, int abilityId, float cooldown, float cooldownRemaining)
@@ -107,7 +119,7 @@ public class AbilityUIManager : MonoBehaviour
     {
         int id = GetAbilityId(abilityCategory, abilityId);
 
-        abilityOnCooldownImages[id].fillAmount = cooldownRemaining / cooldownForRecast;
+        abilityOnCooldownForRecastImages[id].fillAmount = cooldownRemaining / cooldownForRecast;
 
         SetCooldownText(id, cooldownRemaining);
     }
@@ -144,8 +156,8 @@ public class AbilityUIManager : MonoBehaviour
     public void SetAbilityOffCooldownForRecast(AbilityCategory abilityCategory, int abilityId)
     {
         int id = GetAbilityId(abilityCategory, abilityId);
-        abilityOnCooldownImages[id].fillAmount = 0;
-        abilityImages[id].color = Color.white;
+        abilityOnCooldownForRecastImages[id].fillAmount = 0;
+        abilityRecastImages[id].color = Color.white;
         abilityCooldownTexts[id].text = "";
     }
 

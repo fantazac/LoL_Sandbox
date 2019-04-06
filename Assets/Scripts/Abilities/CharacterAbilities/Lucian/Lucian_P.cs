@@ -27,7 +27,7 @@ public class Lucian_P : PassiveTargeted, IBasicAttackEmpoweringAbility, IBasicAt
         cooldownReducedOnPassiveHit = 1;
         criticalStrikeMultiplierAgainstNonMinions = 1.75f;
 
-        AppliesOnHitEffects = true;
+        appliesOnHitEffects = true;
 
         IsEnabled = true;
     }

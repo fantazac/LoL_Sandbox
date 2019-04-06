@@ -76,11 +76,11 @@ public class Lucian_R : DirectionTargetedProjectile
         {
             if (!(ability is Lucian_E || ability == this))
             {
-                AbilitiesToDisableWhileActive.Add(ability);
+                abilitiesToDisableWhileActive.Add(ability);
             }
         }
 
-        AbilitiesToDisableWhileActive.Add(champion.AbilityManager.OtherCharacterAbilities[0]);
+        abilitiesToDisableWhileActive.Add(champion.AbilityManager.OtherCharacterAbilities[0]);
 
         base.Start();
     }
