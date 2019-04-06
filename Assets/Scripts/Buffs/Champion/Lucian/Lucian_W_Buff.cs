@@ -5,7 +5,7 @@
         buffName = "Ardent Blaze";
 
         buffDuration = 1;
-        buffFlatValue = 60;// 60/65/70/75/80
+        buffFlatValue = 60; // 60/65/70/75/80
         buffFlatValuePerLevel = 5;
     }
 

@@ -1,6 +1,6 @@
 ﻿public class Heal_Buff : AbilityBuff
 {
-    private float ratioIfAffectedByHealDebuff;
+    private readonly float ratioIfAffectedByHealDebuff;
 
     private Heal_Debuff healDebuff;
 
@@ -35,6 +35,7 @@
         {
             healAmount *= ratioIfAffectedByHealDebuff;
         }
+
         affectedUnit.StatsManager.RestoreHealth(healAmount);
         affectedUnit.StatsManager.MovementSpeed.AddPercentBonus(buff.BuffValue);
     }

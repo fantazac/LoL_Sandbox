@@ -25,6 +25,7 @@
         {
             Consume(affectedUnit, buff);
         }
+
         affectedUnit.BuffManager.ApplyBuff(CreateNewBuff(affectedUnit), buffSprite, isADebuff);
     }
 

@@ -2,7 +2,7 @@
 {
     private Varus_P varusP;
 
-    private float bonusAttackSpeedScaling;
+    private readonly float bonusAttackSpeedScaling;
 
     protected Varus_P_Buff()
     {

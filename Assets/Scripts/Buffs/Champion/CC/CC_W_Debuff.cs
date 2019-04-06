@@ -14,7 +14,7 @@
         //knockupSpeed = 3;
         //knockupDestination = Vector3.up * knockupSpeed * buffDuration * 0.5f;
 
-        buffStatusEffect = StatusEffect.TAUNT;
+        buffStatusEffect = StatusEffect.SUPPRESSION;
     }
 
     protected override void SetSpritePaths()

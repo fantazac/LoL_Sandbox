@@ -1,6 +1,6 @@
 ﻿public class Varus_P_BuffChampionTakedown : AbilityBuff
 {
-    private float bonusAttackSpeedScaling;
+    private readonly float bonusAttackSpeedScaling;
 
     protected Varus_P_BuffChampionTakedown()
     {

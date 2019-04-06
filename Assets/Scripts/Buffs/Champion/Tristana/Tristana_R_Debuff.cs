@@ -1,6 +1,6 @@
 ﻿public class Tristana_R_Debuff : AbilityBuff
 {
-    private float knockbackSpeed;
+    private readonly float knockbackSpeed;
 
     protected Tristana_R_Debuff()
     {

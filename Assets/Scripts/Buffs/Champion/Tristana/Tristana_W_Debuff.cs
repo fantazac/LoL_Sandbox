@@ -6,7 +6,7 @@
 
         isADebuff = true;
 
-        buffDuration = 1;// 1/1.5/2/2.5/3
+        buffDuration = 1; // 1/1.5/2/2.5/3
         buffDurationPerLevel = 0.5f;
         buffPercentValue = 60;
     }

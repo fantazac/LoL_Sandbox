@@ -1,6 +1,6 @@
 ﻿public class MissFortune_W_PassiveBuff : AbilityBuff
 {
-    private float baseBuffFlatBonus;
+    private readonly float baseBuffFlatBonus;
 
     protected MissFortune_W_PassiveBuff()
     {
@@ -25,18 +25,18 @@
         foreach (Unit affectedUnit in unitsAffectedByBuff)
         {
             BuffUpdatingWithDelay buff = (BuffUpdatingWithDelay)affectedUnit.BuffManager.GetBuff(this);
-            if (buff != null)
+            
+            if (buff == null) continue;
+            
+            if (buff.BuffValue != baseBuffFlatBonus)
             {
-                if (buff.BuffValue != baseBuffFlatBonus)
-                {
-                    affectedUnit.StatsManager.MovementSpeed.RemoveFlatBonus(oldFlatValue);
-                    affectedUnit.StatsManager.MovementSpeed.AddFlatBonus(newFlatValue);
-                    buff.SetBuffValueOnUI(newFlatValue);
-                }
-                else
-                {
-                    buff.SetBuffValuePostDelay(newFlatValue);
-                }
+                affectedUnit.StatsManager.MovementSpeed.RemoveFlatBonus(oldFlatValue);
+                affectedUnit.StatsManager.MovementSpeed.AddFlatBonus(newFlatValue);
+                buff.SetBuffValueOnUI(newFlatValue);
+            }
+            else
+            {
+                buff.SetBuffValuePostDelay(newFlatValue);
             }
         }
     }
