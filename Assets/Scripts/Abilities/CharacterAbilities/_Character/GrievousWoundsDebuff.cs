@@ -1,4 +1,4 @@
-﻿public class GrievousWoundsDebuff : AbilityBuff
+﻿public class GrievousWoundsDebuff : AbilityBuff // Probably never used, but will keep for now
 {
     protected GrievousWoundsDebuff()
     {

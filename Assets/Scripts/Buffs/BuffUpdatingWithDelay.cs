@@ -36,7 +36,7 @@
         buffDurationPostDelay = newBuffDurationPostDelay;
     }
 
-    public override void ConsumeBuff()
+    protected override void ConsumeBuff()
     {
         BuffPostDelay();
     }

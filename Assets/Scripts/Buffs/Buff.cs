@@ -1,6 +1,6 @@
 ﻿public class Buff
 {
-    public AbilityBuff SourceAbilityBuff { get; private set; }
+    public AbilityBuff SourceAbilityBuff { get; }
     protected readonly Unit affectedUnit;
 
     public float Duration { get; protected set; }
@@ -18,19 +18,23 @@
     public bool HasStacks { get; private set; }
     public bool HasValueToSet { get; private set; }
 
-    //No buff value, no duration, no stacks
-    public Buff(AbilityBuff sourceAbilityBuff, Unit affectedUnit) : this(sourceAbilityBuff, affectedUnit, 0, 0, 0, 0) { }
+    //No buff value, no duration, no stacks (MissFortuneP)
+    public Buff(AbilityBuff sourceAbilityBuff, Unit affectedUnit) : 
+        this(sourceAbilityBuff, affectedUnit, 0, 0, 0, 0) { }
 
-    //No duration, no stacks
-    public Buff(AbilityBuff sourceAbilityBuff, Unit affectedUnit, float buffValue) : this(sourceAbilityBuff, affectedUnit, buffValue, 0, 0, 0) { }
+    //No duration, no stacks (VarusE, MissFortuneE)
+    public Buff(AbilityBuff sourceAbilityBuff, Unit affectedUnit, float buffValue) : 
+        this(sourceAbilityBuff, affectedUnit, buffValue, 0, 0, 0) { }
 
     //No stacks (EzrealW, LucianP)
-    public Buff(AbilityBuff sourceAbilityBuff, Unit affectedUnit, float buffValue, float duration) : this(sourceAbilityBuff, affectedUnit, buffValue, duration, 0, 0) { }
+    public Buff(AbilityBuff sourceAbilityBuff, Unit affectedUnit, float buffValue, float duration) : 
+        this(sourceAbilityBuff, affectedUnit, buffValue, duration, 0, 0) { }
 
     //With stacks that disappear instantly if the buff expires (EzrealP)
-    public Buff(AbilityBuff sourceAbilityBuff, Unit affectedUnit, float buffValue, float duration, int maximumStacks) : this(sourceAbilityBuff, affectedUnit, buffValue, duration, maximumStacks, 0) { }
+    public Buff(AbilityBuff sourceAbilityBuff, Unit affectedUnit, float buffValue, float duration, int maximumStacks) : 
+        this(sourceAbilityBuff, affectedUnit, buffValue, duration, maximumStacks, 0) { }
 
-    //With stacks that decay 1 by 1 at a certain delay
+    //With stacks that decay 1 by 1 at a certain delay (JinxQ, JaxP)
     public Buff(AbilityBuff sourceAbilityBuff, Unit affectedUnit, float buffValue, float buffDuration, int maximumStacks, float stackDecayingDelay)
     {
         SourceAbilityBuff = sourceAbilityBuff;
@@ -84,7 +88,7 @@
         SourceAbilityBuff.RemoveBuffFromAffectedUnit(affectedUnit, this);
     }
 
-    public virtual void ConsumeBuff()
+    protected virtual void ConsumeBuff()
     {
         CurrentStacks = 0;
         DurationRemaining = 0;
@@ -94,28 +98,28 @@
     public void ReduceDurationRemaining(float frameDuration)
     {
         DurationRemaining -= frameDuration;
-        if (DurationRemaining <= 0)
+
+        if (DurationRemaining > 0) return;
+
+        if (!HasExpired())
         {
-            if (!HasExpired())
+            RemoveBuff();
+            if (StackDecayingDelay > 0)
             {
-                RemoveBuff();
-                if (StackDecayingDelay > 0)
-                {
-                    CurrentStacks--;
-                    HasStacksToUpdate = true;
-                    ApplyBuff();
-                    DurationRemaining = StackDecayingDelay;
-                    DurationForUI = StackDecayingDelay;
-                }
-                else
-                {
-                    ConsumeBuff();
-                }
+                CurrentStacks--;
+                HasStacksToUpdate = true;
+                ApplyBuff();
+                DurationRemaining = StackDecayingDelay;
+                DurationForUI = StackDecayingDelay;
             }
             else
             {
                 ConsumeBuff();
             }
+        }
+        else
+        {
+            ConsumeBuff();
         }
     }
 
@@ -127,13 +131,12 @@
 
     public void IncreaseCurrentStacks()
     {
-        if (!IsAtMaximumStacks())
-        {
-            SourceAbilityBuff.RemoveBuffFromAffectedUnit(affectedUnit, this);
-            CurrentStacks++;
-            SourceAbilityBuff.ApplyBuffToAffectedUnit(affectedUnit, this);
-            HasStacksToUpdate = true;
-        }
+        if (IsAtMaximumStacks()) return;
+
+        SourceAbilityBuff.RemoveBuffFromAffectedUnit(affectedUnit, this);
+        CurrentStacks++;
+        SourceAbilityBuff.ApplyBuffToAffectedUnit(affectedUnit, this);
+        HasStacksToUpdate = true;
     }
 
     public void StacksWereUpdated()
@@ -146,15 +149,13 @@
         return MaximumStacks == CurrentStacks;
     }
 
-    public bool HasExpired()
+    private bool HasExpired()
     {
         if (MaximumStacks == 0)
         {
             return DurationRemaining <= 0;
         }
-        else
-        {
-            return CurrentStacks == 0;
-        }
+
+        return CurrentStacks == 0;
     }
 }
