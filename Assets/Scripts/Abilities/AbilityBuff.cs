@@ -62,6 +62,8 @@ public abstract class AbilityBuff : MonoBehaviour
         OnAbilityBuffRemoved?.Invoke(affectedUnit);
     }
 
+    public virtual void UpdateBuffOnAffectedUnit(Unit affectedUnit, float oldValue, float newValue) { }
+
     protected virtual void ApplyBuffEffect(Unit affectedUnit, Buff buff) { }
     protected virtual void RemoveBuffEffect(Unit affectedUnit, Buff buff) { }
 

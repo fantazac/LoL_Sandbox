@@ -3,27 +3,15 @@
     private float buffDurationPostDelay;
     private float buffValuePostDelay;
 
-    public BuffUpdatingWithDelay(AbilityBuff sourceAbilityBuff, Unit affectedUnit, float buffValue, float buffDuration, float buffValuePostDelay, float buffDurationPostDelay,
-        int maximumStacks, float stackDecayingDelay)
+    public BuffUpdatingWithDelay(AbilityBuff sourceAbilityBuff, Unit affectedUnit, float buffValue, float buffDuration, float buffValuePostDelay,
+        float buffDurationPostDelay = 0, int maximumStacks = 0, float stackDecayingDelay = 0)
         : base(sourceAbilityBuff, affectedUnit, buffValue, buffDuration, maximumStacks, stackDecayingDelay)
     {
         this.buffDurationPostDelay = buffDurationPostDelay;
         this.buffValuePostDelay = buffValuePostDelay;
     }
 
-    public BuffUpdatingWithDelay(AbilityBuff sourceAbilityBuff, Unit affectedUnit, float buffValue, float buffDuration, float buffValuePostDelay) :
-        this(sourceAbilityBuff, affectedUnit, buffValue, buffDuration, buffValuePostDelay, 0, 0, 0)
-    { }
-
-    public BuffUpdatingWithDelay(AbilityBuff sourceAbilityBuff, Unit affectedUnit, float buffValue, float buffDuration, float buffValuePostDelay, float buffDurationPostDelay) :
-        this(sourceAbilityBuff, affectedUnit, buffValue, buffDuration, buffValuePostDelay, buffDurationPostDelay, 0, 0)
-    { }
-
-    public BuffUpdatingWithDelay(AbilityBuff sourceAbilityBuff, Unit affectedUnit, float buffValue, float buffDuration, float buffValuePostDelay, float buffDurationPostDelay, int maximumStacks) :
-        this(sourceAbilityBuff, affectedUnit, buffValue, buffDuration, buffValuePostDelay, buffDurationPostDelay, maximumStacks, 0)
-    { }
-
-    protected void BuffPostDelay()
+    private void BuffPostDelay()
     {
         float oldBuffValue = BuffValue;
         BuffValue = buffValuePostDelay;
@@ -32,7 +20,7 @@
         DurationRemaining = buffDurationPostDelay;
 
         InitProperties();
-        UpdateBuffOnaffectedUnit(oldBuffValue, BuffValue);
+        SourceAbilityBuff.UpdateBuffOnAffectedUnit(affectedUnit, oldBuffValue, BuffValue);
 
         SetBuffValueOnUI();
     }
@@ -51,11 +39,5 @@
     public override void ConsumeBuff()
     {
         BuffPostDelay();
-    }
-
-    private void UpdateBuffOnaffectedUnit(float oldValue, float newValue)
-    {
-        SourceAbilityBuff.RemoveBuffFromAffectedUnit(affectedUnit, this);
-        SourceAbilityBuff.ApplyBuffToAffectedUnit(affectedUnit, this);
     }
 }

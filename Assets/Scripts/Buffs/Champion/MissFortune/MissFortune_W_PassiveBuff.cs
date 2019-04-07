@@ -20,6 +20,12 @@
         buffSpritePath = "Sprites/Characters/CharacterAbilities/MissFortune/MissFortuneW_PassiveBuff";
     }
 
+    public override void UpdateBuffOnAffectedUnit(Unit affectedUnit, float oldValue, float newValue)
+    {
+        affectedUnit.StatsManager.MovementSpeed.RemoveFlatBonus(oldValue);
+        affectedUnit.StatsManager.MovementSpeed.AddFlatBonus(newValue);
+    }
+    
     protected override void UpdateBuffOnAffectedUnits(float oldFlatValue, float newFlatValue, float oldPercentValue, float newPercentValue)
     {
         foreach (Unit affectedUnit in unitsAffectedByBuff)
@@ -30,8 +36,7 @@
             
             if (buff.BuffValue != baseBuffFlatBonus)
             {
-                affectedUnit.StatsManager.MovementSpeed.RemoveFlatBonus(oldFlatValue);
-                affectedUnit.StatsManager.MovementSpeed.AddFlatBonus(newFlatValue);
+                UpdateBuffOnAffectedUnit(affectedUnit, oldFlatValue, newFlatValue);
                 buff.SetBuffValueOnUI(newFlatValue);
             }
             else
