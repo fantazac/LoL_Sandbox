@@ -99,16 +99,15 @@
     {
         base.SetCannotUseMovementAbilities(count);
 
-        if (blockBasicAbilitiesCount == 0)
+        if (blockBasicAbilitiesCount != 0) return;
+        
+        if (CanBlockAbilitiesOrBasicAttacks(count, blockMovementAbilitiesCount))
         {
-            if (CanBlockAbilitiesOrBasicAttacks(count, blockMovementAbilitiesCount))
-            {
-                champion.AbilityManager.BlockAllMovementAbilities();
-            }
-            else if (CanUnblockAbilitiesOrBasicAttacks(count, blockMovementAbilitiesCount))
-            {
-                champion.AbilityManager.UnblockAllMovementAbilities();
-            }
+            champion.AbilityManager.BlockAllMovementAbilities();
+        }
+        else if (CanUnblockAbilitiesOrBasicAttacks(count, blockMovementAbilitiesCount))
+        {
+            champion.AbilityManager.UnblockAllMovementAbilities();
         }
     }
 

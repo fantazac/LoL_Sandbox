@@ -3,8 +3,7 @@ using UnityEngine;
 
 public class LucianBasicAttack : EmpoweredBasicAttack
 {
-    private float timeBeforePassiveShot;
-    private WaitForSeconds delayPassiveShot;
+    private readonly WaitForSeconds delayPassiveShot;
 
     private bool isShootingPassiveShot;
 
@@ -15,8 +14,7 @@ public class LucianBasicAttack : EmpoweredBasicAttack
         delayPercentBeforeAttack = 0.1666f;
         speed = 2500;
 
-        timeBeforePassiveShot = 0.2f;
-        delayPassiveShot = new WaitForSeconds(timeBeforePassiveShot);
+        delayPassiveShot = new WaitForSeconds(0.2f);
 
         basicAttackPrefabPath = "BasicAttacksPrefabs/Characters/Lucian/LucianBA";
         empoweredBasicAttackPrefabPath = "BasicAttacksPrefabs/Characters/Lucian/LucianBAPassive";
@@ -37,32 +35,33 @@ public class LucianBasicAttack : EmpoweredBasicAttack
             StopCoroutine(shootBasicAttackCoroutine);
             shootBasicAttackCoroutine = null;
         }
-        if (currentTarget != null)
+
+        if (!currentTarget) return;
+        
+        if (isCrowdControlled)
         {
-            if (isCrowdControlled)
-            {
-                StartBasicAttack();
-            }
-            else
-            {
-                currentTarget = null;
-            }
+            StartBasicAttack();
+        }
+        else
+        {
+            currentTarget = null;
         }
     }
 
     protected override void UseBasicAttack(Unit target)
     {
         currentTarget = target;
-        if (BasicAttackCycle.AttackSpeedCycleIsReady)
+        
+        if (!BasicAttackCycle.AttackSpeedCycleIsReady) return;
+        
+        AttackIsInQueue = true;
+        if (!isShootingPassiveShot && shootBasicAttackCoroutine != null)
         {
-            AttackIsInQueue = true;
-            if (!isShootingPassiveShot && shootBasicAttackCoroutine != null)
-            {
-                StopCoroutine(shootBasicAttackCoroutine);
-            }
-            shootBasicAttackCoroutine = ShootBasicAttack(target);
-            StartCoroutine(shootBasicAttackCoroutine);
+            StopCoroutine(shootBasicAttackCoroutine);
         }
+
+        shootBasicAttackCoroutine = ShootBasicAttack(target);
+        StartCoroutine(shootBasicAttackCoroutine);
     }
 
     protected override IEnumerator ShootBasicAttack(Unit target)
@@ -109,6 +108,7 @@ public class LucianBasicAttack : EmpoweredBasicAttack
             iBasicAttackEmpoweringAbilityWithSelfEffect.ApplySelfEffect(unitHit);
             iBasicAttackEmpoweringAbility.OnEmpoweredBasicAttackHit(unitHit, isACriticalStrike);
         }
+
         Destroy(basicAttackProjectile.gameObject);
     }
 }

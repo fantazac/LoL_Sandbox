@@ -8,4 +8,3 @@
         basicAttackPrefabPath = "BasicAttacksPrefabs/Characters/Ezreal/EzrealBA";
     }
 }
-

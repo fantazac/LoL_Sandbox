@@ -11,33 +11,26 @@ public class Varus_R_Entity : MonoBehaviour
     private Unit affectedUnit;
 
     private float tetherRange;
-    private float timeBetweenTetherRangeChecks;
-    private WaitForSeconds delayTetherRangeChecks;
+    private readonly WaitForSeconds delayTetherRangeChecks;
 
-    private float spreadTime;
-    private WaitForSeconds delaySpread;
+    private readonly WaitForSeconds delaySpread;
 
-    private List<Unit> unitsAffectedByTethers;
+    private readonly List<Unit> unitsAffectedByTethers;
     private List<Varus_R_Entity> varusREntitiesCurrentlySpreading;
 
-    private int stacksToApply;
-    private float timeBetweenStacks;
-    private WaitForSeconds delayForStacks;
+    private readonly int stacksToApply;
+    private readonly WaitForSeconds delayForStacks;
 
     private Varus_R_Entity()
     {
         tetherRange = 600;
-        timeBetweenTetherRangeChecks = 0.2f;
-        delayTetherRangeChecks = new WaitForSeconds(timeBetweenTetherRangeChecks);
-
-        spreadTime = 2;
-        delaySpread = new WaitForSeconds(spreadTime);
+        delayTetherRangeChecks = new WaitForSeconds(0.2f);
+        delaySpread = new WaitForSeconds(2);
 
         unitsAffectedByTethers = new List<Unit>();
 
         stacksToApply = 3;
-        timeBetweenStacks = 0.5f;
-        delayForStacks = new WaitForSeconds(timeBetweenStacks);
+        delayForStacks = new WaitForSeconds(0.5f);
     }
 
     private void Start()
@@ -86,14 +79,16 @@ public class Varus_R_Entity : MonoBehaviour
                 {
                     continue;
                 }
+
                 unitIsAffectedByAnotherTether = true;
-                if (TetherIsShorter(tetherLength, unitInRange))
-                {
-                    varusREntity.RemoveTether(unitInRange);
-                    AddTetherToUnitInRange(unitInRange);
-                    break;
-                }
+
+                if (!TetherIsShorter(tetherLength, unitInRange)) continue;
+
+                varusREntity.RemoveTether(unitInRange);
+                AddTetherToUnitInRange(unitInRange);
+                break;
             }
+
             if (!unitIsAffectedByAnotherTether)
             {
                 AddTetherToUnitInRange(unitInRange);
@@ -112,16 +107,12 @@ public class Varus_R_Entity : MonoBehaviour
         return Vector3.Distance(transform.position, unitInRange.transform.position) < otherTetherLength;
     }
 
-    public float GetTetherLength(Unit unitAffectedByTether)
+    private float GetTetherLength(Unit unitAffectedByTether)
     {
-        if (unitsAffectedByTethers.Contains(unitAffectedByTether))
-        {
-            return Vector3.Distance(transform.position, unitAffectedByTether.transform.position);
-        }
-        return float.MaxValue;
+        return unitsAffectedByTethers.Contains(unitAffectedByTether) ? Vector3.Distance(transform.position, unitAffectedByTether.transform.position) : float.MaxValue;
     }
 
-    public void RemoveTether(Unit unitAffectedByTether)
+    private void RemoveTether(Unit unitAffectedByTether)
     {
         unitsAffectedByTethers.Remove(unitAffectedByTether);
     }
@@ -153,10 +144,12 @@ public class Varus_R_Entity : MonoBehaviour
             varusREntitiesToSpawn.Add(varusREntity);
             alreadyAffectedUnits.Add(unitAffectedByTether);
         }
+
         for (int i = 0; i < varusREntitiesToSpawn.Count; i++)
         {
             varusREntitiesToSpawn[i].SetupEntity(ability, unitsAffectedByTethers[i], varusW, alreadyAffectedUnits, varusREntitiesCurrentlySpreading);
         }
+
         foreach (Varus_R_Entity varusREntity in varusREntitiesToSpawn)
         {
             varusREntity.StartEntityLife();
@@ -167,7 +160,8 @@ public class Varus_R_Entity : MonoBehaviour
 
     private Varus_R_Entity SetupNextEntity(Unit unitHit)
     {
-        return Instantiate(gameObject, Vector3.right * unitHit.transform.position.x + Vector3.forward * unitHit.transform.position.z, Quaternion.identity).GetComponent<Varus_R_Entity>();
+        return Instantiate(gameObject, Vector3.right * unitHit.transform.position.x + Vector3.forward * unitHit.transform.position.z, Quaternion.identity)
+            .GetComponent<Varus_R_Entity>();
     }
 
     private IEnumerator Tether(Unit affectedUnit)
@@ -183,7 +177,7 @@ public class Varus_R_Entity : MonoBehaviour
         ability.AbilityDebuffs[1].ConsumeBuff(affectedUnit);
     }
 
-    private IEnumerator ApplyVarusWPassiveStacks()//TODO: If you cleanse the root, does it still apply the stacks? Currently, yes.
+    private IEnumerator ApplyVarusWPassiveStacks() //TODO: If you cleanse the root, does it still apply the stacks? Currently, yes.
     {
         for (int i = 0; i < stacksToApply; i++)
         {

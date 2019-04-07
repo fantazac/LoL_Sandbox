@@ -9,4 +9,3 @@
         empoweredBasicAttackPrefabPath = "BasicAttacksPrefabs/Characters/CC/CCBAQ";
     }
 }
-

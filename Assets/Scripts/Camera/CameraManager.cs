@@ -2,23 +2,26 @@
 
 public class CameraManager : MonoBehaviour
 {
-    [SerializeField]
-    private int distanceFromBorderToStartMoving = 60;
+    [SerializeField] private int distanceFromBorderToStartMoving = 60;
 
-    [SerializeField]
-    private int speed = 28;
+    [SerializeField] private int speed = 28;
 
     private int screenWidth;
     private int screenHeight;
 
     private InputManager inputManager;
 
-    private bool cameraLockedOnChampion = true;
-    private bool cameraFollowsChampion = false;
+    private bool cameraLockedOnChampion;
+    private bool cameraFollowsChampion;
 
     private Vector3 initialPosition;
 
     private Vector3 mousePositionOnFrame;
+
+    private CameraManager()
+    {
+        cameraLockedOnChampion = true;
+    }
 
     private void Start()
     {
@@ -39,27 +42,26 @@ public class CameraManager : MonoBehaviour
 
     private void Update()
     {
-        if (!CameraShouldFollowChampion())
+        if (CameraShouldFollowChampion()) return;
+
+        mousePositionOnFrame = Input.mousePosition;
+
+        if (mousePositionOnFrame.x > screenWidth - distanceFromBorderToStartMoving)
         {
-            mousePositionOnFrame = Input.mousePosition;
+            transform.position += Vector3.right * speed * Time.deltaTime;
+        }
+        else if (mousePositionOnFrame.x < distanceFromBorderToStartMoving)
+        {
+            transform.position += Vector3.left * speed * Time.deltaTime;
+        }
 
-            if (mousePositionOnFrame.x > (screenWidth - distanceFromBorderToStartMoving))
-            {
-                transform.position += Vector3.right * speed * Time.deltaTime;
-            }
-            else if (mousePositionOnFrame.x < distanceFromBorderToStartMoving)
-            {
-                transform.position += Vector3.left * speed * Time.deltaTime;
-            }
-
-            if (mousePositionOnFrame.y > (screenHeight - distanceFromBorderToStartMoving))
-            {
-                transform.position += Vector3.forward * speed * Time.deltaTime;
-            }
-            else if (mousePositionOnFrame.y < distanceFromBorderToStartMoving)
-            {
-                transform.position += Vector3.back * speed * Time.deltaTime;
-            }
+        if (mousePositionOnFrame.y > screenHeight - distanceFromBorderToStartMoving)
+        {
+            transform.position += Vector3.forward * speed * Time.deltaTime;
+        }
+        else if (mousePositionOnFrame.y < distanceFromBorderToStartMoving)
+        {
+            transform.position += Vector3.back * speed * Time.deltaTime;
         }
     }
 

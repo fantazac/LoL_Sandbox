@@ -2,7 +2,7 @@
 
 public abstract class Champion : Character
 {
-    protected bool sentConnectionInfoRequest = false;
+    private bool sentConnectionInfoRequest;
 
     public AbilityEffectsManager AbilityEffectsManager { get; private set; }
     public AbilityManager AbilityManager { get; protected set; }
@@ -87,39 +87,39 @@ public abstract class Champion : Character
     public void SendToServer_ConnectionInfoRequest()
     {
         sentConnectionInfoRequest = true;
-        PhotonView.RPC("ReceiveFromServer_ConnectionInfoRequest", PhotonTargets.Others);
+        PhotonView.RPC(nameof(ReceiveFromServer_ConnectionInfoRequest), PhotonTargets.Others);
     }
 
     [PunRPC]
-    protected void ReceiveFromServer_ConnectionInfoRequest()
+    private void ReceiveFromServer_ConnectionInfoRequest()
     {
         if (PhotonView.isMine)
         {
-            PhotonView.RPC("ReceiveFromServer_ConnectionInfo", PhotonTargets.Others, transform.position, transform.rotation, Team, ID, LevelManager.Level, AbilityManager.GetCharacterAbilityLevels());
+            PhotonView.RPC(nameof(ReceiveFromServer_ConnectionInfo), PhotonTargets.Others, transform.position, transform.rotation, Team, ID, LevelManager.Level,
+                AbilityManager.GetCharacterAbilityLevels());
         }
     }
 
     [PunRPC]
-    protected void ReceiveFromServer_ConnectionInfo(Vector3 position, Quaternion rotation, Team team, int characterId, int characterLevel, int[] characterAbilityLevels)
+    private void ReceiveFromServer_ConnectionInfo(Vector3 position, Quaternion rotation, Team team, int characterId, int characterLevel, int[] characterAbilityLevels)
     {
-        if (sentConnectionInfoRequest)
-        {
-            sentConnectionInfoRequest = false;
-            transform.position = position;
-            transform.rotation = rotation;
-            SetTeamAndID(team, characterId);
-            LevelManager.SetLevelFromLoad(characterLevel);
-            AbilityManager.SetAbilityLevelsFromLoad(characterAbilityLevels);
-        }
+        if (!sentConnectionInfoRequest) return;
+
+        sentConnectionInfoRequest = false;
+        transform.position = position;
+        transform.rotation = rotation;
+        SetTeamAndID(team, characterId);
+        LevelManager.SetLevelFromLoad(characterLevel);
+        AbilityManager.SetAbilityLevelsFromLoad(characterAbilityLevels);
     }
 
-    public void SendToServer_TeamAndID()
+    private void SendToServer_TeamAndID()
     {
-        PhotonView.RPC("ReceiveFromServer_TeamAndID", PhotonTargets.Others, Team, ID);
+        PhotonView.RPC(nameof(ReceiveFromServer_TeamAndID), PhotonTargets.Others, Team, ID);
     }
 
     [PunRPC]
-    protected void ReceiveFromServer_TeamAndID(Team team, int characterId)
+    private void ReceiveFromServer_TeamAndID(Team team, int characterId)
     {
         SetTeamAndID(team, characterId);
     }

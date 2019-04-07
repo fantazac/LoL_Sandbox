@@ -3,7 +3,7 @@ using System.Collections;
 
 public class ChampionMovementManager : MovementManager
 {
-    private string movementCapsulePrefabPath;
+    private readonly string movementCapsulePrefabPath;
     private GameObject movementCapsulePrefab;
 
     private Vector3 currentlySelectedDestination;
@@ -44,12 +44,11 @@ public class ChampionMovementManager : MovementManager
     {
         base.Start();
 
-        if (champion.IsLocalChampion())
-        {
-            champion.InputManager.OnPressedS += StopMovementOnInput;
+        if (!champion.IsLocalChampion()) return;
 
-            LoadPrefabs();
-        }
+        champion.InputManager.OnPressedS += StopMovementOnInput;
+
+        LoadPrefabs();
     }
 
     private void LoadPrefabs()
@@ -72,6 +71,7 @@ public class ChampionMovementManager : MovementManager
         {
             SetMoveTowardsPoint(pointOnMap + champion.CharacterHeightOffset);
         }
+
         Instantiate(movementCapsulePrefab, pointOnMap, Quaternion.identity);
     }
 
@@ -89,8 +89,8 @@ public class ChampionMovementManager : MovementManager
 
     private void SendToServer_Movement_Point(Vector3 destination)
     {
-        PhotonNetwork.RemoveRPCs(champion.PhotonView);//if using AllBufferedViaServer somewhere else, this needs to change
-        champion.PhotonView.RPC("ReceiveFromServer_Movement_Point", PhotonTargets.AllBufferedViaServer, destination);
+        PhotonNetwork.RemoveRPCs(champion.PhotonView); //if using AllBufferedViaServer somewhere else, this needs to change
+        champion.PhotonView.RPC(nameof(ReceiveFromServer_Movement_Point), PhotonTargets.AllBufferedViaServer, destination);
     }
 
     [PunRPC]
@@ -101,8 +101,8 @@ public class ChampionMovementManager : MovementManager
 
     private void SendToServer_Movement_Target(Unit target, float range, bool isBasicAttack)
     {
-        PhotonNetwork.RemoveRPCs(champion.PhotonView);//if using AllBufferedViaServer somewhere else, this needs to change
-        champion.PhotonView.RPC("ReceiveFromServer_Movement_Target", PhotonTargets.AllBufferedViaServer, target.ID, range, isBasicAttack);
+        PhotonNetwork.RemoveRPCs(champion.PhotonView); //if using AllBufferedViaServer somewhere else, this needs to change
+        champion.PhotonView.RPC(nameof(ReceiveFromServer_Movement_Target), PhotonTargets.AllBufferedViaServer, target.ID, range, isBasicAttack);
     }
 
     [PunRPC]
@@ -113,22 +113,21 @@ public class ChampionMovementManager : MovementManager
 
     public void SetMoveTowardsPoint(Vector3 destination, float range = 0)
     {
-        if (currentlySelectedDestination != destination)
+        if (currentlySelectedDestination == destination) return;
+
+        if (currentlySelectedDestination != Vector3.down && (ChampionIsInDestinationRange == null || range > 0) && (ChampionIsInDestinationRange != null || range == 0))
         {
-            if (currentlySelectedDestination != Vector3.down && (ChampionIsInDestinationRange == null || range > 0) && (ChampionIsInDestinationRange != null || range == 0))
-            {
-                currentlySelectedDestination = destination;
-                champion.OrientationManager.RotateCharacter(destination);
-            }
-            else
-            {
-                StopMovement();
-                currentlySelectedDestination = destination;
-                destinationRange = range;
-                currentMovementCoroutine = range > 0 ? MoveTowardsPointWithRange() : MoveTowardsPoint();
-                StartCoroutine(currentMovementCoroutine);
-                champion.OrientationManager.RotateCharacter(destination);
-            }
+            currentlySelectedDestination = destination;
+            champion.OrientationManager.RotateCharacter(destination);
+        }
+        else
+        {
+            StopMovement();
+            currentlySelectedDestination = destination;
+            destinationRange = range;
+            currentMovementCoroutine = range > 0 ? MoveTowardsPointWithRange() : MoveTowardsPoint();
+            StartCoroutine(currentMovementCoroutine);
+            champion.OrientationManager.RotateCharacter(destination);
         }
     }
 
@@ -184,21 +183,19 @@ public class ChampionMovementManager : MovementManager
 
     public void SetMoveTowardsHalfDistanceOfAbilityCastRange()
     {
-        if (IsMovingTowardsPositionForAnEvent())
-        {
-            ChampionIsInDestinationRange = null;
-            destinationRange *= 0.5f;
-        }
+        if (!IsMovingTowardsPositionForAnEvent()) return;
+        
+        ChampionIsInDestinationRange = null;
+        destinationRange *= 0.5f;
     }
 
-    public void SetCharacterIsInTargetRangeEventForBasicAttack()//example: Lucian Q out of range -> Lucian W while walking: This cancels the Q cast but continues movement post-W to auto the same target
+    public void SetCharacterIsInTargetRangeEventForBasicAttack() //example: Lucian Q out of range -> Lucian W while walking: This cancels the Q cast but continues movement post-W to auto the same target
     {
-        if (currentlySelectedTarget != null)
-        {
-            ChampionIsInDestinationRange = null;
-            ChampionIsInTargetRange = null;
-            champion.BasicAttack.SetupBasicAttack(currentlySelectedTarget, false);
-        }
+        if (!currentlySelectedTarget) return;
+        
+        ChampionIsInDestinationRange = null;
+        ChampionIsInTargetRange = null;
+        champion.BasicAttack.SetupBasicAttack(currentlySelectedTarget, false);
     }
 
     public void SetMoveTowardsTarget(Unit target, float range, bool isBasicAttack, bool forceNewCoroutine = false)
@@ -234,9 +231,9 @@ public class ChampionMovementManager : MovementManager
 
     private IEnumerator MoveTowardsTarget(bool isBasicAttack)
     {
-        Unit target = currentlySelectedBasicAttackTarget != null ? currentlySelectedBasicAttackTarget : currentlySelectedTarget;
+        Unit target = currentlySelectedBasicAttackTarget ? currentlySelectedBasicAttackTarget : currentlySelectedTarget;
 
-        if (target != null && Vector3.Distance(target.transform.position, transform.position) > targetRange)
+        if (target && Vector3.Distance(target.transform.position, transform.position) > targetRange)
         {
             champion.AutoAttackManager.StopAutoAttack();
 
@@ -256,13 +253,14 @@ public class ChampionMovementManager : MovementManager
 
                 yield return null;
 
-                target = currentlySelectedBasicAttackTarget != null ? currentlySelectedBasicAttackTarget : currentlySelectedTarget;
+                target = currentlySelectedBasicAttackTarget ? currentlySelectedBasicAttackTarget : currentlySelectedTarget;
                 targetTransform = target ? target.transform : null;
 
-                if (targetTransform == null)
+                if (!targetTransform)
                 {
                     break;
                 }
+
                 distance = Vector3.Distance(targetTransform.position, transform.position);
 
                 if (isBasicAttack)
@@ -275,14 +273,16 @@ public class ChampionMovementManager : MovementManager
             champion.OrientationManager.StopRotation();
         }
 
-        if (target != null)
+        if (target)
         {
-            if (target == currentlySelectedBasicAttackTarget && (!champion.AbilityManager.CanUseBasicAttacks() || !champion.StatusManager.CanUseBasicAttacks() || champion.DisplacementManager.IsBeingDisplaced))//Checks if disarmed
+            if (target == currentlySelectedBasicAttackTarget && (!champion.AbilityManager.CanUseBasicAttacks() || !champion.StatusManager.CanUseBasicAttacks() ||
+                                                                 champion.DisplacementManager.IsBeingDisplaced)) //Checks if disarmed
             {
                 while (!champion.AbilityManager.CanUseBasicAttacks() || !champion.StatusManager.CanUseBasicAttacks() || champion.DisplacementManager.IsBeingDisplaced)
                 {
                     yield return null;
                 }
+
                 SetMoveTowardsTarget(currentlySelectedBasicAttackTarget, targetRange, true);
             }
 
@@ -310,11 +310,11 @@ public class ChampionMovementManager : MovementManager
         {
             champion.OrientationManager.RotateCharacter(currentlySelectedDestination);
         }
-        else if (currentlySelectedTarget != null)
+        else if (currentlySelectedTarget)
         {
             champion.OrientationManager.RotateCharacterUntilReachedTarget(currentlySelectedTarget.transform, true);
         }
-        else if (currentlySelectedBasicAttackTarget != null)
+        else if (currentlySelectedBasicAttackTarget)
         {
             champion.OrientationManager.RotateCharacterUntilReachedTarget(currentlySelectedBasicAttackTarget.transform, true);
         }
@@ -398,7 +398,7 @@ public class ChampionMovementManager : MovementManager
 
     public void StopMovementTowardsTargetIfHasEvent(bool stopBasicAttack = false)
     {
-        if ((currentlySelectedTarget != null || (stopBasicAttack && currentlySelectedBasicAttackTarget != null)) && ChampionIsInTargetRange != null)
+        if ((currentlySelectedTarget || (stopBasicAttack && currentlySelectedBasicAttackTarget)) && ChampionIsInTargetRange != null)
         {
             StopMovement();
         }
@@ -421,7 +421,7 @@ public class ChampionMovementManager : MovementManager
 
     public bool IsMovingTowardsTarget()
     {
-        return currentlySelectedTarget != null || currentlySelectedBasicAttackTarget != null;
+        return currentlySelectedTarget || currentlySelectedBasicAttackTarget;
     }
 
     public Unit GetBasicAttackTarget()
@@ -431,9 +431,6 @@ public class ChampionMovementManager : MovementManager
 
     public void NotifyChampionMoved()
     {
-        if (ChampionMoved != null)
-        {
-            ChampionMoved();
-        }
+        ChampionMoved?.Invoke();
     }
 }

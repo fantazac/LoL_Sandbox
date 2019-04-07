@@ -2,9 +2,19 @@
 {
     protected override void InitAbilities()
     {
-        CharacterAbilities = new Ability[] { gameObject.AddComponent<Lucian_Q>(), gameObject.AddComponent<Lucian_W>(), gameObject.AddComponent<Lucian_E>(), gameObject.AddComponent<Lucian_R>() };
+        CharacterAbilities = new Ability[]
+        {
+            gameObject.AddComponent<Lucian_Q>(), 
+            gameObject.AddComponent<Lucian_W>(),
+            gameObject.AddComponent<Lucian_E>(), 
+            gameObject.AddComponent<Lucian_R>()
+        };
         PassiveCharacterAbilities = new Ability[] { gameObject.AddComponent<Lucian_P>() };
-        SummonerAbilities = new Ability[] { gameObject.AddComponent<Heal>(), gameObject.AddComponent<Flash>() };
+        SummonerAbilities = new Ability[]
+        {
+            gameObject.AddComponent<Heal>(), 
+            gameObject.AddComponent<Flash>()
+        };
 
         base.InitAbilities();
     }
