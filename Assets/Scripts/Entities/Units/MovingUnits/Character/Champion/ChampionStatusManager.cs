@@ -1,4 +1,6 @@
-﻿public class ChampionStatusManager : StatusManager
+﻿using UnityEngine;
+
+public class ChampionStatusManager : StatusManager
 {
     private Champion champion;
 

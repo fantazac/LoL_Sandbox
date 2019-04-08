@@ -4,14 +4,10 @@ using UnityEngine.UI;
 
 public class AbilityTimeBarUIManager : MonoBehaviour
 {
-    [SerializeField]
-    private GameObject ui;
-    [SerializeField]
-    private Image abilityTimeBar;
-    [SerializeField]
-    private Text abilityName;
-    [SerializeField]
-    private Text abilityChannelTime;
+    [SerializeField] private GameObject ui;
+    [SerializeField] private Image abilityTimeBar;
+    [SerializeField] private Text abilityName;
+    [SerializeField] private Text abilityChannelTime;
 
     private IEnumerator currentTimeBarCoroutine;
 
@@ -34,16 +30,17 @@ public class AbilityTimeBarUIManager : MonoBehaviour
             StopCoroutine(currentTimeBarCoroutine);
             currentTimeBarCoroutine = null;
         }
+
         if (activateUI)
         {
             abilityTimeBar.fillAmount = fillAmount;
             abilityName.text = name;
             abilityChannelTime.text = channelTime;
-            ui.SetActive(activateUI);
+            ui.SetActive(true);
         }
         else
         {
-            ui.SetActive(activateUI);
+            ui.SetActive(false);
             abilityTimeBar.fillAmount = fillAmount;
             abilityName.text = name;
             abilityChannelTime.text = channelTime;

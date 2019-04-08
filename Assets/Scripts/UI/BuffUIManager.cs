@@ -4,13 +4,12 @@ using UnityEngine.UI;
 
 public class BuffUIManager : MonoBehaviour
 {
-    [SerializeField]
-    private GameObject buffOutlinePrefab;
+    [SerializeField] private GameObject buffOutlinePrefab;
 
-    private List<Buff> buffs;
-    private Dictionary<Buff, GameObject> buffOutlines;
-    private Dictionary<Buff, Image> darkImages;
-    private Dictionary<Buff, Text> buffStacksTexts;
+    private readonly List<Buff> buffs;
+    private readonly Dictionary<Buff, GameObject> buffOutlines;
+    private readonly Dictionary<Buff, Image> darkImages;
+    private readonly Dictionary<Buff, Text> buffStacksTexts;
 
     private BuffUIManager()
     {

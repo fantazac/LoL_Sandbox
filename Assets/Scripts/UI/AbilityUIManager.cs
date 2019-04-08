@@ -3,26 +3,16 @@ using UnityEngine.UI;
 
 public class AbilityUIManager : MonoBehaviour
 {
-    [SerializeField]
-    private Image[] abilityImages;
-    [SerializeField]
-    private Image[] abilityRecastImages;
-    [SerializeField]
-    private Text[] abilityCostTexts;
-    [SerializeField]
-    private Image[] abilityOnCooldownImages;
-    [SerializeField]
-    private Image[] abilityOnCooldownForRecastImages;
-    [SerializeField]
-    private Text[] abilityCooldownTexts;
-    [SerializeField]
-    private GameObject[] abilityNotEnoughResourceObjects;
-    [SerializeField]
-    private GameObject[] abilityBlockedObjects;
-    [SerializeField]
-    private GameObject[] abilityLevelPoints;
-    [SerializeField]
-    private GameObject abilityLevelPoint;
+    [SerializeField] private Image[] abilityImages;
+    [SerializeField] private Image[] abilityRecastImages;
+    [SerializeField] private Text[] abilityCostTexts;
+    [SerializeField] private Image[] abilityOnCooldownImages;
+    [SerializeField] private Image[] abilityOnCooldownForRecastImages;
+    [SerializeField] private Text[] abilityCooldownTexts;
+    [SerializeField] private GameObject[] abilityNotEnoughResourceObjects;
+    [SerializeField] private GameObject[] abilityBlockedObjects;
+    [SerializeField] private GameObject[] abilityLevelPoints;
+    [SerializeField] private GameObject abilityLevelPoint;
 
     private readonly Color abilityColorOnCooldown;
     private readonly Color abilityColorOnCooldownForRecast;
@@ -39,7 +29,7 @@ public class AbilityUIManager : MonoBehaviour
     {
         abilityImages[GetAbilityId(abilityCategory, abilityId)].sprite = abilitySprite;
     }
-    
+
     public void SetAbilityRecastSprite(AbilityCategory abilityCategory, int abilityId, Sprite abilityRecastSprite)
     {
         abilityRecastImages[GetAbilityId(abilityCategory, abilityId)].sprite = abilityRecastSprite;
@@ -60,6 +50,7 @@ public class AbilityUIManager : MonoBehaviour
                 id += 7;
                 break;
         }
+
         return id;
     }
 
@@ -90,10 +81,12 @@ public class AbilityUIManager : MonoBehaviour
         {
             abilityRecastImages[id].gameObject.SetActive(false);
         }
+
         if (abilityIsBlocked)
         {
             abilityBlockedObjects[id - 1].SetActive(false);
         }
+
         abilityImages[id].color = abilityColorOnCooldown;
         abilityOnCooldownImages[id].fillAmount = 1;
     }
@@ -135,6 +128,7 @@ public class AbilityUIManager : MonoBehaviour
         {
             cooldownString = cooldownRemaining.ToString("f1").Replace(",", ".");
         }
+
         abilityCooldownTexts[abilityId].text = cooldownString;
     }
 
@@ -150,6 +144,7 @@ public class AbilityUIManager : MonoBehaviour
         {
             abilityImages[id].color = Color.white;
         }
+
         abilityCooldownTexts[id].text = "";
     }
 
@@ -178,33 +173,32 @@ public class AbilityUIManager : MonoBehaviour
 
     public void BlockAbility(AbilityCategory abilityCategory, int abilityId, bool abilityUsesResource)
     {
-        if (abilityCategory != AbilityCategory.OfflineAbility && abilityCategory != AbilityCategory.OtherCharacterAbility)
+        if (abilityCategory == AbilityCategory.OfflineAbility || abilityCategory == AbilityCategory.OtherCharacterAbility) return;
+
+        int id = GetAbilityId(abilityCategory, abilityId);
+        abilityImages[id].color = abilityColorOnCooldown;
+        abilityBlockedObjects[id - 1].SetActive(true);
+        if (abilityUsesResource)
         {
-            int id = GetAbilityId(abilityCategory, abilityId);
-            abilityImages[id].color = abilityColorOnCooldown;
-            abilityBlockedObjects[id - 1].SetActive(true);
-            if (abilityUsesResource)
-            {
-                UpdateAbilityHasEnoughResource(abilityId, true);
-            }
+            UpdateAbilityHasEnoughResource(abilityId, true);
         }
     }
 
     public void UnblockAbility(AbilityCategory abilityCategory, int abilityId, bool characterHasEnoughResourceToCastAbility)
     {
-        if (abilityCategory != AbilityCategory.OfflineAbility && abilityCategory != AbilityCategory.OtherCharacterAbility)
-        {
-            int id = GetAbilityId(abilityCategory, abilityId);
-            abilityImages[id].color = Color.white;
-            abilityBlockedObjects[id - 1].SetActive(false);
-            UpdateAbilityHasEnoughResource(abilityId, characterHasEnoughResourceToCastAbility);
-        }
+        if (abilityCategory == AbilityCategory.OfflineAbility || abilityCategory == AbilityCategory.OtherCharacterAbility) return;
+
+        int id = GetAbilityId(abilityCategory, abilityId);
+        abilityImages[id].color = Color.white;
+        abilityBlockedObjects[id - 1].SetActive(false);
+        UpdateAbilityHasEnoughResource(abilityId, characterHasEnoughResourceToCastAbility);
     }
 
     public void UpdateAbilityHasEnoughResource(int abilityId, bool characterHasEnoughResourceToCastAbility)
     {
         GameObject abilityNotEnoughResourceObject = abilityNotEnoughResourceObjects[abilityId];
-        if ((characterHasEnoughResourceToCastAbility && abilityNotEnoughResourceObject.activeSelf) || (!characterHasEnoughResourceToCastAbility && !abilityNotEnoughResourceObject.activeSelf))
+        if ((characterHasEnoughResourceToCastAbility && abilityNotEnoughResourceObject.activeSelf) ||
+            (!characterHasEnoughResourceToCastAbility && !abilityNotEnoughResourceObject.activeSelf))
         {
             abilityNotEnoughResourceObject.SetActive(!characterHasEnoughResourceToCastAbility);
         }

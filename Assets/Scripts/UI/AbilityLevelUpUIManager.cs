@@ -4,16 +4,12 @@ using UnityEngine.UI;
 
 public class AbilityLevelUpUIManager : MonoBehaviour
 {
-    [SerializeField]
-    private GameObject buffsUI;
-    [SerializeField]
-    private GameObject debuffsUI;
-    [SerializeField]
-    private List<UILevelUpArrow> uiLevelUpArrows;
-    [SerializeField]
-    private Text levelUpText;
+    [SerializeField] private GameObject buffsUI;
+    [SerializeField] private GameObject debuffsUI;
+    [SerializeField] private List<UILevelUpArrow> uiLevelUpArrows;
+    [SerializeField] private Text levelUpText;
 
-    private string baseLevelUpText;
+    private readonly string baseLevelUpText;
 
     private RectTransform buffsUITransform;
     private RectTransform debuffsUITransform;
@@ -63,6 +59,7 @@ public class AbilityLevelUpUIManager : MonoBehaviour
         {
             uiLevelUpArrow.SetArrowState(0);
         }
+
         buffsUITransform.anchoredPosition = buffsUIInitialPosition;
         debuffsUITransform.anchoredPosition = debuffsUIInitialPosition;
     }
@@ -85,9 +82,6 @@ public class AbilityLevelUpUIManager : MonoBehaviour
 
     private void LevelUpAbility(int arrowId)
     {
-        if (OnAbilityLevelUp != null)
-        {
-            OnAbilityLevelUp(arrowId);
-        }
+        OnAbilityLevelUp?.Invoke(arrowId);
     }
 }

@@ -12,7 +12,7 @@
         PassiveCharacterAbilities = new Ability[] { };
         SummonerAbilities = new Ability[]
         {
-            gameObject.AddComponent<Heal>(), 
+            gameObject.AddComponent<Teleport>(), 
             gameObject.AddComponent<Flash>()
         };
 

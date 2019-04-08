@@ -281,7 +281,7 @@ public abstract class Ability : DamageSource
     public void BlockAbility()
     {
         abilityIsBlockedCount++;
-        
+
         if (IsBlocked) return;
         
         IsBlocked = true;

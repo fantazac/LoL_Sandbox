@@ -4,36 +4,26 @@ using UnityEngine.UI;
 
 public class HealthBar : MonoBehaviour
 {
-    [SerializeField]
-    private Image healthImage;
+    [SerializeField] private Image healthImage;
     private RectTransform healthImageTransform;
-    [SerializeField]
-    private Image shieldImage;
+    [SerializeField] private Image shieldImage;
     private RectTransform shieldImageTransform;
-    [SerializeField]
-    private Image physicalShieldImage;
+    [SerializeField] private Image physicalShieldImage;
     private RectTransform physicalShieldImageTransform;
-    [SerializeField]
-    private Image magicShieldImage;
+    [SerializeField] private Image magicShieldImage;
     private RectTransform magicShieldImageTransform;
-    [SerializeField]
-    private GameObject healthSeperators;
-    [SerializeField]
-    private Image resourceImage;
-    [SerializeField]
-    private Image healthBarImage;
-    [SerializeField]
-    private Text levelText;
-    [SerializeField]
-    private Image statusImage;
+    [SerializeField] private GameObject healthSeparators;
+    [SerializeField] private Image resourceImage;
+    [SerializeField] private Image healthBarImage;
+    [SerializeField] private Text levelText;
+    [SerializeField] private Image statusImage;
     private RectTransform statusImageTransform;
-    [SerializeField]
-    private Text statusText;
+    [SerializeField] private Text statusText;
     private RectTransform statusTextTransform;
-    [SerializeField]
-    private Text nameText;
+    [SerializeField] private Text nameText;
 
     private Character character;
+    private RectTransform rectTransform;
 
     private Vector2 healthBarOffset;
     private Vector2 characterYOffset;
@@ -45,24 +35,22 @@ public class HealthBar : MonoBehaviour
 
     private float maxHealth;
     private float maxResource;
-    private float[] shields;
+    private readonly float[] shields;
 
-    [SerializeField]
-    private GameObject mark100Prefab;
-    [SerializeField]
-    private GameObject mark1000Prefab;
+    [SerializeField] private GameObject mark100Prefab;
+    [SerializeField] private GameObject mark1000Prefab;
 
-    private float healthWidth;
-    private Vector2 healthBarXOrigin;
+    private readonly float healthWidth;
+    private readonly Vector2 healthBarXOrigin;
 
-    private string healthSelfPath;
-    private string healthAllyPath;
-    private string healthEnemyPath;
-    private string healthBarAllyPath;
-    private string healthBarEnemyPath;
-    private string shieldPath;
-    private string physicalShieldPath;
-    private string magicShieldPath;
+    private readonly string healthSelfPath;
+    private readonly string healthAllyPath;
+    private readonly string healthEnemyPath;
+    private readonly string healthBarAllyPath;
+    private readonly string healthBarEnemyPath;
+    private readonly string shieldPath;
+    private readonly string physicalShieldPath;
+    private readonly string magicShieldPath;
 
     private Dictionary<string, Sprite> statusSprites;
     private List<StatusEffect> currentStatuses;
@@ -86,6 +74,8 @@ public class HealthBar : MonoBehaviour
 
     private void Start()
     {
+        rectTransform = GetComponent<RectTransform>();
+
         decimal aspectRatio = decimal.Round((decimal)Screen.width / Screen.height, 2, System.MidpointRounding.AwayFromZero);
         xRatioOffset = (float)(aspectRatio / 1.77m);
 
@@ -93,22 +83,24 @@ public class HealthBar : MonoBehaviour
         healthBarOffset = Vector2.right * Screen.width * -0.5f + Vector2.up * Screen.height * -0.5f;
         characterYOffset = Vector2.up * 120;
 
-        statusSprites = new Dictionary<string, Sprite>();
-        statusSprites.Add("Airborne", Resources.Load<Sprite>("Sprites/UI/Status/Airborne"));
-        statusSprites.Add("Blind", Resources.Load<Sprite>("Sprites/UI/Status/Blind"));
-        statusSprites.Add("Charm", Resources.Load<Sprite>("Sprites/UI/Status/Charm"));
-        statusSprites.Add("Disarm", Resources.Load<Sprite>("Sprites/UI/Status/Disarm"));
-        statusSprites.Add("Drowsy", Resources.Load<Sprite>("Sprites/UI/Status/Drowsy"));
-        statusSprites.Add("Fear", Resources.Load<Sprite>("Sprites/UI/Status/Fear"));
-        statusSprites.Add("Root", Resources.Load<Sprite>("Sprites/UI/Status/Root"));
-        statusSprites.Add("Silence", Resources.Load<Sprite>("Sprites/UI/Status/Silence"));
-        statusSprites.Add("Sleep", Resources.Load<Sprite>("Sprites/UI/Status/Sleep"));
-        statusSprites.Add("Stun", Resources.Load<Sprite>("Sprites/UI/Status/Stun"));
-        statusSprites.Add("Suppression", Resources.Load<Sprite>("Sprites/UI/Status/Suppression"));
-        statusSprites.Add("Taunt", Resources.Load<Sprite>("Sprites/UI/Status/Taunt"));
+        statusSprites = new Dictionary<string, Sprite>
+        {
+            { "Airborne", Resources.Load<Sprite>("Sprites/UI/Status/Airborne") },
+            { "Blind", Resources.Load<Sprite>("Sprites/UI/Status/Blind") },
+            { "Charm", Resources.Load<Sprite>("Sprites/UI/Status/Charm") },
+            { "Disarm", Resources.Load<Sprite>("Sprites/UI/Status/Disarm") },
+            { "Drowsy", Resources.Load<Sprite>("Sprites/UI/Status/Drowsy") },
+            { "Fear", Resources.Load<Sprite>("Sprites/UI/Status/Fear") },
+            { "Root", Resources.Load<Sprite>("Sprites/UI/Status/Root") },
+            { "Silence", Resources.Load<Sprite>("Sprites/UI/Status/Silence") },
+            { "Sleep", Resources.Load<Sprite>("Sprites/UI/Status/Sleep") },
+            { "Stun", Resources.Load<Sprite>("Sprites/UI/Status/Stun") },
+            { "Suppression", Resources.Load<Sprite>("Sprites/UI/Status/Suppression") },
+            { "Taunt", Resources.Load<Sprite>("Sprites/UI/Status/Taunt") },
+            { "Resurrection", Resources.Load<Sprite>("Sprites/UI/Status/Resurrection") },
+            { "Unstoppable", Resources.Load<Sprite>("Sprites/UI/Status/Unstoppable") }
+        };
 
-        statusSprites.Add("Resurrection", Resources.Load<Sprite>("Sprites/UI/Status/Resurrection"));
-        statusSprites.Add("Unstoppable", Resources.Load<Sprite>("Sprites/UI/Status/Unstoppable"));
 
         statusImageTransform = statusImage.GetComponent<RectTransform>();
         statusTextTransform = statusText.GetComponent<RectTransform>();
@@ -128,21 +120,17 @@ public class HealthBar : MonoBehaviour
 
         if (character.StatsManager.ResourceType != ResourceType.NONE)
         {
-            if (character.StatsManager.ResourceType == ResourceType.MANA)
+            switch (character.StatsManager.ResourceType)
             {
-                resourceImage.color = new Color(57f / 255f, 170f / 255f, 222f / 255f);
-            }
-            else if (character.StatsManager.ResourceType == ResourceType.ENERGY)
-            {
-                resourceImage.color = new Color(234f / 255f, 221f / 255f, 90f / 255f);
-            }
-            else if (character.StatsManager.ResourceType == ResourceType.FURY)
-            {
-                resourceImage.color = new Color(244f / 255f, 4f / 255f, 13f / 255f);
-            }
-            else
-            {
-                Destroy(resourceImage.gameObject);
+                case ResourceType.MANA:
+                    resourceImage.color = new Color(57f / 255f, 170f / 255f, 222f / 255f);
+                    break;
+                case ResourceType.ENERGY:
+                    resourceImage.color = new Color(234f / 255f, 221f / 255f, 90f / 255f);
+                    break;
+                case ResourceType.FURY:
+                    resourceImage.color = new Color(244f / 255f, 4f / 255f, 13f / 255f);
+                    break;
             }
 
             character.StatsManager.Resource.OnCurrentResourceChanged += OnCurrentResourceChanged;
@@ -153,7 +141,7 @@ public class HealthBar : MonoBehaviour
             Destroy(resourceImage.gameObject);
         }
 
-        if (character is Champion champion)//TODO: units will all have levels
+        if (character is Champion champion) //TODO: units will all have levels
         {
             champion.LevelManager.OnLevelUp += OnLevelUp;
             OnLevelUp(champion.LevelManager.Level == 0 ? 1 : champion.LevelManager.Level);
@@ -165,14 +153,7 @@ public class HealthBar : MonoBehaviour
 
         if (StaticObjects.Champion.Team == character.Team)
         {
-            if (StaticObjects.Champion == character)
-            {
-                healthImage.sprite = Resources.Load<Sprite>(healthSelfPath);
-            }
-            else
-            {
-                healthImage.sprite = Resources.Load<Sprite>(healthAllyPath);
-            }
+            healthImage.sprite = Resources.Load<Sprite>(StaticObjects.Champion == character ? healthSelfPath : healthAllyPath);
             healthBarImage.sprite = Resources.Load<Sprite>(healthBarAllyPath);
         }
         else
@@ -180,6 +161,7 @@ public class HealthBar : MonoBehaviour
             healthBarImage.sprite = Resources.Load<Sprite>(healthBarEnemyPath);
             healthImage.sprite = Resources.Load<Sprite>(healthEnemyPath);
         }
+
         shieldImage.sprite = Resources.Load<Sprite>(shieldPath);
         physicalShieldImage.sprite = Resources.Load<Sprite>(physicalShieldPath);
         magicShieldImage.sprite = Resources.Load<Sprite>(magicShieldPath);
@@ -199,33 +181,31 @@ public class HealthBar : MonoBehaviour
 
     private void SetHealthBarSeparators()
     {
-        Transform[] childrenTransforms = healthSeperators.transform.GetComponentsInChildren<Transform>();
+        Transform[] childrenTransforms = healthSeparators.transform.GetComponentsInChildren<Transform>();
         for (int i = 1; i < childrenTransforms.Length; i++)
         {
             Destroy(childrenTransforms[i].gameObject);
         }
+
         float totalHealthValue = GetTotalHealthValue();
-        float healthSeparatorFactor = GetHealthSeperatorFactor(totalHealthValue);
+        int healthSeparatorFactor = GetHealthSeparatorFactor(totalHealthValue);
         float percentPer100Health = healthSeparatorFactor / totalHealthValue;
         Vector2 widthPer100Health = Vector2.right * (float)(decimal.Round((decimal)(percentPer100Health * healthWidth), 2, System.MidpointRounding.AwayFromZero));
-        float modulo = 1000f / healthSeparatorFactor;
+        int modulo = 1000 / healthSeparatorFactor;
         float loopValue = totalHealthValue / healthSeparatorFactor;
         for (int i = 1; i < loopValue; i++)
         {
             GameObject separator;
             if (i % modulo == 0)
             {
-                separator = Instantiate(mark1000Prefab);
-                separator.transform.SetParent(healthSeperators.transform, false);
+                separator = Instantiate(mark1000Prefab, healthSeparators.transform, false);
                 separator.GetComponent<RectTransform>().anchoredPosition = healthBarXOrigin + (widthPer100Health * i);
             }
             else
             {
-                separator = Instantiate(mark100Prefab);
-                separator.transform.SetParent(healthSeperators.transform, false);
+                separator = Instantiate(mark100Prefab, healthSeparators.transform, false);
                 separator.GetComponent<RectTransform>().anchoredPosition = healthBarXOrigin + (widthPer100Health * i) + Vector2.up * 3;
             }
-
         }
     }
 
@@ -236,24 +216,26 @@ public class HealthBar : MonoBehaviour
         {
             character.StatsManager.Resource.OnCurrentResourceChanged -= OnCurrentResourceChanged;
         }
+
         character.ShieldManager.OnShieldChanged -= OnShieldChanged;
     }
 
-    private float GetHealthSeperatorFactor(float totalHealthValue)
+    private int GetHealthSeparatorFactor(float totalHealthValue)
     {
         if (totalHealthValue < 3000)
         {
-            return 100f;
+            return 100;
         }
         else if (totalHealthValue < 6000)
         {
-            return 200f;
+            return 200;
         }
         else if (totalHealthValue < 10000)
         {
-            return 250f;
+            return 250;
         }
-        return 500f;
+
+        return 500;
     }
 
     private void OnLevelUp(int level)
@@ -271,7 +253,7 @@ public class HealthBar : MonoBehaviour
         if (character)
         {
             Vector3 position = characterCamera.WorldToScreenPoint(character.transform.position);
-            GetComponent<RectTransform>().anchoredPosition =
+            rectTransform.anchoredPosition =
                 Vector2.right * (position.x + healthBarOffset.x) * (1920f / Screen.width) * xRatioOffset +
                 Vector2.up * (position.y + healthBarOffset.y) * (1080f / Screen.height) +
                 characterYOffset;
@@ -346,14 +328,7 @@ public class HealthBar : MonoBehaviour
             }
 
             SetShieldSize(magicShieldImageTransform, GetMagicShieldValue(), totalHealthValue);
-            if (!NormalShieldExists())
-            {
-                SetShieldPositionOnHealthBar(magicShieldImageTransform, healthImageTransform);
-            }
-            else
-            {
-                SetShieldPositionOnHealthBar(magicShieldImageTransform, shieldImageTransform);
-            }
+            SetShieldPositionOnHealthBar(magicShieldImageTransform, !NormalShieldExists() ? healthImageTransform : shieldImageTransform);
         }
 
         if (!PhysicalShieldExists())
@@ -370,14 +345,7 @@ public class HealthBar : MonoBehaviour
             SetShieldSize(physicalShieldImageTransform, GetPhysicalShieldValue(), totalHealthValue);
             if (!MagicShieldExists())
             {
-                if (!NormalShieldExists())
-                {
-                    SetShieldPositionOnHealthBar(physicalShieldImageTransform, healthImageTransform);
-                }
-                else
-                {
-                    SetShieldPositionOnHealthBar(physicalShieldImageTransform, shieldImageTransform);
-                }
+                SetShieldPositionOnHealthBar(physicalShieldImageTransform, !NormalShieldExists() ? healthImageTransform : shieldImageTransform);
             }
             else
             {
@@ -386,12 +354,12 @@ public class HealthBar : MonoBehaviour
         }
     }
 
-    private void SetShieldSize(RectTransform shieldTransform, float shieldValue, float totalHealthValue)
+    private void SetShieldSize(Transform shieldTransform, float shieldValue, float totalHealthValue)
     {
         shieldTransform.localScale = new Vector3(shieldValue / totalHealthValue, 1, 1);
     }
 
-    private void SetShieldPositionOnHealthBar(RectTransform shieldTransform, RectTransform transformToTouch)
+    private void SetShieldPositionOnHealthBar(Transform shieldTransform, Transform transformToTouch)
     {
         shieldTransform.localPosition = new Vector3(transformToTouch.localPosition.x + transformToTouch.localScale.x * healthWidth, 3, 0);
     }
@@ -429,14 +397,8 @@ public class HealthBar : MonoBehaviour
     private float GetTotalHealthValue()
     {
         float GetCurrentHealthValue = GetTotalShieldValue() + character.StatsManager.Health.GetCurrentValue();
-        if (maxHealth >= GetCurrentHealthValue)
-        {
-            return maxHealth;
-        }
-        else
-        {
-            return GetCurrentHealthValue;
-        }
+
+        return maxHealth >= GetCurrentHealthValue ? maxHealth : GetCurrentHealthValue;
     }
 
     private float GetTotalShieldValue()
@@ -473,10 +435,10 @@ public class HealthBar : MonoBehaviour
                 statusImage.sprite = statusSprites["Unstoppable"];
             }
             else if (currentStatuses.Contains(StatusEffect.KNOCKASIDE) ||
-            currentStatuses.Contains(StatusEffect.KNOCKBACK) ||
-            currentStatuses.Contains(StatusEffect.KNOCKUP) ||
-            currentStatuses.Contains(StatusEffect.PULL) ||
-            currentStatuses.Contains(StatusEffect.SUSPENSION))
+                     currentStatuses.Contains(StatusEffect.KNOCKBACK) ||
+                     currentStatuses.Contains(StatusEffect.KNOCKUP) ||
+                     currentStatuses.Contains(StatusEffect.PULL) ||
+                     currentStatuses.Contains(StatusEffect.SUSPENSION))
             {
                 statusText.text = "AIRBORNE";
                 statusImage.sprite = statusSprites["Airborne"];
@@ -517,7 +479,7 @@ public class HealthBar : MonoBehaviour
                 statusImage.sprite = statusSprites["Stun"];
             }
             else if (currentStatuses.Contains(StatusEffect.ROOT) ||
-                currentStatuses.Contains(StatusEffect.ENTANGLE))
+                     currentStatuses.Contains(StatusEffect.ENTANGLE))
             {
                 statusText.text = "ROOTED";
                 statusImage.sprite = statusSprites["Root"];
@@ -528,8 +490,8 @@ public class HealthBar : MonoBehaviour
                 statusImage.sprite = statusSprites["Root"];
             }
             else if (currentStatuses.Contains(StatusEffect.SILENCE) ||
-                currentStatuses.Contains(StatusEffect.DISRUPT) ||
-                currentStatuses.Contains(StatusEffect.PACIFY))
+                     currentStatuses.Contains(StatusEffect.DISRUPT) ||
+                     currentStatuses.Contains(StatusEffect.PACIFY))
             {
                 statusText.text = "SILENCED";
                 statusImage.sprite = statusSprites["Silence"];
@@ -568,7 +530,8 @@ public class HealthBar : MonoBehaviour
 
             if (statusText.enabled)
             {
-                statusImageTransform.anchoredPosition = new Vector3(statusTextTransform.anchoredPosition.x -
+                statusImageTransform.anchoredPosition = new Vector3(
+                    statusTextTransform.anchoredPosition.x -
                     (LayoutUtility.GetPreferredWidth(statusTextTransform) * statusTextTransform.localScale.x * 0.5f) -
                     (statusImageTransform.sizeDelta.x * 0.5f) - 4,
                     23);
