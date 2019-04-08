@@ -16,10 +16,7 @@ public class AbilityEffectsManager : MonoBehaviour
 
     public void ApplyAbilityEffectsToUnitHit(Unit unitHit, float damage)
     {
-        if (OnApplyAbilityEffects != null)
-        {
-            OnApplyAbilityEffects(unitHit, damage);
-        }
+        OnApplyAbilityEffects?.Invoke(unitHit, damage);
         character.StatsManager.RestoreHealth(damage * spellVamp.GetTotal());
     }
 }

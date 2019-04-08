@@ -16,10 +16,7 @@ public class OnHitEffectsManager : MonoBehaviour
 
     public void ApplyOnHitEffectsToUnitHit(Unit unitHit, float damage)
     {
-        if (OnApplyOnHitEffects != null)
-        {
-            OnApplyOnHitEffects(unitHit, damage);
-        }
+        OnApplyOnHitEffects?.Invoke(unitHit, damage);
         unit.StatsManager.RestoreHealth(damage * lifeSteal.GetTotal());
     }
 }

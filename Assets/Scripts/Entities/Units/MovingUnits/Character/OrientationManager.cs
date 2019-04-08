@@ -3,24 +3,24 @@ using System.Collections;
 
 public class OrientationManager : MonoBehaviour
 {
-    protected Vector3 lastInstantRotation;
+    //private Vector3 lastInstantRotation;
 
-    protected Unit unit;
-    protected AbilityManager characterAbilityManager;
+    private Unit unit;
+    private AbilityManager characterAbilityManager;
 
-    protected IEnumerator castPointRotation;
-    protected IEnumerator movementRotation;
-    protected IEnumerator targetRotation;
-    protected bool isRotatingTowardsCastPoint;
+    private IEnumerator castPointRotation;
+    private IEnumerator movementRotation;
+    private IEnumerator targetRotation;
+    private bool isRotatingTowardsCastPoint;
 
-    public int RotationSpeed { get; private set; }
+    public int RotationSpeed { get; }
 
-    protected OrientationManager()
+    private OrientationManager()
     {
-        RotationSpeed = 18;// note: rotation under 18 makes EzrealE stop rotation for a short time after the ability is done
+        RotationSpeed = 18; // note: rotation under 18 makes EzrealE stop rotation for a short time after the ability is done
     }
 
-    protected void Awake()
+    private void Awake()
     {
         unit = GetComponent<Unit>();
         characterAbilityManager = GetComponent<AbilityManager>();
@@ -28,7 +28,7 @@ public class OrientationManager : MonoBehaviour
 
     public void RotateCharacterInstantly(Vector3 destination)
     {
-        lastInstantRotation = destination;
+        //lastInstantRotation = destination;
         Vector3 rotation = (destination - transform.position).normalized;
         if (rotation != Vector3.zero)
         {
@@ -36,10 +36,10 @@ public class OrientationManager : MonoBehaviour
         }
     }
 
-    public void RotateCharacterInstantlyToLastInstantRotation()
+    /*public void RotateCharacterInstantlyToLastInstantRotation()
     {
-        transform.rotation = Quaternion.LookRotation((lastInstantRotation - transform.position).normalized); ;
-    }
+        transform.rotation = Quaternion.LookRotation((lastInstantRotation - transform.position).normalized);
+    }*/
 
     public void StopRotation()
     {
@@ -47,22 +47,20 @@ public class OrientationManager : MonoBehaviour
         StopTargetRotation();
     }
 
-    public void StopMovementRotation()
+    private void StopMovementRotation()
     {
-        if (movementRotation != null)
-        {
-            StopCoroutine(movementRotation);
-            movementRotation = null;
-        }
+        if (movementRotation == null) return;
+
+        StopCoroutine(movementRotation);
+        movementRotation = null;
     }
 
     public void StopTargetRotation()
     {
-        if (targetRotation != null)
-        {
-            StopCoroutine(targetRotation);
-            targetRotation = null;
-        }
+        if (targetRotation == null) return;
+
+        StopCoroutine(targetRotation);
+        targetRotation = null;
     }
 
     public void RotateCharacter(Vector3 destination)
@@ -72,7 +70,7 @@ public class OrientationManager : MonoBehaviour
         StartCoroutine(movementRotation);
     }
 
-    protected IEnumerator Rotate(Vector3 destination)
+    private IEnumerator Rotate(Vector3 destination)
     {
         while (transform.position != destination)
         {
@@ -97,17 +95,19 @@ public class OrientationManager : MonoBehaviour
         {
             StopRotation();
         }
+
         targetRotation = RotateUntilReachedTarget(targetTransform, isBasicAttack);
         StartCoroutine(targetRotation);
     }
 
-    protected IEnumerator RotateUntilReachedTarget(Transform targetTransform, bool isBasicAttack)
+    private IEnumerator RotateUntilReachedTarget(Transform targetTransform, bool isBasicAttack)
     {
-        while (targetTransform != null)
+        while (targetTransform)
         {
             if (CanRotateTowardsTarget(targetTransform, isBasicAttack))
             {
-                transform.rotation = Quaternion.LookRotation(Vector3.RotateTowards(transform.forward, targetTransform.position - transform.position, Time.deltaTime * RotationSpeed, 0));
+                transform.rotation =
+                    Quaternion.LookRotation(Vector3.RotateTowards(transform.forward, targetTransform.position - transform.position, Time.deltaTime * RotationSpeed, 0));
             }
 
             yield return null;
@@ -123,17 +123,16 @@ public class OrientationManager : MonoBehaviour
         StartCoroutine(castPointRotation);
     }
 
-    public void StopCastPointRotation()
+    private void StopCastPointRotation()
     {
-        if (castPointRotation != null)
-        {
-            StopCoroutine(castPointRotation);
-            castPointRotation = null;
-            isRotatingTowardsCastPoint = false;
-        }
+        if (castPointRotation == null) return;
+
+        StopCoroutine(castPointRotation);
+        castPointRotation = null;
+        isRotatingTowardsCastPoint = false;
     }
 
-    protected IEnumerator RotateUntilFacingCastPoint(Vector3 castPoint)
+    private IEnumerator RotateUntilFacingCastPoint(Vector3 castPoint)
     {
         isRotatingTowardsCastPoint = true;
 
@@ -155,11 +154,11 @@ public class OrientationManager : MonoBehaviour
         isRotatingTowardsCastPoint = false;
     }
 
-    protected virtual bool CanRotate()
+    private bool CanRotate()
     {
         return !isRotatingTowardsCastPoint && characterAbilityManager.CanRotate() &&
-            !characterAbilityManager.AnAbilityIsBeingCasted() && !characterAbilityManager.AnAbilityInBeingChanneled() &&
-            !unit.DisplacementManager.IsBeingDisplaced;
+               !characterAbilityManager.AnAbilityIsBeingCasted() && !characterAbilityManager.AnAbilityInBeingChanneled() &&
+               !unit.DisplacementManager.IsBeingDisplaced;
     }
 
     private bool CanRotateTowardsTarget(Transform targetTransform, bool isBasicAttack)
@@ -169,7 +168,9 @@ public class OrientationManager : MonoBehaviour
 
     private bool CanRotateBasicAttack(Transform targetTransform, bool isBasicAttack)
     {
-        return isBasicAttack && unit.StatusManager.CanUseBasicAttacks() && (unit.StatusManager.CanUseMovement() || Vector3.Distance(targetTransform.position, transform.position) <= unit.StatsManager.AttackRange.GetTotal());
+        return isBasicAttack && unit.StatusManager.CanUseBasicAttacks() && (unit.StatusManager.CanUseMovement() ||
+                                                                            Vector3.Distance(targetTransform.position, transform.position) <=
+                                                                            unit.StatsManager.AttackRange.GetTotal());
     }
 
     private bool CanRotateNotBasicAttack(Transform targetTransform, bool isBasicAttack)

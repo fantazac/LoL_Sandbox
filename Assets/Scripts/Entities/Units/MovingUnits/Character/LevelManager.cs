@@ -4,11 +4,11 @@ public class LevelManager : MonoBehaviour
 {
     private Champion champion;
 
-    public int AbilityPoints { get; private set; }
     public int Level { get; private set; }
 
-    private static int MaxLevel = 18;
+    private const int MAX_LEVEL = 18;
 
+    private int abilityPoints;
     private int pointsAvailableForQ;
     private int pointsAvailableForW;
     private int pointsAvailableForE;
@@ -24,26 +24,24 @@ public class LevelManager : MonoBehaviour
 
     private void Start()
     {
-        if (champion.AbilityLevelUpUIManager)
-        {
-            champion.AbilityLevelUpUIManager.OnAbilityLevelUp += OnAbilityLevelUp;
-            champion.InputManager.OnAbilityLevelUp += OnAbilityLevelUp;
-            PrepareLevelUp();
-        }
+        if (!champion.AbilityLevelUpUIManager) return;
+
+        champion.AbilityLevelUpUIManager.OnAbilityLevelUp += OnAbilityLevelUp;
+        champion.InputManager.OnAbilityLevelUp += OnAbilityLevelUp;
+        PrepareLevelUp();
     }
 
     public void PrepareLevelUp()
     {
-        if (Level < MaxLevel)
+        if (Level >= MAX_LEVEL) return;
+
+        if (StaticObjects.OnlineMode)
         {
-            if (StaticObjects.OnlineMode)
-            {
-                SendToServer_LevelUp();
-            }
-            else
-            {
-                LevelUp();
-            }
+            SendToServer_LevelUp();
+        }
+        else
+        {
+            LevelUp();
         }
     }
 
@@ -57,7 +55,7 @@ public class LevelManager : MonoBehaviour
 
     private void SendToServer_LevelUp()
     {
-        champion.PhotonView.RPC("ReceiveFromServer_LevelUp", PhotonTargets.AllViaServer);
+        champion.PhotonView.RPC(nameof(ReceiveFromServer_LevelUp), PhotonTargets.AllViaServer);
     }
 
     [PunRPC]
@@ -69,36 +67,40 @@ public class LevelManager : MonoBehaviour
     private void LevelUp()
     {
         ++Level;
-        if (SetPointsAvaiableForAbilities() > AbilityPoints)
+        if (SetPointsAvailableForAbilities() > abilityPoints)
         {
-            ++AbilityPoints;
+            ++abilityPoints;
         }
-        if (champion.AbilityLevelUpUIManager && AbilityPoints > 0)
+
+        if (champion.AbilityLevelUpUIManager && abilityPoints > 0)
         {
             champion.AbilityLevelUpUIManager.gameObject.SetActive(true);
-            champion.AbilityLevelUpUIManager.SetAbilityPoints(AbilityPoints, pointsAvailableForQ, pointsAvailableForW, pointsAvailableForE, pointsAvailableForR);
+            champion.AbilityLevelUpUIManager.SetAbilityPoints(abilityPoints, pointsAvailableForQ, pointsAvailableForW, pointsAvailableForE, pointsAvailableForR);
         }
+
         if (champion.LevelUIManager)
         {
             champion.LevelUIManager.SetLevel(Level);
         }
-        if (Level > 1 && OnLevelUp != null)
+
+        if (Level > 1)
         {
-            OnLevelUp(Level);
+            OnLevelUp?.Invoke(Level);
         }
     }
 
-    private int SetPointsAvaiableForAbilities()
+    private int SetPointsAvailableForAbilities()
     {
         Ability[] characterAbilities = champion.AbilityManager.CharacterAbilities;
         float currentMaxLevel;
-        if (Level == 1 || Level == 3 || Level == 5 || Level == 7 || Level == 9)//Level == 11 is for champions that have abilities with a MaxLevel of 6 (ex. RyzeQ), have to check that
+        if (Level == 1 || Level == 3 || Level == 5 || Level == 7 || Level == 9
+        ) //Level == 11 is for champions that have abilities with a MaxLevel of 6 (ex. RyzeQ), have to check that
         {
             currentMaxLevel = (Level + 1) * 0.5f;
             pointsAvailableForQ += CanAddAbilityPointToNormalAbility(characterAbilities[0], currentMaxLevel) ? 1 : 0;
             pointsAvailableForW += CanAddAbilityPointToNormalAbility(characterAbilities[1], currentMaxLevel) ? 1 : 0;
             pointsAvailableForE += CanAddAbilityPointToNormalAbility(characterAbilities[2], currentMaxLevel) ? 1 : 0;
-            pointsAvailableForR += CanAddAbilityPointToNormalAbility(characterAbilities[3], currentMaxLevel) ? 1 : 0;//Some champions don't have ultimates (ex. Udyr)
+            pointsAvailableForR += CanAddAbilityPointToNormalAbility(characterAbilities[3], currentMaxLevel) ? 1 : 0; //Some champions don't have ultimates (ex. Udyr)
         }
         else if (Level == 6 || Level == 11 || Level == 16)
         {
@@ -133,7 +135,7 @@ public class LevelManager : MonoBehaviour
 
     private void SendToServer_AbilityLevelUp(int abilityId)
     {
-        champion.PhotonView.RPC("ReceiveFromServer_AbilityLevelUp", PhotonTargets.AllViaServer, abilityId);
+        champion.PhotonView.RPC(nameof(ReceiveFromServer_AbilityLevelUp), PhotonTargets.AllViaServer, abilityId);
     }
 
     [PunRPC]
@@ -144,33 +146,32 @@ public class LevelManager : MonoBehaviour
 
     private void LevelUpAbility(int abilityId)
     {
-        if (AbilityPoints > 0)
-        {
-            if (CanLevelUpAbility(abilityId, 0, pointsAvailableForQ))
-            {
-                pointsAvailableForQ--;
-                AbilityLevelUpActions(abilityId);
-            }
-            else if (CanLevelUpAbility(abilityId, 1, pointsAvailableForW))
-            {
-                pointsAvailableForW--;
-                AbilityLevelUpActions(abilityId);
-            }
-            else if (CanLevelUpAbility(abilityId, 2, pointsAvailableForE))
-            {
-                pointsAvailableForE--;
-                AbilityLevelUpActions(abilityId);
-            }
-            else if (CanLevelUpAbility(abilityId, 3, pointsAvailableForR))
-            {
-                pointsAvailableForR--;
-                AbilityLevelUpActions(abilityId);
-            }
+        if (abilityPoints <= 0) return;
 
-            if (champion.AbilityLevelUpUIManager)
-            {
-                champion.AbilityLevelUpUIManager.SetAbilityPoints(AbilityPoints, pointsAvailableForQ, pointsAvailableForW, pointsAvailableForE, pointsAvailableForR);
-            }
+        if (CanLevelUpAbility(abilityId, 0, pointsAvailableForQ))
+        {
+            pointsAvailableForQ--;
+            AbilityLevelUpActions(abilityId);
+        }
+        else if (CanLevelUpAbility(abilityId, 1, pointsAvailableForW))
+        {
+            pointsAvailableForW--;
+            AbilityLevelUpActions(abilityId);
+        }
+        else if (CanLevelUpAbility(abilityId, 2, pointsAvailableForE))
+        {
+            pointsAvailableForE--;
+            AbilityLevelUpActions(abilityId);
+        }
+        else if (CanLevelUpAbility(abilityId, 3, pointsAvailableForR))
+        {
+            pointsAvailableForR--;
+            AbilityLevelUpActions(abilityId);
+        }
+
+        if (champion.AbilityLevelUpUIManager)
+        {
+            champion.AbilityLevelUpUIManager.SetAbilityPoints(abilityPoints, pointsAvailableForQ, pointsAvailableForW, pointsAvailableForE, pointsAvailableForR);
         }
     }
 
@@ -181,25 +182,25 @@ public class LevelManager : MonoBehaviour
 
     private void AbilityLevelUpActions(int abilityId)
     {
-        AbilityPoints--;
+        abilityPoints--;
         champion.AbilityManager.LevelUpAbility(AbilityCategory.CharacterAbility, abilityId);
     }
 
     public void ReachMaxLevel()
     {
-        if (!StaticObjects.OnlineMode)
+        if (StaticObjects.OnlineMode) return;
+
+        while (Level < MAX_LEVEL)
         {
-            while (Level < MaxLevel)
+            PrepareLevelUp();
+        }
+
+        Ability[] characterAbilities = champion.AbilityManager.CharacterAbilities;
+        for (int i = 0; i < characterAbilities.Length; i++)
+        {
+            for (int j = 0; j < characterAbilities[i].MaxLevel; j++)
             {
-                PrepareLevelUp();
-            }
-            Ability[] characterAbilities = champion.AbilityManager.CharacterAbilities;
-            for (int i = 0; i < characterAbilities.Length; i++)
-            {
-                for (int j = 0; j < characterAbilities[i].MaxLevel; j++)
-                {
-                    OnAbilityLevelUp(i);
-                }
+                OnAbilityLevelUp(i);
             }
         }
     }

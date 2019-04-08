@@ -3,9 +3,9 @@ using UnityEngine;
 
 public abstract class CharacterStatsManager : StatsManager
 {
-    private float regenerationPercentPerTick;
-    private float regenerationInterval;
-    private WaitForSeconds delayRegeneration;
+    private readonly float regenerationPercentPerTick;
+    private readonly float regenerationInterval;
+    private readonly WaitForSeconds delayRegeneration;
 
     protected CharacterStatsManager()
     {
@@ -73,16 +73,15 @@ public abstract class CharacterStatsManager : StatsManager
             characterLevelManager.OnLevelUp += Lethality.OnLevelUp;
         }
 
-        if (Health != null && HealthRegeneration != null)
+        if (Health == null || HealthRegeneration == null) return;
+
+        if (Resource != null && ResourceRegeneration != null)
         {
-            if (Resource != null && ResourceRegeneration != null)
-            {
-                StartCoroutine(RegenerateHealthAndResource());
-            }
-            else
-            {
-                StartCoroutine(RegenerateHealth());
-            }
+            StartCoroutine(RegenerateHealthAndResource());
+        }
+        else
+        {
+            StartCoroutine(RegenerateHealth());
         }
     }
 

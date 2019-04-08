@@ -16,6 +16,7 @@ public class BufferedAbilityManager : MonoBehaviour
         {
             return bufferedPositionTargetedAbility;
         }
+
         return bufferedUnitTargetedAbility ? bufferedUnitTargetedAbility : bufferedAutoTargetedAbility;
     }
 
@@ -25,10 +26,12 @@ public class BufferedAbilityManager : MonoBehaviour
         {
             ResetBufferedPositionTargetedAbility();
         }
+
         if (bufferedUnitTargetedAbility)
         {
             ResetBufferedUnitTargetedAbility();
         }
+
         if (bufferedAutoTargetedAbility)
         {
             ResetBufferedAutoTargetedAbility();
@@ -44,6 +47,7 @@ public class BufferedAbilityManager : MonoBehaviour
         {
             ResetBufferedUnitTargetedAbility();
         }
+
         if (bufferedAutoTargetedAbility)
         {
             ResetBufferedAutoTargetedAbility();
@@ -59,6 +63,7 @@ public class BufferedAbilityManager : MonoBehaviour
         {
             ResetBufferedPositionTargetedAbility();
         }
+
         if (bufferedAutoTargetedAbility)
         {
             ResetBufferedAutoTargetedAbility();
@@ -68,11 +73,12 @@ public class BufferedAbilityManager : MonoBehaviour
     public void BufferAutoTargetedAbility(Ability autoTargetedAbility)
     {
         bufferedAutoTargetedAbility = autoTargetedAbility;
-        
+
         if (bufferedPositionTargetedAbility)
         {
             ResetBufferedPositionTargetedAbility();
         }
+
         if (bufferedUnitTargetedAbility)
         {
             ResetBufferedUnitTargetedAbility();
@@ -93,7 +99,7 @@ public class BufferedAbilityManager : MonoBehaviour
             ResetBufferedUnitTargetedAbility();
             ((IUnitTargeted)bufferedAbility).UseAbility(bufferedUnit);
         }
-        else if(bufferedAutoTargetedAbility)
+        else if (bufferedAutoTargetedAbility)
         {
             Ability bufferedAbility = bufferedAutoTargetedAbility;
             ResetBufferedAutoTargetedAbility();

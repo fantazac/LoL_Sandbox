@@ -37,7 +37,11 @@ public abstract class EmpoweredBasicAttack : BasicAttack
 
     protected void SetupBeforeAttackDelay(Unit target)
     {
-        ((Champion)unit).OrientationManager.RotateCharacterUntilReachedTarget(target.transform, true, true);
+        if (unit is Champion champion)
+        {
+            champion.OrientationManager.RotateCharacterUntilReachedTarget(target.transform, true, true);
+        }
+
         empoweringAbilityWasActiveOnBasicAttackCast = unit.BuffManager.IsAffectedByBuff(basicAttackEmpoweringAbility.AbilityBuffs[0]);
     }
 
@@ -45,7 +49,10 @@ public abstract class EmpoweredBasicAttack : BasicAttack
     {
         BasicAttackCycle.LockBasicAttack();
         AttackIsInQueue = false;
-        ((Champion)unit).OrientationManager.StopTargetRotation();
+        if (unit is Champion champion)
+        {
+            champion.OrientationManager.StopTargetRotation();
+        }
 
         ProjectileUnitTargeted projectile = (Instantiate(basicAttackPrefab, transform.position, transform.rotation)).GetComponent<ProjectileUnitTargeted>();
         projectile.ShootProjectile(affectedTeams, target, speed, AttackIsCritical.CheckIfAttackIsCritical(unit.StatsManager.CriticalStrikeChance.GetTotal()));
@@ -61,7 +68,7 @@ public abstract class EmpoweredBasicAttack : BasicAttack
 
     protected override void BasicAttackHit(Projectile basicAttackProjectile, Unit unitHit, bool isACriticalStrike, bool willMiss)
     {
-        if (!(unit.StatusManager.IsBlinded() || willMiss))
+        if (!unit.StatusManager.IsBlinded() && !willMiss)
         {
             EmpoweredBasicAttackHit(unitHit, isACriticalStrike);
         }

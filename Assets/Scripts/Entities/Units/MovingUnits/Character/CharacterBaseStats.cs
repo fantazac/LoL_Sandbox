@@ -1,6 +1,6 @@
 ﻿public abstract class CharacterBaseStats : BaseStats
 {
-    public float BaseResource { get; protected set; }//mana, energy, fury, ...
+    public float BaseResource { get; protected set; } //mana, energy, fury, ...
     public float BaseHealthRegeneration { get; protected set; }
     public float BaseResourceRegeneration { get; protected set; }
 

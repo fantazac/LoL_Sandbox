@@ -3,7 +3,7 @@
 public class MouseManager : MonoBehaviour
 {
     public Unit HoveredUnit { get; private set; }
-    public Unit ClickedUnit { get; private set; }
+    //public Unit ClickedUnit { get; private set; }
 
     private Champion champion;
 
@@ -14,11 +14,11 @@ public class MouseManager : MonoBehaviour
     private void Start()
     {
         champion = StaticObjects.Champion;
-        if (champion.IsLocalChampion())
-        {
-            champion.InputManager.OnLeftClick += PressedLeftClick;
-            champion.InputManager.OnRightClick += PressedRightClick;
-        }
+
+        if (!champion.IsLocalChampion()) return;
+
+        champion.InputManager.OnLeftClick += PressedLeftClick;
+        champion.InputManager.OnRightClick += PressedRightClick;
     }
 
     public void HoverUnit(Unit hoveredUnit)
@@ -34,12 +34,13 @@ public class MouseManager : MonoBehaviour
         }
     }
 
-    public bool HoveredUnitIsAnEnemy(Team team)
+    private bool HoveredUnitIsAnEnemy(Team team)
     {
-        if (HoveredUnit != null)
+        if (HoveredUnit)
         {
             return team != HoveredUnit.Team;
         }
+
         return false;
     }
 
@@ -75,10 +76,10 @@ public class MouseManager : MonoBehaviour
     private Unit FindClosestEnemyUnit()
     {
         Unit closestEnemyUnit = null;
-        foreach (Collider collider in Physics.OverlapSphere(hit.point, RADIUS_RUBBER_BANDING))
+        foreach (Collider other in Physics.OverlapSphere(hit.point, RADIUS_RUBBER_BANDING))
         {
-            closestEnemyUnit = collider.GetComponentInParent<Unit>();
-            if (closestEnemyUnit != null && closestEnemyUnit.Team != champion.Team)
+            closestEnemyUnit = other.GetComponentInParent<Unit>();
+            if (closestEnemyUnit && closestEnemyUnit.Team != champion.Team)
             {
                 break;
             }
@@ -87,6 +88,7 @@ public class MouseManager : MonoBehaviour
                 closestEnemyUnit = null;
             }
         }
+
         return closestEnemyUnit;
     }
 }

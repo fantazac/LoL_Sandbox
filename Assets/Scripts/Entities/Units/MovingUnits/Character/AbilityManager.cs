@@ -7,7 +7,7 @@ public class AbilityManager : MonoBehaviour
 
     public Ability[] CharacterAbilities { get; protected set; }
     public Ability[] PassiveCharacterAbilities { get; protected set; }
-    public Ability[] OtherCharacterAbilities { get; protected set; }
+    public Ability[] OtherCharacterAbilities { get; private set; }
     public Ability[] SummonerAbilities { get; protected set; }
     private Ability[] OfflineAbilities { get; set; }
 

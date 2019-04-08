@@ -47,20 +47,24 @@ public class InputManager : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.Q))
             {
-                OnAbilityLevelUp(0);
+                OnAbilityLevelUp?.Invoke(0);
             }
+
             if (Input.GetKeyDown(KeyCode.W))
             {
-                OnAbilityLevelUp(1);
+                OnAbilityLevelUp?.Invoke(1);
             }
+
             if (Input.GetKeyDown(KeyCode.E))
             {
-                OnAbilityLevelUp(2);
+                OnAbilityLevelUp?.Invoke(2);
             }
+
             if (Input.GetKeyDown(KeyCode.R))
             {
-                OnAbilityLevelUp(3);
+                OnAbilityLevelUp?.Invoke(3);
             }
+
             /*if (Input.GetKeyDown(KeyCode.Equals))
             {
                 characterLevelManager.ReachMaxLevel();
@@ -72,18 +76,22 @@ public class InputManager : MonoBehaviour
             {
                 characterAbilityManager.OnPressedInputForAbility(AbilityCategory.CharacterAbility, 0);
             }
+
             if (Input.GetKeyDown(KeyCode.W))
             {
                 characterAbilityManager.OnPressedInputForAbility(AbilityCategory.CharacterAbility, 1);
             }
+
             if (Input.GetKeyDown(KeyCode.E))
             {
                 characterAbilityManager.OnPressedInputForAbility(AbilityCategory.CharacterAbility, 2);
             }
+
             if (Input.GetKeyDown(KeyCode.R))
             {
                 characterAbilityManager.OnPressedInputForAbility(AbilityCategory.CharacterAbility, 3);
             }
+
             /*if (Input.GetKeyDown(KeyCode.Equals))
             {
                 characterLevelManager.PrepareLevelUp();
@@ -97,6 +105,7 @@ public class InputManager : MonoBehaviour
         {
             characterAbilityManager.OnPressedInputForAbility(AbilityCategory.SummonerAbility, 0);
         }
+
         if (Input.GetKeyDown(KeyCode.F))
         {
             characterAbilityManager.OnPressedInputForAbility(AbilityCategory.SummonerAbility, 1);
@@ -109,20 +118,24 @@ public class InputManager : MonoBehaviour
         {
             characterAbilityManager.ResetCooldowns();
         }
+
         if (Input.GetKey(KeyCode.LeftShift))
         {
             if (Input.GetKeyDown(KeyCode.B))
             {
                 characterAbilityManager.OnPressedInputForAbility(AbilityCategory.OfflineAbility, 2);
             }
+
             if (Input.GetKeyDown(KeyCode.M))
             {
                 characterAbilityManager.OnPressedInputForAbility(AbilityCategory.OfflineAbility, 0);
             }
+
             if (Input.GetKeyDown(KeyCode.N))
             {
                 characterAbilityManager.OnPressedInputForAbility(AbilityCategory.OfflineAbility, 1);
             }
+
             if (Input.GetKeyDown(KeyCode.Equals))
             {
                 characterLevelManager.ReachMaxLevel();
@@ -134,6 +147,7 @@ public class InputManager : MonoBehaviour
             {
                 characterAbilityManager.OnPressedInputForAbility(AbilityCategory.OtherCharacterAbility, 0);
             }
+
             if (Input.GetKeyDown(KeyCode.Equals))
             {
                 characterLevelManager.PrepareLevelUp();
@@ -143,33 +157,37 @@ public class InputManager : MonoBehaviour
 
     private void CheckForCameraControlInputs()
     {
-        if (Input.GetKeyDown(KeyCode.S) && OnPressedS != null)
+        if (Input.GetKeyDown(KeyCode.S))
         {
-            OnPressedS();
+            OnPressedS?.Invoke();
         }
-        if (Input.GetKeyDown(KeyCode.Y) && OnPressedY != null)
+
+        if (Input.GetKeyDown(KeyCode.Y))
         {
-            OnPressedY();
+            OnPressedY?.Invoke();
         }
-        if (Input.GetKeyDown(KeyCode.Space) && OnPressedSpace != null)
+
+        if (Input.GetKeyDown(KeyCode.Space))
         {
-            OnPressedSpace();
+            OnPressedSpace?.Invoke();
         }
-        if (Input.GetKeyUp(KeyCode.Space) && OnPressedSpace != null)
+
+        if (Input.GetKeyUp(KeyCode.Space))
         {
-            OnReleasedSpace();
+            OnReleasedSpace?.Invoke();
         }
     }
 
     private void CheckForMouseInputs()
     {
-        if (Input.GetMouseButtonDown(0) && OnLeftClick != null)
+        if (Input.GetMouseButtonDown(0))
         {
-            OnLeftClick(Input.mousePosition);
+            OnLeftClick?.Invoke(Input.mousePosition);
         }
-        if (Input.GetMouseButtonDown(1) && OnRightClick != null)
+
+        if (Input.GetMouseButtonDown(1))
         {
-            OnRightClick(Input.mousePosition);
+            OnRightClick?.Invoke(Input.mousePosition);
         }
     }
 }

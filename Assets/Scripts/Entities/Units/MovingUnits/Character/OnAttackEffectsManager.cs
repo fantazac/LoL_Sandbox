@@ -7,9 +7,6 @@ public class OnAttackEffectsManager : MonoBehaviour
 
     public void ApplyOnAttackEffectsToUnitHit(Unit unitHit)
     {
-        if (OnApplyOnAttackEffects != null)
-        {
-            OnApplyOnAttackEffects(unitHit);
-        }
+        OnApplyOnAttackEffects?.Invoke(unitHit);
     }
 }
