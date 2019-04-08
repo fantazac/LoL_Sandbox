@@ -174,7 +174,7 @@ public class AbilityUIManager : MonoBehaviour
     public void BlockAbility(AbilityCategory abilityCategory, int abilityId, bool abilityUsesResource)
     {
         if (abilityCategory == AbilityCategory.OfflineAbility || abilityCategory == AbilityCategory.OtherCharacterAbility) return;
-
+        
         int id = GetAbilityId(abilityCategory, abilityId);
         abilityImages[id].color = abilityColorOnCooldown;
         abilityBlockedObjects[id - 1].SetActive(true);

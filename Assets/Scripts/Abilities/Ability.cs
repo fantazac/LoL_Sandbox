@@ -270,7 +270,7 @@ public abstract class Ability : DamageSource
         
         if (IsBlocked)
         {
-            BlockAbility();
+            BlockAbility(true);
         }
         else
         {
@@ -278,11 +278,14 @@ public abstract class Ability : DamageSource
         }
     }
 
-    public void BlockAbility()
+    public void BlockAbility(bool wasDisabled = false)
     {
-        abilityIsBlockedCount++;
-
-        if (IsBlocked) return;
+        if (!wasDisabled)
+        {
+            abilityIsBlockedCount++;
+            
+            if (IsBlocked) return;
+        }
         
         IsBlocked = true;
         if (!IsOnCooldown && IsEnabled && champion.AbilityUIManager)

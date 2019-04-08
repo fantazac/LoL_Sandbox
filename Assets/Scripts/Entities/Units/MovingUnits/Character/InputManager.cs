@@ -147,6 +147,11 @@ public class InputManager : MonoBehaviour
             {
                 characterAbilityManager.OnPressedInputForAbility(AbilityCategory.OtherCharacterAbility, 0);
             }
+            
+            if (Input.GetKeyDown(KeyCode.V))
+            {
+                characterAbilityManager.OnPressedInputForAbility(AbilityCategory.OtherCharacterAbility, 1);
+            }
 
             if (Input.GetKeyDown(KeyCode.Equals))
             {

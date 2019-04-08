@@ -38,7 +38,7 @@ public class AbilityManager : MonoBehaviour
 
         SetupAbilitiesFromAbilityCategory(PassiveCharacterAbilities, AbilityCategory.PassiveCharacterAbility, isLocalChampion);
 
-        OtherCharacterAbilities = new Ability[] { gameObject.AddComponent<Recall>() };
+        OtherCharacterAbilities = new Ability[] { gameObject.AddComponent<Recall>(), gameObject.AddComponent<AlexCC>() }; //TODO: Remove AlexCC 
         SetupAbilitiesFromAbilityCategory(OtherCharacterAbilities, AbilityCategory.OtherCharacterAbility, isLocalChampion);
 
         SetupAbilitiesFromAbilityCategory(SummonerAbilities, AbilityCategory.SummonerAbility, isLocalChampion);
@@ -124,7 +124,8 @@ public class AbilityManager : MonoBehaviour
     {
         SetAbilitySpritesForAbilitiesFromAbilityCategory(CharacterAbilities, AbilityCategory.CharacterAbility);
         SetAbilitySpritesForAbilitiesFromAbilityCategory(PassiveCharacterAbilities, AbilityCategory.PassiveCharacterAbility);
-        SetAbilitySpritesForAbilitiesFromAbilityCategory(OtherCharacterAbilities, AbilityCategory.OtherCharacterAbility);
+        //SetAbilitySpritesForAbilitiesFromAbilityCategory(OtherCharacterAbilities, AbilityCategory.OtherCharacterAbility); //TODO: Remove when AlexCC is gone
+        champion.AbilityUIManager.SetAbilitySprite(AbilityCategory.OtherCharacterAbility, OtherCharacterAbilities[0].ID, OtherCharacterAbilities[0].AbilitySprite);
         SetAbilitySpritesForAbilitiesFromAbilityCategory(SummonerAbilities, AbilityCategory.SummonerAbility);
 
         foreach (Ability characterAbility in CharacterAbilities)
