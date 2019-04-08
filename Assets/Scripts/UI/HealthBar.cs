@@ -153,10 +153,10 @@ public class HealthBar : MonoBehaviour
             Destroy(resourceImage.gameObject);
         }
 
-        if (character is Champion)//TODO: units will all have levels
+        if (character is Champion champion)//TODO: units will all have levels
         {
-            ((Champion)character).LevelManager.OnLevelUp += OnLevelUp;
-            OnLevelUp(((Champion)character).LevelManager.Level == 0 ? 1 : ((Champion)character).LevelManager.Level);
+            champion.LevelManager.OnLevelUp += OnLevelUp;
+            OnLevelUp(champion.LevelManager.Level == 0 ? 1 : champion.LevelManager.Level);
         }
         else
         {

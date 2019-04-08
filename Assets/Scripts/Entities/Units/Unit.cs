@@ -57,14 +57,13 @@ public abstract class Unit : Entity
     {
         foreach (Team affectedTeam in affectedTeams)
         {
-            if (affectedTeam == Team)
+            if (affectedTeam != Team) continue;
+            
+            foreach (Type affectedUnitType in affectedUnitTypes)
             {
-                foreach (Type affectedUnitType in affectedUnitTypes)
+                if (IsSameTypeOrSubtype(GetType(), affectedUnitType))
                 {
-                    if (IsSameTypeOrSubtype(GetType(), affectedUnitType))
-                    {
-                        return true;
-                    }
+                    return true;
                 }
             }
         }

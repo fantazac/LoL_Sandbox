@@ -103,7 +103,7 @@ public class LucianBasicAttack : EmpoweredBasicAttack
 
     private void PassiveBasicAttackHit(Projectile basicAttackProjectile, Unit unitHit, bool isACriticalStrike, bool willMiss)
     {
-        if (!(unit.StatusManager.IsBlinded() || willMiss))
+        if (!unit.StatusManager.IsBlinded() && !willMiss)
         {
             iBasicAttackEmpoweringAbilityWithSelfEffect.ApplySelfEffect(unitHit);
             iBasicAttackEmpoweringAbility.OnEmpoweredBasicAttackHit(unitHit, isACriticalStrike);

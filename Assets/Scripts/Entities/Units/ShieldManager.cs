@@ -9,6 +9,7 @@ public class ShieldManager : MonoBehaviour
     private Shield magicShield;
 
     public delegate void OnShieldChangedHandler(ShieldType shieldType, float shieldValue);
+
     public event OnShieldChangedHandler OnShieldChanged;
 
     private void Start()
@@ -24,76 +25,61 @@ public class ShieldManager : MonoBehaviour
     {
         Shield shieldToChange = GetShield(shieldType);
         shieldToChange.AddNewShield(sourceAbilityBuff, shieldValue);
-        if (OnShieldChanged != null)
-        {
-            OnShieldChanged(shieldType, shieldToChange.GetTotal());
-        }
+        OnShieldChanged?.Invoke(shieldType, shieldToChange.GetTotal());
     }
 
     public void RemoveShield(ShieldType shieldType, AbilityBuff sourceAbilityBuff)
     {
         Shield shieldToChange = GetShield(shieldType);
         shieldToChange.RemoveShield(sourceAbilityBuff);
-        if (OnShieldChanged != null)
-        {
-            OnShieldChanged(shieldType, shieldToChange.GetTotal());
-        }
+        OnShieldChanged?.Invoke(shieldType, shieldToChange.GetTotal());
     }
 
     public void UpdateShield(ShieldType shieldType, AbilityBuff sourceAbilityBuff, float shieldChangeValue)
     {
         Shield shieldToChange = GetShield(shieldType);
         shieldToChange.UpdateShield(sourceAbilityBuff, shieldChangeValue);
-        if (OnShieldChanged != null)
-        {
-            OnShieldChanged(shieldType, shieldToChange.GetTotal());
-        }
+        OnShieldChanged?.Invoke(shieldType, shieldToChange.GetTotal());
     }
 
     private Shield GetShield(ShieldType shieldType)
     {
-        if (shieldType == ShieldType.NORMAL)
+        switch (shieldType)
         {
-            return shield;
-        }
-        else if (shieldType == ShieldType.MAGIC)
-        {
-            return magicShield;
-        }
-        else
-        {
-            return physicalShield;
+            case ShieldType.NORMAL:
+                return shield;
+            case ShieldType.MAGIC:
+                return magicShield;
+            default:
+                return physicalShield;
         }
     }
 
     public float DamageShield(ShieldType shieldType, float damage)
     {
         float remainingDamage = damage;
-        if (shieldType == ShieldType.MAGIC && magicShield.GetTotal() > 0)
+        switch (shieldType)
         {
-            remainingDamage = magicShield.DamageShield(remainingDamage);
-            if (OnShieldChanged != null)
+            case ShieldType.MAGIC when magicShield.GetTotal() > 0:
             {
-                OnShieldChanged(shieldType, magicShield.GetTotal());
+                remainingDamage = magicShield.DamageShield(remainingDamage);
+                OnShieldChanged?.Invoke(shieldType, magicShield.GetTotal());
+
+                break;
             }
-        }
-        else if (shieldType == ShieldType.PHYSICAL && physicalShield.GetTotal() > 0)
-        {
-            remainingDamage = physicalShield.DamageShield(remainingDamage);
-            if (OnShieldChanged != null)
+            case ShieldType.PHYSICAL when physicalShield.GetTotal() > 0:
             {
-                OnShieldChanged(shieldType, physicalShield.GetTotal());
+                remainingDamage = physicalShield.DamageShield(remainingDamage);
+                OnShieldChanged?.Invoke(shieldType, physicalShield.GetTotal());
+
+                break;
             }
         }
 
-        if (remainingDamage > 0 && shield.GetTotal() > 0)
-        {
-            remainingDamage = shield.DamageShield(remainingDamage);
-            if (OnShieldChanged != null)
-            {
-                OnShieldChanged(ShieldType.NORMAL, shield.GetTotal());
-            }
-        }
+        if (remainingDamage <= 0 || shield.GetTotal() <= 0) return remainingDamage;
+
+        remainingDamage = shield.DamageShield(remainingDamage);
+        OnShieldChanged?.Invoke(ShieldType.NORMAL, shield.GetTotal());
 
         return remainingDamage;
     }

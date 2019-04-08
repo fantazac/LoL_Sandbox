@@ -27,20 +27,14 @@ public abstract class StatusManager : MonoBehaviour
     {
         StatusEffectsOnCharacter.Add(statusEffect);
         ApplyStatusEffectToUnit(statusEffect);
-        if (OnStatusEffectAdded != null)
-        {
-            OnStatusEffectAdded(statusEffect);
-        }
+        OnStatusEffectAdded?.Invoke(statusEffect);
     }
 
     public void RemoveStatusEffect(StatusEffect statusEffect)
     {
         StatusEffectsOnCharacter.Remove(statusEffect);
         RemoveStatusEffectFromUnit(statusEffect);
-        if (OnStatusEffectRemoved != null)
-        {
-            OnStatusEffectRemoved(statusEffect);
-        }
+        OnStatusEffectRemoved?.Invoke(statusEffect);
     }
 
     private void ApplyStatusEffectToUnit(StatusEffect statusEffect)
@@ -99,7 +93,7 @@ public abstract class StatusManager : MonoBehaviour
             case StatusEffect.KNOCKDOWN:
                 OnKnockDown();
                 break;
-            case StatusEffect.NEARSIGHT://TODO
+            case StatusEffect.NEARSIGHT: //TODO
                 break;
             case StatusEffect.PACIFY:
             case StatusEffect.POLYMORPH:
@@ -112,7 +106,8 @@ public abstract class StatusManager : MonoBehaviour
                 SetCannotUseMovementAbilities(count);
                 OnRoot();
                 break;
-            case StatusEffect.SILENCE://TODO: You continue to walk towards the target position if you casted a spell, ground or unit, and you do nothing while you're silenced if you stop moving
+            case StatusEffect.SILENCE
+                : //TODO: You continue to walk towards the target position if you casted a spell, ground or unit, and you do nothing while you're silenced if you stop moving
                 SetCannotUseBasicAbilities(count);
                 OnSilence();
                 break;
@@ -185,7 +180,7 @@ public abstract class StatusManager : MonoBehaviour
             case StatusEffect.GROUND:
                 SetCannotUseMovementAbilities(count);
                 break;
-            case StatusEffect.NEARSIGHT://TODO
+            case StatusEffect.NEARSIGHT: //TODO
                 break;
             case StatusEffect.ROOT:
                 SetCannotUseMovement(count);
@@ -271,17 +266,17 @@ public abstract class StatusManager : MonoBehaviour
     public bool CanReduceCrowdControlDuration(StatusEffect buffStatusEffect)
     {
         return buffStatusEffect != StatusEffect.NONE &&
-            buffStatusEffect != StatusEffect.SUPPRESSION &&
-            buffStatusEffect != StatusEffect.STASIS &&
-            !IsAnAirborneEffect(buffStatusEffect);
+               buffStatusEffect != StatusEffect.SUPPRESSION &&
+               buffStatusEffect != StatusEffect.STASIS &&
+               !IsAnAirborneEffect(buffStatusEffect);
     }
 
     public bool IsAnAirborneEffect(StatusEffect buffStatusEffect)
     {
         return buffStatusEffect == StatusEffect.KNOCKASIDE ||
-            buffStatusEffect == StatusEffect.KNOCKBACK ||
-            buffStatusEffect == StatusEffect.KNOCKUP ||
-            buffStatusEffect == StatusEffect.PULL ||
-            buffStatusEffect == StatusEffect.SUSPENSION;
+               buffStatusEffect == StatusEffect.KNOCKBACK ||
+               buffStatusEffect == StatusEffect.KNOCKUP ||
+               buffStatusEffect == StatusEffect.PULL ||
+               buffStatusEffect == StatusEffect.SUSPENSION;
     }
 }

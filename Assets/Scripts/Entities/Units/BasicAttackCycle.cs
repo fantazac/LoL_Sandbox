@@ -22,18 +22,18 @@ public class BasicAttackCycle : MonoBehaviour
     public void LockBasicAttack()
     {
         AttackSpeedCycleIsReady = false;
-        basicAttackCycleCoroutine = CompleteBasicAttackCycle();//Should not have to cancel current coroutine since you cannot basic attack while it's active
+        basicAttackCycleCoroutine = CompleteBasicAttackCycle(); //Should not have to cancel current coroutine since you cannot basic attack while it's active
         StartCoroutine(basicAttackCycleCoroutine);
     }
 
     public void ResetBasicAttack()
     {
         AttackSpeedCycleIsReady = true;
-        if (basicAttackCycleCoroutine != null)
-        {
-            StopCoroutine(basicAttackCycleCoroutine);
-            basicAttackCycleCoroutine = null;
-        }
+
+        if (basicAttackCycleCoroutine == null) return;
+
+        StopCoroutine(basicAttackCycleCoroutine);
+        basicAttackCycleCoroutine = null;
     }
 
     private IEnumerator CompleteBasicAttackCycle()

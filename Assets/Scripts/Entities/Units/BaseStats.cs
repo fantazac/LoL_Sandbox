@@ -8,7 +8,7 @@
     public float BaseMovementSpeed { get; protected set; }
     public float BaseAttackRange { get; protected set; }
 
-    public BaseStats()
+    protected BaseStats()
     {
         SetBaseStats();
     }

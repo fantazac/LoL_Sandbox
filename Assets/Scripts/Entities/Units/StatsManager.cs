@@ -2,7 +2,7 @@
 
 public abstract class StatsManager : MonoBehaviour
 {
-    protected Unit unit;
+    private Unit unit;
 
     public Health Health { get; protected set; }
     public Resource Resource { get; protected set; } //mana, energy, ...
@@ -40,7 +40,7 @@ public abstract class StatsManager : MonoBehaviour
 
     public GrievousWounds GrievousWounds { get; protected set; }
 
-    protected virtual void Awake()
+    protected void Awake()
     {
         unit = GetComponent<Unit>();
 
@@ -101,27 +101,26 @@ public abstract class StatsManager : MonoBehaviour
         else if (damage > 0)
         {
             float remainingDamage = damage;
-            if (damageType == DamageType.MAGIC)
+            switch (damageType)
             {
-                remainingDamage = unit.ShieldManager.DamageShield(ShieldType.MAGIC, remainingDamage);
-            }
-            else if (damageType == DamageType.PHYSICAL)
-            {
-                remainingDamage = unit.ShieldManager.DamageShield(ShieldType.PHYSICAL, remainingDamage);
-            }
-            else
-            {
-                remainingDamage = unit.ShieldManager.DamageShield(ShieldType.NORMAL, remainingDamage);
+                case DamageType.MAGIC:
+                    remainingDamage = unit.ShieldManager.DamageShield(ShieldType.MAGIC, remainingDamage);
+                    break;
+                case DamageType.PHYSICAL:
+                    remainingDamage = unit.ShieldManager.DamageShield(ShieldType.PHYSICAL, remainingDamage);
+                    break;
+                default:
+                    remainingDamage = unit.ShieldManager.DamageShield(ShieldType.NORMAL, remainingDamage);
+                    break;
             }
 
-            if (remainingDamage > 0)
+            if (remainingDamage <= 0) return;
+
+            bool wasAliveBeforeTakingDamage = !Health.IsDead();
+            Health.Reduce(remainingDamage);
+            if (Health.IsDead() && wasAliveBeforeTakingDamage)
             {
-                bool wasAliveBeforeTakingDamage = !Health.IsDead();
-                Health.Reduce(remainingDamage);
-                if (Health.IsDead() && wasAliveBeforeTakingDamage)
-                {
-                    damageSource.KilledUnit(unit);
-                }
+                damageSource.KilledUnit(unit);
             }
         }
     }

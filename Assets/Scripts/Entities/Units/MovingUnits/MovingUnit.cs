@@ -1,6 +1,6 @@
 ﻿public abstract class MovingUnit : Unit
 {
-    public MovementManager MovementManager { get { return GetMovementManager(); } }
+    public MovementManager MovementManager => GetMovementManager();
 
     protected abstract MovementManager GetMovementManager();
 }

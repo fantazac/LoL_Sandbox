@@ -21,9 +21,6 @@ public abstract class DamageSource : MonoBehaviour
 
     public void KilledUnit(Unit killedUnit)
     {
-        if (OnKilledUnit != null)
-        {
-            OnKilledUnit(this, killedUnit);
-        }
+        OnKilledUnit?.Invoke(this, killedUnit);
     }
 }

@@ -3,27 +3,28 @@ using UnityEngine;
 
 public class DisplacementManager : MonoBehaviour
 {
-    private Character unit;//TODO: Unit
+    private Unit unit;
 
     private IEnumerator currentDisplacementCoroutine;
     private AbilityBuff sourceAbilityBuffForCurrentDisplacement;
 
-    public bool IsBeingDisplaced { get { return currentDisplacementCoroutine != null; } }
+    public bool IsBeingDisplaced => currentDisplacementCoroutine != null;
 
     public delegate void OnDisplacementFinishedHandler();
     public event OnDisplacementFinishedHandler OnDisplacementFinished;
 
     private void Start()
     {
-        unit = GetComponent<Character>();
+        unit = GetComponent<Unit>();
     }
 
-    public void SetupDisplacement(Vector3 destination, float displacementSpeed, AbilityBuff sourceAbilityBuff = null, bool isAKnockup = false)
+    public void SetupDisplacement(Vector3 destination, float displacementSpeed, AbilityBuff sourceAbilityBuff = null, bool isAKnockUp = false)
     {
         StopCurrentDisplacement();
 
         destination += transform.position;
-        currentDisplacementCoroutine = isAKnockup ? Knockup(destination, displacementSpeed, sourceAbilityBuff) : Displacement(destination, displacementSpeed, sourceAbilityBuff);
+        currentDisplacementCoroutine =
+            isAKnockUp ? KnockUp(destination, displacementSpeed, sourceAbilityBuff) : Displacement(destination, displacementSpeed, sourceAbilityBuff);
         sourceAbilityBuffForCurrentDisplacement = sourceAbilityBuff;
         StartCoroutine(currentDisplacementCoroutine);
     }
@@ -31,17 +32,18 @@ public class DisplacementManager : MonoBehaviour
     public void StopCurrentDisplacement()
     {
         OnDisplacementFinished = null;
-        if (currentDisplacementCoroutine != null)
+
+        if (currentDisplacementCoroutine == null) return;
+
+        StopCoroutine(currentDisplacementCoroutine);
+        currentDisplacementCoroutine = null;
+        if (sourceAbilityBuffForCurrentDisplacement)
         {
-            StopCoroutine(currentDisplacementCoroutine);
-            currentDisplacementCoroutine = null;
-            if (sourceAbilityBuffForCurrentDisplacement)
-            {
-                sourceAbilityBuffForCurrentDisplacement.ConsumeBuff(unit);
-                sourceAbilityBuffForCurrentDisplacement = null;
-            }
-            unit.ModelObject.transform.position = transform.position;
+            sourceAbilityBuffForCurrentDisplacement.ConsumeBuff(unit);
+            sourceAbilityBuffForCurrentDisplacement = null;
         }
+
+        unit.ModelObject.transform.position = transform.position;
     }
 
     private IEnumerator Displacement(Vector3 destination, float displacementSpeed, AbilityBuff sourceAbilityBuff)
@@ -50,27 +52,24 @@ public class DisplacementManager : MonoBehaviour
         {
             transform.position = Vector3.MoveTowards(transform.position, destination, Time.deltaTime * displacementSpeed);
 
-            if (unit is Champion)//TODO
+            if (unit is Champion champion) //TODO
             {
-                ((Champion)unit).ChampionMovementManager.NotifyChampionMoved();
+                champion.ChampionMovementManager.NotifyChampionMoved();
             }
 
             yield return null;
         }
 
-        if (OnDisplacementFinished != null)
-        {
-            OnDisplacementFinished();
-        }
+        OnDisplacementFinished?.Invoke();
         StopCurrentDisplacement();
     }
 
-    private IEnumerator Knockup(Vector3 destination, float displacementSpeed, AbilityBuff sourceAbilityBuff)
+    private IEnumerator KnockUp(Vector3 destination, float displacementSpeed, AbilityBuff sourceAbilityBuff)
     {
         Vector3 initialPosition = transform.position;
         Transform modelTransform = unit.ModelObject.transform;
 
-        while (modelTransform.position != destination)//up
+        while (modelTransform.position != destination) //up
         {
             modelTransform.position = Vector3.MoveTowards(modelTransform.position, destination, Time.deltaTime * displacementSpeed);
 
@@ -79,7 +78,7 @@ public class DisplacementManager : MonoBehaviour
 
         destination = initialPosition;
 
-        while (modelTransform.position != destination)//down
+        while (modelTransform.position != destination) //down
         {
             modelTransform.position = Vector3.MoveTowards(modelTransform.position, destination, Time.deltaTime * displacementSpeed);
 
@@ -88,10 +87,7 @@ public class DisplacementManager : MonoBehaviour
 
         modelTransform.position = initialPosition;
 
-        if (OnDisplacementFinished != null)
-        {
-            OnDisplacementFinished();
-        }
+        OnDisplacementFinished?.Invoke();
         StopCurrentDisplacement();
     }
 }

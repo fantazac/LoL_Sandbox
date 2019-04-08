@@ -3,8 +3,8 @@ using UnityEngine;
 
 public class BuffManager : MonoBehaviour
 {
-    private List<Buff> buffs;
-    private List<Buff> debuffs;
+    private readonly List<Buff> buffs;
+    private readonly List<Buff> debuffs;
 
     private BuffUIManager buffUIManager;
     private BuffUIManager debuffUIManager;
@@ -26,6 +26,7 @@ public class BuffManager : MonoBehaviour
                 buffUIManager.SetNewBuff(buff, buff.SourceAbilityBuff.GetBuffSprite());
             }
         }
+
         if (debuffUIManager)
         {
             foreach (Buff debuff in debuffs)
@@ -42,6 +43,7 @@ public class BuffManager : MonoBehaviour
         {
             UpdateBuff(buffs[i], buffs, i, deltaTime, buffUIManager);
         }
+
         for (int j = debuffs.Count - 1; j >= 0; j--)
         {
             UpdateBuff(debuffs[j], debuffs, j, deltaTime, debuffUIManager);
@@ -50,7 +52,7 @@ public class BuffManager : MonoBehaviour
 
     private void UpdateBuff(Buff buff, List<Buff> buffsList, int position, float deltaTime, BuffUIManager selectedUIManager)
     {
-        bool hasBuffUIManager = selectedUIManager != null;
+        bool hasBuffUIManager = selectedUIManager;
         if (buff.HasDuration)
         {
             buff.ReduceDurationRemaining(deltaTime);
@@ -66,22 +68,27 @@ public class BuffManager : MonoBehaviour
                 }
             }
         }
+
         if (buff.HasStacksToUpdate)
         {
             if (hasBuffUIManager)
             {
                 selectedUIManager.UpdateBuffStacks(buff, buff.CurrentStacks);
             }
+
             buff.StacksWereUpdated();
         }
+
         if (buff.HasValueToSet)
         {
             if (hasBuffUIManager)
             {
                 selectedUIManager.UpdateBuffValue(buff, (int)buff.BuffValue);
             }
+
             buff.ValueWasSet();
         }
+
         if (buff.HasBeenConsumed)
         {
             ConsumeBuff(buff, buffsList, position, selectedUIManager);
@@ -101,12 +108,13 @@ public class BuffManager : MonoBehaviour
         }
     }
 
-    public void ConsumeBuff(Buff buff, List<Buff> buffsList, int position, BuffUIManager selectedUIManager)
+    private void ConsumeBuff(Buff buff, List<Buff> buffsList, int position, BuffUIManager selectedUIManager)
     {
         if (selectedUIManager)
         {
             selectedUIManager.ConsumeBuff(buff);
         }
+
         buff.RemoveBuff();
         buffsList.RemoveAt(position);
     }
@@ -135,66 +143,52 @@ public class BuffManager : MonoBehaviour
 
     public Buff GetBuff(AbilityBuff sourceAbilityBuff)
     {
-        Buff buff = null;
-
-        foreach (Buff activeBuff in buffs)
-        {
-            if (activeBuff.SourceAbilityBuff == sourceAbilityBuff)
-            {
-                buff = activeBuff;
-                break;
-            }
-        }
-
-        return buff;
+        return GetBuffOrDebuff(sourceAbilityBuff, buffs);
     }
 
     public Buff GetDebuff(AbilityBuff sourceAbilityBuff)
     {
-        Buff debuff = null;
+        return GetBuffOrDebuff(sourceAbilityBuff, debuffs);
+    }
 
-        foreach (Buff activeDebuff in debuffs)
+    private Buff GetBuffOrDebuff(AbilityBuff sourceAbilityBuff, List<Buff> buffsOrDebuffs)
+    {
+        Buff buffOrDebuff = null;
+
+        foreach (Buff activeBuffOrDebuff in buffsOrDebuffs)
         {
-            if (activeDebuff.SourceAbilityBuff == sourceAbilityBuff)
-            {
-                debuff = activeDebuff;
-                break;
-            }
+            if (activeBuffOrDebuff.SourceAbilityBuff != sourceAbilityBuff) continue;
+
+            buffOrDebuff = activeBuffOrDebuff;
+            break;
         }
 
-        return debuff;
+        return buffOrDebuff;
     }
 
     public Buff GetBuffOfSameType(AbilityBuff sourceAbilityBuff)
     {
-        Buff buff = null;
-
-        foreach (Buff activeBuff in buffs)
-        {
-            if (activeBuff.SourceAbilityBuff.GetType() == sourceAbilityBuff.GetType())
-            {
-                buff = activeBuff;
-                break;
-            }
-        }
-
-        return buff;
+        return GetBuffOrDebuffOfSameType(sourceAbilityBuff, buffs);
     }
 
     public Buff GetDebuffOfSameType(AbilityBuff sourceAbilityBuff)
     {
-        Buff debuff = null;
+        return GetBuffOrDebuffOfSameType(sourceAbilityBuff, debuffs);
+    }
 
-        foreach (Buff activeDebuff in debuffs)
+    private Buff GetBuffOrDebuffOfSameType(AbilityBuff sourceAbilityBuff, List<Buff> buffsOrDebuffs)
+    {
+        Buff buffOrDebuff = null;
+
+        foreach (Buff activeBuffOrDebuff in buffsOrDebuffs)
         {
-            if (activeDebuff.SourceAbilityBuff.GetType() == sourceAbilityBuff.GetType())
-            {
-                debuff = activeDebuff;
-                break;
-            }
+            if (activeBuffOrDebuff.SourceAbilityBuff.GetType() != sourceAbilityBuff.GetType()) continue;
+
+            buffOrDebuff = activeBuffOrDebuff;
+            break;
         }
 
-        return debuff;
+        return buffOrDebuff;
     }
 
     public bool IsAffectedByBuff(AbilityBuff sourceAbilityBuff)

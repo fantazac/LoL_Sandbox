@@ -17,17 +17,11 @@ public class EffectSourceManager : MonoBehaviour
 
     public void UnitHitByAbility(Ability ability)
     {
-        if(OnUnitHitByAbility != null)
-        {
-            OnUnitHitByAbility(unit, ability);
-        }
+        OnUnitHitByAbility?.Invoke(unit, ability);
     }
 
     public void UnitHitByBasicAttack(Unit sourceUnit)
     {
-        if (OnUnitHitByBasicAttack != null)
-        {
-            OnUnitHitByBasicAttack(unit, sourceUnit);
-        }
+        OnUnitHitByBasicAttack?.Invoke(unit, sourceUnit);
     }
 }

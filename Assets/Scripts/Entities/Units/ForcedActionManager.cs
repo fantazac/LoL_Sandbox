@@ -13,15 +13,15 @@ public class ForcedActionManager : MonoBehaviour
     private StatusEffect currentStatusEffect;
     private Unit caster;
 
-    public bool IsBeingForced { get { return currentStatusEffect != StatusEffect.NONE; } }
+    public bool IsBeingForced => currentStatusEffect != StatusEffect.NONE;
 
     private void Start()
     {
         unit = GetComponent<Unit>();
-        if (unit is Champion)//TODO: all units will have an orientation manager
+        if (unit is Champion c) //TODO: all units will have an orientation manager
         {
-            champion = (Champion)unit;
-            rotationSpeed = ((Champion)unit).OrientationManager.RotationSpeed;
+            champion = c;
+            rotationSpeed = c.OrientationManager.RotationSpeed;
         }
         else
         {
@@ -61,30 +61,32 @@ public class ForcedActionManager : MonoBehaviour
 
     public void StopCurrentForcedAction(AbilityBuff sourceAbilityBuff)
     {
-        if (sourceAbilityBuffForForcedAction == sourceAbilityBuff)//This is only useful when an AbilityBuff is trying to consume itself, as calls from this class will always be true
+        if (sourceAbilityBuffForForcedAction != sourceAbilityBuff) return;
+
+        if (currentForcedActionCoroutine != null)
         {
-            if (currentForcedActionCoroutine != null)
-            {
-                StopCoroutine(currentForcedActionCoroutine);
-                currentForcedActionCoroutine = null;
-            }
-            StatusEffect tempStatusEffect = currentStatusEffect;
-            currentStatusEffect = StatusEffect.NONE;
-            if (tempStatusEffect == StatusEffect.CHARM)
-            {
+            StopCoroutine(currentForcedActionCoroutine);
+            currentForcedActionCoroutine = null;
+        }
+
+        StatusEffect tempStatusEffect = currentStatusEffect;
+        currentStatusEffect = StatusEffect.NONE;
+        switch (tempStatusEffect)
+        {
+            case StatusEffect.CHARM:
                 currentForcedActionCoroutine = FinishCharm();
                 StartCoroutine(currentForcedActionCoroutine);
-            }
-            else if (tempStatusEffect == StatusEffect.FLEE || tempStatusEffect == StatusEffect.FEAR)
-            {
+                break;
+            case StatusEffect.FLEE:
+            case StatusEffect.FEAR:
                 FinishFearAndFlee();
-            }
-            else if (tempStatusEffect == StatusEffect.TAUNT)
-            {
+                break;
+            case StatusEffect.TAUNT:
                 FinishTaunt();
-            }
-            sourceAbilityBuffForForcedAction = null;
+                break;
         }
+
+        sourceAbilityBuffForForcedAction = null;
     }
 
     private IEnumerator Charm()
@@ -101,7 +103,8 @@ public class ForcedActionManager : MonoBehaviour
                     champion.ChampionMovementManager.NotifyChampionMoved();
                 }
 
-                transform.rotation = Quaternion.LookRotation(Vector3.RotateTowards(transform.forward, casterTransform.position - transform.position, Time.deltaTime * rotationSpeed, 0));
+                transform.rotation =
+                    Quaternion.LookRotation(Vector3.RotateTowards(transform.forward, casterTransform.position - transform.position, Time.deltaTime * rotationSpeed, 0));
             }
 
             yield return null;
@@ -143,7 +146,7 @@ public class ForcedActionManager : MonoBehaviour
         }
     }
 
-    private IEnumerator Fear()//TODO: Same as flee but every X seconds (like 0.5-1) you move towards RANDOM_POSITION
+    private IEnumerator Fear() //TODO: Same as flee but every X seconds (like 0.5-1) you move towards RANDOM_POSITION
     {
         /*while (currentSourceAbilityBuffForForcedAction == sourceAbilityBuff)
         {
@@ -162,7 +165,7 @@ public class ForcedActionManager : MonoBehaviour
             yield return null;
         }*/
 
-        yield return null;//To remove
+        yield return null; //To remove
     }
 
     private IEnumerator Flee()
@@ -179,7 +182,8 @@ public class ForcedActionManager : MonoBehaviour
                     champion.ChampionMovementManager.NotifyChampionMoved();
                 }
 
-                transform.rotation = Quaternion.LookRotation(Vector3.RotateTowards(transform.forward, -(casterTransform.position - transform.position), Time.deltaTime * rotationSpeed, 0));
+                transform.rotation =
+                    Quaternion.LookRotation(Vector3.RotateTowards(transform.forward, -(casterTransform.position - transform.position), Time.deltaTime * rotationSpeed, 0));
             }
 
             yield return null;
@@ -217,7 +221,8 @@ public class ForcedActionManager : MonoBehaviour
 
                 if (unit.BasicAttack.BasicAttackCycle.AttackSpeedCycleIsReady)
                 {
-                    transform.rotation = Quaternion.LookRotation(Vector3.RotateTowards(transform.forward, casterTransform.position - transform.position, Time.deltaTime * rotationSpeed, 0));
+                    transform.rotation =
+                        Quaternion.LookRotation(Vector3.RotateTowards(transform.forward, casterTransform.position - transform.position, Time.deltaTime * rotationSpeed, 0));
                 }
             }
 
