@@ -113,10 +113,10 @@ public abstract class StatusManager : MonoBehaviour
                 break;
             case StatusEffect.STASIS:
             case StatusEffect.SUPPRESSION:
+                SetCannotUseSummonerAbilities(count);
                 SetCannotUseBasicAbilities(count);
                 SetCannotUseBasicAttacks(count);
                 SetCannotUseMovement(count);
-                SetCannotUseSummonerAbilities(count);
                 OnStun();
                 break;
             case StatusEffect.SUSPENSION:
@@ -150,10 +150,10 @@ public abstract class StatusManager : MonoBehaviour
                 break;
             case StatusEffect.STASIS:
             case StatusEffect.SUPPRESSION:
+                SetCannotUseSummonerAbilities(count);
                 SetCannotUseBasicAbilities(count);
                 SetCannotUseBasicAttacks(count);
                 SetCannotUseMovement(count);
-                SetCannotUseSummonerAbilities(count);
                 break;
             case StatusEffect.PACIFY:
             case StatusEffect.POLYMORPH:
