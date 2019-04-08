@@ -1,6 +1,6 @@
 ﻿public class PercentBonusOnlyStat : Stat
 {
-    public override void UpdateTotal()
+    protected override void UpdateTotal()
     {
         total = percentBonus * 0.01f;
     }

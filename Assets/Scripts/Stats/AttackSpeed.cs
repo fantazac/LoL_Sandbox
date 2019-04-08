@@ -2,7 +2,7 @@
 
 public class AttackSpeed : MultiplicativeBonusStat
 {
-    private static float ATTACK_SPEED_CAP = 2.5f;
+    private const float ATTACK_SPEED_CAP = 2.5f;
 
     private BasicAttack basicAttack;
 
@@ -11,14 +11,13 @@ public class AttackSpeed : MultiplicativeBonusStat
 
     public void SetBasicAttack(BasicAttack basicAttack)
     {
-        if (basicAttack)
-        {
-            this.basicAttack = basicAttack;
-            basicAttack.ChangeAttackSpeedCycleDuration(total, false);
-        }
+        if (!basicAttack) return;
+        
+        this.basicAttack = basicAttack;
+        basicAttack.ChangeAttackSpeedCycleDuration(total, false);
     }
 
-    public override void UpdateTotal()
+    protected override void UpdateTotal()
     {
         float oldTotal = total;
         total = Mathf.Clamp(initialBaseValue * (1 + (percentBonus * 0.01f)) * (1 - (percentMalus * 0.01f)) * (1 + (multiplicativePercentBonus * 0.01f)), 0, ATTACK_SPEED_CAP);
@@ -34,6 +33,7 @@ public class AttackSpeed : MultiplicativeBonusStat
         {
             return 0;
         }
+        
         return (total / initialBaseValue) - 1;
     }
 
@@ -41,7 +41,7 @@ public class AttackSpeed : MultiplicativeBonusStat
     {
         if (level > 1)
         {
-            AddPercentBonus(calculateStatTotalLevelBonus(level));
+            AddPercentBonus(CalculateStatTotalLevelBonus(level));
         }
         else
         {
@@ -49,7 +49,7 @@ public class AttackSpeed : MultiplicativeBonusStat
         }
     }
 
-    protected override float calculateStatTotalLevelBonus(int level)
+    protected override float CalculateStatTotalLevelBonus(int level)
     {
         return perLevelValue * (0.65f + 0.035f * level);
     }

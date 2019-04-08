@@ -3,16 +3,15 @@ using System.Collections;
 
 public class NetworkManager : MonoBehaviour
 {
-    private float loadingPlayersTime;
-    private WaitForSeconds delayLoadingPlayers;
+    private readonly WaitForSeconds delayLoadingPlayers;
 
     public delegate void OnConnectedToServerHandler();
+
     public event OnConnectedToServerHandler OnConnectedToServer;
 
     private NetworkManager()
     {
-        loadingPlayersTime = 1;
-        delayLoadingPlayers = new WaitForSeconds(loadingPlayersTime);
+        delayLoadingPlayers = new WaitForSeconds(1);
     }
 
     private void Start()
@@ -49,7 +48,7 @@ public class NetworkManager : MonoBehaviour
         }
         else
         {
-            OnConnectedToServer();
+            OnConnectedToServer?.Invoke();
         }
     }
 
@@ -64,6 +63,6 @@ public class NetworkManager : MonoBehaviour
 
         yield return delayLoadingPlayers;
 
-        OnConnectedToServer();
+        OnConnectedToServer?.Invoke();
     }
 }

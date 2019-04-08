@@ -1,7 +1,7 @@
 ﻿public abstract class Stat
 {
-    private static float BASE_PERCENT_VALUE = 0.7025f;
-    private static float BASE_PERCENT_PER_LEVEL_VALUE = 0.0175f;
+    private const float BASE_PERCENT_VALUE = 0.7025f;
+    private const float BASE_PERCENT_PER_LEVEL_VALUE = 0.0175f;
 
     protected readonly float initialBaseValue;
     protected readonly float perLevelValue;
@@ -13,24 +13,25 @@
     protected float flatMalus;
     protected float percentMalus;
 
-    public Stat() : this(0, 0) { }
-    public Stat(float initialBaseValue) : this(initialBaseValue, 0) { }
-    public Stat(float initialBaseValue, float perLevelValue)
+    protected Stat() : this(0, 0) { }
+    protected Stat(float initialBaseValue) : this(initialBaseValue, 0) { }
+
+    protected Stat(float initialBaseValue, float perLevelValue)
     {
         this.initialBaseValue = initialBaseValue;
         this.perLevelValue = perLevelValue;
         OnLevelUp(1);
     }
 
-    public abstract void UpdateTotal();
+    protected abstract void UpdateTotal();
 
     public virtual void OnLevelUp(int level)
     {
-        currentBaseValue = initialBaseValue + calculateStatTotalLevelBonus(level);
+        currentBaseValue = initialBaseValue + CalculateStatTotalLevelBonus(level);
         UpdateTotal();
     }
 
-    protected virtual float calculateStatTotalLevelBonus(int level)
+    protected virtual float CalculateStatTotalLevelBonus(int level)
     {
         return perLevelValue * (level - 1) * (BASE_PERCENT_VALUE + BASE_PERCENT_PER_LEVEL_VALUE * (level - 1));
     }

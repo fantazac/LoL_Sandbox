@@ -1,6 +1,6 @@
 ﻿public class ResistancePenetrationFlat : Stat
 {
-    public override void UpdateTotal()
+    protected override void UpdateTotal()
     {
         total = flatBonus;
     }

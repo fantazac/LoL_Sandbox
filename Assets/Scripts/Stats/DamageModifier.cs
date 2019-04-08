@@ -1,13 +1,13 @@
 ﻿public class DamageModifier : Stat
 {
-    public DamageModifier() : base()
+    public DamageModifier()
     {
-        percentBonus = 100f;
-        percentMalus = 100f;
+        percentBonus = 100;
+        percentMalus = 100;
         UpdateTotal();
     }
 
-    public override void UpdateTotal()
+    protected override void UpdateTotal()
     {
         total = percentBonus * percentMalus * 0.0001f;
     }

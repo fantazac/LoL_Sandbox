@@ -21,23 +21,14 @@ public class Resource : Stat
     public void Reduce(float amount)
     {
         currentValue = Mathf.Clamp(currentValue - amount, 0, total);
-        if (OnResourceReduced != null)
-        {
-            OnResourceReduced();
-        }
-        if (OnCurrentResourceChanged != null)
-        {
-            OnCurrentResourceChanged(currentValue);
-        }
+        OnResourceReduced?.Invoke();
+        OnCurrentResourceChanged?.Invoke(currentValue);
     }
 
     public void Restore(float amount)
     {
         currentValue = Mathf.Clamp(currentValue + amount, 0, total);
-        if (OnCurrentResourceChanged != null)
-        {
-            OnCurrentResourceChanged(currentValue);
-        }
+        OnCurrentResourceChanged?.Invoke(currentValue);
     }
 
     public float GetPercentLeft()
@@ -45,7 +36,7 @@ public class Resource : Stat
         return currentValue / total;
     }
 
-    public override void UpdateTotal()
+    protected override void UpdateTotal()
     {
         float previousTotal = total;
 
@@ -54,9 +45,6 @@ public class Resource : Stat
         float difference = total - previousTotal;
         currentValue = Mathf.Clamp(currentValue + (difference > 0 ? difference : 0), 0, total);
 
-        if (OnCurrentResourceChanged != null)
-        {
-            OnCurrentResourceChanged(currentValue);
-        }
+        OnCurrentResourceChanged?.Invoke(currentValue);
     }
 }

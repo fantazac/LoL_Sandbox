@@ -23,12 +23,12 @@ public class Old_Ezreal_R : DirectionTargetedProjectile
 
         range = (float)Range.GLOBAL;
         speed = 2000;
-        damage = 350;// 350/500/650
+        damage = 350; // 350/500/650
         damagePerLevel = 150;
-        bonusADScaling = 1;// 100%
-        totalAPScaling = 0.9f;// 90%
-        resourceCost = 100;// 100
-        baseCooldown = 120;// 120
+        bonusADScaling = 1; // 100%
+        totalAPScaling = 0.9f; // 90%
+        resourceCost = 100; // 100
+        baseCooldown = 120; // 120
         castTime = 1;
         delayCastTime = new WaitForSeconds(castTime);
 
@@ -70,16 +70,18 @@ public class Old_Ezreal_R : DirectionTargetedProjectile
 
     protected override void OnProjectileHit(Projectile projectile, Unit unitHit, bool isACriticalStrike, bool willMiss)
     {
-        float damage = GetAbilityDamage(unitHit) * currentDamageMultiplier;
-        DamageUnit(unitHit, damage);
+        float abilityDamage = GetAbilityDamage(unitHit) * currentDamageMultiplier;
+        DamageUnit(unitHit, abilityDamage);
         if (currentDamageMultiplier > DAMAGE_REDUCTION_CAP)
         {
             currentDamageMultiplier -= DAMAGE_REDUCTION_PER_TARGET_HIT;
         }
+
         if (effectType == AbilityEffectType.SINGLE_TARGET)
         {
             Destroy(projectile.gameObject);
         }
-        AbilityHit(unitHit, damage);
+
+        AbilityHit(unitHit, abilityDamage);
     }
 }

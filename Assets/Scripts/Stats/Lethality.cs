@@ -11,6 +11,6 @@
 
     public float GetCurrentValue()
     {
-        return total * (0.6f + ((0.4f * characterLevel) / 18));
+        return total * (0.6f + (0.4f * characterLevel) / 18);
     }
 }

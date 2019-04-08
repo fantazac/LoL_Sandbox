@@ -18,13 +18,13 @@ public class Old_Ezreal_W : DirectionTargetedProjectile
 
         range = 1000;
         speed = 1550;
-        damage = 70;// 70/115/160/205/250
+        damage = 70; // 70/115/160/205/250
         damagePerLevel = 45;
-        totalAPScaling = 0.8f;// 80%
-        resourceCost = 50;// 50/60/70/80/90
+        totalAPScaling = 0.8f; // 80%
+        resourceCost = 50; // 50/60/70/80/90
         resourceCostPerLevel = 10;
-        baseCooldown = 9;// 9
-        castTime = 0.2f;//VERIFY ACTUAL VALUE
+        baseCooldown = 9; // 9
+        castTime = 0.2f; //VERIFY ACTUAL VALUE
         delayCastTime = new WaitForSeconds(castTime);
 
         affectedByCooldownReduction = true;
@@ -66,16 +66,17 @@ public class Old_Ezreal_W : DirectionTargetedProjectile
 
     protected override void OnProjectileHit(Projectile projectile, Unit unitHit, bool isACriticalStrike, bool willMiss)
     {
-        float damage = 0;
+        float abilityDamage = 0;
         if (unitHit.Team == champion.Team)
         {
             AbilityBuffs[0].AddNewBuffToAffectedUnit(unitHit);
         }
         else
         {
-            damage = GetAbilityDamage(unitHit);
-            DamageUnit(unitHit, damage);
+            abilityDamage = GetAbilityDamage(unitHit);
+            DamageUnit(unitHit, abilityDamage);
         }
-        AbilityHit(unitHit, damage);
+
+        AbilityHit(unitHit, abilityDamage);
     }
 }

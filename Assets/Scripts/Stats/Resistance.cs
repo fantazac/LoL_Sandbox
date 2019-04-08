@@ -3,7 +3,7 @@
     public Resistance(float initialBaseValue) : base(initialBaseValue) { }
     public Resistance(float initialBaseValue, float perLevelValue) : base(initialBaseValue, perLevelValue) { }
 
-    public override void UpdateTotal()
+    protected override void UpdateTotal()
     {
         total = ((currentBaseValue + flatBonus) * (1 + (percentBonus * 0.01f)) - flatMalus) * (1 - (percentMalus * 0.01f));
     }

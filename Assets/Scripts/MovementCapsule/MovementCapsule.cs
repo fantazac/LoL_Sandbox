@@ -3,14 +3,19 @@ using System.Collections;
 
 public class MovementCapsule : MonoBehaviour
 {
-    private float downSpeed = 0.06f;
+    private readonly float downSpeed;
+
+    private MovementCapsule()
+    {
+        downSpeed = 0.06f;
+    }
 
     private void Start()
     {
-        StartCoroutine(MakeCapsuleDisapear());
+        StartCoroutine(MakeCapsuleDisappear());
     }
 
-    private IEnumerator MakeCapsuleDisapear()
+    private IEnumerator MakeCapsuleDisappear()
     {
         while (transform.position.y > -1)
         {

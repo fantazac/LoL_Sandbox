@@ -1,6 +1,6 @@
 ﻿public class AbilityPower : Stat
 {
-    public override void UpdateTotal()
+    protected override void UpdateTotal()
     {
         total = flatBonus * (1 + (percentBonus * 0.01f));
     }

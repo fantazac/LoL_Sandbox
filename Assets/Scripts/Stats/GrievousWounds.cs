@@ -2,9 +2,9 @@
 {
     private int grievousWoundsSourcesCount;
 
-    private static float HEALING_REDUCTION = 0.4f;
+    private const float HEALING_REDUCTION = 0.4f;
 
-    public override void UpdateTotal()
+    protected override void UpdateTotal()
     {
         total = grievousWoundsSourcesCount > 0 ? (1 - HEALING_REDUCTION) : 1;
     }

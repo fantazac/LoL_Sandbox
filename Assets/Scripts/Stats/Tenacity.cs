@@ -4,7 +4,7 @@
     private float consumablesTenacity;
     private float itemsTenacity;
 
-    public override void UpdateTotal()
+    protected override void UpdateTotal()
     {
         total = 1 - ((1 - (abilitiesTenacity * 0.01f)) * (1 - (consumablesTenacity * 0.01f)) * (1 - (itemsTenacity * 0.01f)) * (1 - (percentBonus * 0.01f))) - (percentMalus * 0.01f);
     }

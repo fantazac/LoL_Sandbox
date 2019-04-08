@@ -20,13 +20,13 @@
         foreach (Unit affectedUnit in unitsAffectedByBuff)
         {
             Buff buff = affectedUnit.BuffManager.GetBuff(this);
-            if (buff != null)
-            {
-                int currentStacks = buff.CurrentStacks;
-                affectedUnit.StatsManager.AttackSpeed.RemovePercentBonus(oldPercentValue * currentStacks);
-                affectedUnit.StatsManager.AttackSpeed.AddPercentBonus(newPercentValue * currentStacks);
-                buff.SetBuffValue(newPercentValue);
-            }
+
+            if (buff == null) continue;
+
+            int currentStacks = buff.CurrentStacks;
+            affectedUnit.StatsManager.AttackSpeed.RemovePercentBonus(oldPercentValue * currentStacks);
+            affectedUnit.StatsManager.AttackSpeed.AddPercentBonus(newPercentValue * currentStacks);
+            buff.SetBuffValue(newPercentValue);
         }
     }
 

@@ -1,8 +1,8 @@
 ﻿public class CriticalStrikeDamage : Stat
 {
-    public CriticalStrikeDamage() : base(2f) { }
+    public CriticalStrikeDamage() : base(2) { }
 
-    public override void UpdateTotal()
+    protected override void UpdateTotal()
     {
         total = currentBaseValue + percentBonus * 0.01f;
     }

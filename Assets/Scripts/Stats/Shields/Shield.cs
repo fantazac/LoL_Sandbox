@@ -2,12 +2,12 @@
 
 public class Shield
 {
-    private Unit unit;
+    private readonly Unit unit;
 
     private float totalShield;
 
-    private Dictionary<AbilityBuff, float> shieldSources;
-    private List<AbilityBuff> shieldSourcesInOrderOfCreation;
+    private readonly Dictionary<AbilityBuff, float> shieldSources;
+    private readonly List<AbilityBuff> shieldSourcesInOrderOfCreation;
 
     public Shield(Unit unit)
     {
@@ -37,6 +37,7 @@ public class Shield
         {
             RemoveShieldFromContainers(sourceAbilityBuff);
         }
+
         shieldSourcesInOrderOfCreation.Add(sourceAbilityBuff);
         shieldSources.Add(sourceAbilityBuff, shieldValue);
         UpdateTotal();
@@ -56,17 +57,16 @@ public class Shield
 
     public void UpdateShield(AbilityBuff sourceAbilityBuff, float shieldChangeValue)
     {
-        if (shieldSources.ContainsKey(sourceAbilityBuff))
+        if (!shieldSources.ContainsKey(sourceAbilityBuff)) return;
+
+        shieldSources[sourceAbilityBuff] += shieldChangeValue;
+        if (shieldSources[sourceAbilityBuff] <= 0)
         {
-            shieldSources[sourceAbilityBuff] += shieldChangeValue;
-            if (shieldSources[sourceAbilityBuff] <= 0)
-            {
-                sourceAbilityBuff.ConsumeBuff(unit);
-            }
-            else
-            {
-                UpdateTotal();
-            }
+            sourceAbilityBuff.ConsumeBuff(unit);
+        }
+        else
+        {
+            UpdateTotal();
         }
     }
 
@@ -91,6 +91,7 @@ public class Shield
                 remainingDamage = -shieldValue;
             }
         }
+
         UpdateTotal();
 
         return remainingDamage;
