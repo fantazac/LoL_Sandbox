@@ -3,22 +3,18 @@ using UnityEngine.UI;
 
 public class HealthUIManager : MonoBehaviour
 {
-    [SerializeField]
-    private Image healthImage;
-    [SerializeField]
-    private Image resourceImage;
-    [SerializeField]
-    private Text healthText;
-    [SerializeField]
-    private Text resourceText;
+    [SerializeField] private Image healthImage;
+    [SerializeField] private Image resourceImage;
+    [SerializeField] private Text healthText;
+    [SerializeField] private Text resourceText;
 
     private Unit unit;
 
     private int maxHealth;
     private int maxResource;
 
-    private string healthSelfPath;
-    private string healthEnemyPath;
+    private readonly string healthSelfPath;
+    private readonly string healthEnemyPath;
 
     private HealthUIManager()
     {
@@ -33,6 +29,7 @@ public class HealthUIManager : MonoBehaviour
         {
             unit.StatsManager.Resource.OnCurrentResourceChanged -= OnCurrentResourceChanged;
         }
+
         unit = null;
     }
 
@@ -44,14 +41,7 @@ public class HealthUIManager : MonoBehaviour
 
         maxHealth = Mathf.CeilToInt(unit.StatsManager.Health.GetTotal());
 
-        if (StaticObjects.Champion.Team == unit.Team)
-        {
-            healthImage.sprite = Resources.Load<Sprite>(healthSelfPath);
-        }
-        else
-        {
-            healthImage.sprite = Resources.Load<Sprite>(healthEnemyPath);
-        }
+        healthImage.sprite = Resources.Load<Sprite>(StaticObjects.Champion.Team == unit.Team ? healthSelfPath : healthEnemyPath);
 
         OnCurrentHealthChanged(unit.StatsManager.Health.GetCurrentValue());
 
@@ -63,17 +53,17 @@ public class HealthUIManager : MonoBehaviour
 
             maxResource = (int)unit.StatsManager.Resource.GetTotal();
 
-            if (unit.StatsManager.ResourceType == ResourceType.MANA)
+            switch (unit.StatsManager.ResourceType)
             {
-                resourceImage.color = new Color(57f / 255f, 170f / 255f, 222f / 255f);
-            }
-            else if (unit.StatsManager.ResourceType == ResourceType.ENERGY)
-            {
-                resourceImage.color = new Color(234f / 255f, 221f / 255f, 90f / 255f);
-            }
-            else if (unit.StatsManager.ResourceType == ResourceType.FURY)
-            {
-                resourceImage.color = new Color(244f / 255f, 4f / 255f, 13f / 255f);
+                case ResourceType.MANA:
+                    resourceImage.color = new Color(57f / 255f, 170f / 255f, 222f / 255f);
+                    break;
+                case ResourceType.ENERGY:
+                    resourceImage.color = new Color(234f / 255f, 221f / 255f, 90f / 255f);
+                    break;
+                case ResourceType.FURY:
+                    resourceImage.color = new Color(244f / 255f, 4f / 255f, 13f / 255f);
+                    break;
             }
 
             OnCurrentResourceChanged(unit.StatsManager.Resource.GetCurrentValue());

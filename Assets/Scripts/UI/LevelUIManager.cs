@@ -3,10 +3,8 @@ using UnityEngine.UI;
 
 public class LevelUIManager : MonoBehaviour
 {
-    [SerializeField]
-    private Image characterPortraitImage;
-    [SerializeField]
-    private Text levelText;
+    [SerializeField] private Image characterPortraitImage;
+    [SerializeField] private Text levelText;
 
     public void SetPortraitSprite(Sprite portraitSprite)
     {

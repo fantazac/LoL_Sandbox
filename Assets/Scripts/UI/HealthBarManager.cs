@@ -3,11 +3,11 @@ using UnityEngine;
 
 public class HealthBarManager : MonoBehaviour
 {
-    private string healthBarPrefabPath;
+    private readonly string healthBarPrefabPath;
     private GameObject healthBarPrefab;
 
-    private List<Character> characters;
-    private List<HealthBar> healthBars;
+    private readonly List<Character> characters;
+    private readonly List<HealthBar> healthBars;
 
     private HealthBarManager()
     {
@@ -28,28 +28,26 @@ public class HealthBarManager : MonoBehaviour
 
     public void SetupHealthBarForCharacter(Character character)
     {
-        if (!characters.Contains(character))
-        {
-            characters.Add(character);
+        if (characters.Contains(character)) return;
+        
+        characters.Add(character);
 
-            HealthBar healthBar = Instantiate(healthBarPrefab).GetComponent<HealthBar>();
-            healthBar.SetupHealthBar(character);
-            healthBar.transform.SetParent(transform, false);
-            healthBars.Add(healthBar);
-        }
+        HealthBar healthBar = Instantiate(healthBarPrefab).GetComponent<HealthBar>();
+        healthBar.SetupHealthBar(character);
+        healthBar.transform.SetParent(transform, false);
+        healthBars.Add(healthBar);
     }
 
     public void RemoveHealthBarOfDeletedCharacter(Character character)
     {
         foreach (HealthBar healthBar in healthBars)
         {
-            if (healthBar.GetCharacter() == character)
-            {
-                healthBars.Remove(healthBar);
-                characters.Remove(character);
-                Destroy(healthBar.gameObject);
-                break;
-            }
+            if (healthBar.GetCharacter() != character) continue;
+            
+            healthBars.Remove(healthBar);
+            characters.Remove(character);
+            Destroy(healthBar.gameObject);
+            break;
         }
     }
 }

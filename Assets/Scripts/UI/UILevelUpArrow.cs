@@ -4,12 +4,11 @@ using UnityEngine.UI;
 
 public class UILevelUpArrow : MonoBehaviour, IPointerClickHandler
 {
-    [SerializeField]
-    private int arrowId;
+    [SerializeField] private int arrowId;
 
     private Image image;
 
-    private Color unavailableColor;
+    private readonly Color unavailableColor;
 
     private bool arrowIsEnabled;
 
@@ -37,7 +36,7 @@ public class UILevelUpArrow : MonoBehaviour, IPointerClickHandler
 
     public void SetArrowState(int abilityPoints)
     {
-        if(abilityPoints > 0)
+        if (abilityPoints > 0)
         {
             EnableArrow();
         }

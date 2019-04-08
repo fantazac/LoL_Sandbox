@@ -14,7 +14,7 @@ public class StatsUIManager : MonoBehaviour
     {
         if (StaticObjects.OnlineMode)
         {
-            GUILayout.Label("");//ping goes there in online mode
+            GUILayout.Label(""); //ping goes there in online mode
         }
 
         StringBuilder statsText = new StringBuilder();
@@ -72,9 +72,12 @@ public class StatsUIManager : MonoBehaviour
                 characterStatsManager.Armor.GetPercentBonus(), characterStatsManager.Armor.GetFlatMalus(), characterStatsManager.Armor.GetPercentMalus(),
                 (int)Mathf.Round(characterStatsManager.Armor.GetDamageReductionPercent() * 100), characterStatsManager.Armor.GetEffectiveHealthPercent() * 100).AppendLine();
             statsText.AppendFormat("MAGIC RESISTANCE: {0} ((({1} + {2}) + {3}% - {4}) - {5}%) Takes {6}% reduced magic damage (Eff HP: {7}%)",
-                characterStatsManager.MagicResistance.GetTotal(), characterStatsManager.MagicResistance.GetCurrentBaseValue(), characterStatsManager.MagicResistance.GetFlatBonus(),
-                characterStatsManager.MagicResistance.GetPercentBonus(), characterStatsManager.MagicResistance.GetFlatMalus(), characterStatsManager.MagicResistance.GetPercentMalus(),
-                (int)Mathf.Round(characterStatsManager.MagicResistance.GetDamageReductionPercent() * 100), characterStatsManager.MagicResistance.GetEffectiveHealthPercent() * 100).AppendLine();
+                characterStatsManager.MagicResistance.GetTotal(), characterStatsManager.MagicResistance.GetCurrentBaseValue(),
+                characterStatsManager.MagicResistance.GetFlatBonus(),
+                characterStatsManager.MagicResistance.GetPercentBonus(), characterStatsManager.MagicResistance.GetFlatMalus(),
+                characterStatsManager.MagicResistance.GetPercentMalus(),
+                (int)Mathf.Round(characterStatsManager.MagicResistance.GetDamageReductionPercent() * 100),
+                characterStatsManager.MagicResistance.GetEffectiveHealthPercent() * 100).AppendLine();
             statsText.AppendFormat("ATTACK SPEED: {0} ({1} + {2}% - {3}% + {4}%)",
                 characterStatsManager.AttackSpeed.GetTotal(), characterStatsManager.AttackSpeed.GetInitialBaseValue(),
                 characterStatsManager.AttackSpeed.GetPercentBonus(), characterStatsManager.AttackSpeed.GetPercentMalus(),
@@ -82,17 +85,22 @@ public class StatsUIManager : MonoBehaviour
             statsText.AppendFormat("COOLDOWN REDUCTION: {0}%", characterStatsManager.CooldownReduction.GetTotal() * 100).AppendLine();
             statsText.AppendFormat("CRITICAL STRIKE CHANCE: {0}%", characterStatsManager.CriticalStrikeChance.GetTotal()).AppendLine();
             statsText.AppendFormat("MOVEMENT SPEED: {0} (({1} + {2}) + {3}% - ({4}% * {5}%) + {6}%)",
-                characterStatsManager.MovementSpeed.GetTotal() * 100, characterStatsManager.MovementSpeed.GetCurrentBaseValue(), characterStatsManager.MovementSpeed.GetFlatBonus(),
-                characterStatsManager.MovementSpeed.GetPercentBonus(), characterStatsManager.MovementSpeed.GetBiggestSlow(), characterStatsManager.SlowResistance.GetTotal() * 100,
+                characterStatsManager.MovementSpeed.GetTotal() * 100, characterStatsManager.MovementSpeed.GetCurrentBaseValue(),
+                characterStatsManager.MovementSpeed.GetFlatBonus(),
+                characterStatsManager.MovementSpeed.GetPercentBonus(), characterStatsManager.MovementSpeed.GetBiggestSlow(),
+                characterStatsManager.SlowResistance.GetTotal() * 100,
                 characterStatsManager.MovementSpeed.GetMultiplicativePercentBonus()).AppendLine();
 
             statsText.AppendFormat("HEALTH REGENERATION: {0} (({1} + {2}) + {3}% - {4}%)",
-                characterStatsManager.HealthRegeneration.GetTotal(), characterStatsManager.HealthRegeneration.GetCurrentBaseValue(), characterStatsManager.HealthRegeneration.GetFlatBonus(),
+                characterStatsManager.HealthRegeneration.GetTotal(), characterStatsManager.HealthRegeneration.GetCurrentBaseValue(),
+                characterStatsManager.HealthRegeneration.GetFlatBonus(),
                 characterStatsManager.HealthRegeneration.GetPercentBonus(), characterStatsManager.HealthRegeneration.GetPercentMalus()).AppendLine();
             statsText.AppendFormat("{0} REGENERATION: {1} (({2} + {3}) + {4}%)", characterStatsManager.ResourceType,
-                characterStatsManager.ResourceRegeneration.GetTotal(), characterStatsManager.ResourceRegeneration.GetCurrentBaseValue(), characterStatsManager.ResourceRegeneration.GetFlatBonus(),
+                characterStatsManager.ResourceRegeneration.GetTotal(), characterStatsManager.ResourceRegeneration.GetCurrentBaseValue(),
+                characterStatsManager.ResourceRegeneration.GetFlatBonus(),
                 characterStatsManager.ResourceRegeneration.GetPercentBonus()).AppendLine();
-            statsText.AppendFormat("LETHALITY: {0} (Current value: {1})", characterStatsManager.Lethality.GetTotal(), characterStatsManager.Lethality.GetCurrentValue()).AppendLine();
+            statsText.AppendFormat("LETHALITY: {0} (Current value: {1})", characterStatsManager.Lethality.GetTotal(), characterStatsManager.Lethality.GetCurrentValue())
+                .AppendLine();
             statsText.AppendFormat("ARMOR PENETRATION PERCENT: {0}%", characterStatsManager.ArmorPenetrationPercent.GetTotal() * 100).AppendLine();
             statsText.AppendFormat("MAGIC PENETRATION FLAT: {0}", characterStatsManager.MagicPenetrationFlat.GetTotal()).AppendLine();
             statsText.AppendFormat("MAGIC PENETRATION PERCENT: {0}%", characterStatsManager.MagicPenetrationPercent.GetTotal() * 100).AppendLine();
@@ -108,17 +116,17 @@ public class StatsUIManager : MonoBehaviour
                 characterStatsManager.CriticalStrikeDamage.GetPercentBonus()).AppendLine();
             statsText.AppendFormat("CRITICAL STRIKE DAMAGE REDUCTION: {0}%", characterStatsManager.CriticalStrikeDamageReduction.GetTotal() * 100).AppendLine();
             statsText.AppendFormat("PHYSICAL DAMAGE MODIFIER: {0}% ({1}% * {2}%)",
-               characterStatsManager.PhysicalDamageModifier.GetTotal() * 100, characterStatsManager.PhysicalDamageModifier.GetPercentBonus(),
-               characterStatsManager.PhysicalDamageModifier.GetPercentMalus()).AppendLine();
+                characterStatsManager.PhysicalDamageModifier.GetTotal() * 100, characterStatsManager.PhysicalDamageModifier.GetPercentBonus(),
+                characterStatsManager.PhysicalDamageModifier.GetPercentMalus()).AppendLine();
             statsText.AppendFormat("MAGIC DAMAGE MODIFIER: {0}% ({1}% * {2}%)",
-               characterStatsManager.MagicDamageModifier.GetTotal() * 100, characterStatsManager.MagicDamageModifier.GetPercentBonus(),
-               characterStatsManager.MagicDamageModifier.GetPercentMalus()).AppendLine();
+                characterStatsManager.MagicDamageModifier.GetTotal() * 100, characterStatsManager.MagicDamageModifier.GetPercentBonus(),
+                characterStatsManager.MagicDamageModifier.GetPercentMalus()).AppendLine();
             statsText.AppendFormat("PHYSICAL DAMAGE RECEIVED MODIFIER: {0}% ({1}% * {2}%)",
-               characterStatsManager.PhysicalDamageReceivedModifier.GetTotal() * 100, characterStatsManager.PhysicalDamageReceivedModifier.GetPercentBonus(),
-               characterStatsManager.PhysicalDamageReceivedModifier.GetPercentMalus()).AppendLine();
+                characterStatsManager.PhysicalDamageReceivedModifier.GetTotal() * 100, characterStatsManager.PhysicalDamageReceivedModifier.GetPercentBonus(),
+                characterStatsManager.PhysicalDamageReceivedModifier.GetPercentMalus()).AppendLine();
             statsText.AppendFormat("MAGIC DAMAGE RECEIVED MODIFIER: {0}% ({1}% * {2}%)",
-               characterStatsManager.MagicDamageReceivedModifier.GetTotal() * 100, characterStatsManager.MagicDamageReceivedModifier.GetPercentBonus(),
-               characterStatsManager.MagicDamageReceivedModifier.GetPercentMalus()).AppendLine();
+                characterStatsManager.MagicDamageReceivedModifier.GetTotal() * 100, characterStatsManager.MagicDamageReceivedModifier.GetPercentBonus(),
+                characterStatsManager.MagicDamageReceivedModifier.GetPercentMalus()).AppendLine();
             statsText.AppendFormat("HEAL AND SHIELD POWER: {0}%", characterStatsManager.HealAndShieldPower.GetTotal() * 100).AppendLine();
             statsText.AppendFormat("SLOW RESISTANCE: {0}%", characterStatsManager.SlowResistance.GetTotal() * 100).AppendLine();
 
