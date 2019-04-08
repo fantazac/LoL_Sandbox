@@ -12,7 +12,7 @@ public class ChampionStatusManager : StatusManager
     protected override void OnDisarm()
     {
         champion.AbilityManager.CancelAllActiveAbilitiesThatAreNotBeingCastedOrChanneled();
-        champion.AbilityManager.CancelAllChannelingAbilities();//TODO: verify, wiki says yes though
+        champion.AbilityManager.CancelAllChannelingAbilities(); //TODO: verify, wiki says yes though
     }
 
     protected override void OnDisrupt()
@@ -102,7 +102,7 @@ public class ChampionStatusManager : StatusManager
         base.SetCannotUseMovementAbilities(count);
 
         if (blockBasicAbilitiesCount != 0) return;
-        
+
         if (CanBlockAbilitiesOrBasicAttacks(count, blockMovementAbilitiesCount))
         {
             champion.AbilityManager.BlockAllMovementAbilities();
