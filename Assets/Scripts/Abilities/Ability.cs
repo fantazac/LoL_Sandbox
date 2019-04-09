@@ -285,9 +285,10 @@ public abstract class Ability : DamageSource
             abilityIsBlockedCount++;
             
             if (IsBlocked) return;
+            
+            IsBlocked = true;
         }
         
-        IsBlocked = true;
         if (!IsOnCooldown && IsEnabled && champion.AbilityUIManager)
         {
             champion.AbilityUIManager.BlockAbility(AbilityCategory, ID, UsesResource);
