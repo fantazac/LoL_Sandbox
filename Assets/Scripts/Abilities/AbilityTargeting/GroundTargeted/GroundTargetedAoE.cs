@@ -19,7 +19,7 @@ public abstract class GroundTargetedAoE : GroundTargeted
         else if (!champion.StatusManager.StatusEffectsOnCharacter.Contains(StatusEffect.ROOT))
         {
             champion.ChampionMovementManager.SetMoveTowardsPoint(destination, range);
-            champion.ChampionMovementManager.ChampionIsInDestinationRange += base.UseAbility;
+            champion.ChampionMovementManager.OnChampionIsInDestinationRange += base.UseAbility;
         }
     }
 }

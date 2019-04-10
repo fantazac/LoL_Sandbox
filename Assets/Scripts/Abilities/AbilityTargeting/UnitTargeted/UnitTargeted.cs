@@ -16,7 +16,7 @@ public abstract class UnitTargeted : Ability, IUnitTargeted
         else if (!champion.StatusManager.StatusEffectsOnCharacter.Contains(StatusEffect.ROOT))
         {
             champion.ChampionMovementManager.SetMoveTowardsTarget(target, range, false);
-            champion.ChampionMovementManager.ChampionIsInTargetRange += UseAbilityInRange;
+            champion.ChampionMovementManager.OnChampionIsInTargetRange += UseAbilityInRange;
         }
     }
 

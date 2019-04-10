@@ -35,12 +35,10 @@ public class MissFortune_R : DirectionTargetedProjectile
         amountOfWavesToShootPerLevel = 2;
         delayBetweenWaves = new WaitForSeconds(channelTime / amountOfWavesToShoot - 0.015f);
 
-        CanMoveWhileChanneling = true;
-        CanUseAnyAbilityWhileChanneling = true;
-
         IsAnUltimateAbility = true;
 
         affectedByCooldownReduction = true;
+        startCooldownOnAbilityCast = true; // Was not like this before, but now seems like it is?
     }
 
     protected override void SetResourcePaths()
@@ -78,7 +76,7 @@ public class MissFortune_R : DirectionTargetedProjectile
     protected override IEnumerator AbilityWithChannelTime()
     {
         UseResource();
-        champion.MovementManager.StopMovement();
+        champion.ChampionMovementManager.StopMovementTowardsPointIfHasEvent();
         AddNewBuffToAffectedUnit(champion);
         IsBeingChanneled = true;
 
@@ -96,16 +94,16 @@ public class MissFortune_R : DirectionTargetedProjectile
     private void AddNewBuffToAffectedUnit(Unit affectedUnit)
     {
         champion.AbilityManager.OnAnAbilityUsed += CancelMissFortuneR;
-        champion.ChampionMovementManager.ChampionMoved += CancelMissFortuneR;
-        //TODO: if hard cc'd, cancel as well
+        champion.ChampionMovementManager.OnChampionMoved += CancelMissFortuneR;
+        champion.ChampionMovementManager.OnMovementInputReceived += CancelMissFortuneR;
         AbilityBuffs[0].AddNewBuffToAffectedUnit(champion);
     }
 
-    private void RemoveBuffFromAffectedUnit(Unit unitHit)
+    private void RemoveBuffFromAffectedUnit(Unit affectedUnit)
     {
         champion.AbilityManager.OnAnAbilityUsed -= CancelMissFortuneR;
-        champion.ChampionMovementManager.ChampionMoved -= CancelMissFortuneR;
-        //TODO: remove cc cancel
+        champion.ChampionMovementManager.OnChampionMoved -= CancelMissFortuneR;
+        champion.ChampionMovementManager.OnMovementInputReceived -= CancelMissFortuneR;
     }
 
     private void CancelMissFortuneR()

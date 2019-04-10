@@ -16,9 +16,6 @@ public class Recall : AutoTargetedBlink
 
         AbilityLevel = 1;
 
-        CanMoveWhileChanneling = true;
-        CanUseAnyAbilityWhileChanneling = true;
-
         IsEnabled = true;
     }
 
@@ -63,7 +60,8 @@ public class Recall : AutoTargetedBlink
     {
         champion.StatsManager.Health.OnResourceReduced += CancelRecall;
         champion.AbilityManager.OnAnAbilityUsed += CancelRecall;
-        champion.ChampionMovementManager.ChampionMoved += CancelRecall;
+        champion.ChampionMovementManager.OnChampionMoved += CancelRecall;
+        champion.ChampionMovementManager.OnMovementInputReceived += CancelRecall;
         AbilityBuffs[0].AddNewBuffToAffectedUnit(champion);
     }
 
@@ -71,7 +69,8 @@ public class Recall : AutoTargetedBlink
     {
         champion.StatsManager.Health.OnResourceReduced -= CancelRecall;
         champion.AbilityManager.OnAnAbilityUsed -= CancelRecall;
-        champion.ChampionMovementManager.ChampionMoved -= CancelRecall;
+        champion.ChampionMovementManager.OnChampionMoved -= CancelRecall;
+        champion.ChampionMovementManager.OnMovementInputReceived -= CancelRecall;
     }
 
     private void CancelRecall()

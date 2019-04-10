@@ -17,14 +17,17 @@ public class ChampionMovementManager : MovementManager
 
     private Champion champion;
 
-    public delegate void ChampionIsInDestinationRangeHandler(Vector3 destination);
-    public event ChampionIsInDestinationRangeHandler ChampionIsInDestinationRange;
+    public delegate void OnMovementInputReceivedHandler();
+    public event OnMovementInputReceivedHandler OnMovementInputReceived;
+    
+    public delegate void OnChampionIsInDestinationRangeHandler(Vector3 destination);
+    public event OnChampionIsInDestinationRangeHandler OnChampionIsInDestinationRange;
 
-    public delegate void ChampionIsInTargetRangeHandler(Unit target);
-    public event ChampionIsInTargetRangeHandler ChampionIsInTargetRange;
+    public delegate void OnChampionIsInTargetRangeHandler(Unit target);
+    public event OnChampionIsInTargetRangeHandler OnChampionIsInTargetRange;
 
-    public delegate void ChampionMovedHandler();
-    public event ChampionMovedHandler ChampionMoved;
+    public delegate void OnChampionMovedHandler();
+    public event OnChampionMovedHandler OnChampionMoved;
 
     private ChampionMovementManager()
     {
@@ -58,7 +61,7 @@ public class ChampionMovementManager : MovementManager
 
     public void UnsubscribeCameraEvent()
     {
-        ChampionMoved = null;
+        OnChampionMoved = null;
     }
 
     public void PrepareMovementTowardsPoint(Vector3 pointOnMap)
@@ -113,9 +116,11 @@ public class ChampionMovementManager : MovementManager
 
     public void SetMoveTowardsPoint(Vector3 destination, float range = 0)
     {
+        OnMovementInputReceived?.Invoke();
+        
         if (currentlySelectedDestination == destination) return;
 
-        if (currentlySelectedDestination != Vector3.down && (ChampionIsInDestinationRange == null || range > 0) && (ChampionIsInDestinationRange != null || range == 0))
+        if (currentlySelectedDestination != Vector3.down && (OnChampionIsInDestinationRange == null || range > 0) && (OnChampionIsInDestinationRange != null || range == 0))
         {
             currentlySelectedDestination = destination;
             champion.OrientationManager.RotateCharacter(destination);
@@ -137,7 +142,7 @@ public class ChampionMovementManager : MovementManager
 
         while (transform.position != currentlySelectedDestination)
         {
-            if (champion.AbilityManager.CanUseMovement() && champion.StatusManager.CanUseMovement() && !champion.DisplacementManager.IsBeingDisplaced)
+            if (CanUseMovement())
             {
                 transform.position = Vector3.MoveTowards(transform.position, currentlySelectedDestination, Time.deltaTime * champion.StatsManager.MovementSpeed.GetTotal());
 
@@ -158,7 +163,7 @@ public class ChampionMovementManager : MovementManager
         float distance = Vector3.Distance(currentlySelectedDestination, transform.position);
         while (distance > destinationRange || (distance <= destinationRange && champion.DisplacementManager.IsBeingDisplaced))
         {
-            if (champion.AbilityManager.CanUseMovement() && champion.StatusManager.CanUseMovement() && !champion.DisplacementManager.IsBeingDisplaced)
+            if (CanUseMovement())
             {
                 transform.position = Vector3.MoveTowards(transform.position, currentlySelectedDestination, Time.deltaTime * champion.StatsManager.MovementSpeed.GetTotal());
 
@@ -170,10 +175,10 @@ public class ChampionMovementManager : MovementManager
             distance = Vector3.Distance(currentlySelectedDestination, transform.position);
         }
 
-        if (ChampionIsInDestinationRange != null)
+        if (OnChampionIsInDestinationRange != null)
         {
-            ChampionIsInDestinationRange(currentlySelectedDestination);
-            ChampionIsInDestinationRange = null;
+            OnChampionIsInDestinationRange(currentlySelectedDestination);
+            OnChampionIsInDestinationRange = null;
         }
 
         champion.AutoAttackManager.EnableAutoAttack();
@@ -185,7 +190,7 @@ public class ChampionMovementManager : MovementManager
     {
         if (!IsMovingTowardsPositionForAnEvent()) return;
         
-        ChampionIsInDestinationRange = null;
+        OnChampionIsInDestinationRange = null;
         destinationRange *= 0.5f;
     }
 
@@ -193,14 +198,16 @@ public class ChampionMovementManager : MovementManager
     {
         if (!currentlySelectedTarget) return;
         
-        ChampionIsInDestinationRange = null;
-        ChampionIsInTargetRange = null;
+        OnChampionIsInDestinationRange = null;
+        OnChampionIsInTargetRange = null;
         champion.BasicAttack.SetupBasicAttack(currentlySelectedTarget, false);
     }
 
     public void SetMoveTowardsTarget(Unit target, float range, bool isBasicAttack, bool forceNewCoroutine = false)
     {
-        if (ChampionIsInTargetRange == null || forceNewCoroutine)
+        OnMovementInputReceived?.Invoke();
+        
+        if (OnChampionIsInTargetRange == null || forceNewCoroutine)
         {
             StopMovement();
             SetupCorrectTarget(target, isBasicAttack);
@@ -210,7 +217,7 @@ public class ChampionMovementManager : MovementManager
         }
         else
         {
-            ChampionIsInTargetRange = null;
+            OnChampionIsInTargetRange = null;
             SetupCorrectTarget(target, isBasicAttack);
             if (Vector3.Distance(target.transform.position, transform.position) > range)
             {
@@ -244,7 +251,7 @@ public class ChampionMovementManager : MovementManager
             float distance = Vector3.Distance(targetTransform.position, transform.position);
             while (distance > targetRange || (distance <= targetRange && champion.DisplacementManager.IsBeingDisplaced))
             {
-                if (champion.AbilityManager.CanUseMovement() && champion.StatusManager.CanUseMovement() && !champion.DisplacementManager.IsBeingDisplaced)
+                if (CanUseMovement())
                 {
                     transform.position = Vector3.MoveTowards(transform.position, targetTransform.position, Time.deltaTime * champion.StatsManager.MovementSpeed.GetTotal());
 
@@ -289,10 +296,10 @@ public class ChampionMovementManager : MovementManager
             currentlySelectedTarget = null;
             currentlySelectedBasicAttackTarget = null;
 
-            if (ChampionIsInTargetRange != null)
+            if (OnChampionIsInTargetRange != null)
             {
-                ChampionIsInTargetRange(target);
-                ChampionIsInTargetRange = null;
+                OnChampionIsInTargetRange(target);
+                OnChampionIsInTargetRange = null;
             }
         }
         else if (!IsMoving())
@@ -363,13 +370,18 @@ public class ChampionMovementManager : MovementManager
         currentMovementCoroutine = null;
 
         champion.OrientationManager.StopRotation();
-        ChampionIsInTargetRange = null;
-        ChampionIsInDestinationRange = null;
+        OnChampionIsInTargetRange = null;
+        OnChampionIsInDestinationRange = null;
         currentlySelectedDestination = Vector3.down;
         destinationRange = 0;
         currentlySelectedTarget = null;
         currentlySelectedBasicAttackTarget = null;
         targetRange = 0;
+    }
+
+    private bool CanUseMovement()
+    {
+        return champion.AbilityManager.CanUseMovement() && champion.StatusManager.CanUseMovement() && !champion.DisplacementManager.IsBeingDisplaced;
     }
 
     public void StopMovementTowardsPoint()
@@ -398,7 +410,7 @@ public class ChampionMovementManager : MovementManager
 
     public void StopMovementTowardsTargetIfHasEvent(bool stopBasicAttack = false)
     {
-        if ((currentlySelectedTarget || (stopBasicAttack && currentlySelectedBasicAttackTarget)) && ChampionIsInTargetRange != null)
+        if ((currentlySelectedTarget || (stopBasicAttack && currentlySelectedBasicAttackTarget)) && OnChampionIsInTargetRange != null)
         {
             StopMovement();
         }
@@ -416,7 +428,7 @@ public class ChampionMovementManager : MovementManager
 
     public bool IsMovingTowardsPositionForAnEvent()
     {
-        return IsMovingTowardsPosition() && ChampionIsInDestinationRange != null;
+        return IsMovingTowardsPosition() && OnChampionIsInDestinationRange != null;
     }
 
     public bool IsMovingTowardsTarget()
@@ -431,6 +443,6 @@ public class ChampionMovementManager : MovementManager
 
     public void NotifyChampionMoved()
     {
-        ChampionMoved?.Invoke();
+        OnChampionMoved?.Invoke();
     }
 }

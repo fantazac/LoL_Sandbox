@@ -19,7 +19,7 @@ public class Lucian_E : DirectionTargetedDash
         dashSpeed = 32;
 
         IsAMovementAbility = true;
-        ResetBasicAttackCycleOnAbilityFinished = true;
+        resetBasicAttackCycleOnAbilityFinished = true;
 
         affectedByCooldownReduction = true;
     }

@@ -82,7 +82,7 @@ public abstract class BasicAttack : DamageSource
         if (setupEvent && champion)
         {
             //TODO: all units will have a movement manager
-            champion.ChampionMovementManager.ChampionIsInTargetRange += UseBasicAttack;
+            champion.ChampionMovementManager.OnChampionIsInTargetRange += UseBasicAttack;
         }
     }
 

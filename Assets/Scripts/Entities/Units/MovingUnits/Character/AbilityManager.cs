@@ -598,7 +598,7 @@ public class AbilityManager : MonoBehaviour
         for (int i = currentlyUsedAbilities.Count - 1; i >= 0; i--)
         {
             Ability ability = currentlyUsedAbilities[i];
-            if (ability.IsBeingChanneled && ability.CannotCancelChannel)
+            if (ability.IsBeingChanneled && !ability.CannotCancelChannel)
             {
                 ability.CancelAbility();
             }

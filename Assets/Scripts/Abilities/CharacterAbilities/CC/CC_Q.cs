@@ -18,7 +18,7 @@ public class CC_Q : SelfTargeted, IBasicAttackEmpoweringAbility
         baseCooldown = 5.5f;
         resourceCost = 0;
 
-        ResetBasicAttackCycleOnAbilityCast = true;
+        resetBasicAttackCycleOnAbilityCast = true;
 
         affectedByCooldownReduction = true;
     }

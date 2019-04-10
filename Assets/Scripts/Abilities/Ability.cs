@@ -22,6 +22,7 @@ public abstract class Ability : DamageSource
     public bool IsAnUltimateAbility { get; protected set; }
 
     protected string abilityName;
+    protected bool affectedByCooldownReduction;
     protected float castTime;
     protected float channelTime;
     protected float cooldownBeforeRecast;
@@ -29,15 +30,17 @@ public abstract class Ability : DamageSource
     protected Vector3 destinationOnCast;
     protected WaitForSeconds delayCastTime;
     protected WaitForSeconds delayChannelTime;
+    private bool hasReducedCooldownOnAbilityCancel;
     protected RaycastHit hit;
     protected Vector3 positionOnCast;
     protected float range;
+    protected bool resetBasicAttackCycleOnAbilityCast;
+    protected bool resetBasicAttackCycleOnAbilityFinished;
     protected Quaternion rotationOnCast;
     protected float speed;
     protected bool startCooldownOnAbilityCast;
     protected Unit targetedUnit;
 
-    protected bool affectedByCooldownReduction;
     protected float baseCooldown;
     protected float baseCooldownOnCancel;
     protected float baseCooldownPerLevel;
@@ -56,7 +59,7 @@ public abstract class Ability : DamageSource
     private float cooldownOnCancel;
     
     public Sprite AbilitySprite { get; private set; }
-    public Sprite AbilityRecastSprite { get; private set; } //TODO: Not implemented
+    public Sprite AbilityRecastSprite { get; private set; }
 
     protected string abilitySpritePath;
     protected string abilityRecastSpritePath;
@@ -73,22 +76,18 @@ public abstract class Ability : DamageSource
     public bool CannotCancelChannel { get; protected set; }
     public bool CannotCastAnyAbilityWhileActive { get; protected set; }
     public bool CannotRotateWhileActive { get; protected set; }
-    public bool CanUseAnyAbilityWhileChanneling { get; protected set; }
     public bool CanUseBasicAttacksWhileCasting { get; protected set; }
     public bool HasCastTime { get; private set; }
     public bool HasChannelTime { get; private set; }
-    public bool HasReducedCooldownOnAbilityCancel { get; private set; }
-    public bool IsActive { get; protected set; }
+    public bool IsActive { get; private set; }
     public bool IsAMovementAbility { get; protected set; }
     public bool IsBeingCasted { get; protected set; }
     public bool IsBeingChanneled { get; protected set; }
-    public bool IsBlocked { get; protected set; }
+    public bool IsBlocked { get; private set; }
     public bool IsEnabled { get; protected set; }
-    public bool IsOnCooldown { get; protected set; }
-    public bool IsOnCooldownForRecast { get; protected set; }
+    public bool IsOnCooldown { get; private set; }
+    public bool IsOnCooldownForRecast { get; private set; }
     public bool IsReadyToBeRecasted { get; private set; }
-    public bool ResetBasicAttackCycleOnAbilityCast { get; protected set; }
-    public bool ResetBasicAttackCycleOnAbilityFinished { get; protected set; }
     public bool UsesResource { get; private set; }
 
     protected readonly List<Ability> abilitiesToDisableWhileActive;
@@ -127,7 +126,7 @@ public abstract class Ability : DamageSource
 
         HasCastTime = castTime > 0;
         HasChannelTime = channelTime > 0;
-        HasReducedCooldownOnAbilityCancel = baseCooldownOnCancel > 0;
+        hasReducedCooldownOnAbilityCancel = baseCooldownOnCancel > 0;
         UsesResource = resourceCost > 0;
     }
 
@@ -209,7 +208,7 @@ public abstract class Ability : DamageSource
             }
         }
 
-        if (ResetBasicAttackCycleOnAbilityCast)
+        if (resetBasicAttackCycleOnAbilityCast)
         {
             champion.BasicAttack.ResetBasicAttack();
         }
@@ -243,7 +242,7 @@ public abstract class Ability : DamageSource
         OnAbilityFinished?.Invoke(this);
 
         IsActive = false;
-        if (ResetBasicAttackCycleOnAbilityFinished)
+        if (resetBasicAttackCycleOnAbilityFinished)
         {
             champion.BasicAttack.ResetBasicAttack();
         }
@@ -594,7 +593,7 @@ public abstract class Ability : DamageSource
             champion.AbilityTimeBarUIManager.CancelCastTimeAndChannelTime(ID);
         }
 
-        FinishAbilityCast(HasReducedCooldownOnAbilityCancel);
+        FinishAbilityCast(hasReducedCooldownOnAbilityCancel);
     }
 
     protected virtual void ExtraActionsOnCancel() { }

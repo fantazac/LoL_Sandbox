@@ -35,7 +35,7 @@ public class CameraManager : MonoBehaviour
 
         initialPosition = transform.position;
         transform.position += StaticObjects.Champion.transform.position;
-        StaticObjects.Champion.ChampionMovementManager.ChampionMoved += ChampionMoved;
+        StaticObjects.Champion.ChampionMovementManager.OnChampionMoved += ChampionMoved;
 
         ChampionMoved();
     }
