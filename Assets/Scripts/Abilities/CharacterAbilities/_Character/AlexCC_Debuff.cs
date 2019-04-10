@@ -16,7 +16,7 @@ public class AlexCC_Debuff : AbilityBuff
         knockUpSpeed = 3;
         knockUpDestination = Vector3.up * knockUpSpeed * buffDuration * 0.5f;
 
-        buffStatusEffect = StatusEffect.SUPPRESSION;
+        buffStatusEffect = StatusEffect.SILENCE;
     }
 
     protected override void SetSpritePaths()

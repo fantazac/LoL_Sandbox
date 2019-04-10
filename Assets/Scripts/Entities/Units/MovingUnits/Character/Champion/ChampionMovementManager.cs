@@ -335,7 +335,7 @@ public class ChampionMovementManager : MovementManager
 
     private void SendToServer_StopMovement()
     {
-        champion.PhotonView.RPC("ReceiveFromServer_StopMovement", PhotonTargets.AllViaServer);
+        champion.PhotonView.RPC(nameof(ReceiveFromServer_StopMovement), PhotonTargets.AllViaServer);
     }
 
     [PunRPC]
