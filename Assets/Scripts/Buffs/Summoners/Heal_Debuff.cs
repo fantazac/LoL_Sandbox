@@ -11,7 +11,7 @@
 
     protected override void SetSpritePaths()
     {
-        buffSpritePath = "Sprites/Characters/SummonerAbilities/Heal";
+        buffSpritePath = "Sprites/Characters/SummonerAbilities/Heal_Debuff";
     }
 
     public override void AddNewBuffToAffectedUnit(Unit affectedUnit)

@@ -18,7 +18,7 @@
 
     protected override void SetSpritePaths()
     {
-        buffSpritePath = "Sprites/Characters/SummonerAbilities/Ghost";
+        buffSpritePath = "Sprites/Characters/SummonerAbilities/Heal_Buff";
     }
 
     protected override void Start()

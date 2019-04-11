@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-public class CC_W : AutoTargeted
+public class CC_W : SelfTargeted
 {
     protected CC_W()
     {

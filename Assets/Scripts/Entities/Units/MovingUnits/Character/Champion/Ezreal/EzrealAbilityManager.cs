@@ -12,7 +12,7 @@
         PassiveCharacterAbilities = new Ability[] { gameObject.AddComponent<Ezreal_P>() };
         SummonerAbilities = new Ability[]
         {
-            gameObject.AddComponent<Teleport>(), 
+            gameObject.AddComponent<Barrier>(), 
             gameObject.AddComponent<Flash>()
         };
 
