@@ -403,12 +403,12 @@ public class AbilityManager : MonoBehaviour
 
     private bool AbilityCanBePressed(Ability abilityToCast)
     {
-        return !abilityToCast.IsOnCooldown && !abilityToCast.IsOnCooldownForRecast && !abilityToCast.IsActive;
+        return !abilityToCast.IsOnCooldown && !abilityToCast.IsOnCooldownForRecast && (!abilityToCast.IsActive || abilityToCast.IsBeingCharged);
     }
 
     private bool HasEnoughResourceToCastAbility(Ability abilityToCast)
     {
-        return !abilityToCast.UsesResource || abilityToCast.GetResourceCost() <= champion.StatsManager.Resource.GetCurrentValue();
+        return !abilityToCast.UsesResource || abilityToCast.IsActive || abilityToCast.GetResourceCost() <= champion.StatsManager.Resource.GetCurrentValue();
     }
 
     private bool ActiveAbilitiesPreventOtherAbilityCasts()

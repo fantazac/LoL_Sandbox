@@ -12,7 +12,7 @@ public abstract class Ability : DamageSource
     protected AbilityEffectType effectType;
     protected AbilityType abilityType;
 
-    private IEnumerator abilityEffectCoroutine;
+    protected IEnumerator abilityEffectCoroutine;
     private IEnumerator cooldownForRecastCoroutine;
 
     public AbilityCategory AbilityCategory { get; set; }
@@ -25,13 +25,16 @@ public abstract class Ability : DamageSource
     protected bool affectedByCooldownReduction;
     protected float castTime;
     protected float channelTime;
+    protected float chargeTime;
     protected float cooldownBeforeRecast;
     protected float cooldownRemaining;
     protected Vector3 destinationOnCast;
     protected WaitForSeconds delayCastTime;
     protected WaitForSeconds delayChannelTime;
+    protected WaitForSeconds delayChargeTime;
     private bool hasReducedCooldownOnAbilityCancel;
     protected RaycastHit hit;
+    protected float maximumChargeTime;
     protected Vector3 positionOnCast;
     protected float range;
     protected bool resetBasicAttackCycleOnAbilityCast;
@@ -79,10 +82,12 @@ public abstract class Ability : DamageSource
     public bool CanUseBasicAttacksWhileCasting { get; protected set; }
     public bool HasCastTime { get; private set; }
     public bool HasChannelTime { get; private set; }
+    public bool HasChargeTime { get; private set; }
     public bool IsActive { get; private set; }
     public bool IsAMovementAbility { get; protected set; }
     public bool IsBeingCasted { get; protected set; }
     public bool IsBeingChanneled { get; protected set; }
+    public bool IsBeingCharged { get; protected set; }
     public bool IsBlocked { get; private set; }
     public bool IsEnabled { get; protected set; }
     public bool IsOnCooldown { get; private set; }
@@ -126,6 +131,7 @@ public abstract class Ability : DamageSource
 
         HasCastTime = castTime > 0;
         HasChannelTime = channelTime > 0;
+        HasChargeTime = chargeTime > 0;
         hasReducedCooldownOnAbilityCancel = baseCooldownOnCancel > 0;
         UsesResource = resourceCost > 0;
     }
@@ -622,6 +628,10 @@ public abstract class Ability : DamageSource
         {
             abilityEffectCoroutine = AbilityWithChannelTime();
         }
+        else if (delayChargeTime != null)
+        {
+            abilityEffectCoroutine = AbilityWithChargeTime();
+        }
         else
         {
             abilityEffectCoroutine = AbilityWithoutDelay();
@@ -641,6 +651,11 @@ public abstract class Ability : DamageSource
     }
 
     protected virtual IEnumerator AbilityWithChannelTime()
+    {
+        yield return null;
+    }
+
+    protected virtual IEnumerator AbilityWithChargeTime()
     {
         yield return null;
     }

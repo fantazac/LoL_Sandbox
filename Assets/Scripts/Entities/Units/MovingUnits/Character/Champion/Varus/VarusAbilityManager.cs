@@ -4,7 +4,7 @@
     {
         CharacterAbilities = new Ability[]
         {
-            gameObject.AddComponent<Ezreal_Q>(), 
+            gameObject.AddComponent<Varus_Q>(), 
             gameObject.AddComponent<Varus_W>(), 
             gameObject.AddComponent<Varus_E>(), 
             gameObject.AddComponent<Varus_R>()
