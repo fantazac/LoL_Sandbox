@@ -70,6 +70,14 @@ public class AbilityTimeBarUIManager : MonoBehaviour
         currentTimeBarCoroutine = ChannelTime(channelTime);
         StartCoroutine(currentTimeBarCoroutine);
     }
+    
+    public void SetChargeTime(float chargeTime, float maximumChargeTime, string name, int abilityId)
+    {
+        SetupUI(0, name, "", true);
+        currentAbilityId = abilityId;
+        currentTimeBarCoroutine = ChargeTime(chargeTime, maximumChargeTime);
+        StartCoroutine(currentTimeBarCoroutine);
+    }
 
     private IEnumerator CastTime(float castTime)
     {
@@ -127,8 +135,23 @@ public class AbilityTimeBarUIManager : MonoBehaviour
 
         ResetUI();
     }
+    
+    private IEnumerator ChargeTime(float chargeTime, float maximumChargeTime)
+    {
+        float pastChargeTime = 0;
 
-    public void CancelCastTimeAndChannelTime(int abilityId)
+        while (pastChargeTime <= maximumChargeTime)
+        {
+            yield return null;
+
+            pastChargeTime += Time.deltaTime;
+            abilityTimeBar.fillAmount = pastChargeTime / chargeTime;
+        }
+
+        ResetUI();
+    }
+
+    public void CancelCastTimeAndChannelTimeAndChargeTime(int abilityId)
     {
         if (abilityId == currentAbilityId)
         {

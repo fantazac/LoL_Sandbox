@@ -212,6 +212,10 @@ public abstract class Ability : DamageSource
             {
                 champion.AbilityTimeBarUIManager.SetChannelTime(channelTime, abilityName, ID);
             }
+            else if (HasChargeTime)
+            {
+                champion.AbilityTimeBarUIManager.SetChargeTime(chargeTime, maximumChargeTime, abilityName, ID);
+            }
         }
 
         if (resetBasicAttackCycleOnAbilityCast)
@@ -248,6 +252,10 @@ public abstract class Ability : DamageSource
         OnAbilityFinished?.Invoke(this);
 
         IsActive = false;
+        if (champion.AbilityTimeBarUIManager && (HasCastTime || HasChannelTime || HasChargeTime))
+        {
+            champion.AbilityTimeBarUIManager.CancelCastTimeAndChannelTimeAndChargeTime(ID);
+        }
         if (resetBasicAttackCycleOnAbilityFinished)
         {
             champion.BasicAttack.ResetBasicAttack();
@@ -594,10 +602,6 @@ public abstract class Ability : DamageSource
         }
 
         ExtraActionsOnCancel();
-        if (champion.AbilityTimeBarUIManager && (HasCastTime || HasChannelTime))
-        {
-            champion.AbilityTimeBarUIManager.CancelCastTimeAndChannelTime(ID);
-        }
 
         FinishAbilityCast(hasReducedCooldownOnAbilityCancel);
     }
