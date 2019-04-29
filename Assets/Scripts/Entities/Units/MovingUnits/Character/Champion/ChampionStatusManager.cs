@@ -13,11 +13,13 @@ public class ChampionStatusManager : StatusManager
     {
         champion.AbilityManager.CancelAllActiveAbilitiesThatAreNotBeingCastedOrChanneled();
         champion.AbilityManager.CancelAllChannelingAbilities(); //TODO: verify, wiki says yes though
+        champion.AbilityManager.CancelAllChargingAbilities(); //TODO: verify, wiki says yes though
     }
 
     protected override void OnDisrupt()
     {
         champion.AbilityManager.CancelAllChannelingAbilities();
+        champion.AbilityManager.CancelAllChargingAbilities();
     }
 
     protected override void OnEntangle()
@@ -30,6 +32,7 @@ public class ChampionStatusManager : StatusManager
     {
         champion.AbilityManager.CancelAllActiveAbilitiesThatAreNotBeingCastedOrChanneled();
         champion.AbilityManager.CancelAllChannelingAbilities();
+        champion.AbilityManager.CancelAllChargingAbilities();
         champion.MovementManager.StopMovement();
     }
 
@@ -42,6 +45,7 @@ public class ChampionStatusManager : StatusManager
     {
         champion.AbilityManager.CancelAllActiveAbilitiesThatAreNotBeingCastedOrChanneled();
         champion.AbilityManager.CancelAllChannelingAbilities();
+        champion.AbilityManager.CancelAllChargingAbilities();
         champion.ChampionMovementManager.SetCharacterIsInTargetRangeEventForBasicAttack();
         champion.ChampionMovementManager.SetMoveTowardsHalfDistanceOfAbilityCastRange();
     }
@@ -49,18 +53,21 @@ public class ChampionStatusManager : StatusManager
     protected override void OnRoot()
     {
         champion.AbilityManager.CancelAllChannelingAbilities();
+        champion.AbilityManager.CancelAllChargingAbilities();
         champion.ChampionMovementManager.StopMovementTowardsPointIfHasEvent();
     }
 
     protected override void OnSilence()
     {
         champion.AbilityManager.CancelAllChannelingAbilities();
+        champion.AbilityManager.CancelAllChargingAbilities();
     }
 
     protected override void OnStun()
     {
         champion.AbilityManager.CancelAllActiveAbilitiesThatAreNotBeingCastedOrChanneled();
         champion.AbilityManager.CancelAllChannelingAbilities();
+        champion.AbilityManager.CancelAllChargingAbilities();
         champion.ChampionMovementManager.StopMovementTowardsPointIfHasEvent();
     }
 

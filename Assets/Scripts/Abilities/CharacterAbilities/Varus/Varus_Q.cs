@@ -5,8 +5,11 @@ using UnityEngine;
 
 public class Varus_Q : DirectionTargetedProjectile
 {
+    private Varus_W varusW;
+    
     private readonly float manaPercentRefundOnChargeEndCancel;
 
+    private readonly WaitForSeconds delayDisabledVarusW;
     private readonly WaitForSeconds delayToReduceCooldownWithChargeTime;
     
     protected Varus_Q()
@@ -35,9 +38,12 @@ public class Varus_Q : DirectionTargetedProjectile
 
         manaPercentRefundOnChargeEndCancel = 0.5f;
         
+        delayDisabledVarusW = new WaitForSeconds(1);
         delayToReduceCooldownWithChargeTime = new WaitForSeconds(0.1f);
         
         affectedByCooldownReduction = true;
+
+        CanMoveWhileCharging = true;
     }
 
     protected override void SetResourcePaths()
@@ -54,6 +60,18 @@ public class Varus_Q : DirectionTargetedProjectile
     
     protected override void Start()
     {
+        foreach (Ability ability in champion.AbilityManager.CharacterAbilities)
+        {
+            if (ability is Varus_W varus_W)
+            {
+                varusW = varus_W;
+            }
+            else if (ability != this)
+            {
+                abilitiesToDisableWhileActive.Add(ability);
+            }
+        }
+        
         base.Start();
 
         AbilityBuffs = new AbilityBuff[] { gameObject.AddComponent<Varus_Q_Buff>() };
@@ -82,7 +100,16 @@ public class Varus_Q : DirectionTargetedProjectile
             FinalAdjustments(destination);
 
             StartCorrectCoroutine();
+            StartCoroutine(DisableVarusW());
         }
+    }
+
+    private IEnumerator DisableVarusW()
+    {
+        //this needs to be different if w gets activated and stuff
+        yield return delayDisabledVarusW;
+
+        //disable varus w
     }
     
     protected override IEnumerator AbilityWithChargeTime()

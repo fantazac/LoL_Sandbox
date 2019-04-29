@@ -67,7 +67,7 @@ public class AbilityManager : MonoBehaviour
 
     private void OnAbilityUsed(Ability ability)
     {
-        if (ability.HasCastTime || ability.HasChannelTime)
+        if (ability.HasCastTime || ability.HasChannelTime || ability.HasChargeTime)
         {
             currentlyUsedAbilities.Add(ability);
         }
@@ -77,7 +77,7 @@ public class AbilityManager : MonoBehaviour
 
     private void OnAbilityFinished(Ability ability)
     {
-        if (!ability.HasCastTime && !ability.HasChannelTime) return;
+        if (!ability.HasCastTime && !ability.HasChannelTime && !ability.HasChargeTime) return;
 
         currentlyUsedAbilities.Remove(ability);
 
@@ -354,7 +354,7 @@ public class AbilityManager : MonoBehaviour
         {
             champion.BufferedAbilityManager.ResetBufferedAbility();
             ((IDestinationTargeted)ability).UseAbility(destination);
-            if (ability.HasCastTime || ability.HasChannelTime)
+            if (ability.HasCastTime || ability.HasChannelTime || ability.HasChargeTime)
             {
                 champion.ChampionMovementManager.SetCharacterIsInTargetRangeEventForBasicAttack();
             }
@@ -457,7 +457,7 @@ public class AbilityManager : MonoBehaviour
 
     private bool CanMoveWhileAbilityIsActive(Ability ability)
     {
-        return ability.CanMoveWhileActive || (ability.CanMoveWhileChanneling && ability.IsBeingChanneled);
+        return ability.CanMoveWhileActive || (ability.CanMoveWhileChanneling && ability.IsBeingChanneled) || (ability.CanMoveWhileCharging && ability.IsBeingCharged);
     }
 
     public bool CanUseBasicAttacks()
@@ -599,6 +599,18 @@ public class AbilityManager : MonoBehaviour
         {
             Ability ability = currentlyUsedAbilities[i];
             if (ability.IsBeingChanneled && !ability.CannotCancelChannel)
+            {
+                ability.CancelAbility();
+            }
+        }
+    }
+    
+    public void CancelAllChargingAbilities()
+    {
+        for (int i = currentlyUsedAbilities.Count - 1; i >= 0; i--)
+        {
+            Ability ability = currentlyUsedAbilities[i];
+            if (ability.IsBeingCharged && !ability.CannotCancelCharge)
             {
                 ability.CancelAbility();
             }
