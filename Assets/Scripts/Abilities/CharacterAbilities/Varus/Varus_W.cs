@@ -73,7 +73,7 @@ public class Varus_W : SelfTargeted, IAbilityWithPassive
         abilitiesToTriggerStacks = new List<Ability>();
         foreach (Ability ability in champion.AbilityManager.CharacterAbilities)
         {
-            if (ability)
+            if (ability != this)
             {
                 abilitiesToTriggerStacks.Add(ability);
             }
@@ -127,12 +127,13 @@ public class Varus_W : SelfTargeted, IAbilityWithPassive
         AbilityDebuffs[0].AddNewBuffToAffectedUnit(affectedUnit);
     }
 
-    public void ProcStacks(Unit unitHit, Ability sourceAbility)
+    public bool ProcStacks(Unit unitHit, Ability sourceAbility)
     {
-        if (unitHit.BuffManager.IsAffectedByDebuff(AbilityDebuffs[0]) && abilitiesToTriggerStacks.Contains(sourceAbility))
-        {
-            DealDamageToUnitWithStacks(unitHit);
-        }
+        if (!unitHit.BuffManager.IsAffectedByDebuff(AbilityDebuffs[0]) || !abilitiesToTriggerStacks.Contains(sourceAbility)) return false;
+        
+        DealDamageToUnitWithStacks(unitHit);
+        
+        return true;
     }
 
     private void DealDamageToUnitWithStacks(Unit unitHit)

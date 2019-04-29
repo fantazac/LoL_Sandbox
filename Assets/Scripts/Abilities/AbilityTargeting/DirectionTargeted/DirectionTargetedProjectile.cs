@@ -26,7 +26,7 @@ public abstract class DirectionTargetedProjectile : DirectionTargeted
         FinishAbilityCast();
     }
 
-    protected void SpawnProjectile(Vector3 position, Quaternion rotation)
+    protected virtual void SpawnProjectile(Vector3 position, Quaternion rotation)
     {
         Projectile projectile = Instantiate(projectilePrefab, position, rotation).GetComponent<Projectile>();
         projectile.ShootProjectile(affectedTeams, affectedUnitTypes, speed, range);
