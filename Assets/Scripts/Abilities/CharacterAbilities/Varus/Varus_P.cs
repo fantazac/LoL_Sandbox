@@ -14,8 +14,6 @@ public class Varus_P : PassiveTargeted
         AbilityLevel = 1;
 
         buffDuration = 5;
-
-        IsEnabled = true;
     }
 
     protected override void SetResourcePaths()

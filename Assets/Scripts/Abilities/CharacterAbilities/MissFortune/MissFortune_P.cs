@@ -23,8 +23,6 @@ public class MissFortune_P : PassiveTargeted
 
         totalADScaling = 0.5f;
         totalADScalingPerLevel = 0.1f;
-
-        IsEnabled = true;
     }
 
     protected override void SetResourcePaths()

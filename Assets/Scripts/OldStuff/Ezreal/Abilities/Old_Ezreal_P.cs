@@ -10,8 +10,6 @@ public class Old_Ezreal_P : PassiveTargeted
 
         MaxLevel = 3;
         AbilityLevel = 1;
-
-        IsEnabled = true;
     }
 
     protected override void SetResourcePaths()

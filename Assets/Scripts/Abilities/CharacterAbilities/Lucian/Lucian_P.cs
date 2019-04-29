@@ -28,8 +28,6 @@ public class Lucian_P : PassiveTargeted, IBasicAttackEmpoweringAbility, IBasicAt
         criticalStrikeMultiplierAgainstNonMinions = 1.75f;
 
         appliesOnHitEffects = true;
-
-        IsEnabled = true;
     }
 
     protected override void Awake()

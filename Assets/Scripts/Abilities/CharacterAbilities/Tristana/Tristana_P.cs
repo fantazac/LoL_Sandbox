@@ -15,8 +15,6 @@ public class Tristana_P : PassiveTargeted
         AbilityLevel = 1;
 
         rangePerLevel = 8;
-
-        IsEnabled = true;
     }
 
     protected override void SetResourcePaths()

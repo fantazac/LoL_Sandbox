@@ -34,6 +34,8 @@ public abstract class Ability : DamageSource
     protected WaitForSeconds delayChargeTime;
     private bool hasReducedCooldownOnAbilityCancel;
     protected RaycastHit hit;
+    private bool isDisabledByOutsideSource;
+    private bool isEnabled;
     protected float maximumChargeTime;
     protected Vector3 positionOnCast;
     protected float range;
@@ -91,7 +93,6 @@ public abstract class Ability : DamageSource
     public bool IsBeingChanneled { get; protected set; }
     public bool IsBeingCharged { get; protected set; }
     public bool IsBlocked { get; private set; }
-    public bool IsEnabled { get; protected set; }
     public bool IsOnCooldown { get; private set; }
     public bool IsOnCooldownForRecast { get; private set; }
     public bool IsReadyToBeRecasted { get; private set; }
@@ -135,6 +136,7 @@ public abstract class Ability : DamageSource
         HasChannelTime = channelTime > 0;
         HasChargeTime = chargeTime > 0;
         hasReducedCooldownOnAbilityCancel = baseCooldownOnCancel > 0;
+        isEnabled = AbilityLevel > 0;
         UsesResource = resourceCost > 0;
     }
 
@@ -179,16 +181,18 @@ public abstract class Ability : DamageSource
 
     protected virtual void LoadPrefabs() { }
 
+    public bool IsEnabled()
+    {
+        return isEnabled && !isDisabledByOutsideSource;
+    }
+    
     protected void StartAbilityCast()
     {
         if (abilitiesToDisableWhileActive != null)
         {
             foreach (Ability ability in abilitiesToDisableWhileActive)
             {
-                if (ability && ability.AbilityLevel > 0)
-                {
-                    ability.DisableAbility();
-                }
+                ability.DisableAbility();
             }
         }
 
@@ -246,7 +250,7 @@ public abstract class Ability : DamageSource
             {
                 if (ability)
                 {
-                    ability.EnableAbility();
+                    ability.EnableAbility(false);
                 }
             }
         }
@@ -265,23 +269,28 @@ public abstract class Ability : DamageSource
 
         StartCooldown(false, abilityWasCancelled);
     }
-
+    
     private void DisableAbility()
     {
-        IsEnabled = false;
+        isDisabledByOutsideSource = true;
         if (!IsOnCooldown && champion.AbilityUIManager)
         {
             champion.AbilityUIManager.DisableAbility(AbilityCategory, ID, UsesResource);
         }
     }
 
-    private void EnableAbility()
+    private void EnableAbility(bool enableOnLevelUp)
     {
-        if (AbilityLevel <= 0) return;
+        if (enableOnLevelUp)
+        {
+            isEnabled = true;
+        }
+        else
+        {   
+            isDisabledByOutsideSource = false;
+        }
         
-        IsEnabled = true;
-        
-        if (IsOnCooldown || IsActive || !champion.AbilityUIManager) return;
+        if (!IsEnabled() || IsOnCooldown || IsActive || !champion.AbilityUIManager) return;
         
         if (IsBlocked)
         {
@@ -304,7 +313,7 @@ public abstract class Ability : DamageSource
             IsBlocked = true;
         }
         
-        if (!IsOnCooldown && IsEnabled && champion.AbilityUIManager)
+        if (!IsOnCooldown && IsEnabled() && champion.AbilityUIManager)
         {
             champion.AbilityUIManager.BlockAbility(AbilityCategory, ID, UsesResource);
         }
@@ -315,7 +324,7 @@ public abstract class Ability : DamageSource
         if (!IsBlocked || --abilityIsBlockedCount != 0) return;
         
         IsBlocked = false;
-        if (!IsOnCooldown && IsEnabled && champion.AbilityUIManager)
+        if (!IsOnCooldown && IsEnabled() && champion.AbilityUIManager)
         {
             champion.AbilityUIManager.UnblockAbility(AbilityCategory, ID, resourceCost <= champion.StatsManager.Resource.GetCurrentValue());
         }
@@ -392,8 +401,8 @@ public abstract class Ability : DamageSource
             yield return null;
         }
 
-        champion.AbilityUIManager.SetAbilityOffCooldown(AbilityCategory, ID, UsesResource, IsEnabled, IsBlocked);
-        if (UsesResource && IsEnabled && !IsBlocked)
+        champion.AbilityUIManager.SetAbilityOffCooldown(AbilityCategory, ID, UsesResource, IsEnabled(), IsBlocked);
+        if (UsesResource && IsEnabled() && !IsBlocked)
         {
             champion.AbilityUIManager.UpdateAbilityHasEnoughResource(ID, resourceCost <= champion.StatsManager.Resource.GetCurrentValue());
         }
@@ -473,13 +482,13 @@ public abstract class Ability : DamageSource
             {
                 abilityUIManager.SetAbilityCost(ID, resourceCost);
                 abilityUIManager.UpdateAbilityHasEnoughResource(ID,
-                    !IsEnabled || IsBlocked || IsOnCooldown || resourceCost <= champion.StatsManager.Resource.GetCurrentValue());
+                    !IsEnabled() || IsBlocked || IsOnCooldown || resourceCost <= champion.StatsManager.Resource.GetCurrentValue());
             }
         }
         else if (AbilityLevel == 0)
         {
             AbilityLevel++;
-            EnableAbility();
+            EnableAbility(true);
             if (this is IAbilityWithPassive iAbilityWithPassive)
             {
                 iAbilityWithPassive.EnableAbilityPassive();

@@ -16,7 +16,7 @@ public class Teleport : GroundTargetedBlink //TODO: UnitTargeted
         CannotCastAnyAbilityWhileActive = true;
         IsAMovementAbility = true;
 
-        IsEnabled = true;
+        AbilityLevel = 1;
     }
 
     protected override void SetResourcePaths()

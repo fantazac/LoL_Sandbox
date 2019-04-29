@@ -21,7 +21,7 @@ public abstract class SpawnDummy : GroundTargeted //GroundTargetedAoE
     {
         dummies = new List<Dummy>();
 
-        IsEnabled = true;
+        AbilityLevel = 1;
     }
 
     protected override void LoadPrefabs()

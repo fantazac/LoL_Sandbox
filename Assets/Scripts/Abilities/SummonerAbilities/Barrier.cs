@@ -12,8 +12,8 @@ public class Barrier : SelfTargeted
         baseCooldown = 180;
         
         CanBeCastDuringOtherAbilityCastTimes = true;
-        
-        IsEnabled = true;
+
+        AbilityLevel = 1;
     }
 
     protected override void SetResourcePaths()

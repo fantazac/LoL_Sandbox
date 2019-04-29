@@ -15,8 +15,6 @@ public class Recall : AutoTargetedBlink
         delayChannelTime = new WaitForSeconds(channelTime);
 
         AbilityLevel = 1;
-
-        IsEnabled = true;
     }
 
     protected override void SetResourcePaths()

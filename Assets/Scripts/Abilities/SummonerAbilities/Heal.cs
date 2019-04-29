@@ -19,7 +19,7 @@ public class Heal : GroundTargeted
 
         CanBeCastDuringOtherAbilityCastTimes = true;
 
-        IsEnabled = true;
+        AbilityLevel = 1;
     }
 
     protected override void SetResourcePaths()

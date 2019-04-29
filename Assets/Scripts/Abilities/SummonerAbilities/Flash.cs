@@ -15,7 +15,7 @@ public class Flash : GroundTargetedBlink
         CanBeCastDuringOtherAbilityCastTimes = true;
         IsAMovementAbility = true;
 
-        IsEnabled = true;
+        AbilityLevel = 1;
     }
 
     protected override void SetResourcePaths()

@@ -9,8 +9,6 @@ public class Ezreal_P : PassiveTargeted
         abilityType = AbilityType.PASSIVE;
 
         AbilityLevel = 1;
-
-        IsEnabled = true;
     }
 
     protected override void SetResourcePaths()

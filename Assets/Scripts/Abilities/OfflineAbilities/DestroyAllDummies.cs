@@ -8,7 +8,7 @@ public class DestroyAllDummies : AutoTargeted
     {
         abilityName = "Destroy All Dummies";
 
-        IsEnabled = true;
+        AbilityLevel = 1;
     }
 
     protected override void Start()
