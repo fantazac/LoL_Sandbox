@@ -195,7 +195,6 @@ public class Varus_Q : DirectionTargetedProjectile
     protected override void OnProjectileHit(Projectile projectile, Unit unitHit, bool isACriticalStrike, bool willMiss)
     {
         float abilityDamage = GetAbilityDamage(unitHit) * currentDamageReductionMultiplier * currentDamageIncreaseMultiplier;
-        Debug.Log(GetAbilityDamage(unitHit) + " " + currentDamageReductionMultiplier + " " + currentDamageIncreaseMultiplier);
         DamageUnit(unitHit, abilityDamage);
         if (currentDamageReductionMultiplier > DAMAGE_REDUCTION_CAP)
         {
