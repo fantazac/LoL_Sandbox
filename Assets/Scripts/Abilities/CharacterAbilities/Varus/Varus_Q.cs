@@ -18,7 +18,7 @@ public class Varus_Q : DirectionTargetedProjectile
 
         abilityType = AbilityType.SKILLSHOT;
         affectedUnitTypes = new List<Type>() { typeof(Unit) };
-        effectType = AbilityEffectType.SINGLE_TARGET;
+        effectType = AbilityEffectType.AREA_OF_EFFECT;
         damageType = DamageType.PHYSICAL;
 
         MaxLevel = 5;
