@@ -180,13 +180,13 @@ public class AbilityManager : MonoBehaviour
         }
     }
 
-    private void SendToServer_Ability_Destination(AbilityCategory abilityCategory, int abilityId, Vector3 destination)
+    protected void SendToServer_Ability_Destination(AbilityCategory abilityCategory, int abilityId, Vector3 destination)
     {
         champion.PhotonView.RPC(nameof(ReceiveFromServer_Ability_Destination), PhotonTargets.AllViaServer, abilityCategory, abilityId, destination);
     }
 
     [PunRPC]
-    private void ReceiveFromServer_Ability_Destination(AbilityCategory abilityCategory, int abilityId, Vector3 destination)
+    protected void ReceiveFromServer_Ability_Destination(AbilityCategory abilityCategory, int abilityId, Vector3 destination)
     {
         Ability ability = GetAbility(abilityCategory, abilityId);
         if (AbilityIsCastable(ability))
@@ -195,13 +195,13 @@ public class AbilityManager : MonoBehaviour
         }
     }
 
-    private void SendToServer_Ability_Unit(AbilityCategory abilityCategory, int abilityId, Unit target)
+    protected void SendToServer_Ability_Unit(AbilityCategory abilityCategory, int abilityId, Unit target)
     {
         champion.PhotonView.RPC(nameof(ReceiveFromServer_Ability_Unit), PhotonTargets.AllViaServer, abilityCategory, abilityId, target.ID);
     }
 
     [PunRPC]
-    private void ReceiveFromServer_Ability_Unit(AbilityCategory abilityCategory, int abilityId, int unitId)
+    protected void ReceiveFromServer_Ability_Unit(AbilityCategory abilityCategory, int abilityId, int unitId)
     {
         Ability ability = GetAbility(abilityCategory, abilityId);
         if (AbilityIsCastable(ability))
@@ -210,13 +210,13 @@ public class AbilityManager : MonoBehaviour
         }
     }
 
-    private void SendToServer_Ability_Auto(AbilityCategory abilityCategory, int abilityId)
+    protected void SendToServer_Ability_Auto(AbilityCategory abilityCategory, int abilityId)
     {
         champion.PhotonView.RPC(nameof(ReceiveFromServer_Ability_Auto), PhotonTargets.AllViaServer, abilityCategory, abilityId);
     }
 
     [PunRPC]
-    private void ReceiveFromServer_Ability_Auto(AbilityCategory abilityCategory, int abilityId)
+    protected void ReceiveFromServer_Ability_Auto(AbilityCategory abilityCategory, int abilityId)
     {
         Ability ability = GetAbility(abilityCategory, abilityId);
         if (AbilityIsCastable(ability))
@@ -225,13 +225,13 @@ public class AbilityManager : MonoBehaviour
         }
     }
 
-    private void SendToServer_Ability_Recast(AbilityCategory abilityCategory, int abilityId)
+    protected void SendToServer_Ability_Recast(AbilityCategory abilityCategory, int abilityId)
     {
         champion.PhotonView.RPC(nameof(ReceiveFromServer_Ability_Recast), PhotonTargets.AllViaServer, abilityCategory, abilityId);
     }
 
     [PunRPC]
-    private void ReceiveFromServer_Ability_Recast(AbilityCategory abilityCategory, int abilityId)
+    protected void ReceiveFromServer_Ability_Recast(AbilityCategory abilityCategory, int abilityId)
     {
         Ability ability = GetAbility(abilityCategory, abilityId);
         if (ability.IsReadyToBeRecasted)
