@@ -279,6 +279,11 @@ public abstract class Ability : DamageSource
         }
     }
 
+    protected void DisableOtherAbility(Ability ability)
+    {
+        ability.DisableAbility();
+    }
+
     private void EnableAbility(bool enableOnLevelUp)
     {
         if (enableOnLevelUp)
@@ -300,6 +305,11 @@ public abstract class Ability : DamageSource
         {
             champion.AbilityUIManager.EnableAbility(AbilityCategory, ID, resourceCost <= champion.StatsManager.Resource.GetCurrentValue());
         }
+    }
+
+    protected void EnableOtherAbility(Ability ability)
+    {
+        ability.EnableAbility(false);
     }
 
     public void BlockAbility(bool wasDisabled = false)

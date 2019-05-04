@@ -16,6 +16,7 @@ public class Varus_Q : DirectionTargetedProjectile
     private float currentRange;
     
     private Varus_W varusW;
+    private IEnumerator disableVarusWCoroutine;
 
     private readonly float cooldownReductionOnVarusWStacksProc;
     private readonly float manaPercentRefundOnChargeEndCancel;
@@ -130,6 +131,8 @@ public class Varus_Q : DirectionTargetedProjectile
             AbilityBuffs[0].ConsumeBuff(champion);
             
             FinishAbilityCast();
+            
+            EnableOtherAbility(varusW);
         }
         else
         {
@@ -140,7 +143,8 @@ public class Varus_Q : DirectionTargetedProjectile
             FinalAdjustments(destination);
 
             StartCorrectCoroutine();
-            StartCoroutine(DisableVarusW());
+            disableVarusWCoroutine = DisableVarusW();
+            StartCoroutine(disableVarusWCoroutine);
         }
     }
     
@@ -154,10 +158,10 @@ public class Varus_Q : DirectionTargetedProjectile
 
     private IEnumerator DisableVarusW()
     {
-        //this needs to be different if w gets activated and stuff
         yield return delayDisableVarusW;
 
-        //disable varus w
+        DisableOtherAbility(varusW);
+        disableVarusWCoroutine = null;
     }
     
     protected override IEnumerator AbilityWithChargeTime()
@@ -174,6 +178,8 @@ public class Varus_Q : DirectionTargetedProjectile
         champion.StatsManager.Resource.Restore(resourceCost * manaPercentRefundOnChargeEndCancel);
         
         CancelAbility();
+        
+        EnableOtherAbility(varusW);
     }
 
     protected override void ExtraActionsOnCancel()
