@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Varus_E : GroundTargetedAoE //TODO: Shoot invisible projectile and then spawn area on destination reached
+public class Varus_E : GroundTargetedAoE
 {
     private Varus_W varusW;
 
@@ -13,7 +13,7 @@ public class Varus_E : GroundTargetedAoE //TODO: Shoot invisible projectile and 
     private readonly int totalTicks;
     private readonly WaitForSeconds tickDelay;
 
-    private float timeForProjectileToReachDestination;
+    private readonly float timeForProjectileToReachDestination;
 
     //private WaitForSeconds delayActivation;
 
