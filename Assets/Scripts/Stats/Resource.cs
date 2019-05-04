@@ -31,9 +31,14 @@ public class Resource : Stat
         OnCurrentResourceChanged?.Invoke(currentValue);
     }
 
-    public float GetPercentLeft()
+    public float GetCurrentPercentResource()
     {
         return currentValue / total;
+    }
+    
+    public float GetMissingPercentResource()
+    {
+        return 1 - currentValue / total;
     }
 
     protected override void UpdateTotal()

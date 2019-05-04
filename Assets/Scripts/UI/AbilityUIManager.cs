@@ -7,7 +7,6 @@ public class AbilityUIManager : MonoBehaviour
     [SerializeField] private Image[] abilityRecastImages;
     [SerializeField] private Text[] abilityCostTexts;
     [SerializeField] private Image[] abilityOnCooldownImages;
-    [SerializeField] private Image[] abilityOnCooldownForRecastImages;
     [SerializeField] private Text[] abilityCooldownTexts;
     [SerializeField] private GameObject[] abilityNotEnoughResourceObjects;
     [SerializeField] private GameObject[] abilityBlockedObjects;
@@ -96,7 +95,7 @@ public class AbilityUIManager : MonoBehaviour
         int id = GetAbilityId(abilityCategory, abilityId);
         abilityRecastImages[id].gameObject.SetActive(true);
         abilityRecastImages[id].color = abilityColorOnCooldownForRecast;
-        abilityOnCooldownForRecastImages[id].fillAmount = 1;
+        abilityOnCooldownImages[id].fillAmount = 1;
     }
 
     public void UpdateAbilityCooldown(AbilityCategory abilityCategory, int abilityId, float cooldown, float cooldownRemaining)
@@ -108,13 +107,9 @@ public class AbilityUIManager : MonoBehaviour
         SetCooldownText(id, cooldownRemaining);
     }
 
-    public void UpdateAbilityCooldownForRecast(AbilityCategory abilityCategory, int abilityId, float cooldownForRecast, float cooldownRemaining)
+    public void UpdateAbilityCooldownForRecast(AbilityCategory abilityCategory, int abilityId, float cooldown, float cooldownRemaining)
     {
-        int id = GetAbilityId(abilityCategory, abilityId);
-
-        abilityOnCooldownForRecastImages[id].fillAmount = cooldownRemaining / cooldownForRecast;
-
-        SetCooldownText(id, cooldownRemaining);
+        UpdateAbilityCooldown(abilityCategory, abilityId, cooldown, cooldownRemaining);
     }
 
     private void SetCooldownText(int abilityId, float cooldownRemaining)
@@ -151,7 +146,7 @@ public class AbilityUIManager : MonoBehaviour
     public void SetAbilityOffCooldownForRecast(AbilityCategory abilityCategory, int abilityId)
     {
         int id = GetAbilityId(abilityCategory, abilityId);
-        abilityOnCooldownForRecastImages[id].fillAmount = 0;
+        abilityOnCooldownImages[id].fillAmount = 0;
         abilityRecastImages[id].color = Color.white;
         abilityCooldownTexts[id].text = "";
     }

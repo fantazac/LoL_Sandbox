@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class Varus_W : SelfTargeted, IAbilityWithPassive
 {
+    private const float DAMAGE_INCREASE_CAP = 0.5f;
+    
     private List<Ability> abilitiesToTriggerStacks;
 
     private IEnumerator cancelAbilityAfterDelayCoroutine;
@@ -14,10 +16,12 @@ public class Varus_W : SelfTargeted, IAbilityWithPassive
     private readonly float percentHealthDamagePerLevel;
     private readonly float percentAPScaling;
 
+    private Varus_Q varusQ;
+
     //private float maxDamageAgainstMonsters;
 
-    //private float missingHealthDamage;
-    //private float missingHealthDamagePerLevel;
+    private float missingHealthDamage;
+    private readonly float missingHealthDamagePerLevel;
 
     protected Varus_W()
     {
@@ -43,8 +47,8 @@ public class Varus_W : SelfTargeted, IAbilityWithPassive
 
         //maxDamageAgainstMonsters = 360;
 
-        //missingHealthDamage = 6;// 6/7/8/9/10
-        //missingHealthDamagePerLevel = 1;
+        missingHealthDamage = 0.06f;// 6%/8%/10%/12%/14%
+        missingHealthDamagePerLevel = 0.02f;
 
         delayCancelAbility = new WaitForSeconds(5);
 
@@ -66,6 +70,8 @@ public class Varus_W : SelfTargeted, IAbilityWithPassive
 
     protected override void Start()
     {
+        varusQ = GetComponent<Varus_Q>();
+        
         base.Start();
 
         AbilityDebuffs = new AbilityBuff[] { gameObject.AddComponent<Varus_W_Debuff>() };
@@ -77,6 +83,16 @@ public class Varus_W : SelfTargeted, IAbilityWithPassive
             {
                 abilitiesToTriggerStacks.Add(ability);
             }
+        }
+        
+        champion.LevelManager.OnLevelUp += OnCharacterLevelUp;
+    }
+    
+    private void OnCharacterLevelUp(int level)
+    {
+        if (level == 4 || level == 7 || level == 10 || level == 13)
+        {
+            missingHealthDamage += missingHealthDamagePerLevel;
         }
     }
 
@@ -96,16 +112,58 @@ public class Varus_W : SelfTargeted, IAbilityWithPassive
     {
         StartAbilityCast();
 
-        //if q buff is active
-        //AbilityBuffs[1].AddNewBuffToAffectedUnit(character);
-        //else
         if (cancelAbilityAfterDelayCoroutine != null)
         {
             StopCoroutine(cancelAbilityAfterDelayCoroutine);
         }
 
-        cancelAbilityAfterDelayCoroutine = CancelAbilityAfterDelay();
-        StartCoroutine(cancelAbilityAfterDelayCoroutine);
+        if (!varusQ || !varusQ.IsActive)
+        {
+            if (varusQ)
+            {
+                varusQ.OnAbilityUsed += OnVarusQUsed;
+            }
+            cancelAbilityAfterDelayCoroutine = CancelAbilityAfterDelay();
+            StartCoroutine(cancelAbilityAfterDelayCoroutine);   
+        }
+        else
+        {
+            OnVarusQUsed(varusQ);
+        }
+    }
+
+    private void OnVarusQUsed(Ability ability)
+    {
+        if (cancelAbilityAfterDelayCoroutine != null)
+        {
+            StopCoroutine(cancelAbilityAfterDelayCoroutine);
+        }
+        varusQ.OnAbilityUsed -= OnVarusQUsed;
+        varusQ.OnAbilityFinished += OnVarusQFinished;
+        varusQ.VarusWIsActive();
+    }
+
+    public void EmpoweredQHit(Unit unitHit, float chargeTime, float finalChargeDuration)
+    {
+        float missingHealth = unitHit.StatsManager.Health.GetTotal() - unitHit.StatsManager.Health.GetCurrentValue();
+        float missingHealthPercentDamage = missingHealth * missingHealthDamage;
+        if (finalChargeDuration < chargeTime)
+        {
+            missingHealthPercentDamage *= 1 + DAMAGE_INCREASE_CAP * finalChargeDuration;
+        }
+        else
+        {
+            missingHealthPercentDamage *= 1 + DAMAGE_INCREASE_CAP;
+        }
+
+        float empoweredQDamage = GetEmpoweredQDamage(unitHit, missingHealthPercentDamage);
+        DamageUnit(unitHit, empoweredQDamage);
+    }
+
+    private void OnVarusQFinished(Ability ability)
+    {
+        varusQ.OnAbilityFinished -= OnVarusQFinished;
+        FinishAbilityCast();
     }
 
     protected override void ExtraActionsOnCancel()
@@ -113,6 +171,10 @@ public class Varus_W : SelfTargeted, IAbilityWithPassive
         if (cancelAbilityAfterDelayCoroutine != null)
         {
             StopCoroutine(cancelAbilityAfterDelayCoroutine);
+        }
+        if (varusQ)
+        {
+            varusQ.OnAbilityUsed -= OnVarusQUsed;   
         }
     }
 
@@ -160,8 +222,13 @@ public class Varus_W : SelfTargeted, IAbilityWithPassive
         return damageAfterModifiers;
     }
 
-    private IEnumerator CancelAbilityAfterDelay()
+    private float GetEmpoweredQDamage(Unit unitHit, float missingHealthPercentDamage)
     {
+        return ApplyDamageModifiers(unitHit, missingHealthPercentDamage, damageType);
+    }
+    
+    private IEnumerator CancelAbilityAfterDelay()
+    {   
         yield return delayCancelAbility;
 
         CancelAbility();
