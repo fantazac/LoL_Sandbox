@@ -11,7 +11,7 @@ public abstract class GroundTargetedBlink : GroundTargeted
 
         IsBeingCasted = false;
         UseResource();
-        destinationOnCast = FindPointToMoveTo(destinationOnCast, transform.position);
+        destinationOnCast = FindGroundPoint(destinationOnCast, transform.position);
         champion.OrientationManager.RotateCharacterInstantly(destinationOnCast);
         transform.position = destinationOnCast;
         champion.ChampionMovementManager.NotifyChampionMoved();
@@ -37,13 +37,5 @@ public abstract class GroundTargetedBlink : GroundTargeted
     protected override void FinalAdjustments(Vector3 destination)
     {
         destinationOnCast = destination;
-    }
-
-    protected Vector3 FindPointToMoveTo(Vector3 destination, Vector3 currentPosition)
-    {
-        float distanceBetweenBothVectors = Vector3.Distance(destination, currentPosition);
-        Vector3 normalizedVector = Vector3.Normalize(destination - currentPosition);
-
-        return distanceBetweenBothVectors > range ? range * normalizedVector + currentPosition : destination;
     }
 }

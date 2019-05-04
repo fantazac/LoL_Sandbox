@@ -7,8 +7,13 @@ public class Varus_E : GroundTargetedAoE //TODO: Shoot invisible projectile and 
 {
     private Varus_W varusW;
 
+    private string projectilePrefabPath;
+    private GameObject projectilePrefab;
+
     private readonly int totalTicks;
     private readonly WaitForSeconds tickDelay;
+
+    private float timeForProjectileToReachDestination;
 
     //private WaitForSeconds delayActivation;
 
@@ -38,6 +43,8 @@ public class Varus_E : GroundTargetedAoE //TODO: Shoot invisible projectile and 
         totalTicks = 16;
         tickDelay = new WaitForSeconds(0.25f);
 
+        timeForProjectileToReachDestination = 0.5f;
+        
         //delayActivation = new WaitForSeconds(0.5f);
 
         //radius = 200;
@@ -49,7 +56,15 @@ public class Varus_E : GroundTargetedAoE //TODO: Shoot invisible projectile and 
     {
         abilitySpritePath = "Sprites/Characters/CharacterAbilities/Varus/VarusE";
 
+        projectilePrefabPath = "CharacterAbilitiesPrefabs/Varus/VarusE";
         areaOfEffectPrefabPath = "CharacterAbilitiesPrefabs/Varus/VarusE2";
+    }
+
+    protected override void LoadPrefabs()
+    {
+        base.LoadPrefabs();
+
+        projectilePrefab = Resources.Load<GameObject>(projectilePrefabPath);
     }
 
     /*protected override void ModifyValues()
@@ -83,15 +98,31 @@ public class Varus_E : GroundTargetedAoE //TODO: Shoot invisible projectile and 
         UseResource();
         champion.OrientationManager.RotateCharacterInstantly(destinationOnCast);
 
+        float projectileRange = Vector3.Distance(destinationOnCast, transform.position);
+        SpawnProjectile(transform.position + (transform.forward * projectilePrefab.transform.localScale.z * 0.5f), transform.rotation,
+            projectileRange > range ? range : projectileRange);
+
+        FinishAbilityCast();
+    }
+
+    private void SpawnProjectile(Vector3 position, Quaternion rotation, float range)
+    {
+        Projectile projectile = Instantiate(projectilePrefab, position, rotation).GetComponent<Projectile>();
+        projectile.ShootProjectile(affectedTeams, affectedUnitTypes, range / timeForProjectileToReachDestination, range);
+        projectile.OnProjectileReachedEnd += OnProjectileReachedEnd;
+    }
+
+    private void OnProjectileReachedEnd(Projectile projectile)
+    {
         AreaOfEffectWithEffectOverTime areaOfEffect =
-            Instantiate(areaOfEffectPrefab, Vector3.right * destinationOnCast.x + Vector3.forward * destinationOnCast.z, Quaternion.identity)
+            Instantiate(areaOfEffectPrefab, Vector3.right * projectile.transform.position.x + Vector3.forward * projectile.transform.position.z, Quaternion.identity)
                 .GetComponent<AreaOfEffectWithEffectOverTime>();
         areaOfEffect.CreateAreaOfEffect(affectedTeams, affectedUnitTypes, tickDelay, totalTicks);
         areaOfEffect.OnAreaOfEffectHit += OnAreaOfEffectHit;
         areaOfEffect.OnAreaOfEffectWithEffectOverTimeHit += OnAreaOfEffectWithEffectOverTimeHit;
         areaOfEffect.ActivateAreaOfEffect();
-
-        FinishAbilityCast();
+        
+        Destroy(projectile.gameObject);
     }
 
     private void OnAreaOfEffectHit(AreaOfEffect areaOfEffect, Unit unitHit)

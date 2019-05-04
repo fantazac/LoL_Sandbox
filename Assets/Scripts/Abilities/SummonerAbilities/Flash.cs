@@ -34,7 +34,7 @@ public class Flash : GroundTargetedBlink
 
         champion.ChampionMovementManager.StopMovementTowardsPoint();
 
-        Vector3 newDestination = FindPointToMoveTo(destination, transform.position);
+        Vector3 newDestination = FindGroundPoint(destination, transform.position);
         Quaternion newRotation = Quaternion.LookRotation((destination - transform.position).normalized);
 
         transform.position = newDestination;
