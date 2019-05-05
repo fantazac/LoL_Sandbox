@@ -13,14 +13,14 @@ public class AbilityUIManager : MonoBehaviour
     [SerializeField] private GameObject[] abilityLevelPoints;
     [SerializeField] private GameObject abilityLevelPoint;
 
-    private readonly Color abilityColorOnCooldown;
-    private readonly Color abilityColorOnCooldownForRecast;
+    private readonly Color abilityColorDisabled;
+    private readonly Color abilityColorEnabled;
     private readonly Color abilityLevelPointColor;
 
     private AbilityUIManager()
     {
-        abilityColorOnCooldown = Color.gray;
-        abilityColorOnCooldownForRecast = new Color(0.7f, 0.7f, 0.7f);
+        abilityColorDisabled = Color.gray;
+        abilityColorEnabled = Color.white;
         abilityLevelPointColor = new Color(0.85f, 0.8f, 0.3f);
     }
 
@@ -86,7 +86,7 @@ public class AbilityUIManager : MonoBehaviour
             abilityBlockedObjects[id - 1].SetActive(false);
         }
 
-        abilityImages[id].color = abilityColorOnCooldown;
+        abilityImages[id].color = abilityColorDisabled;
         abilityOnCooldownImages[id].fillAmount = 1;
     }
 
@@ -94,7 +94,7 @@ public class AbilityUIManager : MonoBehaviour
     {
         int id = GetAbilityId(abilityCategory, abilityId);
         abilityRecastImages[id].gameObject.SetActive(true);
-        abilityRecastImages[id].color = abilityColorOnCooldownForRecast;
+        abilityRecastImages[id].color = abilityColorDisabled;
         abilityOnCooldownImages[id].fillAmount = 1;
     }
 
@@ -137,7 +137,7 @@ public class AbilityUIManager : MonoBehaviour
         }
         else if (abilityIsEnabled)
         {
-            abilityImages[id].color = Color.white;
+            abilityImages[id].color = abilityColorEnabled;
         }
 
         abilityCooldownTexts[id].text = "";
@@ -147,13 +147,13 @@ public class AbilityUIManager : MonoBehaviour
     {
         int id = GetAbilityId(abilityCategory, abilityId);
         abilityOnCooldownImages[id].fillAmount = 0;
-        abilityRecastImages[id].color = Color.white;
+        abilityRecastImages[id].color = abilityColorEnabled;
         abilityCooldownTexts[id].text = "";
     }
 
     public void DisableAbility(AbilityCategory abilityCategory, int abilityId, bool abilityUsesResource)
     {
-        abilityImages[GetAbilityId(abilityCategory, abilityId)].color = abilityColorOnCooldown;
+        abilityImages[GetAbilityId(abilityCategory, abilityId)].color = abilityColorDisabled;
         if (abilityUsesResource)
         {
             UpdateAbilityHasEnoughResource(abilityId, true);
@@ -162,7 +162,7 @@ public class AbilityUIManager : MonoBehaviour
 
     public void EnableAbility(AbilityCategory abilityCategory, int abilityId, bool characterHasEnoughResourceToCastAbility)
     {
-        abilityImages[GetAbilityId(abilityCategory, abilityId)].color = Color.white;
+        abilityImages[GetAbilityId(abilityCategory, abilityId)].color = abilityColorEnabled;
         UpdateAbilityHasEnoughResource(abilityId, characterHasEnoughResourceToCastAbility);
     }
 
@@ -171,7 +171,7 @@ public class AbilityUIManager : MonoBehaviour
         if (abilityCategory == AbilityCategory.OfflineAbility || abilityCategory == AbilityCategory.OtherCharacterAbility) return;
         
         int id = GetAbilityId(abilityCategory, abilityId);
-        abilityImages[id].color = abilityColorOnCooldown;
+        abilityImages[id].color = abilityColorDisabled;
         abilityBlockedObjects[id - 1].SetActive(true);
         if (abilityUsesResource)
         {
@@ -184,7 +184,7 @@ public class AbilityUIManager : MonoBehaviour
         if (abilityCategory == AbilityCategory.OfflineAbility || abilityCategory == AbilityCategory.OtherCharacterAbility) return;
 
         int id = GetAbilityId(abilityCategory, abilityId);
-        abilityImages[id].color = Color.white;
+        abilityImages[id].color = abilityColorEnabled;
         abilityBlockedObjects[id - 1].SetActive(false);
         UpdateAbilityHasEnoughResource(abilityId, characterHasEnoughResourceToCastAbility);
     }
