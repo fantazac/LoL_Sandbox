@@ -393,7 +393,7 @@ public class AbilityManager : MonoBehaviour
 
     private bool AbilityIsAvailable(Ability abilityToCast)
     {
-        return abilityToCast && abilityToCast.IsEnabled() && !abilityToCast.IsBlocked;
+        return abilityToCast && abilityToCast.IsEnabled() && (!abilityToCast.IsBlocked || abilityToCast.IsReadyToBeRecasted);
     }
 
     private bool AbilityIsCastable(Ability abilityToCast)
