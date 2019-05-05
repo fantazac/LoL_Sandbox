@@ -4,7 +4,7 @@
     {
         buffName = "Piercing Arrow";
 
-        buffDuration = 4;
+        buffDuration = 5;
         buffFlatValue = 20;
     }
 

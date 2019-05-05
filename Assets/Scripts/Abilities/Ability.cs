@@ -372,6 +372,8 @@ public abstract class Ability : DamageSource
         if (cooldownForRecastCoroutine != null)
         {
             StopCoroutine(cooldownForRecastCoroutine);
+            cooldownForRecastCoroutine = null;
+            IsOnCooldownForRecast = false;
         }
 
         StartCoroutine(PutAbilityOffCooldown(abilityCooldown));
@@ -417,7 +419,6 @@ public abstract class Ability : DamageSource
             champion.AbilityUIManager.UpdateAbilityHasEnoughResource(ID, resourceCost <= champion.StatsManager.Resource.GetCurrentValue());
         }
 
-        cooldownForRecastCoroutine = null;
         IsOnCooldown = false;
     }
 

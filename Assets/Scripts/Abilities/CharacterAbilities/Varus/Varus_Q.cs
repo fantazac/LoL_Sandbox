@@ -50,7 +50,7 @@ public class Varus_Q : DirectionTargetedProjectile
         baseCooldown = 20; // 20/18/16/14/12
         baseCooldownPerLevel = -2;
         chargeTime = 1;
-        maximumChargeTime = 4;
+        maximumChargeTime = 5;
         delayChargeTime = new WaitForSeconds(maximumChargeTime);
 
         rangeIncreaseCap = 700;
@@ -146,6 +146,11 @@ public class Varus_Q : DirectionTargetedProjectile
 
             FinishAbilityCast();
 
+            if (disableVarusWCoroutine != null)
+            {
+                StopCoroutine(disableVarusWCoroutine);
+                disableVarusWCoroutine = null;
+            }
             EnableOtherAbility(varusW);
         }
         else
@@ -193,6 +198,7 @@ public class Varus_Q : DirectionTargetedProjectile
         if (disableVarusWCoroutine != null)
         {
             StopCoroutine(disableVarusWCoroutine);
+            disableVarusWCoroutine = null;
         }
 
         DisableOtherAbility(varusW);
