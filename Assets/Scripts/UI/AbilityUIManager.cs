@@ -61,7 +61,7 @@ public class AbilityUIManager : MonoBehaviour
     public void SetMaxAbilityLevel(int abilityId, int abilityMaxLevel)
     {
         RectTransform parent = abilityLevelPoints[abilityId].GetComponent<RectTransform>();
-        parent.anchoredPosition = parent.anchoredPosition + (Vector2.left * 4.5f * abilityMaxLevel + Vector2.right);
+        parent.anchoredPosition += 4.5f * abilityMaxLevel * Vector2.left + Vector2.right;
         for (int i = 0; i < abilityMaxLevel; i++)
         {
             Instantiate(abilityLevelPoint).transform.SetParent(parent, false);
@@ -73,12 +73,17 @@ public class AbilityUIManager : MonoBehaviour
         abilityLevelPoints[abilityId].transform.GetChild(abilityLevel - 1).GetComponent<Image>().color = abilityLevelPointColor;
     }
 
-    public void SetAbilityOnCooldown(AbilityCategory abilityCategory, int abilityId, bool abilityIsBlocked, bool canBeRecasted)
+    public void SetAbilityOnCooldown(AbilityCategory abilityCategory, int abilityId, bool abilityIsBlocked, bool canBeRecasted, bool abilityUsesResource)
     {
         int id = GetAbilityId(abilityCategory, abilityId);
         if (canBeRecasted)
         {
             abilityRecastImages[id].gameObject.SetActive(false);
+        }
+
+        if (abilityUsesResource)
+        {
+            UpdateAbilityHasEnoughResource(abilityCategory, abilityId, true, false);
         }
 
         if (abilityIsBlocked)
@@ -127,20 +132,29 @@ public class AbilityUIManager : MonoBehaviour
         abilityCooldownTexts[abilityId].text = cooldownString;
     }
 
-    public void SetAbilityOffCooldown(AbilityCategory abilityCategory, int abilityId, bool abilityUsesResource, bool abilityIsEnabled, bool abilityIsBlocked)
+    public void SetAbilityOffCooldown(AbilityCategory abilityCategory, int abilityId, bool abilityUsesResource, bool abilityIsEnabled, bool abilityIsBlocked,
+        bool championHasEnoughResourceToCastAbility)
     {
         int id = GetAbilityId(abilityCategory, abilityId);
         abilityOnCooldownImages[id].fillAmount = 0;
-        if (abilityIsBlocked)
+        abilityCooldownTexts[id].text = "";
+
+        if (abilityUsesResource)
         {
-            BlockAbility(abilityCategory, abilityId, abilityUsesResource);
+            if (abilityIsEnabled)
+            {
+                abilityImages[id].color = abilityColorEnabled;
+            }
+            UpdateAbilityHasEnoughResource(abilityCategory, abilityId, championHasEnoughResourceToCastAbility, abilityIsBlocked);
+        }
+        else if (abilityIsBlocked)
+        {
+            BlockAbility(abilityCategory, abilityId);
         }
         else if (abilityIsEnabled)
         {
             abilityImages[id].color = abilityColorEnabled;
         }
-
-        abilityCooldownTexts[id].text = "";
     }
 
     public void SetAbilityOffCooldownForRecast(AbilityCategory abilityCategory, int abilityId)
@@ -156,46 +170,59 @@ public class AbilityUIManager : MonoBehaviour
         abilityImages[GetAbilityId(abilityCategory, abilityId)].color = abilityColorDisabled;
         if (abilityUsesResource)
         {
-            UpdateAbilityHasEnoughResource(abilityId, true);
+            UpdateAbilityHasEnoughResource(abilityCategory, abilityId, true, false);
         }
     }
 
-    public void EnableAbility(AbilityCategory abilityCategory, int abilityId, bool characterHasEnoughResourceToCastAbility)
+    public void EnableAbility(AbilityCategory abilityCategory, int abilityId, bool abilityUsesResource, bool characterHasEnoughResourceToCastAbility, bool abilityIsBlocked)
     {
         abilityImages[GetAbilityId(abilityCategory, abilityId)].color = abilityColorEnabled;
-        UpdateAbilityHasEnoughResource(abilityId, characterHasEnoughResourceToCastAbility);
+        if (abilityUsesResource)
+        {
+            UpdateAbilityHasEnoughResource(abilityCategory, abilityId, characterHasEnoughResourceToCastAbility, abilityIsBlocked);   
+        }
+        else if (abilityIsBlocked)
+        {
+            BlockAbility(abilityCategory, abilityId);
+        }
     }
 
-    public void BlockAbility(AbilityCategory abilityCategory, int abilityId, bool abilityUsesResource)
+    public void BlockAbility(AbilityCategory abilityCategory, int abilityId)
     {
         if (abilityCategory == AbilityCategory.OfflineAbility || abilityCategory == AbilityCategory.OtherCharacterAbility) return;
-        
+
         int id = GetAbilityId(abilityCategory, abilityId);
         abilityImages[id].color = abilityColorDisabled;
         abilityBlockedObjects[id - 1].SetActive(true);
-        if (abilityUsesResource)
-        {
-            UpdateAbilityHasEnoughResource(abilityId, true);
-        }
     }
 
-    public void UnblockAbility(AbilityCategory abilityCategory, int abilityId, bool characterHasEnoughResourceToCastAbility)
+    public void UnblockAbility(AbilityCategory abilityCategory, int abilityId)
     {
         if (abilityCategory == AbilityCategory.OfflineAbility || abilityCategory == AbilityCategory.OtherCharacterAbility) return;
 
         int id = GetAbilityId(abilityCategory, abilityId);
         abilityImages[id].color = abilityColorEnabled;
         abilityBlockedObjects[id - 1].SetActive(false);
-        UpdateAbilityHasEnoughResource(abilityId, characterHasEnoughResourceToCastAbility);
     }
 
-    public void UpdateAbilityHasEnoughResource(int abilityId, bool characterHasEnoughResourceToCastAbility)
+    public void UpdateAbilityHasEnoughResource(AbilityCategory abilityCategory, int abilityId, bool championHasEnoughResourceToCastAbility, bool abilityIsBlocked)
     {
-        GameObject abilityNotEnoughResourceObject = abilityNotEnoughResourceObjects[abilityId];
-        if ((characterHasEnoughResourceToCastAbility && abilityNotEnoughResourceObject.activeSelf) ||
-            (!characterHasEnoughResourceToCastAbility && !abilityNotEnoughResourceObject.activeSelf))
+        int id = GetAbilityId(abilityCategory, abilityId);
+        GameObject abilityNotEnoughResourceObject = abilityNotEnoughResourceObjects[id - 1];
+        if (championHasEnoughResourceToCastAbility == abilityNotEnoughResourceObject.activeSelf)
         {
-            abilityNotEnoughResourceObject.SetActive(!characterHasEnoughResourceToCastAbility);
+            abilityNotEnoughResourceObject.SetActive(!championHasEnoughResourceToCastAbility);
+        }
+
+        if (!abilityIsBlocked) return;
+        
+        if (championHasEnoughResourceToCastAbility)
+        {
+            BlockAbility(abilityCategory, abilityId);
+        }
+        else
+        {
+            UnblockAbility(abilityCategory, abilityId);
         }
     }
 }

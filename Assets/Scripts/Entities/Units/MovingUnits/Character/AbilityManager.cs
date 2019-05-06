@@ -157,8 +157,9 @@ public class AbilityManager : MonoBehaviour
 
     private void UpdateAbilityHasEnoughResource(Ability ability)
     {
-        bool hasEnoughResourceToCastAbility = !AbilityIsAvailable(ability) || !AbilityCanBePressed(ability) || HasEnoughResourceToCastAbility(ability);
-        champion.AbilityUIManager.UpdateAbilityHasEnoughResource(ability.ID, hasEnoughResourceToCastAbility);
+        if (!ability.IsEnabled() || !AbilityCanBePressed(ability)) return;
+        
+        champion.AbilityUIManager.UpdateAbilityHasEnoughResource(ability.AbilityCategory, ability.ID, HasEnoughResourceToCastAbility(ability), ability.IsBlocked);
         if (!ability.UsesResource)
         {
             characterAbilitiesWithResourceCosts.Remove(ability);

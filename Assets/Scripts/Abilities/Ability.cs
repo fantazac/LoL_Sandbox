@@ -273,7 +273,7 @@ public abstract class Ability : DamageSource
     private void DisableAbility()
     {
         isDisabledByOutsideSource = true;
-        if (!IsOnCooldown && champion.AbilityUIManager)
+        if (champion.AbilityUIManager && !IsOnCooldown)
         {
             champion.AbilityUIManager.DisableAbility(AbilityCategory, ID, UsesResource);
         }
@@ -295,7 +295,7 @@ public abstract class Ability : DamageSource
             isDisabledByOutsideSource = false;
         }
         
-        if (!IsEnabled() || IsOnCooldown || IsActive || !champion.AbilityUIManager) return;
+        if (!champion.AbilityUIManager || !IsEnabled() || IsOnCooldown || IsActive) return;
         
         if (IsBlocked)
         {
@@ -303,7 +303,7 @@ public abstract class Ability : DamageSource
         }
         else
         {
-            champion.AbilityUIManager.EnableAbility(AbilityCategory, ID, resourceCost <= champion.StatsManager.Resource.GetCurrentValue());
+            champion.AbilityUIManager.EnableAbility(AbilityCategory, ID, UsesResource, ChampionHasEnoughResourceToCastAbility(), IsBlocked);
         }
     }
 
@@ -323,9 +323,9 @@ public abstract class Ability : DamageSource
             IsBlocked = true;
         }
         
-        if (!IsOnCooldown && IsEnabled() && champion.AbilityUIManager)
+        if (champion.AbilityUIManager && !IsOnCooldown && IsEnabled() && (!UsesResource || ChampionHasEnoughResourceToCastAbility()))
         {
-            champion.AbilityUIManager.BlockAbility(AbilityCategory, ID, UsesResource);
+            champion.AbilityUIManager.BlockAbility(AbilityCategory, ID);
         }
     }
 
@@ -334,9 +334,9 @@ public abstract class Ability : DamageSource
         if (!IsBlocked || --abilityIsBlockedCount != 0) return;
         
         IsBlocked = false;
-        if (!IsOnCooldown && IsEnabled() && champion.AbilityUIManager)
+        if (champion.AbilityUIManager && !IsOnCooldown && IsEnabled())
         {
-            champion.AbilityUIManager.UnblockAbility(AbilityCategory, ID, resourceCost <= champion.StatsManager.Resource.GetCurrentValue());
+            champion.AbilityUIManager.UnblockAbility(AbilityCategory, ID);
         }
     }
 
@@ -402,7 +402,7 @@ public abstract class Ability : DamageSource
 
         yield return null;
 
-        champion.AbilityUIManager.SetAbilityOnCooldown(AbilityCategory, ID, IsBlocked, CanBeRecasted);
+        champion.AbilityUIManager.SetAbilityOnCooldown(AbilityCategory, ID, IsBlocked, CanBeRecasted, UsesResource);
 
         while (cooldownRemaining > 0)
         {
@@ -413,11 +413,7 @@ public abstract class Ability : DamageSource
             yield return null;
         }
 
-        champion.AbilityUIManager.SetAbilityOffCooldown(AbilityCategory, ID, UsesResource, IsEnabled(), IsBlocked);
-        if (UsesResource && IsEnabled() && !IsBlocked)
-        {
-            champion.AbilityUIManager.UpdateAbilityHasEnoughResource(ID, resourceCost <= champion.StatsManager.Resource.GetCurrentValue());
-        }
+        champion.AbilityUIManager.SetAbilityOffCooldown(AbilityCategory, ID, UsesResource, IsEnabled(), IsBlocked, ChampionHasEnoughResourceToCastAbility());
 
         IsOnCooldown = false;
     }
@@ -446,6 +442,11 @@ public abstract class Ability : DamageSource
         IsReadyToBeRecasted = true;
     }
 
+    private bool ChampionHasEnoughResourceToCastAbility()
+    {
+        return resourceCost <= champion.StatsManager.Resource.GetCurrentValue();
+    }
+    
     public void ResetCooldown()
     {
         cooldownRemaining = 0;
@@ -492,8 +493,10 @@ public abstract class Ability : DamageSource
             if (UsesResource && abilityUIManager)
             {
                 abilityUIManager.SetAbilityCost(ID, resourceCost);
-                abilityUIManager.UpdateAbilityHasEnoughResource(ID,
-                    !IsEnabled() || IsBlocked || IsOnCooldown || resourceCost <= champion.StatsManager.Resource.GetCurrentValue());
+                if (UsesResource && IsEnabled() && !IsBlocked && !IsOnCooldown)
+                {
+                    champion.AbilityUIManager.UpdateAbilityHasEnoughResource(AbilityCategory, ID, ChampionHasEnoughResourceToCastAbility(), IsBlocked);
+                }
             }
         }
         else if (AbilityLevel == 0)
