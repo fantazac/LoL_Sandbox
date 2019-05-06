@@ -21,8 +21,8 @@ public class Lucian_Q : UnitTargetedAoE
         range = 500;
         damage = 85; // 85/120/155/190/225
         damagePerLevel = 35;
-        bonusADScaling = 0.6f; // 60/70/80/90/100 %
-        bonusADScalingPerLevel = 0.1f;
+        bonusADScaling = 0.6f; // 60/75/90/105/120 %
+        bonusADScalingPerLevel = 0.15f;
         resourceCost = 50; // 50/60/70/80/90
         resourceCostPerLevel = 10;
         baseCooldown = 9; // 9/8/7/6/5

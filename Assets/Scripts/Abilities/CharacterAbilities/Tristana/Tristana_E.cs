@@ -30,10 +30,10 @@ public class Tristana_E : UnitTargetedProjectile
 
         range = 525;
         speed = 2000;
-        damage = 60; // 60/70/80/90/100
+        damage = 70; // 70/80/90/100/110
         damagePerLevel = 10;
-        bonusADScaling = 0.5f; // 50/65/80/95/110%
-        bonusADScalingPerLevel = 0.15f;
+        bonusADScaling = 0.5f; // 50/70/90/110/130%
+        bonusADScalingPerLevel = 0.2f;
         totalAPScaling = 0.5f;
         resourceCost = 50; // 50/55/60/65/70
         resourceCostPerLevel = 5;

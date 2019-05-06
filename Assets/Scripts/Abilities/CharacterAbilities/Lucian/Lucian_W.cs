@@ -22,10 +22,10 @@ public class Lucian_W : DirectionTargetedProjectile
 
         range = 900;
         speed = 1550;
-        damage = 85; // 85/125/165/205/245
-        damagePerLevel = 40;
+        damage = 75; // 75/110/145/180/215
+        damagePerLevel = 35;
         totalAPScaling = 0.9f; // 90%
-        resourceCost = 50; // 50
+        resourceCost = 70; // 70
         baseCooldown = 14; // 14/13/12/11/10
         baseCooldownPerLevel = -1;
         castTime = 0.25f;

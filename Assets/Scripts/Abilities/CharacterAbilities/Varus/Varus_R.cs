@@ -24,8 +24,8 @@ public class Varus_R : DirectionTargetedProjectile
 
         range = 1075;
         speed = 1850;
-        damage = 100; // 100/175/250
-        damagePerLevel = 75;
+        damage = 150; // 150/200/250
+        damagePerLevel = 50;
         totalAPScaling = 1; // 100%
         resourceCost = 100;
         baseCooldown = 110; // 110/90/70
