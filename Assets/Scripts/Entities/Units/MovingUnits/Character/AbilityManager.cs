@@ -348,6 +348,60 @@ public class AbilityManager : MonoBehaviour
             }
         }
     }
+    
+    public void OnReleasedInputForChargedAbility(AbilityCategory abilityCategory, int abilityId)
+    {
+        Ability ability = GetAbility(abilityCategory, abilityId);
+
+        if (!ability.IsBeingCharged || !AbilityIsAvailable(ability) || !AbilityIsCastable(ability)) return;
+        
+        switch (ability)
+        {
+            case IUnitTargeted unitTargetedAbility:
+            {
+                Unit hoveredUnit = champion.MouseManager.HoveredUnit;
+                if (hoveredUnit && unitTargetedAbility.CanBeCast(hoveredUnit))
+                {
+                    if (StaticObjects.OnlineMode)
+                    {
+                        SendToServer_Ability_Unit(abilityCategory, abilityId, hoveredUnit);
+                    }
+                    else
+                    {
+                        UseUnitTargetedAbility(ability, hoveredUnit);
+                    }
+                }
+
+                break;
+            }
+            case IDestinationTargeted destinationTargetedAbility when destinationTargetedAbility.CanBeCast(Input.mousePosition):
+            {
+                if (StaticObjects.OnlineMode)
+                {
+                    SendToServer_Ability_Destination(abilityCategory, abilityId, destinationTargetedAbility.GetDestination());
+                }
+                else
+                {
+                    UsePositionTargetedAbility(ability, destinationTargetedAbility.GetDestination());
+                }
+
+                break;
+            }
+            case IAutoTargeted _:
+            {
+                if (StaticObjects.OnlineMode)
+                {
+                    SendToServer_Ability_Auto(abilityCategory, abilityId);
+                }
+                else
+                {
+                    UseAutoTargetedAbility(ability);
+                }
+
+                break;
+            }
+        }
+    }
 
     private void UsePositionTargetedAbility(Ability ability, Vector3 destination)
     {

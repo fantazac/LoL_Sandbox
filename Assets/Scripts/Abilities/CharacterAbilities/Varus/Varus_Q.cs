@@ -123,7 +123,8 @@ public class Varus_Q : DirectionTargetedProjectile
         if (IsActive)
         {
             StopCoroutine(abilityEffectCoroutine);
-
+            IsBeingCharged = false;
+            
             Buff buff = champion.BuffManager.GetBuff(AbilityBuffs[0]);
             currentFinalChargeDuration = buff == null ? maximumChargeTime : buff.Duration - buff.DurationRemaining;
             if (currentFinalChargeDuration < chargeTime)
@@ -139,11 +140,11 @@ public class Varus_Q : DirectionTargetedProjectile
 
             currentQIsEmpowered = varusW.IsActive;
             champion.OrientationManager.RotateCharacterInstantly(destination);
-            SpawnProjectile(transform.position + (transform.forward * projectilePrefab.transform.localScale.z * 0.5f), transform.rotation);
+            SpawnProjectile(transform.position + (projectilePrefab.transform.localScale.z * 0.5f * transform.forward), transform.rotation);
 
             StartCoroutine(ReduceRemainingCooldownWithChargeDuration(currentFinalChargeDuration));
             AbilityBuffs[0].ConsumeBuff(champion);
-
+            
             FinishAbilityCast();
 
             if (disableVarusWCoroutine != null)

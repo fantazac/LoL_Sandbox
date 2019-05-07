@@ -76,20 +76,36 @@ public class InputManager : MonoBehaviour
             {
                 characterAbilityManager.OnPressedInputForAbility(AbilityCategory.CharacterAbility, 0);
             }
+            else if (Input.GetKeyUp(KeyCode.Q))
+            {
+                characterAbilityManager.OnReleasedInputForChargedAbility(AbilityCategory.CharacterAbility, 0);
+            }
 
             if (Input.GetKeyDown(KeyCode.W))
             {
                 characterAbilityManager.OnPressedInputForAbility(AbilityCategory.CharacterAbility, 1);
+            }
+            else if (Input.GetKeyUp(KeyCode.W))
+            {
+                characterAbilityManager.OnReleasedInputForChargedAbility(AbilityCategory.CharacterAbility, 1);
             }
 
             if (Input.GetKeyDown(KeyCode.E))
             {
                 characterAbilityManager.OnPressedInputForAbility(AbilityCategory.CharacterAbility, 2);
             }
+            else if (Input.GetKeyUp(KeyCode.E))
+            {
+                characterAbilityManager.OnReleasedInputForChargedAbility(AbilityCategory.CharacterAbility, 2);
+            }
 
             if (Input.GetKeyDown(KeyCode.R))
             {
                 characterAbilityManager.OnPressedInputForAbility(AbilityCategory.CharacterAbility, 3);
+            }
+            else if (Input.GetKeyUp(KeyCode.R))
+            {
+                characterAbilityManager.OnReleasedInputForChargedAbility(AbilityCategory.CharacterAbility, 3);
             }
 
             /*if (Input.GetKeyDown(KeyCode.Equals))
