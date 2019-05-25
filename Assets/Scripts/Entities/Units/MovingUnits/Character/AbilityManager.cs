@@ -225,6 +225,21 @@ public class AbilityManager : MonoBehaviour
             UseAutoTargetedAbility(ability);
         }
     }
+    
+    protected void SendToServer_Ability_Charged(AbilityCategory abilityCategory, int abilityId, Vector3 destination)
+    {
+        champion.PhotonView.RPC(nameof(ReceiveFromServer_Ability_Charged), PhotonTargets.AllViaServer, abilityCategory, abilityId, destination);
+    }
+
+    [PunRPC]
+    protected void ReceiveFromServer_Ability_Charged(AbilityCategory abilityCategory, int abilityId, Vector3 destination)
+    {
+        Ability ability = GetAbility(abilityCategory, abilityId);
+        if (AbilityIsCastable(ability))
+        {
+            UseChargedAbility(ability, destination);
+        }
+    }
 
     protected void SendToServer_Ability_Recast(AbilityCategory abilityCategory, int abilityId)
     {
@@ -353,53 +368,17 @@ public class AbilityManager : MonoBehaviour
     {
         Ability ability = GetAbility(abilityCategory, abilityId);
 
-        if (!ability.IsBeingCharged || !AbilityIsAvailable(ability) || !AbilityIsCastable(ability)) return;
+        if (!(ability is IChargedAbility chargedAbility) || !ability.IsBeingCharged || !AbilityIsAvailable(ability) || !AbilityIsCastable(ability)) return;
+
+        if (!chargedAbility.CanBeCast(Input.mousePosition)) return;
         
-        switch (ability)
+        if (StaticObjects.OnlineMode)
         {
-            case IUnitTargeted unitTargetedAbility:
-            {
-                Unit hoveredUnit = champion.MouseManager.HoveredUnit;
-                if (hoveredUnit && unitTargetedAbility.CanBeCast(hoveredUnit))
-                {
-                    if (StaticObjects.OnlineMode)
-                    {
-                        SendToServer_Ability_Unit(abilityCategory, abilityId, hoveredUnit);
-                    }
-                    else
-                    {
-                        UseUnitTargetedAbility(ability, hoveredUnit);
-                    }
-                }
-
-                break;
-            }
-            case IDestinationTargeted destinationTargetedAbility when destinationTargetedAbility.CanBeCast(Input.mousePosition):
-            {
-                if (StaticObjects.OnlineMode)
-                {
-                    SendToServer_Ability_Destination(abilityCategory, abilityId, destinationTargetedAbility.GetDestination());
-                }
-                else
-                {
-                    UsePositionTargetedAbility(ability, destinationTargetedAbility.GetDestination());
-                }
-
-                break;
-            }
-            case IAutoTargeted _:
-            {
-                if (StaticObjects.OnlineMode)
-                {
-                    SendToServer_Ability_Auto(abilityCategory, abilityId);
-                }
-                else
-                {
-                    UseAutoTargetedAbility(ability);
-                }
-
-                break;
-            }
+            SendToServer_Ability_Charged(abilityCategory, abilityId, chargedAbility.GetDestination());
+        }
+        else
+        {
+            UseChargedAbility(ability, chargedAbility.GetDestination());
         }
     }
 
@@ -444,6 +423,12 @@ public class AbilityManager : MonoBehaviour
         {
             champion.BufferedAbilityManager.BufferAutoTargetedAbility(ability);
         }
+    }
+    
+    private void UseChargedAbility(Ability ability, Vector3 destination)
+    {
+        champion.BufferedAbilityManager.ResetBufferedAbility();
+        ((IChargedAbility)ability).UseChargedAbility(destination);
     }
 
     private bool AbilityIsAvailable(Ability abilityToCast)

@@ -408,7 +408,7 @@ public abstract class Ability : DamageSource
         {
             cooldownRemaining -= Time.deltaTime;
 
-            champion.AbilityUIManager.UpdateAbilityCooldown(AbilityCategory, ID, cooldown, cooldownRemaining);
+            champion.AbilityUIManager.UpdateAbilityCooldown(AbilityCategory, ID, cooldownOnStart, cooldownRemaining);
 
             yield return null;
         }

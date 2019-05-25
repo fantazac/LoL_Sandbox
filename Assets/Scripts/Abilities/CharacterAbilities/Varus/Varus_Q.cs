@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Varus_Q : DirectionTargetedProjectile
+public class Varus_Q : DirectionTargetedProjectile, IChargedAbility
 {
     private const float DAMAGE_REDUCTION_PER_TARGET_HIT = 0.15f;
     private const float DAMAGE_REDUCTION_CAP = 0.33f;
@@ -120,62 +120,61 @@ public class Varus_Q : DirectionTargetedProjectile
 
     public override void UseAbility(Vector3 destination)
     {
-        if (IsActive)
+        StartAbilityCast();
+
+        champion.BasicAttack.CancelCurrentBasicAttackToCastAbility();
+
+        FinalAdjustments(destination);
+
+        StartCorrectCoroutine();
+
+        if (!varusW) return;
+
+        if (varusW.IsActive)
         {
-            StopCoroutine(abilityEffectCoroutine);
-            IsBeingCharged = false;
-            
-            Buff buff = champion.BuffManager.GetBuff(AbilityBuffs[0]);
-            currentFinalChargeDuration = buff == null ? maximumChargeTime : buff.Duration - buff.DurationRemaining;
-            if (currentFinalChargeDuration < chargeTime)
-            {
-                currentDamageIncreaseMultiplier = 1 + DAMAGE_INCREASE_CAP * currentFinalChargeDuration;
-                currentRange = range + rangeIncreaseCap * currentFinalChargeDuration;
-            }
-            else
-            {
-                currentDamageIncreaseMultiplier = 1 + DAMAGE_INCREASE_CAP;
-                currentRange = range + rangeIncreaseCap;
-            }
-
-            currentQIsEmpowered = varusW.IsActive;
-            champion.OrientationManager.RotateCharacterInstantly(destination);
-            SpawnProjectile(transform.position + (projectilePrefab.transform.localScale.z * 0.5f * transform.forward), transform.rotation);
-
-            StartCoroutine(ReduceRemainingCooldownWithChargeDuration(currentFinalChargeDuration));
-            AbilityBuffs[0].ConsumeBuff(champion);
-            
-            FinishAbilityCast();
-
-            if (disableVarusWCoroutine != null)
-            {
-                StopCoroutine(disableVarusWCoroutine);
-                disableVarusWCoroutine = null;
-            }
-            EnableOtherAbility(varusW);
+            DisableOtherAbility(varusW);
         }
         else
         {
-            StartAbilityCast();
-
-            champion.BasicAttack.CancelCurrentBasicAttackToCastAbility();
-
-            FinalAdjustments(destination);
-
-            StartCorrectCoroutine();
-
-            if (!varusW) return;
-
-            if (varusW.IsActive)
-            {
-                DisableOtherAbility(varusW);
-            }
-            else
-            {
-                disableVarusWCoroutine = DisableVarusW();
-                StartCoroutine(disableVarusWCoroutine);
-            }
+            disableVarusWCoroutine = DisableVarusW();
+            StartCoroutine(disableVarusWCoroutine);
         }
+    }
+
+    public void UseChargedAbility(Vector3 destination)
+    {
+        StopCoroutine(abilityEffectCoroutine);
+        IsBeingCharged = false;
+
+        Buff buff = champion.BuffManager.GetBuff(AbilityBuffs[0]);
+        currentFinalChargeDuration = buff == null ? maximumChargeTime : buff.Duration - buff.DurationRemaining;
+        if (currentFinalChargeDuration < chargeTime)
+        {
+            currentDamageIncreaseMultiplier = 1 + DAMAGE_INCREASE_CAP * currentFinalChargeDuration;
+            currentRange = range + rangeIncreaseCap * currentFinalChargeDuration;
+        }
+        else
+        {
+            currentDamageIncreaseMultiplier = 1 + DAMAGE_INCREASE_CAP;
+            currentRange = range + rangeIncreaseCap;
+        }
+
+        currentQIsEmpowered = varusW.IsActive;
+        champion.OrientationManager.RotateCharacterInstantly(destination);
+        SpawnProjectile(transform.position + (projectilePrefab.transform.localScale.z * 0.5f * transform.forward), transform.rotation);
+
+        StartCoroutine(ReduceRemainingCooldownWithChargeDuration(currentFinalChargeDuration));
+        AbilityBuffs[0].ConsumeBuff(champion);
+
+        FinishAbilityCast();
+
+        if (disableVarusWCoroutine != null)
+        {
+            StopCoroutine(disableVarusWCoroutine);
+            disableVarusWCoroutine = null;
+        }
+
+        EnableOtherAbility(varusW);
     }
 
     protected override void SpawnProjectile(Vector3 position, Quaternion rotation)
