@@ -1,7 +1,7 @@
-public class CHAMPION_NAMEStatsManager : ManaUserStatsManager
-{
+public class {0}StatsManager : ManaUserStatsManager
+{{
     protected override BaseStats GetBaseStats()
-    {
-        return new CHAMPION_NAMEBaseStats();
-    }
-}
+    {{
+        return new {0}BaseStats();
+    }}
+}}

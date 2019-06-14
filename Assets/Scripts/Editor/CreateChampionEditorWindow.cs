@@ -42,23 +42,24 @@ public class CreateChampionEditorWindow : EditorWindow
     
     private void CreateChampionFile()
     {
-        string dirPath = championFolderPath + championName;
+        var dirPath = championFolderPath + championName;
         if (!Directory.Exists(dirPath))
         {
             Directory.CreateDirectory(dirPath);
         }
 
-        CreateFile(dirPath, "AbilityManager.cs", championAbilityManagerFileBasePath);
-        CreateFile(dirPath, "BaseStats.cs", championBaseStatsFileBasePath);
-        CreateFile(dirPath, "BasicAttack.cs", championBasicAttackFileBasePath);
-        CreateFile(dirPath, "StatsManager.cs", championStatsManagerFileBasePath);
-        CreateFile(dirPath, ".cs", championFileBasePath);
+        dirPath += "/" + championName;
+
+        CreateFile(dirPath + "AbilityManager.cs", championAbilityManagerFileBasePath);
+        CreateFile(dirPath + "BaseStats.cs", championBaseStatsFileBasePath);
+        CreateFile(dirPath + "BasicAttack.cs", championBasicAttackFileBasePath);
+        CreateFile(dirPath + "StatsManager.cs", championStatsManagerFileBasePath);
+        CreateFile(dirPath + ".cs", championFileBasePath);
     }
 
-    private void CreateFile(string dirPath, string fileEnd, string basePath)
+    private void CreateFile(string filePath, string basePath)
     {
-        string filePath = dirPath + "/" + championName + fileEnd;
-        string fileText = File.ReadAllText(basePath).Replace("CHAMPION_NAME", championName);
+        string fileText = string.Format(File.ReadAllText(basePath), championName);
         if (!File.Exists(filePath))
         {
             using (StreamWriter outfile = new StreamWriter(filePath))

@@ -1,7 +1,7 @@
-public class CHAMPION_NAMEBaseStats : CharacterBaseStats
-{
+public class {0}BaseStats : CharacterBaseStats
+{{
     protected override void SetBaseStats()
-    {
+    {{
         BaseHealth = 500;
         HealthPerLevel = 70;
 
@@ -29,5 +29,5 @@ public class CHAMPION_NAMEBaseStats : CharacterBaseStats
         MagicResistancePerLevel = 0.5f;
 
         BaseMovementSpeed = 325;
-    }
-}
+    }}
+}}

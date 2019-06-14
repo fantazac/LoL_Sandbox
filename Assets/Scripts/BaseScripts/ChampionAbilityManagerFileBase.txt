@@ -1,21 +1,21 @@
-public class CHAMPION_NAMEAbilityManager : AbilityManager
-{
+public class {0}AbilityManager : AbilityManager
+{{
     protected override void InitAbilities()
-    {
+    {{
         CharacterAbilities = new Ability[]
-        {
-            gameObject.AddComponent<CHAMPION_NAME_Q>(), 
-            gameObject.AddComponent<CHAMPION_NAME_W>(), 
-            gameObject.AddComponent<CHAMPION_NAME_E>(), 
-            gameObject.AddComponent<CHAMPION_NAME_R>()
-        };
-        PassiveCharacterAbilities = new Ability[] { gameObject.AddComponent<CHAMPION_NAME_P>() };
+        {{
+            gameObject.AddComponent<{0}_Q>(), 
+            gameObject.AddComponent<{0}_W>(), 
+            gameObject.AddComponent<{0}_E>(), 
+            gameObject.AddComponent<{0}_R>()
+        }};
+        PassiveCharacterAbilities = new Ability[] {{ gameObject.AddComponent<{0}_P>() }};
         SummonerAbilities = new Ability[]
-        {
+        {{
             gameObject.AddComponent<Heal>(), 
             gameObject.AddComponent<Flash>()
-        };
+        }};
 
         base.InitAbilities();
-    }
-}
+    }}
+}}
