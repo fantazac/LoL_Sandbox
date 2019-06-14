@@ -1,0 +1,10 @@
+public class CHAMPION_NAMEBasicAttack : BasicAttack
+{
+    protected CHAMPION_NAMEBasicAttack()
+    {
+        delayPercentBeforeAttack = 0.1666f;
+        speed = 1600;
+
+        basicAttackPrefabPath = "BasicAttacksPrefabs/Characters/CHAMPION_NAME/CHAMPION_NAMEBA";
+    }
+}

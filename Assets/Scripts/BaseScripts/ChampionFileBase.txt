@@ -1,0 +1,20 @@
+public class CHAMPION_NAME : Champion
+{
+    protected CHAMPION_NAME()
+    {
+        Name = "CHAMPION_NAME";
+    }
+
+    protected override void SetPortraitSpritePath()
+    {
+        portraitSpritePath = "Sprites/Portraits/Character/Champion/CHAMPION_NAME";
+    }
+
+    protected override void InitCharacterProperties()
+    {
+        BasicAttack = gameObject.AddComponent<CHAMPION_NAMEBasicAttack>();
+        StatsManager = gameObject.AddComponent<CHAMPION_NAMEStatsManager>();
+
+        AbilityManager = gameObject.AddComponent<CHAMPION_NAMEAbilityManager>();
+    }
+}

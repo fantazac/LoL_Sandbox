@@ -1,0 +1,33 @@
+public class CHAMPION_NAMEBaseStats : CharacterBaseStats
+{
+    protected override void SetBaseStats()
+    {
+        BaseHealth = 500;
+        HealthPerLevel = 70;
+
+        BaseHealthRegeneration = 5;
+        HealthRegenerationPerLevel = 0.5f;
+
+        BaseResource = 350;
+        ResourcePerLevel = 40;
+
+        BaseResourceRegeneration = 5;
+        ResourceRegenerationPerLevel = 0.5f;
+
+        BaseAttackRange = 550;
+
+        BaseAttackDamage = 60;
+        AttackDamagePerLevel = 2.5f;
+
+        BaseAttackSpeed = 0.625f;
+        AttackSpeedPerLevel = 1.5f;
+
+        BaseArmor = 30;
+        ArmorPerLevel = 3;
+
+        BaseMagicResistance = 30;
+        MagicResistancePerLevel = 0.5f;
+
+        BaseMovementSpeed = 325;
+    }
+}
