@@ -1,0 +1,28 @@
+using System.Collections.Generic;
+
+public class {0}_{1} : PassiveTargeted
+{{
+    protected {0}_{1}()
+    {{
+        abilityName = "ABILITY_NAME";
+
+        abilityType = AbilityType.PASSIVE;
+
+        AbilityLevel = 1;
+    }}
+
+    protected override void SetResourcePaths()
+    {{
+        abilitySpritePath = "Sprites/Characters/CharacterAbilities/{0}/{0}{1}";
+    }}
+
+    public override void SetAffectedTeams(Team allyTeam)
+    {{
+        affectedTeams = new List<Team>();
+    }}
+
+    protected override void Start()
+    {{
+        base.Start();
+    }}
+}}

@@ -4,12 +4,12 @@ public class {0}AbilityManager : AbilityManager
     {{
         CharacterAbilities = new Ability[]
         {{
-            gameObject.AddComponent<{0}_Q>(), 
-            gameObject.AddComponent<{0}_W>(), 
-            gameObject.AddComponent<{0}_E>(), 
-            gameObject.AddComponent<{0}_R>()
+            gameObject.AddComponent<{2}>(), 
+            gameObject.AddComponent<{3}>(), 
+            gameObject.AddComponent<{4}>(), 
+            gameObject.AddComponent<{5}>()
         }};
-        PassiveCharacterAbilities = new Ability[] {{ gameObject.AddComponent<{0}_P>() }};
+        PassiveCharacterAbilities = new Ability[] {{ gameObject.AddComponent<{1}>() }};
         SummonerAbilities = new Ability[]
         {{
             gameObject.AddComponent<Heal>(), 
