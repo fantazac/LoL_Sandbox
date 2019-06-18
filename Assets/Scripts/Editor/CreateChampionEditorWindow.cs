@@ -15,8 +15,12 @@ public class CreateChampionEditorWindow : EditorWindow
     private string[] abilityTypes;
     private List<string> existingChampions;
 
-    private bool[] useExistingAbilities;
+    private bool[] createNewAbilities;
     private int[] selectedExistingAbilities;
+
+    private bool createNewStats;
+    private float[] stats;
+    private string[] statNames;
 
     private string championFileBasePath;
     private string championAbilityManagerFileBasePath;
@@ -42,9 +46,31 @@ public class CreateChampionEditorWindow : EditorWindow
         championFolderPath = "Assets/Scripts/Entities/Units/MovingUnits/Character/Champion/";
         championAbilitiesFolderPath = "Assets/Scripts/Abilities/CharacterAbilities/";
         
-        useExistingAbilities = new bool[5];
+        createNewAbilities = new bool[5];
         selectedExistingAbilities = new int[5];
         abilityTypes = new[] { "P", "Q", "W", "E", "R" };
+        stats = new float[18];
+        statNames = new[]
+        {
+            "Health",
+            "Health/lvl",
+            "HP regen",
+            "HP regen/lvl",
+            "Resource",
+            "Resource/lvl",
+            "Resource regen",
+            "Resource regen/lvl",
+            "Attack damage",
+            "Attack damage/lvl",
+            "Attack speed",
+            "Attack speed/lvl",
+            "Armor",
+            "Armor/lvl",
+            "Magic resist",
+            "Magic resist/lvl",
+            "Attack range",
+            "Movement speed"
+        };
     }
 
     [MenuItem ("Sandbox/Create Champion", false, 1)]
@@ -117,6 +143,7 @@ public class CreateChampionEditorWindow : EditorWindow
         
         EditorGUILayout.LabelField("", GUI.skin.horizontalSlider);
         GUILayout.Label("Abilities Settings", EditorStyles.boldLabel);
+        GUILayout.Label("(Will use the selected existing ability for unchecked boxes)");
         EditorGUILayout.Separator();
         ShowAbilitySettings("P", 0);
         EditorGUILayout.Separator();
@@ -127,12 +154,40 @@ public class CreateChampionEditorWindow : EditorWindow
         ShowAbilitySettings("E", 3);
         EditorGUILayout.Separator();
         ShowAbilitySettings("R", 4);
+        
         EditorGUILayout.LabelField("", GUI.skin.horizontalSlider);
-
+        GUILayout.Label("Stats Settings", EditorStyles.boldLabel);
+        if (GUILayout.Toggle(createNewStats, "Create new stats (will use default stats if unchecked)"))
+        {
+            createNewStats = true;
+            for (var i = 0; i < stats.Length; i++)
+            {
+                if (i % 2 == 0)
+                {
+                    if (i != 0)
+                    {
+                        GUILayout.EndHorizontal();
+                    }
+                    GUILayout.BeginHorizontal();
+                }
+                stats[i] = EditorGUILayout.FloatField(statNames[i], stats[i]);   
+            }
+            GUILayout.EndHorizontal();
+        }
+        else
+        {
+            createNewStats = false;
+        }
+        
+        EditorGUILayout.LabelField("", GUI.skin.horizontalSlider);
         GUI.enabled = validName;
         if (GUILayout.Button("Create Champion"))
         {
-            CreateChampionFile();
+            CreateChampionFiles();
+            existingChampions.Add(championName);
+            GUI.FocusControl("");
+            championName = string.Empty;
+            nameIsEmpty = true;
             AssetDatabase.Refresh();
         }
         GUI.enabled = true;
@@ -141,18 +196,18 @@ public class CreateChampionEditorWindow : EditorWindow
     private void ShowAbilitySettings(string groupName, int groupId)
     {
         GUILayout.Label(groupName);
-        if (GUILayout.Toggle(useExistingAbilities[groupId], "Use existing ability"))
+        if (GUILayout.Toggle(createNewAbilities[groupId], "Create new ability"))
         {
-            useExistingAbilities[groupId] = true;
-            selectedExistingAbilities[groupId] = EditorGUILayout.Popup("Existing ability", selectedExistingAbilities[groupId], existingAbilities);
+            createNewAbilities[groupId] = true;
         }
         else
         {
-            useExistingAbilities[groupId] = false;
+            createNewAbilities[groupId] = false;
+            selectedExistingAbilities[groupId] = EditorGUILayout.Popup("Existing ability", selectedExistingAbilities[groupId], existingAbilities);
         }
     }
     
-    private void CreateChampionFile()
+    private void CreateChampionFiles()
     {
         //Ability scripts
         
@@ -167,19 +222,18 @@ public class CreateChampionEditorWindow : EditorWindow
         var abilityNames = new string[5];
         for (int i = 0; i < selectedExistingAbilities.Length; i++)
         {
-            if (useExistingAbilities[i])
-            {
-                var abilityName = existingAbilities[selectedExistingAbilities[i]];
-                abilityNames[i] = abilityName.Substring(abilityName.IndexOf('/') + 1);
-            }
-            else
+            if (createNewAbilities[i])
             {
                 abilityNames[i] = championName + "_" + abilityTypes[i];
                 CreateAbilityFile(dirAbilitiesPath, championAbilityPassiveTargetedFileBasePath, abilityTypes[i]);
             }
+            else
+            {
+                var abilityName = existingAbilities[selectedExistingAbilities[i]];
+                abilityNames[i] = abilityName.Substring(abilityName.IndexOf('/') + 1);
+            }
         }
 
-        
         //Champion scripts
         
         var dirChampionPath = championFolderPath + championName;
@@ -191,8 +245,16 @@ public class CreateChampionEditorWindow : EditorWindow
         dirChampionPath += "/" + championName;
 
         CreateAbilityManagerFile(dirChampionPath, championAbilityManagerFileBasePath, abilityNames);
+
+        if (createNewStats)
+        {
+            CreateBaseStatsFile(dirChampionPath);
+        }
+        else
+        {
+            CreateChampionFile(dirChampionPath, championBaseStatsFileBasePath, "BaseStats");
+        }
         
-        CreateChampionFile(dirChampionPath, championBaseStatsFileBasePath, "BaseStats");
         CreateChampionFile(dirChampionPath, championBasicAttackFileBasePath, "BasicAttack");
         CreateChampionFile(dirChampionPath, championStatsManagerFileBasePath, "StatsManager");
         CreateChampionFile(dirChampionPath, championFileBasePath, "");
@@ -220,6 +282,50 @@ public class CreateChampionEditorWindow : EditorWindow
             using (StreamWriter outfile = new StreamWriter(filePath))
             {
                 outfile.Write(fileText);
+            }
+        }
+    }
+
+    private void CreateBaseStatsFile(string filePath)
+    {
+        filePath += "BaseStats.cs";
+        if (!File.Exists(filePath))
+        {
+            using (StreamWriter outfile = new StreamWriter(filePath))
+            {
+                outfile.WriteLine("public class " + championName + "BaseStats : CharacterBaseStats");
+                outfile.WriteLine("{");
+                outfile.WriteLine("    protected override void SetBaseStats()");
+                outfile.WriteLine("    {");
+                outfile.WriteLine("        BaseHealth = " + stats[0] + ";");
+                outfile.WriteLine("        HealthPerLevel = " + stats[1] + ";");
+                outfile.WriteLine("");
+                outfile.WriteLine("        BaseHealthRegeneration = " + stats[2] + ";");
+                outfile.WriteLine("        HealthRegenerationPerLevel = " + stats[3] + ";");
+                outfile.WriteLine("");
+                outfile.WriteLine("        BaseResource = " + stats[4] + ";");
+                outfile.WriteLine("        ResourcePerLevel = " + stats[5] + ";");
+                outfile.WriteLine("");
+                outfile.WriteLine("        BaseResourceRegeneration = " + stats[6] + ";");
+                outfile.WriteLine("        ResourceRegenerationPerLevel = " + stats[7] + ";");
+                outfile.WriteLine("");
+                outfile.WriteLine("        BaseAttackRange = " + stats[8] + ";");
+                outfile.WriteLine("");
+                outfile.WriteLine("        BaseAttackDamage = " + stats[9] + ";");
+                outfile.WriteLine("        AttackDamagePerLevel = " + stats[10] + ";");
+                outfile.WriteLine("");
+                outfile.WriteLine("        BaseAttackSpeed = " + stats[11] + ";");
+                outfile.WriteLine("        AttackSpeedPerLevel = " + stats[12] + ";");
+                outfile.WriteLine("");
+                outfile.WriteLine("        BaseArmor = " + stats[13] + ";");
+                outfile.WriteLine("        ArmorPerLevel = " + stats[14] + ";");
+                outfile.WriteLine("");
+                outfile.WriteLine("        BaseMagicResistance = " + stats[15] + ";");
+                outfile.WriteLine("        MagicResistancePerLevel = " + stats[16] + ";");
+                outfile.WriteLine("");
+                outfile.WriteLine("        BaseMovementSpeed = " + stats[17] + ";");
+                outfile.WriteLine("    }");
+                outfile.WriteLine("}");
             }
         }
     }
