@@ -111,6 +111,9 @@ public class CreateChampionEditorWindow : EditorWindow
             .Select(a => a.Name)
             .ToList();
         existingChampions.Sort();
+
+        championName = string.Empty;
+        nameIsEmpty = true;
     }
 
     private void OnGUI()
