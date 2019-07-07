@@ -12,33 +12,29 @@ public class CreateChampionEditorWindow : EditorWindow
     private bool nameIsTaken;
     private string[] existingAbilities;
     private string[] existingAbilityTypes;
-    private string[] abilityTypes;
+    private readonly string[] abilityTypes;
     private List<string> existingChampions;
 
-    private bool[] createNewAbilities;
-    private int[] selectedExistingAbilities;
+    private readonly bool[] createNewAbilities;
+    private readonly int[] selectedExistingAbilities;
 
-    private bool createNewStats;
-    private float[] stats;
-    private string[] statNames;
-
-    private string championFileBasePath;
-    private string championAbilityManagerFileBasePath;
-    private string championBasicAttackFileBasePath;
-    private string championBaseStatsFileBasePath;
-    private string championStatsManagerFileBasePath;
+    private readonly string championFileBasePath;
+    private readonly string championAbilityManagerFileBasePath;
+    private readonly string championBasicAttackFileBasePath;
+    private readonly string championStatsManagerFileBasePath;
     
-    private string championAbilityPassiveTargetedFileBasePath;
+    private readonly string championAbilityPassiveTargetedFileBasePath;
     
-    private string championFolderPath;
-    private string championAbilitiesFolderPath;
+    private readonly string championFolderPath;
+    private readonly string championAbilitiesFolderPath;
 
+    private readonly List<ICreateChampionScript> scriptsToCreate;
+    
     private CreateChampionEditorWindow()
     {
         championFileBasePath = "Assets/Scripts/Editor/BaseScripts/ChampionFileBase.txt";
         championAbilityManagerFileBasePath = "Assets/Scripts/Editor/BaseScripts/ChampionAbilityManagerFileBase.txt";
         championBasicAttackFileBasePath = "Assets/Scripts/Editor/BaseScripts/ChampionBasicAttackFileBase.txt";
-        championBaseStatsFileBasePath = "Assets/Scripts/Editor/BaseScripts/ChampionBaseStatsFileBase.txt";
         championStatsManagerFileBasePath = "Assets/Scripts/Editor/BaseScripts/ChampionStatsManagerFileBase.txt";
         
         championAbilityPassiveTargetedFileBasePath = "Assets/Scripts/Editor/BaseScripts/Abilities/ChampionAbilityPassiveTargetedFileBase.txt";
@@ -49,27 +45,10 @@ public class CreateChampionEditorWindow : EditorWindow
         createNewAbilities = new bool[5];
         selectedExistingAbilities = new int[5];
         abilityTypes = new[] { "P", "Q", "W", "E", "R" };
-        stats = new float[18];
-        statNames = new[]
+
+        scriptsToCreate = new List<ICreateChampionScript>
         {
-            "Health",
-            "Health/lvl",
-            "HP regen",
-            "HP regen/lvl",
-            "Resource",
-            "Resource/lvl",
-            "Resource regen",
-            "Resource regen/lvl",
-            "Attack damage",
-            "Attack damage/lvl",
-            "Attack speed",
-            "Attack speed/lvl",
-            "Armor",
-            "Armor/lvl",
-            "Magic resist",
-            "Magic resist/lvl",
-            "Attack range",
-            "Movement speed"
+            new CreateBaseStatsScript()
         };
     }
 
@@ -158,28 +137,10 @@ public class CreateChampionEditorWindow : EditorWindow
         EditorGUILayout.Separator();
         ShowAbilitySettings("R", 4);
         
-        EditorGUILayout.LabelField("", GUI.skin.horizontalSlider);
-        GUILayout.Label("Stats Settings", EditorStyles.boldLabel);
-        if (GUILayout.Toggle(createNewStats, "Create new stats (will use default stats if unchecked)"))
+        foreach (ICreateChampionScript script in scriptsToCreate)
         {
-            createNewStats = true;
-            for (var i = 0; i < stats.Length; i++)
-            {
-                if (i % 2 == 0)
-                {
-                    if (i != 0)
-                    {
-                        GUILayout.EndHorizontal();
-                    }
-                    GUILayout.BeginHorizontal();
-                }
-                stats[i] = EditorGUILayout.FloatField(statNames[i], stats[i]);   
-            }
-            GUILayout.EndHorizontal();
-        }
-        else
-        {
-            createNewStats = false;
+            EditorGUILayout.LabelField("", GUI.skin.horizontalSlider);
+            script.ShowGUI();
         }
         
         EditorGUILayout.LabelField("", GUI.skin.horizontalSlider);
@@ -249,13 +210,9 @@ public class CreateChampionEditorWindow : EditorWindow
 
         CreateAbilityManagerFile(dirChampionPath, championAbilityManagerFileBasePath, abilityNames);
 
-        if (createNewStats)
+        foreach (ICreateChampionScript script in scriptsToCreate)
         {
-            CreateBaseStatsFile(dirChampionPath);
-        }
-        else
-        {
-            CreateChampionFile(dirChampionPath, championBaseStatsFileBasePath, "BaseStats");
+            script.CreateScript(championName, dirChampionPath);
         }
         
         CreateChampionFile(dirChampionPath, championBasicAttackFileBasePath, "BasicAttack");
@@ -289,50 +246,6 @@ public class CreateChampionEditorWindow : EditorWindow
         }
     }
 
-    private void CreateBaseStatsFile(string filePath)
-    {
-        filePath += "BaseStats.cs";
-        if (!File.Exists(filePath))
-        {
-            using (StreamWriter outfile = new StreamWriter(filePath))
-            {
-                outfile.WriteLine("public class " + championName + "BaseStats : CharacterBaseStats");
-                outfile.WriteLine("{");
-                outfile.WriteLine("    protected override void SetBaseStats()");
-                outfile.WriteLine("    {");
-                outfile.WriteLine("        BaseHealth = " + stats[0] + ";");
-                outfile.WriteLine("        HealthPerLevel = " + stats[1] + ";");
-                outfile.WriteLine("");
-                outfile.WriteLine("        BaseHealthRegeneration = " + stats[2] + ";");
-                outfile.WriteLine("        HealthRegenerationPerLevel = " + stats[3] + ";");
-                outfile.WriteLine("");
-                outfile.WriteLine("        BaseResource = " + stats[4] + ";");
-                outfile.WriteLine("        ResourcePerLevel = " + stats[5] + ";");
-                outfile.WriteLine("");
-                outfile.WriteLine("        BaseResourceRegeneration = " + stats[6] + ";");
-                outfile.WriteLine("        ResourceRegenerationPerLevel = " + stats[7] + ";");
-                outfile.WriteLine("");
-                outfile.WriteLine("        BaseAttackRange = " + stats[8] + ";");
-                outfile.WriteLine("");
-                outfile.WriteLine("        BaseAttackDamage = " + stats[9] + ";");
-                outfile.WriteLine("        AttackDamagePerLevel = " + stats[10] + ";");
-                outfile.WriteLine("");
-                outfile.WriteLine("        BaseAttackSpeed = " + stats[11] + ";");
-                outfile.WriteLine("        AttackSpeedPerLevel = " + stats[12] + ";");
-                outfile.WriteLine("");
-                outfile.WriteLine("        BaseArmor = " + stats[13] + ";");
-                outfile.WriteLine("        ArmorPerLevel = " + stats[14] + ";");
-                outfile.WriteLine("");
-                outfile.WriteLine("        BaseMagicResistance = " + stats[15] + ";");
-                outfile.WriteLine("        MagicResistancePerLevel = " + stats[16] + ";");
-                outfile.WriteLine("");
-                outfile.WriteLine("        BaseMovementSpeed = " + stats[17] + ";");
-                outfile.WriteLine("    }");
-                outfile.WriteLine("}");
-            }
-        }
-    }
-    
     private void CreateChampionFile(string filePath, string basePath, string fileType)
     {
         filePath += fileType + ".cs";

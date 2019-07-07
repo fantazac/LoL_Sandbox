@@ -2,32 +2,32 @@ public class {0}BaseStats : CharacterBaseStats
 {{
     protected override void SetBaseStats()
     {{
-        BaseHealth = 500;
-        HealthPerLevel = 70;
+        BaseHealth = {1};
+        HealthPerLevel = {2};
 
-        BaseHealthRegeneration = 5;
-        HealthRegenerationPerLevel = 0.5f;
+        BaseHealthRegeneration = {3};
+        HealthRegenerationPerLevel = {4};
 
-        BaseResource = 350;
-        ResourcePerLevel = 40;
+        BaseResource = {5};
+        ResourcePerLevel = {6};
 
-        BaseResourceRegeneration = 5;
-        ResourceRegenerationPerLevel = 0.5f;
+        BaseResourceRegeneration = {7};
+        ResourceRegenerationPerLevel = {8};
 
-        BaseAttackRange = 550;
+        BaseAttackRange = {9};
 
-        BaseAttackDamage = 60;
-        AttackDamagePerLevel = 2.5f;
+        BaseAttackDamage = {10};
+        AttackDamagePerLevel = {11};
 
-        BaseAttackSpeed = 0.625f;
-        AttackSpeedPerLevel = 1.5f;
+        BaseAttackSpeed = {12};
+        AttackSpeedPerLevel = {13};
 
-        BaseArmor = 30;
-        ArmorPerLevel = 3;
+        BaseArmor = {14};
+        ArmorPerLevel = {15};
 
-        BaseMagicResistance = 30;
-        MagicResistancePerLevel = 0.5f;
+        BaseMagicResistance = {16};
+        MagicResistancePerLevel = {17};
 
-        BaseMovementSpeed = 325;
+        BaseMovementSpeed = {18};
     }}
 }}
