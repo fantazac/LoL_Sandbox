@@ -1,5 +1,6 @@
 ﻿public interface ICreateChampionScript
-{
+{    
+    void Init();
     void ShowGUI();
-    void CreateScript(string championName, string dirChampionPath);
+    void CreateScript(CreateScriptInfo info);
 }
