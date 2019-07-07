@@ -64,6 +64,7 @@ public class CreateAbilityManagerScript : ICreateChampionScript
 
     public void ShowGUI()
     {
+        EditorGUILayout.LabelField("", GUI.skin.horizontalSlider);
         GUILayout.Label("Abilities Settings", EditorStyles.boldLabel);
         GUILayout.Label("(Will use the selected existing ability for unchecked boxes)");
         for (int i = 0; i < abilityGroupNames.Length; i++)

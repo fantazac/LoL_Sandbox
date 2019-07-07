@@ -12,26 +12,21 @@ public class CreateChampionEditorWindow : EditorWindow
     private bool nameIsTaken;
     private List<string> existingChampions;
 
-    private readonly string championFileBasePath;
-    private readonly string championBasicAttackFileBasePath;
-    private readonly string championStatsManagerFileBasePath;
-
     private readonly string championFolderPath;
 
     private readonly List<ICreateChampionScript> scriptsToCreate;
 
     private CreateChampionEditorWindow()
     {
-        championFileBasePath = "Assets/Scripts/Editor/BaseScripts/ChampionFileBase.txt";
-        championBasicAttackFileBasePath = "Assets/Scripts/Editor/BaseScripts/ChampionBasicAttackFileBase.txt";
-        championStatsManagerFileBasePath = "Assets/Scripts/Editor/BaseScripts/ChampionStatsManagerFileBase.txt";
-
         championFolderPath = "Assets/Scripts/Entities/Units/MovingUnits/Character/Champion/";
 
         scriptsToCreate = new List<ICreateChampionScript>
         {
             new CreateAbilityManagerScript(),
-            new CreateBaseStatsScript()
+            new CreateBaseStatsScript(),
+            new CreateBasicAttackScript(),
+            new CreateStatsManagerScript(),
+            new CreateChampionScript()
         };
     }
 
@@ -89,7 +84,6 @@ public class CreateChampionEditorWindow : EditorWindow
 
         foreach (ICreateChampionScript script in scriptsToCreate)
         {
-            EditorGUILayout.LabelField("", GUI.skin.horizontalSlider);
             script.ShowGUI();
         }
 
@@ -123,10 +117,6 @@ public class CreateChampionEditorWindow : EditorWindow
         {
             script.CreateScript(info);
         }
-
-        CreateChampionFile(dirChampionPath, championBasicAttackFileBasePath, "BasicAttack");
-        CreateChampionFile(dirChampionPath, championStatsManagerFileBasePath, "StatsManager");
-        CreateChampionFile(dirChampionPath, championFileBasePath, "");
     }
 
     private void CreateChampionFile(string filePath, string basePath, string fileType)

@@ -65,6 +65,7 @@ public class CreateBaseStatsScript : ICreateChampionScript
 
     public void ShowGUI()
     {
+        EditorGUILayout.LabelField("", GUI.skin.horizontalSlider);
         GUILayout.Label("Stats Settings", EditorStyles.boldLabel);
         if (GUILayout.Toggle(createNewStats, "Create new stats (will use default stats if unchecked)"))
         {
