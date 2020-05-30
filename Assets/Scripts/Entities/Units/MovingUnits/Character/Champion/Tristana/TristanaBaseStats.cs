@@ -8,18 +8,18 @@
         BaseHealthRegeneration = 3.75f;
         HealthRegenerationPerLevel = 0.65f;
 
-        BaseResource = 246.76f;
+        BaseResource = 250;
         ResourcePerLevel = 32;
 
-        BaseResourceRegeneration = 7.206f;
+        BaseResourceRegeneration = 7.2f;
         ResourceRegenerationPerLevel = 0.45f;
 
         BaseAttackRange = 525;
 
         BaseAttackDamage = 61;
-        AttackDamagePerLevel = 3.11f;
+        AttackDamagePerLevel = 3.3f;
 
-        BaseAttackSpeed = 0.656f;
+        BaseAttackSpeed = 0.679f;
         AttackSpeedPerLevel = 1.5f;
 
         BaseArmor = 26;

@@ -18,7 +18,7 @@ public class Tristana_W : DirectionTargetedDash //TODO: GroundTargetedDash
 
         MaxLevel = 5;
 
-        damage = 85; // 85/135/185/235/285
+        damage = 95; // 95/145/195/245/295
         damagePerLevel = 50;
         range = 900;
         resourceCost = 60;
