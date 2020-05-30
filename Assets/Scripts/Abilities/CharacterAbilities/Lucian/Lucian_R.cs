@@ -30,8 +30,8 @@ public class Lucian_R : DirectionTargetedProjectile
 
         range = 1200;
         speed = 2000;
-        damage = 20; // 20/35/50
-        damagePerLevel = 15;
+        damage = 20; // 20/40/60
+        damagePerLevel = 20;
         totalADScaling = 0.25f; // 25%
         totalAPScaling = 0.1f; // 10%
         resourceCost = 100; // 100

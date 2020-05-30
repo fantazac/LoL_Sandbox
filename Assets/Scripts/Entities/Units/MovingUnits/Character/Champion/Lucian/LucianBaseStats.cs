@@ -16,7 +16,7 @@
 
         BaseAttackRange = 500;
 
-        BaseAttackDamage = 61;
+        BaseAttackDamage = 64;
         AttackDamagePerLevel = 2.75f;
 
         BaseAttackSpeed = 0.638f;

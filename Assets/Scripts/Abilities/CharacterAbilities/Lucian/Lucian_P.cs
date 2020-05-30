@@ -6,7 +6,6 @@ public class Lucian_P : PassiveTargeted, IBasicAttackEmpoweringAbility, IBasicAt
     private Ability lucianE;
     private readonly float cooldownReducedOnPassiveHitOnCharacter;
     private readonly float cooldownReducedOnPassiveHit;
-    private readonly float criticalStrikeMultiplierAgainstNonMinions;
 
     protected Lucian_P()
     {
@@ -25,7 +24,6 @@ public class Lucian_P : PassiveTargeted, IBasicAttackEmpoweringAbility, IBasicAt
 
         cooldownReducedOnPassiveHitOnCharacter = 2;
         cooldownReducedOnPassiveHit = 1;
-        criticalStrikeMultiplierAgainstNonMinions = 1.75f;
 
         appliesOnHitEffects = true;
     }
@@ -88,17 +86,7 @@ public class Lucian_P : PassiveTargeted, IBasicAttackEmpoweringAbility, IBasicAt
 
     protected override float GetAbilityDamage(Unit unitHit, bool isACriticalStrike = false, float criticalStrikeDamage = 0)
     {
-        float abilityDamage;
-        //if(unitHit is Minion)
-        //{
-        //    abilityDamage = damage + character.StatsManager.AttackDamage.GetTotal();
-        //}
-        //else
-        //{
-        abilityDamage = damage + (totalADScaling * champion.StatsManager.AttackDamage.GetTotal());
-        //Here, 0.5f is for "/2" because the base criticalStrikeDamage is 2f, which increases the criticalStrikeMultiplierAgainstNonMinions if criticalStrikeDamage is not 2f.
-        criticalStrikeDamage *= criticalStrikeMultiplierAgainstNonMinions * 0.5f;
-        //}
+        float abilityDamage = damage + (totalADScaling * champion.StatsManager.AttackDamage.GetTotal());
         return ApplyDamageModifiers(unitHit, abilityDamage, damageType) *
                ApplyAbilityDamageModifier(unitHit) *
                (isACriticalStrike ? criticalStrikeDamage * (1 - unitHit.StatsManager.CriticalStrikeDamageReduction.GetTotal()) : 1);
