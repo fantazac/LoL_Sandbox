@@ -274,7 +274,7 @@ public class AbilityManager : MonoBehaviour
                 ability = SummonerAbilities[abilityId];
                 break;
             case AbilityCategory.OfflineAbility:
-                ability = OfflineAbilities[abilityId];
+                if (!StaticObjects.OnlineMode) ability = OfflineAbilities[abilityId];
                 break;
         }
 

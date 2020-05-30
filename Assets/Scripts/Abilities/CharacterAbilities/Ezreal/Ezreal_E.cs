@@ -28,8 +28,8 @@ public class Ezreal_E : GroundTargetedBlink
         bonusADScaling = 0.5f; // 50%
         totalAPScaling = 0.75f; // 75%
         resourceCost = 90; // 90
-        baseCooldown = 19; // 19/17.5f/16/14.5f/13
-        baseCooldownPerLevel = -1.5f;
+        baseCooldown = 25; // 25/22/19/16/13
+        baseCooldownPerLevel = -3f;
         castTime = 0.15f; //TODO: VERIFY ACTUAL VALUE
         delayCastTime = new WaitForSeconds(castTime);
 

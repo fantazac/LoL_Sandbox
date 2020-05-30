@@ -19,10 +19,10 @@ public class Ezreal_Q : DirectionTargetedProjectile
 
         range = 1150;
         speed = 2000;
-        damage = 15; // 15/40/65/90/115
+        damage = 20; // 20/45/70/95/120
         damagePerLevel = 25;
-        totalADScaling = 1.1f; // 110%
-        totalAPScaling = 0.3f; // 30%
+        totalADScaling = 1.2f; // 120%
+        totalAPScaling = 0.15f; // 15%
         resourceCost = 28; // 28/31/34/37/40
         resourceCostPerLevel = 3;
         baseCooldown = 5.5f; // 5.5f/5.25f/5/4.75f/4.5f
