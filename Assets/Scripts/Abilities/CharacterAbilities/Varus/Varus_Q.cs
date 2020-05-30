@@ -47,7 +47,7 @@ public class Varus_Q : DirectionTargetedProjectile, IChargedAbility
         totalADScaling = 1.1f; // 110%
         resourceCost = 70; // 70/75/80/85/90
         resourceCostPerLevel = 5;
-        baseCooldown = 20; // 20/18/16/14/12
+        baseCooldown = 18; // 18/16/14/12/10
         baseCooldownPerLevel = -2;
         chargeTime = 1;
         maximumChargeTime = 5;
@@ -55,7 +55,7 @@ public class Varus_Q : DirectionTargetedProjectile, IChargedAbility
 
         rangeIncreaseCap = 700;
         manaPercentRefundOnChargeEndCancel = 0.5f;
-        cooldownReductionOnVarusWStacksProc = 4;
+        cooldownReductionOnVarusWStacksProc = 3;
 
         delayDisableVarusW = new WaitForSeconds(0.25f);
         delayToReduceCooldownWithChargeTime = new WaitForSeconds(0.15f);

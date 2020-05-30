@@ -28,8 +28,8 @@ public class Varus_R : DirectionTargetedProjectile
         damagePerLevel = 50;
         totalAPScaling = 1; // 100%
         resourceCost = 100;
-        baseCooldown = 110; // 110/90/70
-        baseCooldownPerLevel = -20;
+        baseCooldown = 130; // 130/100/70
+        baseCooldownPerLevel = -30;
         castTime = 0.25f; //TODO: VERIFY ACTUAL VALUE
         delayCastTime = new WaitForSeconds(castTime);
 
