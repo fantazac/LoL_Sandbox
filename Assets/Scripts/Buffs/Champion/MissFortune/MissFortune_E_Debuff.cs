@@ -6,8 +6,8 @@
 
         isADebuff = true;
 
-        buffPercentValue = 28; // 28/36/44/52/60
-        buffPercentValuePerLevel = 8;
+        buffPercentValue = 40; // 40/45/50/55/60
+        buffPercentValuePerLevel = 5;
         buffStatusEffect = StatusEffect.SLOW;
     }
 

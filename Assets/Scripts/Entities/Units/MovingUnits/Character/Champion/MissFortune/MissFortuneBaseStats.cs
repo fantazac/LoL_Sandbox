@@ -2,8 +2,8 @@
 {
     protected override void SetBaseStats()
     {
-        BaseHealth = 541;
-        HealthPerLevel = 91;
+        BaseHealth = 570;
+        HealthPerLevel = 93;
 
         BaseHealthRegeneration = 3.75f;
         HealthRegenerationPerLevel = 0.65f;
@@ -20,7 +20,7 @@
         AttackDamagePerLevel = 2.7f;
 
         BaseAttackSpeed = 0.656f;
-        AttackSpeedPerLevel = 3;
+        AttackSpeedPerLevel = 2.25f;
 
         BaseArmor = 28;
         ArmorPerLevel = 3;

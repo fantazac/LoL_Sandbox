@@ -11,7 +11,7 @@
         baseBuffFlatBonus = 25;
         buffDuration = 5;
 
-        buffFlatValue = 60;
+        buffFlatValue = 50;
         buffFlatValuePerLevel = 10;
     }
 
