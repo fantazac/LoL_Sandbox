@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using Photon.Pun;
 
 public class ChampionMovementManager : MovementManager
 {
@@ -93,7 +94,7 @@ public class ChampionMovementManager : MovementManager
     private void SendToServer_Movement_Point(Vector3 destination)
     {
         PhotonNetwork.RemoveRPCs(champion.PhotonView); //if using AllBufferedViaServer somewhere else, this needs to change
-        champion.PhotonView.RPC(nameof(ReceiveFromServer_Movement_Point), PhotonTargets.AllBufferedViaServer, destination);
+        champion.PhotonView.RPC(nameof(ReceiveFromServer_Movement_Point), RpcTarget.AllBufferedViaServer, destination);
     }
 
     [PunRPC]
@@ -105,11 +106,11 @@ public class ChampionMovementManager : MovementManager
     private void SendToServer_Movement_Target(Unit target, float range, bool isBasicAttack)
     {
         PhotonNetwork.RemoveRPCs(champion.PhotonView); //if using AllBufferedViaServer somewhere else, this needs to change
-        champion.PhotonView.RPC(nameof(ReceiveFromServer_Movement_Target), PhotonTargets.AllBufferedViaServer, target.ID, range, isBasicAttack);
+        champion.PhotonView.RPC(nameof(ReceiveFromServer_Movement_Target), RpcTarget.AllBufferedViaServer, target.ID, range, isBasicAttack);
     }
 
     [PunRPC]
-    private void ReceiveFromServer_Movement_Target(int unitId, float range, bool isBasicAttack)
+    private void ReceiveFromServer_Movement_Target(string unitId, float range, bool isBasicAttack)
     {
         SetMoveTowardsTarget(champion.AbilityManager.FindTarget(unitId), range, isBasicAttack);
     }
@@ -342,7 +343,7 @@ public class ChampionMovementManager : MovementManager
 
     private void SendToServer_StopMovement()
     {
-        champion.PhotonView.RPC(nameof(ReceiveFromServer_StopMovement), PhotonTargets.AllViaServer);
+        champion.PhotonView.RPC(nameof(ReceiveFromServer_StopMovement), RpcTarget.AllViaServer);
     }
 
     [PunRPC]

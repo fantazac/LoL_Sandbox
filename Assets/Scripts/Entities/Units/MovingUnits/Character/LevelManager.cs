@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Photon.Pun;
+using UnityEngine;
 
 public class LevelManager : MonoBehaviour
 {
@@ -55,7 +56,7 @@ public class LevelManager : MonoBehaviour
 
     private void SendToServer_LevelUp()
     {
-        champion.PhotonView.RPC(nameof(ReceiveFromServer_LevelUp), PhotonTargets.AllViaServer);
+        champion.PhotonView.RPC(nameof(ReceiveFromServer_LevelUp), RpcTarget.AllViaServer);
     }
 
     [PunRPC]
@@ -135,7 +136,7 @@ public class LevelManager : MonoBehaviour
 
     private void SendToServer_AbilityLevelUp(int abilityId)
     {
-        champion.PhotonView.RPC(nameof(ReceiveFromServer_AbilityLevelUp), PhotonTargets.AllViaServer, abilityId);
+        champion.PhotonView.RPC(nameof(ReceiveFromServer_AbilityLevelUp), RpcTarget.AllViaServer, abilityId);
     }
 
     [PunRPC]

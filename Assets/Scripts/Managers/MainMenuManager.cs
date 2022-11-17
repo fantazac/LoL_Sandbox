@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using Photon.Pun;
+using Photon.Pun.UtilityScripts;
 using UnityEngine;
 
 public class MainMenuManager : MonoBehaviour
@@ -61,6 +63,7 @@ public class MainMenuManager : MonoBehaviour
                 break;
             }
             case MainMenuState.CHARACTER_SELECT when StaticObjects.OnlineMode:
+                PhotonNetwork.LocalPlayer.LeaveCurrentTeam();
                 state = MainMenuState.TEAM_SELECT;
                 break;
             case MainMenuState.CHARACTER_SELECT:
@@ -96,7 +99,7 @@ public class MainMenuManager : MonoBehaviour
                 {
                     state = MainMenuState.CONNECTING;
                     StaticObjects.OnlineMode = true;
-                    StaticObjects.Units = new Dictionary<int, Unit>();
+                    StaticObjects.Units = new Dictionary<string, Unit>();
                     OnConnectingToServer?.Invoke();
                 }
 
@@ -105,39 +108,39 @@ public class MainMenuManager : MonoBehaviour
                     selectedSpawn = offlineSpawn;
                     state = MainMenuState.CHARACTER_SELECT;
                     StaticObjects.OnlineMode = false;
-                    StaticObjects.Units = new Dictionary<int, Unit>();
+                    StaticObjects.Units = new Dictionary<string, Unit>();
                 }
 
                 break;
             case MainMenuState.CONNECTING:
-                GUILayout.Label(PhotonNetwork.connectionStateDetailed.ToString());
+                GUILayout.Label(PhotonNetwork.NetworkClientState.ToString());
                 break;
             case MainMenuState.TEAM_SELECT:
                 if (StaticObjects.OnlineMode)
                 {
-                    GUILayout.Label("Ping: " + PhotonNetwork.GetPing().ToString() + "  -  Players Online: " + PhotonNetwork.playerList.Length);
+                    GUILayout.Label("Ping: " + PhotonNetwork.GetPing() + "  -  Players Online: " + PhotonNetwork.PlayerList.Length);
                 }
 
                 if (GUILayout.Button("BLUE", GUILayout.Height(40)))
                 {
                     selectedSpawn = blueSpawn;
                     state = MainMenuState.CHARACTER_SELECT;
-                    PhotonNetwork.player.SetTeam(PunTeams.Team.blue);
+                    PhotonNetwork.LocalPlayer.JoinTeam(1);
                 }
 
                 if (GUILayout.Button("RED", GUILayout.Height(40)))
                 {
                     selectedSpawn = redSpawn;
                     state = MainMenuState.CHARACTER_SELECT;
-                    PhotonNetwork.player.SetTeam(PunTeams.Team.red);
+                    PhotonNetwork.LocalPlayer.JoinTeam(2);
                 }
 
                 break;
             case MainMenuState.CHARACTER_SELECT:
                 if (StaticObjects.OnlineMode)
                 {
-                    GUILayout.Label("Ping: " + PhotonNetwork.GetPing().ToString() + "  -  Players Online: " + PhotonNetwork.playerList.Length + " - Team: " +
-                                    PhotonNetwork.player.GetTeam());
+                    GUILayout.Label("Ping: " + PhotonNetwork.GetPing() + "  -  Players Online: " + PhotonNetwork.PlayerList.Length + " - Team: " +
+                                    PhotonNetwork.LocalPlayer.GetPhotonTeam());
                 }
 
                 if (GUILayout.Button("CC", GUILayout.Height(40)))
@@ -174,8 +177,8 @@ public class MainMenuManager : MonoBehaviour
             case MainMenuState.ON_HOLD:
                 if (StaticObjects.OnlineMode)
                 {
-                    GUILayout.Label("Ping: " + PhotonNetwork.GetPing().ToString() + "  -  Players Online: " + PhotonNetwork.playerList.Length + " - Team: " +
-                                    PhotonNetwork.player.GetTeam());
+                    GUILayout.Label("Ping: " + PhotonNetwork.GetPing() + "  -  Players Online: " + PhotonNetwork.PlayerList.Length + " - Team: " +
+                                    PhotonNetwork.LocalPlayer.GetPhotonTeam());
                 }
 
                 break;
@@ -195,7 +198,7 @@ public class MainMenuManager : MonoBehaviour
         GameObject champion;
         if (StaticObjects.OnlineMode)
         {
-            champion = PhotonNetwork.Instantiate(characterName, selectedSpawn, new Quaternion(), 0);
+            champion = PhotonNetwork.Instantiate(characterName, selectedSpawn, new Quaternion());
         }
         else
         {

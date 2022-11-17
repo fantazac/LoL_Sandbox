@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using Photon.Pun;
+using Photon.Pun.UtilityScripts;
+using UnityEngine;
 
 public abstract class Champion : Character
 {
@@ -45,14 +47,14 @@ public abstract class Champion : Character
             MouseManager = gameObject.AddComponent<MouseManager>();
         }
 
-        if (StaticObjects.OnlineMode && PhotonView.isMine)
+        if (StaticObjects.OnlineMode && PhotonView.IsMine)
         {
-            SetTeamAndID(PhotonNetwork.player.GetTeam() == PunTeams.Team.blue ? Team.BLUE : Team.RED, PhotonNetwork.player.ID);
+            SetTeamAndID(PhotonNetwork.LocalPlayer.GetPhotonTeam().Code == 1 ? Team.BLUE : Team.RED, PhotonNetwork.LocalPlayer.UserId);
             SendToServer_TeamAndID();
         }
         else if (!StaticObjects.OnlineMode)
         {
-            SetTeamAndID(Team.BLUE, 50);
+            SetTeamAndID(Team.BLUE, "Local");
         }
     }
 
@@ -81,27 +83,27 @@ public abstract class Champion : Character
 
     public bool IsLocalChampion()
     {
-        return !StaticObjects.OnlineMode || PhotonView.isMine;
+        return !StaticObjects.OnlineMode || PhotonView.IsMine;
     }
 
     public void SendToServer_ConnectionInfoRequest()
     {
         sentConnectionInfoRequest = true;
-        PhotonView.RPC(nameof(ReceiveFromServer_ConnectionInfoRequest), PhotonTargets.Others);
+        PhotonView.RPC(nameof(ReceiveFromServer_ConnectionInfoRequest), RpcTarget.Others);
     }
 
     [PunRPC]
     private void ReceiveFromServer_ConnectionInfoRequest()
     {
-        if (PhotonView.isMine)
+        if (PhotonView.IsMine)
         {
-            PhotonView.RPC(nameof(ReceiveFromServer_ConnectionInfo), PhotonTargets.Others, transform.position, transform.rotation, Team, ID, LevelManager.Level,
+            PhotonView.RPC(nameof(ReceiveFromServer_ConnectionInfo), RpcTarget.Others, transform.position, transform.rotation, Team, ID, LevelManager.Level,
                 AbilityManager.GetCharacterAbilityLevels());
         }
     }
 
     [PunRPC]
-    private void ReceiveFromServer_ConnectionInfo(Vector3 position, Quaternion rotation, Team team, int characterId, int characterLevel, int[] characterAbilityLevels)
+    private void ReceiveFromServer_ConnectionInfo(Vector3 position, Quaternion rotation, Team team, string characterId, int characterLevel, int[] characterAbilityLevels)
     {
         if (!sentConnectionInfoRequest) return;
 
@@ -115,11 +117,11 @@ public abstract class Champion : Character
 
     private void SendToServer_TeamAndID()
     {
-        PhotonView.RPC(nameof(ReceiveFromServer_TeamAndID), PhotonTargets.Others, Team, ID);
+        PhotonView.RPC(nameof(ReceiveFromServer_TeamAndID), RpcTarget.Others, Team, ID);
     }
 
     [PunRPC]
-    private void ReceiveFromServer_TeamAndID(Team team, int characterId)
+    private void ReceiveFromServer_TeamAndID(Team team, string characterId)
     {
         SetTeamAndID(team, characterId);
     }
@@ -129,7 +131,7 @@ public abstract class Champion : Character
         return ChampionMovementManager;
     }
 
-    protected override void SetTeamAndID(Team team, int id)
+    protected override void SetTeamAndID(Team team, string id)
     {
         base.SetTeamAndID(team, id);
 

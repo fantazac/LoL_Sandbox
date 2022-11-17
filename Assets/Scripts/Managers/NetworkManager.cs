@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
+using Photon.Pun;
 
-public class NetworkManager : MonoBehaviour
+public class NetworkManager : MonoBehaviourPunCallbacks
 {
     private readonly WaitForSeconds delayLoadingPlayers;
 
@@ -27,22 +28,22 @@ public class NetworkManager : MonoBehaviour
 
     private void Connect()
     {
-        PhotonNetwork.ConnectUsingSettings("MOBA v1.0.0");
+        PhotonNetwork.ConnectUsingSettings();
     }
 
-    private void OnJoinedLobby()
+    public override void OnConnectedToMaster()
     {
         PhotonNetwork.JoinRandomRoom();
     }
 
-    private void OnPhotonRandomJoinFailed()
+    public override void OnJoinRandomFailed(short returnCode, string message)
     {
         PhotonNetwork.CreateRoom(null);
     }
 
-    private void OnJoinedRoom()
+    public override void OnJoinedRoom()
     {
-        if (PhotonNetwork.playerList.Length > 1)
+        if (PhotonNetwork.PlayerList.Length > 1)
         {
             StartCoroutine(LoadPlayers());
         }

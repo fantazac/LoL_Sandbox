@@ -67,7 +67,7 @@ public abstract class SpawnDummy : GroundTargeted //GroundTargetedAoE
 
         Dummy dummy = Instantiate(dummyPrefab, destination, Quaternion.identity).GetComponent<Dummy>();
         dummy.transform.rotation = Quaternion.LookRotation((transform.position - dummy.transform.position).normalized);
-        dummy.SetDummyNameAndTeamAndID(dummyName, team, ++dummyId);
+        dummy.SetDummyNameAndTeamAndID(dummyName, team, "Dummy" + ++dummyId);
         dummies.Add(dummy);
 
         FinishAbilityCast();

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Photon.Pun;
 using UnityEngine;
 
 public abstract class Unit : Entity
@@ -8,7 +9,7 @@ public abstract class Unit : Entity
 
     public Team Team { get; private set; }
 
-    public int ID { get; private set; }
+    public string ID { get; private set; }
 
     public Sprite PortraitSprite { get; private set; }
 
@@ -76,7 +77,7 @@ public abstract class Unit : Entity
         return unitTypeToVerify.IsSubclassOf(affectedUnitType) || unitTypeToVerify == affectedUnitType;
     }
 
-    protected virtual void SetTeamAndID(Team team, int id)
+    protected virtual void SetTeamAndID(Team team, string id)
     {
         Team = team;
         ID = id;

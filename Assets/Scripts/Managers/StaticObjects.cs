@@ -8,7 +8,7 @@ public class StaticObjects : MonoBehaviour
     public static bool OnlineMode { get; set; }
     public static TerrainCollider Terrain { get; set; }
     public static float MultiplyingFactor { get; private set; }
-    public static Dictionary<int, Unit> Units { get; set; }
+    public static Dictionary<string, Unit> Units { get; set; }
 
     private StaticObjects()
     {
